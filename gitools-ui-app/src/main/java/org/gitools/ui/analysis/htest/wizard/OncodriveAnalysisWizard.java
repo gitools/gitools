@@ -105,8 +105,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         saveFilePage = new SaveFilePage();
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-        saveFilePage.setFormats(new FileFormat[]{
-                OncodriveAnalysisFormat.FILE_FORMAT});
+        saveFilePage.setFormats(new FileFormat[]{OncodriveAnalysisFormat.FILE_FORMAT});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -120,8 +119,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     {
         if (currentPage == examplePage)
         {
-            Settings.getDefault().setShowCombinationExamplePage(
-                    examplePage.isShowAgain());
+            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled())
             {
@@ -144,8 +142,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
                         {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final OncodriveAnalysis a = PersistenceManager.get()
-                                    .load(analysisFile, OncodriveAnalysis.class, props, monitor);
+                            final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, props, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {

@@ -27,12 +27,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * @noinspection ALL
+ */
 public class ThreadQueue
 {
 
-    private ArrayBlockingQueue<ThreadSlot> queue;
+    private final ArrayBlockingQueue<ThreadSlot> queue;
 
-    final ExecutorService executor = ThreadManager.getExecutor();
+    private final ExecutorService executor = ThreadManager.getExecutor();
 
     public ThreadQueue(int numSlots)
     {
@@ -54,9 +57,7 @@ public class ThreadQueue
         queue.offer(threadSlot);
     }
 
-    public void execute(
-            final ThreadSlot threadSlot,
-            @NotNull final Runnable runnable)
+    public void execute(final ThreadSlot threadSlot, @NotNull final Runnable runnable)
     {
 
         executor.execute(new Runnable()

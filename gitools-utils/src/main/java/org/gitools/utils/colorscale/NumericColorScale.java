@@ -23,18 +23,33 @@ package org.gitools.utils.colorscale;
 
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
 {
 
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color notANumberColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color posInfinityColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color negInfinityColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color emptyColor;
 
     private ArrayList<ColorScaleRange> rangesList;
@@ -61,7 +76,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
     protected abstract Color colorOf(double value);
 
     @NotNull
-    public abstract double[] getPoints();
+    protected abstract double[] getPoints();
 
     public double getMinValue()
     {
@@ -90,7 +105,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
     }
 
     @Nullable
-    public Color limitsColor(double value)
+    Color limitsColor(double value)
     {
         if (Double.isNaN(value))
         {
@@ -104,7 +119,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         return null;
     }
 
-    public Color getNotANumberColor()
+    Color getNotANumberColor()
     {
         if (notANumberColor == null)
         {

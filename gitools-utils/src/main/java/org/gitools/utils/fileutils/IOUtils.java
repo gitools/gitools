@@ -33,6 +33,9 @@ import java.nio.channels.WritableByteChannel;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+/**
+ * @noinspection ALL
+ */
 public class IOUtils
 {
 
@@ -46,16 +49,11 @@ public class IOUtils
 
         if (path.getName().endsWith(".gz"))
         {
-            return
-                    new InputStreamReader(
-                            new GZIPInputStream(
-                                    new FileInputStream(path)));
+            return new InputStreamReader(new GZIPInputStream(new FileInputStream(path)));
         }
         else
         {
-            return
-                    new BufferedReader(
-                            new FileReader(path));
+            return new BufferedReader(new FileReader(path));
         }
     }
 
@@ -66,7 +64,7 @@ public class IOUtils
     }
 
     @Nullable
-    public static Writer openWriter(@Nullable File path, boolean append) throws IOException
+    private static Writer openWriter(@Nullable File path, boolean append) throws IOException
     {
         if (path == null)
         {
@@ -75,16 +73,11 @@ public class IOUtils
 
         if (path.getName().endsWith(".gz"))
         {
-            return
-                    new OutputStreamWriter(
-                            new GZIPOutputStream(
-                                    new FileOutputStream(path, append)));
+            return new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path, append)));
         }
         else
         {
-            return
-                    new BufferedWriter(
-                            new FileWriter(path, append));
+            return new BufferedWriter(new FileWriter(path, append));
         }
     }
 
@@ -95,7 +88,7 @@ public class IOUtils
     }
 
     @Nullable
-    public static OutputStream openOutputStream(@Nullable File path, boolean append) throws IOException
+    private static OutputStream openOutputStream(@Nullable File path, boolean append) throws IOException
     {
         if (path == null)
         {
@@ -104,15 +97,11 @@ public class IOUtils
 
         if (path.getName().endsWith(".gz"))
         {
-            return
-                    new GZIPOutputStream(
-                            new FileOutputStream(path, append));
+            return new GZIPOutputStream(new FileOutputStream(path, append));
         }
         else
         {
-            return
-                    new BufferedOutputStream(
-                            new FileOutputStream(path, append));
+            return new BufferedOutputStream(new FileOutputStream(path, append));
         }
     }
 
@@ -143,6 +132,9 @@ public class IOUtils
         }
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public static void copyStream(InputStream src, OutputStream dst) throws IOException
     {
         ReadableByteChannel source = null;

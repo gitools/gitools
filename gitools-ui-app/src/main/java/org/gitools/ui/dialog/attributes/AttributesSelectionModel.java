@@ -31,14 +31,17 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class AttributesSelectionModel<T> implements ListModel
+/**
+ * @noinspection ALL
+ */
+class AttributesSelectionModel<T> implements ListModel
 {
 
-    private T[] attributes;
-    private List<Integer> selectedAttributes;
-    private List<Integer> unselectedAttributes;
+    private final T[] attributes;
+    private final List<Integer> selectedAttributes;
+    private final List<Integer> unselectedAttributes;
 
-    private List<ListDataListener> listeners;
+    private final List<ListDataListener> listeners;
 
     public AttributesSelectionModel(@NotNull T[] attributes)
     {
@@ -183,9 +186,7 @@ public class AttributesSelectionModel<T> implements ListModel
     {
         int size = selectedAttributes.size();
 
-        ListDataEvent e = new ListDataEvent(this,
-                ListDataEvent.CONTENTS_CHANGED,
-                0, size > 0 ? size - 1 : 0);
+        ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, size > 0 ? size - 1 : 0);
 
         for (ListDataListener l : listeners)
             l.contentsChanged(e);

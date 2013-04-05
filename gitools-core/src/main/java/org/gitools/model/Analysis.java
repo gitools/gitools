@@ -29,6 +29,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Analysis extends Artifact implements IResource
 {
@@ -41,14 +44,14 @@ public class Analysis extends Artifact implements IResource
     /**
      * Analysis start time
      */
-    protected Date startTime;
+    private Date startTime;
 
     /**
      * Analysis elapsed time in nano-seconds
      */
-    protected long elapsedTime;
+    private long elapsedTime;
 
-    public Analysis()
+    protected Analysis()
     {
     }
 

@@ -30,10 +30,13 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public class XmlToolSetResource
 {
 
-    protected File file;
+    private final File file;
 
     public XmlToolSetResource(File file)
     {
@@ -69,8 +72,7 @@ public class XmlToolSetResource
         ToolSet toolSet = null;
         try
         {
-            JAXBContext context = JAXBContext.newInstance(
-                    ToolSet.class, ToolDescriptor.class, ArrayList.class);
+            JAXBContext context = JAXBContext.newInstance(ToolSet.class, ToolDescriptor.class, ArrayList.class);
 
             Unmarshaller u = context.createUnmarshaller();
             toolSet = (ToolSet) u.unmarshal(reader);
@@ -81,12 +83,11 @@ public class XmlToolSetResource
         return toolSet;
     }
 
-    public static void save(ToolSet toolSet, Writer writer) throws ToolException
+    private static void save(ToolSet toolSet, Writer writer) throws ToolException
     {
         try
         {
-            JAXBContext context =
-                    JAXBContext.newInstance(ToolSet.class);
+            JAXBContext context = JAXBContext.newInstance(ToolSet.class);
 
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

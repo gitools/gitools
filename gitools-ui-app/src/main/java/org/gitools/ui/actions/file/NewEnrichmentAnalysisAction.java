@@ -39,6 +39,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class NewEnrichmentAnalysisAction extends BaseAction
 {
 
@@ -72,17 +75,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction
 
         File populationFile = wizard.getPopulationFile();
 
-        final EnrichmentCommand cmd = new EnrichmentCommand(
-                analysis,
-                wizard.getDataFileFormat(),
-                wizard.getDataFile().getAbsolutePath(),
-                wizard.getSelectedValueIndex(),
-                populationFile != null ? populationFile.getAbsolutePath() : null,
-                wizard.getPopulationDefaultValue(),
-                wizard.getModulesFileFormat(),
-                wizard.getModulesFile().getAbsolutePath(),
-                wizard.getWorkdir(),
-                wizard.getFileName());
+        final EnrichmentCommand cmd = new EnrichmentCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), wizard.getModulesFile().getAbsolutePath(), wizard.getWorkdir(), wizard.getFileName());
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

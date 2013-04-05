@@ -83,12 +83,7 @@ public class ExamplesManager
 
         //System.out.println("locPath = " + locPath);
 
-        String[] paths = new String[]{
-                "examples",
-                "../examples",
-                "../../examples",
-                "../../../examples"
-        };
+        String[] paths = new String[]{"examples", "../examples", "../../examples", "../../../examples"};
 
         for (String path : paths)
         {

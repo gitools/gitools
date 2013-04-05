@@ -55,6 +55,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class CombinationAnalysisWizard extends AbstractWizard
 {
 
@@ -62,24 +65,9 @@ public class CombinationAnalysisWizard extends AbstractWizard
     private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
     private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
-    private static final FileFormat[] dataFormats = new FileFormat[]{
-            FileFormats.MULTIVALUE_DATA_MATRIX,
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.DOUBLE_MATRIX,
-            FileFormats.DOUBLE_BINARY_MATRIX,
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.MODULES_INDEXED_MAP
-    };
+    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
-    private static final FileFormat[] columnSetsFormats = new FileFormat[]{
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.DOUBLE_MATRIX,
-            FileFormats.DOUBLE_BINARY_MATRIX,
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.MODULES_INDEXED_MAP
-    };
+    private static final FileFormat[] columnSetsFormats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     private ExamplePage examplePage;
     private DataFilePage dataPage;
@@ -158,8 +146,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
             saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-            saveFilePage.setFormats(new FileFormat[]{
-                    CombinationAnalysisFormat.FILE_FORMAT});
+            saveFilePage.setFormats(new FileFormat[]{CombinationAnalysisFormat.FILE_FORMAT});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -214,8 +201,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
     {
         if (currentPage == examplePage)
         {
-            Settings.getDefault().setShowCombinationExamplePage(
-                    examplePage.isShowAgain());
+            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled())
             {
@@ -236,8 +222,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
                         Properties props = new Properties();
                         try
                         {
-                            final CombinationAnalysis a = PersistenceManager.get()
-                                    .load(analysisFile, CombinationAnalysis.class, props, monitor);
+                            final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, props, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {

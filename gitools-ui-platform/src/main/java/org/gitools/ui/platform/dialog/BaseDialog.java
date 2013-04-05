@@ -24,14 +24,17 @@ package org.gitools.ui.platform.dialog;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 @Deprecated
 public abstract class BaseDialog extends JDialog
 {
 
     private static final long serialVersionUID = 183914906195441688L;
 
-    String dialogTitle;
-    String dialogSubtitle;
+    private String dialogTitle;
+    private String dialogSubtitle;
 
     public BaseDialog(JFrame owner, String windowTitle, String dialogTitle, String dialogSubtitle)
     {
@@ -43,12 +46,12 @@ public abstract class BaseDialog extends JDialog
     }
 
     //Titles
-    protected void setDialogTitle(String dialogTitle)
+    void setDialogTitle(String dialogTitle)
     {
         this.dialogTitle = dialogTitle;
     }
 
-    public void setDialogSubtitle(String dialogSubtitle)
+    void setDialogSubtitle(String dialogSubtitle)
     {
         this.dialogSubtitle = dialogSubtitle;
     }
@@ -69,10 +72,7 @@ public abstract class BaseDialog extends JDialog
 
         JTextArea titleField = new JTextArea();
         titleField.setText(dialogTitle);
-        Font titleFont = new Font(
-                titleField.getFont().getName(),
-                titleField.getFont().getStyle(),
-                24);
+        Font titleFont = new Font(titleField.getFont().getName(), titleField.getFont().getStyle(), 24);
         titleField.setFont(titleFont);
         titleField.setEditable(false);
         titleField.setOpaque(false);
@@ -81,10 +81,7 @@ public abstract class BaseDialog extends JDialog
         {
             JTextArea subtitleField = new JTextArea();
             subtitleField.setText(dialogSubtitle);
-            Font subtitleFont = new Font(
-                    subtitleField.getFont().getName(),
-                    subtitleField.getFont().getStyle(),
-                    14);
+            Font subtitleFont = new Font(subtitleField.getFont().getName(), subtitleField.getFont().getStyle(), 14);
             subtitleField.setFont(subtitleFont);
             subtitleField.setEditable(false);
             subtitleField.setOpaque(false);

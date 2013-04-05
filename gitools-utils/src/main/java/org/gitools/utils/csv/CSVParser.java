@@ -29,8 +29,9 @@ import java.util.List;
  *
  * @author Glen Smith
  * @author Rainer Pruy
+ * @noinspection ALL
  */
-public class CSVParser
+class CSVParser
 {
 
     private final char separator;
@@ -52,7 +53,7 @@ public class CSVParser
      */
     public static final char DEFAULT_SEPARATOR = '\t';
 
-    public static final int INITIAL_READ_SIZE = 128;
+    private static final int INITIAL_READ_SIZE = 128;
 
     /**
      * The default quote character to use if none is supplied to the
@@ -82,7 +83,7 @@ public class CSVParser
      * This is the "null" character - if a value is set to this then it is ignored.
      * I.E. if the quote character is set to null then there is no quote character.
      */
-    public static final char NULL_CHARACTER = '\0';
+    private static final char NULL_CHARACTER = '\0';
 
     /**
      * Constructs CSVParser using a comma for the separator.
@@ -108,6 +109,7 @@ public class CSVParser
      *
      * @param separator the delimiter to use for separating entries
      * @param quotechar the character to use for quoted elements
+     * @noinspection UnusedDeclaration
      */
     public CSVParser(char separator, char quotechar)
     {
@@ -121,7 +123,7 @@ public class CSVParser
      * @param quotechar the character to use for quoted elements
      * @param escape    the character to use for escaping a separator or quote
      */
-    public CSVParser(char separator, char quotechar, char escape)
+    private CSVParser(char separator, char quotechar, char escape)
     {
         this(separator, quotechar, escape, DEFAULT_STRICT_QUOTES);
     }
@@ -135,7 +137,7 @@ public class CSVParser
      * @param escape       the character to use for escaping a separator or quote
      * @param strictQuotes if true, characters outside the quotes are ignored
      */
-    public CSVParser(char separator, char quotechar, char escape, boolean strictQuotes)
+    private CSVParser(char separator, char quotechar, char escape, boolean strictQuotes)
     {
         this(separator, quotechar, escape, strictQuotes, DEFAULT_IGNORE_LEADING_WHITESPACE);
     }
@@ -348,7 +350,7 @@ public class CSVParser
      * @param i        current index in line
      * @return true if the following character is a quote
      */
-    protected boolean isNextCharacterEscapable(@NotNull String nextLine, boolean inQuotes, int i)
+    boolean isNextCharacterEscapable(@NotNull String nextLine, boolean inQuotes, int i)
     {
         return inQuotes  // we are in quotes, therefore there can be escaped quotes in here.
                 && nextLine.length() > (i + 1)  // there is indeed another character to check.
@@ -361,7 +363,7 @@ public class CSVParser
      * @param sb A sequence of characters to examine
      * @return true if every character in the sequence is whitespace
      */
-    protected boolean isAllWhiteSpace(@NotNull CharSequence sb)
+    boolean isAllWhiteSpace(@NotNull CharSequence sb)
     {
         boolean result = true;
         for (int i = 0; i < sb.length(); i++)

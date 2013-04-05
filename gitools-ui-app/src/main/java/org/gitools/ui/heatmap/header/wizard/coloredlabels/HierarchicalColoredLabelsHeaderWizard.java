@@ -33,22 +33,23 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
 {
 
-    private Heatmap heatmap;
-    private HeatmapDim hdim;
+    private final Heatmap heatmap;
+    private final HeatmapDim hdim;
 
-    private HeatmapHierarchicalColoredLabelsHeader header;
-    private int previousLevel;
+    private final HeatmapHierarchicalColoredLabelsHeader header;
+    private final int previousLevel;
 
     private ColoredLabelsConfigPage headerPage;
     private ColoredLabelsGroupsPage clustersPage;
     private HclLevelPage hclPage;
 
-    public HierarchicalColoredLabelsHeaderWizard(
-            Heatmap heatmap, HeatmapDim hdim,
-            @NotNull HeatmapHierarchicalColoredLabelsHeader header)
+    public HierarchicalColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, @NotNull HeatmapHierarchicalColoredLabelsHeader header)
     {
 
         super();

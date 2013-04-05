@@ -28,10 +28,13 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class FilterDescriptionPanel extends javax.swing.JPanel
 {
 
-    private FilterCollectionPanel parentCollection;
+    private final FilterCollectionPanel parentCollection;
     private FilterDescription filterDescription;
     private FilterComponent filterComponent;
     private Integer currentHeight;
@@ -109,8 +112,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
                             for (FilterDescription desc : collection.getFilterDescriptions())
 
-                                if ((desc.getInternalName().equals(filterDescription.getPointerFilter()))
-                                        && (!desc.isHideDisplay()))
+                                if ((desc.getInternalName().equals(filterDescription.getPointerFilter())) && (!desc.isHideDisplay()))
                                 {
 
                                     this.renderPanel = true;
@@ -203,8 +205,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
                     FilterSelectComponent selecComponent = new FilterSelectComponent(filterDescription, this);
 
                     //Retrieve PushAction Data from default option
-                    parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(
-                            selecComponent.getPushActionData_defaultOption());
+                    parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(selecComponent.getPushActionData_defaultOption());
 
                     filterComponent = selecComponent;
                 }
@@ -266,14 +267,8 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 396, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 298, Short.MAX_VALUE)
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 396, Short.MAX_VALUE));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 298, Short.MAX_VALUE));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -294,11 +289,17 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
         return filterComponent.getFilters();
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setFilterComponents(FilterComponent components)
     {
         this.filterComponent = components;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @Nullable
     public Boolean isChild()
     {

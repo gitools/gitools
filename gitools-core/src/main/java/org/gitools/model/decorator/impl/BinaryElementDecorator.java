@@ -34,6 +34,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class BinaryElementDecorator extends ElementDecorator
 {
 
@@ -41,7 +44,7 @@ public class BinaryElementDecorator extends ElementDecorator
 
     private int valueIndex;
 
-    private BinaryColorScale scale;
+    private final BinaryColorScale scale;
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
 
@@ -132,9 +135,7 @@ public class BinaryElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(
-            @NotNull ElementDecoration decoration,
-            @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
     {
 
         decoration.reset();

@@ -32,14 +32,15 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
+/**
+ * @noinspection ALL
+ */
 public class Main
 {
 
-    private static final String appName =
-            Main.class.getPackage().getImplementationTitle();
+    private static final String appName = Main.class.getPackage().getImplementationTitle();
 
-    private static final String versionString =
-            Main.class.getPackage().getImplementationVersion();
+    private static final String versionString = Main.class.getPackage().getImplementationVersion();
 
     public static void main(String[] args) throws ToolException
     {
@@ -47,9 +48,7 @@ public class Main
         // Initialize file formats
         PersistenceInitialization.registerFormats();
 
-        final ToolSet toolSet = XmlToolSetResource.load(
-                new InputStreamReader(Main.class.getClassLoader()
-                        .getResourceAsStream("gitools-cli.xml")));
+        final ToolSet toolSet = XmlToolSetResource.load(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("gitools-cli.xml")));
 
         final ToolManager toolManager = new ToolManager(toolSet, appName, versionString);
         int code = toolManager.launch(args);

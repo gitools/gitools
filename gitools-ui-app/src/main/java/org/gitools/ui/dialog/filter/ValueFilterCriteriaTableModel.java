@@ -37,21 +37,19 @@ import java.util.Map;
 class ValueFilterCriteriaTableModel implements TableModel
 {
 
-    private static final String[] columnName = new String[]{
-            "Attribute", "Condition", "Value"};
+    private static final String[] columnName = new String[]{"Attribute", "Condition", "Value"};
 
-    private static final Class<?>[] columnClass = new Class<?>[]{
-            String.class, CutoffCmp.class, String.class};
+    private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class};
 
     @NotNull
-    private Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
 
-    private List<ValueFilterCriteria> criteriaList;
+    private final List<ValueFilterCriteria> criteriaList;
 
     @NotNull
-    private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, @NotNull String[] attributeNames)
+    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, @NotNull String[] attributeNames)
     {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)

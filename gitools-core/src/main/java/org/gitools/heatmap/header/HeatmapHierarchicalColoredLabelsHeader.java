@@ -27,8 +27,8 @@ import org.gitools.heatmap.HeatmapDim;
 public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabelsHeader
 {
 
-    public static final String CLUSTERING_RESULTS_CHANGED = "clusteringResults";
-    public static final String TREE_LEVEL_CHANGED = "treeLevel";
+    private static final String CLUSTERING_RESULTS_CHANGED = "clusteringResults";
+    private static final String TREE_LEVEL_CHANGED = "treeLevel";
 
     private HierarchicalClusteringResults clusteringResults;
 

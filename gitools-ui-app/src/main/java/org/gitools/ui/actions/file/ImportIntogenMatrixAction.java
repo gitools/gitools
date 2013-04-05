@@ -28,6 +28,9 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class ImportIntogenMatrixAction extends BaseAction
 {
 
@@ -50,8 +53,7 @@ public class ImportIntogenMatrixAction extends BaseAction
 		
 		wizDlg.open();*/
 
-        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(),
-                IntogenImportDialog.ImportType.ONCODATA);
+        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(), IntogenImportDialog.ImportType.ONCODATA);
 
         dlg.setVisible(true);
     }

@@ -41,16 +41,13 @@ public class DecoratorArchivePersistance
 
     private transient static XStream xstream;
 
-    private static final String userPath =
-            System.getProperty("user.home", ".");
+    private static final String userPath = System.getProperty("user.home", ".");
 
-    public static final String CONFIG_PATH =
-            userPath + File.separator + ".gitools";
+    private static final String CONFIG_PATH = userPath + File.separator + ".gitools";
 
     private static final String configFileName = "scales.xml";
 
-    private static final String configFile =
-            CONFIG_PATH + File.separator + configFileName;
+    private static final String configFile = CONFIG_PATH + File.separator + configFileName;
 
     public DecoratorArchivePersistance()
     {

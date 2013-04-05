@@ -30,11 +30,14 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListenerProxy<L> implements InvocationHandler
+/**
+ * @noinspection ALL
+ */
+class ListenerProxy<L> implements InvocationHandler
 {
 
     @NotNull
-    private List<L> listeners = new ArrayList<L>();
+    private final List<L> listeners = new ArrayList<L>();
 
     public void addListener(L listener)
     {

@@ -47,9 +47,7 @@ public class MatrixConversion implements ConversionDelegate
         {
             cls = DoubleMatrix.class;
         }
-        else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat)
-                || MimeTypes.GENE_MATRIX.equals(dstFormat)
-                || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat))
+        else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat))
         {
             cls = DoubleBinaryMatrix.class;
         }

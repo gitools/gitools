@@ -42,12 +42,15 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class MtcAction extends BaseAction
 {
 
     private static final long serialVersionUID = 991170566166881702L;
 
-    protected MTC mtc;
+    private final MTC mtc;
 
     public MtcAction(@NotNull MTC mtc)
     {
@@ -61,8 +64,7 @@ public class MtcAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -79,15 +81,11 @@ public class MtcAction extends BaseAction
         IElementAdapter cellAdapter = matrixView.getCellAdapter();
 
         final int propIndex = matrixView.getSelectedPropertyIndex();
-        final int corrPropIndex = MatrixUtils.correctedValueIndex(
-                cellAdapter, cellAdapter.getProperty(propIndex));
+        final int corrPropIndex = MatrixUtils.correctedValueIndex(cellAdapter, cellAdapter.getProperty(propIndex));
 
         if (corrPropIndex < 0)
         {
-            JOptionPane.showMessageDialog(AppFrame.get(),
-                    "The property selected doesn't allow multiple test correction.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(AppFrame.get(), "The property selected doesn't allow multiple test correction.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -109,9 +107,7 @@ public class MtcAction extends BaseAction
                 for (int col = 0; col < columnCount; col++)
                 {
                     for (int row = 0; row < rowCount; row++)
-                        values.setQuick(row, col,
-                                MatrixUtils.doubleValue(
-                                        contents.getCellValue(row, col, propIndex)));
+                        values.setQuick(row, col, MatrixUtils.doubleValue(contents.getCellValue(row, col, propIndex)));
 
                     monitor.worked(1);
                 }
@@ -134,8 +130,7 @@ public class MtcAction extends BaseAction
                 for (int col = 0; col < columnCount; col++)
                 {
                     for (int row = 0; row < rowCount; row++)
-                        contents.setCellValue(row, col, corrPropIndex,
-                                values.getQuick(row, col));
+                        contents.setCellValue(row, col, corrPropIndex, values.getQuick(row, col));
 
                     monitor.worked(1);
                 }

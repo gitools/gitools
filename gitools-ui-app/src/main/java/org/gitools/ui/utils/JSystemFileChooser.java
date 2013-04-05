@@ -28,7 +28,7 @@ import sun.swing.FilePane;
 import javax.swing.*;
 import java.awt.*;
 
-public class JSystemFileChooser extends JFileChooser
+class JSystemFileChooser extends JFileChooser
 {
 
     public JSystemFileChooser(String currentDirectoryPath)

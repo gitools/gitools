@@ -23,25 +23,26 @@ import java.util.List;
 /**
  * @author jrobinso
  * @date Jun 9, 2011
+ * @noinspection ALL
  */
 public class GSUtils
 {
-    static final Logger log = Logger.getLogger(GSUtils.class);
+    private static final Logger log = Logger.getLogger(GSUtils.class);
 
 
     /*
     * Directory and filenames to save the token and username to facilitate SSO
     */
     @NotNull
-    private static String tokenSaveDir = ".gs";
+    private static final String tokenSaveDir = ".gs";
     @NotNull
-    private static String tokenSaveFileName = ".gstoken";
+    private static final String tokenSaveFileName = ".gstoken";
     @NotNull
-    private static String usernameSaveFileName = ".gsusername";
+    private static final String usernameSaveFileName = ".gsusername";
     @Nullable
-    public static String gsUser = null;
+    private static String gsUser = null;
     @Nullable
-    public static String gsToken = null;
+    private static String gsToken = null;
 
     public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
     public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identity.genomespace.org/identityServer/basic";

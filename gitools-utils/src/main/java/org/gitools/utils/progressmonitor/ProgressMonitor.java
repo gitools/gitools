@@ -27,7 +27,7 @@ public class ProgressMonitor
 {
 
     @NotNull
-    private static ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>()
+    private static final ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>()
     {
         @NotNull
         @Override

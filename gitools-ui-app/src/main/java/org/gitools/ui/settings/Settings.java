@@ -31,32 +31,29 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings
 {
 
-    public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
-    public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
-    public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
+    private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
+    private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
+    private static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
 
-    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
-    public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
 
-    private static final String userPath =
-            System.getProperty("user.home", ".");
+    private static final String userPath = System.getProperty("user.home", ".");
 
-    public static final String CONFIG_PATH =
-            userPath + File.separator + ".gitools";
+    public static final String CONFIG_PATH = userPath + File.separator + ".gitools";
 
     private static final String configFileName = "ui.xml";
 
-    private static final String configFile =
-            CONFIG_PATH + File.separator + configFileName;
-
-    private static final String defaultWorkspacePath =
-            CONFIG_PATH + File.separator + "workspace";
+    private static final String configFile = CONFIG_PATH + File.separator + configFileName;
 
     @Nullable
     private static Settings instance;
@@ -107,7 +104,6 @@ public class Settings
     private String lastMapPath = userPath;
     private String lastAnnotationPath = userPath;
     private String lastFilterPath = userPath;
-    private String workspacePath = defaultWorkspacePath;
     private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
     private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
 
@@ -250,16 +246,6 @@ public class Settings
         this.lastFilterPath = lastFilterPath;
     }
 
-    public String getWorkspacePath()
-    {
-        return workspacePath;
-    }
-
-    public void setWorkspacePath(String workspacePath)
-    {
-        this.workspacePath = workspacePath;
-    }
-
     public String getIntogenOncomodulesUrl()
     {
         return intogenOncomodulesUrl;
@@ -290,6 +276,9 @@ public class Settings
         this.showEnrichmentExamplePage = showEnrichmentExamplePage;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public boolean isShowOncodriveExamplePage()
     {
         return showOncodriveExamplePage;

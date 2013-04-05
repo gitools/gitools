@@ -23,17 +23,19 @@ package org.gitools.analysis;
 
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class AbstractMethod implements Method
 {
 
-    protected String id;
-    protected String name;
-    protected String desc;
-    protected Class<?> resultClass;
-    protected Properties properties;
+    private final String id;
+    private String name;
+    private String desc;
+    private Class<?> resultClass;
+    private Properties properties;
 
-    public AbstractMethod(String id, String name, String desc,
-                          Class<?> resultClass, Properties properties)
+    protected AbstractMethod(String id, String name, String desc, Class<?> resultClass, Properties properties)
     {
 
         this.id = id;

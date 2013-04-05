@@ -29,16 +29,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.*;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({
-        BinaryElementDecorator.class,
-        FormattedTextElementDecorator.class,
-        LinearTwoSidedElementDecorator.class,
-        PValueElementDecorator.class,
-        ZScoreElementDecorator.class,
-        CorrelationElementDecorator.class
-})
+@XmlSeeAlso({BinaryElementDecorator.class, FormattedTextElementDecorator.class, LinearTwoSidedElementDecorator.class, PValueElementDecorator.class, ZScoreElementDecorator.class, CorrelationElementDecorator.class, CategoricalElementDecorator.class})
 public abstract class ElementDecorator extends AbstractModel
 {
 
@@ -83,9 +79,7 @@ public abstract class ElementDecorator extends AbstractModel
         this.adapter = adapter;
     }
 
-    public abstract void decorate(
-            ElementDecoration decoration,
-            Object element);
+    public abstract void decorate(ElementDecoration decoration, Object element);
 
     public abstract IColorScale getScale();
 

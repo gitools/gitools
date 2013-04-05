@@ -33,6 +33,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class LinearTwoSidedElementDecorator extends ElementDecorator
 {
 
@@ -40,7 +43,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator
 
     private int valueIndex;
 
-    private LinearTwoSidedColorScale scale;
+    private final LinearTwoSidedColorScale scale;
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
 
@@ -58,8 +61,7 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator
     {
         super(adapter);
 
-        valueIndex = getPropertyIndex(new String[]{
-                "value", "log2ratio", "score"});
+        valueIndex = getPropertyIndex(new String[]{"value", "log2ratio", "score"});
 
         this.scale = scale;
     }

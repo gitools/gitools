@@ -31,17 +31,17 @@ import org.jetbrains.annotations.NotNull;
 public abstract class ZscoreTest extends AbstractTest
 {
 
-    protected class PopulationStatistics
+    class PopulationStatistics
     {
         public double mean;
         public double stdev;
     }
 
-    protected Statistic statCalc;
+    final Statistic statCalc;
 
-    protected DoubleMatrix1D population;
+    private DoubleMatrix1D population;
 
-    public ZscoreTest(Statistic statCalc)
+    ZscoreTest(Statistic statCalc)
     {
         this.statCalc = statCalc;
     }
@@ -68,9 +68,7 @@ public abstract class ZscoreTest extends AbstractTest
 
     @NotNull
     @Override
-    public CommonResult processTest(
-            String condName, @NotNull DoubleMatrix1D condItems,
-            String groupName, int[] groupItemIndices)
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
     {
 
         double observed;
@@ -81,8 +79,7 @@ public abstract class ZscoreTest extends AbstractTest
 
         // Create a view with group values (excluding NaN's)
 
-        final DoubleMatrix1D groupItems =
-                condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
+        final DoubleMatrix1D groupItems = condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
 
         // Calculate observed statistic
 
@@ -103,14 +100,9 @@ public abstract class ZscoreTest extends AbstractTest
         twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
         twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 
-        return new ZScoreResult(
-                sampleSize,
-                leftPvalue, rightPvalue, twoTailPvalue,
-                observed,
-                expected.mean, expected.stdev, zscore);
+        return new ZScoreResult(sampleSize, leftPvalue, rightPvalue, twoTailPvalue, observed, expected.mean, expected.stdev, zscore);
     }
 
-    protected abstract void infereMeanAndStdev(
-            DoubleMatrix1D population, DoubleMatrix1D groupItems, PopulationStatistics expected);
+    protected abstract void infereMeanAndStdev(DoubleMatrix1D population, DoubleMatrix1D groupItems, PopulationStatistics expected);
 
 }

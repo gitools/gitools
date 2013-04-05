@@ -60,8 +60,7 @@ public class GroupComparisonAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -111,8 +110,7 @@ public class GroupComparisonAction extends BaseAction
                         return;
                     }
 
-                    final AnalysisDetailsEditor editor =
-                            new GroupComparisonAnalysisEditor(analysis);
+                    final AnalysisDetailsEditor editor = new GroupComparisonAnalysisEditor(analysis);
                     //TODO: adapt to group comparison analysis
 
                     String ext = PersistenceUtils.getExtension(currentEditor.getName());

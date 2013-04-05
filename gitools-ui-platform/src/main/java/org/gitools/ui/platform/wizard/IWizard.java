@@ -26,6 +26,9 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+/**
+ * @noinspection ALL
+ */
 public interface IWizard
 {
 

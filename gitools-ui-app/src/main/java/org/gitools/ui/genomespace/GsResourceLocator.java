@@ -35,7 +35,7 @@ import java.net.URL;
 public class GsResourceLocator implements IResourceLocator
 {
 
-    private IResourceLocator resourceLocator;
+    private final IResourceLocator resourceLocator;
 
     public GsResourceLocator(IResourceLocator resourceLocator) throws PersistenceException
     {

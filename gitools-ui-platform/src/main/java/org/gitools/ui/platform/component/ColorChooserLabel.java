@@ -28,6 +28,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ColorChooserLabel extends JLabel implements MouseListener
 {
 
@@ -40,7 +43,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener
 
     private Color color;
 
-    private List<ColorChangeListener> listeners;
+    private final List<ColorChangeListener> listeners;
 
     public ColorChooserLabel(Color color, String toolTipText)
     {
@@ -112,8 +115,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener
             return;
         }
 
-        Color c = JColorChooser.showDialog(
-                this, "Color selection...", color);
+        Color c = JColorChooser.showDialog(this, "Color selection...", color);
 
         if (c != null)
         {

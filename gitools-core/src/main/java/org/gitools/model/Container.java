@@ -25,14 +25,20 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Container extends Artifact
 {
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     private static final long serialVersionUID = 9028366098418461333L;
 
-    protected boolean limitedExploration;
+    private boolean limitedExploration;
 
     public boolean isLimitedExploration()
     {

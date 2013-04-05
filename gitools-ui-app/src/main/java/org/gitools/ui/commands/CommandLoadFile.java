@@ -65,9 +65,9 @@ import java.net.URL;
 public class CommandLoadFile extends AbstractCommand
 {
 
-    private String file;
-    private String rowsAnnotations;
-    private String columnsAnnotations;
+    private final String file;
+    private final String rowsAnnotations;
+    private final String columnsAnnotations;
 
     public CommandLoadFile(String file)
     {
@@ -147,6 +147,11 @@ public class CommandLoadFile extends AbstractCommand
         {
             return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
         }
+        else if (resource instanceof Heatmap)
+        {
+            ((Heatmap) resource).init();
+            return new HeatmapEditor((Heatmap) resource);
+        }
 
         return createHeatmapEditor((IMatrix) resource, progressMonitor);
     }
@@ -156,22 +161,22 @@ public class CommandLoadFile extends AbstractCommand
     {
 
         final IMatrixView matrixView = new MatrixView(resource);
-        Heatmap figure = HeatmapUtil.createFromMatrixView(matrixView);
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
 
         if (rowsAnnotations != null)
         {
             File rowsFile = download(rowsAnnotations, progressMonitor);
-            loadAnnotations(rowsFile, figure.getRowDim());
+            loadAnnotations(rowsFile, heatmap.getRowDim());
         }
 
         if (columnsAnnotations != null)
         {
             File colsFile = download(columnsAnnotations, progressMonitor);
-            loadAnnotations(colsFile, figure.getColumnDim());
+            loadAnnotations(colsFile, heatmap.getColumnDim());
 
         }
 
-        return new HeatmapEditor(figure);
+        return new HeatmapEditor(heatmap);
     }
 
     private static File download(String file, @NotNull IProgressMonitor monitor) throws CommandException

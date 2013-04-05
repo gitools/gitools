@@ -28,45 +28,33 @@ import org.gitools.matrix.model.element.DoubleElementAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @noinspection ALL
+ */
 public class DoubleMatrix extends BaseMatrix
 {
 
     private static final long serialVersionUID = -710485141066995079L;
 
-    protected DoubleMatrix2D cells;
+    private DoubleMatrix2D cells;
 
     public DoubleMatrix()
     {
         this("", new String[0], new String[0], DoubleFactory2D.dense.make(0, 0));
     }
 
-    public DoubleMatrix(
-            String title,
-            String[] colNames,
-            String[] rowNames,
-            DoubleMatrix2D cells)
+    public DoubleMatrix(String title, String[] colNames, String[] rowNames, DoubleMatrix2D cells)
     {
 
-        super(
-                title,
-                ObjectFactory1D.dense.make(rowNames),
-                ObjectFactory1D.dense.make(colNames),
-                new DoubleElementAdapter());
+        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         this.cells = cells;
     }
 
-    public DoubleMatrix(
-            String title,
-            @NotNull String[] colNames,
-            @NotNull String[] rowNames)
+    public DoubleMatrix(String title, @NotNull String[] colNames, @NotNull String[] rowNames)
     {
 
-        super(
-                title,
-                ObjectFactory1D.dense.make(rowNames),
-                ObjectFactory1D.dense.make(colNames),
-                new DoubleElementAdapter());
+        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         makeCells(rowNames.length, colNames.length);
     }

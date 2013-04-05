@@ -23,13 +23,16 @@ package org.gitools.stats.test.results;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
+/**
+ * @noinspection ALL
+ */
 public class ZScoreResult extends CommonResult
 {
 
-    public double observed;
-    public double expectedMean;
-    public double expectedStdev;
-    public double zscore;
+    private double observed;
+    private double expectedMean;
+    private double expectedStdev;
+    private double zscore;
 
     public ZScoreResult()
     {
@@ -38,11 +41,7 @@ public class ZScoreResult extends CommonResult
         zscore = 0;
     }
 
-    public ZScoreResult(
-            int n,
-            double leftPvalue, double rightPvalue, double twoTailPvalue,
-            double observed,
-            double expectedMean, double expectedStdev, double zscore)
+    public ZScoreResult(int n, double leftPvalue, double rightPvalue, double twoTailPvalue, double observed, double expectedMean, double expectedStdev, double zscore)
     {
 
         super(n, leftPvalue, rightPvalue, twoTailPvalue);

@@ -42,63 +42,66 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis implements Serializable
 {
-    protected String sizeAttrName;
+    private String sizeAttrName;
 
-    protected String pvalueAttrName;
+    private String pvalueAttrName;
 
-    protected boolean transposeData;
+    private boolean transposeData;
 
-    protected int attributeIndex;
+    private int attributeIndex;
     //which attribute of the matrix should be taken as value
 
     @NotNull
-    public static String COLUMN_GROUPING_BY_VALUE = "Group by value";
+    public static final String COLUMN_GROUPING_BY_VALUE = "Group by value";
     @NotNull
-    public static String COLUMN_GROUPING_BY_LABEL = "Group by label";
+    public static final String COLUMN_GROUPING_BY_LABEL = "Group by label";
 
     @Nullable
-    protected String columnGrouping = null;
+    private String columnGrouping = null;
 
     @NotNull
     protected String dataFile = "";
 
     @XmlTransient
-    protected AnnotationMatrix rowAnnotations;
+    private AnnotationMatrix rowAnnotations;
 
     @XmlTransient
-    protected List<HeatmapHeader> rowHeaders;
+    private List<HeatmapHeader> rowHeaders;
 
     @XmlTransient
-    protected List<HeatmapHeader> columnHeaders;
+    private List<HeatmapHeader> columnHeaders;
 
     @XmlTransient
-    protected AnnotationMatrix columnAnnotations;
+    private AnnotationMatrix columnAnnotations;
 
     @XmlTransient
-    protected ColumnGroup group1;
+    private ColumnGroup group1;
     @XmlTransient
-    protected ColumnGroup group2;
+    private ColumnGroup group2;
 
     /**
      * Test name
      */
-    protected ToolConfig testConfig;
-    protected String mtc;
+    private ToolConfig testConfig;
+    private String mtc;
 
 
     /**
      * Data
      */
-    protected ResourceReference<IMatrix> data;
+    private ResourceReference<IMatrix> data;
 
     /**
      * Results
      */
-    protected ResourceReference<IMatrix> results;
+    private ResourceReference<IMatrix> results;
 
     @Nullable
     public MTC getMtc()
@@ -181,10 +184,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
     @NotNull
     public static String[] getColumnGroupingMethods()
     {
-        return new String[]{
-                COLUMN_GROUPING_BY_LABEL,
-                COLUMN_GROUPING_BY_VALUE
-        };
+        return new String[]{COLUMN_GROUPING_BY_LABEL, COLUMN_GROUPING_BY_VALUE};
     }
 
     public void setColumnGrouping(String columnGrouping)

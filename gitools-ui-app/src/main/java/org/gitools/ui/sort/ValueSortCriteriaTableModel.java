@@ -39,21 +39,19 @@ import java.util.Map;
 class ValueSortCriteriaTableModel implements TableModel
 {
 
-    private static final String[] columnName = new String[]{
-            "Attribute", "Agregation", "Direction"};
+    private static final String[] columnName = new String[]{"Attribute", "Agregation", "Direction"};
 
-    private static final Class<?>[] columnClass = new Class<?>[]{
-            String.class, CutoffCmp.class, SortDirection.class};
+    private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, SortDirection.class};
 
     @NotNull
-    private Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
 
-    private List<ValueSortCriteria> criteriaList;
+    private final List<ValueSortCriteria> criteriaList;
 
     @NotNull
-    private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public ValueSortCriteriaTableModel(List<ValueSortCriteria> criteriaList, @NotNull String[] attributeNames)
+    private ValueSortCriteriaTableModel(List<ValueSortCriteria> criteriaList, @NotNull String[] attributeNames)
     {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)

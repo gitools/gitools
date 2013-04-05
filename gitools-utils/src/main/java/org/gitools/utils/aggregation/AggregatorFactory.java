@@ -25,14 +25,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 public class AggregatorFactory
 {
 
-    private static final List<IAggregator> aggregators =
-            new ArrayList<IAggregator>();
+    private static final List<IAggregator> aggregators = new ArrayList<IAggregator>();
 
-    private static final Map<String, IAggregator> aggregatorsMap
-            = new HashMap<String, IAggregator>();
+    private static final Map<String, IAggregator> aggregatorsMap = new HashMap<String, IAggregator>();
 
     static
     {
@@ -66,8 +67,7 @@ public class AggregatorFactory
     @NotNull
     public static IAggregator[] getAggregatorsArray()
     {
-        final IAggregator[] aggregatorsArray =
-                new IAggregator[aggregators.size()];
+        final IAggregator[] aggregatorsArray = new IAggregator[aggregators.size()];
         aggregators.toArray(aggregatorsArray);
         return aggregatorsArray;
     }

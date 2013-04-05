@@ -56,21 +56,21 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
 
     private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
 
-    protected A analysis;
+    protected final A analysis;
 
-    protected String template;
+    private final String template;
 
     @Nullable
-    protected ActionSet toolBar = null;
+    private ActionSet toolBar = null;
 
-    protected TemplatePanel templatePanel;
+    private TemplatePanel templatePanel;
 
     @Nullable
     protected AbstractXmlFormat xmlPersistance = null;
 
     protected FileFormat fileformat;
 
-    public AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar)
+    protected AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar)
     {
         this.analysis = analysis;
         this.template = template;
@@ -139,7 +139,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
         templatePanel.requestFocusInWindow();
     }
 
-    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs)
+    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs)
     {
     }
 

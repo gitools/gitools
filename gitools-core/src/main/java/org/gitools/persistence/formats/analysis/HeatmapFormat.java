@@ -24,11 +24,14 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapFormat extends AbstractXmlFormat<Heatmap>
 {
 
     public static final String EXTENSION = "heatmap";
-    public static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
+    private static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Heatmap", EXTENSION);
 
 

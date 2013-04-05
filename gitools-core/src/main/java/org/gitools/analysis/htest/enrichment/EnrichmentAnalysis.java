@@ -29,6 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable
@@ -39,7 +42,7 @@ public class EnrichmentAnalysis extends HtestAnalysis implements Serializable
     /**
      * Discard data rows without any module annotation
      */
-    protected boolean discardNonMappedRows;
+    private boolean discardNonMappedRows;
 
     public EnrichmentAnalysis()
     {

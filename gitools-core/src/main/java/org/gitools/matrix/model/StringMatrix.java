@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 
-//TODO remove JAXB support
+/**
+ * @noinspection ALL
+ */ //TODO remove JAXB support
 @XmlAccessorType(XmlAccessType.NONE)
 
 public class StringMatrix extends ObjectMatrix
@@ -39,18 +41,14 @@ public class StringMatrix extends ObjectMatrix
 
     private static final long serialVersionUID = 5061265701379494159L;
 
-    public StringMatrix()
+    StringMatrix()
     {
         super();
 
         setCellAdapter(new StringElementAdapter());
     }
 
-    public StringMatrix(
-            String title,
-            ObjectMatrix1D rows,
-            ObjectMatrix1D columns,
-            ObjectMatrix2D cells)
+    StringMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells)
     {
 
         super(title, rows, columns, cells, new StringElementAdapter());
@@ -59,9 +57,7 @@ public class StringMatrix extends ObjectMatrix
     @Override
     public void makeCells()
     {
-        cells = ObjectFactory2D.dense.make(
-                rows.size(),
-                columns.size());
+        cells = ObjectFactory2D.dense.make(rows.size(), columns.size());
     }
 
     @XmlTransient

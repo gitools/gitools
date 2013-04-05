@@ -34,6 +34,9 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @noinspection ALL
+ */
 public class NewickParser<VT>
 {
 
@@ -44,8 +47,8 @@ public class NewickParser<VT>
 
     private static class Token
     {
-        private TokenType type;
-        private String text;
+        private final TokenType type;
+        private final String text;
 
         public Token(TokenType type, String text)
         {
@@ -82,9 +85,9 @@ public class NewickParser<VT>
         TREE_START, BRANCH_START, BRANCH_ADD, BRANCH_CLOSE, BRANCH_LEAF, LEAF, TREE_END, EOF
     }
 
-    private Reader reader;
+    private final Reader reader;
 
-    private StringBuilder sb;
+    private final StringBuilder sb;
     private int bufferedChar;
     private int lastRow, lastCol, row, col;
 
@@ -93,7 +96,7 @@ public class NewickParser<VT>
         this(new StringReader(string));
     }
 
-    public NewickParser(Reader reader)
+    private NewickParser(Reader reader)
     {
         this.reader = reader;
         sb = new StringBuilder();
@@ -101,6 +104,9 @@ public class NewickParser<VT>
         lastRow = lastCol = row = col = 0;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public static void main(String[] args)
     {
         try
@@ -257,8 +263,7 @@ public class NewickParser<VT>
 
                     token = nextToken();
 
-                    if (token.getType() == TokenType.NAME
-                            || token.getType() == TokenType.TWO_COLON)
+                    if (token.getType() == TokenType.NAME || token.getType() == TokenType.TWO_COLON)
                     {
                         token = parseNodeName(root, token, names);
                     }
@@ -315,8 +320,7 @@ public class NewickParser<VT>
     @NotNull
     private Token parseNodeName(@NotNull NewickNode node, @NotNull Token token, @NotNull Set<String> names) throws NewickParserException
     {
-        if (token.getType() == TokenType.NAME
-                || token.getType() == TokenType.NUMBER)
+        if (token.getType() == TokenType.NAME || token.getType() == TokenType.NUMBER)
         {
             if (names.contains(token.getText()))
             {

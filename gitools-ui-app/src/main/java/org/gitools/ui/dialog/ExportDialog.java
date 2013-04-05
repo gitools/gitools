@@ -32,22 +32,19 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportDialog extends AbstractDialog
 {
 
     private static final long serialVersionUID = -829366063374164258L;
 
-    protected JTree tree;
+    private JTree tree;
 
     public ExportDialog(Window owner)
     {
-        super(
-                owner,
-                "Export",
-                "Select",
-                "Choose export destination",
-                MessageStatus.INFO,
-                null);
+        super(owner, "Export", "Select", "Choose export destination", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);
         setMinimumSize(new Dimension(500, 300));
@@ -57,8 +54,7 @@ public class ExportDialog extends AbstractDialog
     @Override
     protected JComponent createContainer()
     {
-        DefaultMutableTreeNode model =
-                new DefaultMutableTreeNode();
+        DefaultMutableTreeNode model = new DefaultMutableTreeNode();
 
         DefaultMutableTreeNode table = new DefaultMutableTreeNode("Table");
         table.add(new DefaultMutableTreeNode("Header names"));
@@ -71,8 +67,7 @@ public class ExportDialog extends AbstractDialog
         picture.add(new DefaultMutableTreeNode("Image file (png, jpg, ...)"));
         model.add(picture);
 
-        DefaultTreeCellRenderer renderer =
-                new DefaultTreeCellRenderer();
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
         tree = new JTree(model);
         tree.setRootVisible(false);

@@ -26,6 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 
+/**
+ * @noinspection ALL
+ */
 public class IntegerXmlAdapter extends XmlAdapter<String, Integer>
 {
 

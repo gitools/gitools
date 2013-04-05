@@ -24,17 +24,24 @@ package org.gitools.utils.colorscale;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScaleRange
 {
 
     @NotNull
-    public static String CONSTANT_TYPE = "constant";
+    public static final String CONSTANT_TYPE = "constant";
     @NotNull
-    public static String EMPTY_TYPE = "empty";
+    public static final String EMPTY_TYPE = "empty";
     @NotNull
-    public static String LINEAR_TYPE = "linear";
+    public static final String LINEAR_TYPE = "linear";
     @NotNull
-    public static String LOGARITHMIC_TYPE = "logarithmic";
+    public static final String LOGARITHMIC_TYPE = "logarithmic";
 
     private String type = "";
     @Nullable
@@ -52,6 +59,7 @@ public class ColorScaleRange
     public ColorScaleRange()
     {
         super();
+        // JAXB requirement
     }
 
     public ColorScaleRange(double minValue, double maxValue, double width)

@@ -39,6 +39,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class DataIntegrationPage extends AbstractWizardPage
 {
 
@@ -61,16 +64,13 @@ public class DataIntegrationPage extends AbstractWizardPage
             for (DataIntegrationCriteria c : criteriaList)
             {
                 Operator op = c.getOperator();
-                intend = (!op.equals(Operator.OR)) ?
-                        "    " : "";
+                intend = (!op.equals(Operator.OR)) ? "    " : "";
                 if (!op.equals(Operator.EMPTY))
                 {
                     rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
                 }
 
-                rendering = rendering + "    " + c.getAttributeName() + " "
-                        + c.getComparator().getLongName() + " "
-                        + Double.toString(c.getCutoffValue()) + "\n";
+                rendering = rendering + "    " + c.getAttributeName() + " " + c.getComparator().getLongName() + " " + Double.toString(c.getCutoffValue()) + "\n";
 
 
             }
@@ -79,8 +79,8 @@ public class DataIntegrationPage extends AbstractWizardPage
         }
     }
 
-    private String[] attrNames;
-    DefaultTableModel model;
+    private final String[] attrNames;
+    private final DefaultTableModel model;
 
     public DataIntegrationPage(@NotNull Heatmap hm)
     {
@@ -89,8 +89,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         setComplete(false);
 
         setTitle("Data Dimension Integration");
-        setMessage("Choose which data dimensions and what cut-offs"
-                + " to integrate");
+        setMessage("Choose which data dimensions and what cut-offs" + " to integrate");
 
         List<IElementAttribute> attributes = hm.getMatrixView().getContents().getCellAdapter().getProperties();
 
@@ -105,8 +104,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         //table.setModel(model);
         table.getColumnModel().getColumn(0).setMaxWidth(65);
         table.getColumnModel().getColumn(1).setMaxWidth(100);
-        table.getColumnModel().getColumn(2).setCellRenderer(
-                new DataIntegrationCriteriaListCellRender());
+        table.getColumnModel().getColumn(2).setCellRenderer(new DataIntegrationCriteriaListCellRender());
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener()
         {
             @Override
@@ -131,12 +129,10 @@ public class DataIntegrationPage extends AbstractWizardPage
     @NotNull
     public List<ArrayList<DataIntegrationCriteria>> getCriteria()
     {
-        ArrayList<ArrayList<DataIntegrationCriteria>> criteria =
-                new ArrayList<ArrayList<DataIntegrationCriteria>>();
+        ArrayList<ArrayList<DataIntegrationCriteria>> criteria = new ArrayList<ArrayList<DataIntegrationCriteria>>();
         for (int i = 0; i < table.getRowCount(); i++)
         {
-            ArrayList<DataIntegrationCriteria> c =
-                    (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
+            ArrayList<DataIntegrationCriteria> c = (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
             criteria.add(c);
         }
         return criteria;
@@ -230,19 +226,12 @@ public class DataIntegrationPage extends AbstractWizardPage
             }
         });
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
+        table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-                },
-                new String[]{
-                        "Priority", "Value", "Criteria"
-                }
-        )
+        }, new String[]{"Priority", "Value", "Criteria"})
         {
             @NotNull
-            Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Object.class
-            };
+            final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class};
 
             public Class getColumnClass(int columnIndex)
             {
@@ -272,55 +261,14 @@ public class DataIntegrationPage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(downBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(upBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(tableAddBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(removeBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(upBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(downBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(editBtn))
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel1).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addComponent(editBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(downBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(upBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(removeBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(upBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(downBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(editBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_tableAddBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-        final DataIntegrationCriteriaDialog dlg =
-                new DataIntegrationCriteriaDialog(AppFrame.get(),
-                        attrNames,
-                        CutoffCmp.comparators,
-                        ops,
-                        null,
-                        "1");
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)
@@ -344,8 +292,7 @@ public class DataIntegrationPage extends AbstractWizardPage
     private void downBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_downBtnActionPerformed
         int selectedPosition = table.getSelectedRow();
-        int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ?
-                selectedPosition : selectedPosition + 1;
+        int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ? selectedPosition : selectedPosition + 1;
         model.moveRow(selectedPosition, selectedPosition, wantedPosition);
         updateRowHeightsAndPriorities();
         table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
@@ -354,8 +301,7 @@ public class DataIntegrationPage extends AbstractWizardPage
     private void upBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_upBtnActionPerformed
         int selectedPosition = table.getSelectedRow();
-        int wantedPosition = (selectedPosition == 0) ?
-                selectedPosition : selectedPosition - 1;
+        int wantedPosition = (selectedPosition == 0) ? selectedPosition : selectedPosition - 1;
         model.moveRow(selectedPosition, selectedPosition, wantedPosition);
         updateRowHeightsAndPriorities();
         table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
@@ -364,16 +310,9 @@ public class DataIntegrationPage extends AbstractWizardPage
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_editBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-        List<DataIntegrationCriteria> criteria =
-                (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
+        List<DataIntegrationCriteria> criteria = (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
         String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
-        final DataIntegrationCriteriaDialog dlg =
-                new DataIntegrationCriteriaDialog(AppFrame.get(),
-                        attrNames,
-                        CutoffCmp.comparators,
-                        ops,
-                        criteria,
-                        setToValue);
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, criteria, setToValue);
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)

@@ -46,6 +46,9 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportScaleImageAction extends BaseAction
 {
 
@@ -102,9 +105,7 @@ public class ExportScaleImageAction extends BaseAction
         wz.setTitle("Export scale to image ...");
         wz.getSavePage().setFileNameWithoutExtension(PersistenceUtils.getFileName(editor.getName()) + "-scale");
         wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
-        wz.getSavePage().setFormats(new FileFormat[]{
-                FileFormats.PNG,
-                FileFormats.JPG});
+        wz.getSavePage().setFormats(new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
         wz.setScale(scale);
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wz);
@@ -145,16 +146,13 @@ public class ExportScaleImageAction extends BaseAction
                     Dimension size = drawer.getSize();
                     size.width = wz.getScaleSize();
 
-                    BufferedImage bi = new BufferedImage(
-                            size.width, size.height, BufferedImage.TYPE_INT_RGB);
+                    BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 
                     Graphics2D g = bi.createGraphics();
                     g.setColor(Color.WHITE);
                     g.fillRect(0, 0, size.width, size.height);
 
-                    drawer.draw(g,
-                            new Rectangle(new Point(), size),
-                            new Rectangle(new Point(), size));
+                    drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
 
                     ImageIO.write(bi, formatExtension, file);
 

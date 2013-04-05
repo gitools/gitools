@@ -23,10 +23,13 @@ package org.gitools.ui.platform.help;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class HelpContext
 {
 
-    protected String id;
+    private final String id;
 
     public HelpContext(String id)
     {

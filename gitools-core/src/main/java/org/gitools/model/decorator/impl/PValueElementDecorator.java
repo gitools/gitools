@@ -33,6 +33,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class PValueElementDecorator extends ElementDecorator
 {
 
@@ -43,18 +46,16 @@ public class PValueElementDecorator extends ElementDecorator
     private boolean useCorrection;
     private double significanceLevel;
 
-    private PValueColorScale scale;
+    private final PValueColorScale scale;
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
 
     public PValueElementDecorator()
     {
 
-        valueIndex = getPropertyIndex(new String[]{
-                "right-p-value", "p-value"});
+        valueIndex = getPropertyIndex(new String[]{"right-p-value", "p-value"});
 
-        correctedValueIndex = getPropertyIndex(new String[]{
-                "corrected-right-p-value", "corrected-p-value"});
+        correctedValueIndex = getPropertyIndex(new String[]{"corrected-right-p-value", "corrected-p-value"});
 
         useCorrection = false;
 
@@ -66,11 +67,9 @@ public class PValueElementDecorator extends ElementDecorator
     {
         super(adapter);
 
-        valueIndex = getPropertyIndex(new String[]{
-                "right-p-value", "p-value"});
+        valueIndex = getPropertyIndex(new String[]{"right-p-value", "p-value"});
 
-        correctedValueIndex = getPropertyIndex(new String[]{
-                "corrected-right-p-value", "corrected-p-value"});
+        correctedValueIndex = getPropertyIndex(new String[]{"corrected-right-p-value", "corrected-p-value"});
 
         useCorrection = false;
 
@@ -183,9 +182,7 @@ public class PValueElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(
-            @NotNull ElementDecoration decoration,
-            @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
     {
 
         decoration.reset();
@@ -213,16 +210,14 @@ public class PValueElementDecorator extends ElementDecorator
 
         if (useCorrection)
         {
-            Object corrValue = correctedValueIndex >= 0 ?
-                    adapter.getValue(element, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? adapter.getValue(element, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 
             isSig = cv <= significanceLevel;
         }
 
-        final Color color = isSig ? scale.valueColor(v)
-                : scale.getNonSignificantColor();
+        final Color color = isSig ? scale.valueColor(v) : scale.getNonSignificantColor();
 
         decoration.setBgColor(color);
         decoration.setToolTip(fmt.pvalue(v));

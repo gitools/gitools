@@ -36,7 +36,7 @@ public class AnnPatRowClusteringData implements ClusteringData
     public class Instance implements ClusteringDataInstance
     {
 
-        private VariableValueResolver resolver;
+        private final VariableValueResolver resolver;
 
         public Instance(VariableValueResolver resolver)
         {
@@ -82,9 +82,9 @@ public class AnnPatRowClusteringData implements ClusteringData
         }
     }
 
-    private IMatrix matrix;
-    private AnnotationMatrix am;
-    private TextPattern pat;
+    private final IMatrix matrix;
+    private final AnnotationMatrix am;
+    private final TextPattern pat;
 
     public AnnPatRowClusteringData(IMatrix matrix, AnnotationMatrix am, String pattern)
     {
@@ -109,8 +109,6 @@ public class AnnPatRowClusteringData implements ClusteringData
     @Override
     public ClusteringDataInstance getInstance(int index)
     {
-        return new Instance(
-                new AnnotationResolver(
-                        am, matrix.getRowLabel(index), "N/A"));
+        return new Instance(new AnnotationResolver(am, matrix.getRowLabel(index), "N/A"));
     }
 }

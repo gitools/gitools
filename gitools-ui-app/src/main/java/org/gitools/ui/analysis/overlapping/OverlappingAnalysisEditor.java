@@ -65,11 +65,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         context.put("appliedTo", appliedTo);
 
         CutoffCmp cmp = analysis.getBinaryCutoffCmp();
-        String filterDesc = cmp == null ?
-                "Not filtered"
-                : "Binary cutoff filter for values "
-                + cmp.getLongName() + " "
-                + analysis.getBinaryCutoffValue();
+        String filterDesc = cmp == null ? "Not filtered" : "Binary cutoff filter for values " + cmp.getLongName() + " " + analysis.getBinaryCutoffValue();
         context.put("filterDesc", filterDesc);
 
         resourceRef = analysis.getCellResults();
@@ -135,9 +131,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), OverlappingAnalysisFormat.EXTENSION,
-                        "-data", ""));
+                editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {
@@ -176,9 +170,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
                 final OverlappingResultsEditor editor = new OverlappingResultsEditor(analysis);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), OverlappingAnalysisFormat.EXTENSION,
-                        "-results", ""));
+                editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {

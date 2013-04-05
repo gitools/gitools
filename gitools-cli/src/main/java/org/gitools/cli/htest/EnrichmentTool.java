@@ -37,6 +37,9 @@ import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.kohsuke.args4j.Option;
 
+/**
+ * @noinspection ALL
+ */
 public class EnrichmentTool extends HtestTool
 {
 
@@ -46,6 +49,9 @@ public class EnrichmentTool extends HtestTool
                 usage = "Modules file format (reference file extension).")
         public String modulesFormat;
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         @Option(name = "-m", aliases = "-modules", metaVar = "<file>",
                 usage = "File with mappings between items and modules.")
         public String modulesFile;
@@ -59,9 +65,8 @@ public class EnrichmentTool extends HtestTool
         private int maxModuleSize = Integer.MAX_VALUE;
 
         @Option(name = "-omi", aliases = "-only-mapped-items",
-                usage = "Consider only items having a mapping for the background.\n" +
-                        "(default: all items in data file will be considered)")
-        private boolean discardNonMappedRows = false;
+                usage = "Consider only items having a mapping for the background.\n" + "(default: all items in data file will be considered)")
+        private final boolean discardNonMappedRows = false;
     }
 
     @Override
@@ -72,8 +77,7 @@ public class EnrichmentTool extends HtestTool
 
         EnrichmentArguments args = (EnrichmentArguments) argsObject;
 
-        testConfig = TestFactory.createToolConfig(
-                ToolConfig.ENRICHMENT, args.testName);
+        testConfig = TestFactory.createToolConfig(ToolConfig.ENRICHMENT, args.testName);
 
         if (testConfig == null)
         {
@@ -113,18 +117,9 @@ public class EnrichmentTool extends HtestTool
 
         IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, ModuleMap.class);
 
-        EnrichmentCommand cmd = new EnrichmentCommand(
-                analysis,
-                dataMime, args.dataFile,
-                args.valueIndex,
-                args.populationFile,
-                populationDefaultValue,
-                modulesMime, args.modulesFile,
-                args.workdir, args.analysisName + "." + EnrichmentAnalysisFormat.EXTENSION);
+        EnrichmentCommand cmd = new EnrichmentCommand(analysis, dataMime, args.dataFile, args.valueIndex, args.populationFile, populationDefaultValue, modulesMime, args.modulesFile, args.workdir, args.analysisName + "." + EnrichmentAnalysisFormat.EXTENSION);
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 

@@ -37,11 +37,11 @@ import javax.swing.*;
 public class ModulesOrganismPage extends FilteredListPage
 {
 
-    private ModulesImporter importer;
+    private final ModulesImporter importer;
 
     private ModuleCategory modCategory;
     private Version version;
-    boolean loaded;
+    private boolean loaded;
 
     public ModulesOrganismPage(ModulesImporter importer)
     {
@@ -56,8 +56,7 @@ public class ModulesOrganismPage extends FilteredListPage
     {
         super.updateControls();
 
-        if (!loaded || modCategory != importer.getModuleCategory()
-                || version != importer.getVersion())
+        if (!loaded || modCategory != importer.getModuleCategory() || version != importer.getVersion())
         {
 
             JobThread.execute(AppFrame.get(), new JobRunnable()

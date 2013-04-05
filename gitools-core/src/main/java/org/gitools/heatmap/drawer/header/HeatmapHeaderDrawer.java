@@ -38,7 +38,7 @@ import java.util.List;
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
 {
 
-    private boolean horizontal;
+    private final boolean horizontal;
 
     private List<AbstractHeatmapHeaderDrawer> drawers;
 
@@ -53,9 +53,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
 
     public final void updateDrawers()
     {
-        List<HeatmapHeader> headers = horizontal ?
-                heatmap.getColumnDim().getHeaders()
-                : heatmap.getRowDim().getHeaders();
+        List<HeatmapHeader> headers = horizontal ? heatmap.getColumnDim().getHeaders() : heatmap.getRowDim().getHeaders();
 
         drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
 
@@ -123,18 +121,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
         return new Dimension(w, h);
     }
 
-    protected static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
+    private static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 
     @Override
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
-        g.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g.setRenderingHint(
-                RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);

@@ -28,6 +28,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
+/**
+ * @noinspection ALL
+ */
 public class ExitAction extends BaseAction
 {
 

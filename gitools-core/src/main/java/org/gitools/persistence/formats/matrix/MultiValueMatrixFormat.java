@@ -85,24 +85,13 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
     static
     {
-        Class<?>[] classes = new Class<?>[]{
-                ZScoreResult.class,
-                BinomialResult.class,
-                FisherResult.class,
-                CorrelationResult.class,
-                CombinationResult.class,
-                OverlappingResult.class,
-                GroupComparisonResult.class
-        };
+        Class<?>[] classes = new Class<?>[]{ZScoreResult.class, BinomialResult.class, FisherResult.class, CorrelationResult.class, CombinationResult.class, OverlappingResult.class, GroupComparisonResult.class};
 
         for (Class<?> elementClass : classes)
         {
-            IElementAdapter adapter =
-                    new BeanElementAdapter(elementClass);
+            IElementAdapter adapter = new BeanElementAdapter(elementClass);
 
-            elementClasses.put(
-                    getElementClassId(adapter.getProperties()),
-                    elementClass);
+            elementClasses.put(getElementClassId(adapter.getProperties()), elementClass);
         }
     }
 
@@ -185,8 +174,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             String[] populationLabels = getPopulationLabels();
-            final Set<String> popLabelsSet = populationLabels != null ?
-                    new HashSet<String>(Arrays.asList(populationLabels)) : null;
+            final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
             String[] line = parser.readNext();
             if (line.length < 3)
@@ -248,8 +236,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
                 if (elementClass == null)
                 {
                     // infer element class and create corresponding adapter and factory
-                    elementClass = elementClasses.get(
-                            getElementClassId(allAttributeNames));
+                    elementClass = elementClasses.get(getElementClassId(allAttributeNames));
                 }
             }
 
@@ -322,15 +309,13 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
                         }
                         else
                         {
-                            value = parsePropertyValue(
-                                    origElementAdapter.getProperty(origElementAdapter.getPropertyIndex(property)), line[sourceIdx + 2]);
+                            value = parsePropertyValue(origElementAdapter.getProperty(origElementAdapter.getPropertyIndex(property)), line[sourceIdx + 2]);
                         }
                         destElementAdapter.setValue(element, destIdx, value);
                     }
                 }
 
-                list.add(new Object[]{
-                        new int[]{columnIndex, rowIndex}, element});
+                list.add(new Object[]{new int[]{columnIndex, rowIndex}, element});
             }
 
             // add missing population labels to matrix
@@ -350,9 +335,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
                                 Double backgroundValue = getBackgroundValue();
                                 origElementAdapter.setValue(element, i, backgroundValue);
                             }
-                            list.add(new Object[]{
-                                    new int[]{columnIndex, rowIndex}, element
-                            });
+                            list.add(new Object[]{new int[]{columnIndex, rowIndex}, element});
                         }
                     }
                 }
@@ -405,23 +388,19 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         Object value = null;
         try
         {
-            if (propertyClass.equals(double.class)
-                    || propertyClass.equals(Double.class))
+            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class))
             {
                 value = Double.parseDouble(string);
             }
-            else if (propertyClass.equals(float.class)
-                    || propertyClass.equals(Float.class))
+            else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class))
             {
                 value = Double.parseDouble(string);
             }
-            else if (propertyClass.equals(int.class)
-                    || propertyClass.equals(Integer.class))
+            else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class))
             {
                 value = Integer.parseInt(string);
             }
-            else if (propertyClass.equals(long.class)
-                    || propertyClass.equals(Long.class))
+            else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class))
             {
                 value = Long.parseLong(string);
             }
@@ -440,23 +419,19 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             }
         } catch (Exception e)
         {
-            if (propertyClass.equals(double.class)
-                    || propertyClass.equals(Double.class))
+            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class))
             {
                 value = Double.NaN;
             }
-            else if (propertyClass.equals(float.class)
-                    || propertyClass.equals(Float.class))
+            else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class))
             {
                 value = Float.NaN;
             }
-            else if (propertyClass.equals(int.class)
-                    || propertyClass.equals(Integer.class))
+            else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class))
             {
                 value = new Integer(0);
             }
-            else if (propertyClass.equals(long.class)
-                    || propertyClass.equals(Long.class))
+            else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class))
             {
                 value = new Long(0);
             }
@@ -618,8 +593,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             if (elementClass == null)
             {
                 // infer element class and create corresponding adapter and factory
-                elementClass = elementClasses.get(
-                        getElementClassId(attributeNames));
+                elementClass = elementClasses.get(getElementClassId(attributeNames));
             }
 
             if (elementClass == null)

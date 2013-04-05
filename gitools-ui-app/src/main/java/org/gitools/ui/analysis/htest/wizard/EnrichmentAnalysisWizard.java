@@ -101,10 +101,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
         saveFilePage = new SaveFilePage();
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-        saveFilePage.setFormats(new FileFormat[]{
-                new FileFormat("Enrichment analysis (*."
-                        + EnrichmentAnalysisFormat.EXTENSION + ")",
-                        EnrichmentAnalysisFormat.EXTENSION)});
+        saveFilePage.setFormats(new FileFormat[]{new FileFormat("Enrichment analysis (*." + EnrichmentAnalysisFormat.EXTENSION + ")", EnrichmentAnalysisFormat.EXTENSION)});
         saveFilePage.setFormatsVisible(false);
         addPage(saveFilePage);
 
@@ -118,8 +115,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
     {
         if (currentPage == examplePage)
         {
-            Settings.getDefault().setShowCombinationExamplePage(
-                    examplePage.isShowAgain());
+            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled())
             {
@@ -142,8 +138,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
                         {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final EnrichmentAnalysis a = PersistenceManager.get()
-                                    .load(analysisFile, EnrichmentAnalysis.class, props, monitor);
+                            final EnrichmentAnalysis a = PersistenceManager.get().load(analysisFile, EnrichmentAnalysis.class, props, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {

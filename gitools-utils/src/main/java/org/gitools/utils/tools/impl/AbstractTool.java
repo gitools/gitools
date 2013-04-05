@@ -36,6 +36,9 @@ import java.io.PrintStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractTool<Context> implements ToolLifeCycle<Context>
 {
 
@@ -113,9 +116,8 @@ public abstract class AbstractTool<Context> implements ToolLifeCycle<Context>
     @Override
     public void printUsage(@NotNull PrintStream outputStream, String appName, @NotNull ToolDescriptor toolDesc, @NotNull CmdLineParser parser)
     {
-        outputStream.print(
-                toolDesc.getName() + " usage:\n\t" +
-                        appName + " " + toolDesc.getName());
+        outputStream.print(toolDesc.getName() + " usage:\n\t" +
+                appName + " " + toolDesc.getName());
 
         parser.printSingleLineUsage(outputStream);
 

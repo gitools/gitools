@@ -74,8 +74,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         // map between modules and item indices
 
-        final Map<String, Set<Integer>> moduleItemsMap =
-                new HashMap<String, Set<Integer>>();
+        final Map<String, Set<Integer>> moduleItemsMap = new HashMap<String, Set<Integer>>();
 
         // read mappings
 
@@ -86,8 +85,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            readModuleMappings(parser, isItemNamesFilterEnabled(),
-                    itemNameToRowMapping, moduleItemsMap);
+            readModuleMappings(parser, isItemNamesFilterEnabled(), itemNameToRowMapping, moduleItemsMap);
 
             in.close();
             progressMonitor.end();
@@ -120,8 +118,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         List<String> moduleNames = new ArrayList<String>();
         List<int[]> modulesItemIndices = new ArrayList<int[]>();
 
-        Iterator<Entry<String, Set<Integer>>> it =
-                moduleItemsMap.entrySet().iterator();
+        Iterator<Entry<String, Set<Integer>>> it = moduleItemsMap.entrySet().iterator();
 
         while (it.hasNext())
         {
@@ -168,7 +165,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         return mmap;
     }
 
-    protected void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException
+    void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException
     {
 
         try
@@ -179,10 +176,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
             {
                 if (fields.length < 2)
                 {
-                    throw new PersistenceException(
-                            "At least 2 columns expected at "
-                                    + parser.getLineNumber()
-                                    + "(item name and group name).");
+                    throw new PersistenceException("At least 2 columns expected at " + parser.getLineNumber() + "(item name and group name).");
                 }
 
                 String itemName = fields[0];

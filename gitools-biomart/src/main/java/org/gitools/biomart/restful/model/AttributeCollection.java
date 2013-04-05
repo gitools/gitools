@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 
 public class AttributeCollection
@@ -38,7 +41,7 @@ public class AttributeCollection
     private int maxSelect;
 
     @XmlAttribute
-    protected String enableSelectAll;
+    private String enableSelectAll;
 
     @XmlAttribute
     private String internalName;

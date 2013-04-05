@@ -36,13 +36,13 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
 {
 
     public static final String MIN_SIZE = "min_size";
-    public static final int DEFAULT_MIN_SIZE = 0;
+    private static final int DEFAULT_MIN_SIZE = 0;
 
     public static final String MAX_SIZE = "max_size";
-    public static final int DEFAULT_MAX_SIZE = Integer.MAX_VALUE;
+    private static final int DEFAULT_MAX_SIZE = Integer.MAX_VALUE;
 
     public static final String ITEM_NAMES_FILTER_ENABLED = "item_names_filter_enabled";
-    public static final boolean DEFAULT_ITEM_NAMES_FILTER_ENABLED = false;
+    private static final boolean DEFAULT_ITEM_NAMES_FILTER_ENABLED = false;
 
     public static final String ITEM_NAMES = "item_names";
 
@@ -51,7 +51,7 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
     private boolean itemNamesFilterEnabled;
     private String[] itemNames;
 
-    protected AbstractModuleMapFormat(String extension, Class<R> resourceClass)
+    AbstractModuleMapFormat(String extension, Class<R> resourceClass)
     {
         super(extension, resourceClass);
     }
@@ -83,22 +83,22 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
         return (T) value;
     }
 
-    protected int getMinSize()
+    int getMinSize()
     {
         return minSize;
     }
 
-    protected int getMaxSize()
+    int getMaxSize()
     {
         return maxSize;
     }
 
-    protected boolean isItemNamesFilterEnabled()
+    boolean isItemNamesFilterEnabled()
     {
         return itemNamesFilterEnabled;
     }
 
-    protected String[] getItemNames()
+    String[] getItemNames()
     {
         return itemNames;
     }

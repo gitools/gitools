@@ -30,28 +30,29 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
-@XmlSeeAlso(value = {
-        BeanElementProperty.class})
+@XmlSeeAlso(value = {BeanElementProperty.class})
 
-public abstract class AbstractElementAdapter
-        implements IElementAdapter, Serializable
+public abstract class AbstractElementAdapter implements IElementAdapter, Serializable
 {
 
     private static final long serialVersionUID = -4797939915206004479L;
 
-    protected Class<?> elementClass;
+    Class<?> elementClass;
 
     @NotNull
     private /*transient*/ List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
 
     private /*transient*/ Map<String, Integer> propIdToIndexMap;
 
-    public AbstractElementAdapter()
+    AbstractElementAdapter()
     {
     }
 
-    public AbstractElementAdapter(Class<?> elementClass)
+    AbstractElementAdapter(Class<?> elementClass)
     {
         this.elementClass = elementClass;
     }
@@ -63,7 +64,7 @@ public abstract class AbstractElementAdapter
         return elementClass;
     }
 
-    protected void setElementClass(Class<?> elementClass)
+    void setElementClass(Class<?> elementClass)
     {
         this.elementClass = elementClass;
     }
@@ -87,7 +88,7 @@ public abstract class AbstractElementAdapter
         return Collections.unmodifiableList(properties);
     }
 
-    protected final void setProperties(@NotNull List<IElementAttribute> properties)
+    final void setProperties(@NotNull List<IElementAttribute> properties)
     {
         this.properties = properties;
         propIdToIndexMap = new HashMap<String, Integer>();

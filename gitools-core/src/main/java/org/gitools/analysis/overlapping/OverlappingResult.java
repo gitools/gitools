@@ -23,6 +23,9 @@ package org.gitools.analysis.overlapping;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
+/**
+ * @noinspection ALL
+ */
 public class OverlappingResult
 {
 
@@ -148,12 +151,15 @@ public class OverlappingResult
         return jaccardIndex;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setJaccardIndex(double jaccardIndex)
     {
         this.jaccardIndex = jaccardIndex;
     }
 
-    public final void calculateProportions()
+    final void calculateProportions()
     {
         double union = columnCount + rowCount - bothCount;
 

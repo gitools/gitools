@@ -27,14 +27,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Attribute", propOrder = {
-        "name"
-})
+@XmlType(name = "Attribute", propOrder = {"name"})
 public class Attribute
 {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
 
     public String getName()
     {

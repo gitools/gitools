@@ -33,9 +33,9 @@ public class ThreadManager
 {
 
     @NotNull
-    protected static ExecutorService executor = createExecutor();
+    private static ExecutorService executor = createExecutor();
 
-    protected static int nThreads = getAvailableProcessors();
+    private static int nThreads = getAvailableProcessors();
 
     public static void shutdown(@NotNull IProgressMonitor monitor)
     {

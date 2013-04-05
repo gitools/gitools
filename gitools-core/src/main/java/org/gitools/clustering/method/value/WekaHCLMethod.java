@@ -37,6 +37,9 @@ import weka.core.SelectedTag;
 import java.util.List;
 
 
+/**
+ * @noinspection ALL
+ */
 public class WekaHCLMethod extends AbstractClusteringValueMethod
 {
 
@@ -92,9 +95,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
                 NewickParser newickParser = new NewickParser(clusterer.graph() + ";");
                 NewickTree tree = newickParser.parse();
 
-                results = new HierarchicalClusteringResults(
-                        labels.toArray(new String[labels.size()]),
-                        tree, 0);
+                results = new HierarchicalClusteringResults(labels.toArray(new String[labels.size()]), tree, 0);
 
             }
 
@@ -143,6 +144,9 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
         this.linkType = linkType;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public int getNumClusters()
     {
         return numClusters;

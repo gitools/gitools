@@ -26,13 +26,16 @@ import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.IMatrix;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class MatrixRowClusteringData implements ClusteringData
 {
 
     public class Instance implements ClusteringDataInstance
     {
 
-        protected int index;
+        final int index;
 
         public Instance(int index)
         {
@@ -77,7 +80,7 @@ public class MatrixRowClusteringData implements ClusteringData
     }
 
     private IMatrix matrix;
-    private int matrixAttribute;
+    private final int matrixAttribute;
     private Class<?> attributeClass;
 
     public MatrixRowClusteringData(@NotNull IMatrix matrix, int matrixAttribute)

@@ -26,15 +26,18 @@ import org.gitools.heatmap.header.HeatmapHeader;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer
 {
 
     protected static final Color highlightingColor = Color.YELLOW;
 
-    protected HT header;
-    protected boolean horizontal;
+    protected final HT header;
+    protected final boolean horizontal;
 
-    public AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal)
+    protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal)
     {
         super(heatmap);
 
@@ -52,8 +55,6 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     {
         return;
     }
-
-    ;
 
     public boolean isHorizontal()
     {

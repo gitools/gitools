@@ -51,7 +51,7 @@ import java.util.List;
 public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 {
 
-    private Heatmap hm;
+    private final Heatmap hm;
 
     private String colsPatt;
 
@@ -78,8 +78,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
             protected void update(DocumentEvent e)
             {
                 saveBtn1.setEnabled(patterns1.getDocument().getLength() > 0);
-                setComplete(patterns1.getDocument().getLength() > 0 &&
-                        patterns2.getDocument().getLength() > 0);
+                setComplete(patterns1.getDocument().getLength() > 0 && patterns2.getDocument().getLength() > 0);
             }
         });
 
@@ -89,8 +88,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
             protected void update(DocumentEvent e)
             {
                 saveBtn2.setEnabled(patterns2.getDocument().getLength() > 0);
-                setComplete(patterns1.getDocument().getLength() > 0 &&
-                        patterns2.getDocument().getLength() > 0);
+                setComplete(patterns1.getDocument().getLength() > 0 && patterns2.getDocument().getLength() > 0);
             }
         });
 
@@ -106,7 +104,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
 
     @NotNull
-    protected String readNamesFromFile(File file) throws IOException
+    String readNamesFromFile(File file) throws IOException
     {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
@@ -140,6 +138,9 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @NotNull
     public FilterDimension getFilterDimension()
     {
@@ -151,7 +152,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         colsRb.setSelected(true);
     }
 
-    public String getPattern()
+    String getPattern()
     {
         return colsPatt;
     }
@@ -196,10 +197,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         AnnotationMatrix am = hm.getColumnDim().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         int[] visibleCols = hm.getMatrixView().getVisibleColumns();
-        int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider,
-                values,
-                isUseRegexChecked(),
-                visibleCols);
+        int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
         for (int i = 0; i < groupCols.length; i++)
         {
@@ -216,10 +214,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            labelProvider = new AnnotationsPatternProvider(
-                    labelProvider,
-                    hm.getColumnDim().getAnnotations(),
-                    getPattern());
+            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumnDim().getAnnotations(), getPattern());
         }
 
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
@@ -230,7 +225,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
-    public void setValues(@NotNull List<String> values, @NotNull JTextArea patterns)
+    void setValues(@NotNull List<String> values, @NotNull JTextArea patterns)
     {
         Iterator<String> it = values.iterator();
         while (it.hasNext())
@@ -247,10 +242,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            labelProvider = new AnnotationsPatternProvider(
-                    labelProvider,
-                    hm.getColumnDim().getAnnotations(),
-                    getPattern());
+            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumnDim().getAnnotations(), getPattern());
         }
 
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
@@ -275,7 +267,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
     }
 
-    public boolean isUseRegexChecked()
+    boolean isUseRegexChecked()
     {
         return useRegexCheck.isSelected();
     }
@@ -412,81 +404,8 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(colsRb)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(colsPattBtn))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel1)
-                                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(pasteUnselected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(saveBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                                        .addComponent(loadBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                                        .addComponent(pasteSelected1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel2)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(pasteUnselected2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(saveBtn2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                                        .addComponent(loadBtn2, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                                                        .addComponent(pasteSelected2, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))
-                                        .addComponent(jLabel3)
-                                        .addComponent(useRegexCheck))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(colsPattBtn)
-                                        .addComponent(colsRb)
-                                        .addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(loadBtn1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(saveBtn1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(pasteSelected1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(pasteUnselected1))
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(loadBtn2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(saveBtn2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(pasteSelected2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(pasteUnselected2))
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(useRegexCheck)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(colsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(colsPattFld, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(colsPattBtn)).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel1).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(pasteUnselected1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(saveBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE).addComponent(loadBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE).addComponent(pasteSelected1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel2).addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(pasteUnselected2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(saveBtn2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE).addComponent(loadBtn2, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE).addComponent(pasteSelected2, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))).addComponent(jLabel3).addComponent(useRegexCheck)).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(colsPattBtn).addComponent(colsRb).addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteSelected1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteUnselected1)).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteSelected2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteUnselected2)).addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel3).addGap(18, 18, 18).addComponent(useRegexCheck).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadBtn1ActionPerformed(java.awt.event.ActionEvent evt)
@@ -494,10 +413,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
         try
         {
-            File file = FileChooserUtils.selectFile(
-                    "Select the file containing values",
-                    Settings.getDefault().getLastFilterPath(),
-                    FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
             if (file == null)
             {
@@ -519,10 +435,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     {//GEN-FIRST:event_saveBtn1ActionPerformed
         try
         {
-            File file = FileChooserUtils.selectFile(
-                    "Select file name ...",
-                    Settings.getDefault().getLastFilterPath(),
-                    FileChooserUtils.MODE_SAVE);
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
 
             if (file == null)
             {
@@ -558,10 +471,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
         try
         {
-            File file = FileChooserUtils.selectFile(
-                    "Select the file containing values",
-                    Settings.getDefault().getLastFilterPath(),
-                    FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
             if (file == null)
             {

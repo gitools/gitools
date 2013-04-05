@@ -35,6 +35,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class ZScoreElementDecorator extends ElementDecorator
 {
 
@@ -54,8 +57,7 @@ public class ZScoreElementDecorator extends ElementDecorator
     {
 
         valueIndex = getPropertyIndex(new String[]{"z-score"});
-        correctedValueIndex = getPropertyIndex(new String[]{
-                "corrected-two-tail-p-value", "corrected-p-value"});
+        correctedValueIndex = getPropertyIndex(new String[]{"corrected-two-tail-p-value", "corrected-p-value"});
 
         useCorrection = false;
         significanceLevel = 0.05;
@@ -69,8 +71,7 @@ public class ZScoreElementDecorator extends ElementDecorator
         super(adapter);
 
         valueIndex = getPropertyIndex(new String[]{"z-score"});
-        correctedValueIndex = getPropertyIndex(new String[]{
-                "corrected-two-tail-p-value", "corrected-p-value"});
+        correctedValueIndex = getPropertyIndex(new String[]{"corrected-two-tail-p-value", "corrected-p-value"});
 
         useCorrection = false;
         significanceLevel = 0.05;
@@ -140,7 +141,7 @@ public class ZScoreElementDecorator extends ElementDecorator
         return scale.getSigHalfAmplitude();
     }
 
-    public final void setSigHalfAmplitude(double sigHalfAmplitude)
+    final void setSigHalfAmplitude(double sigHalfAmplitude)
     {
         double old = scale.getSigHalfAmplitude();
         scale.setSigHalfAmplitude(sigHalfAmplitude);
@@ -251,16 +252,14 @@ public class ZScoreElementDecorator extends ElementDecorator
 
         if (useCorrection)
         {
-            Object corrValue = correctedValueIndex >= 0 ?
-                    adapter.getValue(element, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? adapter.getValue(element, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 
             useScale = cv <= significanceLevel;
         }
 
-        final Color color = useScale ? scale.valueColor(v)
-                : ColorConstants.nonSignificantColor;
+        final Color color = useScale ? scale.valueColor(v) : ColorConstants.nonSignificantColor;
 
         decoration.setBgColor(color);
         decoration.setToolTip(fmt.pvalue(v));

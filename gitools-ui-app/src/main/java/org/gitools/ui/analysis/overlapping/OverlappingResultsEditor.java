@@ -36,15 +36,15 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class OverlappingResultsEditor extends HeatmapEditor
+class OverlappingResultsEditor extends HeatmapEditor
 {
 
     //private OverlappingAnalysis analysis;
 
-    protected AbstractTablesPanel tablesPanel;
+    private final AbstractTablesPanel tablesPanel;
 
     @Nullable
-    protected static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis)
+    private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis)
     {
         IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
         Heatmap heatmap = new Heatmap(results);

@@ -41,6 +41,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class SortByMutualExclusionAction extends BaseAction
 {
 
@@ -56,8 +59,7 @@ public class SortByMutualExclusionAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -65,9 +67,7 @@ public class SortByMutualExclusionAction extends BaseAction
     {
 
 
-        IEditor editor = AppFrame.get()
-                .getEditorsPanel()
-                .getSelectedEditor();
+        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
         if (model == null || !(model instanceof Heatmap))
@@ -126,14 +126,7 @@ public class SortByMutualExclusionAction extends BaseAction
                         break;
                 }
 
-                MatrixViewSorter.sortByMutualExclusion(
-                        matrixView,
-                        page.getPattern(),
-                        am,
-                        page.getValues(),
-                        page.isUseRegexChecked(),
-                        dim.equals(FilterDimension.ROWS),
-                        dim.equals(FilterDimension.COLUMNS));
+                MatrixViewSorter.sortByMutualExclusion(matrixView, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS));
 
                 monitor.end();
             }

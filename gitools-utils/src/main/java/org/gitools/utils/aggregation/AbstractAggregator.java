@@ -25,10 +25,10 @@ import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.function.DoubleFunction;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractAggregator implements IAggregator
+abstract class AbstractAggregator implements IAggregator
 {
 
-    protected double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue)
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue)
     {
         if (data.length == 0)
         {
@@ -39,9 +39,7 @@ public abstract class AbstractAggregator implements IAggregator
             return mapFunc.apply(checkNaN(data[0], nanValue));
         }
 
-        double value = reduceFunc.apply(
-                mapFunc.apply(checkNaN(data[0], nanValue)),
-                mapFunc.apply(checkNaN(data[1], nanValue)));
+        double value = reduceFunc.apply(mapFunc.apply(checkNaN(data[0], nanValue)), mapFunc.apply(checkNaN(data[1], nanValue)));
 
         for (int i = 2; i < data.length; i++)
             value = reduceFunc.apply(value, mapFunc.apply(checkNaN(data[i], nanValue)));
@@ -49,7 +47,7 @@ public abstract class AbstractAggregator implements IAggregator
         return value;
     }
 
-    protected double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue)
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue)
     {
         if (data.length == 0)
         {
@@ -60,9 +58,7 @@ public abstract class AbstractAggregator implements IAggregator
             return checkNaN(data[0], nanValue);
         }
 
-        double value = reduceFunc.apply(
-                checkNaN(data[0], nanValue),
-                checkNaN(data[1], nanValue));
+        double value = reduceFunc.apply(checkNaN(data[0], nanValue), checkNaN(data[1], nanValue));
 
         for (int i = 2; i < data.length; i++)
             value = reduceFunc.apply(value, checkNaN(data[i], nanValue));

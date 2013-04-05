@@ -30,6 +30,9 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class CommandExecutor
 {
 
@@ -106,7 +109,6 @@ public class CommandExecutor
             out.println("OK");
             out.flush();
         }
-        ;
 
     }
 

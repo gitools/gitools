@@ -28,14 +28,17 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportChooserPage extends AbstractWizardPage
 {
 
     private static final long serialVersionUID = 873494691491409555L;
 
-    protected JTree tree;
+    private JTree tree;
 
-    public ExportChooserPage(String id)
+    private ExportChooserPage(String id)
     {
         super(id);
     }
@@ -49,8 +52,7 @@ public class ExportChooserPage extends AbstractWizardPage
     @Override
     public JComponent createControls()
     {
-        DefaultMutableTreeNode model =
-                new DefaultMutableTreeNode();
+        DefaultMutableTreeNode model = new DefaultMutableTreeNode();
 
         DefaultMutableTreeNode table = new DefaultMutableTreeNode("Table");
         table.add(new DefaultMutableTreeNode("Header names"));
@@ -63,8 +65,7 @@ public class ExportChooserPage extends AbstractWizardPage
         picture.add(new DefaultMutableTreeNode("Image file (png, jpg, ...)"));
         model.add(picture);
 
-        DefaultTreeCellRenderer renderer =
-                new DefaultTreeCellRenderer();
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
 
         tree = new JTree(model);
         tree.setRootVisible(false);

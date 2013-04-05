@@ -31,12 +31,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * @noinspection ALL
+ */
 public class JobThread implements JobRunnable
 {
 
-    private Window parent;
+    private final Window parent;
 
-    private JobRunnable runnable;
+    private final JobRunnable runnable;
 
     private Thread thread;
 
@@ -54,7 +57,7 @@ public class JobThread implements JobRunnable
         new JobThread(parent, runnable).executeAndWait();
     }
 
-    public JobThread(Window parent, JobRunnable runnable)
+    private JobThread(Window parent, JobRunnable runnable)
     {
         this.parent = parent;
         this.runnable = runnable;
@@ -79,12 +82,12 @@ public class JobThread implements JobRunnable
         this.cancelled = cancelled;
     }*/
 
-    public Thread getThread()
+    Thread getThread()
     {
         return thread;
     }
 
-    public synchronized void setThread(Thread jobThread)
+    synchronized void setThread(Thread jobThread)
     {
         this.thread = jobThread;
     }
@@ -111,7 +114,7 @@ public class JobThread implements JobRunnable
         this.dlg = dlg;
     }
 
-    protected void cancelJob()
+    void cancelJob()
     {
         getMonitor().cancel();
 
@@ -136,7 +139,7 @@ public class JobThread implements JobRunnable
         }, 250);
     }
 
-    protected void done()
+    void done()
     {
         SwingUtilities.invokeLater(new Runnable()
         {
@@ -151,17 +154,17 @@ public class JobThread implements JobRunnable
         });
     }
 
-    protected synchronized JobProgressMonitor getMonitor()
+    synchronized JobProgressMonitor getMonitor()
     {
         return monitor;
     }
 
-    protected synchronized void setMonitor(JobProgressMonitor monitor)
+    synchronized void setMonitor(JobProgressMonitor monitor)
     {
         this.monitor = monitor;
     }
 
-    public void startThread()
+    void startThread()
     {
         thread = new Thread("JobThread")
         {
@@ -182,8 +185,7 @@ public class JobThread implements JobRunnable
             @Override
             public void run()
             {
-                JobProgressMonitor m = new JobProgressMonitor(
-                        getDlg(), System.out, false, false);
+                JobProgressMonitor m = new JobProgressMonitor(getDlg(), System.out, false, false);
 
                 setMonitor(m);
                 org.gitools.utils.progressmonitor.ProgressMonitor.set(m);
@@ -209,7 +211,7 @@ public class JobThread implements JobRunnable
         };
     }
 
-    public void execute()
+    void execute()
     {
         startThread();
 
@@ -217,7 +219,7 @@ public class JobThread implements JobRunnable
         getDlg().setVisible(true);
     }
 
-    public void executeAndWait()
+    void executeAndWait()
     {
 
         getDlg().setModal(true);

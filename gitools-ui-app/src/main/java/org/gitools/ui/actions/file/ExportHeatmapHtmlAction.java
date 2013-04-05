@@ -38,6 +38,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportHeatmapHtmlAction extends BaseAction
 {
 
@@ -73,9 +76,7 @@ public class ExportHeatmapHtmlAction extends BaseAction
             return;
         }
 
-        final File basePath = FileChooserUtils.selectPath(
-                "Select destination folder",
-                Settings.getDefault().getLastExportPath());
+        final File basePath = FileChooserUtils.selectPath("Select destination folder", Settings.getDefault().getLastExportPath());
 
         if (basePath == null)
         {

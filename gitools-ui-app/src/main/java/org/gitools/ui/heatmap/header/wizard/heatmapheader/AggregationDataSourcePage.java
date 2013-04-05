@@ -36,28 +36,22 @@ import java.util.List;
 public class AggregationDataSourcePage extends AbstractWizardPage
 {
 
-    private Heatmap heatmap;
-    private String[] cellAttributes;
-    private String[] aggregatorNames;
-    private IAggregator[] aggregatorsArray;
-    private boolean applyToRows;
+    private final IAggregator[] aggregatorsArray;
 
 
     public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows)
     {
-        this.heatmap = heatmap;
 
         List<IElementAttribute> attributes = heatmap.getMatrixView().getCellAttributes();
-        cellAttributes = new String[attributes.size()];
+        String[] cellAttributes = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
-            this.cellAttributes[i] = attributes.get(i).getName();
+            cellAttributes[i] = attributes.get(i).getName();
 
         this.aggregatorsArray = AggregatorFactory.getAggregatorsArray();
-        this.aggregatorNames = new String[aggregatorsArray.length];
+        String[] aggregatorNames = new String[aggregatorsArray.length];
         for (int i = 0; i < aggregatorsArray.length; i++)
-            this.aggregatorNames[i] = aggregatorsArray[i].toString();
+            aggregatorNames[i] = aggregatorsArray[i].toString();
 
-        this.applyToRows = applyToRows;
         initComponents();
         updateModel();
 
@@ -211,42 +205,8 @@ public class AggregationDataSourcePage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(useAllRb)
-                                        .addComponent(useSelectedRb)
-                                        .addComponent(separateAggregationCb))
-                                .addContainerGap(204, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15)
-                                .addComponent(separateAggregationCb)
-                                .addGap(18, 18, 18)
-                                .addComponent(useAllRb)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(useSelectedRb)
-                                .addContainerGap(83, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel1).addComponent(jLabel2).addComponent(jLabel3).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(useAllRb).addComponent(useSelectedRb).addComponent(separateAggregationCb)).addContainerGap(204, Short.MAX_VALUE)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(15, 15, 15).addComponent(separateAggregationCb).addGap(18, 18, 18).addComponent(useAllRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(useSelectedRb).addContainerGap(83, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void useAllRbActionPerformed(java.awt.event.ActionEvent evt)

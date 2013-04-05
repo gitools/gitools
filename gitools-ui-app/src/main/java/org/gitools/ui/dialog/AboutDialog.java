@@ -33,15 +33,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+/**
+ * @noinspection ALL
+ */
 public class AboutDialog extends JDialog
 {
 
     private static final long serialVersionUID = -5869809986725283792L;
 
-    private String appName;
-    private String appVersion;
-
-    private TemplatePanel creditsPane;
+    private final String appName;
+    private final String appVersion;
 
     public AboutDialog(JFrame owner)
     {
@@ -55,19 +56,16 @@ public class AboutDialog extends JDialog
 
         createComponents();
 
-        //getContentPane().setBackground(Color.WHITE);
-
         pack();
     }
 
     private void createComponents()
     {
-        JLabel imageLabel = new JLabel(
-                IconUtils.getIconResource(IconNames.aboutLogo));
+        JLabel imageLabel = new JLabel(IconUtils.getIconResource(IconNames.aboutLogo));
         imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 0));
         imageLabel.setVerticalAlignment(SwingConstants.TOP);
 
-        creditsPane = new TemplatePanel();
+        TemplatePanel creditsPane = new TemplatePanel();
         creditsPane.setFocusable(false);
         Dimension dim = new Dimension(550, 374);
         creditsPane.setPreferredSize(dim);
@@ -112,7 +110,7 @@ public class AboutDialog extends JDialog
         add(contPanel, BorderLayout.CENTER);
     }
 
-    protected void closeDialog()
+    void closeDialog()
     {
         setVisible(false);
     }

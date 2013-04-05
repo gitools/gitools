@@ -29,13 +29,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "MartRegistry")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MartRegistry
 {
 
     @XmlElement(name = "MartURLLocation")
-    protected List<MartLocation> locations;
+    private List<MartLocation> locations;
 
     public MartRegistry()
     {

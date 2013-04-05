@@ -30,10 +30,10 @@ import org.jetbrains.annotations.NotNull;
 public class FileFormat
 {
 
-    private String title;
-    private String extension;
-    private boolean titleWithExtension;
-    private boolean allowGzExtension;
+    private final String title;
+    private final String extension;
+    private final boolean titleWithExtension;
+    private final boolean allowGzExtension;
 
     public FileFormat(String title, String extension)
     {
@@ -75,8 +75,7 @@ public class FileFormat
     {
         fileName = fileName.toLowerCase();
         String ext = extension.toLowerCase();
-        return fileName.endsWith(ext)
-                || (allowGzExtension && fileName.endsWith(ext + ".gz"));
+        return fileName.endsWith(ext) || (allowGzExtension && fileName.endsWith(ext + ".gz"));
     }
 
     public <R extends IResource> IResourceFormat<? extends R> getFormat(@NotNull Class<R> resourceClass)

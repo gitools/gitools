@@ -24,10 +24,10 @@ package org.gitools.modules.importer;
 public abstract class RefImpl implements Ref
 {
 
-    private String id;
-    private String name;
+    private final String id;
+    private final String name;
 
-    public RefImpl(String id, String name)
+    protected RefImpl(String id, String name)
     {
         this.id = id;
         this.name = name;

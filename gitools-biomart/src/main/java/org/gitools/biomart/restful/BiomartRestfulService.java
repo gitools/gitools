@@ -46,25 +46,25 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartRestfulService implements BiomartService
 {
 
     private static Logger log = LoggerFactory.getLogger(BiomartRestfulService.class.getName());
 
-    public static final String FORMAT_TSV = "TSV";
-    public static final String FORMAT_TSV_GZ = "GZ";
+    private static final String FORMAT_TSV = "TSV";
+    private static final String FORMAT_TSV_GZ = "GZ";
     public static final String SERVICE_PORT_NAME = "BioMartSoapPort";
     public static final String SERVICE_NAME = "BioMartSoapService";
     public static final String NAMESPACE = "MartServiceSoap";
 
     @NotNull
-    private FileFormat[] supportedFormats = new FileFormat[]{
-            new FileFormat("Tab Separated Fields", "tsv", true, false),
-            new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", true, false)
-    };
+    private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat("Tab Separated Fields", "tsv", true, false), new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", true, false)};
 
-    protected BiomartSource source;
-    protected String restUrl;
+    private final BiomartSource source;
+    private final String restUrl;
 
     public BiomartRestfulService(@NotNull BiomartSource source) throws BiomartServiceException
     {
@@ -383,9 +383,7 @@ public class BiomartRestfulService implements BiomartService
             while ((next = br.readLine()) != null && !monitor.isCancelled())
             {
                 String[] fields = next.split("\t");
-                if (fields.length == 2
-                        && !fields[0].isEmpty()
-                        && !fields[1].isEmpty())
+                if (fields.length == 2 && !fields[0].isEmpty() && !fields[1].isEmpty())
                 {
                     writer.line(fields);
                 }
@@ -423,10 +421,7 @@ public class BiomartRestfulService implements BiomartService
      * @throws BiomartServiceException
      */
     @Override
-    public void queryTable(@NotNull Query query, @NotNull File file, @NotNull String format,
-                           boolean skipRowsWithEmptyValues,
-                           String emptyValuesReplacement,
-                           @NotNull IProgressMonitor monitor) throws BiomartServiceException
+    public void queryTable(@NotNull Query query, @NotNull File file, @NotNull String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException
     {
 
         BiomartQueryHandler tableWriter = null;
@@ -440,8 +435,7 @@ public class BiomartRestfulService implements BiomartService
             throw new BiomartServiceException("Unrecognized format: " + format);
         }
 
-        queryTable(query, tableWriter,
-                skipRowsWithEmptyValues, emptyValuesReplacement, monitor);
+        queryTable(query, tableWriter, skipRowsWithEmptyValues, emptyValuesReplacement, monitor);
 
         if (monitor.isCancelled())
         {
@@ -450,10 +444,7 @@ public class BiomartRestfulService implements BiomartService
     }
 
     @Override
-    public void queryTable(@NotNull Query query, @NotNull BiomartQueryHandler writer,
-                           boolean skipRowsWithEmptyValues,
-                           String emptyValuesReplacement,
-                           @NotNull IProgressMonitor monitor) throws BiomartServiceException
+    public void queryTable(@NotNull Query query, @NotNull BiomartQueryHandler writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException
     {
 
         TimeCounter time = new TimeCounter();

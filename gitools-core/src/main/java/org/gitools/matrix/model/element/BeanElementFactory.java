@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 public class BeanElementFactory implements IElementFactory
 {
 
-    protected Class<?> elementClass;
+    private final Class<?> elementClass;
 
     public BeanElementFactory(Class<?> elementClass)
     {

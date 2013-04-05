@@ -23,6 +23,9 @@ package org.gitools.utils.benchmark;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class TimeCounter
 {
 
@@ -37,7 +40,7 @@ public class TimeCounter
         start();
     }
 
-    public void start()
+    void start()
     {
         paused = false;
         start = System.nanoTime();
@@ -55,7 +58,7 @@ public class TimeCounter
         start = System.nanoTime();
     }
 
-    public long getElapsed()
+    long getElapsed()
     {
         if (!paused)
         {

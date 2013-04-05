@@ -38,6 +38,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class FilterByLabelAction extends BaseAction
 {
 
@@ -52,16 +55,13 @@ public class FilterByLabelAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        IEditor editor = AppFrame.get()
-                .getEditorsPanel()
-                .getSelectedEditor();
+        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
         if (model == null || !(model instanceof Heatmap))
@@ -101,10 +101,7 @@ public class FilterByLabelAction extends BaseAction
                         break;
                 }
 
-                MatrixViewLabelFilter.filter(matrixView, dim,
-                        page.getPattern(), am,
-                        page.getValues(),
-                        page.isUseRegexChecked());
+                MatrixViewLabelFilter.filter(matrixView, dim, page.getPattern(), am, page.getValues(), page.isUseRegexChecked());
 
                 monitor.end();
             }

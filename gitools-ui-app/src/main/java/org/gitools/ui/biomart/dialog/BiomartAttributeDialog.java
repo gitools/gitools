@@ -30,13 +30,15 @@ import org.gitools.ui.biomart.panel.BiomartAttributePanel.AttributeSelectionList
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartAttributeDialog extends javax.swing.JDialog
 {
 
-    boolean cancelled;
+    private boolean cancelled;
 
-    public BiomartAttributeDialog(
-            java.awt.Frame parent, List<AttributePage> attrPages)
+    public BiomartAttributeDialog(java.awt.Frame parent, List<AttributePage> attrPages)
     {
 
         super(parent, true);
@@ -81,10 +83,9 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
         return biomartAttrPanel.getSelectedAttributeNames();
     }
 
-    protected void updateButtons()
+    void updateButtons()
     {
-        acceptBtn.setEnabled(
-                biomartAttrPanel.getSelectedAttributes().size() > 0);
+        acceptBtn.setEnabled(biomartAttrPanel.getSelectedAttributes().size() > 0);
     }
 
     /*
@@ -96,10 +97,7 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
             biomartAttrPanel.setBiomartParameters(port, mart, dataset);
         }
     */
-    public void setBiomartParameters(
-            BiomartService port,
-            MartLocation mart,
-            DatasetInfo dataset)
+    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset)
     {
 
         biomartAttrPanel.setBiomartParameters(port, mart, dataset);
@@ -143,31 +141,8 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(389, Short.MAX_VALUE)
-                                .addComponent(acceptBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cancelBtn)
-                                .addContainerGap())
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                                .addContainerGap())
-                        .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(cancelBtn)
-                                        .addComponent(acceptBtn))
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap(389, Short.MAX_VALUE).addComponent(acceptBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelBtn).addContainerGap()).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE).addContainerGap()).addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(biomartAttrPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelBtn).addComponent(acceptBtn)).addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

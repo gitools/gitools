@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import java.util.Locale;
 public class ExcelReader
 {
 
-    private File file;
+    private final File file;
 
     @Nullable
     private Sheet sheet = null;
@@ -67,7 +66,7 @@ public class ExcelReader
 
     }
 
-    private void openWorkbook(@NotNull File file) throws FileNotFoundException, IOException, InvalidFormatException
+    private void openWorkbook(@NotNull File file) throws IOException, InvalidFormatException
     {
         FileInputStream fis = null;
         try

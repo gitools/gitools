@@ -35,11 +35,13 @@ import java.io.IOException;
 /**
  * This class is an adapter for Weka Instances class
  * and ImatrixView class
+ *
+ * @noinspection ALL
  */
-public class MatrixViewWeka extends Instances
+class MatrixViewWeka extends Instances
 {
 
-    private ClusteringData matrixView;
+    private final ClusteringData matrixView;
 
     private Instances structure;
 
@@ -48,7 +50,7 @@ public class MatrixViewWeka extends Instances
 
     private int dimMatrix;//the dimension of the matrix for obtaining the value
 
-    private int initClassIndex;
+    private final int initClassIndex;
 
     public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex)
     {
@@ -65,7 +67,7 @@ public class MatrixViewWeka extends Instances
 
     //Adding attributes (rows name)
     @NotNull
-    public FastVector addAttributes(int numAttributes)
+    FastVector addAttributes(int numAttributes)
     {
 
         FastVector attr = new FastVector();
@@ -124,8 +126,7 @@ public class MatrixViewWeka extends Instances
 
         int row;
 
-        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-                matrixView.getInstance(index).getValueClass(0));
+        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(matrixView.getInstance(index).getValueClass(0));
 
         if (indexes == null)
         {
@@ -136,8 +137,7 @@ public class MatrixViewWeka extends Instances
             {
                 try
                 {
-                    values[row] = valueCast.getDoubleValue(
-                            matrixView.getInstance(index).getValue(row));
+                    values[row] = valueCast.getDoubleValue(matrixView.getInstance(index).getValue(row));
                 } catch (Exception e)
                 {
                     values[row] = Double.NaN;
@@ -154,8 +154,7 @@ public class MatrixViewWeka extends Instances
                 try
                 {
                     row = indexes[i];
-                    values[i] = valueCast.getDoubleValue(
-                            matrixView.getInstance(index).getValue(row));
+                    values[i] = valueCast.getDoubleValue(matrixView.getInstance(index).getValue(row));
                 } catch (Exception e)
                 {
                     values[i] = Double.NaN;

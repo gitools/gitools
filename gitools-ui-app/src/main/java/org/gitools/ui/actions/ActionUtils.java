@@ -35,9 +35,7 @@ public class ActionUtils
 
     public static AbstractEditor getSelectedEditor()
     {
-        return AppFrame.get()
-                .getEditorsPanel()
-                .getSelectedEditor();
+        return AppFrame.get().getEditorsPanel().getSelectedEditor();
     }
 
     @Nullable
@@ -67,7 +65,7 @@ public class ActionUtils
     @Nullable
     public static IMatrixView getHeatmapMatrixView()
     {
-        IMatrixView matrixView = null;
+        IMatrixView matrixView;
         IEditor editor = ActionUtils.getSelectedEditor();
         Object model = editor.getModel();
         if (model instanceof Heatmap)

@@ -37,15 +37,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OncodriveResultsEditor extends HeatmapEditor
+/**
+ * @noinspection ALL
+ */
+class OncodriveResultsEditor extends HeatmapEditor
 {
 
     protected OncodriveAnalysis analysis;
 
-    protected AbstractTablesPanel tablesPanel;
+    private final AbstractTablesPanel tablesPanel;
 
     @NotNull
-    protected static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis)
+    private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis)
     {
         IMatrixView dataTable = new MatrixView(analysis.getResults().get());
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
@@ -57,11 +60,7 @@ public class OncodriveResultsEditor extends HeatmapEditor
     @NotNull
     protected static List<BaseAction> createToolBar(@NotNull OncodriveAnalysis analysis)
     {
-        ViewRelatedDataFromColumnAction action =
-                new ViewRelatedDataFromColumnAction(
-                        analysis.getTitle(),
-                        analysis.getData().get(),
-                        analysis.getModuleMap().get());
+        ViewRelatedDataFromColumnAction action = new ViewRelatedDataFromColumnAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get());
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);
         return tb;

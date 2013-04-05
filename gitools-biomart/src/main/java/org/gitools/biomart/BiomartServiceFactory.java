@@ -25,6 +25,9 @@ import org.gitools.biomart.restful.BiomartRestfulService;
 import org.gitools.biomart.settings.BiomartSource;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartServiceFactory
 {
 

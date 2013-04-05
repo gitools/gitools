@@ -45,6 +45,9 @@ import org.kohsuke.args4j.Option;
 import java.io.PrintStream;
 
 
+/**
+ * @noinspection ALL
+ */
 public class CombinationTool extends AnalysisTool
 {
 
@@ -68,7 +71,7 @@ public class CombinationTool extends AnalysisTool
 
         @Option(name = "-r", aliases = "-rows",
                 usage = "Apply to rows, by default it is applied to columns.")
-        public boolean applyToRows = false;
+        public final boolean applyToRows = false;
 
         @Option(name = "-sn", aliases = "-size-name", metaVar = "<name>",
                 usage = "Attribute name for size.\n(default: if not specified a constant value of 1 will be used)")
@@ -109,15 +112,9 @@ public class CombinationTool extends AnalysisTool
         IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
         IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, ModuleMap.class);
 
-        CombinationCommand cmd = new CombinationCommand(
-                analysis,
-                dataMime, args.dataFile,
-                columnsMime, args.columnsFile,
-                args.workdir, args.analysisName + "." + CombinationAnalysisFormat.EXTENSION);
+        CombinationCommand cmd = new CombinationCommand(analysis, dataMime, args.dataFile, columnsMime, args.columnsFile, args.workdir, args.analysisName + "." + CombinationAnalysisFormat.EXTENSION);
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 
@@ -151,14 +148,7 @@ public class CombinationTool extends AnalysisTool
     protected void printDataFormats(@NotNull PrintStream out)
     {
         out.println("Supported data formats:");
-        FileFormat[] formats = new FileFormat[]{
-                FileFormats.MULTIVALUE_DATA_MATRIX,
-                FileFormats.DOUBLE_MATRIX,
-                FileFormats.DOUBLE_BINARY_MATRIX,
-                FileFormats.GENE_MATRIX,
-                FileFormats.GENE_MATRIX_TRANSPOSED,
-                FileFormats.MODULES_2C_MAP
-        };
+        FileFormat[] formats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 
         for (FileFormat f : formats)
             out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));

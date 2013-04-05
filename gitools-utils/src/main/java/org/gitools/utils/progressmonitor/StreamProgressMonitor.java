@@ -26,23 +26,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 
+/**
+ * @noinspection ALL
+ */
 public class StreamProgressMonitor extends DefaultProgressMonitor
 {
 
     private static final String indentString = "  ";
 
-    protected PrintStream out;
+    private final PrintStream out;
 
-    protected Timer timer;
-    protected int lastprogress;
+    private final Timer timer;
+    private final int lastprogress;
 
-    protected String tabs;
-    protected boolean flag;
+    private String tabs;
+    private boolean flag;
 
-    protected boolean verbose;
-    protected boolean debug;
+    private final boolean verbose;
+    private final boolean debug;
 
-    public StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug)
+    protected StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug)
     {
         super(parent);
         this.out = out;
@@ -91,23 +94,17 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     @Override
     public IProgressMonitor subtask()
     {
-        IProgressMonitor subtask =
-                createSubtaskMonitor(this, out, verbose, debug);
+        IProgressMonitor subtask = createSubtaskMonitor(this, out, verbose, debug);
         subtask.setLevel(level + 1);
         flag = true;
         return subtask;
     }
 
     @NotNull
-    protected IProgressMonitor createSubtaskMonitor(
-            IProgressMonitor parentMonitor,
-            PrintStream out,
-            boolean verbose,
-            boolean debug)
+    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug)
     {
 
-        return new StreamProgressMonitor(
-                parentMonitor, out, verbose, debug);
+        return new StreamProgressMonitor(parentMonitor, out, verbose, debug);
     }
 
     @Override

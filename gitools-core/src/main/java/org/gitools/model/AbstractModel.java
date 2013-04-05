@@ -28,6 +28,9 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractModel implements IModel, Serializable, Cloneable
 {
 
@@ -37,11 +40,11 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
 
     private transient ArrayList<PropertyChangeListener> listeners;
 
-    public AbstractModel()
+    protected AbstractModel()
     {
     }
 
-    public ArrayList<PropertyChangeListener> getListeners()
+    ArrayList<PropertyChangeListener> getListeners()
     {
         if (listeners == null)
         {
@@ -84,25 +87,21 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
 
         for (PropertyChangeListener l : getListeners())
         {
-            PropertyChangeEvent evt =
-                    new PropertyChangeEvent(this, propName, null, null);
+            PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, null, null);
             l.propertyChange(evt);
         }
     }
 
-    protected void firePropertyChange(
-            String propName, @Nullable Object oldValue, @Nullable Object newValue)
+    protected void firePropertyChange(String propName, @Nullable Object oldValue, @Nullable Object newValue)
     {
 
-        if ((oldValue != null && !oldValue.equals(newValue)) ||
-                (oldValue == null && newValue != null))
+        if ((oldValue != null && !oldValue.equals(newValue)) || (oldValue == null && newValue != null))
         {
 
             //System.out.println("\nPropertyChange: " + propName + " " + oldValue + " -> " + newValue + " Class: " + this);
             for (PropertyChangeListener l : getListeners())
             {
-                PropertyChangeEvent evt =
-                        new PropertyChangeEvent(this, propName, oldValue, newValue);
+                PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, oldValue, newValue);
                 //System.out.println("  >>> " + l);
                 l.propertyChange(evt);
             }

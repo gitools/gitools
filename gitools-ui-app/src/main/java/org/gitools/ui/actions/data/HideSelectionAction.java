@@ -32,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class HideSelectionAction extends BaseAction
 {
 
@@ -42,7 +45,7 @@ public class HideSelectionAction extends BaseAction
         ROWS, COLUMNS
     }
 
-    private ElementType type;
+    private final ElementType type;
 
     public HideSelectionAction(@NotNull ElementType type)
     {
@@ -71,8 +74,7 @@ public class HideSelectionAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class HideSelectionAction extends BaseAction
                 msg = "Selected columns hidden.";
                 matrixView.hideColumns(matrixView.getSelectedColumns());
             /*matrixView.setVisibleColumns(arrayRemove(
-					matrixView.getVisibleColumns(), 
+                    matrixView.getVisibleColumns(),
 					matrixView.getSelectedColumns()));*/
                 break;
         }

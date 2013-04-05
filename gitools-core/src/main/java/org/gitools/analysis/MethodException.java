@@ -21,6 +21,9 @@
  */
 package org.gitools.analysis;
 
+/**
+ * @noinspection ALL
+ */
 public class MethodException extends Exception
 {
 

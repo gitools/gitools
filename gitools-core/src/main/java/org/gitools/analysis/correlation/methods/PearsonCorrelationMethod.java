@@ -29,6 +29,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod
 {
 
@@ -41,10 +44,7 @@ public class PearsonCorrelationMethod extends AbstractMethod implements Correlat
 
     public PearsonCorrelationMethod(Properties properties)
     {
-        super(ID,
-                "Pearson's correlation",
-                "Pearson's product-moment correlation",
-                CorrelationResult.class, properties);
+        super(ID, "Pearson's correlation", "Pearson's product-moment correlation", CorrelationResult.class, properties);
     }
 
     @NotNull
@@ -72,10 +72,7 @@ public class PearsonCorrelationMethod extends AbstractMethod implements Correlat
             sumy2 += yi * yi;
         }
 
-        double r = (sumxy - (sumx * sumy / n))
-                / Math.sqrt(
-                (sumx2 - (sumx * sumx / n))
-                        * (sumy2 - (sumy * sumy / n)));
+        double r = (sumxy - (sumx * sumy / n)) / Math.sqrt((sumx2 - (sumx * sumx / n)) * (sumy2 - (sumy * sumy / n)));
 
         double se = Math.sqrt((1 - (r * r)) / (n - 2));
 

@@ -31,27 +31,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Dataset
 {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
 
     @XmlAttribute(name = "interface")
-    protected String _interface;
+    private String _interface;
 
     @NotNull
     @XmlElement(name = "Filter")
-    protected List<Filter> filter = new ArrayList<Filter>(0);
+    private final List<Filter> filter = new ArrayList<Filter>(0);
 
     @NotNull
     @XmlElement(name = "ValueFilter")
-    protected List<Filter> valueFilter = new ArrayList<Filter>(0);
+    private final List<Filter> valueFilter = new ArrayList<Filter>(0);
 
     @NotNull
     @XmlElement(name = "Attribute", required = true)
-    protected List<Attribute> attribute = new ArrayList<Attribute>(0);
+    private final List<Attribute> attribute = new ArrayList<Attribute>(0);
 
     public String getName()
     {
@@ -79,6 +82,9 @@ public class Dataset
         return this.filter;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @NotNull
     public List<Filter> getValueFilter()
     {

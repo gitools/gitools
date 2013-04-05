@@ -33,38 +33,25 @@ import java.util.List;
 public class ElementDecoratorFactory
 {
 
-    private static final List<ElementDecoratorDescriptor> descriptors
-            = new ArrayList<ElementDecoratorDescriptor>();
+    private static final List<ElementDecoratorDescriptor> descriptors = new ArrayList<ElementDecoratorDescriptor>();
 
     static
     {
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.LINEAR_TWO_SIDED, LinearTwoSidedElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.LINEAR_TWO_SIDED, LinearTwoSidedElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.PVALUE, PValueElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.PVALUE, PValueElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.ZSCORE, ZScoreElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.CORRELATION, CorrelationElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.CORRELATION, CorrelationElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.CATEGORICAL, CategoricalElementDecorator.class));
-
-		/*descriptors.add(new ElementDecoratorDescriptor(
-                ElementDecoratorNames.FORMATTED_TEXT, FormattedTextElementDecorator.class));*/
-
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.CATEGORICAL, CategoricalElementDecorator.class));
     }
 
     @Nullable
-    public static ElementDecorator create(
-            String name,
-            IElementAdapter adapter)
+    public static ElementDecorator create(String name, IElementAdapter adapter)
     {
 
         for (ElementDecoratorDescriptor descriptor : descriptors)
@@ -77,9 +64,7 @@ public class ElementDecoratorFactory
     }
 
     @Nullable
-    public static ElementDecorator create(
-            @NotNull ElementDecoratorDescriptor descriptor,
-            IElementAdapter adapter)
+    public static ElementDecorator create(@NotNull ElementDecoratorDescriptor descriptor, IElementAdapter adapter)
     {
 
         final Class<? extends ElementDecorator> cls = descriptor.getDecoratorClass();
@@ -87,8 +72,7 @@ public class ElementDecoratorFactory
         ElementDecorator decorator = null;
         try
         {
-            decorator = cls.getConstructor(IElementAdapter.class)
-                    .newInstance(new Object[]{adapter});
+            decorator = cls.getConstructor(IElementAdapter.class).newInstance(new Object[]{adapter});
         } catch (Exception e)
         {
             return null;
@@ -98,8 +82,7 @@ public class ElementDecoratorFactory
     }
 
     @Nullable
-    public static ElementDecoratorDescriptor getDescriptor(
-            Class<? extends ElementDecorator> decoratorClass)
+    public static ElementDecoratorDescriptor getDescriptor(Class<? extends ElementDecorator> decoratorClass)
     {
 
         for (ElementDecoratorDescriptor desc : descriptors)

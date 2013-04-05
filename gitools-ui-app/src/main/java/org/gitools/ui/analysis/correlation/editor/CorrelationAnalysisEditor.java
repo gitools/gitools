@@ -125,9 +125,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), CorrelationAnalysisFormat.EXTENSION,
-                        "-data", ""));
+                editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {
@@ -166,9 +164,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
                 final CorrelationResultsEditor editor = new CorrelationResultsEditor(analysis);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), CorrelationAnalysisFormat.EXTENSION,
-                        "-results", ""));
+                editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {

@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.xml.adapter;
 
+/**
+ * @noinspection ALL
+ */
 public class FontXmlElement
 {
 

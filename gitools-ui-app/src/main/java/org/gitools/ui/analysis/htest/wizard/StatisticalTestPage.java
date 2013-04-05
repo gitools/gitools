@@ -35,6 +35,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class StatisticalTestPage extends AbstractWizardPage
 {
 
@@ -42,8 +45,8 @@ public class StatisticalTestPage extends AbstractWizardPage
 
     private static class Test
     {
-        public String name;
-        public String description;
+        public final String name;
+        public final String description;
 
         public Test(String name, String description)
         {
@@ -58,7 +61,6 @@ public class StatisticalTestPage extends AbstractWizardPage
         }
     }
 
-    ;
 
     /**
      * Creates new form StatisticalTestPanel
@@ -88,20 +90,12 @@ public class StatisticalTestPage extends AbstractWizardPage
                 estimatorCbox.setVisible(isZ);
             }
         });
-        testCbox.setModel(new DefaultComboBoxModel(new Test[]{
-                new Test("Binomial (Bernoulli)", ""),
-                new Test("Fisher Exact", ""),
-                new Test("Z Score", "")
-        }));
+        testCbox.setModel(new DefaultComboBoxModel(new Test[]{new Test("Binomial (Bernoulli)", ""), new Test("Fisher Exact", ""), new Test("Z Score", "")}));
         testCbox.setSelectedIndex(0);
 
-        samplingSizeCbox.setSelectedItem(
-                String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
+        samplingSizeCbox.setSelectedItem(String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
 
-        estimatorCbox.setModel(new DefaultComboBoxModel(new String[]{
-                ZscoreTestFactory.MEAN_ESTIMATOR,
-                ZscoreTestFactory.MEDIAN_ESTIMATOR
-        }));
+        estimatorCbox.setModel(new DefaultComboBoxModel(new String[]{ZscoreTestFactory.MEAN_ESTIMATOR, ZscoreTestFactory.MEDIAN_ESTIMATOR}));
     }
 
     @NotNull
@@ -151,59 +145,19 @@ public class StatisticalTestPage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(descLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                                        .addComponent(testCbox, 0, 376, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(estimatorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(samplingSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(estimatorCbox, 0, 275, Short.MAX_VALUE)
-                                                        .addComponent(samplingSizeCbox, 0, 275, Short.MAX_VALUE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(mtcCb, 0, 218, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(descLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(samplingSizeLabel)
-                                        .addComponent(samplingSizeCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(estimatorCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(estimatorLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(descLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE).addComponent(testCbox, 0, 376, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addComponent(estimatorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(samplingSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(estimatorCbox, 0, 275, Short.MAX_VALUE).addComponent(samplingSizeCbox, 0, 275, Short.MAX_VALUE))).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(mtcCb, 0, 218, Short.MAX_VALUE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(descLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(samplingSizeLabel).addComponent(samplingSizeCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(estimatorCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(estimatorLabel)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel descLabel;
-    public javax.swing.JComboBox estimatorCbox;
-    public javax.swing.JLabel estimatorLabel;
+    private javax.swing.JLabel descLabel;
+    private javax.swing.JComboBox estimatorCbox;
+    private javax.swing.JLabel estimatorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JComboBox mtcCb;
-    public javax.swing.JComboBox samplingSizeCbox;
-    public javax.swing.JLabel samplingSizeLabel;
-    public javax.swing.JComboBox testCbox;
+    private javax.swing.JComboBox samplingSizeCbox;
+    private javax.swing.JLabel samplingSizeLabel;
+    private javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables
 
     @NotNull
@@ -214,30 +168,18 @@ public class StatisticalTestPage extends AbstractWizardPage
         switch (testCbox.getSelectedIndex())
         {
             case 0:
-                config.put(
-                        TestFactory.TEST_NAME_PROPERTY,
-                        TestFactory.BINOMIAL_TEST);
-                config.put(
-                        BinomialTestFactory.APROXIMATION_PROPERTY,
-                        BinomialTestFactory.EXACT_APROX);
+                config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
+                config.put(BinomialTestFactory.APROXIMATION_PROPERTY, BinomialTestFactory.EXACT_APROX);
                 break;
 
             case 1:
-                config.put(
-                        TestFactory.TEST_NAME_PROPERTY,
-                        TestFactory.FISHER_EXACT_TEST);
+                config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.FISHER_EXACT_TEST);
                 break;
 
             case 2:
-                config.put(
-                        TestFactory.TEST_NAME_PROPERTY,
-                        TestFactory.ZSCORE_TEST);
-                config.put(
-                        ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
-                        samplingSizeCbox.getSelectedItem().toString());
-                config.put(
-                        ZscoreTestFactory.ESTIMATOR_PROPERTY,
-                        estimatorCbox.getSelectedItem().toString());
+                config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
+                config.put(ZscoreTestFactory.NUM_SAMPLES_PROPERTY, samplingSizeCbox.getSelectedItem().toString());
+                config.put(ZscoreTestFactory.ESTIMATOR_PROPERTY, estimatorCbox.getSelectedItem().toString());
                 break;
         }
 

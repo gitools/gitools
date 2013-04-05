@@ -36,6 +36,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartTableWizard extends AbstractWizard
 {
 
@@ -64,10 +67,7 @@ public class BiomartTableWizard extends AbstractWizard
     public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
     @NotNull
-    private FileFormat[] supportedFormats = new FileFormat[]{
-            new FileFormat("Tab Separated Fields", "tsv", true, false),
-            new FileFormat("Tab Separated Fields compressed", "tsv.gz", true, false)
-    };
+    private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat("Tab Separated Fields", "tsv", true, false), new FileFormat("Tab Separated Fields compressed", "tsv.gz", true, false)};
 
     public BiomartTableWizard()
     { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
@@ -118,10 +118,7 @@ public class BiomartTableWizard extends AbstractWizard
             Database = sourcePage.getDataBase();
             Dataset = sourcePage.getDataset();
 
-            attrListPage.setSource(
-                    biomartService,
-                    Database,
-                    Dataset);
+            attrListPage.setSource(biomartService, Database, Dataset);
         }
         else if (nextPage == filterListPage)
         {
@@ -207,13 +204,13 @@ public class BiomartTableWizard extends AbstractWizard
     }
 
     @Nullable
-    public MartLocation getDatabase()
+    MartLocation getDatabase()
     {
         return Database;
     }
 
     @Nullable
-    public DatasetInfo getDataset()
+    DatasetInfo getDataset()
     {
         return Dataset;
     }

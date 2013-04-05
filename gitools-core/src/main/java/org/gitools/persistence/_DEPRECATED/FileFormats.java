@@ -25,42 +25,30 @@ package org.gitools.persistence._DEPRECATED;
 public class FileFormats
 {
     // Data
-    public static final FileFormat GENE_MATRIX = new FileFormat(
-            "Gene Matrix", FileSuffixes.GENE_MATRIX);
+    public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", FileSuffixes.GENE_MATRIX);
 
-    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat(
-            "Gene Matrix Transposed", FileSuffixes.GENE_MATRIX_TRANSPOSED);
+    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat("Gene Matrix Transposed", FileSuffixes.GENE_MATRIX_TRANSPOSED);
 
-    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat(
-            "Binary data matrix", FileSuffixes.DOUBLE_BINARY_MATRIX);
+    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat("Binary data matrix", FileSuffixes.DOUBLE_BINARY_MATRIX);
 
-    public static final FileFormat DOUBLE_MATRIX = new FileFormat(
-            "Continuous data matrix", FileSuffixes.DOUBLE_MATRIX);
+    public static final FileFormat DOUBLE_MATRIX = new FileFormat("Continuous data matrix", FileSuffixes.DOUBLE_MATRIX);
 
-    public static final FileFormat GENE_CLUSTER_TEXT = new FileFormat(
-            "Gene cluster text", FileSuffixes.GENE_CLUSTER_TEXT);
+    public static final FileFormat GENE_CLUSTER_TEXT = new FileFormat("Gene cluster text", FileSuffixes.GENE_CLUSTER_TEXT);
 
-    public static final FileFormat MODULES_INDEXED_MAP = new FileFormat(
-            "Indexed mappings", FileSuffixes.MODULES_INDEXED_MAP);
+    public static final FileFormat MODULES_INDEXED_MAP = new FileFormat("Indexed mappings", FileSuffixes.MODULES_INDEXED_MAP);
 
-    public static final FileFormat MODULES_2C_MAP = new FileFormat(
-            "Two columns mappings", FileSuffixes.MODULES_2C_MAP);
+    public static final FileFormat MODULES_2C_MAP = new FileFormat("Two columns mappings", FileSuffixes.MODULES_2C_MAP);
 
-    public static final FileFormat MULTIVALUE_DATA_MATRIX = new FileFormat(
-            "Multivalue data matrix", FileSuffixes.OBJECT_MATRIX);
+    public static final FileFormat MULTIVALUE_DATA_MATRIX = new FileFormat("Multivalue data matrix", FileSuffixes.OBJECT_MATRIX);
 
     // Image
-    public static final FileFormat PNG = new FileFormat(
-            "PNG", "png", true, false);
+    public static final FileFormat PNG = new FileFormat("PNG", "png", true, false);
 
-    public static final FileFormat JPG = new FileFormat(
-            "JPEG", "jpg", true, false);
+    public static final FileFormat JPG = new FileFormat("JPEG", "jpg", true, false);
 
     // Html
-    public static final FileFormat HTML = new FileFormat(
-            "HTML", "html", true, false);
+    public static final FileFormat HTML = new FileFormat("HTML", "html", true, false);
 
     // Text
-    public static final FileFormat TEXT = new FileFormat(
-            "TEXT", "txt", true, false);
+    public static final FileFormat TEXT = new FileFormat("TEXT", "txt", true, false);
 }

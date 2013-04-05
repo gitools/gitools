@@ -26,13 +26,13 @@ import org.gitools.heatmap.Heatmap;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel
+abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel
 {
 
-    private Heatmap heatmap;
-    protected boolean updatingControls = false;
+    private final Heatmap heatmap;
+    boolean updatingControls = false;
 
-    public HeatmapPropertiesAbstractPanel(Heatmap heatmap)
+    HeatmapPropertiesAbstractPanel(Heatmap heatmap)
     {
         super();
 
@@ -48,12 +48,12 @@ public abstract class HeatmapPropertiesAbstractPanel extends javax.swing.JPanel
         });
     }
 
-    public Heatmap getHeatmap()
+    Heatmap getHeatmap()
     {
         return heatmap;
     }
 
-    protected void heatmapPropertyChange(PropertyChangeEvent evt)
+    void heatmapPropertyChange(PropertyChangeEvent evt)
     {
     }
 }

@@ -24,24 +24,24 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.datafilters.BinaryCutoff;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @noinspection ALL
+ */
 public class ColumnGroup
 {
 
-    protected String name = "";
-    protected int[] columns = new int[0];
+    private String name = "";
+    private int[] columns = new int[0];
     @Nullable
-    protected BinaryCutoff binaryCutoff = null;
-    protected int cutoffAttributeIndex = -1;
+    private BinaryCutoff binaryCutoff = null;
+    private int cutoffAttributeIndex = -1;
 
     public ColumnGroup(String string)
     {
-        this.name = name;
+        this.name = string;
     }
 
-    public ColumnGroup(String name,
-                       int[] columns,
-                       BinaryCutoff binaryCutoff,
-                       int cutoffAttributeIndex)
+    public ColumnGroup(String name, int[] columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex)
     {
         this.name = name;
         this.columns = columns;

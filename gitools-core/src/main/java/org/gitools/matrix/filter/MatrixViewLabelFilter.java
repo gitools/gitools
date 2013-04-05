@@ -32,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * @noinspection ALL
+ */
 public class MatrixViewLabelFilter
 {
 
@@ -47,7 +50,7 @@ public class MatrixViewLabelFilter
 
     private static class StringFilter implements LabelFilter
     {
-        private Map<String, Integer> values;
+        private final Map<String, Integer> values;
 
         public StringFilter(@NotNull List<String> values)
         {
@@ -72,7 +75,7 @@ public class MatrixViewLabelFilter
 
     private static class RegexFilter implements LabelFilter
     {
-        private List<Pattern> patterns;
+        private final List<Pattern> patterns;
 
         public RegexFilter(@NotNull List<String> values)
         {
@@ -99,13 +102,7 @@ public class MatrixViewLabelFilter
         }
     }
 
-    public static void filter(
-            @NotNull IMatrixView matrixView,
-            @NotNull FilterDimension dim,
-            @NotNull String pattern,
-            AnnotationMatrix annMatrix,
-            @NotNull List<String> values,
-            boolean useRegex)
+    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, AnnotationMatrix annMatrix, @NotNull List<String> values, boolean useRegex)
     {
 
         LabelProvider labelProvider = null;
@@ -116,42 +113,26 @@ public class MatrixViewLabelFilter
                 labelProvider = new MatrixRowsLabelProvider(matrixView);
                 if (!pattern.equalsIgnoreCase("${id}"))
                 {
-                    labelProvider = new AnnotationsPatternProvider(
-                            labelProvider, annMatrix, pattern);
+                    labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
-                matrixView.setVisibleRows(
-                        filterLabels(
-                                labelProvider,
-                                values,
-                                useRegex,
-                                matrixView.getVisibleRows()));
+                matrixView.setVisibleRows(filterLabels(labelProvider, values, useRegex, matrixView.getVisibleRows()));
                 break;
 
             case COLUMNS:
                 labelProvider = new MatrixColumnsLabelProvider(matrixView);
                 if (!pattern.equalsIgnoreCase("${id}"))
                 {
-                    labelProvider = new AnnotationsPatternProvider(
-                            labelProvider, annMatrix, pattern);
+                    labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
-                matrixView.setVisibleColumns(
-                        filterLabels(
-                                labelProvider,
-                                values,
-                                useRegex,
-                                matrixView.getVisibleColumns()));
+                matrixView.setVisibleColumns(filterLabels(labelProvider, values, useRegex, matrixView.getVisibleColumns()));
                 break;
         }
     }
 
     @NotNull
-    public static int[] filterLabels(
-            @NotNull LabelProvider labelProvider,
-            @NotNull List<String> values,
-            boolean useRegex,
-            int[] visibleIndices)
+    public static int[] filterLabels(@NotNull LabelProvider labelProvider, @NotNull List<String> values, boolean useRegex, int[] visibleIndices)
     {
 
         LabelFilter filter = null;

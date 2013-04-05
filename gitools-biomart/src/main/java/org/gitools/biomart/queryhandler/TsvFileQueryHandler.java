@@ -32,8 +32,8 @@ import java.util.zip.GZIPOutputStream;
 public class TsvFileQueryHandler implements BiomartQueryHandler
 {
 
-    private File file;
-    private boolean compressionEnabled;
+    private final File file;
+    private final boolean compressionEnabled;
 
     private PrintWriter writer;
 

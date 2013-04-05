@@ -27,14 +27,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class MTCFactory
 {
 
-    private static final Map<String, Class<? extends MTC>> nameMap =
-            new HashMap<String, Class<? extends MTC>>();
+    private static final Map<String, Class<? extends MTC>> nameMap = new HashMap<String, Class<? extends MTC>>();
 
-    private static final Map<Class<? extends MTC>, String> classMap =
-            new HashMap<Class<? extends MTC>, String>();
+    private static final Map<Class<? extends MTC>, String> classMap = new HashMap<Class<? extends MTC>, String>();
 
     static
     {

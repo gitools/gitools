@@ -31,18 +31,18 @@ import java.util.List;
 public abstract class FilterComponent extends JPanel implements IFilterComponent
 {
 
-    protected FilterComponent childComponent;
+    private FilterComponent childComponent;
 
     @Nullable
-    protected FilterDescriptionPanel parentPanel;
+    final FilterDescriptionPanel parentPanel;
 
     @Nullable
-    protected FilterDescription filterDescription;
+    final FilterDescription filterDescription;
 
     @Nullable
-    protected Option filterOptions;
+    final Option filterOptions;
 
-    protected Integer currentHeight;
+    Integer currentHeight;
 
 
     FilterComponent(FilterDescription d, FilterDescriptionPanel parent)
@@ -94,7 +94,7 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
     }
 
     @Nullable
-    public FilterDescription getFilterDescription()
+    FilterDescription getFilterDescription()
     {
         return filterDescription;
     }
@@ -104,5 +104,5 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
      * This operation is used for implement the PushAction
      * mechanism
      */
-    public abstract void setListOptions(List<Option> optionList);
+    protected abstract void setListOptions(List<Option> optionList);
 }

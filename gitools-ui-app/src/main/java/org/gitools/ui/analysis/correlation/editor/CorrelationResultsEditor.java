@@ -35,15 +35,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class CorrelationResultsEditor extends HeatmapEditor
+class CorrelationResultsEditor extends HeatmapEditor
 {
 
     protected CorrelationAnalysis analysis;
 
-    protected AbstractTablesPanel tablesPanel;
+    private final AbstractTablesPanel tablesPanel;
 
     @Nullable
-    protected static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis)
+    private static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis)
     {
         IMatrixView results = new DiagonalMatrixView(analysis.getResults().get());
         Heatmap heatmap = new Heatmap(results);

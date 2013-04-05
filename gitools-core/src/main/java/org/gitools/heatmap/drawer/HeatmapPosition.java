@@ -23,6 +23,9 @@ package org.gitools.heatmap.drawer;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapPosition
 {
 

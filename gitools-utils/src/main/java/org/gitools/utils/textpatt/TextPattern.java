@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @noinspection ALL
+ */
 public class TextPattern
 {
 
@@ -43,7 +46,7 @@ public class TextPattern
 
     private static class TextToken implements Token
     {
-        private String text;
+        private final String text;
 
         public TextToken(String text)
         {
@@ -59,7 +62,7 @@ public class TextPattern
 
     private static class VariableToken implements Token
     {
-        private String variableName;
+        private final String variableName;
 
         public VariableToken(String variableName)
         {
@@ -171,7 +174,7 @@ public class TextPattern
     }
 
     private String text;
-    private List<Token> tokens;
+    private final List<Token> tokens;
 
     public TextPattern(String pattern)
     {

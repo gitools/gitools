@@ -57,8 +57,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
 
 
     @NotNull
-    public GroupComparisonResult processTest(
-            @NotNull double[] group1, @NotNull double[] group2)
+    public GroupComparisonResult processTest(@NotNull double[] group1, @NotNull double[] group2)
     {
 
         int g1Nans = 0;
@@ -114,24 +113,11 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
             MannWhitneyTest mwwTwoTail = new MannWhitneyTest(group1NoNan, group2NoNan, H1.NOT_EQUAL);
 
 
-            return new GroupComparisonResult(
-                    mwwLeft.getN(),
-                    group1NoNan.length,
-                    group2NoNan.length,
-                    mwwLeft.getSP(),
-                    mwwRight.getSP(),
-                    mwwTwoTail.getSP());
+            return new GroupComparisonResult(mwwLeft.getN(), group1NoNan.length, group2NoNan.length, mwwLeft.getSP(), mwwRight.getSP(), mwwTwoTail.getSP());
         }
         else
         {
-            return new GroupComparisonResult(
-                    group1NoNan.length + group2NoNan.length,
-                    group1NoNan.length,
-                    group2NoNan.length,
-                    Double.NaN,
-                    Double.NaN,
-                    Double.NaN
-            );
+            return new GroupComparisonResult(group1NoNan.length + group2NoNan.length, group1NoNan.length, group2NoNan.length, Double.NaN, Double.NaN, Double.NaN);
         }
 
     }

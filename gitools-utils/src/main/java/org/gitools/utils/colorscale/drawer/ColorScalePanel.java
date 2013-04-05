@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class ColorScalePanel extends JPanel
 {
 

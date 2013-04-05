@@ -30,6 +30,9 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "configuration")
 public class ConfigurationXmlElement
 {
@@ -67,8 +70,7 @@ public class ConfigurationXmlElement
 
     @NotNull
     @XmlElement(name = "property")
-    private List<ConfigurationXmlEntry> configuration =
-            new ArrayList<ConfigurationXmlElement.ConfigurationXmlEntry>();
+    private final List<ConfigurationXmlEntry> configuration = new ArrayList<ConfigurationXmlElement.ConfigurationXmlEntry>();
 
     public ConfigurationXmlElement()
     {

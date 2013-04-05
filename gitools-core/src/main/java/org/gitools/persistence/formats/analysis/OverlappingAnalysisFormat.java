@@ -27,7 +27,7 @@ import org.gitools.persistence._DEPRECATED.FileFormat;
 public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnalysis>
 {
     public static final String EXTENSION = "overlapping";
-    public static final Class<OverlappingAnalysis> RESOURCE_CLASS = OverlappingAnalysis.class;
+    private static final Class<OverlappingAnalysis> RESOURCE_CLASS = OverlappingAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
     public OverlappingAnalysisFormat()

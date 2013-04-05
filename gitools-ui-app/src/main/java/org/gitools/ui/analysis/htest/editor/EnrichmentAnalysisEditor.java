@@ -63,11 +63,10 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
-        context.put("dataFile",
-                fileRef != null ? fileRef.getName() : "Not defined");
+        context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         ToolConfig testConfig = analysis.getTestConfig();
-        if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "")
+        if (!testConfig.get(TestFactory.TEST_NAME_PROPERTY).equals(""))
         {
             context.put("test", WordUtils.capitalize(testConfig.get(TestFactory.TEST_NAME_PROPERTY)));
             HashMap<String, Object> testAttributes = new HashMap<String, Object>();
@@ -75,8 +74,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
             {
                 if (!key.equals(TestFactory.TEST_NAME_PROPERTY))
                 {
-                    testAttributes.put(WordUtils.capitalize(key),
-                            WordUtils.capitalize(testConfig.get(key)));
+                    testAttributes.put(WordUtils.capitalize(key), WordUtils.capitalize(testConfig.get(key)));
                 }
             }
             if (testAttributes.size() > 0)
@@ -87,17 +85,12 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         }
 
         CutoffCmp cmp = analysis.getBinaryCutoffCmp();
-        String filterDesc = cmp == null ?
-                "Not filtered"
-                : "Binary cutoff filter for values "
-                + cmp.getLongName() + " "
-                + analysis.getBinaryCutoffValue();
+        String filterDesc = cmp == null ? "Not filtered" : "Binary cutoff filter for values " + cmp.getLongName() + " " + analysis.getBinaryCutoffValue();
         context.put("filterDesc", filterDesc);
 
         fileRef = analysis.getModuleMap().getLocator();
 
-        context.put("modulesFile",
-                fileRef != null ? fileRef.getName() : "Unknown");
+        context.put("modulesFile", fileRef != null ? fileRef.getName() : "Unknown");
 
         context.put("moduleMinSize", analysis.getMinModuleSize());
         int maxSize = analysis.getMaxModuleSize();
@@ -181,9 +174,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), EnrichmentAnalysisFormat.EXTENSION,
-                        "-data", ""));
+                editor.setName(editorPanel.deriveName(getName(), EnrichmentAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {
@@ -222,9 +213,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
                 final EnrichmentResultsEditor editor = new EnrichmentResultsEditor(analysis);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), EnrichmentAnalysisFormat.EXTENSION,
-                        "-results", ""));
+                editor.setName(editorPanel.deriveName(getName(), EnrichmentAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {

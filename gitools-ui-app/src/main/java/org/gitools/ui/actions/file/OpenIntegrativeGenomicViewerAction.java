@@ -119,7 +119,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
     private class IgvCommand extends AbstractCommand
     {
 
-        private String rowQuery;
+        private final String rowQuery;
 
         private IgvCommand(String rowQuery)
         {

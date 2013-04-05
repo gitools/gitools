@@ -21,6 +21,9 @@
  */
 package org.gitools.obo;
 
+/**
+ * @noinspection ALL
+ */
 public interface OBOEventTypes
 {
 

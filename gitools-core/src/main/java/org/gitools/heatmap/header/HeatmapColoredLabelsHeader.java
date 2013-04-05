@@ -32,32 +32,35 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapColoredLabelsHeader extends HeatmapHeader
 {
 
-    public static final String THICKNESS_CHANGED = "thickness";
-    public static final String SEPARATION_GRID_CHANGED = "separationGrid";
-    public static final String FORCE_LABEL_COLOR = "forceLabelColor";
-    public static final String CLUSTERS_CHANGED = "clusters";
-    public static final String INDICES_CHANGED = "indices";
+    private static final String THICKNESS_CHANGED = "thickness";
+    private static final String SEPARATION_GRID_CHANGED = "separationGrid";
+    private static final String FORCE_LABEL_COLOR = "forceLabelColor";
+    private static final String CLUSTERS_CHANGED = "clusters";
+    private static final String INDICES_CHANGED = "indices";
 
     /* The thickness of the color band */
-    protected int thickness;
+    private int thickness;
 
     /* Separate different clusters with a grid */
-    protected boolean separationGrid;
+    private boolean separationGrid;
 
-    protected boolean forceLabelColor;
+    private boolean forceLabelColor;
 
     /**
      * The list of clusters in this set
      */
-    protected ColoredLabel[] coloredLabels;
+    private ColoredLabel[] coloredLabels;
 
     /**
      * Maps matrix row/column id to cluster index
      */
-    protected Map<String, Integer> dataColoredLabelIndices;
+    private Map<String, Integer> dataColoredLabelIndices;
 
     public HeatmapColoredLabelsHeader(HeatmapDim hdim)
     {
@@ -205,9 +208,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
         coloredLabels = new ColoredLabel[results.getNumClusters()];
         for (int i = 0; i < results.getNumClusters(); i++)
         {
-            ColoredLabel cluster = coloredLabels[i]
-                    = new ColoredLabel(clusterTitles[i],
-                    cg.next());
+            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
         }
 
         dataColoredLabelIndices = new HashMap<String, Integer>();

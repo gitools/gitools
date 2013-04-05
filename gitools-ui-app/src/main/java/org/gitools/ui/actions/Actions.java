@@ -34,16 +34,10 @@ public class Actions
     {
     }
 
-    public static final void init()
+    public static void init()
     {
         ActionManager am = ActionManager.getDefault();
         am.addRootAction(menuActionSet);
         am.addRootAction(toolBarActionSet);
-
-		/*am.addActionsFromClass(FileActions.class);
-        am.addActionsFromClass(EditActions.class);
-		am.addActionsFromClass(DataActions.class);
-		am.addActionsFromClass(MtcActions.class);
-		am.addActionsFromClass(HeatmapActions.class);*/
     }
 }

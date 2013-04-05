@@ -50,21 +50,16 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class OverlappingAnalysisWizard extends AbstractWizard
 {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
-    private static final FileFormat[] dataFormats = new FileFormat[]{
-            FileFormats.MULTIVALUE_DATA_MATRIX,
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.DOUBLE_MATRIX,
-            FileFormats.DOUBLE_BINARY_MATRIX,
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.MODULES_INDEXED_MAP
-    };
+    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     private ExamplePage examplePage;
     private DataFilePage dataPage;
@@ -129,8 +124,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
             saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-            saveFilePage.setFormats(new FileFormat[]{
-                    OverlappingAnalysisFormat.FILE_FORMAT});
+            saveFilePage.setFormats(new FileFormat[]{OverlappingAnalysisFormat.FILE_FORMAT});
             saveFilePage.setFormatsVisible(false);
             addPage(saveFilePage);
         }
@@ -146,8 +140,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
     {
         if (currentPage == examplePage)
         {
-            Settings.getDefault().setShowCombinationExamplePage(
-                    examplePage.isShowAgain());
+            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled())
             {
@@ -170,8 +163,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
                         {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final OverlappingAnalysis a = PersistenceManager.get()
-                                    .load(analysisFile, OverlappingAnalysis.class, props, monitor);
+                            final OverlappingAnalysis a = PersistenceManager.get().load(analysisFile, OverlappingAnalysis.class, props, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {
@@ -261,8 +253,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard
         a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
 
         //Verify: a.setAttributeIndex(overlappingPage.getAttributeIndex());
-        a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ?
-                overlappingPage.getReplaceNanValue() : null);
+        a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ? overlappingPage.getReplaceNanValue() : null);
         a.setTransposeData(overlappingPage.isTransposeEnabled());
 
         return a;

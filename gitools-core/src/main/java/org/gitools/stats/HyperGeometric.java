@@ -42,8 +42,7 @@ public class HyperGeometric
         x -= 1259.139216722289 / (z + 1);
         x += 676.5203681218835 / (z);
         x += 0.9999999999995183;
-        return (Math.log(x) - 5.58106146679532777 - z + (z - 0.5)
-                * Math.log(z + 6.5));
+        return (Math.log(x) - 5.58106146679532777 - z + (z - 0.5) * Math.log(z + 6.5));
     }
 
     private double lnfact(int n)
@@ -62,8 +61,7 @@ public class HyperGeometric
 
     private double hyper_323(int n11, int n1_, int n_1, int n)
     {
-        return (Math.exp(lnbico(n1_, n11) + lnbico(n - n1_, n_1 - n11)
-                - lnbico(n, n_1)));
+        return (Math.exp(lnbico(n1_, n11) + lnbico(n - n1_, n_1 - n11) - lnbico(n, n_1)));
     }
 
     public double hyper(int n11)
@@ -79,16 +77,13 @@ public class HyperGeometric
             {
                 if (n11i == sn11 + 1)
                 {
-                    sprob *= ((double) (sn1_ - sn11) / (double) n11i)
-                            * ((double) (sn_1 - sn11) / (double) (n11i + sn
-                            - sn1_ - sn_1));
+                    sprob *= ((double) (sn1_ - sn11) / (double) n11i) * ((double) (sn_1 - sn11) / (double) (n11i + sn - sn1_ - sn_1));
                     sn11 = n11i;
                     return sprob;
                 }
                 if (n11i == sn11 - 1)
                 {
-                    sprob *= ((double) sn11 / (double) (sn1_ - n11i))
-                            * ((double) (sn11 + sn - sn1_ - sn_1) / (double) (sn_1 - n11i));
+                    sprob *= ((double) sn11 / (double) (sn1_ - n11i)) * ((double) (sn11 + sn - sn1_ - sn_1) / (double) (sn_1 - n11i));
                     sn11 = n11i;
                     return sprob;
                 }

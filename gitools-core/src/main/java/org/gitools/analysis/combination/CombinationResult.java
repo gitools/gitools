@@ -24,14 +24,17 @@ package org.gitools.analysis.combination;
 import org.gitools.matrix.model.element.AttributeDef;
 
 
+/**
+ * @noinspection ALL
+ */
 public class CombinationResult
 {
 
-    protected int n;
+    private int n;
 
-    protected double zscore;
+    private double zscore;
 
-    protected double pvalue;
+    private double pvalue;
 
     @AttributeDef(id = "N", name = "N", description = "Number of pvalues combined")
     public int getN()

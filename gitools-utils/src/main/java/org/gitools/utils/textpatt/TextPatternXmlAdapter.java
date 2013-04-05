@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+/**
+ * @noinspection ALL
+ */
 public class TextPatternXmlAdapter extends XmlAdapter<String, TextPattern>
 {
 

@@ -25,30 +25,27 @@ import org.gitools.matrix.model.element.AttributeDef;
 import org.gitools.stats.test.results.CommonResult;
 
 
+/**
+ * @noinspection ALL
+ */
 public class GroupComparisonResult extends CommonResult
 {
 
-    public int N_group1;
-    public int N_group2;
+    private int N_group1;
+    private int N_group2;
 
     public GroupComparisonResult()
     {
         super(0, 0.0, 0.0, 0.0);
     }
 
-    public GroupComparisonResult(
-            int N,
-            double leftPvalue, double rightPvalue,
-            double twoTailPvalue)
+    public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue)
     {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
     }
 
-    public GroupComparisonResult(
-            int N, int N_group1, int N_group2,
-            double leftPvalue, double rightPvalue,
-            double twoTailPvalue)
+    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue)
     {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
@@ -73,6 +70,9 @@ public class GroupComparisonResult extends CommonResult
         return N_group2;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setN_group2(int N_group2)
     {
         this.N_group2 = N_group2;

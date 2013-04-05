@@ -37,15 +37,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnrichmentResultsEditor extends HeatmapEditor
+/**
+ * @noinspection ALL
+ */
+class EnrichmentResultsEditor extends HeatmapEditor
 {
 
     protected EnrichmentAnalysis analysis;
 
-    protected AbstractTablesPanel tablesPanel;
+    private final AbstractTablesPanel tablesPanel;
 
     @NotNull
-    protected static Heatmap createHeatmap(@NotNull EnrichmentAnalysis analysis)
+    private static Heatmap createHeatmap(@NotNull EnrichmentAnalysis analysis)
     {
         IMatrixView dataTable = new MatrixView(analysis.getResults().get());
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
@@ -57,11 +60,7 @@ public class EnrichmentResultsEditor extends HeatmapEditor
     @NotNull
     protected static List<BaseAction> createToolBar(@NotNull EnrichmentAnalysis analysis)
     {
-        ViewRelatedDataFromRowAction action =
-                new ViewRelatedDataFromRowAction(
-                        analysis.getTitle(),
-                        analysis.getData().get(),
-                        analysis.getModuleMap().get());
+        ViewRelatedDataFromRowAction action = new ViewRelatedDataFromRowAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get());
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);
         return tb;

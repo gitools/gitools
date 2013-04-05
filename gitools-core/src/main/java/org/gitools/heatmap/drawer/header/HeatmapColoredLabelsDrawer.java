@@ -43,7 +43,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 {
 
     private int headerTotalSize = 0;
-    protected static final double radianAngle90 = (90.0 / 180.0) * Math.PI;
+    private static final double radianAngle90 = (90.0 / 180.0) * Math.PI;
 
 
     public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapColoredLabelsHeader header, boolean horizontal)
@@ -134,8 +134,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                 bgColor = highlightingColor;
             }
 
-            boolean selected = !pictureMode && (horizontal ?
-                    data.isColumnSelected(index) : data.isRowSelected(index));
+            boolean selected = !pictureMode && (horizontal ? data.isColumnSelected(index) : data.isRowSelected(index));
 
             if (selected)
             {
@@ -144,9 +143,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                 finalGridColor = gridColor.darker();
             }
 
-            boolean lead = !pictureMode && (horizontal ?
-                    (leadColumn == index) /*&& (leadRow == -1)*/ :
-                    (leadRow == index) /*&& (leadColumn == -1)*/);
+            boolean lead = !pictureMode && (horizontal ? (leadColumn == index) /*&& (leadRow == -1)*/ : (leadRow == index) /*&& (leadColumn == -1)*/);
 
             g.setColor(bgColor);
             g.fillRect(x, y, width, height - gridSize);
@@ -239,15 +236,13 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         {
             int cellWidth = heatmap.getCellWidth() + gridSize;
             int columnCount = heatmap.getMatrixView().getColumnCount();
-            return new Dimension(
-                    cellWidth * columnCount + extBorder, headerTotalSize);
+            return new Dimension(cellWidth * columnCount + extBorder, headerTotalSize);
         }
         else
         {
             int cellHeight = heatmap.getCellHeight() + gridSize;
             int rowCount = heatmap.getMatrixView().getRowCount();
-            return new Dimension(
-                    headerTotalSize, cellHeight * rowCount + extBorder);
+            return new Dimension(headerTotalSize, cellHeight * rowCount + extBorder);
         }
     }
 

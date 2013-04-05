@@ -24,5 +24,5 @@ package org.gitools.ui.platform.dialog;
 public enum MessageStatus
 {
 
-    INFO, WARN, ERROR, PROGRESS
+    INFO, WARN, ERROR, PROGRESS /** @noinspection ALL*/
 }

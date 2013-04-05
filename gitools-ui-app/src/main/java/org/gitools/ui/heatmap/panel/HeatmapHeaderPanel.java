@@ -28,12 +28,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapHeaderPanel extends AbstractHeatmapPanel
 {
 
     private static final long serialVersionUID = 930370133535101914L;
 
-    private HeatmapDim hdim;
+    private final HeatmapDim hdim;
 
     public HeatmapHeaderPanel(@NotNull Heatmap heatmap, boolean horizontal)
     {

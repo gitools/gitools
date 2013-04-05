@@ -71,6 +71,7 @@ import java.util.*;
  * @author Remco Bouckaert (rrb@xm.co.nz, remco@cs.waikato.ac.nz)
  * @author Eibe Frank (eibe@cs.waikato.ac.nz)
  * @version $Revision: 6587 $
+ * @noinspection ALL
  */
 public class WekaHierarchicalClusterer extends AbstractClusterer implements OptionHandler, CapabilitiesHandler, Drawable
 {
@@ -79,29 +80,29 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * Whether the classifier is run in debug mode.
      */
-    protected boolean m_bDebug = false;
+    private boolean m_bDebug = false;
 
     /**
      * Whether the distance represent node height (if false) or branch length (if true).
      */
-    protected boolean m_bDistanceIsBranchLength = false;
+    private boolean m_bDistanceIsBranchLength = false;
 
     /**
      * training data *
      */
-    Instances m_instances;
+    private Instances m_instances;
 
     /**
      * number of clusters desired in clustering *
      */
-    int m_nNumClusters = 2;
+    private int m_nNumClusters = 2;
 
     public void setNumClusters(int nClusters)
     {
         m_nNumClusters = Math.max(1, nClusters);
     }
 
-    public int getNumClusters()
+    int getNumClusters()
     {
         return m_nNumClusters;
     }
@@ -109,7 +110,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * distance function used for comparing members of a cluster *
      */
-    protected DistanceFunction m_DistanceFunction = new EuclideanDistance();
+    private DistanceFunction m_DistanceFunction = new EuclideanDistance();
 
     public DistanceFunction getDistanceFunction()
     {
@@ -135,17 +136,17 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             m_nClusterSize2 = nSize2;
         }
 
-        double m_fDist;
-        int m_iCluster1;
-        int m_iCluster2;
-        int m_nClusterSize1;
-        int m_nClusterSize2;
+        final double m_fDist;
+        final int m_iCluster1;
+        final int m_iCluster2;
+        final int m_nClusterSize1;
+        final int m_nClusterSize2;
     }
 
     /**
      * comparator used by priority queue*
      */
-    class TupleComparator implements Comparator<Tuple>
+    private class TupleComparator implements Comparator<Tuple>
     {
         public int compare(@NotNull Tuple o1, @NotNull Tuple o2)
         {
@@ -164,32 +165,22 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * the various link types
      */
-    final static int SINGLE = 0;
-    final static int COMPLETE = 1;
-    final static int AVERAGE = 2;
-    final static int MEAN = 3;
-    final static int CENTROID = 4;
-    final static int WARD = 5;
-    final static int ADJCOMLPETE = 6;
-    final static int NEIGHBOR_JOINING = 7;
-    public static final Tag[] TAGS_LINK_TYPE = {
-            new Tag(SINGLE, "SINGLE"),
-            new Tag(COMPLETE, "COMPLETE"),
-            new Tag(AVERAGE, "AVERAGE"),
-            new Tag(MEAN, "MEAN"),
-            new Tag(CENTROID, "CENTROID"),
-            new Tag(WARD, "WARD"),
-            new Tag(ADJCOMLPETE, "ADJCOMPLETE"),
-            new Tag(NEIGHBOR_JOINING, "NEIGHBOR_JOINING")
-    };
+    private final static int SINGLE = 0;
+    private final static int COMPLETE = 1;
+    private final static int AVERAGE = 2;
+    private final static int MEAN = 3;
+    private final static int CENTROID = 4;
+    private final static int WARD = 5;
+    private final static int ADJCOMLPETE = 6;
+    private final static int NEIGHBOR_JOINING = 7;
+    public static final Tag[] TAGS_LINK_TYPE = {new Tag(SINGLE, "SINGLE"), new Tag(COMPLETE, "COMPLETE"), new Tag(AVERAGE, "AVERAGE"), new Tag(MEAN, "MEAN"), new Tag(CENTROID, "CENTROID"), new Tag(WARD, "WARD"), new Tag(ADJCOMLPETE, "ADJCOMPLETE"), new Tag(NEIGHBOR_JOINING, "NEIGHBOR_JOINING")};
 
     /**
      * Holds the Link type used calculate distance between clusters
      */
-    int m_nLinkType = SINGLE;
+    private int m_nLinkType = SINGLE;
 
-    boolean m_bPrintNewick = true;
-    ;
+    private boolean m_bPrintNewick = true;
 
     public boolean getPrintNewick()
     {
@@ -332,8 +323,8 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         }
     }
 
-    Node[] m_clusters;
-    int[] m_nClusterNr;
+    private Node[] m_clusters;
+    private int[] m_nClusterNr;
 
 
     @Override
@@ -1040,29 +1031,13 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     {
 
         Vector newVector = new Vector(8);
-        newVector.addElement(new Option(
-                "\tIf set, classifier is run in debug mode and\n"
-                        + "\tmay output additional info to the console",
-                "D", 0, "-D"));
-        newVector.addElement(new Option(
-                "\tIf set, distance is interpreted as branch length\n"
-                        + "\totherwise it is node height.",
-                "B", 0, "-B"));
+        newVector.addElement(new Option("\tIf set, classifier is run in debug mode and\n" + "\tmay output additional info to the console", "D", 0, "-D"));
+        newVector.addElement(new Option("\tIf set, distance is interpreted as branch length\n" + "\totherwise it is node height.", "B", 0, "-B"));
 
-        newVector.addElement(new Option(
-                "\tnumber of clusters",
-                "N", 1, "-N <Nr Of Clusters>"));
-        newVector.addElement(new Option(
-                "\tFlag to indicate the cluster should be printed in Newick format.",
-                "P", 0, "-P"));
-        newVector.addElement(
-                new Option(
-                        "Link type (Single, Complete, Average, Mean, Centroid, Ward, Adjusted complete, Neighbor joining)", "L", 1,
-                        "-L [SINGLE|COMPLETE|AVERAGE|MEAN|CENTROID|WARD|ADJCOMLPETE|NEIGHBOR_JOINING]"));
-        newVector.add(new Option(
-                "\tDistance function to use.\n"
-                        + "\t(default: weka.core.EuclideanDistance)",
-                "A", 1, "-A <classname and options>"));
+        newVector.addElement(new Option("\tnumber of clusters", "N", 1, "-N <Nr Of Clusters>"));
+        newVector.addElement(new Option("\tFlag to indicate the cluster should be printed in Newick format.", "P", 0, "-P"));
+        newVector.addElement(new Option("Link type (Single, Complete, Average, Mean, Centroid, Ward, Adjusted complete, Neighbor joining)", "L", 1, "-L [SINGLE|COMPLETE|AVERAGE|MEAN|CENTROID|WARD|ADJCOMLPETE|NEIGHBOR_JOINING]"));
+        newVector.add(new Option("\tDistance function to use.\n" + "\t(default: weka.core.EuclideanDistance)", "A", 1, "-A <classname and options>"));
         return newVector.elements();
     }
 
@@ -1142,9 +1117,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             String className = nnSearchClassSpec[0];
             nnSearchClassSpec[0] = "";
 
-            setDistanceFunction((DistanceFunction)
-                    Utils.forName(DistanceFunction.class,
-                            className, nnSearchClassSpec));
+            setDistanceFunction((DistanceFunction) Utils.forName(DistanceFunction.class, className, nnSearchClassSpec));
         }
         else
         {
@@ -1273,7 +1246,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @param debug true if debug output should be printed
      */
-    public void setDebug(boolean debug)
+    void setDebug(boolean debug)
     {
 
         m_bDebug = debug;
@@ -1284,13 +1257,13 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return true if debugging output is on
      */
-    public boolean getDebug()
+    boolean getDebug()
     {
 
         return m_bDebug;
     }
 
-    public boolean getDistanceIsBranchLength()
+    boolean getDistanceIsBranchLength()
     {
         return m_bDistanceIsBranchLength;
     }
@@ -1319,8 +1292,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     @NotNull
     public String debugTipText()
     {
-        return "If set to true, classifier may output additional info to " +
-                "the console.";
+        return "If set to true, classifier may output additional info to " + "the console.";
     }
 
     /**
@@ -1329,8 +1301,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     @NotNull
     public String numClustersTipText()
     {
-        return "Sets the number of clusters. " +
-                "If a single hierarchy is desired, set this to 1.";
+        return "Sets the number of clusters. " + "If a single hierarchy is desired, set this to 1.";
     }
 
     /**
@@ -1358,6 +1329,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
     /**
      * @return a string to describe the Link type
+     * @noinspection UnusedDeclaration
      */
     @NotNull
     public String linkTypeTipText()
@@ -1382,8 +1354,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                 " The information of a cluster is calculated as the error sum of squares of the" +
                 " centroids of the cluster and its members.\n" +
                 "NEIGHBOR_JOINING\n" +
-                " use neighbor joining algorithm."
-                ;
+                " use neighbor joining algorithm.";
     }
 
     /**
@@ -1394,10 +1365,9 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     @NotNull
     public String globalInfo()
     {
-        return
-                "Hierarchical clustering class.\n" +
-                        "Implements a number of classic agglomorative (i.e. bottom up) hierarchical clustering methods" +
-                        "based on .";
+        return "Hierarchical clustering class.\n" +
+                "Implements a number of classic agglomorative (i.e. bottom up) hierarchical clustering methods" +
+                "based on .";
     }
 
     public static void main(String[] argv)

@@ -35,10 +35,13 @@ import java.nio.channels.ClosedByInterruptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class CommandListener implements Runnable
 {
 
-    private static Logger log = Logger.getLogger(CommandListener.class);
+    private static final Logger log = Logger.getLogger(CommandListener.class);
 
     @Nullable
     private static CommandListener listener;
@@ -48,8 +51,8 @@ public class CommandListener implements Runnable
     private ServerSocket serverSocket = null;
     @Nullable
     private Socket clientSocket = null;
-    private Thread listenerThread;
-    boolean halt = false;
+    private final Thread listenerThread;
+    private boolean halt = false;
 
     public static synchronized void start(int port)
     {
@@ -413,7 +416,7 @@ public class CommandListener implements Runnable
      * @return
      */
     @Nullable
-    public static String decodeURL(@Nullable String s)
+    private static String decodeURL(@Nullable String s)
     {
         if (s == null)
         {

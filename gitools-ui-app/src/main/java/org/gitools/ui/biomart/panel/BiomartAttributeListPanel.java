@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartAttributeListPanel extends JPanel
 {
 
@@ -49,8 +52,8 @@ public class BiomartAttributeListPanel extends JPanel
 
     private static class AttributeDescWrapper
     {
-        private AttributeDescription attr;
-        private String label;
+        private final AttributeDescription attr;
+        private final String label;
 
         public AttributeDescWrapper(AttributeDescription attr, String label)
         {
@@ -74,8 +77,7 @@ public class BiomartAttributeListPanel extends JPanel
     private List<AttributePage> attrPages;
 
     @NotNull
-    private List<AttributeListChangeListener> attributeListChangeListeners =
-            new ArrayList<AttributeListChangeListener>();
+    private final List<AttributeListChangeListener> attributeListChangeListeners = new ArrayList<AttributeListChangeListener>();
 
     public BiomartAttributeListPanel()
     {
@@ -137,11 +139,10 @@ public class BiomartAttributeListPanel extends JPanel
                         for (AttributeDescription d : c.getAttributeDescriptions())
                             if (!d.isHidden() && !d.isHideDisplay() && d.isDefault())
                             {
-                                model.addElement(new AttributeDescWrapper(d,
-                                        p.getDisplayName() + " > " +
-                                                g.getDisplayName() + " > " +
-                                                c.getDisplayName() + " > " +
-                                                d.getDisplayName()));
+                                model.addElement(new AttributeDescWrapper(d, p.getDisplayName() + " > " +
+                                        g.getDisplayName() + " > " +
+                                        c.getDisplayName() + " > " +
+                                        d.getDisplayName()));
                             }
         }
 
@@ -165,7 +166,7 @@ public class BiomartAttributeListPanel extends JPanel
         addBtn.setEnabled(enabled);
     }
 
-    public void updateButtons()
+    void updateButtons()
     {
         addBtn.setEnabled(attrPages != null);
 
@@ -272,47 +273,13 @@ public class BiomartAttributeListPanel extends JPanel
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(upBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(downBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(addBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(removeBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(upBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(downBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(loadBtn)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(saveBtn)))
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(upBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(downBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addComponent(addBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(removeBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(upBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(downBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(loadBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn))).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_addBtnActionPerformed
-        BiomartAttributeDialog dlg =
-                new BiomartAttributeDialog(AppFrame.get(), attrPages);
+        BiomartAttributeDialog dlg = new BiomartAttributeDialog(AppFrame.get(), attrPages);
 
         dlg.open();
 
@@ -326,8 +293,7 @@ public class BiomartAttributeListPanel extends JPanel
                 DefaultListModel model = (DefaultListModel) attrList.getModel();
                 for (int i = 0; i < attributes.size(); i++)
                 {
-                    model.addElement(new AttributeDescWrapper(
-                            attributes.get(i), names.get(i)));
+                    model.addElement(new AttributeDescWrapper(attributes.get(i), names.get(i)));
                 }
             }
         }

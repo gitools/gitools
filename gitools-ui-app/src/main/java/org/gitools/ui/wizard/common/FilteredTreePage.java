@@ -54,13 +54,13 @@ public abstract class FilteredTreePage extends AbstractWizardPage
     protected abstract TreeModel createModel(String filterText);
 
     @Nullable
-    protected TreeModel pageCreateModel(String filterText)
+    TreeModel pageCreateModel(String filterText)
     {
         return createModel(filterText);
     }
 
     @Nullable
-    public FilteredTreePanel getPanel()
+    protected FilteredTreePanel getPanel()
     {
         return panel;
     }

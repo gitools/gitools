@@ -28,7 +28,7 @@ import org.gitools.modules.importer.Version;
 public class EnsemblKeggVersion implements Version
 {
 
-    private BiomartSource source;
+    private final BiomartSource source;
 
     public EnsemblKeggVersion(BiomartSource source)
     {

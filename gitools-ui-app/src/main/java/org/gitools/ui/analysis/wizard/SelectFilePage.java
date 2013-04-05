@@ -39,6 +39,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class SelectFilePage extends AbstractWizardPage
 {
 
@@ -49,7 +52,7 @@ public class SelectFilePage extends AbstractWizardPage
     private static final FileFormat[] defaultFormats = new FileFormat[]{anyFileFormat};
 
     @Nullable
-    private FileFormat[] formats;
+    private final FileFormat[] formats;
     private boolean blankFileAllowed;
     private String lastPath;
 
@@ -89,7 +92,7 @@ public class SelectFilePage extends AbstractWizardPage
         filePath.getDocument().addDocumentListener(docCompleteListener);
     }
 
-    protected void updateState()
+    void updateState()
     {
         FileFormat ff = getFileFormat();
 
@@ -190,46 +193,8 @@ public class SelectFilePage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(formatCb, 0, 576, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(fileBrowseBtn))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(valueLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(valueCb, 0, 586, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(formatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(fileBrowseBtn)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel2)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(valueLabel)
-                                        .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(238, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(formatCb, 0, 576, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(fileBrowseBtn)).addGroup(layout.createSequentialGroup().addComponent(valueLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(valueCb, 0, 586, Short.MAX_VALUE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(formatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(fileBrowseBtn).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel2))).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(valueLabel).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap(238, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt)
@@ -265,11 +230,7 @@ public class SelectFilePage extends AbstractWizardPage
                 filters[i + 2] = new FileFormatFilter(formats[i]);
         }
 
-        FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile(
-                "Select file",
-                getLastPath(),
-                FileChooserUtils.MODE_OPEN,
-                filters);
+        FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile("Select file", getLastPath(), FileChooserUtils.MODE_OPEN, filters);
 
         if (sel != null)
         {
@@ -318,7 +279,7 @@ public class SelectFilePage extends AbstractWizardPage
         updateState();
     }
 
-    public void activateValueSelection()
+    void activateValueSelection()
     {
         valueCb.setVisible(true);
         valueLabel.setVisible(true);
@@ -326,7 +287,7 @@ public class SelectFilePage extends AbstractWizardPage
         valueLabel.setEnabled(true);
     }
 
-    public void deactivateValueSelection()
+    void deactivateValueSelection()
     {
         valueCb.setEnabled(false);
         valueLabel.setEnabled(false);
@@ -334,7 +295,7 @@ public class SelectFilePage extends AbstractWizardPage
         valueLabel.setVisible(false);
     }
 
-    protected void setValues(String[] values)
+    void setValues(String[] values)
     {
         valueCb.setModel(new DefaultComboBoxModel(values));
     }
@@ -351,6 +312,9 @@ public class SelectFilePage extends AbstractWizardPage
         }
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @NotNull
     public String[] getValues()
     {

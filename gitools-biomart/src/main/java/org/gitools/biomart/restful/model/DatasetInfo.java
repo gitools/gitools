@@ -27,30 +27,27 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "datasetInfo", propOrder = {
-        "name",
-        "displayName",
-        "type",
-        "visible",
-        "_interface"
-})
+@XmlType(name = "datasetInfo", propOrder = {"name", "displayName", "type", "visible", "_interface"})
 public class DatasetInfo
 {
 
     @XmlElement(required = true)
-    protected String name;
+    private String name;
 
     @XmlElement(required = true)
-    protected String displayName;
+    private String displayName;
 
     @XmlElement(required = true)
-    protected String type;
+    private String type;
 
-    protected int visible;
+    private int visible;
 
     @XmlElement(name = "interface", required = true)
-    protected String _interface;
+    private String _interface;
 
     /**
      * Gets the value of the name property.

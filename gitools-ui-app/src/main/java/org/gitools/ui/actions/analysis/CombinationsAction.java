@@ -60,8 +60,7 @@ public class CombinationsAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -100,12 +99,7 @@ public class CombinationsAction extends BaseAction
         String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
         IResourceFormat columnSetsFormat = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getFormat(ModuleMap.class) : null;
 
-        final CombinationCommand cmd = new CombinationCommand(
-                analysis,
-                null, null,
-                columnSetsFormat,
-                columnSetsPath,
-                null, null);
+        final CombinationCommand cmd = new CombinationCommand(analysis, null, null, columnSetsFormat, columnSetsPath, null, null);
         cmd.setStoreAnalysis(false);
 
         JobThread.execute(AppFrame.get(), new JobRunnable()

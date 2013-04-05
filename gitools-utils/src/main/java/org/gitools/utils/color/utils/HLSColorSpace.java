@@ -25,7 +25,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.color.ColorSpace;
 
-public class HLSColorSpace extends ColorSpace
+/**
+ * @noinspection ALL
+ */
+class HLSColorSpace extends ColorSpace
 {
 
 

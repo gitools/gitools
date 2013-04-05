@@ -21,9 +21,15 @@
  */
 package org.gitools.persistence;
 
+/**
+ * @noinspection ALL
+ */
 public class PersistenceException extends RuntimeException
 {
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     private static final long serialVersionUID = -3292740209879198812L;
 
     public PersistenceException(Throwable cause)

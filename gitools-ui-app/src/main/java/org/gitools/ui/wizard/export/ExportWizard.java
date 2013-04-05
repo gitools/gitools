@@ -23,6 +23,9 @@ package org.gitools.ui.wizard.export;
 
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportWizard extends AbstractWizard
 {
 

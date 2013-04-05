@@ -27,6 +27,9 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"title", "description", "attributes"})
 public class Artifact extends AbstractModel
@@ -34,9 +37,9 @@ public class Artifact extends AbstractModel
 
     private static final long serialVersionUID = 5752318457428475330L;
 
-    public static final String TITLE_CHANGED = "titleChanged";
-    public static final String DESC_CHANGED = "descChanged";
-    public static final String ATTRIBUTES_CHANGED = "attributesChanged";
+    private static final String TITLE_CHANGED = "titleChanged";
+    private static final String DESC_CHANGED = "descChanged";
+    private static final String ATTRIBUTES_CHANGED = "attributesChanged";
 
     /**
      * short description *
@@ -46,18 +49,18 @@ public class Artifact extends AbstractModel
     /**
      * long description *
      */
-    protected String description;
+    private String description;
 
     /**
      * Extra attributes *
      */
     @XmlElementWrapper(name = "attributes")
     @XmlElement(name = "attribute")
-    protected List<Attribute> attributes = new ArrayList<Attribute>(0);
+    private List<Attribute> attributes = new ArrayList<Attribute>(0);
 
 	/* constructors */
 
-    public Artifact()
+    protected Artifact()
     {
     }
 

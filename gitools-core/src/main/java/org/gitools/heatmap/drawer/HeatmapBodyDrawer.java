@@ -42,21 +42,12 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
 
-        int borderSize = getBorderSize();
         int rowsGridSize = heatmap.getRowDim().isGridEnabled() ? heatmap.getRowDim().getGridSize() : 0;
         int columnsGridSize = heatmap.getColumnDim().isGridEnabled() ? heatmap.getColumnDim().getGridSize() : 0;
 
         // Clear background
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
-        // Draw borders and grid background
-        if (heatmap.isShowBorders())
-        {
-            g.setColor(Color.BLACK);
-            g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-            box.grow(-borderSize, -borderSize);
-        }
 
         IMatrixView data = heatmap.getMatrixView();
 
@@ -93,8 +84,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
                 Color rowsGridColor = heatmap.getRowDim().getGridColor();
                 Color columnsGridColor = heatmap.getColumnDim().getGridColor();
 
-                boolean selected = !pictureMode
-                        && (rowSelected || data.isColumnSelected(col));
+                boolean selected = !pictureMode && (rowSelected || data.isColumnSelected(col));
 
                 if (selected)
                 {
@@ -157,9 +147,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         int rowCount = heatmap.getMatrixView().getRowCount();
         int columnCount = heatmap.getMatrixView().getColumnCount();
         int extBorder = /*2 * 1 - 1*/ 0;
-        return new Dimension(
-                cellWidth * columnCount + extBorder,
-                cellHeight * rowCount + extBorder);
+        return new Dimension(cellWidth * columnCount + extBorder, cellHeight * rowCount + extBorder);
     }
 
     @NotNull

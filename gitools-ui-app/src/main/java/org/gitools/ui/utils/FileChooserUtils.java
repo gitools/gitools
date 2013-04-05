@@ -31,24 +31,27 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class FileChooserUtils
 {
 
     public static final int MODE_SAVE = 1;
     public static final int MODE_OPEN = 2;
 
-    public final static String jpeg = "jpeg";
-    public final static String jpg = "jpg";
-    public final static String gif = "gif";
+    private final static String jpeg = "jpeg";
+    private final static String jpg = "jpg";
+    private final static String gif = "gif";
     public final static String tiff = "tiff";
-    public final static String tif = "tif";
-    public final static String png = "png";
-    public final static String pdf = "pdf";
+    private final static String tif = "tif";
+    private final static String png = "png";
+    private final static String pdf = "pdf";
 
     public static class FileAndFilter
     {
-        private File file;
-        private FileFilter filter;
+        private final File file;
+        private final FileFilter filter;
 
         public FileAndFilter(File file, FileFilter filter)
         {
@@ -68,7 +71,7 @@ public class FileChooserUtils
     }
 
     @NotNull
-    private static FileFilter imageFileFilter = new FileFilter()
+    private static final FileFilter imageFileFilter = new FileFilter()
     {
         @Override
         public boolean accept(@NotNull File f)
@@ -214,9 +217,7 @@ public class FileChooserUtils
 
         if (retval == JFileChooser.APPROVE_OPTION)
         {
-            return new FileAndFilter(
-                    fileChooser.getSelectedFile(),
-                    fileChooser.getFileFilter());
+            return new FileAndFilter(fileChooser.getSelectedFile(), fileChooser.getFileFilter());
         }
 
         return null;
@@ -284,7 +285,7 @@ public class FileChooserUtils
     }
 
     @Nullable
-    public static String getExtension(@NotNull String fileName)
+    private static String getExtension(@NotNull String fileName)
     {
         String ext = null;
         int i = fileName.lastIndexOf('.');
@@ -296,12 +297,8 @@ public class FileChooserUtils
         return ext;
     }
 
-    public static boolean isImageExtension(@NotNull String extension)
+    private static boolean isImageExtension(@NotNull String extension)
     {
-        return extension.equals(tif)
-                || extension.equals(gif)
-                || extension.equals(jpeg)
-                || extension.equals(jpg)
-                || extension.equals(png);
+        return extension.equals(tif) || extension.equals(gif) || extension.equals(jpeg) || extension.equals(jpg) || extension.equals(png);
     }
 }

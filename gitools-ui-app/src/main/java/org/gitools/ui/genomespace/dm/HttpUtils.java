@@ -36,18 +36,19 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Jim Robinson
  * @date 9/22/11
+ * @noinspection ALL
  */
 public class HttpUtils
 {
 
-    private static Logger log = Logger.getLogger(HttpUtils.class);
+    private static final Logger log = Logger.getLogger(HttpUtils.class);
 
     private static HttpUtils instance;
 
-    public static int CONNECT_TIMEOUT = 20000;        // 20 seconds
-    public static int READ_TIMEOUT = 1000 * 3 * 60;   // 3 minutes
+    private static final int CONNECT_TIMEOUT = 20000;        // 20 seconds
+    private static final int READ_TIMEOUT = 1000 * 3 * 60;   // 3 minutes
 
-    private Map<String, Boolean> byteRangeTestMap;
+    private final Map<String, Boolean> byteRangeTestMap;
 
     private final int MAX_REDIRECTS = 5;
 
@@ -57,7 +58,9 @@ public class HttpUtils
     private char[] defaultPassword = null;
     private static Pattern URLmatcher = Pattern.compile(".{1,8}://.*");
 
-    // static provided to support unit testing
+    /**
+     * @noinspection UnusedDeclaration
+     */ // static provided to support unit testing
     private static boolean BYTE_RANGE_DISABLED = false;
 
     /**
@@ -204,7 +207,7 @@ public class HttpUtils
     }
 
     @Nullable
-    public InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException
+    InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException
     {
 
         HttpURLConnection conn = openConnection(url, requestProperties);
@@ -235,7 +238,7 @@ public class HttpUtils
     }
 
     @Nullable
-    public String getHeaderField(@NotNull URL url, String key) throws IOException
+    String getHeaderField(@NotNull URL url, String key) throws IOException
     {
         HttpURLConnection conn = openConnection(url, null, "HEAD");
         if (conn == null)
@@ -399,26 +402,22 @@ public class HttpUtils
     private void disableCertificateValidation()
     {
         // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager()
-                {
-                    @NotNull
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers()
-                    {
-                        return new java.security.cert.X509Certificate[0];
-                    }
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager()
+        {
+            @NotNull
+            public java.security.cert.X509Certificate[] getAcceptedIssuers()
+            {
+                return new java.security.cert.X509Certificate[0];
+            }
 
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType)
-                    {
-                    }
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
+            {
+            }
 
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType)
-                    {
-                    }
-                }
-        };
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
+            {
+            }
+        }};
 
         // Install the all-trusting trust manager
         try
@@ -493,8 +492,7 @@ public class HttpUtils
      * @throws IOException
      */
     @Nullable
-    private HttpURLConnection openConnection(
-            @NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException
+    private HttpURLConnection openConnection(@NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException
     {
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -609,9 +607,9 @@ public class HttpUtils
     {
 
         @NotNull
-        Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
+        final Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
         @NotNull
-        HashSet<String> cacheAttempts = new HashSet<String>();
+        final HashSet<String> cacheAttempts = new HashSet<String>();
 
         /**
          * Called when password authentication is needed.
@@ -688,6 +686,8 @@ public class HttpUtils
 
     /**
      * For unit tests
+     *
+     * @noinspection UnusedDeclaration
      */
     public void resetAuthenticator()
     {
@@ -703,10 +703,10 @@ public class HttpUtils
      * gs-token=HnR9rBShNO4dTXk8cKXVJT98Oe0jWVY+; Domain=.genomespace.org; Expires=Mon, 21-Jul-2031 03:27:23 GMT; Path=/
      */
 
-    final static public Pattern equalPattern = Pattern.compile("=");
-    final static public Pattern semicolonPattern = Pattern.compile(";");
+    private final static Pattern equalPattern = Pattern.compile("=");
+    private final static Pattern semicolonPattern = Pattern.compile(";");
 
-    static class IGVCookieManager extends CookieManager
+    private static class IGVCookieManager extends CookieManager
     {
 
 

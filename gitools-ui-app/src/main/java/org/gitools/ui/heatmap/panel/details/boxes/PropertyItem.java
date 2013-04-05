@@ -31,10 +31,10 @@ import java.io.Serializable;
  */
 public class PropertyItem implements Serializable
 {
-    private String name;
-    private String description;
-    private String value;
-    private String link;
+    private final String name;
+    private final String description;
+    private final String value;
+    private final String link;
     private Color color;
 
     /**

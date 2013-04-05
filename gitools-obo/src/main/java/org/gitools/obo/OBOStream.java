@@ -31,6 +31,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * @noinspection ALL
+ */
 class OBOStream
 {
 
@@ -77,6 +80,9 @@ class OBOStream
         this.linePos = 0;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public URL getBaseUrl()
     {
         return baseUrl;

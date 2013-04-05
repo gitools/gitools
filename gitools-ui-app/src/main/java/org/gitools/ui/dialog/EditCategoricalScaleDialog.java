@@ -32,22 +32,19 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class EditCategoricalScaleDialog extends AbstractDialog
 {
 
     private static final long serialVersionUID = -829366063374164258L;
 
-    protected ColoredLabelsGroupsPage page;
+    private final ColoredLabelsGroupsPage page;
 
     public EditCategoricalScaleDialog(Window owner, ColoredLabel[] coloredLabels)
     {
-        super(
-                owner,
-                "Edit Categorical Scale",
-                "Edit Categorical Scale",
-                "Edit Categorical Scale",
-                MessageStatus.INFO,
-                null);
+        super(owner, "Edit Categorical Scale", "Edit Categorical Scale", "Edit Categorical Scale", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);
         setMinimumSize(new Dimension(500, 500));
@@ -55,10 +52,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog
         this.page = new ColoredLabelsGroupsPage(coloredLabels);
         setContainer(this.page);
         page.setValueEditable(true);
-        createComponents("Edit Categorical Scale",
-                "Edit Categorical Scale",
-                MessageStatus.INFO,
-                null);
+        createComponents("Edit Categorical Scale", "Edit Categorical Scale", MessageStatus.INFO, null);
 
     }
 

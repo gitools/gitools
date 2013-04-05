@@ -21,6 +21,9 @@
  */
 package org.gitools.intogen;
 
+/**
+ * @noinspection ALL
+ */
 public class IntogenServiceException extends Exception
 {
 

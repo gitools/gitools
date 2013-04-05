@@ -32,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class AnnotationMatrix extends StringMatrix
 {
@@ -40,8 +43,8 @@ public class AnnotationMatrix extends StringMatrix
 
     public static class Annotation
     {
-        private String key;
-        private String value;
+        private final String key;
+        private final String value;
 
         public Annotation(String key, String value)
         {
@@ -68,11 +71,7 @@ public class AnnotationMatrix extends StringMatrix
         super();
     }
 
-    public AnnotationMatrix(
-            String title,
-            ObjectMatrix1D rows,
-            ObjectMatrix1D columns,
-            ObjectMatrix2D cells)
+    public AnnotationMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells)
     {
 
         super(title, rows, columns, cells);

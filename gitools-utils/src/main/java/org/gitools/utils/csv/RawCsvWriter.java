@@ -27,12 +27,15 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class RawCsvWriter
 {
 
-    private PrintWriter out;
-    private char separator;
-    private char quote;
+    private final PrintWriter out;
+    private final char separator;
+    private final char quote;
 
     public RawCsvWriter(Writer writer, char separator, char quote)
     {

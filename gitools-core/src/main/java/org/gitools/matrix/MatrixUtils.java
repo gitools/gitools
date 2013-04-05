@@ -39,10 +39,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class MatrixUtils
 {
 
-    private static int MAX_UNIQUE = 30;
+    private static final int MAX_UNIQUE = 30;
 
     public static interface DoubleCast
     {
@@ -221,10 +224,7 @@ public class MatrixUtils
                 }
                 else
                 {
-                    lscale.getMid().setValue(
-                            (lscale.getMax().getValue() +
-                                    lscale.getMin().getValue())
-                                    / 2);
+                    lscale.getMid().setValue((lscale.getMax().getValue() + lscale.getMin().getValue()) / 2);
                 }
                 scale = lscale;
             }
@@ -311,15 +311,14 @@ public class MatrixUtils
     }
 
 
-    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
     {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too man (50), it returns
         * an equally distributed array values from min to max*/
 
         Double[] values = null;
         List<Double> valueList = new ArrayList<Double>();
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(
-                cellAdapter.getProperty(valueDimension).getValueClass());
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(cellAdapter.getProperty(valueDimension).getValueClass());
         Double min = Double.POSITIVE_INFINITY;
         Double max = Double.NEGATIVE_INFINITY;
 

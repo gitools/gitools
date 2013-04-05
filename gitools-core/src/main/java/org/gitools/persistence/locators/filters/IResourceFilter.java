@@ -24,6 +24,9 @@ package org.gitools.persistence.locators.filters;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public interface IResourceFilter
 {
     String getSuffix();

@@ -42,6 +42,9 @@ import org.kohsuke.args4j.Option;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @noinspection ALL
+ */
 public class OverlappingTool extends AnalysisTool
 {
 
@@ -57,11 +60,13 @@ public class OverlappingTool extends AnalysisTool
 
         @Option(name = "-r", aliases = "-rows",
                 usage = "Apply to rows, by default it is applied to columns.")
-        public boolean applyToRows = false;
+        public final boolean applyToRows = false;
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         @Option(name = "-ev", aliases = "-empty-values", metaVar = "<value>",
-                usage = "Replace empty values by <value>.\n" +
-                        "If not specified empty values will be discarded.")
+                usage = "Replace empty values by <value>.\n" + "If not specified empty values will be discarded.")
         public Double replaceValue;
 
         @Option(name = "-an", aliases = "-attr-name", metaVar = "<name>",
@@ -84,9 +89,9 @@ public class OverlappingTool extends AnalysisTool
         public String binCutoff;
     }
 
-    protected boolean binaryCutoffEnabled = false;
-    protected CutoffCmp binaryCutoffCmp;
-    protected double binaryCutoffValue;
+    private boolean binaryCutoffEnabled = false;
+    private CutoffCmp binaryCutoffCmp;
+    private double binaryCutoffValue;
 
     @Override
     public void validate(Object argsObject) throws ToolException
@@ -133,9 +138,7 @@ public class OverlappingTool extends AnalysisTool
 
         OverlappingArguments args = (OverlappingArguments) argsObject;
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 

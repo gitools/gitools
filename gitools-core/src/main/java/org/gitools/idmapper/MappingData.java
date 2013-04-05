@@ -28,11 +28,11 @@ import java.util.*;
 public class MappingData
 {
 
-    private MappingNode srcNode;
+    private final MappingNode srcNode;
     private MappingNode dstNode;
 
-    private Set<String> dstIds;
-    private Map<String, Set<String>> map;
+    private final Set<String> dstIds;
+    private final Map<String, Set<String>> map;
 
     public MappingData(String srcId, String dstId)
     {
@@ -91,7 +91,7 @@ public class MappingData
         ids.add(dstId);
     }
 
-    public void clearDstIds()
+    void clearDstIds()
     {
         dstIds.clear();
     }
@@ -126,7 +126,7 @@ public class MappingData
         }
     }
 
-    public void clear()
+    void clear()
     {
         dstIds.clear();
         map.clear();

@@ -25,6 +25,9 @@ import org.gitools.biomart.restful.model.Filter;
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 interface IFilterComponent
 {
 

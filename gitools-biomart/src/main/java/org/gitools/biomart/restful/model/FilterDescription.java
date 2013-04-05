@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FilterDescription extends AbstractDescription
 {
@@ -107,7 +110,7 @@ public class FilterDescription extends AbstractDescription
     @XmlElement(name = "Option")
     private List<Option> options = new ArrayList<Option>();
 
-    public FilterDescription()
+    FilterDescription()
     {
     }
 

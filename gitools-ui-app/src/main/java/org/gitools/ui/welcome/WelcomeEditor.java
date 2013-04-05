@@ -47,6 +47,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 
+/**
+ * @noinspection ALL
+ */
 public class WelcomeEditor extends HtmlEditor
 {
 
@@ -88,26 +91,22 @@ public class WelcomeEditor extends HtmlEditor
                 switch (dlg.getSelection())
                 {
                     case IntogenTypeDialog.MATRIX:
-                        new ImportIntogenMatrixAction()
-                                .actionPerformed(new ActionEvent(this, 0, name));
+                        new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
 
                     case IntogenTypeDialog.ONCOMODULES:
-                        new ImportIntogenOncomodulesAction()
-                                .actionPerformed(new ActionEvent(this, 0, name));
+                        new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
                 }
             }
         }
         else if (name.equals("importGo"))
         {
-            new ImportGoModulesAction()
-                    .actionPerformed(new ActionEvent(this, 0, name));
+            new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
         }
         else if (name.equals("importKegg"))
         {
-            new ImportKeggModulesAction()
-                    .actionPerformed(new ActionEvent(this, 0, name));
+            new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
         }
         else if (name.equals("importBiomart"))
         {
@@ -118,26 +117,22 @@ public class WelcomeEditor extends HtmlEditor
                 switch (dlg.getSelection())
                 {
                     case BiomartTypeDialog.TABLE:
-                        new ImportBiomartTableAction()
-                                .actionPerformed(new ActionEvent(this, 0, name));
+                        new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
 
                     case BiomartTypeDialog.MODULES:
-                        new ImportBiomartModulesAction()
-                                .actionPerformed(new ActionEvent(this, 0, name));
+                        new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
                 }
             }
         }
         else if (name.equals("importExcel"))
         {
-            new ImportExcelMatrixAction()
-                    .actionPerformed(new ActionEvent(this, 0, name));
+            new ImportExcelMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
         }
         else if (name.equals("analysis"))
         {
-            final Map<String, Class<? extends BaseAction>> actions =
-                    new HashMap<String, Class<? extends BaseAction>>();
+            final Map<String, Class<? extends BaseAction>> actions = new HashMap<String, Class<? extends BaseAction>>();
 
             actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
             actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
@@ -186,9 +181,7 @@ public class WelcomeEditor extends HtmlEditor
             dlg.setVisible(true);
             downloadExamples(dlg.getPath());
         }
-        else if (name.equals("dataMatrices")
-                || name.equals("dataModules")
-                || name.equals("dataTables"))
+        else if (name.equals("dataMatrices") || name.equals("dataModules") || name.equals("dataTables"))
         {
             DataHelpDialog dlg = new DataHelpDialog(AppFrame.get());
             dlg.setVisible(true);

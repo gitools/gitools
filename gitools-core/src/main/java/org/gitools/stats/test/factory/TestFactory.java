@@ -29,6 +29,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class TestFactory
 {
 
@@ -37,17 +40,16 @@ public abstract class TestFactory
     public static final String ZSCORE_TEST = "zscore";
     public static final String BINOMIAL_TEST = "binomial";
     public static final String FISHER_EXACT_TEST = "fisher-exact";
-    public static final String HYPERGEOMETRIC_TEST = "hypergeometric";
-    public static final String CHI_SQUARE_TEST = "chi-square";
-    public static final String MANN_WHITNEY_WILCOXON = "mannWhitneyWilcoxon";
+    private static final String HYPERGEOMETRIC_TEST = "hypergeometric";
+    private static final String CHI_SQUARE_TEST = "chi-square";
+    private static final String MANN_WHITNEY_WILCOXON = "mannWhitneyWilcoxon";
 
     private static enum TestEnum
     {
         zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
     }
 
-    private static final Map<String, TestEnum> testNameMap =
-            new HashMap<String, TestEnum>();
+    private static final Map<String, TestEnum> testNameMap = new HashMap<String, TestEnum>();
 
     static
     {
@@ -67,8 +69,7 @@ public abstract class TestFactory
     }
 
     @NotNull
-    private static Map<String, TestConfigEnum> testAliases =
-            new HashMap<String, TestConfigEnum>();
+    private static final Map<String, TestConfigEnum> testAliases = new HashMap<String, TestConfigEnum>();
 
     static
     {
@@ -140,40 +141,26 @@ public abstract class TestFactory
         {
             case zscoreMean:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
-                config.put(
-                        ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
-                        String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
-                config.put(
-                        ZscoreTestFactory.ESTIMATOR_PROPERTY,
-                        ZscoreTestFactory.MEAN_ESTIMATOR);
+                config.put(ZscoreTestFactory.NUM_SAMPLES_PROPERTY, String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
+                config.put(ZscoreTestFactory.ESTIMATOR_PROPERTY, ZscoreTestFactory.MEAN_ESTIMATOR);
                 break;
             case zscoreMedian:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
-                config.put(
-                        ZscoreTestFactory.NUM_SAMPLES_PROPERTY,
-                        String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
-                config.put(
-                        ZscoreTestFactory.ESTIMATOR_PROPERTY,
-                        ZscoreTestFactory.MEDIAN_ESTIMATOR);
+                config.put(ZscoreTestFactory.NUM_SAMPLES_PROPERTY, String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
+                config.put(ZscoreTestFactory.ESTIMATOR_PROPERTY, ZscoreTestFactory.MEDIAN_ESTIMATOR);
                 break;
             case binomial:
             case binomialExact:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-                config.put(
-                        BinomialTestFactory.APROXIMATION_PROPERTY,
-                        BinomialTestFactory.EXACT_APROX);
+                config.put(BinomialTestFactory.APROXIMATION_PROPERTY, BinomialTestFactory.EXACT_APROX);
                 break;
             case binomialNormal:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-                config.put(
-                        BinomialTestFactory.APROXIMATION_PROPERTY,
-                        BinomialTestFactory.NORMAL_APROX);
+                config.put(BinomialTestFactory.APROXIMATION_PROPERTY, BinomialTestFactory.NORMAL_APROX);
                 break;
             case binomialPoisson:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.BINOMIAL_TEST);
-                config.put(
-                        BinomialTestFactory.APROXIMATION_PROPERTY,
-                        BinomialTestFactory.POISSON_APROX);
+                config.put(BinomialTestFactory.APROXIMATION_PROPERTY, BinomialTestFactory.POISSON_APROX);
                 break;
             case hypergeometric:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.HYPERGEOMETRIC_TEST);
@@ -192,9 +179,9 @@ public abstract class TestFactory
         return config;
     }
 
-    protected ToolConfig toolConfig;
+    private final ToolConfig toolConfig;
 
-    public TestFactory(ToolConfig config)
+    TestFactory(ToolConfig config)
     {
         this.toolConfig = config;
     }

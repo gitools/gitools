@@ -32,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class ShowAllAction extends BaseAction
 {
 
@@ -42,7 +45,7 @@ public class ShowAllAction extends BaseAction
         ROWS, COLUMNS
     }
 
-    private ElementType type;
+    private final ElementType type;
 
     public ShowAllAction(@NotNull ElementType type)
     {
@@ -69,8 +72,7 @@ public class ShowAllAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -96,8 +98,7 @@ public class ShowAllAction extends BaseAction
 
             matrixView.setVisibleRows(visibleRows);
 
-            AppFrame.get()
-                    .setStatusText(visibleRows.length + " rows");
+            AppFrame.get().setStatusText(visibleRows.length + " rows");
         }
         else if (type == ElementType.COLUMNS)
         {
@@ -110,8 +111,7 @@ public class ShowAllAction extends BaseAction
 
             matrixView.setVisibleColumns(visibleColumns);
 
-            AppFrame.get()
-                    .setStatusText(visibleColumns.length + " columns");
+            AppFrame.get().setStatusText(visibleColumns.length + " columns");
         }
     }
 }

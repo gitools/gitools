@@ -24,6 +24,9 @@ package org.gitools.model.decorator;
 import java.awt.*;
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
 public class ElementDecoration implements Serializable
 {
 
@@ -34,11 +37,11 @@ public class ElementDecoration implements Serializable
         left, right, center
     }
 
-    protected String text;
-    public TextAlignment textAlign;
-    protected String toolTip;
-    protected Color fgColor;
-    protected Color bgColor;
+    private String text;
+    private TextAlignment textAlign;
+    private String toolTip;
+    private Color fgColor;
+    private Color bgColor;
 
     public ElementDecoration()
     {

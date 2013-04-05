@@ -37,11 +37,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * @noinspection ALL
+ */
 public class AddHeaderPage extends AbstractWizardPage
 {
 
-    private class IconListRenderer
-            extends DefaultListCellRenderer
+    private class IconListRenderer extends DefaultListCellRenderer
     {
 
         @Nullable
@@ -54,16 +56,12 @@ public class AddHeaderPage extends AbstractWizardPage
 
         @NotNull
         @Override
-        public Component getListCellRendererComponent(
-                JList list, @NotNull Object value, int index,
-                boolean isSelected, boolean cellHasFocus)
+        public Component getListCellRendererComponent(JList list, @NotNull Object value, int index, boolean isSelected, boolean cellHasFocus)
         {
 
             // Get the renderer component from parent class
 
-            JLabel label =
-                    (JLabel) super.getListCellRendererComponent(list,
-                            value, index, isSelected, cellHasFocus);
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             // Get icon to use for the list item value
 
@@ -79,8 +77,8 @@ public class AddHeaderPage extends AbstractWizardPage
 
     private static class HeaderType
     {
-        private String title;
-        private Class<? extends HeatmapHeader> cls;
+        private final String title;
+        private final Class<? extends HeatmapHeader> cls;
 
         public HeaderType(String title, Class<? extends HeatmapHeader> cls)
         {
@@ -106,16 +104,14 @@ public class AddHeaderPage extends AbstractWizardPage
     }
 
     @NotNull
-    public static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    private static final String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
     @NotNull
-    public static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    private static final String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
     @NotNull
-    public static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    private static final String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
     @NotNull
-    public static String ANNOTATION_HEATMAP = "Heatmap from annotation";
+    public static final String ANNOTATION_HEATMAP = "Heatmap from annotation";
 
-
-    private DefaultListModel model;
 
     /**
      * Creates new form AddHeaderDialog
@@ -131,7 +127,7 @@ public class AddHeaderPage extends AbstractWizardPage
         icons.put(ANNOTATION_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_HEATMAP, 60));
 
 
-        model = new DefaultListModel();
+        DefaultListModel model = new DefaultListModel();
         model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
         model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
         model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDataHeatmapHeader.class));
@@ -178,20 +174,8 @@ public class AddHeaderPage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
 

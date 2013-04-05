@@ -27,8 +27,8 @@ package org.gitools.kegg.service.domain;
 public class IdConversion
 {
 
-    private String sourceId;
-    private String targetId;
+    private final String sourceId;
+    private final String targetId;
 
     public IdConversion(String[] fields)
     {

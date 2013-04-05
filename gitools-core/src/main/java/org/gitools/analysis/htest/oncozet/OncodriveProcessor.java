@@ -65,7 +65,7 @@ public class OncodriveProcessor extends HtestProcessor
         }
     }
 
-    private OncodriveAnalysis analysis;
+    private final OncodriveAnalysis analysis;
 
     public OncodriveProcessor(OncodriveAnalysis analysis)
     {
@@ -90,9 +90,7 @@ public class OncodriveProcessor extends HtestProcessor
         ModuleMap csmap = analysis.getModuleMap().get();
         if (csmap != null)
         {
-            csmap = csmap.remap(labels,
-                    analysis.getMinModuleSize(),
-                    analysis.getMaxModuleSize());
+            csmap = csmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
         }
         else
         {
@@ -122,8 +120,7 @@ public class OncodriveProcessor extends HtestProcessor
         resultsMatrix.setRows(rowLabels);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(
-                new BeanElementAdapter(test.getResultClass()));
+        resultsMatrix.setCellAdapter(new BeanElementAdapter(test.getResultClass()));
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -166,9 +163,7 @@ public class OncodriveProcessor extends HtestProcessor
                 int k = 0;
                 for (int i = 0; i < numRows; i++)
                     for (int j = 0; j < numColumns; j++)
-                        population.setQuick(k++,
-                                MatrixUtils.doubleValue(
-                                        dataMatrix.getCellValue(i, columnIndices[j], 0)));
+                        population.setQuick(k++, MatrixUtils.doubleValue(dataMatrix.getCellValue(i, columnIndices[j], 0)));
 
                 population = population.viewSelection(notNaNProc);
 
@@ -184,13 +179,10 @@ public class OncodriveProcessor extends HtestProcessor
 
                     final String itemName = rowLabels.getQuick(itemIdx).toString();
 
-                    final DoubleMatrix1D itemValues =
-                            DoubleFactory1D.dense.make(numColumns);
+                    final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 
                     for (int j = 0; j < numColumns; j++)
-                        itemValues.setQuick(j,
-                                MatrixUtils.doubleValue(
-                                        dataMatrix.getCellValue(itemIdx, columnIndices[j], 0)));
+                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getCellValue(itemIdx, columnIndices[j], 0)));
 
                     final RunSlot slot;
                     try
@@ -216,9 +208,7 @@ public class OncodriveProcessor extends HtestProcessor
                             CommonResult result = null;
                             try
                             {
-                                result = slot.test.processTest(
-                                        csetName, itemValues,
-                                        itemName, cindices);
+                                result = slot.test.processTest(csetName, itemValues, itemName, cindices);
                             } catch (Throwable cause)
                             {
                                 cause.printStackTrace();
@@ -251,13 +241,9 @@ public class OncodriveProcessor extends HtestProcessor
 
 		/* Multiple test correction */
 
-        MTC mtc =
-                MTCFactory.createFromName(analysis.getMtc());
+        MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-        multipleTestCorrection(
-                resultsMatrix,
-                mtc,
-                monitor.subtask());
+        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

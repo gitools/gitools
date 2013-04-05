@@ -25,6 +25,9 @@ import org.gitools.heatmap.Heatmap;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractHeatmapDrawer
 {
 
@@ -32,7 +35,7 @@ public abstract class AbstractHeatmapDrawer
 
     protected boolean pictureMode;
 
-    public AbstractHeatmapDrawer(Heatmap heatmap)
+    protected AbstractHeatmapDrawer(Heatmap heatmap)
     {
         this.heatmap = heatmap;
         this.pictureMode = false;
@@ -46,19 +49,6 @@ public abstract class AbstractHeatmapDrawer
     public void setHeatmap(Heatmap heatmap)
     {
         this.heatmap = heatmap;
-    }
-
-	/*protected int getRowsGridSize() {
-        return heatmap.isRowsGridEnabled() ? heatmap.getRowsGridSize() : 0;
-	}
-
-	protected int getColumnsGridSize() {
-		return heatmap.isColumnsGridEnabled() ? heatmap.getColumnsGridSize() : 0;
-	}*/
-
-    protected int getBorderSize()
-    {
-        return heatmap.isShowBorders() ? 1 : 0;
     }
 
     public boolean isPictureMode()

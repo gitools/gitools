@@ -29,13 +29,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * @noinspection ALL
+ */
 public class BeanResolver implements TextPattern.VariableValueResolver
 {
 
     private static class BeanProperty
     {
-        private Method m;
+        private final Method m;
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         public BeanProperty(Method m)
         {
             this.m = m;
@@ -54,10 +60,10 @@ public class BeanResolver implements TextPattern.VariableValueResolver
         }
     }
 
-    private Class<?> beanClass;
+    private final Class<?> beanClass;
     private Object beanInstance;
 
-    private Map<String, BeanProperty> beanProperties;
+    private final Map<String, BeanProperty> beanProperties;
 
     public BeanResolver(@NotNull Class<?> beanClass)
     {
@@ -108,13 +114,10 @@ public class BeanResolver implements TextPattern.VariableValueResolver
         {
             boolean isGet = m.getName().startsWith("get");
             boolean isIs = m.getName().startsWith("is");
-            if (m.getParameterTypes().length == 0
-                    && !m.getName().equals("getClass")
-                    && (isGet || isIs))
+            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || isIs))
             {
 
-                final String getterName = isGet ?
-                        m.getName().substring(3) : m.getName().substring(2);
+                final String getterName = isGet ? m.getName().substring(3) : m.getName().substring(2);
 
                 //final Class<?> propertyClass = m.getReturnType();
 

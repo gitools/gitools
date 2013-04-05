@@ -40,6 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class AnalysisTool extends AbstractTool
 {
 
@@ -47,7 +50,7 @@ public class AnalysisTool extends AbstractTool
     protected static final String LIST_L_FMT = "\t* %-48s%s";
 
     @NotNull
-    protected List<Attribute> analysisAttributes = new ArrayList<Attribute>(0);
+    private final List<Attribute> analysisAttributes = new ArrayList<Attribute>(0);
 
     @Override
     public void validate(Object argsObject) throws ToolException
@@ -131,13 +134,7 @@ public class AnalysisTool extends AbstractTool
     protected void printDataFormats(@NotNull PrintStream out)
     {
         out.println("Supported data formats:");
-        FileFormat[] formats = new FileFormat[]{
-                FileFormats.DOUBLE_MATRIX,
-                FileFormats.DOUBLE_BINARY_MATRIX,
-                FileFormats.GENE_MATRIX,
-                FileFormats.GENE_MATRIX_TRANSPOSED,
-                FileFormats.MODULES_2C_MAP
-        };
+        FileFormat[] formats = new FileFormat[]{FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 
         for (FileFormat f : formats)
             out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
@@ -146,12 +143,7 @@ public class AnalysisTool extends AbstractTool
     protected void printModulesFormats(@NotNull PrintStream out)
     {
         out.println("Supported modules formats:");
-        FileFormat[] formats = new FileFormat[]{
-                FileFormats.GENE_MATRIX,
-                FileFormats.GENE_MATRIX_TRANSPOSED,
-                FileFormats.MODULES_2C_MAP,
-                FileFormats.DOUBLE_BINARY_MATRIX
-        };
+        FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP, FileFormats.DOUBLE_BINARY_MATRIX};
 
         for (FileFormat f : formats)
             out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));

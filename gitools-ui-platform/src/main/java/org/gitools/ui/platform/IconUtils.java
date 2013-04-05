@@ -65,7 +65,7 @@ public class IconUtils
         return image;
     }
 
-    public static Image iconToImage(@NotNull Icon icon, int width, int height)
+    private static Image iconToImage(@NotNull Icon icon, int width, int height)
     {
 
         int w = icon.getIconWidth();

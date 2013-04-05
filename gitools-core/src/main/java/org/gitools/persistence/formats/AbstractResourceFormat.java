@@ -32,8 +32,8 @@ import java.util.Properties;
 public abstract class AbstractResourceFormat<R extends IResource> implements IResourceFormat<R>
 {
 
-    private String extension;
-    private Class<R> resourceClass;
+    private final String extension;
+    private final Class<R> resourceClass;
 
     protected AbstractResourceFormat(String extension, Class<R> resourceClass)
     {

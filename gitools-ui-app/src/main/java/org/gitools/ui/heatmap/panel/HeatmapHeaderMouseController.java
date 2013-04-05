@@ -33,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener
 {
 
@@ -51,7 +54,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private Point startPoint;
     private Point startScrollValue;
     @NotNull
-    private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
+    private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
 
     public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel, boolean horizontal)
@@ -368,11 +371,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
         else if (ctrlDown)
         {
-            boolean selected = horizontal ?
-                    mv.isColumnSelected(index) : mv.isRowSelected(index);
+            boolean selected = horizontal ? mv.isColumnSelected(index) : mv.isRowSelected(index);
 
-            int[] prevSel = horizontal ?
-                    mv.getSelectedColumns() : mv.getSelectedRows();
+            int[] prevSel = horizontal ? mv.getSelectedColumns() : mv.getSelectedRows();
 
             if (dragging && !indexChanged)
             {
@@ -441,8 +442,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private int getIndexCount()
     {
-        return horizontal ? heatmap.getMatrixView().getColumnCount()
-                : heatmap.getMatrixView().getRowCount();
+        return horizontal ? heatmap.getMatrixView().getColumnCount() : heatmap.getMatrixView().getRowCount();
     }
 
     private boolean isValidIndex(int index)

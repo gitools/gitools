@@ -23,18 +23,17 @@ package org.gitools.utils.colorscale.impl;
 
 import org.gitools.utils.colorscale.ColorScalePoint;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.awt.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CorrelationColorScale extends LinearTwoSidedColorScale
 {
 
     public CorrelationColorScale()
     {
-        super(
-                new ColorScalePoint(-1, Color.GREEN),
-                new ColorScalePoint(0, Color.WHITE),
-                new ColorScalePoint(1, new Color(255, 0, 255))
-        );
+        super(new ColorScalePoint(-1, Color.GREEN), new ColorScalePoint(0, Color.WHITE), new ColorScalePoint(1, new Color(255, 0, 255)));
     }
 
 }

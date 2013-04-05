@@ -57,9 +57,7 @@ public class FisherTest extends AbstractTest
 
     @NotNull
     @Override
-    public CommonResult processTest(
-            String condName, @NotNull DoubleMatrix1D condItems,
-            String groupName, @NotNull int[] groupItemIndices)
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, @NotNull int[] groupItemIndices)
     {
 
         int[] ctable = new int[4];
@@ -71,15 +69,7 @@ public class FisherTest extends AbstractTest
 
         int N = ctable[0] + ctable[1];
 
-        return new FisherResult(
-                N,
-                fisher.getLeftPValue(),
-                fisher.getRightPValue(),
-                fisher.getTwoTailPValue(),
-                ctable[0],
-                ctable[1],
-                ctable[2],
-                ctable[3]);
+        return new FisherResult(N, fisher.getLeftPValue(), fisher.getRightPValue(), fisher.getTwoTailPValue(), ctable[0], ctable[1], ctable[2], ctable[3]);
     }
 
     /**
@@ -98,10 +88,7 @@ public class FisherTest extends AbstractTest
      * @param groupItems item indices to propItems for the items that belongs to the group
      * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      */
-    private void calcContingencyTable(
-            @NotNull DoubleMatrix1D condItems,
-            @NotNull int[] groupItems,
-            int[] ctable)
+    private void calcContingencyTable(@NotNull DoubleMatrix1D condItems, @NotNull int[] groupItems, int[] ctable)
     {
 
         // Initialize the contingency table with zeros

@@ -27,6 +27,9 @@ import org.gitools.stats.test.BinomialTest.AproximationMode;
 import org.gitools.stats.test.Test;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class BinomialTestFactory extends TestFactory
 {
 
@@ -37,7 +40,7 @@ public class BinomialTestFactory extends TestFactory
     public static final String POISSON_APROX = "poisson";
     public static final String AUTOMATIC_APROX = "automatic";
 
-    private AproximationMode aproxMode;
+    private final AproximationMode aproxMode;
 
     public BinomialTestFactory(@NotNull ToolConfig config)
     {

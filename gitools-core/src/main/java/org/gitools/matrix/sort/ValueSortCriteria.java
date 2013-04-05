@@ -24,6 +24,9 @@ package org.gitools.matrix.sort;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public final class ValueSortCriteria
 {
 
@@ -32,8 +35,8 @@ public final class ValueSortCriteria
         ASCENDING("Ascending", 1),
         DESCENDING("Descending", -1);
 
-        private String title;
-        private int factor;
+        private final String title;
+        private final int factor;
 
         private SortDirection(String title, int factor)
         {
@@ -53,25 +56,18 @@ public final class ValueSortCriteria
         }
     }
 
-    protected String attributeName;
-    protected int attributeIndex;
-    protected IAggregator aggregator;
-    protected SortDirection direction;
+    private String attributeName;
+    private int attributeIndex;
+    private IAggregator aggregator;
+    private SortDirection direction;
 
-    public ValueSortCriteria(
-            int attributeIndex,
-            IAggregator aggregator,
-            SortDirection direction)
+    public ValueSortCriteria(int attributeIndex, IAggregator aggregator, SortDirection direction)
     {
 
         this(null, attributeIndex, aggregator, direction);
     }
 
-    public ValueSortCriteria(
-            String attributeName,
-            int attributeIndex,
-            IAggregator aggregator,
-            SortDirection direction)
+    public ValueSortCriteria(String attributeName, int attributeIndex, IAggregator aggregator, SortDirection direction)
     {
 
         this.attributeName = attributeName;
@@ -124,8 +120,6 @@ public final class ValueSortCriteria
     @Override
     public String toString()
     {
-        return attributeName + ", "
-                + aggregator.toString() + ", "
-                + direction.toString();
+        return attributeName + ", " + aggregator.toString() + ", " + direction.toString();
     }
 }

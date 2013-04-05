@@ -37,11 +37,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * @noinspection ALL
+ */
 public class AppFrame extends JFrame
 {
 
     private static final long serialVersionUID = -6899584212813749990L;
-    private static String appName;
+    private static final String appName;
     private static String appVersion;
 
     static
@@ -165,7 +168,7 @@ public class AppFrame extends JFrame
 
     }
 
-    public boolean isLatestGitools() throws Exception
+    boolean isLatestGitools() throws Exception
     {
 
         String thisVersion = AppFrame.getAppVersion();
@@ -180,8 +183,7 @@ public class AppFrame extends JFrame
         con.setConnectTimeout(5);
         con.setReadTimeout(5);
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(latestUrl.openStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(latestUrl.openStream()));
 
         String latestVersion;
         latestVersion = in.readLine();

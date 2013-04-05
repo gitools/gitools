@@ -33,27 +33,30 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * @noinspection ALL
+ */
 public class ColorScaleDrawer
 {
 
     private NumericColorScale scale;
 
-    private Color bgColor;
+    private final Color bgColor;
 
     private double zoomRangeMin;
     private double zoomRangeMax;
 
-    private int widthPadding;
-    private int heightPadding;
+    private final int widthPadding;
+    private final int heightPadding;
 
     private int barSize;
-    private Color barBorderColor;
+    private final Color barBorderColor;
 
-    private boolean legendEnabled;
-    private Color legendPointColor;
-    private int legendPadding;
-    private Font legendFont;
-    private String legendFormat;
+    private final boolean legendEnabled;
+    private final Color legendPointColor;
+    private final int legendPadding;
+    private final Font legendFont;
+    private final String legendFormat;
 
     public ColorScaleDrawer(IColorScale scale)
     {
@@ -79,7 +82,7 @@ public class ColorScaleDrawer
         return scale;
     }
 
-    public void setScale(IColorScale scale)
+    void setScale(IColorScale scale)
     {
         this.scale = (NumericColorScale) scale;
         resetZoom();

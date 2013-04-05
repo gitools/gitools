@@ -49,16 +49,13 @@ public class SortByLabelAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        IEditor editor = AppFrame.get()
-                .getEditorsPanel()
-                .getSelectedEditor();
+        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
         if (model == null || !(model instanceof Heatmap))
@@ -86,17 +83,7 @@ public class SortByLabelAction extends BaseAction
             {
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByLabel(matrixView,
-                        page.isApplyToRowsSelected(),
-                        page.getRowsPattern(),
-                        hm.getRowDim().getAnnotations(),
-                        page.getRowsDirection(),
-                        page.getRowsNumeric(),
-                        page.isApplyToColumnsSelected(),
-                        page.getColumnsPattern(),
-                        hm.getColumnDim().getAnnotations(),
-                        page.getColumnsDirection(),
-                        page.getColumnsNumeric());
+                MatrixViewSorter.sortByLabel(matrixView, page.isApplyToRowsSelected(), page.getRowsPattern(), hm.getRowDim().getAnnotations(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), hm.getColumnDim().getAnnotations(), page.getColumnsDirection(), page.getColumnsNumeric());
 
                 monitor.end();
             }

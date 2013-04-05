@@ -43,18 +43,15 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ModulesPage extends AbstractWizardPage
 {
 
     private static final long serialVersionUID = -3938595143114651781L;
 
-    private static final FileFormat[] formats = new FileFormat[]{
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.DOUBLE_BINARY_MATRIX,
-            FileFormats.MODULES_INDEXED_MAP
-    };
+    private static final FileFormat[] formats = new FileFormat[]{FileFormats.MODULES_2C_MAP, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_INDEXED_MAP};
 
     private boolean emptyFileAllowed;
 
@@ -228,61 +225,8 @@ public class ModulesPage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel1)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(fileFormatCb, 0, 455, Short.MAX_VALUE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel2)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(fileBrowseBtn)))
-                                                .addGap(26, 26, 26))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addContainerGap(456, Short.MAX_VALUE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                        .addComponent(minSizeEnableChk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(maxSizeEnableChk))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(minSizeValueCb, 0, 209, Short.MAX_VALUE)
-                                                        .addComponent(maxSizeValueCb, 0, 209, Short.MAX_VALUE))
-                                                .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(fileFormatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(fileBrowseBtn)
-                                        .addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(minSizeEnableChk)
-                                        .addComponent(minSizeValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(maxSizeValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(maxSizeEnableChk))
-                                .addContainerGap(125, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(fileFormatCb, 0, 455, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(filePath, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(fileBrowseBtn))).addGap(26, 26, 26)).addGroup(layout.createSequentialGroup().addComponent(jLabel3).addContainerGap(456, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(minSizeEnableChk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(maxSizeEnableChk)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(minSizeValueCb, 0, 209, Short.MAX_VALUE).addComponent(maxSizeValueCb, 0, 209, Short.MAX_VALUE)).addContainerGap()))));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(fileFormatCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel1)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel2).addComponent(fileBrowseBtn).addComponent(filePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(minSizeEnableChk).addComponent(minSizeValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(maxSizeValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(maxSizeEnableChk)).addContainerGap(125, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void minSizeEnableChkItemStateChanged(java.awt.event.ItemEvent evt)
@@ -292,10 +236,7 @@ public class ModulesPage extends AbstractWizardPage
 
     private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_fileBrowseBtnActionPerformed
-        File selPath = FileChooserUtils.selectFile(
-                "Select file",
-                Settings.getDefault().getLastMapPath(),
-                FileChooserUtils.MODE_OPEN);
+        File selPath = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastMapPath(), FileChooserUtils.MODE_OPEN);
 
         if (selPath != null)
         {
@@ -312,14 +253,14 @@ public class ModulesPage extends AbstractWizardPage
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    public javax.swing.JCheckBox maxSizeEnableChk;
-    public javax.swing.JComboBox maxSizeValueCb;
-    public javax.swing.JCheckBox minSizeEnableChk;
-    public javax.swing.JComboBox minSizeValueCb;
+    private javax.swing.JCheckBox maxSizeEnableChk;
+    private javax.swing.JComboBox maxSizeValueCb;
+    private javax.swing.JCheckBox minSizeEnableChk;
+    private javax.swing.JComboBox minSizeValueCb;
     // End of variables declaration//GEN-END:variables
 
     @NotNull
-    protected FileFormat getFileFormat()
+    FileFormat getFileFormat()
     {
         return (FileFormat) fileFormatCb.getSelectedItem();
     }

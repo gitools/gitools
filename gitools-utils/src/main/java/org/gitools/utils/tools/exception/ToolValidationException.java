@@ -21,6 +21,9 @@
  */
 package org.gitools.utils.tools.exception;
 
+/**
+ * @noinspection ALL
+ */
 public class ToolValidationException extends ToolException
 {
 

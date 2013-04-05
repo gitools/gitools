@@ -25,7 +25,7 @@ import org.gitools.ui.actions.help.AboutAction;
 import org.gitools.ui.actions.help.WelcomeAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public final class HelpActions
+final class HelpActions
 {
 
     public static final BaseAction aboutAction = new AboutAction();

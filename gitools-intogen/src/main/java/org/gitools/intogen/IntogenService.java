@@ -57,12 +57,7 @@ public class IntogenService
         return service;
     }
 
-    public void queryFromPOST(
-            File folder,
-            String prefix,
-            @NotNull URL action,
-            @NotNull List<String[]> properties,
-            @NotNull IProgressMonitor monitor) throws IntogenServiceException
+    public void queryFromPOST(File folder, String prefix, @NotNull URL action, @NotNull List<String[]> properties, @NotNull IProgressMonitor monitor) throws IntogenServiceException
     {
 
         try

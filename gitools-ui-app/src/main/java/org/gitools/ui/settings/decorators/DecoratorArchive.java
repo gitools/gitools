@@ -44,7 +44,7 @@ public class DecoratorArchive
     public transient final static String VERSION = "2.0";
 
     @NotNull
-    private List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
+    private final List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
 
     private transient final String DEFAULT = "Default";
 

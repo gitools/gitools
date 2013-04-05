@@ -23,13 +23,16 @@ package org.gitools.stats.test.results;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
+/**
+ * @noinspection ALL
+ */
 public class FisherResult extends CommonResult
 {
 
-    public int a;
-    public int b;
-    public int c;
-    public int d;
+    private int a;
+    private int b;
+    private int c;
+    private int d;
 
     public FisherResult()
     {
@@ -37,10 +40,7 @@ public class FisherResult extends CommonResult
         a = b = c = d = 0;
     }
 
-    public FisherResult(
-            int n,
-            double leftPvalue, double rightPvalue, double twoTailPvalue,
-            int a, int b, int c, int d)
+    public FisherResult(int n, double leftPvalue, double rightPvalue, double twoTailPvalue, int a, int b, int c, int d)
     {
 
         super(n, leftPvalue, rightPvalue, twoTailPvalue);
@@ -62,6 +62,9 @@ public class FisherResult extends CommonResult
         this.a = a;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @AttributeDef(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
     public int getB()
     {
@@ -73,6 +76,9 @@ public class FisherResult extends CommonResult
         this.b = b;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @AttributeDef(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
     public int getC()
     {

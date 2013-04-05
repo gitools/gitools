@@ -27,6 +27,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractDialog extends JDialog
 {
 
@@ -34,12 +37,12 @@ public abstract class AbstractDialog extends JDialog
 
     private DialogHeaderPanel hdrPanel;
 
-    protected JComponent container;
+    private JComponent container;
 
     /**
      * A return status code - returned if Cancel button has been pressed
      */
-    public static final int RET_CANCEL = 0;
+    private static final int RET_CANCEL = 0;
     /**
      * A return status code - returned if OK button has been pressed
      */
@@ -47,11 +50,7 @@ public abstract class AbstractDialog extends JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public AbstractDialog(
-            Window owner,
-            String title, String header,
-            String message, @NotNull MessageStatus status,
-            Icon logo)
+    protected AbstractDialog(Window owner, String title, String header, String message, @NotNull MessageStatus status, Icon logo)
     {
 
         super(owner, title);
@@ -66,7 +65,7 @@ public abstract class AbstractDialog extends JDialog
         setMinimumSize(new Dimension(300, 260));
     }
 
-    public AbstractDialog(Window owner, String title, Icon icon)
+    protected AbstractDialog(Window owner, String title, Icon icon)
     {
         this(owner, title, "", "", MessageStatus.INFO, icon);
     }
@@ -86,11 +85,7 @@ public abstract class AbstractDialog extends JDialog
         this.container = container;
     }
 
-    protected void createComponents(
-            String header,
-            String message,
-            @NotNull MessageStatus status,
-            Icon logo)
+    protected void createComponents(String header, String message, @NotNull MessageStatus status, Icon logo)
     {
 
         hdrPanel = new DialogHeaderPanel();
@@ -106,9 +101,7 @@ public abstract class AbstractDialog extends JDialog
 
         container = createContainer();
 
-        final DialogButtonsPanel buttonsPanel =
-                new DialogButtonsPanel(
-                        createButtons());
+        final DialogButtonsPanel buttonsPanel = new DialogButtonsPanel(createButtons());
 
         JPanel bp = new JPanel();
         bp.setLayout(new BorderLayout());
@@ -124,7 +117,7 @@ public abstract class AbstractDialog extends JDialog
         add(bp, BorderLayout.SOUTH);
     }
 
-    public DialogHeaderPanel getHeaderPanel()
+    protected DialogHeaderPanel getHeaderPanel()
     {
         return hdrPanel;
     }

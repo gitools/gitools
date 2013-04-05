@@ -35,13 +35,16 @@ import javax.swing.event.ListSelectionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartDatasetPage extends AbstractWizardPage
 {
 
     private static class DatasetListWrapper
     {
 
-        private DatasetInfo dataset;
+        private final DatasetInfo dataset;
 
         public DatasetListWrapper(DatasetInfo dataset)
         {
@@ -69,6 +72,9 @@ public class BiomartDatasetPage extends AbstractWizardPage
 
     private boolean updated;
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public BiomartDatasetPage(BiomartService biomartService /*IBiomartService biomartService*/)
     {
         super();
@@ -142,8 +148,7 @@ public class BiomartDatasetPage extends AbstractWizardPage
                         @Override
                         public void run()
                         {
-                            panelDataset.setListData(visibleDataSets.toArray(
-                                    new DatasetListWrapper[visibleDataSets.size()]));
+                            panelDataset.setListData(visibleDataSets.toArray(new DatasetListWrapper[visibleDataSets.size()]));
 
                             setMessage(MessageStatus.INFO, "");
                         }

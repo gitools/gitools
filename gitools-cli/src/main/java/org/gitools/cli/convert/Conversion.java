@@ -26,10 +26,10 @@ import org.jetbrains.annotations.Nullable;
 class Conversion
 {
 
-    public String src;
-    public String dst;
+    private final String src;
+    private final String dst;
 
-    public ConversionDelegate delegate;
+    public final ConversionDelegate delegate;
 
     public Conversion(String src, String dst)
     {

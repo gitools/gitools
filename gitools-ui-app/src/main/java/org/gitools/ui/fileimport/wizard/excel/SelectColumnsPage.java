@@ -35,6 +35,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class SelectColumnsPage extends AbstractWizardPage
 {
 
@@ -215,7 +218,7 @@ public class SelectColumnsPage extends AbstractWizardPage
 
     private class CheckListItem
     {
-        private ExcelHeader header;
+        private final ExcelHeader header;
         private boolean isSelected = false;
 
         public CheckListItem(ExcelHeader header)

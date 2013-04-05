@@ -43,6 +43,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartAttributePanel extends FilteredTreePanel
 {
 
@@ -56,9 +59,9 @@ public class BiomartAttributePanel extends FilteredTreePanel
     @Nullable
     private List<AttributePage> attrPages;
 
-    private List<AttributeDescription> selectedAttr;
-    private List<String> selectedAttrNames;
-    private Set<String> selectedAttrNamesSet;
+    private final List<AttributeDescription> selectedAttr;
+    private final List<String> selectedAttrNames;
+    private final Set<String> selectedAttrNamesSet;
 
     public static interface AttributeSelectionListener
     {
@@ -66,8 +69,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
     }
 
     @NotNull
-    private List<AttributeSelectionListener> attributeSelectionListeners =
-            new ArrayList<AttributeSelectionListener>();
+    private final List<AttributeSelectionListener> attributeSelectionListeners = new ArrayList<AttributeSelectionListener>();
 
     public BiomartAttributePanel()
     {
@@ -106,10 +108,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
             loadAttributePages();
         }
         */
-    public void setBiomartParameters(
-            BiomartService port,
-            MartLocation mart,
-            DatasetInfo dataset)
+    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset)
     {
 
         this.port = port;
@@ -194,13 +193,9 @@ public class BiomartAttributePanel extends FilteredTreePanel
 
         for (TreePath sel : paths)
         {
-            DefaultMutableTreeNode node =
-                    (DefaultMutableTreeNode) sel.getLastPathComponent();
-            AttributeWrapper attrw =
-                    (AttributeWrapper) node.getUserObject();
-            AttributeDescription attribute =
-                    attrw.getType() == AttributeWrapper.NodeType.ATTRIBUTE
-                            ? (AttributeDescription) attrw.getObject() : null;
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) sel.getLastPathComponent();
+            AttributeWrapper attrw = (AttributeWrapper) node.getUserObject();
+            AttributeDescription attribute = attrw.getType() == AttributeWrapper.NodeType.ATTRIBUTE ? (AttributeDescription) attrw.getObject() : null;
 
             if (e.isAddedPath(sel))
             {
@@ -277,8 +272,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
     {
         this.attrPages = attrPages;
 
-        final AttributesTreeModel model = attrPages == null ? null :
-                new AttributesTreeModel(attrPages);
+        final AttributesTreeModel model = attrPages == null ? null : new AttributesTreeModel(attrPages);
 
         setModel(model);
         expandAll();

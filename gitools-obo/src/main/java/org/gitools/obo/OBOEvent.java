@@ -25,15 +25,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
+/**
+ * @noinspection ALL
+ */
 public class OBOEvent implements OBOEventTypes
 {
 
-    private int type;
+    private final int type;
     private String stanzaName;
     private String tagName;
     private String tagContents;
 
-    protected int linePos;
+    private final int linePos;
 
     public OBOEvent(int type, int line)
     {

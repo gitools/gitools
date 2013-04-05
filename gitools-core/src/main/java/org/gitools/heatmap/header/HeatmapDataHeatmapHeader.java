@@ -30,6 +30,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapDataHeatmapHeader extends HeatmapHeader
 {
 
@@ -37,7 +40,7 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
     {
         leftOf,
         rightOf,
-        inside;
+        inside
     }
 
     private static final String HEADER_HEATMAP_CHANGED = "headerHeatmap";

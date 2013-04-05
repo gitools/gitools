@@ -36,28 +36,11 @@ import java.util.List;
 public class ClusteringMethodFactory
 {
 
-    private static final ClusteringMethodDescriptor[] DEFAULT_DESCRIPTORS = new ClusteringMethodDescriptor[]{
-            new ClusteringMethodDescriptor(
-                    "Clustering from annotations",
-                    "Cluster data instances according to a set of selected annotations",
-                    AnnPatClusteringMethod.class),
-            new ClusteringMethodDescriptor(
-                    "Agglomerative hierarchical clustering",
-                    "Cluster data instances according to classic agglomerative hierarchical clustering method",
-                    WekaHCLMethod.class),
-            new ClusteringMethodDescriptor(
-                    "K-means clustering",
-                    "Cluster data instances according to k-means clustering method",
-                    WekaKmeansMethod.class),
-            new ClusteringMethodDescriptor(
-                    "Cobweb clustering",
-                    "Cluster data instances according to cobweb clustering method",
-                    WekaCobWebMethod.class)
-    };
+    private static final ClusteringMethodDescriptor[] DEFAULT_DESCRIPTORS = new ClusteringMethodDescriptor[]{new ClusteringMethodDescriptor("Clustering from annotations", "Cluster data instances according to a set of selected annotations", AnnPatClusteringMethod.class), new ClusteringMethodDescriptor("Agglomerative hierarchical clustering", "Cluster data instances according to classic agglomerative hierarchical clustering method", WekaHCLMethod.class), new ClusteringMethodDescriptor("K-means clustering", "Cluster data instances according to k-means clustering method", WekaKmeansMethod.class), new ClusteringMethodDescriptor("Cobweb clustering", "Cluster data instances according to cobweb clustering method", WekaCobWebMethod.class)};
 
     private static ClusteringMethodFactory instance;
 
-    private List<ClusteringMethodDescriptor> descriptors;
+    private final List<ClusteringMethodDescriptor> descriptors;
 
     private ClusteringMethodFactory()
     {
@@ -79,7 +62,7 @@ public class ClusteringMethodFactory
         return descriptors;
     }
 
-    public final void registerMethods(ClusteringMethodDescriptor[] descriptors)
+    final void registerMethods(ClusteringMethodDescriptor[] descriptors)
     {
         this.descriptors.addAll(Arrays.asList(descriptors));
     }

@@ -32,18 +32,21 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.*;
 import java.util.Date;
 
+/**
+ * @noinspection ALL
+ */
 public class ToolManager
 {
 
-    protected ToolSet toolSet;
+    private ToolSet toolSet;
 
-    protected String appName;
-    protected String appVersion;
+    private String appName;
+    private String appVersion;
 
     private int usageWidth;
 
-    protected PrintStream outputStream = System.out;
-    protected PrintStream errorStream = System.err;
+    private PrintStream outputStream = System.out;
+    private PrintStream errorStream = System.err;
 
     public ToolManager(ToolSet toolSet, String appName, String appVersion)
     {
@@ -124,7 +127,7 @@ public class ToolManager
     /**
      * Launches a tool from the raw java arguments.
      */
-    public int launch(@NotNull String[] args, Object context) throws ToolException
+    int launch(@NotNull String[] args, Object context) throws ToolException
     {
         if (args.length < 1)
         {
@@ -160,8 +163,7 @@ public class ToolManager
     /**
      * Launches a tool from its name and the arguments passed to it
      */
-    public int launch(String name, @NotNull String[] args, Object context)
-            throws ToolException
+    int launch(String name, @NotNull String[] args, Object context) throws ToolException
     {
 
         // look for the tool
@@ -175,8 +177,7 @@ public class ToolManager
         ToolLifeCycle tool;
         try
         {
-            final Class<? extends ToolLifeCycle> lifeCycleClass =
-                    toolDesc.getLifeCycleClass();
+            final Class<? extends ToolLifeCycle> lifeCycleClass = toolDesc.getLifeCycleClass();
 
             if (lifeCycleClass == null)
             {
@@ -285,12 +286,7 @@ public class ToolManager
         return code;
     }
 
-    private void logExceptionError(
-            @NotNull ToolDescriptor toolDesc,
-            @NotNull String[] args,
-            @NotNull Throwable e,
-            @NotNull PrintStream err,
-            @Nullable String logName)
+    private void logExceptionError(@NotNull ToolDescriptor toolDesc, @NotNull String[] args, @NotNull Throwable e, @NotNull PrintStream err, @Nullable String logName)
     {
 
         err.println("ERROR " + getErrorLine(e));
@@ -308,8 +304,7 @@ public class ToolManager
             Writer writer = null;
             if (logName == null)
             {
-                file = File.createTempFile(
-                        "intogen-error-report-" + toolDesc.getName() + "-", ".txt");
+                file = File.createTempFile("intogen-error-report-" + toolDesc.getName() + "-", ".txt");
                 writer = new BufferedWriter(new FileWriter(file));
             }
             else
@@ -371,7 +366,7 @@ public class ToolManager
         return sb.toString();
     }
 
-    public void printToolUsage(String name, String appName, Object context) throws ToolException
+    void printToolUsage(String name, String appName, Object context) throws ToolException
     {
 
         ToolDescriptor toolDesc = getToolDescriptorFromName(name);

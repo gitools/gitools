@@ -43,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnalysis>
 {
 
@@ -51,11 +54,11 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
     private static final String DATA_TEMPLATE = "/vm/analysis/combination/tables_data.vm";
     private static final String RESULTS_TEMPLATE = "/vm/analysis/combination/tables_results.vm";
 
-    protected Map<String, Integer> dataRowIndices;
-    protected Map<String, Integer> dataColIndices;
+    private final Map<String, Integer> dataRowIndices;
+    private final Map<String, Integer> dataColIndices;
 
     @Nullable
-    protected ModuleMap gmap;
+    private ModuleMap gmap;
 
     public CombinationTablesPanel(@NotNull CombinationAnalysis analysis, @NotNull Heatmap heatmap)
     {
@@ -128,26 +131,22 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
                 if (row != -1 && col != -1) // cell
                 {
-                    context.put("columns",
-                            createDataCellModel(mv, row, col, data, gmap));
+                    context.put("columns", createDataCellModel(mv, row, col, data, gmap));
                 }
 
                 else if (row == -1 && col != -1) // column
                 {
-                    context.put("columns",
-                            createDataColumnModel(mv, col, data, gmap));
+                    context.put("columns", createDataColumnModel(mv, col, data, gmap));
                 }
 
                 else if (row != -1 && col == -1) // row
                 {
-                    context.put("columns",
-                            createDataRowModel(mv, row, data, gmap));
+                    context.put("columns", createDataRowModel(mv, row, data, gmap));
                 }
 
                 else
                 {
-                    context.put("columns",
-                            createDataAllModel(mv, data, gmap));
+                    context.put("columns", createDataAllModel(mv, data, gmap));
                 }
                 break;
 
@@ -156,26 +155,22 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
                 if (row != -1 && col != -1) // cell
                 {
-                    context.put("columns",
-                            createResultsCellModel(mv, row, col));
+                    context.put("columns", createResultsCellModel(mv, row, col));
                 }
 
                 else if (row == -1 && col != -1) // column
                 {
-                    context.put("columns",
-                            createResultsColumnModel(mv, col));
+                    context.put("columns", createResultsColumnModel(mv, col));
                 }
 
                 else if (row != -1 && col == -1) // row
                 {
-                    context.put("columns",
-                            createResultsRowModel(mv, row));
+                    context.put("columns", createResultsRowModel(mv, row));
                 }
 
                 else
                 {
-                    context.put("columns",
-                            createResultsAllModel(mv));
+                    context.put("columns", createResultsAllModel(mv));
                 }
 
                 break;
@@ -202,7 +197,7 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
         /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
-			pvalueIndex = analysis.getPvalueAttrIndex();*/
+            pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
         {
             pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
@@ -212,12 +207,10 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
         if (sizeIndex >= 0)
         {
-            sizeCast = MatrixUtils.createDoubleCast(
-                    data.getCellAdapter().getProperty(sizeIndex).getValueClass());
+            sizeCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(sizeIndex).getValueClass());
         }
 
-        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
-                data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
+        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
 
@@ -241,14 +234,11 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
             int mci = cindices[ci];
             if (data.getCell(drow, mci) != null)
             {
-                double size = sizeIndex < 0 ? 1
-                        : sizeCast.getDoubleValue(
-                        data.getCellValue(drow, mci, sizeIndex));
+                double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(drow, mci, sizeIndex));
 
                 sumSize += size;
 
-                double pvalue = pvalueCast.getDoubleValue(
-                        data.getCellValue(drow, mci, pvalueIndex));
+                double pvalue = pvalueCast.getDoubleValue(data.getCellValue(drow, mci, pvalueIndex));
 
                 VelocityContext e = new VelocityContext();
                 e.put("name", data.getColumnLabel(mci));
@@ -271,12 +261,10 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
         GenericFormatter fmt = new GenericFormatter();
 
-        List<VelocityContext> elements =
-                createDataElements(mv, row, col, data, gmap);
+        List<VelocityContext> elements = createDataElements(mv, row, col, data, gmap);
 
         int n = MatrixUtils.intValue(mv.getCellValue(row, col, "N"));
-        double pvalue = MatrixUtils.doubleValue(
-                mv.getCellValue(row, col, "p-value"));
+        double pvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, "p-value"));
 
         PValueColorScale scale = new PValueColorScale();
 
@@ -368,12 +356,9 @@ public class CombinationTablesPanel extends AbstractTablesPanel<CombinationAnaly
 
         GenericFormatter fmt = new GenericFormatter();
 
-        int n = MatrixUtils.intValue(
-                mv.getCellValue(row, col, "n"));
-        double zscore = MatrixUtils.doubleValue(
-                mv.getCellValue(row, col, "z-score"));
-        double pvalue = MatrixUtils.doubleValue(
-                mv.getCellValue(row, col, "p-value"));
+        int n = MatrixUtils.intValue(mv.getCellValue(row, col, "n"));
+        double zscore = MatrixUtils.doubleValue(mv.getCellValue(row, col, "z-score"));
+        double pvalue = MatrixUtils.doubleValue(mv.getCellValue(row, col, "p-value"));
 
         PValueColorScale pscale = new PValueColorScale();
         ZScoreColorScale zscale = new ZScoreColorScale();

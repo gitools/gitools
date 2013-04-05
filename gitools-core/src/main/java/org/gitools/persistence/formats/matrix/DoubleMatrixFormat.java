@@ -36,7 +36,7 @@ public class DoubleMatrixFormat extends AbstractTextMatrixFormat<DoubleMatrix>
         super(FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class);
     }
 
-    public DoubleMatrixFormat(String extension, int skipLines, Integer... skipColumns)
+    DoubleMatrixFormat(String extension, int skipLines, Integer... skipColumns)
     {
         super(extension, DoubleMatrix.class, skipLines, skipColumns);
     }

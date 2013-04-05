@@ -26,18 +26,21 @@ import org.lobobrowser.html.test.SimpleUserAgentContext;
 
 import java.net.URL;
 
-public class DataHelpDialog extends javax.swing.JDialog
+/**
+ * @noinspection ALL
+ */
+class DataHelpDialog extends javax.swing.JDialog
 {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
-    public static final int RET_CANCEL = 0;
+    private static final int RET_CANCEL = 0;
     /**
      * A return status code - returned if OK button has been pressed
      */
-    public static final int RET_OK = 1;
+    private static final int RET_OK = 1;
 
-    private SimpleHtmlRendererContext rcontext;
+    private final SimpleHtmlRendererContext rcontext;
 
     /**
      * Creates new form DataHelpDialog
@@ -109,24 +112,8 @@ public class DataHelpDialog extends javax.swing.JDialog
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(okButton)
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(okButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addComponent(htmlPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE).addGap(18, 18, 18).addComponent(okButton).addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

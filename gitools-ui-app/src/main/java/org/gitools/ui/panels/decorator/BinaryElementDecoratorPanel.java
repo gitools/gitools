@@ -39,6 +39,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel
 {
 
@@ -201,8 +204,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel
 
     private void valueChanged()
     {
-        IndexedProperty propAdapter =
-                (IndexedProperty) valueCb.getSelectedItem();
+        IndexedProperty propAdapter = (IndexedProperty) valueCb.getSelectedItem();
 
         model.switchActiveCellDecorator(propAdapter.getIndex());
         changeDecorator();
@@ -236,13 +238,13 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel
 
     }
 
-    protected void cmpChanged()
+    void cmpChanged()
     {
         CutoffCmp cc = (CutoffCmp) cmpCb.getSelectedItem();
         decorator.setCutoffCmp(cc);
     }
 
-    protected void cutoffChanged()
+    void cutoffChanged()
     {
         try
         {

@@ -35,24 +35,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 class DataIntegrationCriteriaTableModel implements TableModel
 {
 
-    private static final String[] columnName = new String[]{
-            "Operator", "Attribute", "Condition", "Value"};
+    private static final String[] columnName = new String[]{"Operator", "Attribute", "Condition", "Value"};
 
-    private static final Class<?>[] columnClass = new Class<?>[]{
-            String.class, CutoffCmp.class, String.class, Operator.class};
+    private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class, Operator.class};
 
     @NotNull
-    private Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
 
-    private List<DataIntegrationCriteria> criteriaList;
+    private final List<DataIntegrationCriteria> criteriaList;
 
     @NotNull
-    private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, @NotNull String[] attributeNames)
+    private DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, @NotNull String[] attributeNames)
     {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)

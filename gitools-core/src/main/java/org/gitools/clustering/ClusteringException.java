@@ -21,6 +21,9 @@
  */
 package org.gitools.clustering;
 
+/**
+ * @noinspection ALL
+ */
 public class ClusteringException extends Exception
 {
 

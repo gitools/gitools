@@ -21,6 +21,9 @@
  */
 package org.gitools.ui;
 
+/**
+ * @noinspection ALL
+ */
 public class IconNames
 {
 
@@ -33,6 +36,9 @@ public class IconNames
     public static final String open16 = "/img/Open16.png";
     public static final String open24 = "/img/Open24.png";
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public static final String openAnalysis16 = "/img/OpenAnalysis16.png";
     public static final String openAnalysis24 = "/img/OpenAnalysis24.png";
 

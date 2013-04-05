@@ -23,6 +23,9 @@ package org.gitools.ui.commands;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
+/**
+ * @noinspection ALL
+ */
 public interface Command
 {
 

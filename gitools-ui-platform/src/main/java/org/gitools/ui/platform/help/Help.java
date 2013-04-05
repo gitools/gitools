@@ -43,8 +43,8 @@ public abstract class Help
 
     public static class UrlMap
     {
-        private Pattern pattern;
-        private String url;
+        private final Pattern pattern;
+        private final String url;
 
         public UrlMap(Pattern pattern, String url)
         {
@@ -63,15 +63,15 @@ public abstract class Help
         }
     }
 
-    protected PropertiesExpansion properties;
-    protected List<UrlMap> urlMap;
+    private final PropertiesExpansion properties;
+    private final List<UrlMap> urlMap;
 
-    public Help()
+    Help()
     {
         this(new Properties(), new ArrayList<UrlMap>());
     }
 
-    protected Help(Properties properties, List<UrlMap> urlMap)
+    private Help(Properties properties, List<UrlMap> urlMap)
     {
         this.properties = new PropertiesExpansion(properties);
         this.urlMap = urlMap;
@@ -121,7 +121,7 @@ public abstract class Help
     }
 
     @NotNull
-    protected URL getHelpUrl(@NotNull HelpContext context) throws MalformedURLException
+    URL getHelpUrl(@NotNull HelpContext context) throws MalformedURLException
     {
         String id = context.getId();
         String urlStr = null; // FIXME Use a default url
@@ -145,9 +145,7 @@ public abstract class Help
     public abstract void showHelp(HelpContext context) throws HelpException;
 
     @NotNull
-    private String expandPattern(
-            @NotNull Properties properties,
-            @NotNull String pattern)
+    private String expandPattern(@NotNull Properties properties, @NotNull String pattern)
     {
 
         final StringBuilder output = new StringBuilder();

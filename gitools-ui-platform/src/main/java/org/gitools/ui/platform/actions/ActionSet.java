@@ -29,12 +29,18 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ActionSet extends BaseAction
 {
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     private static final long serialVersionUID = -1441656907811177103L;
 
-    protected List<BaseAction> actions;
+    private final List<BaseAction> actions;
 
     public ActionSet(BaseAction[] actions)
     {
@@ -46,7 +52,7 @@ public class ActionSet extends BaseAction
         this(name, null, actions);
     }
 
-    public ActionSet(String name, ImageIcon icon, BaseAction[] actions)
+    private ActionSet(String name, ImageIcon icon, BaseAction[] actions)
     {
         super(name, icon);
         this.actions = Arrays.asList(actions);

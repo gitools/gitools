@@ -35,23 +35,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CombinationAnalysis extends Analysis
 {
 
-    protected String sizeAttrName;
+    private String sizeAttrName;
 
-    protected String pvalueAttrName;
+    private String pvalueAttrName;
 
-    protected boolean transposeData;
+    private boolean transposeData;
 
-    protected ResourceReference<ModuleMap> groupsMap;
+    private ResourceReference<ModuleMap> groupsMap;
 
     /**
      * Data
      */
-    protected ResourceReference<IMatrix> data;
+    private ResourceReference<IMatrix> data;
 
     /**
      * Results
      */
-    protected ResourceReference<IMatrix> results;
+    private ResourceReference<IMatrix> results;
 
     public CombinationAnalysis()
     {

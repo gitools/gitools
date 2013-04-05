@@ -27,27 +27,33 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PValueColorScale extends NumericColorScale
 {
 
-    public static final double defaultLogFactor = 0.25;
+    private static final double defaultLogFactor = 0.25;
 
     private double significanceLevel;
 
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color minColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color maxColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color nonSignificantColor;
 
-    public PValueColorScale(
-            double significanceLevel,
-            Color minColor,
-            Color maxColor,
-            Color nonSignificantColor)
+    private PValueColorScale(double significanceLevel, Color minColor, Color maxColor, Color nonSignificantColor)
     {
 
         super();
@@ -60,10 +66,7 @@ public class PValueColorScale extends NumericColorScale
 
     public PValueColorScale()
     {
-        this(0.05,
-                ColorConstants.minColor,
-                ColorConstants.maxColor,
-                ColorConstants.nonSignificantColor);
+        this(0.05, ColorConstants.minColor, ColorConstants.maxColor, ColorConstants.nonSignificantColor);
         updateRangesList();
     }
 
@@ -89,7 +92,7 @@ public class PValueColorScale extends NumericColorScale
         return new double[]{0, significanceLevel, 1};
     }
 
-    public double getSignificanceLevel()
+    double getSignificanceLevel()
     {
         return significanceLevel;
     }
@@ -152,12 +155,8 @@ public class PValueColorScale extends NumericColorScale
         double max = getMaxValue();
         double mid = getSignificanceLevel();
 
-        rangesList.add(new ColorScaleRange(
-                min, mid, 20, min, null, mid, ColorScaleRange.LOGARITHMIC_TYPE)
-        );
-        rangesList.add(new ColorScaleRange(
-                mid, max, 10, null, null, max, ColorScaleRange.LOGARITHMIC_TYPE)
-        );
+        rangesList.add(new ColorScaleRange(min, mid, 20, min, null, mid, ColorScaleRange.LOGARITHMIC_TYPE));
+        rangesList.add(new ColorScaleRange(mid, max, 10, null, null, max, ColorScaleRange.LOGARITHMIC_TYPE));
 
     }
 

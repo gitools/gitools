@@ -34,6 +34,9 @@ import org.json.JSONException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
+/**
+ * @noinspection ALL
+ */
 public class OpenGenomeSpaceAction extends BaseAction
 {
 

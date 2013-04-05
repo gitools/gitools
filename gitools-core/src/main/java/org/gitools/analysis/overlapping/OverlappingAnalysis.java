@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OverlappingAnalysis extends Analysis
@@ -41,33 +44,33 @@ public class OverlappingAnalysis extends Analysis
     /**
      * If different from null then replace NaN values by a number
      */
-    protected Double replaceNanValue;
+    private Double replaceNanValue;
 
     /**
      * If true then compare rows instead of columns
      */
-    protected boolean transposeData;
+    private boolean transposeData;
 
     /**
      * Data attribute name
      */
-    protected String attributeName;
+    private String attributeName;
 
     /**
      * Data binary cutoff enabled
      */
-    protected boolean binaryCutoffEnabled;
+    private boolean binaryCutoffEnabled;
 
     /**
      * Data binary cutoff comparator
      */
     @XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
-    protected CutoffCmp binaryCutoffCmp;
+    private CutoffCmp binaryCutoffCmp;
 
     /**
      * Data binary cutoff value
      */
-    protected Double binaryCutoffValue;
+    private Double binaryCutoffValue;
 
     public ResourceReference<IMatrix> getCellResults()
     {
@@ -103,19 +106,19 @@ public class OverlappingAnalysis extends Analysis
      * Data source file
      */
     @XmlElement
-    protected ResourceReference<IMatrix> sourceData;
+    private ResourceReference<IMatrix> sourceData;
 
     /**
      * Filtered data file
      */
     @XmlElement
-    protected ResourceReference<IMatrix> filteredData;
+    private ResourceReference<IMatrix> filteredData;
 
     /**
      * Results
      */
     @XmlElement
-    protected ResourceReference<IMatrix> cellResults;
+    private ResourceReference<IMatrix> cellResults;
 
     public OverlappingAnalysis()
     {

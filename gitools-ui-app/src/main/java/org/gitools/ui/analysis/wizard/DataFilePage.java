@@ -41,15 +41,7 @@ import java.util.zip.DataFormatException;
 public class DataFilePage extends SelectFilePage
 {
 
-    private static final FileFormat[] formats = new FileFormat[]{
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-            FileFormats.DOUBLE_MATRIX,
-            FileFormats.DOUBLE_BINARY_MATRIX,
-            FileFormats.MULTIVALUE_DATA_MATRIX,
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.MODULES_INDEXED_MAP
-    };
+    private static final FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     public DataFilePage()
     {
@@ -72,9 +64,7 @@ public class DataFilePage extends SelectFilePage
         FileFormat ff = getFileFormat();
         super.updateState();
 
-        if (isComplete() == true &
-                ff.getExtension().equals(
-                        FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))
+        if (isComplete() == true & ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))
         {
             activateValueSelection();
 
@@ -98,8 +88,7 @@ public class DataFilePage extends SelectFilePage
     }
 
     @Nullable
-    public static String[] readHeader(File file)
-            throws PersistenceException
+    private static String[] readHeader(File file) throws PersistenceException
     {
 
         String[] matrixHeaders = null;

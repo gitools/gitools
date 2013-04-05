@@ -48,7 +48,6 @@ public class Main
             {
                 return;
             }
-            ;
         }
 
         // Initialize look and feel

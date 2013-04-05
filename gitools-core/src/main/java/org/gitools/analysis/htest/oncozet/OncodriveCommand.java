@@ -47,25 +47,13 @@ import java.util.Properties;
 public class OncodriveCommand extends HtestCommand
 {
 
-    protected IResourceFormat modulesFormat;
-    protected String modulesPath;
+    private final IResourceFormat modulesFormat;
+    private final String modulesPath;
 
-    public OncodriveCommand(
-            OncodriveAnalysis analysis,
-            IResourceFormat dataMime,
-            String dataPath,
-            int valueIndex,
-            String populationPath,
-            Double populationDefaultValue,
-            IResourceFormat modulesFormat,
-            String modulesFile,
-            String workdir,
-            String fileName)
+    public OncodriveCommand(OncodriveAnalysis analysis, IResourceFormat dataMime, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName)
     {
 
-        super(analysis, dataMime, dataPath, valueIndex,
-                populationPath, populationDefaultValue,
-                workdir, fileName);
+        super(analysis, dataMime, dataPath, valueIndex, populationPath, populationDefaultValue, workdir, fileName);
 
         this.modulesFormat = modulesFormat;
         this.modulesPath = modulesFile;
@@ -85,13 +73,7 @@ public class OncodriveCommand extends HtestCommand
             monitor.info("Data: " + dataPath);
             monitor.info("Columns: " + modulesPath);
 
-            loadDataAndModules(
-                    dataFormat, dataPath,
-                    valueIndex,
-                    populationPath,
-                    modulesFormat, modulesPath,
-                    oncozAnalysis,
-                    monitor.subtask());
+            loadDataAndModules(dataFormat, dataPath, valueIndex, populationPath, modulesFormat, modulesPath, oncozAnalysis, monitor.subtask());
 
             monitor.end();
 
@@ -108,15 +90,7 @@ public class OncodriveCommand extends HtestCommand
         }
     }
 
-    private void loadDataAndModules(
-            IResourceFormat dataFormat,
-            String dataFileName,
-            int valueIndex,
-            @Nullable String populationFileName,
-            IResourceFormat modulesFormat,
-            @Nullable String modulesFileName,
-            @NotNull OncodriveAnalysis analysis,
-            IProgressMonitor progressMonitor) throws PersistenceException
+    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, @Nullable String modulesFileName, @NotNull OncodriveAnalysis analysis, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         // Load background population
@@ -136,12 +110,7 @@ public class OncodriveCommand extends HtestCommand
 
         IResourceLocator dataLocator = new UrlResourceLocator(new File(dataFileName));
         Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
-        valueTranslators.put(0,
-                createValueTranslator(
-                        analysis.isBinaryCutoffEnabled(),
-                        analysis.getBinaryCutoffCmp(),
-                        analysis.getBinaryCutoffValue())
-        );
+        valueTranslators.put(0, createValueTranslator(analysis.isBinaryCutoffEnabled(), analysis.getBinaryCutoffCmp(), analysis.getBinaryCutoffValue()));
 
         Properties dataProps = new Properties();
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());

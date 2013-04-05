@@ -82,19 +82,15 @@ public class CloneHeatmapAction extends BaseAction
         clone.setTitle(hm.getTitle());
         clone.setDescription(hm.getDescription());
         clone.setAttributes(SerialClone.xclone(hm.getAttributes()));
-        clone.setFooter(hm.getFooter());
         clone.setCellHeight(hm.getCellHeight());
         clone.setCellWidth(hm.getCellWidth());
-        clone.setShowBorders(hm.isShowBorders());
         clone.setCellDecorators(SerialClone.xclone(hm.getCellDecorators()));
         clone.setColumnDim(SerialClone.xclone(hm.getColumnDim()));
         clone.setRowDim(SerialClone.xclone(hm.getRowDim()));
 
         HeatmapEditor editor = new HeatmapEditor(clone);
 
-        editor.setName(editorPanel.deriveName(
-                currentEditor.getName(), HeatmapFormat.EXTENSION,
-                "", HeatmapFormat.EXTENSION));
+        editor.setName(editorPanel.deriveName(currentEditor.getName(), HeatmapFormat.EXTENSION, "", HeatmapFormat.EXTENSION));
 
         editorPanel.addEditor(editor);
     }

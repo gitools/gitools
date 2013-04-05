@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public class ArrayElementFactory implements IElementFactory
 {
 
-    private int length;
+    private final int length;
 
     public ArrayElementFactory(int length)
     {

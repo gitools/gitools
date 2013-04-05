@@ -31,6 +31,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapTextLabelsHeader extends HeatmapHeader
@@ -38,23 +41,23 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
 
     private static final long serialVersionUID = -2580139666999968074L;
 
-    public static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
-    public static final String LINK_NAME_CHANGED = "linkNameChanged";
-    public static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
+    private static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
+    private static final String LINK_NAME_CHANGED = "linkNameChanged";
+    private static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
 
     public enum LabelSource
     {
         ID, ANNOTATION, PATTERN
     }
 
-    protected LabelSource labelSource;
-    protected String labelAnnotation;
-    protected String labelPattern;
+    private LabelSource labelSource;
+    private String labelAnnotation;
+    private String labelPattern;
 
     @Deprecated
-    protected String linkName;
+    private String linkName;
     @Deprecated
-    protected String linkPattern;
+    private String linkPattern;
 
     public HeatmapTextLabelsHeader()
     {
@@ -157,6 +160,9 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @Deprecated
     public String getLinkName()
     {

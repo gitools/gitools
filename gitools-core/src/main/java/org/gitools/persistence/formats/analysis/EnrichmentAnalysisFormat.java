@@ -28,7 +28,7 @@ public class EnrichmentAnalysisFormat extends AbstractXmlFormat<EnrichmentAnalys
 {
 
     public static final String EXTENSION = "enrichment";
-    public static final Class<EnrichmentAnalysis> RESOURCE_CLASS = EnrichmentAnalysis.class;
+    private static final Class<EnrichmentAnalysis> RESOURCE_CLASS = EnrichmentAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Enrichment analysis", EXTENSION);
 
     public EnrichmentAnalysisFormat()

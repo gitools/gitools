@@ -43,13 +43,16 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
 {
 
     private static final long serialVersionUID = -7443053984962647946L;
 
-    private List<IndexedProperty> valueProperties;
-    private List<IndexedProperty> corrValueProperties;
+    private final List<IndexedProperty> valueProperties;
+    private final List<IndexedProperty> corrValueProperties;
 
     private PValueElementDecorator decorator;
 
@@ -268,8 +271,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
     private void valueChanged()
     {
 
-        IndexedProperty propAdapter =
-                (IndexedProperty) valueCb.getSelectedItem();
+        IndexedProperty propAdapter = (IndexedProperty) valueCb.getSelectedItem();
 
         //decorator.setValueIndex(propAdapter.getIndex());
 
@@ -281,8 +283,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
 
         // search for corresponding corrected value
 
-        int corrIndex = MatrixUtils.correctedValueIndex(
-                decorator.getAdapter(), propAdapter.getProperty());
+        int corrIndex = MatrixUtils.correctedValueIndex(decorator.getAdapter(), propAdapter.getProperty());
 
         if (corrIndex >= 0)
         {
@@ -336,22 +337,19 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
 				decorator.setCorrectedValueIndex(corrIndex);
 		}*/
 
-        decorator.setUseCorrection(
-                showCorrChkBox.isSelected());
+        decorator.setUseCorrection(showCorrChkBox.isSelected());
 
-        corrValueCb.setEnabled(
-                showCorrChkBox.isSelected());
+        corrValueCb.setEnabled(showCorrChkBox.isSelected());
     }
 
-    protected void corrValueChanged()
+    void corrValueChanged()
     {
-        IndexedProperty propAdapter =
-                (IndexedProperty) corrValueCb.getSelectedItem();
+        IndexedProperty propAdapter = (IndexedProperty) corrValueCb.getSelectedItem();
 
         decorator.setCorrectedValueIndex(propAdapter.getIndex());
     }
 
-    protected void sigLevelChanged()
+    void sigLevelChanged()
     {
         try
         {

@@ -29,6 +29,9 @@ import org.gitools.stats.test.results.BinomialResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class BinomialTest extends AbstractTest
 {
 
@@ -39,21 +42,15 @@ public class BinomialTest extends AbstractTest
         onlyExact, onlyNormal, onlyPoisson, automatic
     }
 
-    ;
-
     private abstract class BinomialAproximation
     {
         @NotNull
-        public abstract CommonResult getResult(
-                int observed, int n, double p,
-                double expectedMean, double expectedStdev, double expectedVar);
+        public abstract CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar);
     }
 
-    protected Statistic statCalc;
+    private final Statistic statCalc;
 
-    protected AproximationMode aproxMode;
-
-    //protected DoubleMatrix1D population;
+    private final AproximationMode aproxMode;
 
     private double p;
 
@@ -71,9 +68,7 @@ public class BinomialTest extends AbstractTest
                 {
                     @NotNull
                     @Override
-                    public CommonResult getResult(
-                            int observed, int n, double p,
-                            double expectedMean, double expectedStdev, double expectedVar)
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
                     {
 
                         return resultWithExact(observed, n, p, expectedMean, expectedStdev);
@@ -85,9 +80,7 @@ public class BinomialTest extends AbstractTest
                 {
                     @NotNull
                     @Override
-                    public CommonResult getResult(
-                            int observed, int n, double p,
-                            double expectedMean, double expectedStdev, double expectedVar)
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
                     {
 
                         return resultWithNormal(observed, n, p, expectedMean, expectedStdev);
@@ -99,9 +92,7 @@ public class BinomialTest extends AbstractTest
                 {
                     @NotNull
                     @Override
-                    public CommonResult getResult(
-                            int observed, int n, double p,
-                            double expectedMean, double expectedStdev, double expectedVar)
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
                     {
 
                         return resultWithPoisson(observed, n, p, expectedMean, expectedStdev);
@@ -113,9 +104,7 @@ public class BinomialTest extends AbstractTest
                 {
                     @NotNull
                     @Override
-                    public CommonResult getResult(
-                            int observed, int n, double p,
-                            double expectedMean, double expectedStdev, double expectedVar)
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
                     {
 
                         if (n <= exactSizeLimit)
@@ -183,15 +172,12 @@ public class BinomialTest extends AbstractTest
 
     @NotNull
     @Override
-    public CommonResult processTest(
-            String condName, @NotNull DoubleMatrix1D condItems,
-            String groupName, int[] groupItemIndices)
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
     {
 
         // Create a view with group values (excluding NaN's)
 
-        final DoubleMatrix1D groupItems =
-                condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
+        final DoubleMatrix1D groupItems = condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
 
         // Calculate observed statistic
 
@@ -209,9 +195,7 @@ public class BinomialTest extends AbstractTest
     }
 
     @NotNull
-    public final CommonResult resultWithExact(
-            int observed, int n, double p,
-            double expectedMean, double expectedStdev)
+    final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev)
     {
 
         double leftPvalue;
@@ -226,22 +210,17 @@ public class BinomialTest extends AbstractTest
         else
         {
             leftPvalue = Probability.binomial(observed, n, p);
-            rightPvalue = observed > 0 ?
-                    Probability.binomialComplemented(observed - 1, n, p) : 1.0;
+            rightPvalue = observed > 0 ? Probability.binomialComplemented(observed - 1, n, p) : 1.0;
 
             twoTailPvalue = leftPvalue + rightPvalue;
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
         }
 
-        return new BinomialResult(BinomialResult.Distribution.BINOMIAL,
-                n, leftPvalue, rightPvalue, twoTailPvalue,
-                observed, expectedMean, expectedStdev, p);
+        return new BinomialResult(BinomialResult.Distribution.BINOMIAL, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
     @NotNull
-    public final CommonResult resultWithNormal(
-            int observed, int n, double p,
-            double expectedMean, double expectedStdev)
+    final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev)
     {
 
         double zscore;
@@ -258,15 +237,11 @@ public class BinomialTest extends AbstractTest
         twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
         twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 
-        return new BinomialResult(BinomialResult.Distribution.NORMAL,
-                n, leftPvalue, rightPvalue, twoTailPvalue,
-                observed, expectedMean, expectedStdev, p);
+        return new BinomialResult(BinomialResult.Distribution.NORMAL, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
     @NotNull
-    public final CommonResult resultWithPoisson(
-            int observed, int n, double p,
-            double expectedMean, double expectedStdev)
+    final CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev)
     {
 
         double leftPvalue;
@@ -278,8 +253,7 @@ public class BinomialTest extends AbstractTest
         try
         {
             leftPvalue = Probability.poisson(observed, expectedMean);
-            rightPvalue = observed > 0 ?
-                    Probability.poissonComplemented(observed - 1, expectedMean) : 1.0;
+            rightPvalue = observed > 0 ? Probability.poissonComplemented(observed - 1, expectedMean) : 1.0;
 
             twoTailPvalue = (observed <= expectedMean ? leftPvalue : rightPvalue) * 2; //FIXME: Review
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
@@ -288,9 +262,7 @@ public class BinomialTest extends AbstractTest
             leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
         }
 
-        return new BinomialResult(BinomialResult.Distribution.POISSON,
-                n, leftPvalue, rightPvalue, twoTailPvalue,
-                observed, expectedMean, expectedStdev, p);
+        return new BinomialResult(BinomialResult.Distribution.POISSON, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
 	/*private double filterPvalue(double pvalue) {

@@ -25,20 +25,19 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class DataIntegrationCriteria
 {
 
-    protected String attributeName;
-    protected int attributeIndex;
-    protected CutoffCmp comparator;
-    protected double cutoffValue;
-    protected Operator operator;
+    private String attributeName;
+    private int attributeIndex;
+    private CutoffCmp comparator;
+    private double cutoffValue;
+    private Operator operator;
 
-    public DataIntegrationCriteria(String attributeName,
-                                   int attributeIndex,
-                                   CutoffCmp comparator,
-                                   double cutoffValue,
-                                   Operator operator)
+    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, Operator operator)
     {
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
@@ -47,11 +46,7 @@ public class DataIntegrationCriteria
         this.operator = operator;
     }
 
-    public DataIntegrationCriteria(String attributeName,
-                                   int attributeIndex,
-                                   CutoffCmp comparator,
-                                   double cutoffValue,
-                                   String operator)
+    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, String operator)
     {
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;

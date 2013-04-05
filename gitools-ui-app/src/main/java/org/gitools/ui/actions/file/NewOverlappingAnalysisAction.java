@@ -42,6 +42,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class NewOverlappingAnalysisAction extends BaseAction
 {
 
@@ -73,16 +76,11 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
         final OverlappingAnalysis analysis = wizard.getAnalysis();
 
-        ResourceReference<IMatrix> sourceData = new ResourceReference<IMatrix>(
-                new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()),
-                wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
+        ResourceReference<IMatrix> sourceData = new ResourceReference<IMatrix>(new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()), wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
 
         analysis.setSourceData(new ResourceReference<IMatrix>("source-data", sourceData.get()));
 
-        final OverlappingCommand cmd = new OverlappingCommand(
-                analysis,
-                wizard.getWorkdir(),
-                wizard.getFileName());
+        final OverlappingCommand cmd = new OverlappingCommand(analysis, wizard.getWorkdir(), wizard.getFileName());
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

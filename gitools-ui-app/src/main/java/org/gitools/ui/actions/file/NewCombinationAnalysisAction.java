@@ -44,6 +44,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class NewCombinationAnalysisAction extends BaseAction
 {
 
@@ -83,14 +86,7 @@ public class NewCombinationAnalysisAction extends BaseAction
         IResourceFormat columnSetsFormat = PersistenceManager.get().getFormat(columnSetsMime, ModuleMap.class);
         IResourceFormat dataFormat = PersistenceManager.get().getFormat(wizard.getDataFilePage().getFileFormat().getExtension(), IMatrix.class);
 
-        final CombinationCommand cmd = new CombinationCommand(
-                analysis,
-                dataFormat,
-                wizard.getDataFilePage().getFile().getAbsolutePath(),
-                columnSetsFormat,
-                columnSetsPath,
-                wizard.getSaveFilePage().getFolder(),
-                analysisPath);
+        final CombinationCommand cmd = new CombinationCommand(analysis, dataFormat, wizard.getDataFilePage().getFile().getAbsolutePath(), columnSetsFormat, columnSetsPath, wizard.getSaveFilePage().getFolder(), analysisPath);
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

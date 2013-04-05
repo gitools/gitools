@@ -37,14 +37,11 @@ import java.io.File;
 public class CorrelationCommand extends AnalysisCommand
 {
 
-    protected CorrelationAnalysis analysis;
-    protected IResourceFormat dataFormat;
-    protected String dataPath;
+    private final CorrelationAnalysis analysis;
+    private final IResourceFormat dataFormat;
+    private final String dataPath;
 
-    public CorrelationCommand(
-            CorrelationAnalysis analysis,
-            IResourceFormat dataFormat, String dataPath,
-            String workdir, String fileName)
+    public CorrelationCommand(CorrelationAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName)
     {
 
         super(workdir, fileName);
@@ -75,9 +72,7 @@ public class CorrelationCommand extends AnalysisCommand
                 workdirFile.mkdirs();
             }
 
-            IResourceLocator resourceLocator = new UrlResourceLocator(
-                    new File(workdirFile, fileName)
-            );
+            IResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
             PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
         } catch (Throwable cause)
         {

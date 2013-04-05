@@ -36,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ImportBiomartModulesAction extends BaseAction
 {
 

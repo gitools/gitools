@@ -29,6 +29,9 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class InvertSelectionAction extends BaseAction
 {
 
@@ -44,8 +47,7 @@ public class InvertSelectionAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -59,8 +61,7 @@ public class InvertSelectionAction extends BaseAction
             matrixView.invertSelection();
         }
 
-        AppFrame.get()
-                .setStatusText("Selection inverted");
+        AppFrame.get().setStatusText("Selection inverted");
     }
 
 }

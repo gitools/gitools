@@ -27,6 +27,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class DoubleElementAdapter extends AbstractElementAdapter
 {
 
@@ -60,8 +63,7 @@ public class DoubleElementAdapter extends AbstractElementAdapter
     @Override
     public void setValue(Object element, int index, Object value)
     {
-        throw new UnsupportedOperationException(
-                getClass().getSimpleName() + " doesn't support change string value.");
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " doesn't support change string value.");
     }
 
     @NotNull

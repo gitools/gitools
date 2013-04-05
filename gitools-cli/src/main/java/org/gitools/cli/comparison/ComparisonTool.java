@@ -54,10 +54,13 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.zip.DataFormatException;
 
+/**
+ * @noinspection ALL
+ */
 public class ComparisonTool extends AnalysisTool
 {
 
-    protected String groups;
+    private String groups;
 
     public static class ComparisonArguments extends AnalysisArguments
     {
@@ -65,6 +68,9 @@ public class ComparisonTool extends AnalysisTool
                 usage = "Data file format (reference extension).")
         public String dataFormat;
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         @Option(name = "-d", aliases = "-data", metaVar = "<file>",
                 usage = "File with data to be processed.")
         public String dataFile;
@@ -93,13 +99,12 @@ public class ComparisonTool extends AnalysisTool
                 usage = "Add a short description for each group seperated by commas. If not \n" +
                         "supplied, an automatically generated description will be added \n" +
                         "Example: \"With disease,Without disease\"")
-        public String groupDescriptions = "";
+        public final String groupDescriptions = "";
 
         @NotNull
         @Option(name = "-mtc", metaVar = "<name>",
-                usage = "Multiple test correxction method.\n" +
-                        "Available: bonferroni, bh. (default: bh)")
-        public String mtc = "bh";
+                usage = "Multiple test correxction method.\n" + "Available: bonferroni, bh. (default: bh)")
+        public final String mtc = "bh";
 
         @Option(name = "-an", aliases = "-attr-name", metaVar = "<name>",
                 usage = "Attribute name of the data matrix to take values for comparison from.")
@@ -167,8 +172,7 @@ public class ComparisonTool extends AnalysisTool
     }
 
     @Nullable
-    public static String[] readHeader(File file)
-            throws PersistenceException
+    private static String[] readHeader(File file) throws PersistenceException
     {
 
         String[] matrixHeaders = null;
@@ -217,15 +221,9 @@ public class ComparisonTool extends AnalysisTool
         String[] groupDescriptions = args.groupDescriptions.split(",");
 
 
-        GroupComparisonCommand cmd = new GroupComparisonCommand(
-                analysis,
-                dataFormat, args.dataFile,
-                args.workdir, args.analysisName + "." + GroupComparisonAnalysisFormat.EXTENSION,
-                args.grouping, this.groups, groupDescriptions);
+        GroupComparisonCommand cmd = new GroupComparisonCommand(analysis, dataFormat, args.dataFile, args.workdir, args.analysisName + "." + GroupComparisonAnalysisFormat.EXTENSION, args.grouping, this.groups, groupDescriptions);
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 

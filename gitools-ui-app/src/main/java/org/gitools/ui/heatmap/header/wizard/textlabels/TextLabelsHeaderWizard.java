@@ -29,8 +29,8 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 public class TextLabelsHeaderWizard extends AbstractWizard
 {
 
-    private HeatmapDim hdim;
-    private HeatmapTextLabelsHeader header;
+    private final HeatmapDim hdim;
+    private final HeatmapTextLabelsHeader header;
 
     private TextLabelsSourcePage sourcePage;
     private TextLabelsConfigPage configPage;

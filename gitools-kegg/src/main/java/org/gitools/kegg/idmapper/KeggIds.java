@@ -21,6 +21,9 @@
  */
 package org.gitools.kegg.idmapper;
 
+/**
+ * @noinspection ALL
+ */
 public interface KeggIds
 {
 

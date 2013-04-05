@@ -39,6 +39,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class OpenAction extends BaseAction
 {
 
@@ -59,59 +62,17 @@ public class OpenAction extends BaseAction
     {
         FileFilter[] filters = new FileFilter[]{
 
-                new FileFormatFilter("All known formats", new FileFormat[]{
-                        FileFormats.MULTIVALUE_DATA_MATRIX,
-                        FileFormats.DOUBLE_MATRIX,
-                        FileFormats.DOUBLE_BINARY_MATRIX,
-                        FileFormats.GENE_CLUSTER_TEXT,
-                        FileFormats.GENE_MATRIX,
-                        FileFormats.GENE_MATRIX_TRANSPOSED,
-                        EnrichmentAnalysisFormat.FILE_FORMAT,
-                        OncodriveAnalysisFormat.FILE_FORMAT,
-                        CorrelationAnalysisFormat.FILE_FORMAT,
-                        CombinationAnalysisFormat.FILE_FORMAT,
-                        OverlappingAnalysisFormat.FILE_FORMAT,
-                        GroupComparisonAnalysisFormat.FILE_FORMAT
-                }),
-                new FileFormatFilter("Heatmaps", new FileFormat[]{
-                        FileFormats.MULTIVALUE_DATA_MATRIX,
-                        FileFormats.DOUBLE_MATRIX,
-                        FileFormats.DOUBLE_BINARY_MATRIX,
-                        FileFormats.GENE_CLUSTER_TEXT,
-                        FileFormats.GENE_MATRIX,
-                        FileFormats.GENE_MATRIX_TRANSPOSED
-                }),
+                new FileFormatFilter("All known formats", new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_CLUSTER_TEXT, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, EnrichmentAnalysisFormat.FILE_FORMAT, OncodriveAnalysisFormat.FILE_FORMAT, CorrelationAnalysisFormat.FILE_FORMAT, CombinationAnalysisFormat.FILE_FORMAT, OverlappingAnalysisFormat.FILE_FORMAT, GroupComparisonAnalysisFormat.FILE_FORMAT}), new FileFormatFilter("Heatmaps", new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_CLUSTER_TEXT, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED}),
 
-                new FileFormatFilter("Analysis", new FileFormat[]{
-                        EnrichmentAnalysisFormat.FILE_FORMAT,
-                        OncodriveAnalysisFormat.FILE_FORMAT,
-                        CorrelationAnalysisFormat.FILE_FORMAT,
-                        CombinationAnalysisFormat.FILE_FORMAT,
-                        OverlappingAnalysisFormat.FILE_FORMAT,
-                        GroupComparisonAnalysisFormat.FILE_FORMAT
-                }),
+                new FileFormatFilter("Analysis", new FileFormat[]{EnrichmentAnalysisFormat.FILE_FORMAT, OncodriveAnalysisFormat.FILE_FORMAT, CorrelationAnalysisFormat.FILE_FORMAT, CombinationAnalysisFormat.FILE_FORMAT, OverlappingAnalysisFormat.FILE_FORMAT, GroupComparisonAnalysisFormat.FILE_FORMAT}),
 
                 // Heatmaps
-                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
-                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)"),
-                new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
-                new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)"),
-                new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
-                new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
-                new FileFormatFilter(FileFormats.GENE_MATRIX),
-                new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED),
+                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX), new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)"), new FileFormatFilter(FileFormats.DOUBLE_MATRIX), new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)"), new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT), new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX), new FileFormatFilter(FileFormats.GENE_MATRIX), new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED),
 
                 // Analysis
-                new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
-        };
+                new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT), new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT), new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT), new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT), new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT), new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)};
 
-        final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile(
-                "Select file", FileChooserUtils.MODE_OPEN, filters);
+        final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
 
         if (ret == null)
         {

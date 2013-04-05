@@ -40,7 +40,7 @@ public class FilterSelectComponent extends FilterComponent
     private static class OptionListWrapper
     {
 
-        private Option option;
+        private final Option option;
 
         public OptionListWrapper(Option filterOption)
         {
@@ -73,7 +73,7 @@ public class FilterSelectComponent extends FilterComponent
 
     private final Integer LIST_HEIGHT = 190;
 
-    private HashMap<Option, HashMap<String, List<Option>>> pushActions; // N options, each one with its list of components and options to show
+    private final HashMap<Option, HashMap<String, List<Option>>> pushActions; // N options, each one with its list of components and options to show
 
 
     public FilterSelectComponent(FilterDescription d, FilterDescriptionPanel collectionParent)
@@ -125,24 +125,8 @@ public class FilterSelectComponent extends FilterComponent
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                                        .addComponent(comboComponent, javax.swing.GroupLayout.Alignment.TRAILING, 0, 388, Short.MAX_VALUE))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(comboComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE).addComponent(comboComponent, javax.swing.GroupLayout.Alignment.TRAILING, 0, 388, Short.MAX_VALUE)).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(comboComponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -432,6 +416,9 @@ public class FilterSelectComponent extends FilterComponent
         }
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public HashMap<Option, HashMap<String, List<Option>>> getPushActions()
     {
 

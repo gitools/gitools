@@ -30,19 +30,21 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ToolConfig
 {
 
-    //FIXME This shouldn't be here
     public static final String ENRICHMENT = "enrichment";
     public static final String ONCODRIVE = "oncodrive";
 
-    protected String name;
+    private String name;
 
     @XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
-    protected Map<String, String> configuration = new HashMap<String, String>();
+    private Map<String, String> configuration = new HashMap<String, String>();
 
     public ToolConfig(String name)
     {

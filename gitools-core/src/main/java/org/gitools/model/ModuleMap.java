@@ -31,6 +31,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.NONE)
 public class ModuleMap extends Artifact implements IResource
 {
@@ -39,22 +42,22 @@ public class ModuleMap extends Artifact implements IResource
 
     private IResourceLocator locator;
 
-    protected String organism;
-    protected String moduleCategory;
-    protected String itemCategory;
+    private String organism;
+    private String moduleCategory;
+    private String itemCategory;
 
-    protected String[] moduleNames;
-    protected String[] moduleDescriptions;
-    protected String[] itemNames;
+    private String[] moduleNames;
+    private String[] moduleDescriptions;
+    private String[] itemNames;
 
-    protected int[][] itemIndices;
+    private int[][] itemIndices;
 
-    protected int[][] moduleTreeIndices;
+    private int[][] moduleTreeIndices;
 
     @NotNull
-    protected Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> moduleIndexMap = new HashMap<String, Integer>();
     @NotNull
-    protected Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 
     public ModuleMap()
     {
@@ -65,8 +68,7 @@ public class ModuleMap extends Artifact implements IResource
         this.moduleTreeIndices = new int[0][];
     }
 
-    public ModuleMap(@NotNull String[] moduleNames, @NotNull String[] itemNames,
-                     int[][] itemIndices)
+    public ModuleMap(@NotNull String[] moduleNames, @NotNull String[] itemNames, int[][] itemIndices)
     {
 
         setModuleNames(moduleNames);
@@ -95,10 +97,7 @@ public class ModuleMap extends Artifact implements IResource
         this(map, desc, new HashMap<String, Set<String>>());
     }
 
-    public ModuleMap(
-            @NotNull Map<String, Set<String>> map,
-            @NotNull Map<String, String> desc,
-            @NotNull Map<String, Set<String>> tree)
+    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc, @NotNull Map<String, Set<String>> tree)
     {
 
         int modCount = map.keySet().size();
@@ -239,12 +238,15 @@ public class ModuleMap extends Artifact implements IResource
         this.itemIndices = new int[moduleNames.length][];
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public String[] getModuleDescriptions()
     {
         return moduleDescriptions;
     }
 
-    public final void setModuleDescriptions(String[] descriptions)
+    final void setModuleDescriptions(String[] descriptions)
     {
         this.moduleDescriptions = descriptions;
     }
@@ -273,12 +275,12 @@ public class ModuleMap extends Artifact implements IResource
         return moduleDescriptions[index];
     }
 
-    public void setModuleDescription(int index, String desc)
+    void setModuleDescription(int index, String desc)
     {
         moduleDescriptions[index] = desc;
     }
 
-    public String getModuleDescription(String name)
+    String getModuleDescription(String name)
     {
         return getModuleDescription(getModuleIndex(name));
     }
@@ -288,7 +290,7 @@ public class ModuleMap extends Artifact implements IResource
         setModuleDescription(getModuleIndex(name), description);
     }
 
-    public int getModuleItemCount(int index)
+    int getModuleItemCount(int index)
     {
         return itemIndices[index].length;
     }
@@ -307,7 +309,7 @@ public class ModuleMap extends Artifact implements IResource
             itemIndexMap.put(itemNames[i], i);
     }
 
-    public int getItemCount()
+    int getItemCount()
     {
         return itemNames.length;
     }
@@ -426,7 +428,7 @@ public class ModuleMap extends Artifact implements IResource
     }
 
     @NotNull
-    public Map<String, Set<String>> getMap()
+    Map<String, Set<String>> getMap()
     {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
@@ -447,7 +449,7 @@ public class ModuleMap extends Artifact implements IResource
     }
 
     @NotNull
-    public Map<String, Set<String>> getTree()
+    Map<String, Set<String>> getTree()
     {
         Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
 
@@ -495,11 +497,7 @@ public class ModuleMap extends Artifact implements IResource
         return mmap;
     }
 
-    private void plainModule(String id,
-                             @NotNull Set<String> path,
-                             @NotNull Set<String> dstIds,
-                             @NotNull Map<String, Set<String>> map,
-                             @NotNull Map<String, Set<String>> childrenTree)
+    private void plainModule(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree)
     {
 
         if (path.contains(id))
@@ -548,7 +546,7 @@ public class ModuleMap extends Artifact implements IResource
         return map;
     }
 
-    public int getModuleIndex(String modName)
+    int getModuleIndex(String modName)
     {
         Integer modIndex = moduleIndexMap.get(modName);
         if (modIndex == null)

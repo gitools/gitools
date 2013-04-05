@@ -23,12 +23,15 @@ package org.gitools.datafilters;
 
 import cern.colt.function.DoubleFunction;
 
+/**
+ * @noinspection ALL
+ */
 public class BinaryCutoffTranslator implements ValueTranslator<Double>
 {
 
     private static final long serialVersionUID = 4964176171201274622L;
 
-    protected DoubleFunction filter;
+    private final DoubleFunction filter;
 
     public BinaryCutoffTranslator(DoubleFunction filter)
     {

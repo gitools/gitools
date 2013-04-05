@@ -26,12 +26,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
+/**
+ * @noinspection ALL
+ */
 public class FilteredListPage extends AbstractWizardPage
 {
 
     private FilteredListPanel panel;
 
-    public FilteredListPage()
+    protected FilteredListPage()
     {
     }
 
@@ -67,6 +70,9 @@ public class FilteredListPage extends AbstractWizardPage
         setComplete(value != null);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setSelectionMode(int mode)
     {
         panel.setSelectionMode(mode);
@@ -82,12 +88,12 @@ public class FilteredListPage extends AbstractWizardPage
         panel.setListData(listData);
     }
 
-    public Object getSelectedValue()
+    protected Object getSelectedValue()
     {
         return panel.getSelectedValue();
     }
 
-    public void setSelectedValue(Object o)
+    protected void setSelectedValue(Object o)
     {
         panel.setSElectedValue(o);
     }

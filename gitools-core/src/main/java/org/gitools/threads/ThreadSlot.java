@@ -24,7 +24,7 @@ package org.gitools.threads;
 public class ThreadSlot implements Runnable
 {
 
-    private ThreadQueue threadQueue;
+    private final ThreadQueue threadQueue;
 
     public ThreadSlot(ThreadQueue threadQueue)
     {

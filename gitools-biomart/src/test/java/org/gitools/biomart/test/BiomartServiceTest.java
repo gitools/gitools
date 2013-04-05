@@ -42,6 +42,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartServiceTest
 {
 
@@ -86,7 +89,9 @@ public class BiomartServiceTest
         return srv;
     }
 
-    //@Test
+    /**
+     * @noinspection UnusedDeclaration
+     */ //@Test
     public void getRegistry()
     {
         try

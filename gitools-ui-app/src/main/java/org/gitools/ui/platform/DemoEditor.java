@@ -25,7 +25,10 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 
-public class DemoEditor extends HeatmapEditor
+/**
+ * @noinspection ALL
+ */
+class DemoEditor extends HeatmapEditor
 {
 
     public DemoEditor()

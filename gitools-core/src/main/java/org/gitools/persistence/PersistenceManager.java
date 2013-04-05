@@ -39,7 +39,7 @@ public class PersistenceManager implements Serializable
 {
 
     @NotNull
-    private static PersistenceManager defaultManager = new PersistenceManager();
+    private static final PersistenceManager defaultManager = new PersistenceManager();
 
     @NotNull
     public static PersistenceManager get()
@@ -47,7 +47,7 @@ public class PersistenceManager implements Serializable
         return defaultManager;
     }
 
-    private List<IResourceFilter> filters = new ArrayList<IResourceFilter>();
+    private final List<IResourceFilter> filters = new ArrayList<IResourceFilter>();
     private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
     private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<Class<? extends IResource>, String>();
 
@@ -208,7 +208,8 @@ public class PersistenceManager implements Serializable
         classToDefaultExtension.put(resourceClass, extension);
     }
 
-    void registerResourceFilter(IResourceFilter resourceFilter) {
+    void registerResourceFilter(IResourceFilter resourceFilter)
+    {
         filters.add(resourceFilter);
     }
 

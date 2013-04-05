@@ -33,11 +33,9 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
 {
 
     @NotNull
-    private FileFormat[] supportedFormats = new FileFormat[]{
-            FileFormats.TEXT
-    };
+    private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.TEXT};
 
-    private Heatmap hm;
+    private final Heatmap hm;
 
     private ExportHeatmapLabelsPage sourcePage;
     private PatternSourcePage patPage;

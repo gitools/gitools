@@ -31,6 +31,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class FileChooserPage extends AbstractWizardPage
 {
 
@@ -46,7 +49,7 @@ public class FileChooserPage extends AbstractWizardPage
         this(JFileChooser.FILES_ONLY);
     }
 
-    public FileChooserPage(int selectionMode)
+    private FileChooserPage(int selectionMode)
     {
         this.selectionMode = selectionMode;
     }
@@ -76,8 +79,7 @@ public class FileChooserPage extends AbstractWizardPage
             @Override
             public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
-                if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())
-                        || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName()))
+                if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName()) || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName()))
                 {
                     updateComplete();
                 }
@@ -92,15 +94,20 @@ public class FileChooserPage extends AbstractWizardPage
 
     private void updateComplete()
     {
-        setComplete(fileChooser.getSelectedFile() != null
-                || fileChooser.getSelectedFiles().length > 0);
+        setComplete(fileChooser.getSelectedFile() != null || fileChooser.getSelectedFiles().length > 0);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setFileSelectionMode(int selectionMode)
     {
         this.selectionMode = selectionMode;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setCurrentPath(File file)
     {
         currentPath = file;

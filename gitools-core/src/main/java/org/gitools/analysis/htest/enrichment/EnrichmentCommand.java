@@ -45,25 +45,13 @@ import java.util.*;
 public class EnrichmentCommand extends HtestCommand
 {
 
-    protected IResourceFormat modulesFormat;
-    protected String modulesPath;
+    private final IResourceFormat modulesFormat;
+    private final String modulesPath;
 
-    public EnrichmentCommand(
-            EnrichmentAnalysis analysis,
-            IResourceFormat dataFormat,
-            String dataFile,
-            int valueIndex,
-            String populationPath,
-            Double populationDefaultValue,
-            IResourceFormat modulesFormat,
-            String modulesFile,
-            String workdir,
-            String fileName)
+    public EnrichmentCommand(EnrichmentAnalysis analysis, IResourceFormat dataFormat, String dataFile, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName)
     {
 
-        super(analysis, dataFormat, dataFile, valueIndex,
-                populationPath, populationDefaultValue,
-                workdir, fileName);
+        super(analysis, dataFormat, dataFile, valueIndex, populationPath, populationDefaultValue, workdir, fileName);
 
         this.modulesFormat = modulesFormat;
         this.modulesPath = modulesFile;
@@ -83,13 +71,7 @@ public class EnrichmentCommand extends HtestCommand
             monitor.info("Data: " + dataPath);
             monitor.info("Modules: " + modulesPath);
 
-            loadDataAndModules(
-                    dataFormat, dataPath,
-                    valueIndex,
-                    populationPath,
-                    modulesFormat, modulesPath,
-                    enrichAnalysis,
-                    monitor.subtask());
+            loadDataAndModules(dataFormat, dataPath, valueIndex, populationPath, modulesFormat, modulesPath, enrichAnalysis, monitor.subtask());
 
             monitor.end();
 
@@ -132,16 +114,7 @@ public class EnrichmentCommand extends HtestCommand
      * @param monitor
      * @throws PersistenceException
      */
-    private void loadDataAndModules(
-            IResourceFormat dataFormat,
-            String dataFileName,
-            int valueIndex,
-            @Nullable String populationFileName,
-            IResourceFormat modulesFormat,
-            String modulesFileName,
-            @NotNull EnrichmentAnalysis analysis,
-            IProgressMonitor monitor)
-            throws PersistenceException
+    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, String modulesFileName, @NotNull EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException
     {
 
         // Load background population
@@ -163,12 +136,7 @@ public class EnrichmentCommand extends HtestCommand
         IResourceLocator dataLocator = new UrlResourceLocator(new File(dataFileName));
 
         Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
-        valueTranslators.put(0,
-                createValueTranslator(
-                        analysis.isBinaryCutoffEnabled(),
-                        analysis.getBinaryCutoffCmp(),
-                        analysis.getBinaryCutoffValue())
-        );
+        valueTranslators.put(0, createValueTranslator(analysis.isBinaryCutoffEnabled(), analysis.getBinaryCutoffCmp(), analysis.getBinaryCutoffValue()));
 
         Properties dataProps = new Properties();
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());

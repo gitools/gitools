@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public class ZscoreWithSamplingTest extends ZscoreTest
 {
 
-    protected int numSamples;
+    private final int numSamples;
 
     public ZscoreWithSamplingTest(int numSamples, Statistic statCalc)
     {
@@ -40,8 +40,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
     }
 
     @Override
-    protected void infereMeanAndStdev(
-            @NotNull DoubleMatrix1D population, @NotNull DoubleMatrix1D groupItems, @NotNull PopulationStatistics expected)
+    protected void infereMeanAndStdev(@NotNull DoubleMatrix1D population, @NotNull DoubleMatrix1D groupItems, @NotNull PopulationStatistics expected)
     {
 
         final int sampleSize = groupItems.size();
@@ -56,15 +55,11 @@ public class ZscoreWithSamplingTest extends ZscoreTest
 
         for (int i = 0; i < numSamples; i++)
         {
-            RandomSampler.sample(
-                    sampleSize, population.size(),
-                    sampleSize, 0, lindices, 0,
-                    randomEngine);
+            RandomSampler.sample(sampleSize, population.size(), sampleSize, 0, lindices, 0, randomEngine);
 
             copyIndices(lindices, indices);
 
-            double xi = statCalc.calc(
-                    population.viewSelection(indices));
+            double xi = statCalc.calc(population.viewSelection(indices));
 
             sx += xi;
             sx2 += (xi * xi);
@@ -77,7 +72,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
         //Math.sqrt((sx2 - N * (expectedMean * expectedMean)) / (N - 1));
     }
 
-    private final void copyIndices(@NotNull long[] lindices, int[] indices)
+    private void copyIndices(@NotNull long[] lindices, int[] indices)
     {
         for (int j = 0; j < lindices.length; j++)
             indices[j] = (int) lindices[j];

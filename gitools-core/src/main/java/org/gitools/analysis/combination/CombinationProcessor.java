@@ -40,7 +40,7 @@ import java.util.Date;
 public class CombinationProcessor implements AnalysisProcessor
 {
 
-    private CombinationAnalysis analysis;
+    private final CombinationAnalysis analysis;
 
     public CombinationProcessor(CombinationAnalysis analysis)
     {
@@ -94,8 +94,7 @@ public class CombinationProcessor implements AnalysisProcessor
         results.setRows(rlabels);
         results.makeCells();
 
-        results.setCellAdapter(
-                new BeanElementAdapter(CombinationResult.class));
+        results.setCellAdapter(new BeanElementAdapter(CombinationResult.class));
 
         analysis.setResults(new ResourceReference<IMatrix>("results", results));
 
@@ -112,7 +111,7 @@ public class CombinationProcessor implements AnalysisProcessor
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
         /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
-			pvalueIndex = analysis.getPvalueAttrIndex();*/
+            pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
         {
             pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
@@ -122,12 +121,10 @@ public class CombinationProcessor implements AnalysisProcessor
 
         if (sizeIndex >= 0)
         {
-            sizeCast = MatrixUtils.createDoubleCast(
-                    data.getCellAdapter().getProperty(sizeIndex).getValueClass());
+            sizeCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(sizeIndex).getValueClass());
         }
 
-        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(
-                data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
+        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
 
         int numCC = cmap.getModuleCount();
 
@@ -148,12 +145,9 @@ public class CombinationProcessor implements AnalysisProcessor
 
                     if (data.getCell(ri, mci) != null)
                     {
-                        double size = sizeIndex < 0 ? 1
-                                : sizeCast.getDoubleValue(
-                                data.getCellValue(ri, mci, sizeIndex));
+                        double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(ri, mci, sizeIndex));
 
-                        double pvalue = pvalueCast.getDoubleValue(
-                                data.getCellValue(ri, mci, pvalueIndex));
+                        double pvalue = pvalueCast.getDoubleValue(data.getCellValue(ri, mci, pvalueIndex));
 
                         double zscore = pvalueToZscore(pvalue);
 

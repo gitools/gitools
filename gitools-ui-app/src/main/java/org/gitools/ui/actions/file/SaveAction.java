@@ -34,6 +34,9 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class SaveAction extends BaseAction
 {
 

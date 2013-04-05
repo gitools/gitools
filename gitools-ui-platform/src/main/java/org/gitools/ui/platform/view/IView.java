@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
+/**
+ * @noinspection ALL
+ */
 public interface IView
 {
 

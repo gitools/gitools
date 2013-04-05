@@ -25,17 +25,20 @@ import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @noinspection ALL
+ */
 public class AnnotationResolver implements VariableValueResolver
 {
 
-    public static final String DEFAULT_NA = "";
+    private static final String DEFAULT_NA = "";
 
-    private AnnotationMatrix am;
+    private final AnnotationMatrix am;
 
     private String label;
     private int annRow;
 
-    private String na;
+    private final String na;
 
     public AnnotationResolver(AnnotationMatrix am)
     {
@@ -57,7 +60,7 @@ public class AnnotationResolver implements VariableValueResolver
         this.na = na;
     }
 
-    public final void setLabel(String label)
+    final void setLabel(String label)
     {
         this.label = label;
 

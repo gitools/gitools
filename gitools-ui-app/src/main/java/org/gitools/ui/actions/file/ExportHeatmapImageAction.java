@@ -45,6 +45,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportHeatmapImageAction extends BaseAction
 {
 
@@ -80,14 +83,7 @@ public class ExportHeatmapImageAction extends BaseAction
             return;
         }
 
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-                "Export heatmap to image ...",
-                PersistenceUtils.getFileName(editor.getName()),
-                Settings.getDefault().getLastExportPath(),
-                new FileFormat[]{
-                        FileFormats.PNG,
-                        FileFormats.JPG
-                });
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", PersistenceUtils.getFileName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);
@@ -128,9 +124,7 @@ public class ExportHeatmapImageAction extends BaseAction
                     Graphics2D g = bi.createGraphics();
                     g.setColor(Color.WHITE);
                     g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
-                    drawer.draw(g,
-                            new Rectangle(new Point(), heatmapSize),
-                            new Rectangle(new Point(), heatmapSize));
+                    drawer.draw(g, new Rectangle(new Point(), heatmapSize), new Rectangle(new Point(), heatmapSize));
 
                     ImageIO.write(bi, formatExtension, file);
 

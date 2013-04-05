@@ -28,12 +28,15 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 
+/**
+ * @noinspection ALL
+ */
 public class SaveFileWizard extends AbstractWizard
 {
 
     private SaveFilePage page;
 
-    public SaveFileWizard()
+    private SaveFileWizard()
     {
         setTitle("Select destination file");
     }
@@ -44,7 +47,7 @@ public class SaveFileWizard extends AbstractWizard
         addPage(getSaveFilePage());
     }
 
-    public SaveFilePage getSaveFilePage()
+    SaveFilePage getSaveFilePage()
     {
         if (page == null)
         {
@@ -82,18 +85,14 @@ public class SaveFileWizard extends AbstractWizard
     }
 
     @NotNull
-    public static SaveFileWizard createSimple(
-            String title, String fileName,
-            String folder, FileFormat fileFormat)
+    public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat)
     {
         return createSimple(title, fileName, folder, new FileFormat[]{fileFormat});
     }
 
 
     @NotNull
-    public static SaveFileWizard createSimple(
-            String title, String fileName,
-            String folder, @NotNull FileFormat[] fileFormats)
+    public static SaveFileWizard createSimple(String title, String fileName, String folder, @NotNull FileFormat[] fileFormats)
     {
 
         SaveFileWizard wiz = new SaveFileWizard();

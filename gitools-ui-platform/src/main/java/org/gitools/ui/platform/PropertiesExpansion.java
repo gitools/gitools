@@ -52,6 +52,7 @@ import java.util.Properties;
  * @version 1.0
  *          <p/>
  *          http://articles.techrepublic.com.com/5100-10878_11-1049526.html#
+ * @noinspection ALL
  */
 public class PropertiesExpansion extends Properties
 {
@@ -151,7 +152,7 @@ public class PropertiesExpansion extends Properties
     /**
      * @see #getProperty
      */
-    public static int getInt(@NotNull Properties prop, String key)
+    private static int getInt(@NotNull Properties prop, String key)
     {
         String s = prop.getProperty(key);
         if (s == null)
@@ -173,7 +174,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public static long getLong(@NotNull Properties prop, String key)
+    private static long getLong(@NotNull Properties prop, String key)
     {
         String s = prop.getProperty(key);
         if (s == null)
@@ -195,7 +196,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public static float getFloat(@NotNull Properties prop, String key)
+    private static float getFloat(@NotNull Properties prop, String key)
     {
         String s = prop.getProperty(key);
         if (s == null)
@@ -217,7 +218,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public static double getDouble(@NotNull Properties prop, String key)
+    private static double getDouble(@NotNull Properties prop, String key)
     {
         String s = prop.getProperty(key);
         if (s == null)
@@ -239,7 +240,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public static boolean getBoolean(@NotNull Properties prop, String key)
+    private static boolean getBoolean(@NotNull Properties prop, String key)
     {
         String s = prop.getProperty(key);
         if (s == null)
@@ -261,7 +262,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public int getInt(String key)
+    int getInt(String key)
     {
         String s = getProperty(key);
         if (s == null)
@@ -283,7 +284,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public long getLong(String key)
+    long getLong(String key)
     {
         String s = getProperty(key);
         if (s == null)
@@ -305,7 +306,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public float getFloat(String key)
+    float getFloat(String key)
     {
         String s = getProperty(key);
         if (s == null)
@@ -327,7 +328,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public double getDouble(String key)
+    double getDouble(String key)
     {
         String s = getProperty(key);
         if (s == null)
@@ -349,7 +350,7 @@ public class PropertiesExpansion extends Properties
         return out;
     }
 
-    public boolean getBoolean(String key)
+    boolean getBoolean(String key)
     {
         String s = getProperty(key);
         if (s == null)
@@ -539,8 +540,7 @@ public class PropertiesExpansion extends Properties
      * @param os     an output stream.
      * @param header a description of the property list.
      */
-    public synchronized void store(@NotNull OutputStream os, String header)
-            throws IOException
+    public synchronized void store(@NotNull OutputStream os, String header) throws IOException
     {
         Properties p = null;
         for (Enumeration en = keys(); en.hasMoreElements(); )
@@ -617,7 +617,7 @@ public class PropertiesExpansion extends Properties
      *           this property list
      */
     @Nullable
-    protected String replace(@Nullable String in)
+    String replace(@Nullable String in)
     {
         if (in == null)
         {
@@ -649,7 +649,7 @@ public class PropertiesExpansion extends Properties
     /**
      * Replaces all occurrences of the substitution tag in the given Properties.
      */
-    protected void replaceAll(@NotNull Properties p)
+    void replaceAll(@NotNull Properties p)
     {
         for (Enumeration en = p.keys(); en.hasMoreElements(); )
         {
@@ -667,12 +667,12 @@ public class PropertiesExpansion extends Properties
         }
     }
 
-    protected static char startSecSep = '[';
-    protected static char endSecSep = ']';
+    private static final char startSecSep = '[';
+    private static final char endSecSep = ']';
     @NotNull
-    protected static String startTag = "${";
+    private static final String startTag = "${";
     @NotNull
-    protected static String endTag = "}";
+    private static final String endTag = "}";
     @Nullable
     private String curSec = "";
 }

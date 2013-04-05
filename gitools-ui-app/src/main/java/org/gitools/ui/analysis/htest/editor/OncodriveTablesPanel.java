@@ -40,6 +40,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
 {
 
@@ -48,16 +51,16 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     private static final String DATA_TEMPLATE = "/vm/analysis/oncodrive/tables_data.vm";
     private static final String RESULTS_TEMPLATE = "/vm/analysis/oncodrive/tables_results.vm";
 
-    protected final int dataValueIndex = 0;
+    private final int dataValueIndex = 0;
 
-    protected Map<String, Integer> dataRowIndices;
-    protected Map<String, Integer> dataColIndices;
-
-    @Nullable
-    protected ModuleMap mmap;
+    private final Map<String, Integer> dataRowIndices;
+    private final Map<String, Integer> dataColIndices;
 
     @Nullable
-    protected IColorScale dataScale;
+    private ModuleMap mmap;
+
+    @Nullable
+    private final IColorScale dataScale;
 
     public OncodriveTablesPanel(@NotNull OncodriveAnalysis analysis, @NotNull Heatmap heatmap)
     {
@@ -176,12 +179,10 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     }
 
     @NotNull
-    private List<VelocityContext> createDataElements(
-            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
+    private List<VelocityContext> createDataElements(@NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
     {
 
-        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-                data.getCellAdapter().getProperty(dataValueIndex).getValueClass());
+        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(dataValueIndex).getValueClass());
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
 
@@ -199,10 +200,8 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
             @Override
             public int compare(Integer o1, Integer o2)
             {
-                double v1 = valueCast.getDoubleValue(
-                        data.getCellValue(drow, o1, dataValueIndex));
-                double v2 = valueCast.getDoubleValue(
-                        data.getCellValue(drow, o2, dataValueIndex));
+                double v1 = valueCast.getDoubleValue(data.getCellValue(drow, o1, dataValueIndex));
+                double v2 = valueCast.getDoubleValue(data.getCellValue(drow, o2, dataValueIndex));
                 return (int) Math.signum(v2 - v1);
             }
         });
@@ -214,8 +213,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
             int mci = iix[ci];
             if (data.getCell(drow, mci) != null)
             {
-                double value = valueCast.getDoubleValue(
-                        data.getCellValue(drow, mci, dataValueIndex));
+                double value = valueCast.getDoubleValue(data.getCellValue(drow, mci, dataValueIndex));
 
                 VelocityContext e = new VelocityContext();
                 e.put("name", data.getColumnLabel(mci));
@@ -232,8 +230,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     private VelocityContext createDataTableElements(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
-        List<VelocityContext> elements =
-                createDataElements(mv, row, col, data, mmap);
+        List<VelocityContext> elements = createDataElements(mv, row, col, data, mmap);
 
         VelocityContext table = new VelocityContext();
         table.put("name", mv.getRowLabel(row));
@@ -243,8 +240,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     }
 
     @NotNull
-    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
-                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         VelocityContext table = createDataTableElements(mv, row, col, data, mmap);
@@ -263,8 +259,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     }
 
     @NotNull
-    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
-                                                  @NotNull IMatrixView mv, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -300,8 +295,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
     }
 
     @NotNull
-    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
-                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> tables = new ArrayList<VelocityContext>();
@@ -340,8 +334,7 @@ public class OncodriveTablesPanel extends AbstractTablesPanel<OncodriveAnalysis>
         return context;
     }
 
-    private VelocityContext createDataAllModel(VelocityContext context,
-                                               IMatrixView mv, IMatrix data, ModuleMap mmap)
+    private VelocityContext createDataAllModel(VelocityContext context, IMatrixView mv, IMatrix data, ModuleMap mmap)
     {
 
         return context;

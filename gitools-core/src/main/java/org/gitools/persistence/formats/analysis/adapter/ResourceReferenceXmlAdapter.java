@@ -30,8 +30,8 @@ import java.util.List;
 
 public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference>
 {
-    private IResourceLocator resourceLocator;
-    private List<ResourceReference> dependencies;
+    private final IResourceLocator resourceLocator;
+    private final List<ResourceReference> dependencies;
 
     public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator)
     {

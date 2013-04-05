@@ -42,6 +42,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartFilterConfigurationPage extends AbstractWizardPage
 {
 
@@ -50,7 +53,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     private static class PageListWrapper
     {
 
-        private FilterPage page;
+        private final FilterPage page;
 
         public PageListWrapper(FilterPage dataset)
         {
@@ -79,7 +82,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     private static class GroupListWrapper
     {
 
-        private FilterGroup group;
+        private final FilterGroup group;
 
         public GroupListWrapper(FilterGroup dataset)
         {
@@ -121,7 +124,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     @Nullable
     private FilterPage lastPageSelected;
 
-    private HashMap<String, Filter> filters;
+    private final HashMap<String, Filter> filters;
 
     private HashMap<FilterPage, CollectionsPanelsCache> collectionsCache; // Stores component panel selections
 
@@ -133,7 +136,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     {
 
         @NotNull
-        public HashMap<FilterGroup, List<FilterCollectionPanel>> collections = new HashMap<FilterGroup, List<FilterCollectionPanel>>();
+        public final HashMap<FilterGroup, List<FilterCollectionPanel>> collections = new HashMap<FilterGroup, List<FilterCollectionPanel>>();
 
     }
 
@@ -185,8 +188,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
             {
                 if (filterPageCombo.getModel().getSelectedItem() != null && filterGroupList.getSelectedValue() != null)
                 {
-                    updateCollectionControls(((PageListWrapper) filterPageCombo.getModel().getSelectedItem()).getFilterPage(),
-                            ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup());
+                    updateCollectionControls(((PageListWrapper) filterPageCombo.getModel().getSelectedItem()).getFilterPage(), ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup());
 
                     lastGroupSelected = ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup();
                 }
@@ -227,19 +229,8 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE).addContainerGap()));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE).addContainerGap()));
 
         jSplitPane1.setLeftComponent(jPanel1);
 
@@ -250,64 +241,22 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
 
         javax.swing.GroupLayout collectionsPanelLayout = new javax.swing.GroupLayout(collectionsPanel);
         collectionsPanel.setLayout(collectionsPanelLayout);
-        collectionsPanelLayout.setHorizontalGroup(
-                collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 350, Short.MAX_VALUE)
-        );
-        collectionsPanelLayout.setVerticalGroup(
-                collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 366, Short.MAX_VALUE)
-        );
+        collectionsPanelLayout.setHorizontalGroup(collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 350, Short.MAX_VALUE));
+        collectionsPanelLayout.setVerticalGroup(collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 366, Short.MAX_VALUE));
 
         scrollPanel.setViewportView(collectionsPanel);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 362, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 390, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                                        .addContainerGap()))
-        );
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 362, Short.MAX_VALUE).addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))));
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 390, Short.MAX_VALUE).addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE).addContainerGap())));
 
         jSplitPane1.setRightComponent(jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(filterPageCombo, 0, 522, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(filterPageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(filterPageCombo, 0, 522, Short.MAX_VALUE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(filterPageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -404,7 +353,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
         }
     }
 
-    public void updatePageFilterList()
+    void updatePageFilterList()
     {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
 
@@ -427,8 +376,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     {
 
         // Avoid update process when null value or unaltered filter group selection
-        if (lastPageSelected != null
-                && lastPageSelected.getInternalName().equals(page.getInternalName()))
+        if (lastPageSelected != null && lastPageSelected.getInternalName().equals(page.getInternalName()))
         {
 
             return;
@@ -467,7 +415,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     private void updateCollectionsCache(FilterPage page, @NotNull FilterGroup group)
     {
 
-        FilterCollectionPanel collectionPanel = null;
+        FilterCollectionPanel collectionPanel;
 
         List<FilterCollectionPanel> listCollections = new ArrayList<FilterCollectionPanel>();
 
@@ -497,9 +445,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage
     {
 
         // Avoid update process when null value or unaltered filter group selection
-        if (filterGroupList.getSelectedValue() == null
-                || (lastGroupSelected != null
-                && lastGroupSelected.getInternalName().equals(group.getInternalName())))
+        if (filterGroupList.getSelectedValue() == null || (lastGroupSelected != null && lastGroupSelected.getInternalName().equals(group.getInternalName())))
         {
 
             return;

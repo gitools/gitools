@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 public class ClusteringValueWizard extends AbstractWizard
 {
 
-    private Heatmap heatmap;
+    private final Heatmap heatmap;
 
     private AbstractClusteringValueMethod method;
 
@@ -68,9 +68,7 @@ public class ClusteringValueWizard extends AbstractWizard
         addPage(methodPage);
 
         IMatrixView mv = heatmap.getMatrixView();
-        optionsPage = new ClusteringOptionsPage(
-                mv.getContents().getCellAttributes(),
-                mv.getSelectedPropertyIndex());
+        optionsPage = new ClusteringOptionsPage(mv.getContents().getCellAttributes(), mv.getSelectedPropertyIndex());
         addPage(optionsPage);
 
         newickPage = new SaveFilePage();
@@ -99,17 +97,13 @@ public class ClusteringValueWizard extends AbstractWizard
     @Override
     public boolean canFinish()
     {
-        return currentPage == cobwebPage
-                || currentPage == hclPage
-                || currentPage == kmeansPage;
+        return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
     }
 
     @Override
     public boolean isLastPage(IWizardPage page)
     {
-        return currentPage == cobwebPage
-                || currentPage == hclPage
-                || currentPage == kmeansPage;
+        return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
     }
 
     @Nullable
@@ -130,9 +124,7 @@ public class ClusteringValueWizard extends AbstractWizard
                 nextPage = getMethodConfigPage();
             }
         }
-        else if (currentPage == cobwebPage
-                || currentPage == hclPage
-                || currentPage == kmeansPage)
+        else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage)
         {
             nextPage = null;
         }
@@ -153,9 +145,7 @@ public class ClusteringValueWizard extends AbstractWizard
             Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
             optionsPage.setNewickExportVisible(WekaHCLMethod.class.equals(methodClass));
         }
-        else if (currentPage == cobwebPage
-                || currentPage == hclPage
-                || currentPage == kmeansPage)
+        else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage)
         {
             method = ((ClusteringValueMethodPage) currentPage).getMethod();
             method.setPreprocess(optionsPage.isPreprocessing());
@@ -189,9 +179,7 @@ public class ClusteringValueWizard extends AbstractWizard
     {
         int attr = optionsPage.getDataAttribute();
         IMatrixView mv = heatmap.getMatrixView();
-        return optionsPage.isApplyToRows() ?
-                new MatrixRowClusteringData(mv, attr)
-                : new MatrixColumnClusteringData(mv, attr);
+        return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, attr) : new MatrixColumnClusteringData(mv, attr);
     }
 
     public boolean isHeaderSelected()

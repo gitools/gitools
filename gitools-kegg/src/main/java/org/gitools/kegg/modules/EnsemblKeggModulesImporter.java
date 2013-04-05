@@ -49,28 +49,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes
 {
 
-    private static Logger logger = LoggerFactory.getLogger(EnsemblKeggModulesImporter.class);
+    private static final Logger logger = LoggerFactory.getLogger(EnsemblKeggModulesImporter.class);
 
     // KEGG
 
-    public static final EnsemblKeggModuleCategory[] KEGG_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[]{
-            new EnsemblKeggModuleCategory("KEGG", KEGG_PATHWAYS, "KEGG Pathways")
-    };
+    private static final EnsemblKeggModuleCategory[] KEGG_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[]{new EnsemblKeggModuleCategory("KEGG", KEGG_PATHWAYS, "KEGG Pathways")};
 
     // Gene Ontology
 
-    public static final EnsemblKeggModuleCategory[] GO_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[]{
-            new EnsemblKeggModuleCategory("Ensembl", GO_BP, "GO Biological Processes"),
-            new EnsemblKeggModuleCategory("Ensembl", GO_MF, "GO Molecular functions"),
-            new EnsemblKeggModuleCategory("Ensembl", GO_CL, "GO Cellular locations")
-    };
+    private static final EnsemblKeggModuleCategory[] GO_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[]{new EnsemblKeggModuleCategory("Ensembl", GO_BP, "GO Biological Processes"), new EnsemblKeggModuleCategory("Ensembl", GO_MF, "GO Molecular functions"), new EnsemblKeggModuleCategory("Ensembl", GO_CL, "GO Cellular locations")};
 
     private static final Map<String, String> goDescId = new HashMap<String, String>();
 
@@ -84,18 +77,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     // Features
 
-    private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[]{
-            new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"),
-            new EnsemblKeggFeatureCategory("Genes", NCBI_GENES, "NCBI Genes"),
-            new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"),
-            new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt"),
-            new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"),
-            new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts"),
-            new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")
-    };
+    private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[]{new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"), new EnsemblKeggFeatureCategory("Genes", NCBI_GENES, "NCBI Genes"), new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"), new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt"), new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"), new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts"), new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")};
 
-    private static final Map<String, EnsemblKeggFeatureCategory> featMap =
-            new HashMap<String, EnsemblKeggFeatureCategory>();
+    private static final Map<String, EnsemblKeggFeatureCategory> featMap = new HashMap<String, EnsemblKeggFeatureCategory>();
 
     static
     {
@@ -115,9 +99,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     @Nullable
     private EnsemblKeggFeatureCategory featCategory;
 
-    private boolean keggEnabled;
+    private final boolean keggEnabled;
 
-    private boolean goEnabled;
+    private final boolean goEnabled;
 
     // internal state
 
@@ -132,7 +116,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     @Nullable
     private Organism[] cachedOrganisms;
 
-    private ModuleCategory[] moduleCategories;
+    private final ModuleCategory[] moduleCategories;
 
     @Nullable
     private FeatureCategory[] cachedFeatures;
@@ -173,8 +157,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             throw new ModulesImporterException("Ensembl biomart source not defined.");
         }
 
-        return biomartService =
-                BiomartServiceFactory.createService(version.getSource());
+        return biomartService = BiomartServiceFactory.createService(version.getSource());
     }
 
     @Nullable
@@ -361,11 +344,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         {
             ensemblFeats = new ArrayList<EnsemblKeggFeatureCategory>();
 
-            ensemblFeats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[]{
-                    featMap.get(ENSEMBL_GENES),
-                    featMap.get(ENSEMBL_TRANSCRIPTS),
-                    featMap.get(ENSEMBL_PROTEINS)
-            }));
+            ensemblFeats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[]{featMap.get(ENSEMBL_GENES), featMap.get(ENSEMBL_TRANSCRIPTS), featMap.get(ENSEMBL_PROTEINS)}));
 
             List<AttributePage> attrs = null;
             try
@@ -389,14 +368,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             idmap.put("uniprot_swissprot_accession", UNIPROT);
             //idmap.put("unigene", UNIGENE);
 
-            Set<String> idremove = new HashSet<String>(Arrays.asList(new String[]{
-                    "clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name",
-                    "clone_based_vega_gene_name", "clone_based_vega_transcript_name",
-                    "ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg",
-                    "shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt",
-                    "HGNC_mb001", "uniprot_sptrembl", "wikigene_description",
-                    "dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"
-            }));
+            Set<String> idremove = new HashSet<String>(Arrays.asList(new String[]{"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name", "clone_based_vega_gene_name", "clone_based_vega_transcript_name", "ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg", "shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt", "HGNC_mb001", "uniprot_sptrembl", "wikigene_description", "dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"}));
 
             for (AttributePage p : attrs)
                 for (AttributeGroup g : p.getAttributeGroups())
@@ -585,9 +557,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
             String linkId = null;
 
-            if (keggEnabled
-                    && organism.getKeggOrganism() != null
-                    && !keggFeatMap.containsKey(ENSEMBL_GENES))
+            if (keggEnabled && organism.getKeggOrganism() != null && !keggFeatMap.containsKey(ENSEMBL_GENES))
             {
 
                 List<String> idList = Arrays.asList(new String[]{ENSEMBL_GENES, NCBI_GENES, PDB, UNIPROT});
@@ -684,18 +654,14 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
             if (!monitor.isCancelled())
             {
-                if (!src.equals(data.getSrcNode().getId())
-                        || !featCategory.getId().equals(data.getDstNode().getId()))
+                if (!src.equals(data.getSrcNode().getId()) || !featCategory.getId().equals(data.getDstNode().getId()))
                 {
                     monitor.exception(new ModulesImporterException("There was an unexpected mapping error."));
                 }
 
                 Map<String, Set<String>> tree = null;
 
-                boolean plainGo = goEnabled && (
-                        modCategory.getId().equals(GO_BP)
-                                || modCategory.getId().equals(GO_MF)
-                                || modCategory.getId().equals(GO_CL));
+                boolean plainGo = goEnabled && (modCategory.getId().equals(GO_BP) || modCategory.getId().equals(GO_MF) || modCategory.getId().equals(GO_CL));
 
                 if (plainGo)
                 {
@@ -757,10 +723,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         {
             bs = getBiomartService();
 
-            Query q = EnsemblMapper.createQuery(
-                    organism.getEnsemblDataset().getName(),
-                    EnsemblMapper.getInternalName(GO_ID),
-                    goDescId.get(GO_ID));
+            Query q = EnsemblMapper.createQuery(organism.getEnsemblDataset().getName(), EnsemblMapper.getInternalName(GO_ID), goDescId.get(GO_ID));
 
             Attribute a = new Attribute();
             a.setName("namespace_1003");
@@ -778,9 +741,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 {
                     if (fields.length == 3)
                     {
-                        if ((src.equals(GO_CL) && fields[2].equals("cellular_component"))
-                                || (src.equals(GO_MF) && fields[2].equals("molecular_function"))
-                                || (src.equals(GO_BP) && fields[2].equals("biological_process")))
+                        if ((src.equals(GO_CL) && fields[2].equals("cellular_component")) || (src.equals(GO_MF) && fields[2].equals("molecular_function")) || (src.equals(GO_BP) && fields[2].equals("biological_process")))
                         {
                             desc.put(fields[0], fields[1]);
                         }
@@ -812,10 +773,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         {
             bs = getBiomartService();
 
-            Query q = EnsemblMapper.createQuery(
-                    organism.getEnsemblDataset().getName(),
-                    EnsemblMapper.getInternalName(src),
-                    goDescId.get(src));
+            Query q = EnsemblMapper.createQuery(organism.getEnsemblDataset().getName(), EnsemblMapper.getInternalName(src), goDescId.get(src));
 
             bs.queryTable(q, new BiomartQueryHandler()
             {
@@ -860,7 +818,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private Map<String, Set<String>> retrieveGoTree(@NotNull IProgressMonitor monitor) throws MalformedURLException, IOException
+    private Map<String, Set<String>> retrieveGoTree(@NotNull IProgressMonitor monitor) throws IOException
     {
         monitor.begin("Reading Gene Ontology graph ...", 1);
 
@@ -945,7 +903,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws MalformedURLException, IOException
+    private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws IOException
     {
         monitor.begin("Plaining Gene Ontology hierarchy ...", 1);
 
@@ -957,9 +915,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 			System.out.println();
 		}*/
 
-        MappingData plainData = new MappingData(
-                data.getSrcNode().getId(),
-                data.getDstNode().getId());
+        MappingData plainData = new MappingData(data.getSrcNode().getId(), data.getDstNode().getId());
 
         for (String id : data.getSrcIds())
         {
@@ -975,11 +931,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return plainData;
     }
 
-    private void plainGoTerm(String id,
-                             @NotNull Set<String> path,
-                             @NotNull Set<String> dstIds,
-                             @NotNull Map<String, Set<String>> map,
-                             @NotNull Map<String, Set<String>> childrenTree)
+    private void plainGoTerm(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree)
     {
 
         if (path.contains(id))
@@ -1008,7 +960,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         }
     }
 
-    public KeggService getKeggService()
+    KeggService getKeggService()
     {
 
         if (keggService == null)

@@ -45,6 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class CorrelationTool extends AnalysisTool
 {
 
@@ -60,18 +63,20 @@ public class CorrelationTool extends AnalysisTool
 
         @Option(name = "-r", aliases = "-rows",
                 usage = "Apply to rows, by default it is applied to columns.")
-        public boolean applyToRows = false;
+        public final boolean applyToRows = false;
 
         @Option(name = "-m", aliases = "-method", metaVar = "<method>",
                 usage = "Correlation method to use. (default: pearson)")
-        public String method = PearsonCorrelationMethod.ID;
+        public final String method = PearsonCorrelationMethod.ID;
 
         @NotNull
         @Option(name = "-M", aliases = "-method-conf", metaVar = "<param=value>",
-                usage = "Define a method configuration parameter.\n" +
-                        " This allows to configure the behaviour of the method.")
-        public List<String> methodConf = new ArrayList<String>(0);
+                usage = "Define a method configuration parameter.\n" + " This allows to configure the behaviour of the method.")
+        public final List<String> methodConf = new ArrayList<String>(0);
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         @Option(name = "-ev", aliases = "-empty-values", metaVar = "<value>",
                 usage = "Replace empty values by <value>.\n" +
                         "If not specified pairs with empty values\n" +
@@ -87,7 +92,7 @@ public class CorrelationTool extends AnalysisTool
         public int attrIndex = 0;
     }
 
-    protected Properties methodProperties = new Properties();
+    private Properties methodProperties = new Properties();
 
     @Override
     public void validate(Object argsObject) throws ToolException
@@ -125,14 +130,9 @@ public class CorrelationTool extends AnalysisTool
 
         IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
 
-        CorrelationCommand cmd = new CorrelationCommand(
-                analysis,
-                dataFormat, args.dataFile,
-                args.workdir, args.analysisName + "." + CorrelationAnalysisFormat.EXTENSION);
+        CorrelationCommand cmd = new CorrelationCommand(analysis, dataFormat, args.dataFile, args.workdir, args.analysisName + "." + CorrelationAnalysisFormat.EXTENSION);
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 

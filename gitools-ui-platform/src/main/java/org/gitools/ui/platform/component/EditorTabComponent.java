@@ -41,7 +41,7 @@ import java.awt.event.*;
 public class EditorTabComponent extends JPanel
 {
 
-    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
     private final EditorsPanel editorPanel;
     @NotNull
@@ -50,9 +50,7 @@ public class EditorTabComponent extends JPanel
     @NotNull
     private final JLabel label;
 
-    public EditorTabComponent(
-            EditorsPanel editorPanel,
-            @NotNull AbstractEditor editor)
+    public EditorTabComponent(EditorsPanel editorPanel, @NotNull AbstractEditor editor)
     {
 
         this.editorPanel = editorPanel;
@@ -83,8 +81,7 @@ public class EditorTabComponent extends JPanel
             @Override
             public void mousePressed(MouseEvent e)
             {
-                EditorTabComponent.this.editorPanel.setSelectedEditor(
-                        EditorTabComponent.this.editor);
+                EditorTabComponent.this.editorPanel.setSelectedEditor(EditorTabComponent.this.editor);
             }
         });
 

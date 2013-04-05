@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class HeatmapLayout implements LayoutManager
+class HeatmapLayout implements LayoutManager
 {
 
     @Override
@@ -49,9 +49,7 @@ public class HeatmapLayout implements LayoutManager
         Dimension bdyPsz = parent.getComponent(2).getPreferredSize();
         Dimension clsPsz = parent.getComponent(3).getPreferredSize();
         Dimension rwsPsz = parent.getComponent(4).getPreferredSize();
-        return new Dimension(
-                colPsz.width + rowPsz.width + rwsPsz.width,
-                colPsz.height + rowPsz.height + clsPsz.height);
+        return new Dimension(colPsz.width + rowPsz.width + rwsPsz.width, colPsz.height + rowPsz.height + clsPsz.height);
     }
 
     @NotNull

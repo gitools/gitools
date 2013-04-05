@@ -25,12 +25,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
 public class ExcelHeader implements Serializable
 {
 
-    private int pos;
-    private int type;
-    private String label;
+    private final int pos;
+    private final int type;
+    private final String label;
 
     public ExcelHeader(String label, int pos, int type)
     {

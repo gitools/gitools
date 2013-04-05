@@ -29,6 +29,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class SpearmanCorrelationMethod extends AbstractMethod implements CorrelationMethod
 {
 
@@ -39,12 +42,9 @@ public class SpearmanCorrelationMethod extends AbstractMethod implements Correla
         this(new Properties());
     }
 
-    public SpearmanCorrelationMethod(Properties properties)
+    private SpearmanCorrelationMethod(Properties properties)
     {
-        super(ID,
-                "Spearman's rank correlation",
-                "Spearman's rank correlation",
-                CorrelationResult.class, properties);
+        super(ID, "Spearman's rank correlation", "Spearman's rank correlation", CorrelationResult.class, properties);
     }
 
     @Nullable

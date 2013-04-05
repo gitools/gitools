@@ -44,7 +44,7 @@ public final class ZscoreTestFactory extends TestFactory
     public static final int DEFAULT_NUM_SAMPLES = 10000;
 
     private int numSamples;
-    private Statistic statCalc;
+    private final Statistic statCalc;
 
     public ZscoreTestFactory(@NotNull ToolConfig config)
     {

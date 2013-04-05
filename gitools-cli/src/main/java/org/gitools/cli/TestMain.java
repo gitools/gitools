@@ -28,6 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class TestMain
 {
 
@@ -76,7 +79,7 @@ public class TestMain
 				" -verbose -debug -err-log -";*/
 
 		/*cmd = "combination" +
-				" -d " + stuff + "/brain-comb2.cdm.gz" +
+                " -d " + stuff + "/brain-comb2.cdm.gz" +
 				" -df " + MimeTypes.DOUBLE_MATRIX +
 				" -w "+ temp + "/test-cmb -N test_comb" +
 				" -verbose -debug -err-log -";*/

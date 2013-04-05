@@ -32,10 +32,10 @@ import org.jetbrains.annotations.NotNull;
 public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
 {
 
-    protected String[] attributeNames;
+    private final String[] attributeNames;
 
-    protected CorrelationFromEditorPage corrPage;
-    protected AnalysisDetailsPage analysisDetailsPage;
+    private CorrelationFromEditorPage corrPage;
+    private AnalysisDetailsPage analysisDetailsPage;
 
     public CorrelationAnalysisFromEditorWizard(String[] attributeNames)
     {
@@ -81,8 +81,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
         a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
         a.setAttributeIndex(corrPage.getAttributeIndex());
-        a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
-                corrPage.getReplaceNanValue() : null);
+        a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);
         a.setTransposeData(corrPage.isTransposeEnabled());
 
         return a;

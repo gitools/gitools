@@ -28,7 +28,7 @@ public class BenjaminiHochbergFdr implements MTC
 {
 
     @NotNull
-    public static String SHORT_NAME = "bh";
+    public static final String SHORT_NAME = "bh";
 
     @NotNull
     @Override

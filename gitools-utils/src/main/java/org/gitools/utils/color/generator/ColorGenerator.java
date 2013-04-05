@@ -23,6 +23,9 @@ package org.gitools.utils.color.generator;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public interface ColorGenerator
 {
 

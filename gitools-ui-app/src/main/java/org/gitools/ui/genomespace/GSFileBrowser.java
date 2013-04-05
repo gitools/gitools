@@ -43,6 +43,7 @@ import java.util.List;
 
 /**
  * @author Jim Robinson
+ * @noinspection ALL
  */
 public class GSFileBrowser extends JDialog
 {
@@ -54,18 +55,18 @@ public class GSFileBrowser extends JDialog
         OPEN, SAVE
     }
 
-    private static Logger log = Logger.getLogger(GSFileBrowser.class);
+    private static final Logger log = Logger.getLogger(GSFileBrowser.class);
 
-    static ImageIcon folderIcon;
-    static ImageIcon fileIcon;
+    private static ImageIcon folderIcon;
+    private static ImageIcon fileIcon;
     @Nullable
-    static GSFileMetadata selectedFile;
+    private static GSFileMetadata selectedFile;
 
-    Mode mode = Mode.OPEN;
+    private Mode mode = Mode.OPEN;
     @Nullable
-    String userRootUrl = null;
+    private String userRootUrl = null;
 
-    public GSFileBrowser(Frame owner) throws IOException, JSONException
+    private GSFileBrowser(Frame owner) throws IOException, JSONException
     {
         this(owner, Mode.OPEN);
     }
@@ -309,7 +310,7 @@ public class GSFileBrowser extends JDialog
     static class ListModel extends AbstractListModel
     {
 
-        List<GSFileMetadata> elements;
+        final List<GSFileMetadata> elements;
 
         ListModel(List<GSFileMetadata> elements)
         {
@@ -328,18 +329,16 @@ public class GSFileBrowser extends JDialog
 
     }
 
-    static class CellRenderer extends JLabel implements ListCellRenderer
+    private static class CellRenderer extends JLabel implements ListCellRenderer
     {
         // This is the only method defined by ListCellRenderer.
         // We just reconfigure the JLabel each time we're called.
 
         @NotNull
-        public Component getListCellRendererComponent(
-                @NotNull JList list,
-                @NotNull Object value,            // value to display
-                int index,               // cell index
-                boolean isSelected,      // is the cell selected
-                boolean cellHasFocus)    // the list and the cell have the focus
+        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value,            // value to display
+                                                      int index,               // cell index
+                                                      boolean isSelected,      // is the cell selected
+                                                      boolean cellHasFocus)    // the list and the cell have the focus
         {
             GSFileMetadata fileElement = (GSFileMetadata) value;
 

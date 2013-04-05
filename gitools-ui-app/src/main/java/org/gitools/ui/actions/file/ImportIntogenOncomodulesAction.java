@@ -28,6 +28,9 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class ImportIntogenOncomodulesAction extends BaseAction
 {
 
@@ -44,17 +47,7 @@ public class ImportIntogenOncomodulesAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        /*WizardDialog wizDlg = new WizardDialog(
-                AppFrame.instance(),
-				new IntogenOncomodulesWizard());
-		
-		wizDlg.open();*/
-
-		/*IntogenOncomodulesPage editor = new IntogenOncomodulesPage();
-        AppFrame.instance().getEditorsPanel().addEditor(editor);*/
-
-        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(),
-                IntogenImportDialog.ImportType.ONCOMODULES);
+        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(), IntogenImportDialog.ImportType.ONCOMODULES);
 
         dlg.setVisible(true);
     }

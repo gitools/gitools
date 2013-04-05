@@ -37,6 +37,9 @@ import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.kohsuke.args4j.Option;
 
+/**
+ * @noinspection ALL
+ */
 public class OncodriveTool extends HtestTool
 {
 
@@ -67,8 +70,7 @@ public class OncodriveTool extends HtestTool
 
         OncodriveArguments args = (OncodriveArguments) argsObject;
 
-        testConfig = TestFactory.createToolConfig(
-                ToolConfig.ONCODRIVE, args.testName);
+        testConfig = TestFactory.createToolConfig(ToolConfig.ONCODRIVE, args.testName);
 
         if (testConfig == null)
         {
@@ -101,17 +103,9 @@ public class OncodriveTool extends HtestTool
 
         IResourceFormat setsMime = getResourceFormat(args.setsFormat, args.setsFile, ModuleMap.class);
 
-        OncodriveCommand cmd = new OncodriveCommand(
-                analysis, dataMime, args.dataFile,
-                args.valueIndex,
-                args.populationFile,
-                populationDefaultValue,
-                setsMime, args.setsFile,
-                args.workdir, args.analysisName + "." + OncodriveAnalysisFormat.EXTENSION);
+        OncodriveCommand cmd = new OncodriveCommand(analysis, dataMime, args.dataFile, args.valueIndex, args.populationFile, populationDefaultValue, setsMime, args.setsFile, args.workdir, args.analysisName + "." + OncodriveAnalysisFormat.EXTENSION);
 
-        IProgressMonitor monitor = !args.quiet ?
-                new StreamProgressMonitor(System.out, args.verbose, args.debug)
-                : new NullProgressMonitor();
+        IProgressMonitor monitor = !args.quiet ? new StreamProgressMonitor(System.out, args.verbose, args.debug) : new NullProgressMonitor();
 
         ThreadManager.setNumThreads(args.maxProcs);
 

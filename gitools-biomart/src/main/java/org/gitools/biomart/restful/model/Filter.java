@@ -24,28 +24,27 @@ package org.gitools.biomart.restful.model;
 import javax.xml.bind.annotation.*;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Filter", propOrder = {
-        "name",
-        "value",
-        "excluded"
-})
+@XmlType(name = "Filter", propOrder = {"name", "value", "excluded"})
 public class Filter
 {
 
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
 
     @XmlAttribute
-    protected String value;
+    private String value;
 
     @XmlAttribute
-    protected int excluded;
+    private int excluded;
 
     // Only in case of radio components since
     // a query in xml with this type of components is different
     @XmlTransient
-    protected Boolean radio = false;
+    private Boolean radio = false;
 
     /**
      * Gets the value of the name property.

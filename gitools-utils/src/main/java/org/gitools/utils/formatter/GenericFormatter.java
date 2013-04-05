@@ -29,6 +29,9 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class GenericFormatter implements Serializable
 {
 
@@ -40,12 +43,10 @@ public class GenericFormatter implements Serializable
     private static final long oneDay = 24 * oneHour;
 
     @NotNull
-    private static Map<Class<?>, String> defaultGenericFormatMap =
-            new HashMap<Class<?>, String>();
+    private static final Map<Class<?>, String> defaultGenericFormatMap = new HashMap<Class<?>, String>();
 
     @NotNull
-    private Map<Class<?>, String> customFormatMap =
-            new HashMap<Class<?>, String>();
+    private final Map<Class<?>, String> customFormatMap = new HashMap<Class<?>, String>();
 
     static
     {
@@ -53,11 +54,11 @@ public class GenericFormatter implements Serializable
         defaultGenericFormatMap.put(Double.class, "%.3g");
     }
 
-    private String ltString;
-    private Map<Class<?>, String> genericFormatMap;
+    private final String ltString;
+    private final Map<Class<?>, String> genericFormatMap;
 
-    private StringBuilder sb;
-    private Formatter fmt;
+    private final StringBuilder sb;
+    private final Formatter fmt;
 
     public GenericFormatter(String ltString)
     {
@@ -103,7 +104,7 @@ public class GenericFormatter implements Serializable
     }
 
     @NotNull
-    public String format(String format, Object... args)
+    String format(String format, Object... args)
     {
         sb.setLength(0);
         fmt.format(format, args);

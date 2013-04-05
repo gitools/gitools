@@ -23,6 +23,9 @@ package org.gitools.matrix.model.element;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 public class StringElementAdapter extends AbstractElementAdapter
 {
@@ -43,8 +46,7 @@ public class StringElementAdapter extends AbstractElementAdapter
     @Override
     public void setValue(Object element, int index, Object value)
     {
-        throw new UnsupportedOperationException(
-                getClass().getSimpleName() + " doesn't support change string value.");
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " doesn't support change string value.");
     }
 
 }

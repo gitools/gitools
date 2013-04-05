@@ -50,6 +50,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class IntogenImportDialog extends JDialog
 {
 
@@ -58,11 +61,11 @@ public class IntogenImportDialog extends JDialog
         ONCODATA, ONCOMODULES
     }
 
-    private ImportType type;
+    private final ImportType type;
 
-    private DialogHeaderPanel headerPanel;
+    private final DialogHeaderPanel headerPanel;
 
-    private HtmlPanel htmlPanel;
+    private final HtmlPanel htmlPanel;
     @Nullable
     private SimpleHtmlRendererContext rcontext;
 
@@ -137,8 +140,7 @@ public class IntogenImportDialog extends JDialog
                     {
                         try
                         {
-                            IntogenService.getDefault().queryFromPOST(
-                                    folder, prefix, action, properties, monitor);
+                            IntogenService.getDefault().queryFromPOST(folder, prefix, action, properties, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {
@@ -182,12 +184,8 @@ public class IntogenImportDialog extends JDialog
             @Override
             public void error(String message, Throwable throwable)
             {
-                int ret = JOptionPane.showConfirmDialog(AppFrame.get(),
-                        "There was an error trying to conect to " + getUrl() +
-                                "\nPress OK to try again or Cancel to close this dialog and try later.",
-                        "Error",
-                        JOptionPane.OK_CANCEL_OPTION,
-                        JOptionPane.ERROR_MESSAGE);
+                int ret = JOptionPane.showConfirmDialog(AppFrame.get(), "There was an error trying to conect to " + getUrl() +
+                        "\nPress OK to try again or Cancel to close this dialog and try later.", "Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 
                 if (ret == JOptionPane.OK_OPTION)
                 {

@@ -27,6 +27,7 @@ import org.json.JSONObject;
  *
  * @author Jim Robinson
  * @date Aug 2, 2011
+ * @noinspection ALL
  */
 public class GSFileMetadata
 {

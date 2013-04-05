@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener
 {
 
@@ -43,15 +46,15 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
     protected IWizardPage currentPage;
 
     @NotNull
-    private List<IWizardPage> pages = new ArrayList<IWizardPage>();
+    private final List<IWizardPage> pages = new ArrayList<IWizardPage>();
 
     @NotNull
-    private Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
+    private final Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
 
     @NotNull
-    private List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
+    private final List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
 
-    public AbstractWizard()
+    protected AbstractWizard()
     {
     }
 
@@ -73,7 +76,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         return logo;
     }
 
-    public void setLogo(Icon icon)
+    protected void setLogo(Icon icon)
     {
         this.logo = icon;
         fireWizardUpdate();
@@ -90,12 +93,12 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         this.helpContext = helpContext;
     }
 
-    public void setHelpContext(String helpContextId)
+    protected void setHelpContext(String helpContextId)
     {
         this.helpContext = new HelpContext(helpContextId);
     }
 
-    public void addPage(@NotNull IWizardPage page)
+    protected void addPage(@NotNull IWizardPage page)
     {
         String id = page.getId();
         if (id == null)
@@ -106,7 +109,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         addPage(id, page);
     }
 
-    public void addPage(String id, @NotNull IWizardPage page)
+    protected void addPage(String id, @NotNull IWizardPage page)
     {
         page.setId(id);
         page.setWizard(this);

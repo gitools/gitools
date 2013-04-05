@@ -26,13 +26,16 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
 public class BinaryCutoff implements DoubleFunction, Serializable
 {
 
     private static final long serialVersionUID = 5091376519840044515L;
 
-    protected CutoffCmp cmp;
-    protected double cutoff;
+    private final CutoffCmp cmp;
+    private final double cutoff;
 
     public BinaryCutoff(CutoffCmp cmp, double cutoff)
     {
@@ -43,7 +46,6 @@ public class BinaryCutoff implements DoubleFunction, Serializable
     @Override
     public double apply(double value)
     {
-        return Double.isNaN(value) ? Double.NaN :
-                cmp.compare(value, cutoff) ? 1 : 0;
+        return Double.isNaN(value) ? Double.NaN : cmp.compare(value, cutoff) ? 1 : 0;
     }
 }

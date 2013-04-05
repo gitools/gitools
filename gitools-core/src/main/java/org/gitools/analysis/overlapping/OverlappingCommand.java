@@ -33,7 +33,7 @@ import java.io.File;
 public class OverlappingCommand extends AnalysisCommand
 {
 
-    private OverlappingAnalysis analysis;
+    private final OverlappingAnalysis analysis;
 
     public OverlappingCommand(OverlappingAnalysis analysis, String workdir, String fileName)
     {
@@ -59,11 +59,7 @@ public class OverlappingCommand extends AnalysisCommand
                     workdirFile.mkdirs();
                 }
 
-                PersistenceManager.get().store(
-                        new UrlResourceLocator(new File(workdirFile, fileName)),
-                        analysis,
-                        progressMonitor
-                );
+                PersistenceManager.get().store(new UrlResourceLocator(new File(workdirFile, fileName)), analysis, progressMonitor);
             }
         } catch (Throwable cause)
         {

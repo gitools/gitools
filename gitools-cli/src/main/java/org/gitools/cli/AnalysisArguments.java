@@ -27,14 +27,16 @@ import org.kohsuke.args4j.Option;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class AnalysisArguments extends GitoolsArguments
 {
 
     @NotNull
     @Option(name = "-N", aliases = "-name", metaVar = "<name>",
-            usage = "Analysis name. A folder with this name will be created\n" +
-                    "in the workdir. (default: unnamed).")
-    public String analysisName = "unnamed";
+            usage = "Analysis name. A folder with this name will be created\n" + "in the workdir. (default: unnamed).")
+    public final String analysisName = "unnamed";
 
     @Option(name = "-T", aliases = "-title", metaVar = "<title>",
             usage = "Set the analysis title. (default: analysis name)")
@@ -47,9 +49,9 @@ public class AnalysisArguments extends GitoolsArguments
     @NotNull
     @Option(name = "-A", aliases = "-attribute", metaVar = "<name=value>",
             usage = "Define an analysis attribute.")
-    public List<String> analysisAttributes = new ArrayList<String>(0);
+    public final List<String> analysisAttributes = new ArrayList<String>(0);
 
     @Option(name = "-w", aliases = "-workdir", metaVar = "<dir>",
             usage = "Working directory (default: current dir).")
-    public String workdir = System.getProperty("user.dir");
+    public final String workdir = System.getProperty("user.dir");
 }

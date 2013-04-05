@@ -39,29 +39,26 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-public class TemplateEngine
+class TemplateEngine
 {
 
-    private VelocityEngine velocityEngine;
+    private final VelocityEngine velocityEngine;
     private String templateName;
     private Template template;
     private VelocityContext context;
 
-    public TemplateEngine(@NotNull Properties props)
+    private TemplateEngine(@NotNull Properties props)
     {
         velocityEngine = new VelocityEngine();
 
         velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "file, class");
-        velocityEngine.setProperty(
-                "class." + VelocityEngine.RESOURCE_LOADER + ".class",
-                ClasspathResourceLoader.class.getName());
+        velocityEngine.setProperty("class." + VelocityEngine.RESOURCE_LOADER + ".class", ClasspathResourceLoader.class.getName());
 
         velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
         velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 
         for (Entry<Object, Object> prop : props.entrySet())
-            velocityEngine.setProperty(
-                    (String) prop.getKey(), prop.getValue());
+            velocityEngine.setProperty((String) prop.getKey(), prop.getValue());
 
         context = new VelocityContext();
     }
@@ -73,9 +70,7 @@ public class TemplateEngine
 
     public void setFileLoaderPath(@NotNull File file)
     {
-        velocityEngine.setProperty(
-                VelocityEngine.FILE_RESOURCE_LOADER_PATH,
-                Arrays.asList(file.getAbsolutePath()));
+        velocityEngine.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, Arrays.asList(file.getAbsolutePath()));
     }
 
     public void init()
@@ -90,8 +85,7 @@ public class TemplateEngine
         }
     }
 
-    public void loadTemplate(String name)
-            throws ResourceNotFoundException, ParseErrorException, Exception
+    public void loadTemplate(String name) throws Exception
     {
 
         if (template == null || !this.templateName.equals(name))
@@ -106,15 +100,13 @@ public class TemplateEngine
         this.context = new VelocityContext(context);
     }
 
-    public void render(Writer writer)
-            throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
+    void render(Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
     {
 
         template.merge(context, writer);
     }
 
-    public void render(File file)
-            throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
+    public void render(File file) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
     {
 
         Writer writer = IOUtils.openWriter(file);

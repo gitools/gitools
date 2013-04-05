@@ -28,12 +28,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "tools")
 public class ToolSet
 {
 
-    protected List<ToolDescriptor> toolDescriptors =
-            new ArrayList<ToolDescriptor>();
+    private List<ToolDescriptor> toolDescriptors = new ArrayList<ToolDescriptor>();
 
     public ToolSet()
     {

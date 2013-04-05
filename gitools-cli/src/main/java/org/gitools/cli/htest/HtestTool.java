@@ -40,27 +40,31 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class HtestTool extends AnalysisTool
 {
 
     public static class HtestArguments extends AnalysisArguments
     {
 
+        /**
+         * @noinspection UnusedDeclaration
+         */
         @Option(name = "-t", aliases = "-test", metaVar = "<name>",
                 usage = "Statistical test to use.")
         public String testName;
 
         @NotNull
         @Option(name = "-tc", aliases = "-test-conf", metaVar = "<param=value>",
-                usage = "Define a test configuration parameter." +
-                        " This allows to configure the behaviour of the test.")
-        public List<String> testConf = new ArrayList<String>(0);
+                usage = "Define a test configuration parameter." + " This allows to configure the behaviour of the test.")
+        public final List<String> testConf = new ArrayList<String>(0);
 
         @NotNull
         @Option(name = "-mtc", metaVar = "<name>",
-                usage = "Multiple test correxction method.\n" +
-                        "Available: bonferroni, bh. (default: bh)")
-        public String mtc = "bh";
+                usage = "Multiple test correxction method.\n" + "Available: bonferroni, bh. (default: bh)")
+        public final String mtc = "bh";
 
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
                 usage = "Data file format (reference file extension).")
@@ -72,7 +76,7 @@ public abstract class HtestTool extends AnalysisTool
 
         @Option(name = "-vi", aliases = "value-index", metaVar = "<file>",
                 usage = "Integer indicating the value-index, in case of multi-value data matrix (.tdm)")
-        public int valueIndex = -1;
+        public final int valueIndex = -1;
 
         @Option(name = "-P", aliases = "-population", metaVar = "<file>",
                 usage = "File with background population elements.")
@@ -80,9 +84,8 @@ public abstract class HtestTool extends AnalysisTool
 
         @NotNull
         @Option(name = "-Pv", aliases = "-population-default-value", metaVar = "<value>",
-                usage = "Default value to use when a population element"
-                        + "\ndoesn't exist in the data.\nIt can be a number, 'empty' or 'nan'. (default: 0)")
-        public String populationDefaultValue = "0.0";
+                usage = "Default value to use when a population element" + "\ndoesn't exist in the data.\nIt can be a number, 'empty' or 'nan'. (default: 0)")
+        public final String populationDefaultValue = "0.0";
 
         @Option(name = "-b", aliases = "-bin-cutoff-filt",
                 usage = "Binary cutoff filter. Available conditions:\n" +
@@ -98,16 +101,16 @@ public abstract class HtestTool extends AnalysisTool
 
     //protected BinaryCutoffParser binaryCutoffParser;
 
-    protected boolean binaryCutoffEnabled = false;
-    protected CutoffCmp binaryCutoffCmp;
-    protected double binaryCutoffValue;
+    private boolean binaryCutoffEnabled = false;
+    private CutoffCmp binaryCutoffCmp;
+    private double binaryCutoffValue;
 
     @Nullable
-    protected Double populationDefaultValue;
+    Double populationDefaultValue;
 
-    protected ToolConfig testConfig;
+    ToolConfig testConfig;
     @NotNull
-    protected List<String[]> testConfigParams = new ArrayList<String[]>(0);
+    private final List<String[]> testConfigParams = new ArrayList<String[]>(0);
 
     @Override
     public void validate(Object argsObject) throws ToolException
@@ -171,8 +174,7 @@ public abstract class HtestTool extends AnalysisTool
         {
             try
             {
-                populationDefaultValue =
-                        Double.parseDouble(args.populationDefaultValue);
+                populationDefaultValue = Double.parseDouble(args.populationDefaultValue);
             } catch (NumberFormatException ex)
             {
                 throw new ToolValidationException("Population default value should be a number, 'empty' or 'nan");
@@ -180,7 +182,7 @@ public abstract class HtestTool extends AnalysisTool
         }
     }
 
-    protected void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args)
+    void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args)
     {
         prepareGeneralAnalysisAttributes(analysis, args);
 

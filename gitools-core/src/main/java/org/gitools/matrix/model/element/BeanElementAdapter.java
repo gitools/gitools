@@ -28,6 +28,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 public class BeanElementAdapter extends AbstractElementAdapter
 {
@@ -53,20 +56,17 @@ public class BeanElementAdapter extends AbstractElementAdapter
         readProperties();
     }
 
-    protected void readProperties()
+    void readProperties()
     {
         List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
 
         for (Method m : elementClass.getMethods())
         {
             boolean isGet = m.getName().startsWith("get");
-            if (m.getParameterTypes().length == 0
-                    && !m.getName().equals("getClass")
-                    && (isGet || m.getName().startsWith("is")))
+            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is")))
             {
 
-                final String getterName = isGet ?
-                        m.getName().substring(3) : m.getName().substring(2);
+                final String getterName = isGet ? m.getName().substring(3) : m.getName().substring(2);
 
                 final Class<?> propertyClass = m.getReturnType();
 
@@ -94,15 +94,12 @@ public class BeanElementAdapter extends AbstractElementAdapter
                 Method setterMethod = null;
                 try
                 {
-                    setterMethod = elementClass.getMethod(
-                            "set" + getterName, new Class<?>[]{propertyClass});
+                    setterMethod = elementClass.getMethod("set" + getterName, new Class<?>[]{propertyClass});
                 } catch (Exception e)
                 {
                 }
 
-                IElementAttribute prop = new BeanElementProperty(
-                        id, name, description, propertyClass,
-                        m, setterMethod);
+                IElementAttribute prop = new BeanElementProperty(id, name, description, propertyClass, m, setterMethod);
 
                 properties.add(prop);
             }

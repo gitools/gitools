@@ -38,6 +38,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class Html4Panel extends JPanel
 {
 
@@ -116,10 +119,10 @@ public class Html4Panel extends JPanel
 
     }
 
-    protected HtmlPanel panel;
-    protected SimpleHtmlRendererContext rcontext;
+    HtmlPanel panel;
+    SimpleHtmlRendererContext rcontext;
 
-    public Html4Panel()
+    Html4Panel()
     {
         createComponents();
     }
@@ -133,7 +136,7 @@ public class Html4Panel extends JPanel
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException
+    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException
     {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");

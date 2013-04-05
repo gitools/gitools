@@ -66,8 +66,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         context.put("dataFile", resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
         resourceLocator = analysis.getGroupsMap().getLocator();
-        String groupsFile = resourceLocator != null ? resourceLocator.getName()
-                : "Not specified. All " + combOf + " are combined";
+        String groupsFile = resourceLocator != null ? resourceLocator.getName() : "Not specified. All " + combOf + " are combined";
         context.put("groupsFile", groupsFile);
 
         String sizeAttr = analysis.getSizeAttrName();
@@ -89,8 +88,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         context.put("pvalueAttr", pvalueAttr);
 
         resourceLocator = analysis.getResults().getLocator();
-        context.put("resultsFile",
-                resourceLocator != null ? resourceLocator.getName() : "Not defined");
+        context.put("resultsFile", resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
         resourceLocator = analysis.getLocator();
         if (resourceLocator != null)
@@ -154,9 +152,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                     final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                    editor.setName(editorPanel.deriveName(
-                            getName(), CombinationAnalysisFormat.EXTENSION,
-                            "-data", ""));
+                    editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-data", ""));
 
                     SwingUtilities.invokeLater(new Runnable()
                     {
@@ -208,9 +204,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                     final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
 
-                    editor.setName(editorPanel.deriveName(
-                            getName(), CombinationAnalysisFormat.EXTENSION,
-                            "-results", ""));
+                    editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-results", ""));
 
                     SwingUtilities.invokeLater(new Runnable()
                     {

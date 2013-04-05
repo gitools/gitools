@@ -42,6 +42,9 @@ import javax.swing.tree.TreeSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartAttributePage extends FilteredTreePage
 {
 
@@ -150,8 +153,7 @@ public class BiomartAttributePage extends FilteredTreePage
 
     private void selectionChanged()
     {
-        final DefaultMutableTreeNode node =
-                (DefaultMutableTreeNode) panel.tree.getLastSelectedPathComponent();
+        final DefaultMutableTreeNode node = (DefaultMutableTreeNode) panel.tree.getLastSelectedPathComponent();
 
         boolean complete = false;
 

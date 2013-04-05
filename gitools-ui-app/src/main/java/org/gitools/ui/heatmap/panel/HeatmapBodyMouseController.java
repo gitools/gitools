@@ -32,8 +32,10 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeatmapBodyMouseController
-        implements MouseListener, MouseMotionListener, MouseWheelListener
+/**
+ * @noinspection ALL
+ */
+public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener
 {
 
     private enum Mode
@@ -55,7 +57,7 @@ public class HeatmapBodyMouseController
     private Point startScrollValue;
 
     @NotNull
-    private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
+    private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
     public HeatmapBodyMouseController(@NotNull HeatmapPanel panel)
     {

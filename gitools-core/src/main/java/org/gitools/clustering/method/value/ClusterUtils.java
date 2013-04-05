@@ -23,9 +23,6 @@ package org.gitools.clustering.method.value;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.newick.NewickNode;
-import org.gitools.newick.NewickParserException;
-import org.gitools.newick.NewickTree;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import weka.attributeSelection.AttributeSelection;
@@ -35,7 +32,6 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +69,7 @@ public class ClusterUtils
      * from one side to the other and recording the order that attributes
      * are selected.
      */
-    public static void dataReductionProcess(@NotNull MatrixViewWeka data, @NotNull IProgressMonitor monitor) throws Exception, IOException
+    public static void dataReductionProcess(@NotNull MatrixViewWeka data, @NotNull IProgressMonitor monitor) throws Exception
     {
 
         if (data.numAttributes() > MAX_ATTR || data.numAttributes() < MIN_ATTR)
@@ -104,11 +100,11 @@ public class ClusterUtils
     /**
      * Adding attributes (rows name)
      *
-     * @param name
+     * @param numAttributes Total number of attributes to add
      * @return
      */
     @NotNull
-    public static FastVector addAttributes(Integer numAttributes)
+    private static FastVector addAttributes(Integer numAttributes)
     {
 
         FastVector attr = new FastVector();
@@ -135,8 +131,7 @@ public class ClusterUtils
         int index = 0;
 
 
-        String[] clustersSorted = (String[]) clusterResults.keySet().toArray(
-                new String[clusterResults.keySet().size()]);
+        String[] clustersSorted = clusterResults.keySet().toArray(new String[clusterResults.keySet().size()]);
 
         Arrays.sort(clustersSorted);
 
@@ -151,8 +146,8 @@ public class ClusterUtils
     /**
      * Creation of an Instance structure from a IMatrixView
      *
-     * @param matrixView
-     * @param clusterParameters
+     * @param clusterData
+     * @param transposed
      * @return
      */
     @NotNull
@@ -208,74 +203,5 @@ public class ClusterUtils
         return num;
     }
 
-	/*
-    public static ClusteringResults getHCLResultsByLevel(HierarchicalClusteringResults res, int level) {
-
-		ClusteringResults results = null;
-
-		HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
-
-		List<NewickNode> leaves = res.getTree().getRoot().getLeaves(level);
-
-		Integer maxLengthClusters = Integer.toString(leaves.size()).length();
-		
-		int i = 0;
-
-		for (NewickNode node : leaves) {
-
-			List<Integer> instancesCluster = new ArrayList<Integer>();
-			
-			 for (NewickNode leave : (List<NewickNode>) node.getLeaves()) {
-					instancesCluster.add(Integer.valueOf(leave.getName()));
-			}
-
-			clusterResults.put(valueToString(i, maxLengthClusters), instancesCluster);
-
-			i++;
-		}
-
-		results = new HierarchicalClusteringResults(res.getDataLabels(), clusterResults, res.getTree(), res.getStrNewickTree());
-
-		return results;
-	}
-	 */
-
-    @NotNull
-    public static List<Integer> getTreeLeaves(@NotNull NewickTree tree) throws NumberFormatException, IOException, NewickParserException
-    {
-
-        List<Integer> instancesCluster = new ArrayList<Integer>();
-
-        List<NewickNode> leaves = tree.getRoot().getLeaves();
-
-        for (NewickNode node : leaves)
-            instancesCluster.add(new Integer(node.getName()));
-
-        return instancesCluster;
-    }
-
-/*
-    public void dataReductionProcess2(MatrixViewWeka data) throws Exception, IOException {
-
-		if (data.numAttributes() > MAX_ATTR) return;
-
-		Instances dataSet = data.getDataSet();
-
-		AttributeSelection filter = new AttributeSelection();
-		CfsSubsetEval eval = new CfsSubsetEval();
-		GreedyStepwise search = new GreedyStepwise();
-		search.setSearchBackwards(false);
-		search.setGenerateRanking(false);
-		filter.setEvaluator(eval);
-		filter.setSearch(search);
-		filter.setInputFormat(data);
-
-		Instances newData = Filter.useFilter(data, filter);
-		System.out.println(newData);
-
-		System.out.println(newData);
-
-	}
-*/
 
 }

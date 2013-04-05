@@ -28,7 +28,7 @@ import javax.swing.*;
 public abstract class AbstractView extends JPanel implements IView
 {
 
-    protected Icon icon;
+    private Icon icon;
 
     @Override
     public Icon getIcon()
@@ -36,7 +36,7 @@ public abstract class AbstractView extends JPanel implements IView
         return icon;
     }
 
-    public void setIcon(Icon icon)
+    protected void setIcon(Icon icon)
     {
         this.icon = icon;
     }

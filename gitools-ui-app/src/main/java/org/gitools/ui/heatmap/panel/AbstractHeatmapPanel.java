@@ -33,16 +33,19 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class AbstractHeatmapPanel extends JPanel
+/**
+ * @noinspection ALL
+ */
+class AbstractHeatmapPanel extends JPanel
 {
 
-    protected Heatmap heatmap;
+    private Heatmap heatmap;
 
-    protected AbstractHeatmapDrawer drawer;
+    private final AbstractHeatmapDrawer drawer;
     @NotNull
     private final PropertyChangeListener heatmapListener;
 
-    public AbstractHeatmapPanel(Heatmap heatmap, @NotNull AbstractHeatmapDrawer drawer)
+    AbstractHeatmapPanel(Heatmap heatmap, @NotNull AbstractHeatmapDrawer drawer)
     {
         this.heatmap = heatmap;
         this.drawer = drawer;
@@ -96,25 +99,15 @@ public class AbstractHeatmapPanel extends JPanel
         if (old != null)
         {
             old.removePropertyChangeListener(heatmapListener);
-            /*old.getColumnLabelsHeader().removePropertyChangeListener(heatmapListener);
-            old.getRowLabelsHeader().removePropertyChangeListener(heatmapListener);
-			old.getCellDecorator().removePropertyChangeListener(heatmapListener);
-			old.getMatrixView().removePropertyChangeListener(heatmapListener);*/
         }
 
         heatmap.addPropertyChangeListener(heatmapListener);
-        /*heatmap.getColumnLabelsHeader().addPropertyChangeListener(heatmapListener);
-		heatmap.getRowLabelsHeader().addPropertyChangeListener(heatmapListener);
-		heatmap.getCellDecorator().addPropertyChangeListener(heatmapListener);
-		heatmap.getMatrixView().addPropertyChangeListener(heatmapListener);*/
     }
 
-    protected void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
+    void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
     {
         String pname = evt.getPropertyName();
         Object src = evt.getSource();
-
-        //System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
         if (src.equals(heatmap))
         {
@@ -125,18 +118,15 @@ public class AbstractHeatmapPanel extends JPanel
         }
         else if (src.equals(heatmap.getMatrixView()))
         {
-            if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
-                    || IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
+            if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname) || IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
             {
                 updateSize();
             }
         }
-        else if (src.equals(heatmap.getRowDim())
-                || src.equals(heatmap.getColumnDim()))
+        else if (src.equals(heatmap.getRowDim()) || src.equals(heatmap.getColumnDim()))
         {
 
-            if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)
-                    || HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
+            if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname) || HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
             {
                 updateSize();
             }

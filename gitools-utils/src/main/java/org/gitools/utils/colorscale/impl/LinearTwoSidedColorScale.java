@@ -29,9 +29,15 @@ import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedColorScale extends NumericColorScale
 {
 
@@ -40,7 +46,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale
     private ColorScalePoint mid;
     private ColorScalePoint max;
 
-    public LinearTwoSidedColorScale(ColorScalePoint min, ColorScalePoint mid, ColorScalePoint max)
+    LinearTwoSidedColorScale(ColorScalePoint min, ColorScalePoint mid, ColorScalePoint max)
     {
         super();
         this.min = min;
@@ -51,11 +57,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale
 
     public LinearTwoSidedColorScale()
     {
-        this(
-                new ColorScalePoint(-2, Color.GREEN),
-                new ColorScalePoint(0, Color.WHITE),
-                new ColorScalePoint(2, Color.RED)
-        );
+        this(new ColorScalePoint(-2, Color.GREEN), new ColorScalePoint(0, Color.WHITE), new ColorScalePoint(2, Color.RED));
     }
 
     @Override

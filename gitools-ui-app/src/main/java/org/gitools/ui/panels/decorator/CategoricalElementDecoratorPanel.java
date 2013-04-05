@@ -43,6 +43,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPanel
 {
 
@@ -55,9 +58,9 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
     private ColorChooserLabel emptyCc;
 
     @NotNull
-    private String categoriesLabelText = " Categories:";
+    private final String categoriesLabelText = " Categories:";
     @NotNull
-    private JLabel categoriesLabel = new JLabel(categoriesLabelText);
+    private final JLabel categoriesLabel = new JLabel(categoriesLabelText);
 
     public CategoricalElementDecoratorPanel(@NotNull Heatmap model)
     {
@@ -138,8 +141,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
 
         CategoricalElementDecorator elementDecorator = (CategoricalElementDecorator) model.getActiveCellDecorator();
-        CategoricalColorScale scale =
-                (CategoricalColorScale) elementDecorator.getScale();
+        CategoricalColorScale scale = (CategoricalColorScale) elementDecorator.getScale();
         ColorScalePoint[] scalePoints = scale.getPointObjects();
 
         ColoredLabel[] coloredLabels = new ColoredLabel[scalePoints.length];
@@ -161,9 +163,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
             index = 0;
             for (ColoredLabel cl : coloredLabels)
             {
-                newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()),
-                        cl.getColor(),
-                        cl.getDisplayedLabel());
+                newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());
                 index++;
             }
 
@@ -191,8 +191,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
     private void valueChanged()
     {
-        IndexedProperty propAdapter =
-                (IndexedProperty) valueCb.getSelectedItem();
+        IndexedProperty propAdapter = (IndexedProperty) valueCb.getSelectedItem();
 
         model.switchActiveCellDecorator(propAdapter.getIndex());
         changeDecorator();

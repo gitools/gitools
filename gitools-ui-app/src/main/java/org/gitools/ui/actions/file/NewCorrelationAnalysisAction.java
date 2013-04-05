@@ -39,6 +39,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class NewCorrelationAnalysisAction extends BaseAction
 {
 
@@ -70,12 +73,7 @@ public class NewCorrelationAnalysisAction extends BaseAction
 
         final CorrelationAnalysis analysis = wizard.getAnalysis();
 
-        final CorrelationCommand cmd = new CorrelationCommand(
-                analysis,
-                wizard.getDataFileFormat(),
-                wizard.getDataFile().getAbsolutePath(),
-                wizard.getWorkdir(),
-                wizard.getFileName());
+        final CorrelationCommand cmd = new CorrelationCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getWorkdir(), wizard.getFileName());
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

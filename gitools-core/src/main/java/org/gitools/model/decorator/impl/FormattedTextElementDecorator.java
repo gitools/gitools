@@ -30,6 +30,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.IllegalFormatException;
 
+/**
+ * @noinspection ALL
+ */
 public class FormattedTextElementDecorator extends ElementDecorator
 {
 
@@ -95,8 +98,7 @@ public class FormattedTextElementDecorator extends ElementDecorator
         {
             if (this.valueIndex >= 0)
             {
-                cellText = String.format(formatString,
-                        this.adapter.getValue(element, valueIndex));
+                cellText = String.format(formatString, this.adapter.getValue(element, valueIndex));
             }
             else
             {

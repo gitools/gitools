@@ -40,6 +40,9 @@ public class Option extends FilterDescription
     @XmlElement(name = "PushAction")
     private List<PushAction> pushactions;
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public Option()
     {
     }

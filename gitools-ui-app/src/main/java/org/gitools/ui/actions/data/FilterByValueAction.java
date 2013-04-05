@@ -40,6 +40,9 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class FilterByValueAction extends BaseAction
 {
 
@@ -54,8 +57,7 @@ public class FilterByValueAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -88,8 +90,7 @@ public class FilterByValueAction extends BaseAction
         ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<ValueFilterCriteria>(1);
         initialCriteria.add(new ValueFilterCriteria(attrNames[pvalueIndex], pvalueIndex, CutoffCmp.LT, 0.05));
 
-        final ValueFilterDialog dlg = new ValueFilterDialog(AppFrame.get(),
-                attrNames, CutoffCmp.comparators, initialCriteria);
+        final ValueFilterDialog dlg = new ValueFilterDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, initialCriteria);
 
         dlg.setVisible(true);
 
@@ -106,13 +107,7 @@ public class FilterByValueAction extends BaseAction
             {
                 monitor.begin("Filtering ...", 1);
 
-                MatrixViewValueFilter.filter(matrixView,
-                        dlg.getCriteriaList(),
-                        dlg.isAllCriteriaChecked(),
-                        dlg.isAllElementsChecked(),
-                        dlg.isInvertCriteriaChecked(),
-                        dlg.isApplyToRowsChecked(),
-                        dlg.isApplyToColumnsChecked());
+                MatrixViewValueFilter.filter(matrixView, dlg.getCriteriaList(), dlg.isAllCriteriaChecked(), dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked(), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
             }
         });
 

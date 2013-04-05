@@ -37,11 +37,12 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixView
-        extends AbstractModel
-        implements Serializable, IMatrixView
+public class MatrixView extends AbstractModel implements Serializable, IMatrixView
 {
 
     private static final long serialVersionUID = -8602409555044803568L;
@@ -49,29 +50,29 @@ public class MatrixView
     private static final int INT_BIT_SIZE = 32;
 
     @XmlElement
-    protected ResourceReference<IMatrix> contents;
+    private ResourceReference<IMatrix> contents;
 
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
-    protected int[] visibleRows;
+    private int[] visibleRows;
 
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
-    protected int[] visibleColumns;
+    private int[] visibleColumns;
 
     //@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     @XmlTransient
-    protected int[] selectedRows;
+    private int[] selectedRows;
 
     //@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     @XmlTransient
-    protected int[] selectedColumns;
+    private int[] selectedColumns;
 
     @XmlTransient
-    protected int selectionLeadRow;
+    private int selectionLeadRow;
 
     @XmlTransient
-    protected int selectionLeadColumn;
+    private int selectionLeadColumn;
 
-    protected int selectedPropertyIndex;
+    private int selectedPropertyIndex;
 
     @XmlTransient
     private int[] selectedColumnsBitmap;
@@ -159,8 +160,7 @@ public class MatrixView
         int i = 0;
         for (IElementAttribute attr : contents.getCellAttributes())
         {
-            if ("right-p-value".equals(attr.getId())
-                    || "p-value".equals(attr.getId()))
+            if ("right-p-value".equals(attr.getId()) || "p-value".equals(attr.getId()))
             {
                 selectedPropertyIndex = i;
                 break;
@@ -189,7 +189,7 @@ public class MatrixView
         setVisibleRows(indices, true);
     }
 
-    public void setVisibleRows(@NotNull int[] indices, boolean updateLead)
+    void setVisibleRows(@NotNull int[] indices, boolean updateLead)
     {
         // update selection according to new visibility
         int[] selection = selectionFromVisible(selectedRowsBitmap, indices);
@@ -229,7 +229,7 @@ public class MatrixView
         setVisibleColumns(indices, true);
     }
 
-    public void setVisibleColumns(@NotNull int[] indices, boolean updateLead)
+    void setVisibleColumns(@NotNull int[] indices, boolean updateLead)
     {
         // update selection according to new visibility
         int[] selection = selectionFromVisible(selectedColumnsBitmap, indices);
@@ -263,8 +263,7 @@ public class MatrixView
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[0] > 0
-                    && Arrays.binarySearch(indices, selectionLeadRow) >= 0)
+            if (indices[0] > 0 && Arrays.binarySearch(indices, selectionLeadRow) >= 0)
             {
                 selectionLeadRow--;
             }
@@ -281,8 +280,7 @@ public class MatrixView
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < contents.get().getRowCount() - 1
-                    && Arrays.binarySearch(indices, selectionLeadRow) >= 0)
+            if (indices[indices.length - 1] < contents.get().getRowCount() - 1 && Arrays.binarySearch(indices, selectionLeadRow) >= 0)
             {
                 selectionLeadRow++;
             }
@@ -299,8 +297,7 @@ public class MatrixView
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[0] > 0
-                    && Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
+            if (indices[0] > 0 && Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
             {
                 selectionLeadColumn--;
             }
@@ -317,8 +314,7 @@ public class MatrixView
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < contents.get().getColumnCount() - 1
-                    && Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
+            if (indices[indices.length - 1] < contents.get().getColumnCount() - 1 && Arrays.binarySearch(indices, selectionLeadColumn) >= 0)
             {
                 selectionLeadColumn++;
             }
@@ -539,13 +535,11 @@ public class MatrixView
         }
         else if (selectedRows.length == 0)
         {
-            setSelectedColumns(invertSelectionArray(
-                    selectedColumns, getColumnCount()));
+            setSelectedColumns(invertSelectionArray(selectedColumns, getColumnCount()));
         }
         else if (selectedColumns.length == 0)
         {
-            setSelectedRows(invertSelectionArray(
-                    selectedRows, getRowCount()));
+            setSelectedRows(invertSelectionArray(selectedRows, getRowCount()));
         }
     }
 
@@ -576,8 +570,7 @@ public class MatrixView
     @Override
     public void setLeadSelection(int row, int column)
     {
-        boolean changed = this.selectionLeadRow != row
-                || this.selectionLeadColumn != column;
+        boolean changed = this.selectionLeadRow != row || this.selectionLeadColumn != column;
 
         this.selectionLeadRow = row;
         this.selectionLeadColumn = column;
@@ -646,37 +639,25 @@ public class MatrixView
     @Override
     public Object getCellValue(int row, int column, int index)
     {
-        return contents.get().getCellValue(
-                visibleRows[row],
-                visibleColumns[column],
-                index);
+        return contents.get().getCellValue(visibleRows[row], visibleColumns[column], index);
     }
 
     @Override
     public Object getCellValue(int row, int column, String id)
     {
-        return contents.get().getCellValue(
-                visibleRows[row],
-                visibleColumns[column],
-                id);
+        return contents.get().getCellValue(visibleRows[row], visibleColumns[column], id);
     }
 
     @Override
     public void setCellValue(int row, int column, int index, Object value)
     {
-        contents.get().setCellValue(
-                visibleRows[row],
-                visibleColumns[column],
-                index, value);
+        contents.get().setCellValue(visibleRows[row], visibleColumns[column], index, value);
     }
 
     @Override
     public void setCellValue(int row, int column, String id, Object value)
     {
-        contents.get().setCellValue(
-                visibleRows[row],
-                visibleColumns[column],
-                id, value);
+        contents.get().setCellValue(visibleRows[row], visibleColumns[column], id, value);
     }
 
     @Override
@@ -699,8 +680,7 @@ public class MatrixView
 
     // internal operations
 
-    private void arrayMoveLeft(
-            int[] array, @NotNull int[] indices, @NotNull int[] selection)
+    private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection)
     {
 
         if (indices.length == 0 || indices[0] == 0)
@@ -721,12 +701,10 @@ public class MatrixView
             selection[i]--;
     }
 
-    private void arrayMoveRight(
-            @NotNull int[] array, @NotNull int[] indices, @NotNull int[] selection)
+    private void arrayMoveRight(@NotNull int[] array, @NotNull int[] indices, @NotNull int[] selection)
     {
 
-        if (indices.length == 0
-                || indices[indices.length - 1] == array.length - 1)
+        if (indices.length == 0 || indices[indices.length - 1] == array.length - 1)
         {
             return;
         }

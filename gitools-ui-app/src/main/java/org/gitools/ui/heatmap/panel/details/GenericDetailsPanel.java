@@ -61,13 +61,7 @@ public class GenericDetailsPanel extends AbstractDetailsPanel
             properties.addAll(cell.getValues());
         }
 
-        properties.add(
-                new PropertyItem(
-                        "Size",
-                        "Matrix size: Columns x Rows",
-                        String.valueOf(getColumnsCount()) + " x " + String.valueOf(getRowsCount())
-                )
-        );
+        properties.add(new PropertyItem("Size", "Matrix size: Columns x Rows", String.valueOf(getColumnsCount()) + " x " + String.valueOf(getRowsCount())));
 
         Dimension size = getSize();
         add(new PropertiesBox(size.width, properties));

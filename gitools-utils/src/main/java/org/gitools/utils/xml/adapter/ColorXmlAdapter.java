@@ -43,7 +43,6 @@ public class ColorXmlAdapter extends XmlAdapter<String, Color>
     @Override
     public Color unmarshal(@NotNull String v) throws Exception
     {
-        String sixLetterHex = v.substring(0, 7);
         try
         {
             Color c = Color.decode(v);

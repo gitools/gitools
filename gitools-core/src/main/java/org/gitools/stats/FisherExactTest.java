@@ -33,21 +33,23 @@ import org.jetbrains.annotations.NotNull;
  * between two variables in a 2 x 2 contingency table.
  * <p/>
  * More info in http://en.wikipedia.org/wiki/Fisher's_exact_test
+ *
+ * @noinspection ALL
  */
 public class FisherExactTest
 {
 
-    protected int a;
-    protected int b;
-    protected int c;
-    protected int d;
+    private int a;
+    private int b;
+    private int c;
+    private int d;
 
-    protected double leftPValue;
-    protected double rightPValue;
-    protected double twoTailPValue;
+    private double leftPValue;
+    private double rightPValue;
+    private double twoTailPValue;
 
     @NotNull
-    protected HyperGeometric hyper = new HyperGeometric();
+    private final HyperGeometric hyper = new HyperGeometric();
 
     /**
      * Constructor from an array contingency table:
@@ -248,8 +250,7 @@ public class FisherExactTest
         return prob;
     }
 
-    private void calcPValues(
-            double sleft, double sright, double sless, double slarg)
+    private void calcPValues(double sleft, double sright, double sless, double slarg)
     {
 
         leftPValue = sless < 1.0 ? sless : 1.0;

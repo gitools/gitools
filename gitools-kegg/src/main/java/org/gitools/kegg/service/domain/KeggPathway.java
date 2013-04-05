@@ -24,8 +24,8 @@ package org.gitools.kegg.service.domain;
 public class KeggPathway
 {
 
-    private String id;
-    private String description;
+    private final String id;
+    private final String description;
 
     public KeggPathway(String[] fields)
     {

@@ -39,6 +39,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class FastSortRowsAction extends BaseAction
 {
 
@@ -79,8 +82,7 @@ public class FastSortRowsAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -117,11 +119,7 @@ public class FastSortRowsAction extends BaseAction
             @Override
             public void run(@NotNull IProgressMonitor monitor)
             {
-                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{
-                        new ValueSortCriteria(
-                                propIndex,
-                                aggregator,
-                                sort)};
+                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{new ValueSortCriteria(propIndex, aggregator, sort)};
 
                 monitor.begin("Sorting ...", 1);
 

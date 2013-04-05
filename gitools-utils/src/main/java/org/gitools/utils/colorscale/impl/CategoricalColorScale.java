@@ -30,10 +30,16 @@ import org.gitools.utils.colorscale.util.ColorConstants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CategoricalColorScale extends NumericColorScale
 {
 
@@ -42,9 +48,7 @@ public class CategoricalColorScale extends NumericColorScale
 
     public CategoricalColorScale()
     {
-        this(
-                new double[]{1.0, 2.0}
-        );
+        this(new double[]{1.0, 2.0});
     }
 
     public CategoricalColorScale(ColorScalePoint[] points)
@@ -68,15 +72,14 @@ public class CategoricalColorScale extends NumericColorScale
         Color[] palette = generateColors(pointValues.length);
         for (int i = 0; i < pointValues.length; i++)
         {
-            this.points[i] =
-                    new ColorScalePoint(pointValues[i], palette[i]);
+            this.points[i] = new ColorScalePoint(pointValues[i], palette[i]);
         }
 
         updateRangesList();
     }
 
     @NotNull
-    public Color[] generateColors(int n)
+    Color[] generateColors(int n)
     {
         Color[] cols = new Color[n];
 

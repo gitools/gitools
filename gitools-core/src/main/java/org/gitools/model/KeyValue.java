@@ -25,6 +25,8 @@ import java.io.Serializable;
 
 /**
  * Key-Value pair *
+ *
+ * @noinspection ALL
  */
 public class KeyValue implements Serializable
 {
@@ -35,6 +37,9 @@ public class KeyValue implements Serializable
 
     private String value;
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public KeyValue()
     {
     }
@@ -50,7 +55,7 @@ public class KeyValue implements Serializable
         return key;
     }
 
-    public void setKey(String key)
+    void setKey(String key)
     {
         this.key = key;
     }
@@ -60,7 +65,7 @@ public class KeyValue implements Serializable
         return value;
     }
 
-    public void setValue(String value)
+    void setValue(String value)
     {
         this.value = value;
     }

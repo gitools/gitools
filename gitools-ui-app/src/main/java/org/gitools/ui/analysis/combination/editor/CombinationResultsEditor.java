@@ -33,15 +33,15 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 
-public class CombinationResultsEditor extends HeatmapEditor
+class CombinationResultsEditor extends HeatmapEditor
 {
 
     protected CombinationAnalysis analysis;
 
-    protected CombinationTablesPanel tablesPanel;
+    private final CombinationTablesPanel tablesPanel;
 
     @NotNull
-    protected static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
+    private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
     {
         IMatrixView dataTable = new MatrixView(analysis.getResults().get());
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);

@@ -27,9 +27,9 @@ import org.gitools.utils.textpatt.TextPattern;
 public class AnnotationsPatternProvider implements LabelProvider
 {
 
-    private LabelProvider labelProvider;
-    private TextPattern pat;
-    private AnnotationsResolver resolver;
+    private final LabelProvider labelProvider;
+    private final TextPattern pat;
+    private final AnnotationsResolver resolver;
 
     public AnnotationsPatternProvider(LabelProvider labelProvider, AnnotationMatrix am, String pattern)
     {

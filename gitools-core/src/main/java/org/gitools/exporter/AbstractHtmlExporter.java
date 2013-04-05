@@ -30,13 +30,16 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+/**
+ * @noinspection ALL
+ */
 public class AbstractHtmlExporter
 {
 
-    protected File basePath;
-    protected String indexName;
+    File basePath;
+    String indexName;
 
-    public AbstractHtmlExporter()
+    AbstractHtmlExporter()
     {
         basePath = new File(System.getProperty("user.dir"));
         indexName = "index.html";
@@ -64,9 +67,9 @@ public class AbstractHtmlExporter
 
     // FIXME
     @Nullable
-    protected File getTemplatePath()
+    File getTemplatePath()
     {
-        File templatePath = null;
+        File templatePath;
         try
         {
             URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
@@ -91,7 +94,7 @@ public class AbstractHtmlExporter
         return templatePath;
     }
 
-    protected void copy(@NotNull File src, File dst) throws IOException
+    void copy(@NotNull File src, File dst) throws IOException
     {
         File[] list = src.listFiles(new FilenameFilter()
         {

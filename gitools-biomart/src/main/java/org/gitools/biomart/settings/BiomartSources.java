@@ -30,7 +30,7 @@ import java.util.List;
 
 @XmlRootElement(name = "mart-registry")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BiomartSources
+class BiomartSources
 {
 
     @XmlElement(name = "mart")

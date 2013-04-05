@@ -41,7 +41,7 @@ import java.util.Date;
 public class OverlappingProcessor implements AnalysisProcessor
 {
 
-    private OverlappingAnalysis analysis;
+    private final OverlappingAnalysis analysis;
 
     public OverlappingProcessor(OverlappingAnalysis analysis)
     {
@@ -85,8 +85,7 @@ public class OverlappingProcessor implements AnalysisProcessor
         results.setRows(labels);
         results.makeCells();
 
-        results.setCellAdapter(
-                new BeanElementAdapter(OverlappingResult.class));
+        results.setCellAdapter(new BeanElementAdapter(OverlappingResult.class));
 
         BitSet x = new BitSet(numRows);
         BitSet xna = new BitSet(numRows);
@@ -149,8 +148,7 @@ public class OverlappingProcessor implements AnalysisProcessor
                         }
                     }
 
-                    results.setCell(i, j,
-                            new OverlappingResult(rowCount, columnCount, bothCount));
+                    results.setCell(i, j, new OverlappingResult(rowCount, columnCount, bothCount));
                 }
 
                 monitor.worked(1);
@@ -164,11 +162,7 @@ public class OverlappingProcessor implements AnalysisProcessor
     }
 
     @Nullable
-    private Double transformValue(
-            @Nullable Double v, double replaceNanValue,
-            boolean binaryCutoffEnabled,
-            @NotNull CutoffCmp cutoffCmp, Double cutoffValue,
-            int row, int column) throws AnalysisException
+    private Double transformValue(@Nullable Double v, double replaceNanValue, boolean binaryCutoffEnabled, @NotNull CutoffCmp cutoffCmp, Double cutoffValue, int row, int column) throws AnalysisException
     {
 
         boolean isNaN = v != null ? Double.isNaN(v) : true;

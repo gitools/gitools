@@ -29,9 +29,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
-public class ArrayElementAdapter
-        extends AbstractElementAdapter
+public class ArrayElementAdapter extends AbstractElementAdapter
 {
 
     private static final long serialVersionUID = 5864596809781257355L;
@@ -47,7 +49,7 @@ public class ArrayElementAdapter
         }
     }
 
-    protected String[] ids;
+    private String[] ids;
 
     protected ArrayElementAdapter()
     {

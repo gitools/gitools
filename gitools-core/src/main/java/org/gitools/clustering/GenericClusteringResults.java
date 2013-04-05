@@ -50,7 +50,7 @@ public class GenericClusteringResults implements ClusteringResults
         init(dataLabels, clusters);
     }
 
-    protected final void init(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
+    final void init(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
     {
         this.dataClusterIndex = null;
         this.clusterTitlesIndex = null;

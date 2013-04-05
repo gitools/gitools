@@ -54,7 +54,6 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         g.setColor(header.getBackgroundColor());
         g.fillRect(box.x, box.y, box.width, box.height);
 
-        int borderSize = getBorderSize();
         int rowsGridSize;
         int columnsGridSize;
         int cellWidth;
@@ -87,14 +86,6 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         // Clear background
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
-        // Draw borders and grid background
-        if (heatmap.isShowBorders())
-        {
-            g.setColor(Color.BLACK);
-            g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-            box.grow(-borderSize, -borderSize);
-        }
 
         headerSize = header.getSize();
 
@@ -338,9 +329,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
             totalWidth = header.getSize();
             totalHeight = (heatmap.getCellHeight() + rowsGridSize) * rowCount + extBorder;
         }
-        return new Dimension(
-                totalWidth,
-                totalHeight);
+        return new Dimension(totalWidth, totalHeight);
     }
 
     @NotNull

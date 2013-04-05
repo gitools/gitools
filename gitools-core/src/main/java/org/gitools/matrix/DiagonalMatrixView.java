@@ -41,10 +41,10 @@ public class DiagonalMatrixView implements IMatrixView
 
     private IMatrixView mv;
 
-    private PropertyChangeListener listener;
+    private final PropertyChangeListener listener;
 
     @NotNull
-    private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+    private final List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
     private IResourceLocator locator;
 
@@ -86,10 +86,9 @@ public class DiagonalMatrixView implements IMatrixView
         this.locator = locator;
     }
 
-    public final void setMatrix(@NotNull IMatrix matrix)
+    final void setMatrix(@NotNull IMatrix matrix)
     {
-        IMatrixView mview = matrix instanceof IMatrixView ?
-                (IMatrixView) matrix : new MatrixView(matrix);
+        IMatrixView mview = matrix instanceof IMatrixView ? (IMatrixView) matrix : new MatrixView(matrix);
         setMatrixView(mview);
     }
 
@@ -389,8 +388,7 @@ public class DiagonalMatrixView implements IMatrixView
 
     private void propertyChange(@NotNull PropertyChangeEvent evt)
     {
-        PropertyChangeEvent evt2 = new PropertyChangeEvent(this,
-                evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
+        PropertyChangeEvent evt2 = new PropertyChangeEvent(this, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 
         for (PropertyChangeListener l : listeners)
             l.propertyChange(evt2);

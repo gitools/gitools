@@ -27,11 +27,12 @@ import java.io.IOException;
  *
  * @author Jim Robinson
  * @date Jul 27, 2011
+ * @noinspection ALL
  */
-public class HttpResponseException extends IOException
+class HttpResponseException extends IOException
 {
 
-    int statusCode;
+    private final int statusCode;
 
     public HttpResponseException(int statusCode)
     {

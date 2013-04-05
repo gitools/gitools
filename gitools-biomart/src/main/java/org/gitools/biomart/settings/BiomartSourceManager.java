@@ -34,7 +34,7 @@ import java.util.List;
 public class BiomartSourceManager
 {
 
-    private static Logger logger = LoggerFactory.getLogger(BiomartSourceManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(BiomartSourceManager.class);
 
     private static final String userPath = System.getProperty("user.home", ".");
     private static final String configPath = userPath + File.separator + ".gitools";
@@ -43,7 +43,7 @@ public class BiomartSourceManager
 
     private static BiomartSourceManager instance;
     @NotNull
-    private static BiomartSources biomartSources = new BiomartSources();
+    private static final BiomartSources biomartSources = new BiomartSources();
 
     public static BiomartSourceManager getDefault()
     {
@@ -55,8 +55,7 @@ public class BiomartSourceManager
             {
                 File file = new File(configFile);
 
-                reader = file.exists() ? new FileReader(configFile)
-                        : new InputStreamReader(BiomartSourceManager.class.getResourceAsStream("/biomart-sources.xml"));
+                reader = file.exists() ? new FileReader(configFile) : new InputStreamReader(BiomartSourceManager.class.getResourceAsStream("/biomart-sources.xml"));
 
                 instance = load(reader);
                 reader.close();
@@ -114,7 +113,7 @@ public class BiomartSourceManager
     {
     }
 
-    public void save()
+    void save()
     {
         File path = new File(configPath);
         if (!path.exists())
@@ -143,6 +142,9 @@ public class BiomartSourceManager
         return biomartSources.getSources();
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setSources(List<BiomartSource> sources)
     {
         biomartSources.setSources(sources);

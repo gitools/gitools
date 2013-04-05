@@ -31,6 +31,9 @@ import org.gitools.ui.platform.actions.BaseAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class UnselectAllAction extends BaseAction
 {
 
@@ -49,8 +52,7 @@ public class UnselectAllAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -63,8 +65,7 @@ public class UnselectAllAction extends BaseAction
             matrixView.clearSelection();
         }
 
-        AppFrame.get()
-                .setStatusText("Unselected all.");
+        AppFrame.get().setStatusText("Unselected all.");
     }
 
 }

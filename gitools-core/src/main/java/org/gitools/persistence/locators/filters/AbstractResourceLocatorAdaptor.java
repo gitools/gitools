@@ -32,21 +32,17 @@ import java.net.URL;
 public abstract class AbstractResourceLocatorAdaptor implements IResourceLocator
 {
 
-    private String name;
+    private final String name;
     private String baseName;
-    private String extension;
-    private IResourceLocator resourceLocator;
+    private final String extension;
+    private final IResourceLocator resourceLocator;
 
-    public AbstractResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator)
+    protected AbstractResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator)
     {
-        this(
-                filter.removeExtension(resourceLocator.getName()),
-                filter.removeExtension(resourceLocator.getExtension()),
-                resourceLocator
-        );
+        this(filter.removeExtension(resourceLocator.getName()), filter.removeExtension(resourceLocator.getExtension()), resourceLocator);
     }
 
-    public AbstractResourceLocatorAdaptor(String name, String extension, IResourceLocator resourceLocator)
+    protected AbstractResourceLocatorAdaptor(String name, String extension, IResourceLocator resourceLocator)
     {
         this.name = name;
         this.extension = extension;

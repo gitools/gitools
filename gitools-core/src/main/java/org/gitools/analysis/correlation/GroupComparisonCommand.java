@@ -55,18 +55,14 @@ public class GroupComparisonCommand extends AnalysisCommand
 
     public static final String GROUP_BY_VALUE = "value";
     public static final String GROUP_BY_LABELS = "labels";
-    protected GroupComparisonAnalysis analysis;
-    protected IResourceFormat dataFormat;
-    protected String dataPath;
-    private String groupingMethod;
-    private String groups;
-    private String[] groupDescriptions;
+    private final GroupComparisonAnalysis analysis;
+    private final IResourceFormat dataFormat;
+    private final String dataPath;
+    private final String groupingMethod;
+    private final String groups;
+    private final String[] groupDescriptions;
 
-    public GroupComparisonCommand(
-            GroupComparisonAnalysis analysis,
-            IResourceFormat dataFormat, String dataPath,
-            String workdir, String fileName,
-            String groupingMethod, String groups, String[] groupDescriptions)
+    public GroupComparisonCommand(GroupComparisonAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName, String groupingMethod, String groups, String[] groupDescriptions)
     {
 
         super(workdir, fileName);

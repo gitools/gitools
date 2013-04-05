@@ -62,8 +62,7 @@ public class ImportKeggModulesAction extends BaseAction
     public void actionPerformed(ActionEvent e)
     {
 
-        final EnsemblKeggModulesImporter importer =
-                new EnsemblKeggModulesImporter(true, false);
+        final EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(true, false);
 
         final ModulesImportWizard wz = new KeggModulesImportWizard(importer);
 
@@ -88,8 +87,7 @@ public class ImportKeggModulesAction extends BaseAction
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (MimeTypes.GENE_MATRIX.equals(extension)
-                                || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension))
+                        if (MimeTypes.GENE_MATRIX.equals(extension) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension))
                         {
 
                             BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);

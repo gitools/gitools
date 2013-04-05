@@ -42,6 +42,9 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class SortByValueAction extends BaseAction
 {
 
@@ -57,8 +60,7 @@ public class SortByValueAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -107,18 +109,10 @@ public class SortByValueAction extends BaseAction
         List<ValueSortCriteria> initialCriteria = new ArrayList<ValueSortCriteria>(1);
         if (attributeNames.length > 0)
         {
-            initialCriteria.add(new ValueSortCriteria(
-                    attributeNames[attrIndex], attrIndex,
-                    aggregators[aggrIndex],
-                    ValueSortCriteria.SortDirection.ASCENDING));
+            initialCriteria.add(new ValueSortCriteria(attributeNames[attrIndex], attrIndex, aggregators[aggrIndex], ValueSortCriteria.SortDirection.ASCENDING));
         }
 
-        final ValueSortDialog dlg = new ValueSortDialog(
-                AppFrame.get(),
-                attributeNames,
-                aggregators,
-                ValueSortCriteria.SortDirection.values(),
-                initialCriteria);
+        final ValueSortDialog dlg = new ValueSortDialog(AppFrame.get(), attributeNames, aggregators, ValueSortCriteria.SortDirection.values(), initialCriteria);
         dlg.setVisible(true);
 
         if (dlg.isCancelled())
@@ -140,13 +134,9 @@ public class SortByValueAction extends BaseAction
             {
                 monitor.begin("Sorting ...", 1);
 
-                ValueSortCriteria[] criteriaArray =
-                        new ValueSortCriteria[criteriaList.size()];
+                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[criteriaList.size()];
 
-                MatrixViewSorter.sortByValue(matrixView,
-                        criteriaList.toArray(criteriaArray),
-                        dlg.isApplyToRowsChecked(),
-                        dlg.isApplyToColumnsChecked());
+                MatrixViewSorter.sortByValue(matrixView, criteriaList.toArray(criteriaArray), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
 
                 monitor.end();
             }

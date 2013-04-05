@@ -29,6 +29,9 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class ImportExcelMatrixAction extends BaseAction
 {
 
@@ -45,9 +48,7 @@ public class ImportExcelMatrixAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        WizardDialog wizDlg = new WizardDialog(
-                AppFrame.get(),
-                new ImportExcelWizard());
+        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), new ImportExcelWizard());
 
         wizDlg.open();
 

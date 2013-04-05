@@ -27,10 +27,10 @@ import org.jetbrains.annotations.NotNull;
 public class ValueFilterCriteria
 {
 
-    protected String attributeName;
-    protected int attributeIndex;
-    protected CutoffCmp comparator;
-    protected double value;
+    private String attributeName;
+    private int attributeIndex;
+    private CutoffCmp comparator;
+    private double value;
 
     public ValueFilterCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double value)
     {

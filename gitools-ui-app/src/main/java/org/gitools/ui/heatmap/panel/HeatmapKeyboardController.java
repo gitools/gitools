@@ -30,11 +30,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-public class HeatmapKeyboardController extends KeyAdapter
+class HeatmapKeyboardController extends KeyAdapter
 {
 
-    private HeatmapPanel panel;
-    private Heatmap hm;
+    private final HeatmapPanel panel;
+    private final Heatmap hm;
 
     private int selStart;
     private int selEnd;
@@ -65,15 +65,10 @@ public class HeatmapKeyboardController extends KeyAdapter
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
         boolean altDown = ((modifiers & InputEvent.ALT_MASK) != 0);
 
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP
-                || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT
-                || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END
-                || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN)
+        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN)
         {
 
-            if (((!shiftDown && !ctrlDown)
-                    || (shiftDown && !ctrlDown)
-                    || (!shiftDown && ctrlDown)) && !altDown)
+            if (((!shiftDown && !ctrlDown) || (shiftDown && !ctrlDown) || (!shiftDown && ctrlDown)) && !altDown)
             {
                 changeLead(e);
             }
@@ -406,11 +401,9 @@ public class HeatmapKeyboardController extends KeyAdapter
         }
         else
         {
-            boolean selected = horizontal ?
-                    mv.isColumnSelected(col) : mv.isRowSelected(row);
+            boolean selected = horizontal ? mv.isColumnSelected(col) : mv.isRowSelected(row);
 
-            int[] prevSel = horizontal ?
-                    mv.getSelectedColumns() : mv.getSelectedRows();
+            int[] prevSel = horizontal ? mv.getSelectedColumns() : mv.getSelectedRows();
 
             if (!selected)
             {

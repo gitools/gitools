@@ -37,6 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class ImportBiomartTableAction extends BaseAction
 {
 
@@ -53,12 +56,6 @@ public class ImportBiomartTableAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-
-        //final IBiomartService service = BiomartServiceFactory.createDefaultservice();
-        //final BiomartCentralPortalSoapService service = BiomartCentralPortalSoapService.getDefault();
-        //List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
-        //BiomartSource bsrc = lBs.get(0);
-        //final BiomartRestfulService service = BiomartServiceFactory.createRestfulService(bsrc);
 
         final BiomartTableWizard wizard = new BiomartTableWizard();
 

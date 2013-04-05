@@ -32,19 +32,20 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 class ColoredLabelsTableModel implements TableModel
 {
 
-    private static final String[] columnName = new String[]{
-            "Value", "Displayed Label", "Color"};
+    private static final String[] columnName = new String[]{"Value", "Displayed Label", "Color"};
 
-    private static final Class<?>[] columnClass = new Class<?>[]{
-            String.class, String.class, Color.class};
+    private static final Class<?>[] columnClass = new Class<?>[]{String.class, String.class, Color.class};
 
     private List<ColoredLabel> labelList;
 
     @NotNull
-    private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
     private boolean valueEditable = true;
     private boolean valueMustBeNumeric = false;
 

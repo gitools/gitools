@@ -27,6 +27,9 @@ import org.gitools.persistence.IResourceFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class HtestCommand extends AnalysisCommand
 {
 
@@ -40,16 +43,9 @@ public abstract class HtestCommand extends AnalysisCommand
     protected int valueIndex;
 
     protected String populationPath;
-    protected Double populationDefaultValue;
+    protected final Double populationDefaultValue;
 
-    public HtestCommand(
-            HtestAnalysis analysis,
-            IResourceFormat dataFormat,
-            String dataPath,
-            int valueIndex,
-            String populationPath,
-            Double populationDefaultValue,
-            String workdir, String fileName)
+    protected HtestCommand(HtestAnalysis analysis, IResourceFormat dataFormat, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, String workdir, String fileName)
     {
 
         super(workdir, fileName);
@@ -115,11 +111,9 @@ public abstract class HtestCommand extends AnalysisCommand
     @Nullable
     protected TestFactory createTestFactory(String toolName, String configName)
     {
-        ToolConfig toolConfig =
-                TestFactory.createToolConfig(toolName, configName);
+        ToolConfig toolConfig = TestFactory.createToolConfig(toolName, configName);
 
-        TestFactory testFactory =
-                TestFactory.createFactory(toolConfig);
+        TestFactory testFactory = TestFactory.createFactory(toolConfig);
 
         return testFactory;
     }

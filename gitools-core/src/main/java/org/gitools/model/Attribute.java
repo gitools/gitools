@@ -27,6 +27,8 @@ import java.io.Serializable;
 
 /**
  * Annotation for items, adds a dynamic attribute to the desired item *
+ *
+ * @noinspection ALL
  */
 
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -38,33 +38,18 @@ public class DoubleBinaryMatrix extends BaseMatrix
         this("", new String[0], new String[0], new BitMatrix(0, 0));
     }
 
-    public DoubleBinaryMatrix(
-            String title,
-            String[] colNames,
-            String[] rowNames,
-            BitMatrix cells)
+    public DoubleBinaryMatrix(String title, String[] colNames, String[] rowNames, BitMatrix cells)
     {
 
-        super(
-                title,
-                ObjectFactory1D.dense.make(rowNames),
-                ObjectFactory1D.dense.make(colNames),
-                new DoubleElementAdapter());
+        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         this.cells = cells;
     }
 
-    public DoubleBinaryMatrix(
-            String title,
-            @NotNull String[] colNames,
-            @NotNull String[] rowNames)
+    public DoubleBinaryMatrix(String title, @NotNull String[] colNames, @NotNull String[] rowNames)
     {
 
-        super(
-                title,
-                ObjectFactory1D.dense.make(rowNames),
-                ObjectFactory1D.dense.make(colNames),
-                new DoubleElementAdapter());
+        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         makeCells(rowNames.length, colNames.length);
     }

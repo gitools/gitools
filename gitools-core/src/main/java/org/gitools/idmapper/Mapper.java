@@ -34,12 +34,7 @@ public interface Mapper
 
     void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException;
 
-    MappingData map(
-            MappingContext context,
-            MappingData input,
-            MappingNode src,
-            MappingNode dst,
-            IProgressMonitor monitor) throws MappingException;
+    MappingData map(MappingContext context, MappingData input, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException;
 
     void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException;
 }

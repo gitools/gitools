@@ -31,7 +31,7 @@ import java.util.List;
 public class DiagonalMatrix implements IMatrix
 {
 
-    private IMatrix m;
+    private final IMatrix m;
 
     private IResourceLocator locator;
 

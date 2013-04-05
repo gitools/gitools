@@ -36,7 +36,7 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
 {
-    private String entryName;
+    private final String entryName;
 
     public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator)
     {
@@ -54,9 +54,10 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException
     {
         int firstDot = referenceName.indexOf('.');
-        String extension = referenceName.substring(firstDot+1);
+        String extension = referenceName.substring(firstDot + 1);
 
-        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extension, getResourceLocator()) {
+        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extension, getResourceLocator())
+        {
             @Override
             protected ZipOutputStream getZipOutputStream() throws IOException
             {
@@ -101,18 +102,21 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
 
     private ZipOutputStream out;
 
-    protected ZipOutputStream getZipOutputStream() throws IOException {
+    protected ZipOutputStream getZipOutputStream() throws IOException
+    {
 
-        if (this.out == null) {
+        if (this.out == null)
+        {
             this.out = new ZipOutputStream(getResourceLocator().openOutputStream());
         }
 
         return out;
     }
 
-    private class NonClosableOutputStream extends OutputStream {
+    private class NonClosableOutputStream extends OutputStream
+    {
 
-        private OutputStream out;
+        private final OutputStream out;
 
         private NonClosableOutputStream(OutputStream out)
         {

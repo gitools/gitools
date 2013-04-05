@@ -30,7 +30,7 @@ import java.util.ListIterator;
 class ReverseListIterator<T> implements Iterable<T>, Iterator<T>
 {
 
-    private ListIterator<T> iterator;
+    private final ListIterator<T> iterator;
 
     public ReverseListIterator(@NotNull List<T> list)
     {

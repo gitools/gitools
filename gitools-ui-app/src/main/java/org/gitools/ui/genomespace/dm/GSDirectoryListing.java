@@ -32,9 +32,9 @@ public class GSDirectoryListing
 {
 
     @Nullable
-    private GSFileMetadata directory;
+    private final GSFileMetadata directory;
 
-    private List<GSFileMetadata> contents;
+    private final List<GSFileMetadata> contents;
 
     public GSDirectoryListing(String url, List<GSFileMetadata> contents)
     {

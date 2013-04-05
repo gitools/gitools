@@ -54,47 +54,36 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
+ *
+ * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "mart", propOrder = {
-        "name",
-        "displayName",
-        "database",
-        "host",
-        "path",
-        "port",
-        "visible",
-        "_default",
-        "serverVirtualSchema",
-        "includeDatasets",
-        "martUser",
-        "redirect"
-})
-public class Mart
+@XmlType(name = "mart", propOrder = {"name", "displayName", "database", "host", "path", "port", "visible", "_default", "serverVirtualSchema", "includeDatasets", "martUser", "redirect"})
+class Mart
 {
 
     @XmlElement(required = true)
-    protected String name;
+    private String name;
     @XmlElement(required = true)
-    protected String displayName;
+    private String displayName;
     @XmlElement(required = true)
-    protected String database;
+    private String database;
     @XmlElement(required = true)
-    protected String host;
+    private String host;
     @XmlElement(required = true)
-    protected String path;
+    private String path;
     @XmlElement(required = true)
-    protected String port;
-    protected int visible;
+    private String port;
+    private int visible;
     @XmlElement(name = "default")
-    protected int _default;
+    private int _default;
     @XmlElement(required = true)
-    protected String serverVirtualSchema;
+    private String serverVirtualSchema;
     @XmlElement(required = true)
-    protected String includeDatasets;
+    private String includeDatasets;
     @XmlElement(required = true)
-    protected String martUser;
-    protected int redirect;
+    private String martUser;
+    private int redirect;
 
     /**
      * Gets the value of the name property.

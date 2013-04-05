@@ -49,7 +49,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
     private Map<Integer, ValueTranslator> valueTranslatorMap;
 
 
-    public AbstractMatrixFormat(String extension, Class<T> resourceClass)
+    AbstractMatrixFormat(String extension, Class<T> resourceClass)
     {
         super(extension, resourceClass);
     }
@@ -91,7 +91,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
         }
     }
 
-    protected Properties getProperties()
+    Properties getProperties()
     {
         return properties;
     }
@@ -102,7 +102,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return population labels
      */
-    protected String[] getPopulationLabels()
+    String[] getPopulationLabels()
     {
         return populationLabels;
     }
@@ -112,7 +112,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return background value
      */
-    protected Double getBackgroundValue()
+    Double getBackgroundValue()
     {
         return this.backgroundValue;
     }
@@ -125,7 +125,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      * @return value translator
      */
     @Nullable
-    protected ValueTranslator getValueTranslator()
+    ValueTranslator getValueTranslator()
     {
         return getValueTranslator(0);
     }
@@ -138,7 +138,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      */
     @Nullable
     @Deprecated
-    protected ValueTranslator getValueTranslator(int i)
+    ValueTranslator getValueTranslator(int i)
     {
         if (valueTranslatorMap == null)
         {

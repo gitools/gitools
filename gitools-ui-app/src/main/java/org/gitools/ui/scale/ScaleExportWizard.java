@@ -29,8 +29,8 @@ import org.gitools.utils.colorscale.NumericColorScale;
 public class ScaleExportWizard extends AbstractWizard
 {
 
-    protected SaveFilePage savePage;
-    protected ScaleExportConfigPage configPage;
+    private final SaveFilePage savePage;
+    private final ScaleExportConfigPage configPage;
 
     public ScaleExportWizard()
     {

@@ -36,8 +36,8 @@ import java.util.*;
 public class EnsemblMapper extends AbstractMapper implements AllIds
 {
 
-    private BiomartService service;
-    private String dataset;
+    private final BiomartService service;
+    private final String dataset;
 
     public EnsemblMapper(BiomartService service, String dataset)
     {

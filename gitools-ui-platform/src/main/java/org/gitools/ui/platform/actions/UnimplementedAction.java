@@ -27,6 +27,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class UnimplementedAction extends BaseAction
 {
 
@@ -52,9 +55,7 @@ public class UnimplementedAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        JOptionPane.showMessageDialog(getParent(),
-                "That action is unimplemented.\n" +
-                        "Be patient my friend.");
+        JOptionPane.showMessageDialog(getParent(), "That action is unimplemented.\n" + "Be patient my friend.");
     }
 
     @Nullable

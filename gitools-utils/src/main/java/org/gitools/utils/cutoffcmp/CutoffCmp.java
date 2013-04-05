@@ -28,6 +28,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 @SuppressWarnings("serial")
 public abstract class CutoffCmp implements Serializable
 {
@@ -43,7 +46,7 @@ public abstract class CutoffCmp implements Serializable
         }
     };
 
-    public static final CutoffCmp LE = new CutoffCmp("le", "<=", "less than or equal to")
+    private static final CutoffCmp LE = new CutoffCmp("le", "<=", "less than or equal to")
     {
         @Override
         public boolean compare(double value, double cutoff)
@@ -70,7 +73,7 @@ public abstract class CutoffCmp implements Serializable
         }
     };
 
-    public static final CutoffCmp GT = new CutoffCmp("gt", ">", "greater than")
+    private static final CutoffCmp GT = new CutoffCmp("gt", ">", "greater than")
     {
         @Override
         public boolean compare(double value, double cutoff)
@@ -142,10 +145,7 @@ public abstract class CutoffCmp implements Serializable
         }
     };
 
-    public static final CutoffCmp[] comparators = new CutoffCmp[]{
-            LT, LE, GT, GE, EQ, NE,
-            ABS_LT, ABS_LE, ABS_GT, ABS_GE, ABS_EQ, ABS_NE
-    };
+    public static final CutoffCmp[] comparators = new CutoffCmp[]{LT, LE, GT, GE, EQ, NE, ABS_LT, ABS_LE, ABS_GT, ABS_GE, ABS_EQ, ABS_NE};
 
     private static final DualHashBidiMap opposite = new DualHashBidiMap();
 
@@ -159,10 +159,10 @@ public abstract class CutoffCmp implements Serializable
         opposite.put(CutoffCmp.ABS_EQ, CutoffCmp.ABS_NE);
     }
 
-    public static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<String, CutoffCmp>();
-    public static final Map<String, CutoffCmp> shortNameMap = new HashMap<String, CutoffCmp>();
-    public static final Map<String, CutoffCmp> longNameMap = new HashMap<String, CutoffCmp>();
-    public static final Map<String, CutoffCmp> nameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> shortNameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> longNameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> nameMap = new HashMap<String, CutoffCmp>();
 
     static
     {
@@ -182,9 +182,9 @@ public abstract class CutoffCmp implements Serializable
         return nameMap.get(name);
     }
 
-    private String abbreviation;
-    private String shortName;
-    private String longName;
+    private final String abbreviation;
+    private final String shortName;
+    private final String longName;
 
     public CutoffCmp(String abbreviation, String shortName, String longName)
     {

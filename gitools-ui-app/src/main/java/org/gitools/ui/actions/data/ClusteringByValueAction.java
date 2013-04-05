@@ -58,8 +58,7 @@ public class ClusteringByValueAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -120,12 +119,9 @@ public class ClusteringByValueAction extends BaseAction
                     {
                         boolean hcl = results instanceof HierarchicalClusteringResults;
 
-                        HeatmapDim hdim = wiz.isApplyToRows() ?
-                                heatmap.getRowDim() : heatmap.getColumnDim();
+                        HeatmapDim hdim = wiz.isApplyToRows() ? heatmap.getRowDim() : heatmap.getColumnDim();
 
-                        HeatmapColoredLabelsHeader header = hcl ?
-                                new HeatmapHierarchicalColoredLabelsHeader(hdim)
-                                : new HeatmapColoredLabelsHeader(hdim);
+                        HeatmapColoredLabelsHeader header = hcl ? new HeatmapHierarchicalColoredLabelsHeader(hdim) : new HeatmapColoredLabelsHeader(hdim);
 
                         header.setTitle("Clustering: " + wiz.getMethodName());
 

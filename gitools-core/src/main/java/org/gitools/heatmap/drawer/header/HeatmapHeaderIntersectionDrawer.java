@@ -41,8 +41,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 {
 
 
-    private HeatmapHeaderDrawer colDrawer;
-    private HeatmapHeaderDrawer rowDrawer;
+    private final HeatmapHeaderDrawer colDrawer;
+    private final HeatmapHeaderDrawer rowDrawer;
 
     private MultiValueMap headerLegendDrawers;
 
@@ -53,7 +53,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     * legend of a header from the other dimension (row,cols) as for example:
     * HeatmapColoredLabelsHeader --> draws for --> HeatmapDataHeatmapHeader */
     @NotNull
-    private static Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
+    private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
 
     static
     {
@@ -189,7 +189,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     }
 
 
-    public void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection)
+    void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection)
     {
 
         getHeaderDrawers();

@@ -46,12 +46,11 @@ import java.util.Set;
 public class ViewRelatedDataFromColumnAction extends BaseAction
 {
 
-    protected String title;
-    protected IMatrix matrix;
-    protected ModuleMap map;
+    private final String title;
+    private final IMatrix matrix;
+    private final ModuleMap map;
 
-    public ViewRelatedDataFromColumnAction(
-            String title, IMatrix matrix, ModuleMap map)
+    public ViewRelatedDataFromColumnAction(String title, IMatrix matrix, ModuleMap map)
     {
         super("View annotated elements");
 
@@ -83,9 +82,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         }
         else if (leadColumn == -1)
         {
-            JOptionPane.showMessageDialog(AppFrame.get(),
-                    "You must select some columns before.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(AppFrame.get(), "You must select some columns before.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -140,9 +137,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         // Create editor
         HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-        editor.setName(editorPanel.deriveName(
-                currentEditor.getName(), HeatmapFormat.EXTENSION,
-                "-data", HeatmapFormat.EXTENSION));
+        editor.setName(editorPanel.deriveName(currentEditor.getName(), HeatmapFormat.EXTENSION, "-data", HeatmapFormat.EXTENSION));
 
         editorPanel.addEditor(editor);
 

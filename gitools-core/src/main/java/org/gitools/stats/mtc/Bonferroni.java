@@ -29,7 +29,7 @@ public class Bonferroni implements MTC
 {
 
     @NotNull
-    public static String SHORT_NAME = "bonferroni";
+    public static final String SHORT_NAME = "bonferroni";
 
     @NotNull
     @Override

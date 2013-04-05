@@ -21,7 +21,10 @@
  */
 package org.gitools.ui.examples;
 
-public class ExamplesManagerException extends Exception
+/**
+ * @noinspection ALL
+ */
+class ExamplesManagerException extends Exception
 {
 
     public ExamplesManagerException(String msg)

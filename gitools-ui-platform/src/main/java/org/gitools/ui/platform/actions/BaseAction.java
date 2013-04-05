@@ -29,6 +29,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.net.URL;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class BaseAction extends AbstractAction
 {
 
@@ -88,7 +91,7 @@ public abstract class BaseAction extends AbstractAction
         this(name, null, null, null);
     }
 
-    public String getName()
+    String getName()
     {
         return getValue(NAME).toString();
     }
@@ -114,12 +117,12 @@ public abstract class BaseAction extends AbstractAction
     }
 
     @Nullable
-    protected ImageIcon getSmallIcon()
+    ImageIcon getSmallIcon()
     {
         return (ImageIcon) getValue(SMALL_ICON);
     }
 
-    protected void setSmallIcon(ImageIcon icon)
+    void setSmallIcon(ImageIcon icon)
     {
         putValue(SMALL_ICON, icon);
     }
@@ -129,10 +132,12 @@ public abstract class BaseAction extends AbstractAction
         setSmallIcon(getIconResource(name));
     }
 
-    protected String getDesc() {
+    String getDesc()
+    {
         Object desc = getValue(SHORT_DESCRIPTION);
 
-        if (desc == null) {
+        if (desc == null)
+        {
             return getName();
         }
 
@@ -145,7 +150,7 @@ public abstract class BaseAction extends AbstractAction
         return (ImageIcon) getValue(LARGE_ICON_KEY);
     }
 
-    protected void setLargeIcon(ImageIcon icon)
+    void setLargeIcon(ImageIcon icon)
     {
         putValue(LARGE_ICON_KEY, icon);
     }
@@ -167,13 +172,13 @@ public abstract class BaseAction extends AbstractAction
         return new ImageIcon(url);
     }
 
-    public void setDefaultEnabled(boolean defaultEnabled)
+    protected void setDefaultEnabled(boolean defaultEnabled)
     {
         this.defaultEnabled = defaultEnabled;
         setEnabled(defaultEnabled);
     }
 
-    public void setTreeEnabled(boolean enabled)
+    void setTreeEnabled(boolean enabled)
     {
         setEnabled(enabled);
     }
@@ -185,7 +190,7 @@ public abstract class BaseAction extends AbstractAction
         return en;
     }
 
-    public boolean isEnabledByEditor(@Nullable IEditor editor)
+    protected boolean isEnabledByEditor(@Nullable IEditor editor)
     {
         if (editor != null)
         {

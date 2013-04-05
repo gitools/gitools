@@ -46,6 +46,9 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportHeatmapLabelsAction extends BaseAction
 {
 
@@ -62,17 +65,14 @@ public class ExportHeatmapLabelsAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
 
-        IEditor editor = AppFrame.get()
-                .getEditorsPanel()
-                .getSelectedEditor();
+        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
         if (model == null || !(model instanceof Heatmap))
@@ -136,8 +136,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     String pattern = wiz.getPattern();
                     if (!pattern.equalsIgnoreCase("${id}"))
                     {
-                        labelProvider = new AnnotationsPatternProvider(
-                                labelProvider, annMatrix, pattern);
+                        labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                     }
 
                     for (int i = 0; i < labelProvider.getCount(); i++)

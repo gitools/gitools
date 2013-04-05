@@ -29,20 +29,19 @@ public class GitoolsArguments extends BaseArguments
 {
 
     @Option(name = "-version", usage = "Print the version information and exit.")
-    public boolean version = false;
+    public final boolean version = false;
 
     @Option(name = "-quiet", usage = "Don't print any information.")
-    public boolean quiet = false;
+    public final boolean quiet = false;
 
     @Option(name = "-v", aliases = "-verbose", usage = "Print extra information.")
-    public boolean verbose = false;
+    public final boolean verbose = false;
 
     @Option(name = "-debug", usage = "Print debug level information.")
-    public boolean debug = false;
+    public final boolean debug = false;
 
     @Option(name = "-p", aliases = "-max-procs",
-            usage = "Maximum number of parallel processors allowed.\n" +
-                    "(default: all available processors).", metaVar = "<n>")
-    public int maxProcs = ThreadManager.getAvailableProcessors();
+            usage = "Maximum number of parallel processors allowed.\n" + "(default: all available processors).", metaVar = "<n>")
+    public final int maxProcs = ThreadManager.getAvailableProcessors();
 
 }

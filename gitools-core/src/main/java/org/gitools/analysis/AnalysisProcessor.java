@@ -23,6 +23,9 @@ package org.gitools.analysis;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
+/**
+ * @noinspection ALL
+ */
 public interface AnalysisProcessor
 {
 

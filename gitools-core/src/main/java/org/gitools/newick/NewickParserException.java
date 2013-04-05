@@ -21,7 +21,7 @@
  */
 package org.gitools.newick;
 
-public class NewickParserException extends Exception
+class NewickParserException extends Exception
 {
 
     public NewickParserException(String msg)

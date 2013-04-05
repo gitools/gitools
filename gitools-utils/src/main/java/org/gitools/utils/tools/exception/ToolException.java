@@ -21,12 +21,15 @@
  */
 package org.gitools.utils.tools.exception;
 
+/**
+ * @noinspection ALL
+ */
 public class ToolException extends Exception
 {
 
     private static final long serialVersionUID = 2458110805961757125L;
 
-    public ToolException()
+    ToolException()
     {
         super();
     }
@@ -36,6 +39,9 @@ public class ToolException extends Exception
         super(msg);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public ToolException(String msg, Throwable cause)
     {
         super(msg, cause);

@@ -35,10 +35,10 @@ import java.util.List;
 public class CommandConvertAndLoadExcelFile extends CommandLoadFile
 {
 
-    private int columns;
-    private int rows;
-    private List<Integer> values;
-    private ExcelReader reader;
+    private final int columns;
+    private final int rows;
+    private final List<Integer> values;
+    private final ExcelReader reader;
 
     public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, @NotNull ExcelReader reader)
     {

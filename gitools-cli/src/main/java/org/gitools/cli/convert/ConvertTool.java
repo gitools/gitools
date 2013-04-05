@@ -44,6 +44,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ConvertTool extends AbstractTool
 {
 
@@ -90,8 +93,7 @@ public class ConvertTool extends AbstractTool
 
             if (args.inputFileFormat == null)
             {
-                throw new ToolValidationException("Unknown input file format.\n" +
-                        "You can use the option -input-format");
+                throw new ToolValidationException("Unknown input file format.\n" + "You can use the option -input-format");
             }
         }
 
@@ -106,8 +108,7 @@ public class ConvertTool extends AbstractTool
 
             if (args.outputFileFormat == null)
             {
-                throw new ToolValidationException("Unknown output file format.\n" +
-                        "You can use the option -output-format");
+                throw new ToolValidationException("Unknown output file format.\n" + "You can use the option -output-format");
             }
         }
     }
@@ -130,15 +131,13 @@ public class ConvertTool extends AbstractTool
         int convIndex = vc.indexOf(targetConv);
         if (convIndex < 0)
         {
-            throw new ToolException("Unsupportted conversion from '"
-                    + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+            throw new ToolException("Unsupportted conversion from '" + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
         }
 
         targetConv = vc.get(convIndex);
         if (targetConv.delegate == null)
         {
-            throw new ToolException("Unimplemented conversion from '"
-                    + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
+            throw new ToolException("Unimplemented conversion from '" + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
         }
 
         IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
@@ -168,8 +167,7 @@ public class ConvertTool extends AbstractTool
         IResource dstObject = null;
         try
         {
-            dstObject = (IResource) targetConv.delegate.convert(
-                    args.inputFileFormat, resource, args.outputFileFormat, monitor);
+            dstObject = (IResource) targetConv.delegate.convert(args.inputFileFormat, resource, args.outputFileFormat, monitor);
         } catch (Exception ex)
         {
             monitor.exception(ex);
@@ -229,9 +227,9 @@ public class ConvertTool extends AbstractTool
         vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
     }
 
-    protected static final String LIST_L_FMT = "\t* %-48s%s";
+    private static final String LIST_L_FMT = "\t* %-48s%s";
 
-    protected String mimeFromFormat(String format, String fileName)
+    String mimeFromFormat(String format, String fileName)
     {
         if (StringUtils.isEmpty(format))
         {
@@ -249,13 +247,7 @@ public class ConvertTool extends AbstractTool
         outputStream.println();
 
         outputStream.println("Supported formats:");
-        FileFormat[] formats = new FileFormat[]{
-                FileFormats.DOUBLE_MATRIX,
-                FileFormats.DOUBLE_BINARY_MATRIX,
-                FileFormats.GENE_MATRIX,
-                FileFormats.GENE_MATRIX_TRANSPOSED,
-                FileFormats.MODULES_2C_MAP
-        };
+        FileFormat[] formats = new FileFormat[]{FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 
         for (FileFormat f : formats)
             outputStream.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));

@@ -35,13 +35,16 @@ import javax.swing.event.ListSelectionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartDatabasePage extends AbstractWizardPage
 {
 
 
     private static class DatabaseListWrapper
     {
-        private MartLocation mart;
+        private final MartLocation mart;
 
         public DatabaseListWrapper(MartLocation mart)
         {
@@ -60,7 +63,7 @@ public class BiomartDatabasePage extends AbstractWizardPage
         }
     }
 
-    private BiomartService biomartService;
+    private final BiomartService biomartService;
 
     private FilteredListPanel panelDataset;
 
@@ -127,8 +130,7 @@ public class BiomartDatabasePage extends AbstractWizardPage
                         @Override
                         public void run()
                         {
-                            panelDataset.setListData(listData.toArray(
-                                    new DatabaseListWrapper[listData.size()]));
+                            panelDataset.setListData(listData.toArray(new DatabaseListWrapper[listData.size()]));
 
                             setMessage(MessageStatus.INFO, "");
                         }

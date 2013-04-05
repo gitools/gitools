@@ -32,9 +32,9 @@ import java.util.Collection;
 public class Cell implements Serializable
 {
 
-    private PropertyItem row;
-    private PropertyItem column;
-    private Collection<PropertyItem> values;
+    private final PropertyItem row;
+    private final PropertyItem column;
+    private final Collection<PropertyItem> values;
 
     /**
      * Instantiates a new Cell.

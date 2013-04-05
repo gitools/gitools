@@ -27,21 +27,24 @@ import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
+/**
+ * @noinspection ALL
+ */
 public class LoadTool extends AbstractTool
 {
 
     @Argument(index = 0, metaVar = "<matrix-file>", required = true,
             usage = "Matrix file ")
-    public String file;
+    private String file;
 
     @Option(name = "-r", aliases = "--rows", metaVar = "<rows-annotation-file>",
             usage = "File rows annotations")
-    public String rows;
+    private String rows;
 
 
     @Option(name = "-c", aliases = "--cols", metaVar = "<cols-annotation-file>",
             usage = "File cols annotations")
-    public String cols;
+    private String cols;
 
 
     public LoadTool()

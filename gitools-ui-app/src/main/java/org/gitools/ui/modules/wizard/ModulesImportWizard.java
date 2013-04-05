@@ -36,20 +36,16 @@ public class ModulesImportWizard extends AbstractWizard
 {
 
     @NotNull
-    private FileFormat[] supportedFormats = new FileFormat[]{
-            FileFormats.MODULES_2C_MAP,
-            FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED,
-    };
+    private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.MODULES_2C_MAP, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED,};
 
-    private ModulesImporter importer;
+    private final ModulesImporter importer;
 
     private ModulesSourcePage moduleCategoryPage;
     private ModulesOrganismPage organismPage;
     private ModulesFeaturesPage featuresPage;
     private SaveFilePage saveFilePage;
 
-    public ModulesImportWizard(ModulesImporter importer)
+    protected ModulesImportWizard(ModulesImporter importer)
     {
         this.importer = importer;
 

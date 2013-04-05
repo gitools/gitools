@@ -32,6 +32,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class FilterCollectionPanel extends JPanel
 {
 
@@ -39,7 +42,7 @@ public class FilterCollectionPanel extends JPanel
 
     private Integer currentHeight = 0;
     @NotNull
-    private Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
+    private final Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
 
     private Boolean rendered; //Controls if collectionPanel contains any component
 
@@ -184,14 +187,8 @@ public class FilterCollectionPanel extends JPanel
 
         javax.swing.GroupLayout descriptionsPanelLayout = new javax.swing.GroupLayout(descriptionsPanel);
         descriptionsPanel.setLayout(descriptionsPanelLayout);
-        descriptionsPanelLayout.setHorizontalGroup(
-                descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 374, Short.MAX_VALUE)
-        );
-        descriptionsPanelLayout.setVerticalGroup(
-                descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 247, Short.MAX_VALUE)
-        );
+        descriptionsPanelLayout.setHorizontalGroup(descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 374, Short.MAX_VALUE));
+        descriptionsPanelLayout.setVerticalGroup(descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 247, Short.MAX_VALUE));
 
         collectionCheckBox.setText("name");
         collectionCheckBox.addChangeListener(new javax.swing.event.ChangeListener()
@@ -204,24 +201,8 @@ public class FilterCollectionPanel extends JPanel
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(collectionCheckBox)
-                                        .addComponent(descriptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(16, 16, 16))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(collectionCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(descriptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(collectionCheckBox).addComponent(descriptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addGap(16, 16, 16)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(collectionCheckBox).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(descriptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(16, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void stateChangedAction(javax.swing.event.ChangeEvent evt)

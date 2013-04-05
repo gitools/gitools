@@ -33,33 +33,36 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractElementDecoratorPanel extends JPanel
 {
 
     private static final long serialVersionUID = 7349354490870110812L;
 
-    protected Heatmap model;
+    final Heatmap model;
 
-    protected List<IndexedProperty> valueProperties;
+    List<IndexedProperty> valueProperties;
 
-    public AbstractElementDecoratorPanel(Heatmap model)
+    AbstractElementDecoratorPanel(Heatmap model)
     {
         this.model = model;
     }
 
     @Nullable
-    protected IMatrixView getTable()
+    IMatrixView getTable()
     {
         return model.getMatrixView();
     }
 
-    protected ElementDecorator getDecorator()
+    ElementDecorator getDecorator()
     {
         return model.getActiveCellDecorator();
     }
 
     @Nullable
-    protected List<IndexedProperty> loadAllProperties(@Nullable List<IndexedProperty> properties, @NotNull IElementAdapter adapter)
+    List<IndexedProperty> loadAllProperties(@Nullable List<IndexedProperty> properties, @NotNull IElementAdapter adapter)
     {
         int numProps = adapter.getPropertyCount();
 

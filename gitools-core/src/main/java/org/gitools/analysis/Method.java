@@ -23,6 +23,9 @@ package org.gitools.analysis;
 
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public interface Method
 {
 

@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "Query")
 @XmlAccessorType(XmlAccessType.FIELD)
 
@@ -35,33 +38,33 @@ public class Query
 {
 
     @XmlAttribute(required = true)
-    protected String virtualSchemaName;
+    private String virtualSchemaName;
 
     @XmlAttribute
-    protected int header;
+    private int header;
 
     @XmlAttribute
-    protected int count;
+    private int count;
 
     @XmlAttribute
-    protected int uniqueRows;
+    private int uniqueRows;
 
     @XmlAttribute
-    protected String formatter;
-
-    @XmlAttribute
-    @XmlJavaTypeAdapter(IntegerXmlAdapter.class)
-    protected Integer limitStart;
+    private String formatter;
 
     @XmlAttribute
     @XmlJavaTypeAdapter(IntegerXmlAdapter.class)
-    protected Integer limitSize;
+    private Integer limitStart;
 
     @XmlAttribute
-    protected String requestId;
+    @XmlJavaTypeAdapter(IntegerXmlAdapter.class)
+    private Integer limitSize;
+
+    @XmlAttribute
+    private String requestId;
 
     @XmlElement(name = "Dataset", required = true)
-    protected List<Dataset> datasets;
+    private List<Dataset> datasets;
 
     /**
      * Gets the value of the virtualSchemaName property.
@@ -154,6 +157,9 @@ public class Query
         return limitStart;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setLimitStart(Integer limitStart)
     {
         this.limitStart = limitStart;

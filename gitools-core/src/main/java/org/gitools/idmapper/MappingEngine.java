@@ -29,16 +29,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 public class MappingEngine
 {
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     private static final Logger logger = LoggerFactory.getLogger(MappingEngine.class);
 
     private static class Edge
     {
-        private MappingNode src;
-        private MappingNode dst;
-        private Mapper proc;
+        private final MappingNode src;
+        private final MappingNode dst;
+        private final Mapper proc;
 
         public Edge(MappingNode src, MappingNode dst, Mapper proc)
         {
@@ -95,9 +101,9 @@ public class MappingEngine
     {
 
         @NotNull
-        private LinkedList<Step> steps = new LinkedList<Step>();
+        private final LinkedList<Step> steps = new LinkedList<Step>();
         @NotNull
-        private Set<MappingNode> visited = new HashSet<MappingNode>();
+        private final Set<MappingNode> visited = new HashSet<MappingNode>();
 
         public Path()
         {
@@ -164,8 +170,8 @@ public class MappingEngine
 
     private static class Step
     {
-        private MappingNode node;
-        private Mapper mapper;
+        private final MappingNode node;
+        private final Mapper mapper;
 
         public Step(MappingNode node)
         {
@@ -196,9 +202,9 @@ public class MappingEngine
         }
     }
 
-    private MappingContext context;
+    private final MappingContext context;
 
-    private List<Edge> edges;
+    private final List<Edge> edges;
 
     public MappingEngine()
     {
@@ -216,7 +222,7 @@ public class MappingEngine
         addMapper(new StringMappingNode(src), new StringMappingNode(dst), proc);
     }
 
-    public void addMapper(MappingNode src, MappingNode dst, Mapper proc)
+    void addMapper(MappingNode src, MappingNode dst, Mapper proc)
     {
         edges.add(new Edge(src, dst, proc));
     }

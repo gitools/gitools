@@ -37,39 +37,38 @@ import java.net.URL;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class TemplatePanel extends Html4Panel
 {
 
     private static final long serialVersionUID = 1939265225161205798L;
 
-    private VelocityEngine velocityEngine;
+    private final VelocityEngine velocityEngine;
     private String templateName;
     private String templateUrl;
     private Template template;
     private VelocityContext context;
 
-    public TemplatePanel(@NotNull Properties props)
+    private TemplatePanel(@NotNull Properties props)
     {
         super();
 
         velocityEngine = new VelocityEngine();
 
         velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "class");
-        velocityEngine.setProperty(
-                "class." + VelocityEngine.RESOURCE_LOADER + ".class",
-                ClasspathResourceLoader.class.getName());
+        velocityEngine.setProperty("class." + VelocityEngine.RESOURCE_LOADER + ".class", ClasspathResourceLoader.class.getName());
 
         velocityEngine.setProperty(VelocityEngine.COUNTER_NAME, "forIndex");
         velocityEngine.setProperty(VelocityEngine.COUNTER_INITIAL_VALUE, "0");
 
-        velocityEngine.setProperty("runtime.log.logsystem.log4j.logger",
-                "org.apache.velocity.runtime.log.Log4JLogChute");
+        velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "org.apache.velocity.runtime.log.Log4JLogChute");
 
         velocityEngine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
 
         for (Entry<Object, Object> prop : props.entrySet())
-            velocityEngine.setProperty(
-                    (String) prop.getKey(), prop.getValue());
+            velocityEngine.setProperty((String) prop.getKey(), prop.getValue());
 
         try
         {
@@ -97,7 +96,7 @@ public class TemplatePanel extends Html4Panel
         setTemplateFromResource(resource, "http://localhost");
     }
 
-    public void setTemplateFromResource(String resource, String baseUrl) throws Exception
+    void setTemplateFromResource(String resource, String baseUrl) throws Exception
     {
 
         setTemplateFromResource(resource, new URL(baseUrl));

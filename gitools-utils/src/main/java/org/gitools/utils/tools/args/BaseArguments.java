@@ -25,6 +25,9 @@ import org.kohsuke.args4j.Option;
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BaseArguments
 {
 
@@ -36,7 +39,6 @@ public class BaseArguments
     public boolean help;
 
     @Option(name = "-err-log",
-            usage = "Specify the file where error logs will be saved.\n" +
-                    "If it is '-' the standard error stream will be used.")
+            usage = "Specify the file where error logs will be saved.\n" + "If it is '-' the standard error stream will be used.")
     public String errorLog;
 }

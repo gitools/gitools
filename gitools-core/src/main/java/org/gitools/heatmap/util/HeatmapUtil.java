@@ -48,10 +48,7 @@ public class HeatmapUtil
             BinaryElementDecorator[] decorators = new BinaryElementDecorator[propertiesNb];
             for (int i = 0; i < decorators.length; i++)
             {
-                BinaryElementDecorator decorator =
-                        (BinaryElementDecorator) ElementDecoratorFactory.create(
-                                ElementDecoratorNames.BINARY,
-                                matrix.getCellAdapter());
+                BinaryElementDecorator decorator = (BinaryElementDecorator) ElementDecoratorFactory.create(ElementDecoratorNames.BINARY, matrix.getCellAdapter());
                 decorator.setValueIndex(i);
                 decorator.setCutoff(1.0);
                 decorator.setCutoffCmp(CutoffCmp.EQ);

@@ -37,7 +37,7 @@
             <id-type>not_specified</id-type>
             <annotations path="row_annotations.tsv.gz" mime="application/annotations"/>
             <headers>
-                <labels> <!-- ... --> </label>
+                <labels> <!-- ... --> </labels>
                 <color-labels> <!-- ... --> </color-labels>
                 <histogram> <!-- ... --> </histogram>
             </headers>
@@ -58,7 +58,7 @@
             <idType>not_specified</idType>
             <annotations path="col_annotations.tsv.gz" mime="application/annotations"/>
             <headers>
-                <labels> <!-- ... --> </label>
+                <labels> <!-- ... --> </labels>
                 <color-labels> <!-- ... --> </color-labels>
             </headers>
             <grid-enabled>false</grid-enabled>

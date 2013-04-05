@@ -30,6 +30,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public interface BiomartService
 {
 

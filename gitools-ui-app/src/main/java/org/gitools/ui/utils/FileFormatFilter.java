@@ -27,10 +27,13 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class FileFormatFilter extends FileFilter
 {
 
-    private String description;
+    private final String description;
 
     private FileFormat format;
 

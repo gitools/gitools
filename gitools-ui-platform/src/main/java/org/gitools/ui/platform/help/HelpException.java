@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.platform.help;
 
+/**
+ * @noinspection ALL
+ */
 public class HelpException extends Exception
 {
 

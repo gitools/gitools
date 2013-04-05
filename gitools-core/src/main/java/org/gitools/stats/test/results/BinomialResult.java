@@ -23,21 +23,22 @@ package org.gitools.stats.test.results;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
+/**
+ * @noinspection ALL
+ */
 public class BinomialResult extends CommonResult
 {
 
     public enum Distribution
     {
-        BINOMIAL, NORMAL, POISSON
+        BINOMIAL, NORMAL, POISSON /** @noinspection UnusedDeclaration*/
     }
 
-    ;
-
-    public Distribution distribution;
-    public int observed;
-    public double expectedMean;
-    public double expectedStdev;
-    public double probability;
+    private Distribution distribution;
+    private int observed;
+    private double expectedMean;
+    private double expectedStdev;
+    private double probability;
 
     public BinomialResult()
     {
@@ -47,10 +48,7 @@ public class BinomialResult extends CommonResult
         probability = 0;
     }
 
-    public BinomialResult(
-            Distribution aprox, int n,
-            double leftPvalue, double rightPvalue, double twoTailPvalue,
-            int observed, double expectedMean, double expectedStdev, double p)
+    public BinomialResult(Distribution aprox, int n, double leftPvalue, double rightPvalue, double twoTailPvalue, int observed, double expectedMean, double expectedStdev, double p)
     {
 
         super(n, leftPvalue, rightPvalue, twoTailPvalue);
@@ -62,6 +60,9 @@ public class BinomialResult extends CommonResult
         this.probability = p;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @AttributeDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
     public int getObserved()
     {

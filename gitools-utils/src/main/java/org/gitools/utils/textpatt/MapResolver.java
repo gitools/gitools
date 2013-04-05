@@ -24,10 +24,13 @@ package org.gitools.utils.textpatt;
 import java.util.Map;
 
 
+/**
+ * @noinspection ALL
+ */
 public class MapResolver implements TextPattern.VariableValueResolver
 {
 
-    private Map map;
+    private final Map map;
 
     public MapResolver(Map map)
     {

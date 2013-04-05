@@ -31,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class MoveSelectionAction extends BaseAction
 {
 
@@ -41,7 +44,7 @@ public class MoveSelectionAction extends BaseAction
         ROW_UP, ROW_DOWN, COL_LEFT, COL_RIGHT
     }
 
-    protected MoveDirection dir;
+    private final MoveDirection dir;
 
     public MoveSelectionAction(@NotNull MoveDirection dir)
     {
@@ -85,8 +88,7 @@ public class MoveSelectionAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -102,20 +104,16 @@ public class MoveSelectionAction extends BaseAction
         switch (dir)
         {
             case ROW_UP:
-                matrixView.moveRowsUp(
-                        matrixView.getSelectedRows());
+                matrixView.moveRowsUp(matrixView.getSelectedRows());
                 break;
             case ROW_DOWN:
-                matrixView.moveRowsDown(
-                        matrixView.getSelectedRows());
+                matrixView.moveRowsDown(matrixView.getSelectedRows());
                 break;
             case COL_LEFT:
-                matrixView.moveColumnsLeft(
-                        matrixView.getSelectedColumns());
+                matrixView.moveColumnsLeft(matrixView.getSelectedColumns());
                 break;
             case COL_RIGHT:
-                matrixView.moveColumnsRight(
-                        matrixView.getSelectedColumns());
+                matrixView.moveColumnsRight(matrixView.getSelectedColumns());
                 break;
         }
     }

@@ -24,14 +24,13 @@ package org.gitools.kegg.idmapper;
 import org.gitools.idmapper.AbstractMapper;
 import org.gitools.kegg.service.KeggService;
 
-public abstract class AbstractKeggMapper extends AbstractMapper
+abstract class AbstractKeggMapper extends AbstractMapper
 {
 
-    protected KeggService service;
-    protected String organismId;
+    final KeggService service;
+    final String organismId;
 
-    public AbstractKeggMapper(String name, boolean bidirectional, boolean generator,
-                              KeggService service, String organismId)
+    AbstractKeggMapper(String name, boolean bidirectional, boolean generator, KeggService service, String organismId)
     {
 
         super(name, bidirectional, generator);

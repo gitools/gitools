@@ -46,7 +46,7 @@ public class PropertiesBox extends WebPanel
     private static final int MINIMUM_VALUE_LENGTH = 6;
 
     private int nextProperty = 1;
-    private int totalProperties;
+    private final int totalProperties;
     private int maxValueLength;
 
     /**
@@ -62,7 +62,7 @@ public class PropertiesBox extends WebPanel
      * @param maxWidth   Maximum width of the panel
      * @param properties Properties to draw
      */
-    public PropertiesBox(int maxWidth, PropertyItem... properties)
+    private PropertiesBox(int maxWidth, PropertyItem... properties)
     {
         this(maxWidth, null, properties);
     }
@@ -72,7 +72,7 @@ public class PropertiesBox extends WebPanel
      * @param title      Optional title of the properties table
      * @param properties Properties to draw
      */
-    public PropertiesBox(int maxWidth, @Nullable String title, @NotNull PropertyItem... properties)
+    private PropertiesBox(int maxWidth, @Nullable String title, @NotNull PropertyItem... properties)
     {
         maxValueLength = convertToCharacters(maxWidth) - maxValueLength(properties);
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
@@ -114,7 +114,7 @@ public class PropertiesBox extends WebPanel
      *
      * @param property The property to add
      */
-    protected final void addProperty(@NotNull PropertyItem property)
+    final void addProperty(@NotNull PropertyItem property)
     {
         int nextRow = nextProperty * 2;
         add(createHorizontalSeparator(), "0," + (nextRow - 1) + ",4," + (nextRow - 1));

@@ -46,14 +46,17 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @noinspection ALL
+ */
 public class ColorScalePage extends AbstractWizardPage
 {
 
-    private HeatmapDataHeatmapHeader header;
+    private final HeatmapDataHeatmapHeader header;
 
     private Heatmap heatmap;
 
-    private Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
+    private final Map<ElementDecoratorDescriptor, ElementDecorator> decoratorCache;
 
     public ColorScalePage(HeatmapDataHeatmapHeader header)
     {
@@ -65,10 +68,8 @@ public class ColorScalePage extends AbstractWizardPage
 
         decoratorCache = new HashMap<ElementDecoratorDescriptor, ElementDecorator>();
 
-        final List<ElementDecoratorDescriptor> descList =
-                ElementDecoratorFactory.getDescriptors();
-        final ElementDecoratorDescriptor[] descriptors =
-                new ElementDecoratorDescriptor[descList.size()];
+        final List<ElementDecoratorDescriptor> descList = ElementDecoratorFactory.getDescriptors();
+        final ElementDecoratorDescriptor[] descriptors = new ElementDecoratorDescriptor[descList.size()];
         descList.toArray(descriptors);
 
         cellDecoratorCb.setModel(new DefaultComboBoxModel(descriptors));
@@ -88,8 +89,7 @@ public class ColorScalePage extends AbstractWizardPage
     public void setHeatmap(@NotNull Heatmap heatmap)
     {
         this.heatmap = heatmap;
-        ElementDecoratorDescriptor d =
-                ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
+        ElementDecoratorDescriptor d = ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
         changeDecoratorPanel(d);
         cellDecoratorCb.setSelectedItem(d);
     }
@@ -135,8 +135,7 @@ public class ColorScalePage extends AbstractWizardPage
                 ElementDecorator decorator = ElementDecoratorFactory.create(descriptor, heatmap.getMatrixView().getCellAdapter());
                 decoratorCache.put(descriptor, decorator);
             }
-            ElementDecoratorDescriptor d =
-                    ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
+            ElementDecoratorDescriptor d = ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());
             decoratorCache.put(d, heatmap.getActiveCellDecorator());
 
             createNewDecoratorPanel(d);
@@ -175,14 +174,8 @@ public class ColorScalePage extends AbstractWizardPage
 
         javax.swing.GroupLayout decoPanelLayout = new javax.swing.GroupLayout(decoPanel);
         decoPanel.setLayout(decoPanelLayout);
-        decoPanelLayout.setHorizontalGroup(
-                decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 368, Short.MAX_VALUE)
-        );
-        decoPanelLayout.setVerticalGroup(
-                decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 230, Short.MAX_VALUE)
-        );
+        decoPanelLayout.setHorizontalGroup(decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 368, Short.MAX_VALUE));
+        decoPanelLayout.setVerticalGroup(decoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 230, Short.MAX_VALUE));
 
         saveScale.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.save16))); // NOI18N
         saveScale.setToolTipText("Save scale");
@@ -212,53 +205,20 @@ public class ColorScalePage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel1)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(248, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel1).addGroup(layout.createSequentialGroup().addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap(248, Short.MAX_VALUE)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addGap(18, 18, 18).addComponent(cellDecoratorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(20, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadScaleActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_loadScaleActionPerformed
 
-        DecoratorArchivePersistance archivePersistance =
-                new DecoratorArchivePersistance();
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
         DecoratorArchive archive = archivePersistance.load();
 
         ElementDecorator d = heatmap.getActiveCellDecorator();
-        ElementDecoratorDescriptor descriptor =
-                ElementDecoratorFactory.getDescriptor(d.getClass());
+        ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(d.getClass());
 
-        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
-                AppFrame.get(),
-                d.getAdapter(),
-                archive.getDecorators().values().toArray(),
-                descriptor.getDecoratorClass());
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(AppFrame.get(), d.getAdapter(), archive.getDecorators().values().toArray(), descriptor.getDecoratorClass());
         dialog.setVisible(true);
         if (dialog.isCancelled())
         {
@@ -281,8 +241,7 @@ public class ColorScalePage extends AbstractWizardPage
 
     private void saveScaleActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_saveScaleActionPerformed
-        DecoratorArchivePersistance archivePersistance =
-                new DecoratorArchivePersistance();
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
         DecoratorArchive archive = archivePersistance.load();
         ElementDecorator d = heatmap.getActiveCellDecorator();
         SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());

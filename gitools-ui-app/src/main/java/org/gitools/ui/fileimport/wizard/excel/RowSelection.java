@@ -21,7 +21,10 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
-public class RowSelection
+/**
+ * @noinspection ALL
+ */
+class RowSelection
 {
     private String rowSelection;
 

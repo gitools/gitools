@@ -23,6 +23,9 @@ package org.gitools.model.decorator;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @noinspection ALL
+ */
 public class ElementDecoratorDescriptor
 {
 
@@ -33,8 +36,7 @@ public class ElementDecoratorDescriptor
     {
     }
 
-    public ElementDecoratorDescriptor(String name,
-                                      Class<? extends ElementDecorator> decoratorClass)
+    public ElementDecoratorDescriptor(String name, Class<? extends ElementDecorator> decoratorClass)
     {
         this.name = name;
         this.decoratorClass = decoratorClass;
@@ -72,8 +74,7 @@ public class ElementDecoratorDescriptor
             return false;
         }
         ElementDecoratorDescriptor other = (ElementDecoratorDescriptor) obj;
-        return name.equals(other.name)
-                && decoratorClass.equals(other.decoratorClass);
+        return name.equals(other.name) && decoratorClass.equals(other.decoratorClass);
     }
 
     @Override

@@ -33,6 +33,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartAttributeListPage extends AbstractWizardPage
 {
 

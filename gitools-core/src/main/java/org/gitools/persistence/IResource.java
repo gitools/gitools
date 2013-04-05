@@ -21,6 +21,9 @@
  */
 package org.gitools.persistence;
 
+/**
+ * @noinspection ALL
+ */
 public interface IResource
 {
 

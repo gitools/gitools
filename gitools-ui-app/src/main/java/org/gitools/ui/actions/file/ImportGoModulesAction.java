@@ -86,8 +86,7 @@ public class ImportGoModulesAction extends BaseAction
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (FileSuffixes.GENE_MATRIX.equals(extension)
-                                || FileSuffixes.GENE_MATRIX_TRANSPOSED.equals(extension))
+                        if (FileSuffixes.GENE_MATRIX.equals(extension) || FileSuffixes.GENE_MATRIX_TRANSPOSED.equals(extension))
                         {
 
                             BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);

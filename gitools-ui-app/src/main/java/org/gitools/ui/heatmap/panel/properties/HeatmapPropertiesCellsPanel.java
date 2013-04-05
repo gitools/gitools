@@ -57,16 +57,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 {
 
     @NotNull
-    private Map<Integer, Object[]> decorationCache =
-            new HashMap<Integer, Object[]>();
+    private final Map<Integer, Object[]> decorationCache = new HashMap<Integer, Object[]>();
 
     @NotNull
-    private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorMap =
-            new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
+    private Map<ElementDecoratorDescriptor, ElementDecorator[]> decoratorMap = new HashMap<ElementDecoratorDescriptor, ElementDecorator[]>();
 
     @NotNull
-    private Map<String, ElementDecoratorDescriptor> descriptorMap =
-            new HashMap<String, ElementDecoratorDescriptor>();
+    private Map<String, ElementDecoratorDescriptor> descriptorMap = new HashMap<String, ElementDecoratorDescriptor>();
 
     public HeatmapPropertiesCellsPanel(@NotNull Heatmap heatmap)
     {
@@ -132,7 +129,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
     }
 
-    protected void updateControls()
+    void updateControls()
     {
         updatingControls = true;
 
@@ -148,16 +145,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         columnsGridColor.setColor(cdim.getGridColor());
         columnsGridSize.setValue(cdim.getGridSize());
 
-        final List<ElementDecoratorDescriptor> descList =
-                ElementDecoratorFactory.getDescriptors();
-        final ElementDecoratorDescriptor[] descriptors =
-                new ElementDecoratorDescriptor[descList.size()];
+        final List<ElementDecoratorDescriptor> descList = ElementDecoratorFactory.getDescriptors();
+        final ElementDecoratorDescriptor[] descriptors = new ElementDecoratorDescriptor[descList.size()];
         descList.toArray(descriptors);
 
         cellDecorator.setModel(new DefaultComboBoxModel(descriptors));
 
-        ElementDecoratorDescriptor descriptor =
-                ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
+        ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
 
         cellDecorator.setSelectedItem(descriptor);
 
@@ -181,8 +175,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             {
                 if (evt.getOldValue().getClass().equals(evt.getNewValue().getClass()))
                 {
-                    ElementDecoratorDescriptor descriptor =
-                            ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
+                    ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
                     changeDecoratorPanel(descriptor);
                 }
             }
@@ -210,23 +203,19 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
         if (evt.getStateChange() == ItemEvent.DESELECTED)
         {
-            ElementDecoratorDescriptor descriptor =
-                    ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
+            ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(getHeatmap().getActiveCellDecorator().getClass());
 
             cacheDecorators(descriptor);
         }
         else if (evt.getStateChange() == ItemEvent.SELECTED)
         {
-            ElementDecoratorDescriptor descriptor =
-                    (ElementDecoratorDescriptor) evt.getItem();
+            ElementDecoratorDescriptor descriptor = (ElementDecoratorDescriptor) evt.getItem();
 
             ElementDecorator[] decorators = getDecoratorsForDescriptor(descriptor);
             int selectedDataDimension = getHeatmap().getMatrixView().getSelectedPropertyIndex();
             if (decorators[selectedDataDimension].getValueIndex() != selectedDataDimension)
             {
-                decorators[selectedDataDimension] = setValueIndex(decorators[selectedDataDimension],
-                        decorators[selectedDataDimension].getAdapter(),
-                        selectedDataDimension);
+                decorators[selectedDataDimension] = setValueIndex(decorators[selectedDataDimension], decorators[selectedDataDimension].getAdapter(), selectedDataDimension);
             }
             getHeatmap().setCellDecorators(decorators);
             changeDecoratorPanel(descriptor);
@@ -252,8 +241,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
             for (int i = 0; i < decorators.length; i++)
             {
-                ElementDecorator decorator = ElementDecoratorFactory.create(
-                        descriptor, cellAdapter);
+                ElementDecorator decorator = ElementDecoratorFactory.create(descriptor, cellAdapter);
 
                 if (categoricalScale)
                 {
@@ -456,107 +444,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                                        .addComponent(rowsGridEnabled, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(columnsGridEnabled, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(12, 12, 12)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel1)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(rowsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(jLabel5)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel2)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(columnsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(12, 12, 12)
-                                                                .addComponent(jLabel6)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel3)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel4)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(cellHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(18, 18, 18)
-                                                .addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(cellDecorator, javax.swing.GroupLayout.Alignment.LEADING, 0, 214, Short.MAX_VALUE)
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(12, 12, 12)
-                                                .addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabel3)
-                                                        .addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabel4)
-                                                        .addComponent(cellHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(20, 20, 20)
-                                                .addComponent(rowsGridEnabled))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(31, 31, 31)
-                                                .addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(jLabel5)
-                                                .addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel1)
-                                                .addComponent(rowsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(columnsGridEnabled)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(jLabel6)
-                                                .addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(7, 7, 7)
-                                                .addComponent(jLabel2))
-                                        .addComponent(columnsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(17, 17, 17)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cellDecorator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(decoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE).addComponent(rowsGridEnabled, javax.swing.GroupLayout.Alignment.LEADING).addComponent(columnsGridEnabled, javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGap(12, 12, 12).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(rowsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jLabel5).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(columnsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(12, 12, 12).addComponent(jLabel6).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jLabel3).addGap(18, 18, 18).addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createSequentialGroup().addComponent(jLabel4).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cellHeight, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))).addGap(18, 18, 18).addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addComponent(cellDecorator, javax.swing.GroupLayout.Alignment.LEADING, 0, 214, Short.MAX_VALUE).addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGap(12, 12, 12).addComponent(decoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel3).addComponent(cellWidth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel4).addComponent(cellHeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(20, 20, 20).addComponent(rowsGridEnabled)).addGroup(layout.createSequentialGroup().addGap(31, 31, 31).addComponent(cellSyncSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel5).addComponent(rowsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jLabel1).addComponent(rowsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(columnsGridEnabled).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel6).addComponent(columnsGridSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createSequentialGroup().addGap(7, 7, 7).addComponent(jLabel2)).addComponent(columnsGridColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(17, 17, 17).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel7).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cellDecorator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(loadScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(saveScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(decoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     private void cellWidthStateChanged(javax.swing.event.ChangeEvent evt)
@@ -613,8 +502,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
     private void saveScaleActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_saveScaleActionPerformed
-        DecoratorArchivePersistance archivePersistance =
-                new DecoratorArchivePersistance();
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
         DecoratorArchive archive = archivePersistance.load();
         ElementDecorator d = getHeatmap().getActiveCellDecorator();
         SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
@@ -634,19 +522,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     private void loadScaleActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_loadScaleActionPerformed
 
-        DecoratorArchivePersistance archivePersistance =
-                new DecoratorArchivePersistance();
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
         DecoratorArchive archive = archivePersistance.load();
 
         ElementDecorator d = getHeatmap().getActiveCellDecorator();
-        ElementDecoratorDescriptor descriptor =
-                ElementDecoratorFactory.getDescriptor(d.getClass());
+        ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(d.getClass());
 
-        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
-                AppFrame.get(),
-                d.getAdapter(),
-                archive.getDecorators().values().toArray(),
-                descriptor.getDecoratorClass());
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(AppFrame.get(), d.getAdapter(), archive.getDecorators().values().toArray(), descriptor.getDecoratorClass());
         dialog.setVisible(true);
         if (dialog.isCancelled())
         {

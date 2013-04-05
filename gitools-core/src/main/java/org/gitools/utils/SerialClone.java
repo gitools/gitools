@@ -30,6 +30,8 @@ import java.util.Queue;
 
 /**
  * Code obtained from http://weblogs.java.net/blog/emcmanus/archive/2007/04/cloning_java_ob.html
+ *
+ * @noinspection ALL
  */
 public class SerialClone
 {
@@ -68,7 +70,7 @@ public class SerialClone
     {
 
         @NotNull
-        Queue<Class<?>> classQueue = new LinkedList<Class<?>>();
+        final Queue<Class<?>> classQueue = new LinkedList<Class<?>>();
 
         CloneOutput(OutputStream out) throws IOException
         {
@@ -100,23 +102,20 @@ public class SerialClone
         }
 
         @Override
-        protected Class<?> resolveClass(@NotNull ObjectStreamClass osc)
-                throws IOException, ClassNotFoundException
+        protected Class<?> resolveClass(@NotNull ObjectStreamClass osc) throws IOException, ClassNotFoundException
         {
             Class<?> c = output.classQueue.poll();
             String expected = osc.getName();
             String found = (c == null) ? null : c.getName();
             if (!expected.equals(found))
             {
-                throw new InvalidClassException("Classes desynchronized: "
-                        + "found " + found + " when expecting " + expected);
+                throw new InvalidClassException("Classes desynchronized: " + "found " + found + " when expecting " + expected);
             }
             return c;
         }
 
         @Override
-        protected Class<?> resolveProxyClass(String[] interfaceNames)
-                throws IOException, ClassNotFoundException
+        protected Class<?> resolveProxyClass(String[] interfaceNames) throws IOException, ClassNotFoundException
         {
             return output.classQueue.poll();
         }

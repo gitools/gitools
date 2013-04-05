@@ -24,13 +24,16 @@ package org.gitools.analysis.correlation;
 import org.gitools.matrix.model.element.AttributeDef;
 
 
+/**
+ * @noinspection ALL
+ */
 public class CorrelationResult
 {
 
-    protected int n;
-    protected double score;
-    protected double pvalue;
-    protected double standardError;
+    private int n;
+    private double score;
+    private double pvalue;
+    private double standardError;
 
     public CorrelationResult()
     {

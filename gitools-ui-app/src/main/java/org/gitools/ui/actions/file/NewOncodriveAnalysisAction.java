@@ -39,6 +39,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+/**
+ * @noinspection ALL
+ */
 public class NewOncodriveAnalysisAction extends BaseAction
 {
 
@@ -77,17 +80,7 @@ public class NewOncodriveAnalysisAction extends BaseAction
         File populationFile = wizard.getPopulationFile();
         File modulesFile = wizard.getModulesFile();
 
-        final OncodriveCommand cmd = new OncodriveCommand(
-                analysis,
-                wizard.getDataFileFormat(),
-                wizard.getDataFile().getAbsolutePath(),
-                wizard.getSelectedValueIndex(),
-                populationFile != null ? populationFile.getAbsolutePath() : null,
-                wizard.getPopulationDefaultValue(),
-                wizard.getModulesFileFormat(),
-                modulesFile != null ? modulesFile.getAbsolutePath() : null,
-                wizard.getWorkdir(),
-                wizard.getFileName());
+        final OncodriveCommand cmd = new OncodriveCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), modulesFile != null ? modulesFile.getAbsolutePath() : null, wizard.getWorkdir(), wizard.getFileName());
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

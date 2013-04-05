@@ -30,19 +30,20 @@ import java.util.List;
  * A very simple CSV reader released under a commercial-friendly license.
  *
  * @author Glen Smith
+ * @noinspection ALL
  */
 public class CSVReader implements Closeable
 {
 
-    private BufferedReader br;
+    private final BufferedReader br;
 
     private boolean hasNext = true;
 
-    private CSVParser parser;
+    private final CSVParser parser;
 
-    private int skipLines;
+    private final int skipLines;
 
-    private char commentchar;
+    private final char commentchar;
 
     private boolean linesSkiped;
 
@@ -51,14 +52,14 @@ public class CSVReader implements Closeable
     /**
      * The default line to start reading.
      */
-    public static final int DEFAULT_SKIP_LINES = 0;
+    private static final int DEFAULT_SKIP_LINES = 0;
 
     /*
     * The default comment character. All lines that start with this
     * character will be skipped.
     *
     */
-    public static final char DEFAULT_COMMENT_CHARACTER = '#';
+    private static final char DEFAULT_COMMENT_CHARACTER = '#';
 
     /**
      * Constructs CSVReader using a comma for the separator.
@@ -116,8 +117,7 @@ public class CSVReader implements Closeable
      * @param escape    the character to use for escaping a separator or quote
      */
 
-    public CSVReader(Reader reader, char separator,
-                     char quotechar, char escape)
+    private CSVReader(Reader reader, char separator, char quotechar, char escape)
     {
         this(reader, separator, quotechar, escape, DEFAULT_SKIP_LINES, CSVParser.DEFAULT_STRICT_QUOTES);
     }
@@ -159,7 +159,7 @@ public class CSVReader implements Closeable
      * @param line         the line number to skip for start reading
      * @param strictQuotes sets if characters outside the quotes are ignored
      */
-    public CSVReader(Reader reader, char separator, char quotechar, char escape, int line, boolean strictQuotes)
+    private CSVReader(Reader reader, char separator, char quotechar, char escape, int line, boolean strictQuotes)
     {
         this(reader, separator, quotechar, escape, DEFAULT_COMMENT_CHARACTER, line, strictQuotes, CSVParser.DEFAULT_IGNORE_LEADING_WHITESPACE);
     }
@@ -176,7 +176,7 @@ public class CSVReader implements Closeable
      * @param strictQuotes            sets if characters outside the quotes are ignored
      * @param ignoreLeadingWhiteSpace it true, parser should ignore white space before a quote in a field
      */
-    public CSVReader(Reader reader, char separator, char quotechar, char escape, char commentchar, int line, boolean strictQuotes, boolean ignoreLeadingWhiteSpace)
+    private CSVReader(Reader reader, char separator, char quotechar, char escape, char commentchar, int line, boolean strictQuotes, boolean ignoreLeadingWhiteSpace)
     {
         this.br = new BufferedReader(reader);
         this.parser = new CSVParser(separator, quotechar, escape, strictQuotes, ignoreLeadingWhiteSpace);

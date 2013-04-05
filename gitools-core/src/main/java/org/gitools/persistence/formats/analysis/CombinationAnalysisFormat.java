@@ -28,7 +28,7 @@ public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnal
 {
 
     public static final String EXTENSION = "combination";
-    public static final Class<CombinationAnalysis> RESOURCE_CLASS = CombinationAnalysis.class;
+    private static final Class<CombinationAnalysis> RESOURCE_CLASS = CombinationAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Combination analysis", EXTENSION);
 
     public CombinationAnalysisFormat()

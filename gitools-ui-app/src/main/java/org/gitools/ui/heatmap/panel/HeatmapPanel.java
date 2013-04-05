@@ -40,6 +40,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapPanel extends JPanel
 {
 
@@ -66,7 +69,7 @@ public class HeatmapPanel extends JPanel
     private JScrollBar rowSB;
 
     @NotNull
-    private List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
+    private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
     public HeatmapPanel(Heatmap heatmap)
     {
@@ -131,8 +134,7 @@ public class HeatmapPanel extends JPanel
             }
         };
 
-        HeatmapBodyMouseController bodyController =
-                new HeatmapBodyMouseController(this);
+        HeatmapBodyMouseController bodyController = new HeatmapBodyMouseController(this);
         bodyController.addHeatmapMouseListener(mouseListenerProxy);
 
         colVP = new JViewport();
@@ -214,16 +216,13 @@ public class HeatmapPanel extends JPanel
         int row = mv.getLeadSelectionRow();
         int col = mv.getLeadSelectionColumn();
 
-        Point leadPoint = bodyPanel.getDrawer()
-                .getPoint(new HeatmapPosition(row, col));
+        Point leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
 
         HeatmapDim rowDim = heatmap.getRowDim();
         HeatmapDim colDim = heatmap.getColumnDim();
 
-        int leadPointXEnd = leadPoint.x + heatmap.getCellWidth()
-                + (colDim.isGridEnabled() ? colDim.getGridSize() : 0);
-        int leadPointYEnd = leadPoint.y + heatmap.getCellHeight()
-                + (rowDim.isGridEnabled() ? rowDim.getGridSize() : 0);
+        int leadPointXEnd = leadPoint.x + heatmap.getCellWidth() + (colDim.isGridEnabled() ? colDim.getGridSize() : 0);
+        int leadPointYEnd = leadPoint.y + heatmap.getCellHeight() + (rowDim.isGridEnabled() ? rowDim.getGridSize() : 0);
 
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
@@ -328,9 +327,7 @@ public class HeatmapPanel extends JPanel
 
     public HeatmapPosition getScrollPosition()
     {
-        Point pos = new Point(
-                colSB.getValue(),
-                rowSB.getValue());
+        Point pos = new Point(colSB.getValue(), rowSB.getValue());
 
         return bodyPanel.getDrawer().getPosition(pos);
     }
@@ -338,9 +335,7 @@ public class HeatmapPanel extends JPanel
     @NotNull
     public Point getScrollValue()
     {
-        return new Point(
-                colSB.getValue(),
-                rowSB.getValue());
+        return new Point(colSB.getValue(), rowSB.getValue());
     }
 
     public void setScrollColumnPosition(int index)
@@ -383,20 +378,7 @@ public class HeatmapPanel extends JPanel
         String pname = evt.getPropertyName();
         Object src = evt.getSource();
 
-        boolean updateAll =
-                (src.equals(heatmap)
-                        && Heatmap.CELL_SIZE_CHANGED.equals(pname))
-                        || ((src instanceof HeatmapDim)
-                        && (HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname)
-                        || HeatmapDim.HEADERS_CHANGED.equals(pname)
-                        || HeatmapDim.HEADER_SIZE_CHANGED.equals(pname)))
-                        || (src instanceof HeatmapHeader
-                        && (HeatmapHeader.SIZE_CHANGED.equals(pname)
-                        || HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
-                        || (src.equals(heatmap.getMatrixView())
-                        && (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname)
-                        || MatrixView.VISIBLE_ROWS_CHANGED.equals(pname)
-                        || MatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
+        boolean updateAll = (src.equals(heatmap) && Heatmap.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDim) && (HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDim.HEADERS_CHANGED.equals(pname) || HeatmapDim.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap.getMatrixView()) && (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname) || MatrixView.VISIBLE_ROWS_CHANGED.equals(pname) || MatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
 
         if (updateAll)
         {

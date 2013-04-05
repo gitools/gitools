@@ -55,16 +55,16 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
     public static final String HEADER_SIZE_CHANGED = "headerSize";
     public static final String GRID_PROPERTY_CHANGED = "gridProperty";
     public static final String ANNOTATIONS_CHANGED = "annotations";
-    public static final String HIGHLIGHTING_CHANGED = "highlighting";
+    private static final String HIGHLIGHTING_CHANGED = "highlighting";
 
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
-    protected IdType idType;
+    private IdType idType;
 
     @XmlElement
-    protected ResourceReference<AnnotationMatrix> annotations;
+    private ResourceReference<AnnotationMatrix> annotations;
 
     @XmlTransient
-    protected List<HeatmapHeader> headers;
+    private final List<HeatmapHeader> headers;
 
     private boolean gridEnabled;
 
@@ -97,9 +97,7 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
 
         //System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
 
-        if (src instanceof HeatmapHeader
-                && (HeatmapHeader.SIZE_CHANGED.equals(pname)
-                || HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
+        if (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
         {
             firePropertyChange(HEADER_SIZE_CHANGED);
         }
@@ -171,6 +169,9 @@ public class HeatmapDim extends AbstractModel implements PropertyChangeListener
         firePropertyChange(HEADERS_CHANGED);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public int getHeaderSize()
     {
         int size = 0;

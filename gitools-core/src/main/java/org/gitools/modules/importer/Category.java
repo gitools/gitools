@@ -21,12 +21,15 @@
  */
 package org.gitools.modules.importer;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class Category extends RefImpl
 {
 
-    private String section;
+    private final String section;
 
-    public Category(String section, String id, String name)
+    protected Category(String section, String id, String name)
     {
         super(id, name);
         this.section = section;

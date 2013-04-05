@@ -42,6 +42,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportMatrixAction extends BaseAction
 {
 
@@ -58,8 +61,7 @@ public class ExportMatrixAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -81,10 +83,7 @@ public class ExportMatrixAction extends BaseAction
         selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
         selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
 
-        final String selected = (String) JOptionPane.showInputDialog(AppFrame.get(),
-                "What do you want to export ?", "Export table data",
-                JOptionPane.QUESTION_MESSAGE, null, propNames,
-                propNames[selectedPropIndex]);
+        final String selected = (String) JOptionPane.showInputDialog(AppFrame.get(), "What do you want to export ?", "Export table data", JOptionPane.QUESTION_MESSAGE, null, propNames, propNames[selectedPropIndex]);
 
         if (selected == null || selected.isEmpty())
         {
@@ -100,10 +99,7 @@ public class ExportMatrixAction extends BaseAction
 
         final int propIndex = index;
 
-        final File file = FileChooserUtils.selectFile(
-                "Select destination file",
-                Settings.getDefault().getLastExportPath(),
-                FileChooserUtils.MODE_SAVE);
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
 
         if (file == null)
         {

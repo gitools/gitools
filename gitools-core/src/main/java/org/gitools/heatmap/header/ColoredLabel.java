@@ -26,15 +26,18 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class ColoredLabel
 {
 
-    protected String displayedLabel;
+    private String displayedLabel;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    protected Color color;
+    private Color color;
 
-    protected String value;
+    private String value;
 
     public ColoredLabel()
     {
@@ -48,7 +51,7 @@ public class ColoredLabel
         this(value, value, color);
     }
 
-    public ColoredLabel(String value, String displayedLabel, Color color)
+    private ColoredLabel(String value, String displayedLabel, Color color)
     {
         this.displayedLabel = displayedLabel;
         this.value = value;
@@ -99,12 +102,12 @@ public class ColoredLabel
         this.value = value;
     }
 
-    public void setValue(double value)
+    void setValue(double value)
     {
         this.value = Double.toString(value);
     }
 
-    public void setValue(int value)
+    void setValue(int value)
     {
         this.value = Integer.toString(value);
     }

@@ -40,8 +40,7 @@ public class JobProgressMonitor extends StreamProgressMonitor
         this.dlg = dlg;
     }
 
-    private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg,
-                               PrintStream out, boolean verbose, boolean debug)
+    private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug)
     {
 
         super(parentMonitor, out, verbose, debug);
@@ -146,14 +145,9 @@ public class JobProgressMonitor extends StreamProgressMonitor
 
     @NotNull
     @Override
-    protected IProgressMonitor createSubtaskMonitor(
-            IProgressMonitor parentMonitor,
-            PrintStream out,
-            boolean verbose,
-            boolean debug)
+    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug)
     {
 
-        return new JobProgressMonitor(
-                parentMonitor, dlg, out, verbose, debug);
+        return new JobProgressMonitor(parentMonitor, dlg, out, verbose, debug);
     }
 }

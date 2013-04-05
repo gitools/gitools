@@ -46,10 +46,10 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     protected static class AnnotationProvider implements LabelProvider
     {
 
-        private LabelProvider labelProvider;
+        private final LabelProvider labelProvider;
         @Nullable
-        private AnnotationMatrix am;
-        private String name;
+        private final AnnotationMatrix am;
+        private final String name;
         private int column;
 
         public AnnotationProvider(LabelProvider labelProvider, @Nullable AnnotationMatrix am, String name)
@@ -108,19 +108,6 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         g.setColor(header.getBackgroundColor());
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        // Draw borders
-        if (heatmap.isShowBorders())
-        {
-            int borderSize = getBorderSize();
-
-            g.setColor(Color.BLACK);
-            g.drawRect(box.x, box.y, box.width - 1, box.height - 1);
-            box.x += horizontal ? 0 : borderSize;
-            box.width -= borderSize * (horizontal ? 1 : 2);
-            box.y += borderSize;
-            box.height -= borderSize * (horizontal ? 1 : 2);
-        }
-
         final HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
         IMatrixView data = heatmap.getMatrixView();
 
@@ -173,16 +160,10 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 labelProvider = matrixLabelProvider;
                 break;
             case ANNOTATION:
-                labelProvider = new AnnotationProvider(
-                        matrixLabelProvider,
-                        hdim.getAnnotations(),
-                        header.getLabelAnnotation());
+                labelProvider = new AnnotationProvider(matrixLabelProvider, hdim.getAnnotations(), header.getLabelAnnotation());
                 break;
             case PATTERN:
-                labelProvider = new AnnotationsPatternProvider(
-                        matrixLabelProvider,
-                        hdim.getAnnotations(),
-                        header.getLabelPattern());
+                labelProvider = new AnnotationsPatternProvider(matrixLabelProvider, hdim.getAnnotations(), header.getLabelPattern());
                 break;
         }
 
@@ -202,8 +183,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 bgColor = highlightingColor;
             }
 
-            boolean selected = !pictureMode && (horizontal ?
-                    data.isColumnSelected(index) : data.isRowSelected(index));
+            boolean selected = !pictureMode && (horizontal ? data.isColumnSelected(index) : data.isRowSelected(index));
 
             if (selected)
             {
@@ -212,9 +192,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 gColor = gridColor.darker();
             }
 
-            boolean lead = !pictureMode && (horizontal ?
-                    (leadColumn == index) /*&& (leadRow == -1)*/ :
-                    (leadRow == index) /*&& (leadColumn == -1)*/);
+            boolean lead = !pictureMode && (horizontal ? (leadColumn == index) /*&& (leadRow == -1)*/ : (leadRow == index) /*&& (leadColumn == -1)*/);
 
             g.setColor(gColor);
             g.fillRect(x, y + cellHeight, width, gridSize);
@@ -251,16 +229,14 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             int cellWidth = heatmap.getCellWidth() + gridSize;
             int columnCount = heatmap.getMatrixView().getColumnCount();
             int headerSize = header.getSize();
-            return new Dimension(
-                    cellWidth * columnCount + extBorder, headerSize /*- colorAnnSize*/);
+            return new Dimension(cellWidth * columnCount + extBorder, headerSize /*- colorAnnSize*/);
         }
         else
         {
             int cellHeight = heatmap.getCellHeight() + gridSize;
             int rowCount = heatmap.getMatrixView().getRowCount();
             int headerSize = header.getSize();
-            return new Dimension(
-                    headerSize, cellHeight * rowCount + extBorder);
+            return new Dimension(headerSize, cellHeight * rowCount + extBorder);
         }
     }
 

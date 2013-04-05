@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class NewickNode<VT>
 {
 
@@ -38,14 +41,14 @@ public class NewickNode<VT>
     private String name;
     private VT value;
 
-    private List<NewickNode> children;
+    private final List<NewickNode> children;
 
     public NewickNode()
     {
         this(null, null);
     }
 
-    public NewickNode(String name, VT value)
+    private NewickNode(String name, VT value)
     {
         this.name = name;
         this.value = value;
@@ -92,7 +95,7 @@ public class NewickNode<VT>
         children.add(node);
     }
 
-    public boolean isLeaf()
+    boolean isLeaf()
     {
         return children.isEmpty();
     }
@@ -102,7 +105,7 @@ public class NewickNode<VT>
         return getMaxDepth(0);
     }
 
-    protected int getMaxDepth(int depth)
+    int getMaxDepth(int depth)
     {
         int res = 0;
 
@@ -123,7 +126,7 @@ public class NewickNode<VT>
         return res;
     }
 
-    protected void leaves(@NotNull List<NewickNode> leaves, int maxLevel, @NotNull Order order)
+    void leaves(@NotNull List<NewickNode> leaves, int maxLevel, @NotNull Order order)
     {
         if (children.isEmpty() || maxLevel == 0)
         {
@@ -147,7 +150,7 @@ public class NewickNode<VT>
     }
 
     @NotNull
-    public List<NewickNode> getLeaves(int maxLevel, @NotNull Order order)
+    List<NewickNode> getLeaves(int maxLevel, @NotNull Order order)
     {
         List<NewickNode> leaves = new ArrayList<NewickNode>();
         leaves(leaves, maxLevel, order);

@@ -23,6 +23,9 @@ package org.gitools.cli.convert;
 
 import cern.jet.stat.Probability;
 
+/**
+ * @noinspection ALL
+ */
 public class TestProbabilitiesTool
 {
 

@@ -28,13 +28,16 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class DataIntegrationDimensionsWizard extends AbstractWizard
 {
     private static final long serialVersionUID = -6058042494975580570L;
 
-    protected DataIntegrationPage dataIntegrationPage;
-    protected DataDetailsPage dataDetailsPage;
-    private Heatmap heatmap;
+    private DataIntegrationPage dataIntegrationPage;
+    private DataDetailsPage dataDetailsPage;
+    private final Heatmap heatmap;
 
     private double[] values;
     private List<ArrayList<DataIntegrationCriteria>> criteria;

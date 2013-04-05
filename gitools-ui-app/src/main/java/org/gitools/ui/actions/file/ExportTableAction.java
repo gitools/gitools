@@ -42,6 +42,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ExportTableAction extends BaseAction
 {
 
@@ -58,8 +61,7 @@ public class ExportTableAction extends BaseAction
     @Override
     public boolean isEnabledByModel(Object model)
     {
-        return model instanceof Heatmap
-                || model instanceof IMatrixView;
+        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -86,10 +88,7 @@ public class ExportTableAction extends BaseAction
             return;
         }
 
-        final File file = FileChooserUtils.selectFile(
-                "Select destination file",
-                Settings.getDefault().getLastExportPath(),
-                FileChooserUtils.MODE_SAVE);
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
 
         if (file == null)
         {

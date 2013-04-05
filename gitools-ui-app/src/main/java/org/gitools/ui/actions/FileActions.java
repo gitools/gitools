@@ -24,7 +24,7 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public class FileActions
+class FileActions
 {
 
     // New
@@ -41,9 +41,6 @@ public class FileActions
     // Save
     public static final BaseAction saveAction = new SaveAction();
     public static final BaseAction saveAsAction = new SaveAsAction();
-
-    // Close
-    public static final BaseAction closeAction = new CloseAction();
 
     // Exit
     public static final BaseAction exitAction = new ExitAction();

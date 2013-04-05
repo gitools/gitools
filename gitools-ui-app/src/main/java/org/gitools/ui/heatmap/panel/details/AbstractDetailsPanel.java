@@ -64,7 +64,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      *
      * @param heatmap the heatmap
      */
-    public AbstractDetailsPanel(@NotNull final Heatmap heatmap)
+    AbstractDetailsPanel(@NotNull final Heatmap heatmap)
     {
         super();
         this.heatmap = heatmap;
@@ -77,7 +77,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
             @Override
             public void propertyChange(@NotNull PropertyChangeEvent evt)
             {
-                if ("selectionLead" == evt.getPropertyName())
+                if ("selectionLead".equals(evt.getPropertyName()))
                 {
                     updateDetailsPanel();
                 }
@@ -114,12 +114,9 @@ public abstract class AbstractDetailsPanel extends WebPanel
      *
      * @return
      */
-    protected final boolean isCellSelected()
+    final boolean isCellSelected()
     {
-        return (
-                getMatrixView().getLeadSelectionColumn() != -1 &&
-                        getMatrixView().getLeadSelectionRow() != -1
-        );
+        return (getMatrixView().getLeadSelectionColumn() != -1 && getMatrixView().getLeadSelectionRow() != -1);
     }
 
     /**
@@ -127,7 +124,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      *
      * @return the rows count
      */
-    protected final int getRowsCount()
+    final int getRowsCount()
     {
         return getMatrixView().getRowCount();
     }
@@ -137,7 +134,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      *
      * @return the columns count
      */
-    protected final int getColumnsCount()
+    final int getColumnsCount()
     {
         return getMatrixView().getColumnCount();
     }
@@ -148,7 +145,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      * @return the selected cell
      */
     @Nullable
-    protected final Cell getSelectedCell()
+    final Cell getSelectedCell()
     {
 
         if (!isCellSelected())
@@ -162,11 +159,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
         int column = getMatrixView().getLeadSelectionColumn();
         String columnIdentifier = heatmap.getColumnLabel(column);
 
-        return new Cell(
-                new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRowDim())),
-                new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumnDim())),
-                getProperties(row, column)
-        );
+        return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRowDim())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumnDim())), getProperties(row, column));
     }
 
     @Nullable
@@ -189,17 +182,11 @@ public abstract class AbstractDetailsPanel extends WebPanel
         {
             final IElementAttribute prop = properties.get(index);
             Object value = cellAdapter.getValue(cellElement, index);
-            PropertyItem item = new PropertyItem(
-                    prop.getName(),
-                    prop.getDescription(),
-                    FORMATTER.format(value)
-            );
+            PropertyItem item = new PropertyItem(prop.getName(), prop.getDescription(), FORMATTER.format(value));
 
             if (index == selectedIndex && value instanceof Double)
             {
-                item.setColor(
-                        selectedDecorator.getScale().valueColor((Double) value)
-                );
+                item.setColor(selectedDecorator.getScale().valueColor((Double) value));
             }
 
             values.add(item);

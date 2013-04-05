@@ -29,6 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
+/**
+ * @noinspection ALL
+ */
 public class AboutAction extends BaseAction
 {
 
@@ -45,8 +48,7 @@ public class AboutAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        new AboutDialog(AppFrame.get())
-                .setVisible(true);
+        new AboutDialog(AppFrame.get()).setVisible(true);
     }
 
 }

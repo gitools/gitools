@@ -21,17 +21,18 @@
  */
 package org.gitools.clustering;
 
+/**
+ * @noinspection ALL
+ */
 public class ClusteringMethodDescriptor
 {
 
-    private String title;
-    private String description;
+    private final String title;
+    private final String description;
 
-    private Class<? extends ClusteringMethod> methodClass;
+    private final Class<? extends ClusteringMethod> methodClass;
 
-    public ClusteringMethodDescriptor(
-            String title, String description,
-            Class<? extends ClusteringMethod> methodClass)
+    public ClusteringMethodDescriptor(String title, String description, Class<? extends ClusteringMethod> methodClass)
     {
 
         this.title = title;

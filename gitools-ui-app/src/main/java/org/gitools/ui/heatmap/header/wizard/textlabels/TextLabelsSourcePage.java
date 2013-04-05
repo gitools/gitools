@@ -34,8 +34,8 @@ import java.awt.event.ActionListener;
 public class TextLabelsSourcePage extends AbstractWizardPage
 {
 
-    protected HeatmapDim hdim;
-    protected HeatmapTextLabelsHeader header;
+    private final HeatmapDim hdim;
+    private final HeatmapTextLabelsHeader header;
 
     public TextLabelsSourcePage(HeatmapDim hdim, HeatmapTextLabelsHeader header)
     {
@@ -111,7 +111,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     }
 
     @NotNull
-    public HeatmapTextLabelsHeader.LabelSource getLabelSource()
+    HeatmapTextLabelsHeader.LabelSource getLabelSource()
     {
         if (idOpt.isSelected())
         {
@@ -135,7 +135,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     }
 
     @NotNull
-    public String getAnnotation()
+    String getAnnotation()
     {
         if (annList.getSelectedIndex() != -1)
         {
@@ -147,7 +147,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         }
     }
 
-    public String getPattern()
+    String getPattern()
     {
         return pattText.getText();
     }
@@ -189,42 +189,8 @@ public class TextLabelsSourcePage extends AbstractWizardPage
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(24, 24, 24)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(idOpt)
-                                                        .addComponent(annOpt)))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addGap(12, 12, 12)
-                                                                .addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                                                        .addComponent(patOpt))))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(idOpt)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(annOpt)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(patOpt)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGap(24, 24, 24).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(idOpt).addComponent(annOpt))).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(12, 12, 12).addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)).addComponent(patOpt)))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(idOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(annOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE).addGap(18, 18, 18).addComponent(patOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
 

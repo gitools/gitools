@@ -74,9 +74,12 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapEditor extends AbstractEditor
 {
-    protected Heatmap heatmap;
+    protected final Heatmap heatmap;
 
     private HeatmapPanel heatmapPanel;
 
@@ -86,28 +89,29 @@ public class HeatmapEditor extends AbstractEditor
 
     private AbstractDetailsPanel detailsView;
 
-    protected boolean blockSelectionUpdate;
+    private final boolean blockSelectionUpdate;
 
-    private PropertyChangeListener heatmapListener;
-    private PropertyChangeListener cellDecoratorListener;
+    private final PropertyChangeListener heatmapListener;
+    private final PropertyChangeListener cellDecoratorListener;
 
-    private PropertyChangeListener rowDecoratorListener;
+    private final PropertyChangeListener rowDecoratorListener;
 
-    private PropertyChangeListener colDecoratorListener;
+    private final PropertyChangeListener colDecoratorListener;
 
     @NotNull
     protected final JPanel embeddedContainer;
 
-    private static int DEFAULT_ACCORDION_WIDTH = 270;
+    private static final int DEFAULT_ACCORDION_WIDTH = 270;
 
     public HeatmapEditor(@NotNull Heatmap heatmap)
     {
         this(heatmap, false);
     }
 
-    public HeatmapEditor(@NotNull Heatmap heatmap, boolean embedded)
+    protected HeatmapEditor(@NotNull Heatmap heatmap, boolean embedded)
     {
         this.heatmap = heatmap;
+        this.heatmap.init();
 
         if (heatmap.getCellDecorators()[0].getAdapter() instanceof BeanElementAdapter)
         {
@@ -179,7 +183,7 @@ public class HeatmapEditor extends AbstractEditor
         setSaveAsAllowed(true);
     }
 
-    protected void heatmapPropertyChange(@NotNull Object src, String pname, Object oldValue, Object newValue)
+    void heatmapPropertyChange(@NotNull Object src, String pname, Object oldValue, Object newValue)
     {
 
         if (src.equals(heatmap))
@@ -210,7 +214,7 @@ public class HeatmapEditor extends AbstractEditor
         setDirty(true);
     }
 
-    protected void matrixPropertyChange(String propertyName, @Nullable Object oldValue, @NotNull Object newValue)
+    void matrixPropertyChange(String propertyName, @Nullable Object oldValue, @NotNull Object newValue)
     {
 
         if (IMatrixView.SELECTED_LEAD_CHANGED.equals(propertyName))
@@ -291,17 +295,9 @@ public class HeatmapEditor extends AbstractEditor
         searchPanel = new HeatmapSearchPanel(heatmap);
         searchPanel.setVisible(false);
 
-        WebSplitPane splitPane = new WebSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT,
-                leftPanel,
-                heatmapPanel
-        );
+        WebSplitPane splitPane = new WebSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, heatmapPanel);
 
-        heatmapPanel.setBorder(
-                new CompoundBorder(
-                        BorderFactory.createEmptyBorder(20, 20, 20, 20),
-                        BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)
-                ));
+        heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);
@@ -346,11 +342,7 @@ public class HeatmapEditor extends AbstractEditor
         File file = getFile();
         if (file == null)
         {
-            SaveFileWizard wiz = SaveFileWizard.createSimple(
-                    "Save heatmap",
-                    getName(),
-                    Settings.getDefault().getLastPath(),
-                    new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+            SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
             WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
             dlg.setVisible(true);
@@ -381,16 +373,8 @@ public class HeatmapEditor extends AbstractEditor
     {
         if (isDirty())
         {
-            int res = JOptionPane.showOptionDialog(AppFrame.get(),
-                    "File " + getName() + " is modified.\n" +
-                            "Save changes ?",
-                    "Close",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    new String[]{
-                            "Cancel", "Discard", "Save"},
-                    "Save");
+            int res = JOptionPane.showOptionDialog(AppFrame.get(), "File " + getName() + " is modified.\n" +
+                    "Save changes ?", "Close", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Cancel", "Discard", "Save"}, "Save");
 
             if (res == -1 || res == 0)
             {
@@ -398,11 +382,7 @@ public class HeatmapEditor extends AbstractEditor
             }
             else if (res == 2)
             {
-                SaveFileWizard wiz = SaveFileWizard.createSimple(
-                        "Save heatmap",
-                        getName(),
-                        Settings.getDefault().getLastPath(),
-                        new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+                SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
                 dlg.setVisible(true);
@@ -444,7 +424,7 @@ public class HeatmapEditor extends AbstractEditor
     private int lastMouseRow = -1;
     private int lastMouseCol = -1;
 
-    protected void mouseMoved(int row, int col, MouseEvent e)
+    void mouseMoved(int row, int col, MouseEvent e)
     {
         if (lastMouseRow == row && lastMouseCol == col)
         {
@@ -524,11 +504,9 @@ public class HeatmapEditor extends AbstractEditor
             List<IElementAttribute> attrs = mv.getCellAttributes();
             if (attrs.size() > 0)
             {
-                sb.append(": ").append(attrs.get(0).getName())
-                        .append(" = ").append(mv.getCellValue(row, col, 0));
+                sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getCellValue(row, col, 0));
                 for (int i = 1; i < attrs.size(); i++)
-                    sb.append(", ").append(attrs.get(i).getName())
-                            .append(" = ").append(mv.getCellValue(row, col, i));
+                    sb.append(", ").append(attrs.get(i).getName()).append(" = ").append(mv.getCellValue(row, col, i));
             }
         }
 
@@ -538,7 +516,7 @@ public class HeatmapEditor extends AbstractEditor
         }
     }
 
-    protected void mouseClicked(int row, int col, MouseEvent e)
+    void mouseClicked(int row, int col, MouseEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
     }

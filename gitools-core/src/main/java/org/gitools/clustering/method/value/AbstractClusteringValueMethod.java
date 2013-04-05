@@ -28,14 +28,17 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractClusteringValueMethod implements ClusteringMethod
 {
 
-    protected boolean preprocess;
+    boolean preprocess;
 
-    protected boolean transpose;
+    boolean transpose;
 
-    protected int classIndex;
+    int classIndex;
 
     public abstract ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 

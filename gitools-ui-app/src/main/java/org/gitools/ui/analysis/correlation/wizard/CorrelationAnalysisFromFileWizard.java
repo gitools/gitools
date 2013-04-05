@@ -48,6 +48,9 @@ import javax.swing.*;
 import java.io.File;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard
 {
 
@@ -57,9 +60,9 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     private ExamplePage examplePage;
     private DataFilePage dataPage;
     private DataFilterPage dataFilterPage;
-    protected CorrelationFromFilePage corrPage;
+    private CorrelationFromFilePage corrPage;
     private SaveFilePage saveFilePage;
-    protected AnalysisDetailsPage analysisDetailsPage;
+    private AnalysisDetailsPage analysisDetailsPage;
 
     public CorrelationAnalysisFromFileWizard()
     {
@@ -98,10 +101,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         saveFilePage = new SaveFilePage();
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-        saveFilePage.setFormats(new FileFormat[]{
-                CorrelationAnalysisFormat.FILE_FORMAT,
-                new FileFormat("Correlations analysis (ZIP)", CorrelationAnalysisFormat.EXTENSION + ".zip")
-        });
+        saveFilePage.setFormats(new FileFormat[]{CorrelationAnalysisFormat.FILE_FORMAT, new FileFormat("Correlations analysis (ZIP)", CorrelationAnalysisFormat.EXTENSION + ".zip")});
         saveFilePage.setFormatsVisible(true);
         addPage(saveFilePage);
 
@@ -115,8 +115,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     {
         if (currentPage == examplePage)
         {
-            Settings.getDefault().setShowCombinationExamplePage(
-                    examplePage.isShowAgain());
+            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled())
             {
@@ -139,8 +138,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
                         {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final CorrelationAnalysis a = PersistenceManager.get()
-                                    .load(analysisFile, CorrelationAnalysis.class, props, monitor);
+                            final CorrelationAnalysis a = PersistenceManager.get().load(analysisFile, CorrelationAnalysis.class, props, monitor);
 
                             SwingUtilities.invokeLater(new Runnable()
                             {
@@ -218,8 +216,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
 
         //a.setAttributeIndex(corrPage.getAttributeIndex());
-        a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ?
-                corrPage.getReplaceNanValue() : null);
+        a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);
         a.setTransposeData(corrPage.isTransposeEnabled());
 
         return a;

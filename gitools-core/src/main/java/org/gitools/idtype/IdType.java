@@ -25,19 +25,22 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IdType
 {
 
     @XmlAttribute
-    protected String key;
+    private String key;
 
     @XmlElement
-    protected String title;
+    private String title;
 
     @XmlElement(name = "link")
-    protected List<UrlLink> links = new ArrayList<UrlLink>(0);
+    private List<UrlLink> links = new ArrayList<UrlLink>(0);
 
     public IdType()
     {

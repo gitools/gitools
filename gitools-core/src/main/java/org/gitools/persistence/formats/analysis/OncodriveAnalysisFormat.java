@@ -27,7 +27,7 @@ import org.gitools.persistence._DEPRECATED.FileFormat;
 public class OncodriveAnalysisFormat extends AbstractXmlFormat<OncodriveAnalysis>
 {
     public static final String EXTENSION = "oncodrive";
-    public static final Class<OncodriveAnalysis> RESOURCE_CLASS = OncodriveAnalysis.class;
+    private static final Class<OncodriveAnalysis> RESOURCE_CLASS = OncodriveAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Oncodrive analysis", EXTENSION);
 
     public OncodriveAnalysisFormat()

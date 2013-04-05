@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 public class ActionManager
 {
 
@@ -43,12 +46,12 @@ public class ActionManager
         return defaultActionManager;
     }
 
-    private Set<BaseAction> rootActions;
-    private Set<BaseAction> baseActions;
+    private final Set<BaseAction> rootActions;
+    private final Set<BaseAction> baseActions;
 
-    private Map<String, BaseAction> actionMap;
+    private final Map<String, BaseAction> actionMap;
 
-    public ActionManager()
+    private ActionManager()
     {
         rootActions = new HashSet<BaseAction>();
         baseActions = new HashSet<BaseAction>();
@@ -60,13 +63,13 @@ public class ActionManager
         return actionMap.get(id);
     }
 
-    public void addAction(@NotNull BaseAction action)
+    void addAction(@NotNull BaseAction action)
     {
         baseActions.add(action);
         actionMap.put(action.getClass().getName(), action);
     }
 
-    public void addAction(BaseAction action, String id)
+    void addAction(BaseAction action, String id)
     {
         baseActions.add(action);
         actionMap.put(id, action);

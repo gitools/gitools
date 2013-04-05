@@ -27,6 +27,9 @@ import org.gitools.persistence.IResource;
 
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public interface IMatrix extends IResource
 {
 

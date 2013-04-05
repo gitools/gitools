@@ -31,7 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-//TODO remove JAXB support
+/**
+ * @noinspection ALL
+ */ //TODO remove JAXB support
 @XmlAccessorType(XmlAccessType.NONE)
 
 public class ObjectMatrix extends BaseMatrix
@@ -39,19 +41,14 @@ public class ObjectMatrix extends BaseMatrix
 
     private static final long serialVersionUID = 4077172838934816719L;
 
-    protected ObjectMatrix2D cells;
+    ObjectMatrix2D cells;
 
     public ObjectMatrix()
     {
         super();
     }
 
-    public ObjectMatrix(
-            String title,
-            ObjectMatrix1D rows,
-            ObjectMatrix1D columns,
-            ObjectMatrix2D cells,
-            IElementAdapter cellAdapter)
+    public ObjectMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells, IElementAdapter cellAdapter)
     {
 
         super(title, rows, columns, cellAdapter);
@@ -59,11 +56,7 @@ public class ObjectMatrix extends BaseMatrix
         this.cells = cells;
     }
 
-    public ObjectMatrix(
-            String title,
-            @NotNull String[] rowNames,
-            @NotNull String[] columnNames,
-            IElementAdapter cellAdapter)
+    public ObjectMatrix(String title, @NotNull String[] rowNames, @NotNull String[] columnNames, IElementAdapter cellAdapter)
     {
 
 

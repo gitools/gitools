@@ -40,7 +40,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 {
     private List<ResourceReference> dependencies;
 
-    public AbstractXmlFormat(String extension, Class<R> resourceClass)
+    AbstractXmlFormat(String extension, Class<R> resourceClass)
     {
         super(extension, resourceClass);
     }
@@ -56,10 +56,17 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     {
     }
 
-    protected void beforeRead(InputStream in, IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    void beforeRead(InputStream in, IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
         dependencies = new ArrayList<ResourceReference>();
         unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
+
+    }
+
+    void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    {
+        dependencies = new ArrayList<ResourceReference>();
+        marshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 
     /**
@@ -73,7 +80,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
-    protected void afterRead(InputStream inputStream, IResourceLocator resourceLocator, R resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    void afterRead(InputStream inputStream, IResourceLocator resourceLocator, R resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
     }
 
@@ -105,13 +112,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         return entity;
     }
 
-    protected void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        dependencies = new ArrayList<ResourceReference>();
-        marshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
-    }
-
-    protected void afterWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
+    void afterWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
         // Force write the dependencies
         for (ResourceReference dependency : dependencies)

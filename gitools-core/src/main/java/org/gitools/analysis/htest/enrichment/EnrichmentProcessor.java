@@ -71,7 +71,7 @@ public class EnrichmentProcessor extends HtestProcessor
         }
     }
 
-    private EnrichmentAnalysis analysis;
+    private final EnrichmentAnalysis analysis;
 
     public EnrichmentProcessor(EnrichmentAnalysis analysis)
     {
@@ -85,8 +85,7 @@ public class EnrichmentProcessor extends HtestProcessor
 
         Date startTime = new Date();
 
-        TestFactory testFactory =
-                TestFactory.createFactory(analysis.getTestConfig());
+        TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
 
         IMatrix dataMatrix = analysis.getData().get();
 
@@ -98,9 +97,7 @@ public class EnrichmentProcessor extends HtestProcessor
             labels[i] = dataMatrix.getRowLabel(i);
 
         ModuleMap mmap = analysis.getModuleMap().get();
-        mmap = mmap.remap(labels,
-                analysis.getMinModuleSize(),
-                analysis.getMaxModuleSize());
+        mmap = mmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
 
         //DoubleMatrix2D data = null;
         ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumnCount());
@@ -123,8 +120,7 @@ public class EnrichmentProcessor extends HtestProcessor
         resultsMatrix.setRows(modules);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(
-                new BeanElementAdapter(test.getResultClass()));
+        resultsMatrix.setCellAdapter(new BeanElementAdapter(test.getResultClass()));
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -154,8 +150,7 @@ public class EnrichmentProcessor extends HtestProcessor
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
             for (int i = 0; i < numRows; i++)
             {
-                double value = MatrixUtils.doubleValue(
-                        dataMatrix.getCellValue(i, condIndex, 0));
+                double value = MatrixUtils.doubleValue(dataMatrix.getCellValue(i, condIndex, 0));
 
                 condItems.setQuick(i, value);
             }
@@ -199,24 +194,18 @@ public class EnrichmentProcessor extends HtestProcessor
                         CommonResult result = null;
                         try
                         {
-                            int moduleSize = (int) condItems
-                                    .viewSelection(itemIndices)
-                                    .aggregate(
-                                            Functions.plus,
-                                            new DoubleFunction()
-                                            {
-                                                @Override
-                                                public double apply(double d)
-                                                {
-                                                    return Double.isNaN(d) ? 0 : 1;
-                                                }
-                                            });
+                            int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction()
+                            {
+                                @Override
+                                public double apply(double d)
+                                {
+                                    return Double.isNaN(d) ? 0 : 1;
+                                }
+                            });
 
                             if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize)
                             {
-                                result = slot.test.processTest(
-                                        condName, condItems,
-                                        moduleName, itemIndices);
+                                result = slot.test.processTest(condName, condItems, moduleName, itemIndices);
                             }
                         } catch (Throwable cause)
                         {
@@ -251,10 +240,7 @@ public class EnrichmentProcessor extends HtestProcessor
 
         MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-        multipleTestCorrection(
-                resultsMatrix,
-                mtc,
-                monitor.subtask());
+        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

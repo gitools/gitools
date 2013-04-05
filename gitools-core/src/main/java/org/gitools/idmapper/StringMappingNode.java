@@ -26,10 +26,10 @@ import org.jetbrains.annotations.Nullable;
 public class StringMappingNode implements MappingNode
 {
 
-    private String id;
-    private String name;
+    private final String id;
+    private final String name;
 
-    public StringMappingNode(String id, String name)
+    private StringMappingNode(String id, String name)
     {
         this.id = id;
         this.name = name;

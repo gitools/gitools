@@ -44,7 +44,7 @@ import java.util.List;
 public class GroupComparisonProcessor extends HtestProcessor
 {
 
-    private GroupComparisonAnalysis analysis;
+    private final GroupComparisonAnalysis analysis;
 
     public GroupComparisonProcessor(GroupComparisonAnalysis analysis)
     {
@@ -80,8 +80,7 @@ public class GroupComparisonProcessor extends HtestProcessor
         resultsMatrix.setRows(rlabels);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(
-                new BeanElementAdapter(GroupComparisonResult.class));
+        resultsMatrix.setCellAdapter(new BeanElementAdapter(GroupComparisonResult.class));
 
 
         // Run group comparison
@@ -99,12 +98,8 @@ public class GroupComparisonProcessor extends HtestProcessor
             for (int row = 0; row < numRows; row++)
             {
 
-                int[] group1 = getColumnIndices(data,
-                        analysis.getGroups1(),
-                        row);
-                int[] group2 = getColumnIndices(data,
-                        analysis.getGroups2(),
-                        row);
+                int[] group1 = getColumnIndices(data, analysis.getGroups1(), row);
+                int[] group2 = getColumnIndices(data, analysis.getGroups2(), row);
 
 
                 double[] groupVals1 = new double[group1.length];
@@ -147,10 +142,7 @@ public class GroupComparisonProcessor extends HtestProcessor
 
         MTC mtc = analysis.getMtc();
 
-        multipleTestCorrection(
-                resultsMatrix,
-                mtc,
-                monitor.subtask());
+        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

@@ -31,80 +31,82 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class HeatmapHeader extends AbstractModel
 {
 
-    public static final String TITLE_CHANGED = "title";
+    private static final String TITLE_CHANGED = "title";
     public static final String SIZE_CHANGED = "size";
     public static final String VISIBLE_CHANGED = "visible";
-    public static final String BG_COLOR_CHANGED = "bgColor";
-    public static final String MARGIN_CHANGED = "margin";
-    public static final String LABEL_VISIBLE_CHANGED = "labelVisible";
-    public static final String LABEL_FONT_CHANGED = "labelFont";
-    public static final String LABEL_ROTATED_CHANGED = "labelRotated";
-    public static final String LABEL_COLOR_CHANGED = "labelColor";
-    public static final String LARGEST_LABEL_LENGTH_CHANGED = "largestLabelLength";
+    private static final String BG_COLOR_CHANGED = "bgColor";
+    private static final String MARGIN_CHANGED = "margin";
+    private static final String LABEL_VISIBLE_CHANGED = "labelVisible";
+    static final String LABEL_FONT_CHANGED = "labelFont";
+    private static final String LABEL_ROTATED_CHANGED = "labelRotated";
+    private static final String LABEL_COLOR_CHANGED = "labelColor";
+    private static final String LARGEST_LABEL_LENGTH_CHANGED = "largestLabelLength";
 
     /**
      * The title of the cluster set
      */
-    protected String title;
+    private String title;
 
     /**
      * The height/width of the color band
      */
-    protected int size;
+    int size;
 
     /**
      * Wether the cluster set is visible
      */
-    protected boolean visible;
+    private boolean visible;
 
     /* Background color*/
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    protected Color backgroundColor;
+    Color backgroundColor;
 
-    /* Color band margin */
-    protected int margin;
+    /* Color band margin */ int margin;
 
     /**
      * Whether to show labels of each cluster
      */
-    protected boolean labelVisible;
+    boolean labelVisible;
 
     /**
      * The font to use for labels
      */
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
-    protected Font font;
+    Font font;
 
     /**
      * If false the label is painted along the color band,
      * otherwise the label is perpendicular to the color band
      */
-    protected boolean labelRotated;
+    boolean labelRotated;
 
     /* If the header is referring to annotation from
     * the other dimension, the pattern is stored here*/
     @Nullable
-    protected String annotationPattern;
+    private String annotationPattern;
 
-    protected String[] annotationValues;
+    private String[] annotationValues;
 
     /**
      * Tells the drawer how long the largest label is with current
      * font settings
      */
 
-    protected int largestLabelLength;
+    int largestLabelLength;
 
     /**
      * Label foreground color
      */
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    protected Color labelColor;
+    Color labelColor;
 
-    public HeatmapHeader(HeatmapDim dim)
+    HeatmapHeader(HeatmapDim dim)
     {
         this.dim = dim;
         this.title = "";
@@ -121,7 +123,7 @@ public abstract class HeatmapHeader extends AbstractModel
     }
 
     @XmlTransient
-    protected HeatmapDim dim;
+    private HeatmapDim dim;
 
     public HeatmapDim getHeatmapDim()
     {
@@ -297,7 +299,7 @@ public abstract class HeatmapHeader extends AbstractModel
         return largestLabelLength;
     }
 
-    public void setLargestLabelLength(int largestLabelLength)
+    void setLargestLabelLength(int largestLabelLength)
     {
         int old = this.largestLabelLength;
         this.largestLabelLength = largestLabelLength;

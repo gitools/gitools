@@ -47,7 +47,7 @@ public class ActionSetUtils
     }
 
     @NotNull
-    public static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet)
+    private static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet)
     {
 
         for (BaseAction a : actionSet.getActions())
@@ -122,7 +122,7 @@ public class ActionSetUtils
     }
 
     @NotNull
-    public static JMenu createMenu(@NotNull BaseAction action)
+    private static JMenu createMenu(@NotNull BaseAction action)
     {
         WebMenu menu = new WebMenu(action);
 

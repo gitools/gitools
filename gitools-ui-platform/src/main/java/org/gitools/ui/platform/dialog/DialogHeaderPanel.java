@@ -28,6 +28,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * @noinspection ALL
+ */
 public class DialogHeaderPanel extends javax.swing.JPanel
 {
 
@@ -55,11 +58,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         rightLogo.setText("");
     }
 
-    public DialogHeaderPanel(
-            String header,
-            String message,
-            @NotNull MessageStatus status,
-            Icon logo)
+    public DialogHeaderPanel(String header, String message, @NotNull MessageStatus status, Icon logo)
     {
         this();
 
@@ -130,28 +129,8 @@ public class DialogHeaderPanel extends javax.swing.JPanel
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(leftLogo)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-                                        .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rightLogo))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(title)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(message)
-                                .addContainerGap(28, Short.MAX_VALUE))
-                        .addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                        .addComponent(rightLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(leftLogo).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE).addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(rightLogo)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(title).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(message).addContainerGap(28, Short.MAX_VALUE)).addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE).addComponent(rightLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE));
     }// </editor-fold>//GEN-END:initComponents
 
     private void rightLogoMouseClicked(java.awt.event.MouseEvent evt)

@@ -28,7 +28,7 @@ public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupCompar
 {
 
     public static final String EXTENSION = "comparison";
-    public static final Class<GroupComparisonAnalysis> RESOURCE_CLASS = GroupComparisonAnalysis.class;
+    private static final Class<GroupComparisonAnalysis> RESOURCE_CLASS = GroupComparisonAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
 

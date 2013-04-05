@@ -41,19 +41,22 @@ import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public class ColoredLabelsHeaderWizard extends AbstractWizard
 {
 
-    private Heatmap heatmap;
-    private HeatmapDim hdim;
-    private boolean applyToRows;
+    private final Heatmap heatmap;
+    private final HeatmapDim hdim;
+    private final boolean applyToRows;
 
     private boolean editionMode;
 
-    private String lastPattern;
-    private HeatmapColoredLabelsHeader header;
+    private final String lastPattern;
+    private final HeatmapColoredLabelsHeader header;
 
-    private AnnPatClusteringMethod clusteringMethod;
+    private final AnnPatClusteringMethod clusteringMethod;
 
     private PatternSourcePage sourcePage;
     private ColoredLabelsConfigPage headerPage;
@@ -116,9 +119,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
         AnnotationMatrix am = hdim.getAnnotations();
         header.setAnnotationPattern(pattern);
 
-        final ClusteringData data = applyToRows ?
-                new AnnPatRowClusteringData(mv, am, pattern)
-                : new AnnPatColumnClusteringData(mv, am, pattern);
+        final ClusteringData data = applyToRows ? new AnnPatRowClusteringData(mv, am, pattern) : new AnnPatColumnClusteringData(mv, am, pattern);
 
         header.setTitle("Colors: " + sourcePage.getPatternTitle());
 
@@ -129,8 +130,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
             {
                 try
                 {
-                    final ClusteringResults results =
-                            clusteringMethod.cluster(data, monitor);
+                    final ClusteringResults results = clusteringMethod.cluster(data, monitor);
 
                     header.updateFromClusterResults(results);
                 } catch (Throwable ex)

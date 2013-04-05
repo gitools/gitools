@@ -27,26 +27,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * It represents the descriptor for a tool
  * and contains all the relevant information for the tool.
+ *
+ * @noinspection ALL
  */
 
 @XmlRootElement
 public class ToolDescriptor
 {
 
-    protected String name;
-    protected String description;
-    protected Class<?> argsClass;
-    protected Class<? extends ToolLifeCycle> lifeCycleClass;
+    private String name;
+    private String description;
+    private Class<?> argsClass;
+    private Class<? extends ToolLifeCycle> lifeCycleClass;
 
     public ToolDescriptor()
     {
     }
 
-    public ToolDescriptor(
-            String name,
-            String descr,
-            Class<?> argsObject,
-            Class<? extends ToolLifeCycle> toolClass)
+    public ToolDescriptor(String name, String descr, Class<?> argsObject, Class<? extends ToolLifeCycle> toolClass)
     {
 
         this.name = name;

@@ -33,6 +33,9 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @noinspection ALL
+ */
 public class OBOStreamReader implements OBOEventTypes
 {
 
@@ -40,10 +43,10 @@ public class OBOStreamReader implements OBOEventTypes
     private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\s*!(.*)$");
     private static final Pattern TAG_NAME_PATTERN = Pattern.compile("^[0-9a-zA-Z_]$");
 
-    private OBOStream stream;
-    private Stack<OBOStream> streamStack;
+    private final OBOStream stream;
+    private final Stack<OBOStream> streamStack;
 
-    private LinkedList<OBOEvent> tokens;
+    private final LinkedList<OBOEvent> tokens;
 
     private boolean headerStarted;
     private boolean headerEnded;

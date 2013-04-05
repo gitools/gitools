@@ -29,6 +29,9 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AnalysisCommand
 {
 
@@ -38,13 +41,16 @@ public abstract class AnalysisCommand
 
     protected boolean storeAnalysis;
 
-    public AnalysisCommand(String workdir, String fileName)
+    protected AnalysisCommand(String workdir, String fileName)
     {
         this.workdir = workdir;
         this.fileName = fileName;
         this.storeAnalysis = true;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public String getWorkdir()
     {
         return workdir;
@@ -78,12 +84,9 @@ public abstract class AnalysisCommand
     public abstract void run(IProgressMonitor monitor) throws AnalysisException;
 
     @NotNull
-    protected ValueTranslator createValueTranslator(
-            boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue)
+    protected ValueTranslator createValueTranslator(boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue)
     {
 
-        return binaryCutoffEnabled ?
-                new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) :
-                new DoubleTranslator();
+        return binaryCutoffEnabled ? new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) : new DoubleTranslator();
     }
 }

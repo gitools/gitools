@@ -34,20 +34,23 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends AbstractMatrixFormat<R>
 {
 
-    private int skipLines;
-    private Set<Integer> skipColumns;
+    private final int skipLines;
+    private final Set<Integer> skipColumns;
 
     private R matrix;
 
-    public AbstractTextMatrixFormat(String extension, Class<R> resourceClass)
+    AbstractTextMatrixFormat(String extension, Class<R> resourceClass)
     {
         this(extension, resourceClass, 0);
     }
 
-    public AbstractTextMatrixFormat(String extension, Class<R> resourceClass, int skipLines, Integer... skipColumns)
+    AbstractTextMatrixFormat(String extension, Class<R> resourceClass, int skipLines, Integer... skipColumns)
     {
         super(extension, resourceClass);
         this.skipLines = skipLines;
@@ -79,7 +82,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         readMetadata(resourceLocator, matrix, progressMonitor);
     }
 
-    protected R read(@NotNull IResourceLocator resourceLocator, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
+    R read(@NotNull IResourceLocator resourceLocator, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
 
         progressMonitor.begin("Loading matrix...", 1);
@@ -129,8 +132,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             // Read row names
 
             String[] populationLabels = getPopulationLabels();
-            final Set<String> popLabelsSet = populationLabels != null ?
-                    new HashSet<String>(Arrays.asList(populationLabels)) : null;
+            final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
             String[] fields;
 
@@ -167,8 +169,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             throw new PersistenceException(e);
         }
 
-        progressMonitor.info(matrix.getColumns().cardinality() + " columns and "
-                + matrix.getRows().cardinality() + " rows");
+        progressMonitor.info(matrix.getColumns().cardinality() + " columns and " + matrix.getRows().cardinality() + " rows");
 
         progressMonitor.end();
     }
@@ -197,8 +198,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         // Read rows names and data ordered by rowsOrder
 
         String[] populationLabels = getPopulationLabels();
-        final Set<String> popLabelsSet = populationLabels != null ?
-                new HashSet<String>(Arrays.asList(populationLabels)) : null;
+        final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
         try
         {
@@ -309,7 +309,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         return result;
     }
 
-    protected void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException
+    void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
 
         monitor.begin("Saving matrix...", matrix.getColumnCount());
@@ -347,8 +347,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
                 for (int j = 0; j < numCols; j++)
                 {
                     pw.print('\t');
-                    pw.print(valueTranslator.valueToString(
-                            matrix.getCellValue(i, j, 0)));
+                    pw.print(valueTranslator.valueToString(matrix.getCellValue(i, j, 0)));
                 }
 
                 pw.print('\n');

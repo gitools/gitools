@@ -30,24 +30,27 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 public class CorrelationAnalysis extends Analysis
 {
 
-    protected String method;
+    private String method;
 
-    protected Properties methodProperties;
+    private Properties methodProperties;
 
     @Nullable
-    protected Double replaceNanValue;
+    private Double replaceNanValue;
 
-    protected boolean transposeData;
+    private boolean transposeData;
 
-    protected int attributeIndex;
+    private int attributeIndex;
 
-    protected ResourceReference<IMatrix> data;
+    private ResourceReference<IMatrix> data;
 
-    protected ResourceReference<IMatrix> results;
+    private ResourceReference<IMatrix> results;
 
     /**
      *

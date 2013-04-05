@@ -34,20 +34,16 @@ import org.jetbrains.annotations.NotNull;
 public abstract class HtestProcessor implements AnalysisProcessor
 {
 
-    protected static final DoubleProcedure notNaNProc =
-            new DoubleProcedure()
-            {
-                @Override
-                public boolean apply(double element)
-                {
-                    return !Double.isNaN(element);
-                }
-            };
+    protected static final DoubleProcedure notNaNProc = new DoubleProcedure()
+    {
+        @Override
+        public boolean apply(double element)
+        {
+            return !Double.isNaN(element);
+        }
+    };
 
-    protected void multipleTestCorrection(
-            @NotNull ObjectMatrix res,
-            @NotNull MTC mtc,
-            @NotNull IProgressMonitor monitor)
+    protected void multipleTestCorrection(@NotNull ObjectMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor)
     {
 
         monitor.begin(mtc.getName() + " correction...", 1);

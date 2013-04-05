@@ -27,6 +27,9 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 
+/**
+ * @noinspection ALL
+ */
 public final class ToolBarActionSet extends ActionSet
 {
 
@@ -34,14 +37,7 @@ public final class ToolBarActionSet extends ActionSet
 
     public ToolBarActionSet()
     {
-        super(new BaseAction[]{
-                FileActions.openAction,
-                FileActions.saveAction,
-                BaseAction.separator,
-                FileActions.openGenomeSpaceAction,
-                FileActions.openIntegrativeGenomicViewerAction,
-                HeatmapActions.cloneAction
-        });
+        super(new BaseAction[]{FileActions.openAction, FileActions.saveAction, BaseAction.separator, FileActions.openGenomeSpaceAction, FileActions.openIntegrativeGenomicViewerAction, HeatmapActions.cloneAction});
     }
 
     public JToolBar createToolBar()

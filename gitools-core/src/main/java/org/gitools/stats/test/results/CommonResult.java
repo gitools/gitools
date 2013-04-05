@@ -25,21 +25,21 @@ import org.gitools.matrix.model.element.AttributeDef;
 
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
 public class CommonResult implements Serializable
 {
 
-    public int N;
-    public double leftPvalue;
-    public double rightPvalue;
-    public double twoTailPvalue;
-    public double corrLeftPvalue;
-    public double corrRightPvalue;
-    public double corrTwoTailPvalue;
+    private int N;
+    private double leftPvalue;
+    private double rightPvalue;
+    private double twoTailPvalue;
+    private double corrLeftPvalue;
+    private double corrRightPvalue;
+    private double corrTwoTailPvalue;
 
-    public CommonResult(
-            int N,
-            double leftPvalue, double rightPvalue,
-            double twoTailPvalue)
+    public CommonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue)
     {
 
         this.leftPvalue = leftPvalue;
@@ -48,6 +48,9 @@ public class CommonResult implements Serializable
         this.twoTailPvalue = twoTailPvalue;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     @AttributeDef(id = "N", name = "N", description = "Number of elements")
     public int getN()
     {

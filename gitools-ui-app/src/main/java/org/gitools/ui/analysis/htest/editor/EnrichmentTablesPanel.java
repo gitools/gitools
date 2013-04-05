@@ -41,6 +41,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+/**
+ * @noinspection ALL
+ */
 public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysis>
 {
 
@@ -49,13 +52,13 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     private static final String DATA_TEMPLATE = "/vm/analysis/enrichment/tables_data.vm";
     private static final String RESULTS_TEMPLATE = "/vm/analysis/enrichment/tables_results.vm";
 
-    protected Map<String, Integer> dataRowIndices;
-    protected Map<String, Integer> dataColIndices;
+    private final Map<String, Integer> dataRowIndices;
+    private final Map<String, Integer> dataColIndices;
 
-    protected ModuleMap mmap;
+    private final ModuleMap mmap;
 
     @Nullable
-    protected IColorScale dataScale;
+    private final IColorScale dataScale;
 
     public EnrichmentTablesPanel(@NotNull EnrichmentAnalysis analysis, Heatmap heatmap)
     {
@@ -152,13 +155,11 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     }
 
     @NotNull
-    private List<VelocityContext> createDataElements(
-            @NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
+    private List<VelocityContext> createDataElements(@NotNull IMatrixView mv, int row, int col, @NotNull final IMatrix data, @NotNull ModuleMap mmap)
     {
 
         final int valueIndex = 0;
-        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(
-                data.getCellAdapter().getProperty(valueIndex).getValueClass());
+        final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(valueIndex).getValueClass());
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
 
@@ -176,10 +177,8 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
             @Override
             public int compare(Integer o1, Integer o2)
             {
-                double v1 = valueCast.getDoubleValue(
-                        data.getCellValue(o1, dcol, valueIndex));
-                double v2 = valueCast.getDoubleValue(
-                        data.getCellValue(o2, dcol, valueIndex));
+                double v1 = valueCast.getDoubleValue(data.getCellValue(o1, dcol, valueIndex));
+                double v2 = valueCast.getDoubleValue(data.getCellValue(o2, dcol, valueIndex));
                 return (int) Math.signum(v2 - v1);
             }
         });
@@ -191,8 +190,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
             int mri = iix[ri];
             if (data.getCell(mri, dcol) != null)
             {
-                double value = valueCast.getDoubleValue(
-                        data.getCellValue(mri, dcol, valueIndex));
+                double value = valueCast.getDoubleValue(data.getCellValue(mri, dcol, valueIndex));
 
                 VelocityContext e = new VelocityContext();
                 e.put("name", data.getRowLabel(mri));
@@ -209,8 +207,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     private VelocityContext createDataTableElements(@NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
-        List<VelocityContext> elements =
-                createDataElements(mv, row, col, data, mmap);
+        List<VelocityContext> elements = createDataElements(mv, row, col, data, mmap);
 
         VelocityContext table = new VelocityContext();
         table.put("name", mv.getRowLabel(row));
@@ -220,8 +217,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     }
 
     @NotNull
-    private VelocityContext createDataCellModel(@NotNull VelocityContext context,
-                                                @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
+    private VelocityContext createDataCellModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, int col, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         VelocityContext table = createDataTableElements(mv, row, col, data, mmap);
@@ -240,8 +236,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     }
 
     @NotNull
-    private VelocityContext createDataColumnModel(@NotNull VelocityContext context,
-                                                  @NotNull IMatrixView mv, int col, IMatrix data, ModuleMap mmap)
+    private VelocityContext createDataColumnModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int col, IMatrix data, ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -274,8 +269,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
     }
 
     @NotNull
-    private VelocityContext createDataRowModel(@NotNull VelocityContext context,
-                                               @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
+    private VelocityContext createDataRowModel(@NotNull VelocityContext context, @NotNull IMatrixView mv, int row, @NotNull IMatrix data, @NotNull ModuleMap mmap)
     {
 
         List<VelocityContext> elements = new ArrayList<VelocityContext>();
@@ -311,8 +305,7 @@ public class EnrichmentTablesPanel extends AbstractTablesPanel<EnrichmentAnalysi
         return context;
     }
 
-    private VelocityContext createDataAllModel(VelocityContext context,
-                                               IMatrixView mv, IMatrix data, ModuleMap mmap)
+    private VelocityContext createDataAllModel(VelocityContext context, IMatrixView mv, IMatrix data, ModuleMap mmap)
     {
 
         return context;

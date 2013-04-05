@@ -23,10 +23,10 @@ package org.gitools.ui.panels.decorator;
 
 import org.gitools.matrix.model.element.IElementAttribute;
 
-public class IndexedProperty
+class IndexedProperty
 {
-    private int index;
-    private IElementAttribute property;
+    private final int index;
+    private final IElementAttribute property;
 
     public IndexedProperty(int index, IElementAttribute property)
     {

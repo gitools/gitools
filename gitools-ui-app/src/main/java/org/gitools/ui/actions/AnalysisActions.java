@@ -30,7 +30,7 @@ import org.gitools.ui.platform.actions.UnimplementedAction;
 
 import java.awt.*;
 
-public class AnalysisActions
+class AnalysisActions
 {
 
     public static final BaseAction combinations = new CombinationsAction();

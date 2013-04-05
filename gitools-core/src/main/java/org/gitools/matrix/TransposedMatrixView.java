@@ -55,8 +55,7 @@ public class TransposedMatrixView implements IMatrixView
 
     public final void setMatrix(@NotNull IMatrix matrix)
     {
-        this.mv = matrix instanceof IMatrixView ?
-                (IMatrixView) matrix : new MatrixView(matrix);
+        this.mv = matrix instanceof IMatrixView ? (IMatrixView) matrix : new MatrixView(matrix);
     }
 
     public IResourceLocator getLocator()
@@ -228,7 +227,7 @@ public class TransposedMatrixView implements IMatrixView
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener)
     {
-        removePropertyChangeListener(listener);
+        mv.removePropertyChangeListener(listener);
     }
 
     @Override

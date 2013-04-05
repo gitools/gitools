@@ -24,6 +24,9 @@ package org.gitools.ui.clustering.values;
 import org.gitools.clustering.ClusteringMethodDescriptor;
 import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 
+/**
+ * @noinspection ALL
+ */
 public interface ClusteringValueMethodPage
 {
 

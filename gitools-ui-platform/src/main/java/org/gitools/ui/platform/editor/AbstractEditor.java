@@ -30,6 +30,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractEditor extends AbstractView implements IEditor
 {
 
@@ -45,19 +48,14 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         {
         }
 
-        ;
-
         public void dirtyChanged(IEditor editor)
         {
         }
-
-        ;
 
         public void saved(IEditor editor)
         {
         }
 
-        ;
     }
 
     private File file;
@@ -66,7 +64,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
     private boolean saveAllowed = false;
 
     @NotNull
-    private List<EditorListener> listeners = new ArrayList<EditorListener>();
+    private final List<EditorListener> listeners = new ArrayList<EditorListener>();
 
     @Override
     public void setName(String name)
@@ -85,7 +83,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         return file;
     }
 
-    public void setFile(@NotNull File file)
+    protected void setFile(@NotNull File file)
     {
         if (this.file != file || !this.file.equals(file))
         {
@@ -104,8 +102,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
 
     protected void setDirty(boolean dirty)
     {
-        //TODO enablse save feature
-        if (false && this.dirty != dirty)
+        if (this.dirty != dirty)
         {
             this.dirty = dirty;
             for (EditorListener l : listeners)
@@ -120,7 +117,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         return saveAsAllowed;
     }
 
-    public void setSaveAsAllowed(boolean saveAsAllowed)
+    protected void setSaveAsAllowed(boolean saveAsAllowed)
     {
         this.saveAsAllowed = saveAsAllowed;
     }
@@ -131,7 +128,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         return saveAllowed;
     }
 
-    public void setSaveAllowed(boolean saveAllowed)
+    protected void setSaveAllowed(boolean saveAllowed)
     {
         this.saveAllowed = saveAllowed;
     }
@@ -166,6 +163,9 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         listeners.add(listener);
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void removeEditorListener(EditorListener listener)
     {
         listeners.add(listener);

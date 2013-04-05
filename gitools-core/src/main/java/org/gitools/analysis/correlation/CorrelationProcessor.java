@@ -39,7 +39,7 @@ import java.util.Date;
 public class CorrelationProcessor implements AnalysisProcessor
 {
 
-    protected CorrelationAnalysis analysis;
+    private final CorrelationAnalysis analysis;
 
     public CorrelationProcessor(CorrelationAnalysis analysis)
     {
@@ -52,8 +52,7 @@ public class CorrelationProcessor implements AnalysisProcessor
 
         Date startTime = new Date();
 
-        CorrelationMethod method = CorrelationMethodFactory.createMethod(
-                analysis.getMethod(), analysis.getMethodProperties());
+        CorrelationMethod method = CorrelationMethodFactory.createMethod(analysis.getMethod(), analysis.getMethodProperties());
 
         IMatrix data = analysis.getData().get();
         int attributeIndex = analysis.getAttributeIndex();
@@ -81,8 +80,7 @@ public class CorrelationProcessor implements AnalysisProcessor
         results.setRows(labels);
         results.makeCells();
 
-        results.setCellAdapter(
-                new BeanElementAdapter(method.getResultClass()));
+        results.setCellAdapter(new BeanElementAdapter(method.getResultClass()));
 
         double[] x = new double[numRows];
         double[] y = new double[numRows];
@@ -140,8 +138,7 @@ public class CorrelationProcessor implements AnalysisProcessor
 
                     try
                     {
-                        results.setCell(i, j,
-                                method.correlation(x, y, indices, numPairs));
+                        results.setCell(i, j, method.correlation(x, y, indices, numPairs));
                     } catch (MethodException ex)
                     {
                         throw new AnalysisException(ex);

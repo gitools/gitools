@@ -21,17 +21,34 @@
  */
 package org.gitools.utils.colorscale;
 
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint>
 {
 
     private double value;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color color;
+
     private String name;
+
+    public ColorScalePoint()
+    {
+        super();
+        // JAXB requirement
+    }
 
     public ColorScalePoint(double value, Color color, String name)
     {

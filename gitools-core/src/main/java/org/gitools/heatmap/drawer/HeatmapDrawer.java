@@ -32,17 +32,13 @@ import java.awt.geom.AffineTransform;
 public class HeatmapDrawer extends AbstractHeatmapDrawer
 {
 
-    private HeatmapBodyDrawer body;
+    private final HeatmapBodyDrawer body;
     @NotNull
     private final HeatmapHeaderDrawer rowsHeader;
     @NotNull
     private final HeatmapHeaderDrawer colsHeader;
     @NotNull
     private final HeatmapHeaderIntersectionDrawer headerIntersection;
-    /*private HeatmapLabelsDrawer rows;
-    private HeatmapLabelsDrawer columns;
-	private HeatmapColoredClustersDrawer rowsClusterSet;
-	private HeatmapColoredClustersDrawer columnsClusterSet;*/
 
     public HeatmapDrawer(Heatmap heatmap)
     {
@@ -52,11 +48,6 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         rowsHeader = new HeatmapHeaderDrawer(heatmap, false);
         colsHeader = new HeatmapHeaderDrawer(heatmap, true);
         headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap, colsHeader, rowsHeader);
-
-		/*rows = new HeatmapLabelsDrawer(heatmap, false);
-        columns = new HeatmapLabelsDrawer(heatmap, true);
-		rowsClusterSet = new HeatmapColoredClustersDrawer(heatmap, false);
-		columnsClusterSet = new HeatmapColoredClustersDrawer(heatmap, true);*/
     }
 
     @Override
@@ -65,13 +56,9 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
         Dimension columnsSize = colsHeader.getSize();
-		/*Dimension rowsCSSize = rowsClusterSet.getSize();
-		Dimension columnsCSSize = columnsClusterSet.getSize();*/
 
         Rectangle columnsBounds = new Rectangle(0, 0, columnsSize.width, columnsSize.height);
-        //Rectangle columnsCSBounds = new Rectangle(0 - columnsSize.height, 0, columnsCSSize.width, columnsCSSize.height);
         Rectangle bodyBounds = new Rectangle(0, columnsSize.height, bodySize.width, bodySize.height);
-        //Rectangle rowsCSBounds = new Rectangle(bodySize.width, columnsSize.height + columnsCSSize.height, rowsCSSize.width, rowsCSSize.height);
         Rectangle rowsBounds = new Rectangle(bodySize.width, columnsSize.height, rowsSize.width, rowsSize.height);
         Rectangle headerIntersectionBounds = new Rectangle(bodySize.width, 0, rowsSize.width, columnsSize.height);
 
@@ -86,15 +73,8 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         rowsHeader.draw(g, rowsBounds, rowsBounds);
         at.setToIdentity();
         g.setTransform(at);
-        //headerIntersection.updateDrawers(null);
         headerIntersection.draw(g, headerIntersectionBounds, headerIntersectionBounds);
 
-        /*rowsHeader.drawHeaderIntersection(g, headerIntersection);
-        at.setToIdentity();
-        g.setTransform(at);
-        colsHeader.drawHeaderIntersection(g, headerIntersection);
-        at.setToIdentity();
-        g.setTransform(at); */
     }
 
     @NotNull
@@ -104,8 +84,6 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
         Dimension columnsSize = colsHeader.getSize();
-        //Dimension rowsCSSize = rowsClusterSet.getSize();
-        //Dimension columnsCSSize = columnsClusterSet.getSize();
         return new Dimension(bodySize.width + rowsSize.width, bodySize.height + columnsSize.height);
     }
 

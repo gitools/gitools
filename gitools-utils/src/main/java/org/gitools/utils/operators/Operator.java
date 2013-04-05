@@ -25,6 +25,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 @SuppressWarnings("serial")
 public abstract class Operator implements Serializable
 {
@@ -58,14 +61,12 @@ public abstract class Operator implements Serializable
         }
     };
 
-    public static final Operator[] operators = new Operator[]{
-            AND, OR, EMPTY
-    };
+    private static final Operator[] operators = new Operator[]{AND, OR, EMPTY};
 
-    public static final Map<String, Operator> abbreviatedNameMap = new HashMap<String, Operator>();
-    public static final Map<String, Operator> shortNameMap = new HashMap<String, Operator>();
-    public static final Map<String, Operator> longNameMap = new HashMap<String, Operator>();
-    public static final Map<String, Operator> nameMap = new HashMap<String, Operator>();
+    private static final Map<String, Operator> abbreviatedNameMap = new HashMap<String, Operator>();
+    private static final Map<String, Operator> shortNameMap = new HashMap<String, Operator>();
+    private static final Map<String, Operator> longNameMap = new HashMap<String, Operator>();
+    private static final Map<String, Operator> nameMap = new HashMap<String, Operator>();
 
     static
     {
@@ -85,9 +86,9 @@ public abstract class Operator implements Serializable
         return nameMap.get(name);
     }
 
-    private String abbreviation;
-    private String shortName;
-    private String longName;
+    private final String abbreviation;
+    private final String shortName;
+    private final String longName;
 
     public Operator(String abbreviation, String shortName, String longName)
     {
@@ -101,7 +102,7 @@ public abstract class Operator implements Serializable
         return abbreviation;
     }
 
-    public String getShortName()
+    String getShortName()
     {
         return shortName;
     }

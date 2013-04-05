@@ -29,6 +29,9 @@ import org.gitools.ui.platform.editor.IEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class SaveAsAction extends BaseAction
 {
 

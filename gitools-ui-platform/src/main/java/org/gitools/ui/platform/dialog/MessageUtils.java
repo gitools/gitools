@@ -29,10 +29,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @noinspection ALL
+ */
 public class MessageUtils
 {
 
-    private static Logger log = Logger.getLogger(MessageUtils.class);
+    private static final Logger log = Logger.getLogger(MessageUtils.class);
 
     // Somewhat silly class, needed to pass values between threads
     static class ValueHolder
@@ -57,7 +60,7 @@ public class MessageUtils
         showMessage(parent, Level.INFO, message);
     }
 
-    public static synchronized void showMessage(@Nullable final Frame parent, Level level, String message)
+    private static synchronized void showMessage(@Nullable final Frame parent, Level level, String message)
     {
 
         log.log(level, message);

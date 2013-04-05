@@ -55,12 +55,15 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.net.URL;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractTablesPanel<A> extends JPanel
 {
 
-    private static Logger log = LoggerFactory.getLogger(AbstractTablesPanel.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractTablesPanel.class);
 
-    protected static final boolean DEFAULT_AUTOMATIC_UPDATE = false;
+    private static final boolean DEFAULT_AUTOMATIC_UPDATE = false;
 
     protected static final int DATA_VIEW_MODE = 1;
     protected static final int RESULTS_VIEW_MODE = 2;
@@ -117,18 +120,18 @@ public abstract class AbstractTablesPanel<A> extends JPanel
         }
     }
 
-    protected A analysis;
+    protected final A analysis;
 
-    protected Heatmap heatmap;
+    protected final Heatmap heatmap;
 
     protected int viewMode;
 
-    protected boolean automaticUpdate;
-    protected boolean forceUpdate;
+    private boolean automaticUpdate;
+    private boolean forceUpdate;
 
     private TemplatePanel templatePanel;
 
-    public AbstractTablesPanel(A analysis, @NotNull Heatmap heatmap)
+    protected AbstractTablesPanel(A analysis, @NotNull Heatmap heatmap)
     {
         this.analysis = analysis;
         this.heatmap = heatmap;
@@ -163,52 +166,46 @@ public abstract class AbstractTablesPanel<A> extends JPanel
 
     private JToolBar createToolBar()
     {
-        return ActionSetUtils.createToolBar(new ActionSet(new BaseAction[]{
-                new DataAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        setViewMode(DATA_VIEW_MODE);
-                    }
-                },
-                new ResultsAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        setViewMode(RESULTS_VIEW_MODE);
-                    }
-                },
-                new ExportHtmlAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        saveHtml();
-                    }
-                },
-                new AutomaticUpdateAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        setAutomaticUpdate(!isAutomaticUpdate());
-                        updateContents();
-                    }
-                },
-                new ForceUpdateAction()
-                {
-                    @Override
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        forceUpdate();
-                    }
-                }
-        }));
+        return ActionSetUtils.createToolBar(new ActionSet(new BaseAction[]{new DataAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setViewMode(DATA_VIEW_MODE);
+            }
+        }, new ResultsAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setViewMode(RESULTS_VIEW_MODE);
+            }
+        }, new ExportHtmlAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                saveHtml();
+            }
+        }, new AutomaticUpdateAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                setAutomaticUpdate(!isAutomaticUpdate());
+                updateContents();
+            }
+        }, new ForceUpdateAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                forceUpdate();
+            }
+        }}));
     }
 
-    public void propertyChange(@NotNull PropertyChangeEvent evt)
+    void propertyChange(@NotNull PropertyChangeEvent evt)
     {
         String name = evt.getPropertyName();
         if (evt.getSource() == heatmap.getMatrixView())
@@ -251,45 +248,38 @@ public abstract class AbstractTablesPanel<A> extends JPanel
         return viewMode;
     }
 
-    public void setViewMode(int viewMode)
+    void setViewMode(int viewMode)
     {
         this.viewMode = viewMode;
         updateContents();
     }
 
-    public boolean isAutomaticUpdate()
+    boolean isAutomaticUpdate()
     {
         return automaticUpdate;
     }
 
-    public void setAutomaticUpdate(boolean automaticUpdate)
+    void setAutomaticUpdate(boolean automaticUpdate)
     {
         this.automaticUpdate = automaticUpdate;
     }
 
-    public void forceUpdate()
+    void forceUpdate()
     {
         this.forceUpdate = true;
         updateContents();
     }
 
-    protected void saveHtml()
+    void saveHtml()
     {
-        AbstractEditor editor = AppFrame.get().getEditorsPanel()
-                .getSelectedEditor();
+        AbstractEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         if (editor == null)
         {
             return;
         }
 
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-                "Export html ...",
-                PersistenceUtils.getFileName(editor.getName()),
-                Settings.getDefault().getLastExportPath(),
-                new FileFormat[]{
-                        FileFormats.HTML
-                });
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export html ...", PersistenceUtils.getFileName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.HTML});
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);

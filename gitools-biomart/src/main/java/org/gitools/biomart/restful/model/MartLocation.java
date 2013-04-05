@@ -29,43 +29,46 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "MartURLLocation")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MartLocation
 {
 
     @XmlAttribute
-    protected String database;
+    private String database;
 
     @XmlAttribute(name = "default")
-    protected int isdefault;
+    private int isdefault;
 
     @XmlAttribute
-    protected String displayName;
+    private String displayName;
 
     @XmlAttribute
-    protected String host;
+    private String host;
 
     @XmlAttribute
-    protected String includeDatasets;
+    private String includeDatasets;
 
     @XmlAttribute
-    protected String martUser;
+    private String martUser;
 
     @XmlAttribute
-    protected String name;
+    private String name;
 
     @XmlAttribute
-    protected String path;
+    private String path;
 
     @XmlAttribute
-    protected String port;
+    private String port;
 
     @XmlAttribute
-    protected String serverVirtualSchema;
+    private String serverVirtualSchema;
 
     @XmlAttribute
-    protected int visible;
+    private int visible;
 
     public MartLocation()
     {
@@ -86,11 +89,7 @@ public class MartLocation
         this.visible = mart.getVisible();
     }
 
-    public MartLocation(String database, int isdefault,
-                        String displayName, String host,
-                        String includeDatasets, String martUser,
-                        String name, String path, String port,
-                        String serverVirtualSchema, int visible)
+    public MartLocation(String database, int isdefault, String displayName, String host, String includeDatasets, String martUser, String name, String path, String port, String serverVirtualSchema, int visible)
     {
 
         this.database = database;

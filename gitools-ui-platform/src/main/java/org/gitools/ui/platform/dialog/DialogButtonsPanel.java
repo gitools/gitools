@@ -27,6 +27,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class DialogButtonsPanel extends JPanel
 {
 
@@ -35,8 +38,8 @@ public class DialogButtonsPanel extends JPanel
     public static final JButton SEPARATOR = new JButton();
 
     @Nullable
-    protected List<JButton> buttons;
-    private JPanel buttonsPanel;
+    private List<JButton> buttons;
+    private final JPanel buttonsPanel;
 
     public DialogButtonsPanel(List<JButton> buttons)
     {
@@ -57,7 +60,7 @@ public class DialogButtonsPanel extends JPanel
         return buttons;
     }
 
-    public void setButtons(@Nullable List<JButton> buttons)
+    void setButtons(@Nullable List<JButton> buttons)
     {
         this.buttons = buttons;
         buttonsPanel.removeAll();

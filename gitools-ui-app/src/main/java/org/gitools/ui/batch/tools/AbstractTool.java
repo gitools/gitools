@@ -78,7 +78,7 @@ public abstract class AbstractTool implements ITool
         return true;
     }
 
-    public void execute()
+    void execute()
     {
         JobRunnable job = newJob();
 

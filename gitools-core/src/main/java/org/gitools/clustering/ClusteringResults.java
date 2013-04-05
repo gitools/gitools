@@ -25,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public interface ClusteringResults
 {
 
@@ -76,6 +79,8 @@ public interface ClusteringResults
 
     /**
      * Returns the cluster the data belongs to
+     *
+     * @noinspection UnusedDeclaration
      */
     int getClusterIndex(int dataIndex);
 

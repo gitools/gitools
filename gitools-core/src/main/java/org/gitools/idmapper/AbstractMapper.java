@@ -24,14 +24,17 @@ package org.gitools.idmapper;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractMapper implements Mapper
 {
 
-    private String name;
-    private boolean bidirectional;
-    private boolean generator;
+    private final String name;
+    private final boolean bidirectional;
+    private final boolean generator;
 
-    public AbstractMapper(String name, boolean bidirectional, boolean generator)
+    protected AbstractMapper(String name, boolean bidirectional, boolean generator)
     {
         this.name = name;
         this.bidirectional = bidirectional;

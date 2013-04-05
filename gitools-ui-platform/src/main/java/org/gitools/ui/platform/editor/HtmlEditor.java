@@ -39,6 +39,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class HtmlEditor extends AbstractEditor
 {
 
@@ -110,10 +113,10 @@ public class HtmlEditor extends AbstractEditor
     }
 
     private String title;
-    protected HtmlPanel panel;
-    protected SimpleHtmlRendererContext rcontext;
+    private HtmlPanel panel;
+    private SimpleHtmlRendererContext rcontext;
 
-    public HtmlEditor(String title)
+    protected HtmlEditor(String title)
     {
         this.title = title;
 
@@ -126,6 +129,9 @@ public class HtmlEditor extends AbstractEditor
         return title;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public String getTitle()
     {
         return title;
@@ -152,11 +158,11 @@ public class HtmlEditor extends AbstractEditor
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException
+    void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException
     {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
-        if (rel != null && rel.equalsIgnoreCase("action"))
+        if ("action".equalsIgnoreCase(rel))
         {
             String name = href;
             Map<String, String> params = new HashMap<String, String>();
@@ -206,7 +212,7 @@ public class HtmlEditor extends AbstractEditor
         }
     }
 
-    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
+    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
     {
         /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
         if (formInputs != null)
@@ -219,7 +225,7 @@ public class HtmlEditor extends AbstractEditor
         // do nothing
     }
 
-    public void navigate(URL url) throws Exception
+    protected void navigate(URL url) throws Exception
     {
         rcontext.navigate(url, "_this");
     }

@@ -32,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class BaseMatrix extends Artifact implements IMatrix, Serializable
 {
 
@@ -39,25 +42,17 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
 
     private IResourceLocator locator;
 
-    protected ObjectMatrix1D rows;
-    protected ObjectMatrix1D columns;
+    ObjectMatrix1D rows;
+    ObjectMatrix1D columns;
 
-    protected IElementAdapter cellAdapter;
+    IElementAdapter cellAdapter;
 
-    public BaseMatrix()
+    BaseMatrix()
     {
-        this(
-                "",
-                ObjectFactory1D.dense.make(0),
-                ObjectFactory1D.dense.make(0),
-                null);
+        this("", ObjectFactory1D.dense.make(0), ObjectFactory1D.dense.make(0), null);
     }
 
-    public BaseMatrix(
-            String title,
-            ObjectMatrix1D rows,
-            ObjectMatrix1D columns,
-            IElementAdapter cellAdapter)
+    BaseMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, IElementAdapter cellAdapter)
     {
 
         this.title = title;

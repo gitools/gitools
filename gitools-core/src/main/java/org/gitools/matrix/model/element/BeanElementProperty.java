@@ -29,22 +29,23 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Method;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 public class BeanElementProperty extends AbstractElementAttribute
 {
 
     private static final long serialVersionUID = 1735870808859461498L;
 
-    protected Method getterMethod;
-    protected Method setterMethod;
+    private Method getterMethod;
+    private Method setterMethod;
 
-    protected BeanElementProperty()
+    BeanElementProperty()
     {
     }
 
-    public BeanElementProperty(
-            String id, String name, String description,
-            Class<?> valueClass, Method getterMethod, Method setterMethod)
+    public BeanElementProperty(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod)
     {
 
         super(id, name, description, valueClass);
@@ -60,7 +61,7 @@ public class BeanElementProperty extends AbstractElementAttribute
         return valueClass;
     }
 
-    static class MethodAdapter extends XmlAdapter<String, Method>
+    private static class MethodAdapter extends XmlAdapter<String, Method>
     {
 
         @NotNull

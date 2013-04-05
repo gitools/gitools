@@ -37,19 +37,15 @@ import java.io.File;
 public class CombinationCommand extends AnalysisCommand
 {
 
-    protected CombinationAnalysis analysis;
+    private final CombinationAnalysis analysis;
 
-    protected IResourceFormat dataFormat;
-    protected String dataPath;
+    private final IResourceFormat dataFormat;
+    private final String dataPath;
 
-    protected IResourceFormat columnsFormat;
-    protected String columnsPath;
+    private final IResourceFormat columnsFormat;
+    private final String columnsPath;
 
-    public CombinationCommand(
-            CombinationAnalysis analysis,
-            IResourceFormat dataFormat, String dataPath,
-            IResourceFormat columnsFormat, String columnsPath,
-            String workdir, String fileName)
+    public CombinationCommand(CombinationAnalysis analysis, IResourceFormat dataFormat, String dataPath, IResourceFormat columnsFormat, String columnsPath, String workdir, String fileName)
     {
 
         super(workdir, fileName);

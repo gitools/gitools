@@ -27,24 +27,31 @@ import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BinaryColorScale extends NumericColorScale
 {
 
     private String comparator;
     private double cutoff;
 
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color minColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color maxColor;
 
     @NotNull
-    private static List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
 
     static
     {
@@ -53,7 +60,7 @@ public class BinaryColorScale extends NumericColorScale
     }
 
     @NotNull
-    private static List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
 
     {
         notequalCmp.add(CutoffCmp.NE);
@@ -61,7 +68,7 @@ public class BinaryColorScale extends NumericColorScale
     }
 
     @NotNull
-    private static List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
 
     {
         absoluteCmp.add(CutoffCmp.ABS_GE);
@@ -72,7 +79,7 @@ public class BinaryColorScale extends NumericColorScale
         absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
-    public BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp)
+    private BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp)
     {
         super();
 
@@ -131,9 +138,7 @@ public class BinaryColorScale extends NumericColorScale
 
         if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY)
         {
-            outsideRange = (cutoffForRanges == 0.0) ?
-                    Math.abs(cutoffForRanges) + 0.5 :
-                    cutoffForRanges * 2.5;
+            outsideRange = (cutoffForRanges == 0.0) ? Math.abs(cutoffForRanges) + 0.5 : cutoffForRanges * 2.5;
 
 
             if (cutoffForRanges == 0.0)
@@ -159,8 +164,8 @@ public class BinaryColorScale extends NumericColorScale
         }
 
 
-        double positiveValue = 0.0;
-        double negativeValue = 0.0;
+        double positiveValue;
+        double negativeValue;
 
         if (positiveCmp.compare(outsideRange, cutoffForRanges))
         {

@@ -31,9 +31,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class AttributesTreeModel extends DefaultTreeModel
 {
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     private static final long serialVersionUID = 8325493802045161663L;
 
     public static class AttributeWrapper
@@ -44,8 +50,8 @@ public class AttributesTreeModel extends DefaultTreeModel
             ROOT, PAGE, GROUP, COLLECTION, ATTRIBUTE
         }
 
-        private Object object;
-        private NodeType type;
+        private final Object object;
+        private final NodeType type;
         private String name;
 
         public AttributeWrapper(Object object)
@@ -196,8 +202,7 @@ public class AttributesTreeModel extends DefaultTreeModel
             {
                 if (page.getOutFormats().toLowerCase().contains("tsv"))
                 {
-                    DefaultMutableTreeNode pageNode =
-                            new DefaultMutableTreeNode(new AttributeWrapper(page));
+                    DefaultMutableTreeNode pageNode = new DefaultMutableTreeNode(new AttributeWrapper(page));
 
                     if (populatePage(pageNode, page.getAttributeGroups(), filterText) > 0)
                     {
@@ -208,15 +213,12 @@ public class AttributesTreeModel extends DefaultTreeModel
         }
     }
 
-    private int populatePage(
-            @NotNull DefaultMutableTreeNode node,
-            @NotNull List<AttributeGroup> groups, @NotNull String filterText)
+    private int populatePage(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeGroup> groups, @NotNull String filterText)
     {
 
         for (AttributeGroup group : groups)
         {
-            DefaultMutableTreeNode groupNode =
-                    new DefaultMutableTreeNode(new AttributeWrapper(group));
+            DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(new AttributeWrapper(group));
 
             if (populateGroup(groupNode, group.getAttributeCollections(), filterText) > 0)
             {
@@ -227,15 +229,12 @@ public class AttributesTreeModel extends DefaultTreeModel
         return node.getChildCount();
     }
 
-    private int populateGroup(
-            @NotNull DefaultMutableTreeNode node,
-            @NotNull List<AttributeCollection> collections, @NotNull String filterText)
+    private int populateGroup(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeCollection> collections, @NotNull String filterText)
     {
 
         for (AttributeCollection coll : collections)
         {
-            DefaultMutableTreeNode collNode =
-                    new DefaultMutableTreeNode(new AttributeWrapper(coll));
+            DefaultMutableTreeNode collNode = new DefaultMutableTreeNode(new AttributeWrapper(coll));
 
             if (populateCollection(collNode, coll.getAttributeDescriptions(), filterText) > 0)
             {
@@ -246,9 +245,7 @@ public class AttributesTreeModel extends DefaultTreeModel
         return node.getChildCount();
     }
 
-    private int populateCollection(
-            @NotNull DefaultMutableTreeNode node,
-            @NotNull List<AttributeDescription> attrs, @NotNull String filterText)
+    private int populateCollection(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeDescription> attrs, @NotNull String filterText)
     {
 
         for (AttributeDescription attr : attrs)
@@ -256,8 +253,7 @@ public class AttributesTreeModel extends DefaultTreeModel
             if (attr.getDisplayName() != null) //xrp: identified null displayNames
             {
                 AttributeWrapper aw = new AttributeWrapper(attr);
-                if (filterText.isEmpty()
-                        || aw.getName().toLowerCase().contains(filterText))
+                if (filterText.isEmpty() || aw.getName().toLowerCase().contains(filterText))
                 {
                     node.add(new DefaultMutableTreeNode(aw));
                 }

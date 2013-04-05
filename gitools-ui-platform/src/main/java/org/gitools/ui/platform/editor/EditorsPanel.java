@@ -39,10 +39,10 @@ import java.util.Set;
 public class EditorsPanel extends WebTabbedPane
 {
 
-    public static final String DEFAULT_NAME_PREFIX = "unnamed";
+    private static final String DEFAULT_NAME_PREFIX = "unnamed";
 
     @NotNull
-    private Map<String, Integer> nameCounts = new HashMap<String, Integer>();
+    private final Map<String, Integer> nameCounts = new HashMap<String, Integer>();
 
     public EditorsPanel()
     {
@@ -78,8 +78,7 @@ public class EditorsPanel extends WebTabbedPane
             return;
         }
 
-        final String name = editor.getName() != null ?
-                editor.getName() : createName();
+        final String name = editor.getName() != null ? editor.getName() : createName();
 
         final Icon icon = editor.getIcon();
 
@@ -124,20 +123,20 @@ public class EditorsPanel extends WebTabbedPane
         return (AbstractEditor) getSelectedComponent();
     }
 
-    public void refreshActions()
+    void refreshActions()
     {
         AbstractEditor editor = getSelectedEditor();
         ActionManager.getDefault().updateEnabledByEditor(editor);
     }
 
     @NotNull
-    public String createName()
+    String createName()
     {
         return createName(DEFAULT_NAME_PREFIX, "");
     }
 
     @NotNull
-    public String createName(String prefix, String suffix)
+    String createName(String prefix, String suffix)
     {
         Set<String> names = new HashSet<String>();
         int numTabs = getTabCount();

@@ -32,6 +32,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement(name = "DatasetConfig")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DatasetConfig
@@ -386,6 +389,9 @@ public class DatasetConfig
         return type;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setType(String type)
     {
         this.type = type;

@@ -27,28 +27,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
-@XmlSeeAlso(value = {
-        BeanElementProperty.class})
+@XmlSeeAlso(value = {BeanElementProperty.class})
 
-public abstract class AbstractElementAttribute
-        implements IElementAttribute, Serializable
+public abstract class AbstractElementAttribute implements IElementAttribute, Serializable
 {
-
     private static final long serialVersionUID = -6293895024608178858L;
 
-    protected String id;
-    protected String name;
-    protected String description;
-    protected Class<?> valueClass;
+    private String id;
+    private String name;
+    private String description;
+    Class<?> valueClass;
 
     public AbstractElementAttribute()
     {
     }
 
-    public AbstractElementAttribute(
-            String id, String name, String description,
-            Class<?> valueClass)
+    public AbstractElementAttribute(String id, String name, String description, Class<?> valueClass)
     {
 
         this.id = id;

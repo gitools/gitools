@@ -63,11 +63,10 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
-        context.put("dataFile",
-                fileRef != null ? fileRef.getName() : "Not defined");
+        context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         ToolConfig testConfig = analysis.getTestConfig();
-        if (testConfig.get(TestFactory.TEST_NAME_PROPERTY) != "")
+        if (!testConfig.get(TestFactory.TEST_NAME_PROPERTY).equals(""))
         {
             context.put("test", WordUtils.capitalize(testConfig.get(TestFactory.TEST_NAME_PROPERTY)));
             HashMap<String, Object> testAttributes = new HashMap<String, Object>();
@@ -75,8 +74,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
             {
                 if (!key.equals(TestFactory.TEST_NAME_PROPERTY))
                 {
-                    testAttributes.put(WordUtils.capitalize(key),
-                            WordUtils.capitalize(testConfig.get(key)));
+                    testAttributes.put(WordUtils.capitalize(key), WordUtils.capitalize(testConfig.get(key)));
                 }
             }
             if (testAttributes.size() > 0)
@@ -87,17 +85,12 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         }
 
         CutoffCmp cmp = analysis.getBinaryCutoffCmp();
-        String filterDesc = cmp == null ?
-                "Not filtered"
-                : "Binary cutoff filter for values "
-                + cmp.getLongName() + " "
-                + analysis.getBinaryCutoffValue();
+        String filterDesc = cmp == null ? "Not filtered" : "Binary cutoff filter for values " + cmp.getLongName() + " " + analysis.getBinaryCutoffValue();
         context.put("filterDesc", filterDesc);
 
         fileRef = analysis.getModuleMap().getLocator();
 
-        context.put("modulesFile",
-                fileRef != null ? fileRef.getName() : "Unknown");
+        context.put("modulesFile", fileRef != null ? fileRef.getName() : "Unknown");
 
         context.put("moduleMinSize", analysis.getMinModuleSize());
         int maxSize = analysis.getMaxModuleSize();
@@ -113,8 +106,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         }
 
         fileRef = analysis.getResults().getLocator();
-        context.put("resultsFile",
-                fileRef != null ? fileRef.getName() : "Not defined");
+        context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         fileRef = analysis.getLocator();
         if (fileRef != null)
@@ -177,9 +169,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), OncodriveAnalysisFormat.EXTENSION,
-                        "-data", ""));
+                editor.setName(editorPanel.deriveName(getName(), OncodriveAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {
@@ -218,9 +208,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
                 final OncodriveResultsEditor editor = new OncodriveResultsEditor(analysis);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), OncodriveAnalysisFormat.EXTENSION,
-                        "-results", ""));
+                editor.setName(editorPanel.deriveName(getName(), OncodriveAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {

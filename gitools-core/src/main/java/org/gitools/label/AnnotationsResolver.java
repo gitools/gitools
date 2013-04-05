@@ -28,8 +28,8 @@ import org.jetbrains.annotations.NotNull;
 public class AnnotationsResolver implements TextPattern.VariableValueResolver
 {
 
-    private LabelProvider labelProvider;
-    private AnnotationMatrix am;
+    private final LabelProvider labelProvider;
+    private final AnnotationMatrix am;
     private int index;
 
     public AnnotationsResolver(LabelProvider labelProvider, AnnotationMatrix am)

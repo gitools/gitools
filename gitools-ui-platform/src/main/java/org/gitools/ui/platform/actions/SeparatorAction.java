@@ -23,6 +23,9 @@ package org.gitools.ui.platform.actions;
 
 import java.awt.event.ActionEvent;
 
+/**
+ * @noinspection ALL
+ */
 public final class SeparatorAction extends BaseAction
 {
 

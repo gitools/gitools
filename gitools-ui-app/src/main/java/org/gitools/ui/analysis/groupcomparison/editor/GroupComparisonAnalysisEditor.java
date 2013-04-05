@@ -140,9 +140,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), GroupComparisonAnalysisFormat.EXTENSION,
-                        "-data", ""));
+                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {
@@ -200,14 +198,12 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 for (ColoredLabel cl : clusters)
                 {
                     //newClusters[index] ;
-                    ColoredLabel newcl =
-                            new ColoredLabel(cl.getDisplayedLabel(), cl.getColor());
+                    ColoredLabel newcl = new ColoredLabel(cl.getDisplayedLabel(), cl.getColor());
                     newClusters[index] = newcl;
                     index++;
                 }
                 colorHeaderCopy.setClusters(newClusters);
-                colorHeaderCopy.setAssignedColoredLabels(
-                        oldHeader.getAssignedColoredLabels());
+                colorHeaderCopy.setAssignedColoredLabels(oldHeader.getAssignedColoredLabels());
 
                 dim.getAnnotations().getRows();
 
@@ -261,9 +257,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
-                editor.setName(editorPanel.deriveName(
-                        getName(), GroupComparisonAnalysisFormat.EXTENSION,
-                        "-results", ""));
+                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable()
                 {

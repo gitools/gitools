@@ -27,11 +27,19 @@ import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
+import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreColorScale extends NumericColorScale
 {
 
@@ -39,13 +47,22 @@ public class ZScoreColorScale extends NumericColorScale
     private double halfAmplitude;
     private double sigHalfAmplitude;
 
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color leftMinColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color leftMaxColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color rightMinColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color rightMaxColor;
+
+    @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color nonSignificantColor;
 
-    public ZScoreColorScale(double center, double halfAmplitude, double sigHalfAmplitude, Color leftMinColor, Color leftMaxColor, Color rightMinColor, Color rightMaxColor, Color nonSignificantColor)
+    private ZScoreColorScale(double center, double halfAmplitude, double sigHalfAmplitude, Color leftMinColor, Color leftMaxColor, Color rightMinColor, Color rightMaxColor, Color nonSignificantColor)
     {
         this.center = center;
         this.halfAmplitude = halfAmplitude;
@@ -59,11 +76,7 @@ public class ZScoreColorScale extends NumericColorScale
 
     public ZScoreColorScale()
     {
-        this(
-                0, 10, 1.96,
-                Color.BLUE, Color.CYAN,
-                Color.YELLOW, Color.RED,
-                ColorConstants.nonSignificantColor);
+        this(0, 10, 1.96, Color.BLUE, Color.CYAN, Color.YELLOW, Color.RED, ColorConstants.nonSignificantColor);
     }
 
     @Override
@@ -103,12 +116,7 @@ public class ZScoreColorScale extends NumericColorScale
     @Override
     public double[] getPoints()
     {
-        return new double[]{
-                center - halfAmplitude,
-                center - sigHalfAmplitude,
-                center + sigHalfAmplitude,
-                center + halfAmplitude
-        };
+        return new double[]{center - halfAmplitude, center - sigHalfAmplitude, center + sigHalfAmplitude, center + halfAmplitude};
     }
 
     @Override
@@ -144,6 +152,9 @@ public class ZScoreColorScale extends NumericColorScale
         updateRangesList();
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public double getHalfAmplitude()
     {
         return halfAmplitude;

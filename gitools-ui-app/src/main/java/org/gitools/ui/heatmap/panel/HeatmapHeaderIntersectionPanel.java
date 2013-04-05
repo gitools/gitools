@@ -30,6 +30,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeEvent;
 
+/**
+ * @noinspection ALL
+ */
 public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel
 {
 

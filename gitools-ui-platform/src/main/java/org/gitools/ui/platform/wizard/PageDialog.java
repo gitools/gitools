@@ -40,7 +40,7 @@ import java.util.List;
 public class PageDialog extends AbstractDialog
 {
 
-    private IWizardPage page;
+    private final IWizardPage page;
 
     private boolean cancelled;
 
@@ -48,7 +48,7 @@ public class PageDialog extends AbstractDialog
     private JButton finishButton;
     private JButton helpButton;
 
-    protected JPanel pagePanel;
+    private JPanel pagePanel;
 
     public PageDialog(Window owner, @NotNull IWizardPage page)
     {
@@ -123,10 +123,7 @@ public class PageDialog extends AbstractDialog
 
         finishButton.setDefaultCapable(true);
 
-        return Arrays.asList(
-                cancelButton,
-                finishButton,
-                helpButton);
+        return Arrays.asList(cancelButton, finishButton, helpButton);
     }
 
     private void helpActionPerformed()

@@ -38,6 +38,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+/**
+ * @noinspection ALL
+ */
 public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecoratorPanel
 {
 
@@ -248,8 +251,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 
     private void valueChanged()
     {
-        IndexedProperty propAdapter =
-                (IndexedProperty) valueCb.getSelectedItem();
+        IndexedProperty propAdapter = (IndexedProperty) valueCb.getSelectedItem();
 
         model.switchActiveCellDecorator(propAdapter.getIndex());
         changeDecorator();
@@ -283,7 +285,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 
     }
 
-    protected void minValueChanged()
+    void minValueChanged()
     {
         try
         {
@@ -297,7 +299,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
         }
     }
 
-    protected void midValueChanged()
+    void midValueChanged()
     {
         try
         {
@@ -311,7 +313,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
         }
     }
 
-    protected void maxValueChanged()
+    void maxValueChanged()
     {
         try
         {

@@ -30,6 +30,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractWizardPage extends JPanel implements IWizardPage
 {
 
@@ -53,14 +56,14 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
     private HelpContext helpContext;
 
     @NotNull
-    private List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
+    private final List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
 
-    public AbstractWizardPage()
+    protected AbstractWizardPage()
     {
         this(null);
     }
 
-    public AbstractWizardPage(@Nullable String id)
+    protected AbstractWizardPage(@Nullable String id)
     {
         this.id = id != null ? id : this.getClass().getCanonicalName();
         this.pageComplete = false;
@@ -98,7 +101,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
         return pageComplete;
     }
 
-    public void setComplete(boolean complete)
+    protected void setComplete(boolean complete)
     {
         this.pageComplete = complete;
         fireUpdated();
@@ -141,7 +144,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
         return logo;
     }
 
-    public void setLogo(Icon logo)
+    protected void setLogo(Icon logo)
     {
         this.logo = logo;
     }
@@ -152,7 +155,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
         return this.status;
     }
 
-    public void setStatus(MessageStatus status)
+    protected void setStatus(MessageStatus status)
     {
         this.status = status;
         fireUpdated();
@@ -164,7 +167,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
         return message;
     }
 
-    public void setMessage(String message)
+    protected void setMessage(String message)
     {
         this.message = message;
         fireUpdated();

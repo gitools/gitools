@@ -34,6 +34,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
+/**
+ * @noinspection ALL
+ */
 public class CategoricalElementDecorator extends ElementDecorator
 {
 
@@ -44,6 +47,11 @@ public class CategoricalElementDecorator extends ElementDecorator
     private CategoricalColorScale scale;
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
+
+    public CategoricalElementDecorator()
+    {
+        super();
+    }
 
     public CategoricalElementDecorator(double[] points)
     {
@@ -59,8 +67,7 @@ public class CategoricalElementDecorator extends ElementDecorator
     {
         super(adapter);
 
-        valueIndex = getPropertyIndex(new String[]{
-                "value", "log2ratio", "score"});
+        valueIndex = getPropertyIndex(new String[]{"value", "log2ratio", "score"});
 
         this.scale = scale;
     }
@@ -159,11 +166,17 @@ public class CategoricalElementDecorator extends ElementDecorator
         return scale;
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public boolean isCagetoricalSpans()
     {
         return scale.isCagetoricalSpans();
     }
 
+    /**
+     * @noinspection UnusedDeclaration
+     */
     public void setCagetoricalSpans(boolean cagetoricalSpans)
     {
         scale.setCagetoricalSpans(cagetoricalSpans);

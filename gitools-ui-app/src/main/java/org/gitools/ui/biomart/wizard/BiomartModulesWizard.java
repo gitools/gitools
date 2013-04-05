@@ -61,10 +61,7 @@ public class BiomartModulesWizard extends AbstractWizard
     public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
     @NotNull
-    private FileFormat[] supportedFormats = new FileFormat[]{
-            new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), true, false),
-            new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", true, false)
-    };
+    private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), true, false), new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", true, false)};
 
     public BiomartModulesWizard()
     {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
@@ -125,17 +122,13 @@ public class BiomartModulesWizard extends AbstractWizard
             Database = sourcePage.getDataBase();
             Dataset = sourcePage.getDataset();
 
-            modulesAttributePage.setSource(
-                    biomartService,
-                    Database,
-                    Dataset);
+            modulesAttributePage.setSource(biomartService, Database, Dataset);
 
         }
         else if (page == modulesAttributePage)
         {
 
-            dataAttributePage.setAttributePages(
-                    modulesAttributePage.getAttributePages());
+            dataAttributePage.setAttributePages(modulesAttributePage.getAttributePages());
         }
 
         else if (page == dataAttributePage)
@@ -207,12 +200,12 @@ public class BiomartModulesWizard extends AbstractWizard
         return saveFilePage.getFormat();
     }
 
-    public MartLocation getDatabase()
+    MartLocation getDatabase()
     {
         return Database;
     }
 
-    public DatasetInfo getDataset()
+    DatasetInfo getDataset()
     {
         return Dataset;
     }

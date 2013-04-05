@@ -38,26 +38,29 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class WizardDialog extends AbstractDialog
 {
 
     private static final long serialVersionUID = 1L;
 
-    protected Map<String, JComponent> pageControlsMap;
+    private final Map<String, JComponent> pageControlsMap;
 
-    protected IWizardPage currentPage;
+    private IWizardPage currentPage;
 
-    protected Stack<IWizardPage> pageHistory;
+    private final Stack<IWizardPage> pageHistory;
 
-    protected JPanel pagePanel;
+    private JPanel pagePanel;
 
-    protected JButton helpButton;
-    protected JButton backButton;
-    protected JButton nextButton;
-    protected JButton finishButton;
-    protected JButton cancelButton;
+    private JButton helpButton;
+    private JButton backButton;
+    private JButton nextButton;
+    private JButton finishButton;
+    private JButton cancelButton;
 
-    protected boolean cancelled;
+    private boolean cancelled;
 
     public WizardDialog(Window owner, @NotNull IWizard wizard)
     {
@@ -94,22 +97,22 @@ public class WizardDialog extends AbstractDialog
     }
 
     @Nullable
-    public IWizard getWizard()
+    IWizard getWizard()
     {
         return currentPage != null ? currentPage.getWizard() : null;
     }
 
-    public IWizardPage getCurrentPage()
+    IWizardPage getCurrentPage()
     {
         return currentPage;
     }
 
-    protected final void setCurrentPage(@NotNull IWizardPage page)
+    final void setCurrentPage(@NotNull IWizardPage page)
     {
         setCurrentPage(page, true);
     }
 
-    protected final void setCurrentPage(@NotNull IWizardPage page, boolean updateHistory)
+    final void setCurrentPage(@NotNull IWizardPage page, boolean updateHistory)
     {
         if (currentPage != null)
         {
@@ -154,7 +157,7 @@ public class WizardDialog extends AbstractDialog
         cancelButton.setEnabled(true);
     }
 
-    protected JComponent getPageContents(String id)
+    JComponent getPageContents(String id)
     {
         JComponent contents = pageControlsMap.get(id);
         IWizard wizard = getWizard();
@@ -236,15 +239,7 @@ public class WizardDialog extends AbstractDialog
 
         nextButton.setDefaultCapable(true);
 
-        return Arrays.asList(
-                backButton,
-                nextButton,
-                DialogButtonsPanel.SEPARATOR,
-                cancelButton,
-                DialogButtonsPanel.SEPARATOR,
-                finishButton,
-                DialogButtonsPanel.SEPARATOR,
-                helpButton);
+        return Arrays.asList(backButton, nextButton, DialogButtonsPanel.SEPARATOR, cancelButton, DialogButtonsPanel.SEPARATOR, finishButton, DialogButtonsPanel.SEPARATOR, helpButton);
     }
 
     private void helpActionPerformed()
@@ -317,7 +312,7 @@ public class WizardDialog extends AbstractDialog
         setVisible(false);
     }
 
-    public void updateState()
+    void updateState()
     {
         if (currentPage != null)
         {

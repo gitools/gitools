@@ -30,6 +30,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Properties;
 
+/**
+ * @noinspection ALL
+ */
 @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
 public class ResourceReference<R extends IResource>
 {
@@ -128,7 +131,7 @@ public class ResourceReference<R extends IResource>
         this.properties = properties;
     }
 
-    public final boolean isLoaded()
+    final boolean isLoaded()
     {
         return loaded;
     }
@@ -152,7 +155,7 @@ public class ResourceReference<R extends IResource>
 
     }
 
-    protected R onBeforeLoad(R resource)
+    R onBeforeLoad(R resource)
     {
         return resource;
     }
@@ -163,13 +166,13 @@ public class ResourceReference<R extends IResource>
         return (R) resource;
     }
 
-    protected R onBeforeUnload(R resource)
+    R onBeforeUnload(R resource)
     {
         return resource;
     }
 
     @Nullable
-    protected R onAfterUnload()
+    R onAfterUnload()
     {
         return null;
     }

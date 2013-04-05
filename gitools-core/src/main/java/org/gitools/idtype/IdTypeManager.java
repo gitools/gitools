@@ -42,7 +42,7 @@ public class IdTypeManager
     {
         @NotNull
         @XmlElement(name = "idType")
-        public List<IdType> idTypes = new ArrayList<IdType>(0);
+        public final List<IdType> idTypes = new ArrayList<IdType>(0);
     }
 
     private static IdTypeManager instance;
@@ -66,9 +66,7 @@ public class IdTypeManager
             JAXBContext context = JAXBContext.newInstance(Document.class);
             Unmarshaller u = context.createUnmarshaller();
 
-            reader = new InputStreamReader(
-                    IdTypeManager.class.getResourceAsStream(
-                            "/idtypes.xml"));
+            reader = new InputStreamReader(IdTypeManager.class.getResourceAsStream("/idtypes.xml"));
 
             Document doc = (Document) u.unmarshal(reader);
             idTypes.addAll(doc.idTypes);
@@ -90,8 +88,8 @@ public class IdTypeManager
         return new IdTypeManager(idTypes);
     }
 
-    private List<IdType> idTypes;
-    private Map<String, IdType> idTypesMap;
+    private final List<IdType> idTypes;
+    private final Map<String, IdType> idTypesMap;
     private IdType defaultIdType;
 
     private IdTypeManager(@NotNull List<IdType> idTypes)
@@ -105,9 +103,7 @@ public class IdTypeManager
         defaultIdType = idTypesMap.get(IdTypeNames.NOT_SPECIFIED_KEY);
         if (defaultIdType == null)
         {
-            defaultIdType = new IdType(
-                    IdTypeNames.NOT_SPECIFIED_KEY,
-                    IdTypeNames.NOT_SPECIFIED_TITLE);
+            defaultIdType = new IdType(IdTypeNames.NOT_SPECIFIED_KEY, IdTypeNames.NOT_SPECIFIED_TITLE);
             this.idTypes.add(defaultIdType);
             this.idTypesMap.put(defaultIdType.getKey(), defaultIdType);
         }

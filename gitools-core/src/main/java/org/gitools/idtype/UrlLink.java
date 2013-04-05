@@ -27,17 +27,20 @@ import org.gitools.utils.textpatt.TextPatternXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+/**
+ * @noinspection ALL
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UrlLink
 {
 
     @XmlAttribute
-    protected String name;
+    private String name;
 
     @XmlValue
     @XmlJavaTypeAdapter(TextPatternXmlAdapter.class)
-    protected TextPattern pattern;
+    private TextPattern pattern;
 
     public UrlLink()
     {

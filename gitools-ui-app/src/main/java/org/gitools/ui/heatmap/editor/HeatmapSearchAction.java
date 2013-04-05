@@ -33,7 +33,7 @@ import java.awt.event.KeyEvent;
 public class HeatmapSearchAction extends BaseAction
 {
 
-    private boolean searchColumns;
+    private final boolean searchColumns;
 
     public HeatmapSearchAction(boolean searchColumns)
     {

@@ -35,11 +35,10 @@ public class PersistenceInitialization
 
     public static void registerFormats()
     {
-        registerFormats(
-                PersistenceManager.get());
+        registerFormats(PersistenceManager.get());
     }
 
-    public static void registerFormats(@NotNull PersistenceManager pm)
+    private static void registerFormats(@NotNull PersistenceManager pm)
     {
         pm.registerFormat(new EnrichmentAnalysisFormat());
         pm.registerFormat(new OncodriveAnalysisFormat());

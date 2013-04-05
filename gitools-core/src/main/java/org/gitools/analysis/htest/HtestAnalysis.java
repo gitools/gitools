@@ -40,9 +40,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 
-@XmlSeeAlso({
-        EnrichmentAnalysis.class,
-        OncodriveAnalysis.class})
+@XmlSeeAlso({EnrichmentAnalysis.class, OncodriveAnalysis.class})
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HtestAnalysis extends Analysis
@@ -51,55 +49,55 @@ public class HtestAnalysis extends Analysis
     /**
      * Data binary cutoff enabled
      */
-    protected boolean binaryCutoffEnabled;
+    private boolean binaryCutoffEnabled;
 
     /**
      * Data binary cutoff comparator
      */
     @XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
-    protected CutoffCmp binaryCutoffCmp;
+    private CutoffCmp binaryCutoffCmp;
 
     /**
      * Data binary cutoff value
      */
-    protected double binaryCutoffValue;
+    private double binaryCutoffValue;
 
     /**
      * Test name
      */
-    protected ToolConfig testConfig;
+    private ToolConfig testConfig;
 
     /**
      * Modules
      */
-    protected ResourceReference<ModuleMap> moduleMap;
+    private ResourceReference<ModuleMap> moduleMap;
 
     /**
      * Minimum module size
      */
-    protected int minModuleSize;
+    private int minModuleSize;
 
     /**
      * Maximum module size
      */
-    protected int maxModuleSize;
+    private int maxModuleSize;
 
     /**
      * Data
      */
-    protected ResourceReference<IMatrix> data;
+    private ResourceReference<IMatrix> data;
 
     /**
      * Multiple test correction
      */
-    protected String mtc;
+    private String mtc;
 
     /**
      * Results
      */
-    protected ResourceReference<ObjectMatrix> results;
+    private ResourceReference<ObjectMatrix> results;
 
-    public HtestAnalysis()
+    protected HtestAnalysis()
     {
     }
 
