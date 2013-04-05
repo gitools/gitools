@@ -98,17 +98,9 @@ public class HeatmapEditor extends AbstractEditor
 
     private final PropertyChangeListener colDecoratorListener;
 
-    @NotNull
-    protected final JPanel embeddedContainer;
-
     private static final int DEFAULT_ACCORDION_WIDTH = 270;
 
     public HeatmapEditor(@NotNull Heatmap heatmap)
-    {
-        this(heatmap, false);
-    }
-
-    protected HeatmapEditor(@NotNull Heatmap heatmap, boolean embedded)
     {
         this.heatmap = heatmap;
         this.heatmap.init();
@@ -127,8 +119,7 @@ public class HeatmapEditor extends AbstractEditor
 
         this.blockSelectionUpdate = false;
 
-        embeddedContainer = embedded ? new JPanel() : this;
-        createComponents(embeddedContainer);
+        createComponents(this);
 
         heatmapListener = new PropertyChangeListener()
         {

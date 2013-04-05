@@ -35,9 +35,11 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromColumnAction;
 import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -46,7 +48,9 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnalysis>
@@ -206,7 +210,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                final OncodriveResultsEditor editor = new OncodriveResultsEditor(analysis);
+                final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
 
                 editor.setName(editorPanel.deriveName(getName(), OncodriveAnalysisFormat.EXTENSION, "-results", ""));
 
@@ -221,5 +225,24 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
                 });
             }
         });
+    }
+
+    @NotNull
+    private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis)
+    {
+        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        return heatmap;
+    }
+
+    //TODO
+    @NotNull
+    protected static List<BaseAction> createToolBar(@NotNull OncodriveAnalysis analysis)
+    {
+        ViewRelatedDataFromColumnAction action = new ViewRelatedDataFromColumnAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get());
+        List<BaseAction> tb = new ArrayList<BaseAction>();
+        tb.add(action);
+        return tb;
     }
 }

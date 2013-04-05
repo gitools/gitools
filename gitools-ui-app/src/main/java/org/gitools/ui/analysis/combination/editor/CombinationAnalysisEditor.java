@@ -202,7 +202,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                     heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                    final CombinationResultsEditor editor = new CombinationResultsEditor(analysis);
+                    final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
 
                     editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-results", ""));
 
@@ -221,5 +221,14 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                 }
             }
         });
+    }
+
+    @NotNull
+    private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
+    {
+        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
+        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        return heatmap;
     }
 }

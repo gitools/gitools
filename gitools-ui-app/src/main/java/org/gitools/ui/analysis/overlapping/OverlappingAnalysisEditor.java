@@ -25,9 +25,12 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.util.HeatmapUtil;
+import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
@@ -40,8 +43,10 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
 
 
@@ -168,7 +173,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                final OverlappingResultsEditor editor = new OverlappingResultsEditor(analysis);
+                final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
 
                 editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-results", ""));
 
@@ -183,5 +188,38 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 });
             }
         });
+
+
+    }
+
+    @Nullable
+    private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis)
+    {
+        IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
+        Heatmap heatmap = new Heatmap(results);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        IElementAdapter cellAdapter = results.getCellAdapter();
+        int propertiesNb = cellAdapter.getProperties().size();
+        LinearTwoSidedElementDecorator[] dec = new LinearTwoSidedElementDecorator[propertiesNb];
+        for (int i = 0; i < propertiesNb; i++)
+        {
+            dec[i] = new LinearTwoSidedElementDecorator(cellAdapter);
+            int valueIndex = cellAdapter.getPropertyIndex("jaccard-index");
+            Color minColor = new Color(0x63, 0xdc, 0xfe);
+            Color maxColor = new Color(0xff, 0x00, 0x5f);
+            dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
+            dec[i].setMinValue(0.0);
+            dec[i].setMinColor(minColor);
+            dec[i].setMidValue(1.0);
+            dec[i].setMidColor(maxColor);
+            dec[i].setMaxValue(1.0);
+            dec[i].setMaxColor(maxColor);
+            dec[i].setEmptyColor(Color.WHITE);
+        }
+        heatmap.setCellDecorators(dec);
+
+        heatmap.setTitle(analysis.getTitle());
+
+        return heatmap;
     }
 }
