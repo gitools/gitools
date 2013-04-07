@@ -7,72 +7,73 @@
 </head>
 
 <body>
-	<div id="section">
-		<div id="section_title">Details</div>
-		<div id="section_body">
-			<table id="attr_table">
+	<div class="section">
+		<div class="section_title">Details</div>
+		<div class="section_body">
+			<table class="attr_table">
 				#if ($analysis.title)
-					<tr><td class="name">Title</td><td>$analysis.title</td></tr>
+					<tr><td class="name"><div>Title</div></td><td>$analysis.title</td></tr>
 				#end
 				#if( $analysis.description )
-					<tr><td class="name">Notes</td><td>$analysis.description</td></tr>
+					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
 				#end
-				<tr><td class="name">Created</td><td>$fmt.format($analysis.startTime)</td></tr>
-				<tr><td class="name">Elapsed time</td><td>$fmt.elapsedTime($analysis.elapsedTime)</td></tr>
+				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
+				<tr><td class="name"><div>Elapsed time</div></td><td>$fmt.elapsedTime($analysis.elapsedTime)</td></tr>
 				#if( $analysis.attributes && $analysis.attributes.size() > 0 )
 					#foreach($attr in $analysis.attributes)
 						#if ($attr.name)
-							<tr><td class="name">$attr.name</td><td>$attr.value</td></tr>
+							<tr><td class="name"><div>$attr.name</div></td><td>$attr.value</td></tr>
 						#end
 					#end
 				#end
 				#if($analysisLocation)
-				    <tr><td class="name">Location</td><td>$analysisLocation</td></tr>
+				    <tr><td class="name"><div>Location</div></td><td>$analysisLocation</td></tr>
 				#end
 			</table>
 		</div>
 	</div>
 
-	<div id="section">
-		<div id="section_title">Data</div>
-		<div id="section_body">
-			<table id="attr_table">
-				<tr><td class="name">File</td><td>$dataFile</td></tr>
-				<tr><td class="name">Size attribute</td><td>$sizeAttr</td></tr>
-				<tr><td class="name">Pvalue attribute</td><td>$pvalueAttr</td></tr>
+	<div class="section">
+    		<div class="section_title">Results</div>
+    		<div class="section_body">
+    			<table class="attr_table">
+    			    <tr><td class="name"><div>File</div></td><td>$resultsFile</td></tr>
+    				<tr><td class="name"><div>Combination of</div></td><td>$combinationOf</td></tr>
+    			</table>
+
+    			<div class="button_bar">
+    				<a rel="action" href="NewResultsHeatmap"><span class="button">&nbsp;&nbsp;Heatmap&nbsp;&nbsp;</span></a>
+    			</div>
+    		</div>
+    	</div>
+
+	<div class="section">
+		<div class="section_title">Data</div>
+		<div class="section_body">
+			<table class="attr_table">
+				<tr><td class="name"><div>File</div></td><td>$dataFile</td></tr>
+				<tr><td class="name"><div>Size attribute</div></td><td>$sizeAttr</td></tr>
+				<tr><td class="name"><div>Pvalue attribute</div></td><td>$pvalueAttr</td></tr>
 			</table>
 
-			<div id="button_bar">
+			<div class="button_bar">
 				<a rel="action" href="NewDataHeatmap"><span class="button">&nbsp;&nbsp;Heatmap&nbsp;&nbsp;</span></a>
 			</div>
 		</div>
 	</div>
 
-	<div id="section">
-		<div id="section_title">Groups</div>
-		<div id="section_body">
-			<table id="attr_table">
-				<tr><td class="name">File</td><td>$groupsFile</td></tr>
+	<div class="section">
+		<div class="section_title">Groups</div>
+		<div class="section_body">
+			<table class="attr_table">
+				<tr><td class="name"><div>File</div></td><td>$groupsFile</td></tr>
 			</table>
 
-			<div id="button_bar">
+			<div class="button_bar">
 				<a rel="action" href="ViewModuleMap"><span class="button">&nbsp;&nbsp;View&nbsp;&nbsp;</span></a>
 			</div>
 		</div>
 	</div>
 
-	<div id="section">
-		<div id="section_title">Results</div>
-		<div id="section_body">
-			<table id="attr_table">
-			    <tr><td class="name">File</td><td>$resultsFile</td></tr>
-				<tr><td class="name">Combination of</td><td>$combinationOf</td></tr>
-			</table>
-
-			<div id="button_bar">
-				<a rel="action" href="NewResultsHeatmap"><span class="button">&nbsp;&nbsp;Heatmap&nbsp;&nbsp;</span></a>
-			</div>
-		</div>
-	</div>
 </body>
 </html>

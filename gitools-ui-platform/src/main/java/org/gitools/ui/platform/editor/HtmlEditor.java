@@ -39,9 +39,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class HtmlEditor extends AbstractEditor
 {
 
@@ -152,6 +149,7 @@ public class HtmlEditor extends AbstractEditor
     private void createComponents()
     {
         panel = new HtmlPanel();
+        panel.setBackground(Color.WHITE);
         rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
 
         setLayout(new BorderLayout());

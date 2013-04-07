@@ -46,10 +46,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-
-/**
- * @noinspection ALL
- */
 public class WelcomeEditor extends HtmlEditor
 {
 

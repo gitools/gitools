@@ -22,11 +22,11 @@
 body {
 	background-color: #ffffff;
 	font-family: sans-serif;
-	margin: 0px;
+	margin: 10px 20px;
 }
 
 .section {
-	background-color: #a4a4be;
+	background-color: #f29128;
 	margin-top: 6px;
 }
 
@@ -39,7 +39,7 @@ body {
 }
 	
 table {
-	width: 100%;
+
 }
 	
 A:link, A:visited { 
