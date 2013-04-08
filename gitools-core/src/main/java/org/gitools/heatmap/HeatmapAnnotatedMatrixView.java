@@ -211,6 +211,12 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView
     }
 
     @Override
+    public void init()
+    {
+        mv.init();
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
         mv.addPropertyChangeListener(listener);

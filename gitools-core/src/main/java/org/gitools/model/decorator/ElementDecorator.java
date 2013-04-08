@@ -29,9 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.*;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({BinaryElementDecorator.class, FormattedTextElementDecorator.class, LinearTwoSidedElementDecorator.class, PValueElementDecorator.class, ZScoreElementDecorator.class, CorrelationElementDecorator.class, CategoricalElementDecorator.class})

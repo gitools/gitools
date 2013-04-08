@@ -37,9 +37,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixView extends AbstractModel implements Serializable, IMatrixView
@@ -96,7 +93,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
 
     public MatrixView(@NotNull IMatrix contents)
     {
-        initFromMatrix(contents);
+        initFromMatrix(contents, true);
     }
 
     public MatrixView(@NotNull IMatrixView matrixView)
@@ -114,7 +111,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
         else
         {
-            initFromMatrix(matrixView.getContents());
+            initFromMatrix(matrixView.getContents(), true);
         }
 
         selectedColumnsBitmap = newSelectionBitmap(contents.get().getColumnCount());
@@ -131,22 +128,29 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         this.locator = locator;
     }
 
-    private void initFromMatrix(@NotNull IMatrix contents)
+    public void init()
+    {
+        initFromMatrix(contents.get(), false);
+    }
+
+    private void initFromMatrix(@NotNull IMatrix contents, boolean visible)
     {
         this.contents = new ResourceReference<IMatrix>("contents", contents);
 
         // initialize visible rows and columns
+        if (visible)
+        {
+            visibleRows = new int[contents.getRowCount()];
+            for (int i = 0; i < contents.getRowCount(); i++)
+                visibleRows[i] = i;
 
-        visibleRows = new int[contents.getRowCount()];
-        for (int i = 0; i < contents.getRowCount(); i++)
-            visibleRows[i] = i;
+            visibleColumns = new int[contents.getColumnCount()];
+            for (int i = 0; i < contents.getColumnCount(); i++)
+                visibleColumns[i] = i;
+        }
 
-        visibleColumns = new int[contents.getColumnCount()];
-        for (int i = 0; i < contents.getColumnCount(); i++)
-            visibleColumns[i] = i;
 
         // initialize selection
-
         selectedRows = new int[0];
         selectedColumns = new int[0];
 
@@ -156,7 +160,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         selectionLeadRow = selectionLeadColumn = -1;
 
         // selected property
-
+        /*
         int i = 0;
         for (IElementAttribute attr : contents.getCellAttributes())
         {
@@ -166,7 +170,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
                 break;
             }
             i++;
-        }
+        }  */
     }
 
 	/* visibility */

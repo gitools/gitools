@@ -26,11 +26,11 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.decorator.ElementDecorator;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -62,8 +62,13 @@ public abstract class AbstractElementDecoratorPanel extends JPanel
     }
 
     @Nullable
-    List<IndexedProperty> loadAllProperties(@Nullable List<IndexedProperty> properties, @NotNull IElementAdapter adapter)
+    List<IndexedProperty> loadAllProperties(@Nullable List<IndexedProperty> properties, IElementAdapter adapter)
     {
+        if (adapter == null)
+        {
+            return Collections.EMPTY_LIST;
+        }
+
         int numProps = adapter.getPropertyCount();
 
         if (properties == null)

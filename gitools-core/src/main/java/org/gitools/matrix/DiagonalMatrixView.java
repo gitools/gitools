@@ -282,6 +282,12 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
+    public void init()
+    {
+        mv.init();
+    }
+
+    @Override
     public int getRowCount()
     {
         return mv.getRowCount();

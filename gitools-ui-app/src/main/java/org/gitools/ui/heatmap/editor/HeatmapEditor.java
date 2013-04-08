@@ -74,9 +74,6 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class HeatmapEditor extends AbstractEditor
 {
     protected final Heatmap heatmap;
@@ -205,7 +202,7 @@ public class HeatmapEditor extends AbstractEditor
         setDirty(true);
     }
 
-    void matrixPropertyChange(String propertyName, @Nullable Object oldValue, @NotNull Object newValue)
+    void matrixPropertyChange(String propertyName, @Nullable Object oldValue, Object newValue)
     {
 
         if (IMatrixView.SELECTED_LEAD_CHANGED.equals(propertyName))
@@ -333,7 +330,14 @@ public class HeatmapEditor extends AbstractEditor
         File file = getFile();
         if (file == null)
         {
-            SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+            SaveFileWizard wiz = SaveFileWizard.createSimple(
+                    "Save heatmap",
+                    getName(),
+                    Settings.getDefault().getLastPath(),
+                    new FileFormat[]{
+                            new FileFormat("Heatmap", HeatmapFormat.EXTENSION)
+                    }
+            );
 
             WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
             dlg.setVisible(true);

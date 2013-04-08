@@ -100,7 +100,7 @@ public class CommandLoadFile extends AbstractCommand
         }
 
         final AbstractEditor editor = createEditor(resource, monitor);
-        editor.setName(resourceLocator.getName());
+        editor.setName(resourceLocator.getBaseName());
 
         SwingUtilities.invokeLater(new Runnable()
         {

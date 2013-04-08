@@ -97,4 +97,6 @@ public interface IMatrixView extends IModel, IMatrix
     int getSelectedPropertyIndex();
 
     void setSelectedPropertyIndex(int index);
+
+    void init();
 }

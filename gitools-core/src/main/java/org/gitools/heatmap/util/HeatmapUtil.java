@@ -63,8 +63,6 @@ public class HeatmapUtil
             figure.getRowDim().setGridEnabled(false);
             figure.getColumnDim().setGridEnabled(false);
         }
-        /*else if (matrix instanceof ObjectMatrix) {
-        }*/
 
         return figure;
     }
