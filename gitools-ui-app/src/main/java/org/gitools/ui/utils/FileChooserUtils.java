@@ -21,19 +21,19 @@
  */
 package org.gitools.ui.utils;
 
+import com.googlecode.vfsjfilechooser2.VFSJFileChooser;
+import com.googlecode.vfsjfilechooser2.filechooser.AbstractVFSFileFilter;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileType;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class FileChooserUtils
 {
 
@@ -43,95 +43,8 @@ public class FileChooserUtils
     private final static String jpeg = "jpeg";
     private final static String jpg = "jpg";
     private final static String gif = "gif";
-    public final static String tiff = "tiff";
     private final static String tif = "tif";
     private final static String png = "png";
-    private final static String pdf = "pdf";
-
-    public static class FileAndFilter
-    {
-        private final File file;
-        private final FileFilter filter;
-
-        public FileAndFilter(File file, FileFilter filter)
-        {
-            this.file = file;
-            this.filter = filter;
-        }
-
-        public File getFile()
-        {
-            return file;
-        }
-
-        public FileFilter getFilter()
-        {
-            return filter;
-        }
-    }
-
-    @NotNull
-    private static final FileFilter imageFileFilter = new FileFilter()
-    {
-        @Override
-        public boolean accept(@NotNull File f)
-        {
-            if (f.isDirectory())
-            {
-                return true;
-            }
-
-            String extension = getExtension(f);
-            if (extension != null)
-            {
-                return isImageExtension(extension);
-            }
-
-            return false;
-        }
-
-        @NotNull
-        @Override
-        public String getDescription()
-        {
-            return "Image files (*.png, *.jpg, *.jpeg, *.gif)";
-        }
-    };
-
-    @NotNull
-    private static FileFilter pdfFileFilter = new FileFilter()
-    {
-        @Override
-        public boolean accept(@NotNull File f)
-        {
-            if (f.isDirectory())
-            {
-                return true;
-            }
-
-            String extension = getExtension(f);
-            if (extension != null)
-            {
-                if (extension.equals(pdf))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        @NotNull
-        @Override
-        public String getDescription()
-        {
-            return "Image files (*.pdf)";
-        }
-    };
 
     @Nullable
     public static File selectFile(String title, int mode)
@@ -142,34 +55,11 @@ public class FileChooserUtils
     @Nullable
     public static File selectFile(String title, String currentPath, int mode)
     {
-        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
-
-        fileChooser.setDialogTitle(title);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setPreferredSize(new Dimension(640, 480));
-
-        int retval = JFileChooser.CANCEL_OPTION;
-
-        if (mode == FileChooserUtils.MODE_SAVE)
-        {
-            retval = fileChooser.showSaveDialog(AppFrame.get());
-        }
-        else if (mode == FileChooserUtils.MODE_OPEN)
-        {
-            retval = fileChooser.showOpenDialog(AppFrame.get());
-        }
-
-        if (retval == JFileChooser.APPROVE_OPTION)
-        {
-            File file = fileChooser.getSelectedFile();
-            return file;
-        }
-
-        return null;
+        return selectFile(title, currentPath, mode, null);
     }
 
     @Nullable
-    public static FileAndFilter selectFile(String title, int mode, FileFilter[] filters)
+    public static File selectFile(String title, int mode, FileFormatFilter[] filters)
     {
         return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
     }
@@ -183,28 +73,49 @@ public class FileChooserUtils
      * @param filters
      * @return {file, filter}
      */
-    @Nullable
-    public static FileAndFilter selectFile(String title, String currentPath, int mode, @Nullable FileFilter[] filters)
+    public static File selectFile(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters)
     {
-        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
+        return selectFileVFS(title, currentPath, mode, filters);
+    }
+
+
+    @Nullable
+    private static File selectFileVFS(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters)
+    {
+        /*TODO
+        try
+        {
+            FileSystemOptions opts = new FileSystemOptions();
+            FtpFileSystemConfigBuilder.getInstance().setPassiveMode(opts, true);
+            SftpFileSystemConfigBuilder.getInstance().setStrictHostKeyChecking(opts, "no");
+            SftpFileSystemConfigBuilder.getInstance().setUserDirIsRoot(opts, false);
+        } catch (FileSystemException e)
+        {
+            throw new RuntimeException(e);
+        } */
+
+        VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
+
+        //TODO Fix VFS integration
+        //fileChooser.setAccessory(new DefaultAccessoriesPanel(fileChooser));
 
         fileChooser.setDialogTitle(title);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.FILES_ONLY);
         fileChooser.setPreferredSize(new Dimension(640, 480));
 
         if (filters != null)
         {
             fileChooser.setAcceptAllFileFilterUsed(false);
-            for (FileFilter filter : filters)
-                fileChooser.addChoosableFileFilter(filter);
+            for (FileFormatFilter filter : filters)
+                fileChooser.addChoosableFileFilter(new VFSFileFilterAdaptor(filter));
 
             if (filters.length > 0)
             {
-                fileChooser.setFileFilter(filters[0]);
+                fileChooser.setFileFilter(new VFSFileFilterAdaptor(filters[0]));
             }
         }
 
-        int retval = JFileChooser.CANCEL_OPTION;
+        VFSJFileChooser.RETURN_TYPE retval = VFSJFileChooser.RETURN_TYPE.CANCEL;
 
         if (mode == FileChooserUtils.MODE_SAVE)
         {
@@ -215,61 +126,51 @@ public class FileChooserUtils
             retval = fileChooser.showOpenDialog(AppFrame.get());
         }
 
-        if (retval == JFileChooser.APPROVE_OPTION)
+        if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE)
         {
-            return new FileAndFilter(fileChooser.getSelectedFile(), fileChooser.getFileFilter());
+            return fileChooser.getSelectedFile();
         }
 
         return null;
-    }
-
-    @Nullable
-    public static File selectPath(String title)
-    {
-        return selectPath(title, Settings.getDefault().getLastPath());
     }
 
     @Nullable
     public static File selectPath(String title, String currentPath)
     {
-        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
-
-        fileChooser.setDialogTitle(title);
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        fileChooser.setPreferredSize(new Dimension(640, 480));
-
-        int retval = fileChooser.showOpenDialog(AppFrame.get());
-        if (retval == JFileChooser.APPROVE_OPTION)
-        {
-            File file = fileChooser.getSelectedFile();
-            return file;
-        }
-
-        return null;
+         return selectPathVFS(title, currentPath);
     }
 
-    @Nullable
-    public static File selectImageFile(String title, String currentPath, int mode)
+    private static File selectPathVFS(String title, String currentPath)
     {
-        JFileChooser fileChooser = new JSystemFileChooser(currentPath);
+        VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
 
         fileChooser.setDialogTitle(title);
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.addChoosableFileFilter(imageFileFilter);
+        fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.DIRECTORIES_ONLY);
         fileChooser.setPreferredSize(new Dimension(640, 480));
-
-        int retval = JFileChooser.CANCEL_OPTION;
-
-        if (mode == FileChooserUtils.MODE_SAVE)
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter( new AbstractVFSFileFilter()
         {
-            retval = fileChooser.showSaveDialog(AppFrame.get());
-        }
-        else if (mode == FileChooserUtils.MODE_OPEN)
-        {
-            retval = fileChooser.showOpenDialog(AppFrame.get());
-        }
+            @Override
+            public boolean accept(FileObject f)
+            {
+                try
+                {
+                    return f.getType() == FileType.FOLDER;
+                } catch (FileSystemException e)
+                {
+                    return true;
+                }
+            }
 
-        if (retval == JFileChooser.APPROVE_OPTION)
+            @Override
+            public String getDescription()
+            {
+                return "Folders";
+            }
+        });
+
+        VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(AppFrame.get());
+        if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE)
         {
             File file = fileChooser.getSelectedFile();
             return file;
@@ -295,10 +196,5 @@ public class FileChooserUtils
             ext = fileName.substring(i + 1).toLowerCase();
         }
         return ext;
-    }
-
-    private static boolean isImageExtension(@NotNull String extension)
-    {
-        return extension.equals(tif) || extension.equals(gif) || extension.equals(jpeg) || extension.equals(jpg) || extension.equals(png);
     }
 }

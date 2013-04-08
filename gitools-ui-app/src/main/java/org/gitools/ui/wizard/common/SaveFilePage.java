@@ -28,12 +28,12 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.FileFormatFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -276,18 +276,18 @@ public class SaveFilePage extends AbstractWizardPage
 
     private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_browseFileBtnActionPerformed
-        FileFilter ff = new FileFilter()
+        FileFormatFilter ff = new FileFormatFilter("Known files")
         {
             @Override
-            public boolean accept(@NotNull File f)
+            public boolean accept(boolean directory, String fileName)
             {
-                if (f.isDirectory())
+                if (directory)
                 {
                     return true;
                 }
 
                 for (FileFormat fmt : formats)
-                    if (fmt.checkExtension(f.getName()))
+                    if (fmt.checkExtension(fileName))
                     {
                         return true;
                     }
@@ -312,12 +312,10 @@ public class SaveFilePage extends AbstractWizardPage
             }
         };
 
-        FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFilter[]{ff});
+        File selFile = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFormatFilter[]{ff});
 
-        if (sel != null)
+        if (selFile != null)
         {
-            File selFile = sel.getFile();
-
             String fn = selFile.getName();
             fileName.setText(fn);
             folder.setText(selFile.getParentFile().getAbsolutePath());

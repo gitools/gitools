@@ -44,6 +44,7 @@ import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -281,17 +282,12 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     @Nullable
     private File getSelectedPath()
     {
-        JFileChooser fileChooser = new JFileChooser(Settings.getDefault().getLastAnnotationPath());
+        File selectedFile = FileChooserUtils.selectPath("Select file", Settings.getDefault().getLastAnnotationPath());
 
-        fileChooser.setDialogTitle("Select file");
-        fileChooser.setMinimumSize(new Dimension(800, 600));
-        fileChooser.setPreferredSize(new Dimension(800, 600));
-
-        int retval = fileChooser.showOpenDialog(AppFrame.get());
-        if (retval == JFileChooser.APPROVE_OPTION)
+        if (selectedFile != null)
         {
-            Settings.getDefault().setLastAnnotationPath(fileChooser.getSelectedFile().getParent());
-            return fileChooser.getSelectedFile();
+            Settings.getDefault().setLastAnnotationPath(selectedFile.getParent());
+            return selectedFile;
         }
 
         return null;

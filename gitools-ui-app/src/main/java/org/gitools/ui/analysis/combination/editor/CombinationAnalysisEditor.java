@@ -31,7 +31,6 @@ import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -116,10 +115,6 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         {
             newDataHeatmap();
         }
-        else if ("ViewModuleMap".equals(name))
-        {
-            viewModuleMap();
-        }
         else if ("NewResultsHeatmap".equals(name))
         {
             newResultsHeatmap();
@@ -171,11 +166,6 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                 }
             }
         });
-    }
-
-    private void viewModuleMap()
-    {
-        UnimplementedDialog.show(AppFrame.get());
     }
 
     private void newResultsHeatmap()

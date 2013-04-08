@@ -31,9 +31,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class FileChooserPage extends AbstractWizardPage
 {
 

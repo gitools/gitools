@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -201,40 +200,25 @@ public class SelectFilePage extends AbstractWizardPage
     {//GEN-FIRST:event_fileBrowseBtnActionPerformed
         boolean anyFormat = formats.length == 1 && formats[0] == anyFileFormat;
 
-        FileFilter any = new FileFilter()
-        {
-            @Override
-            public boolean accept(File pathname)
-            {
-                return true;
-            }
-
-            @Override
-            public String getDescription()
-            {
-                return anyFileFormat.getTitle();
-            }
-        };
-
-        FileFilter[] filters = null;
+        FileFormatFilter any = new FileFormatFilter(anyFileFormat.getTitle(), anyFileFormat);
+        FileFormatFilter[] filters = null;
         if (anyFormat)
         {
-            filters = new FileFilter[]{any};
+            filters = new FileFormatFilter[]{any};
         }
         else
         {
-            filters = new FileFilter[formats.length + 2];
+            filters = new FileFormatFilter[formats.length + 2];
             filters[0] = any;
             filters[1] = new FileFormatFilter("Known formats", formats);
             for (int i = 0; i < formats.length; i++)
                 filters[i + 2] = new FileFormatFilter(formats[i]);
         }
 
-        FileChooserUtils.FileAndFilter sel = FileChooserUtils.selectFile("Select file", getLastPath(), FileChooserUtils.MODE_OPEN, filters);
+        File selPath = FileChooserUtils.selectFile("Select file", getLastPath(), FileChooserUtils.MODE_OPEN, filters);
 
-        if (sel != null)
+        if (selPath != null)
         {
-            File selPath = sel.getFile();
             setFile(selPath);
             setLastPath(selPath.getAbsolutePath());
         }

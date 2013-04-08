@@ -21,17 +21,12 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.ui.dialog.UnimplementedDialog;
-import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
 public class SaveAsAction extends BaseAction
 {
 
@@ -54,6 +49,6 @@ public class SaveAsAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        UnimplementedDialog.show(AppFrame.get());
+        //TODO
     }
 }

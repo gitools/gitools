@@ -59,9 +59,7 @@ class FileActions
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
-    public static final BaseAction exportHeatmapHtmlAction = new ExportHeatmapHtmlAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
-    public static final BaseAction exportPdfReportAction = new ExportPdfReportAction();
 
     // Other
     public static final BaseAction openIntegrativeGenomicViewerAction = new OpenIntegrativeGenomicViewerAction();

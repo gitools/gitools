@@ -36,7 +36,6 @@ import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -136,10 +135,6 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         {
             newDataHeatmap();
         }
-        else if ("ViewModuleMap".equals(name))
-        {
-            viewModuleMap();
-        }
         else if ("NewResultsHeatmap".equals(name))
         {
             newResultsHeatmap();
@@ -191,11 +186,6 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                 });
             }
         });
-    }
-
-    private void viewModuleMap()
-    {
-        UnimplementedDialog.show(AppFrame.get());
     }
 
     private void newResultsHeatmap()

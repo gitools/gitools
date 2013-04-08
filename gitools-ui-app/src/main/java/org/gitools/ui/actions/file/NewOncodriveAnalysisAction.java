@@ -60,10 +60,6 @@ public class NewOncodriveAnalysisAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-
-        //UnimplementedDialog.show(AppFrame.instance());
-        //if (true) return;
-
         final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);

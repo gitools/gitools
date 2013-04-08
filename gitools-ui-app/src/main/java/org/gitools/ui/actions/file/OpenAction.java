@@ -34,7 +34,6 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
 
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -60,7 +59,7 @@ public class OpenAction extends BaseAction
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        FileFilter[] filters = new FileFilter[]{
+        FileFormatFilter[] filters = new FileFormatFilter[]{
 
                 new FileFormatFilter("All known formats", new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_CLUSTER_TEXT, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, EnrichmentAnalysisFormat.FILE_FORMAT, OncodriveAnalysisFormat.FILE_FORMAT, CorrelationAnalysisFormat.FILE_FORMAT, CombinationAnalysisFormat.FILE_FORMAT, OverlappingAnalysisFormat.FILE_FORMAT, GroupComparisonAnalysisFormat.FILE_FORMAT}), new FileFormatFilter("Heatmaps", new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_CLUSTER_TEXT, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED}),
 
@@ -72,14 +71,7 @@ public class OpenAction extends BaseAction
                 // Analysis
                 new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT), new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT), new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT), new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT), new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT), new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)};
 
-        final FileChooserUtils.FileAndFilter ret = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
-
-        if (ret == null)
-        {
-            return;
-        }
-
-        final File file = ret.getFile();
+        final File file = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
 
         if (file == null)
         {

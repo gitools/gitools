@@ -22,7 +22,6 @@
 package org.gitools.ui.welcome;
 
 import org.gitools.ui.actions.file.*;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -148,10 +147,6 @@ public class WelcomeEditor extends HtmlEditor
                 {
                     ExceptionDialog.show(AppFrame.get(), ex);
                 }
-            }
-            else
-            {
-                UnimplementedDialog.show(AppFrame.get());
             }
         }
         else if (name.equals("open"))

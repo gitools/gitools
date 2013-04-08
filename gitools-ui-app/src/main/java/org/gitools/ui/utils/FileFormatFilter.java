@@ -27,9 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class FileFormatFilter extends FileFilter
 {
 
@@ -44,7 +41,7 @@ public class FileFormatFilter extends FileFilter
         this.description = description;
     }
 
-    public FileFormatFilter(String description, FileFormat[] formats)
+    public FileFormatFilter(String description, FileFormat... formats)
     {
         this(description);
         this.formats = formats;
@@ -57,21 +54,26 @@ public class FileFormatFilter extends FileFilter
     }
 
     @Override
-    public boolean accept(@NotNull File f)
+    public final boolean accept(@NotNull File f)
     {
-        if (f.isDirectory())
+        return accept(f.isDirectory(), f.getName());
+    }
+
+    public boolean accept(boolean directory, String fileName)
+    {
+        if (directory)
         {
             return true;
         }
 
         if (format != null)
         {
-            return format.checkExtension(f.getName());
+            return format.checkExtension(fileName);
         }
         else if (formats != null)
         {
             for (FileFormat ff : formats)
-                if (ff.checkExtension(f.getName()))
+                if (ff.checkExtension(fileName))
                 {
                     return true;
                 }

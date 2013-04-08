@@ -36,7 +36,6 @@ import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromColumnAction;
-import org.gitools.ui.dialog.UnimplementedDialog;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -131,10 +130,6 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         {
             newDataHeatmap();
         }
-        else if ("ViewModuleMap".equals(name))
-        {
-            viewModuleMap();
-        }
         else if ("NewResultsHeatmap".equals(name))
         {
             newResultsHeatmap();
@@ -186,11 +181,6 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
                 });
             }
         });
-    }
-
-    private void viewModuleMap()
-    {
-        UnimplementedDialog.show(AppFrame.get());
     }
 
     private void newResultsHeatmap()
