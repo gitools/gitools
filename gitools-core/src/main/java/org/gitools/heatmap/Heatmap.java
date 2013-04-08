@@ -118,8 +118,10 @@ public class Heatmap extends Artifact implements Serializable, IResource
         this.rowDim.addPropertyChangeListener(propertyListener);
         this.columnDim.addPropertyChangeListener(propertyListener);
 
-        this.rowDim.addHeader(new HeatmapTextLabelsHeader());
-        this.columnDim.addHeader(new HeatmapTextLabelsHeader());
+        if (this.rowDim.getHeaderSize() == 0)
+            this.rowDim.addHeader(new HeatmapTextLabelsHeader());
+        if (this.columnDim.getHeaderSize() == 0)
+            this.columnDim.addHeader(new HeatmapTextLabelsHeader());
     }
 
     @NotNull

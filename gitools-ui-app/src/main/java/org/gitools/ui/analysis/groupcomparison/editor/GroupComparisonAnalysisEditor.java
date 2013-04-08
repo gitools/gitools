@@ -25,10 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
@@ -126,16 +123,17 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
-                if (analysis.getRowHeaders() != null)
+                if (analysis.getRowAnnotations() != null)
                 {
                     heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
-                    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
                 }
-                if (analysis.getColumnHeaders() != null)
+                copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+
+                if (analysis.getColumnAnnotations() != null)
                 {
                     heatmap.getColumnDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
-                    copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
                 }
+                copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
@@ -158,64 +156,8 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
     private void copyHeaders(@NotNull HeatmapDim dim, @NotNull List<HeatmapHeader> headers)
     {
-
-        dim.removeHeader(0);
-
-        for (HeatmapHeader hh : headers)
-        {
-            HeatmapHeader headerCopy = null;
-            if (hh instanceof HeatmapTextLabelsHeader)
-            {
-                HeatmapTextLabelsHeader oldHeader = (HeatmapTextLabelsHeader) hh;
-                HeatmapTextLabelsHeader textHeaderCopy = new HeatmapTextLabelsHeader(dim);
-                textHeaderCopy.setFont(oldHeader.getFont());
-                textHeaderCopy.setLabelColor(oldHeader.getLabelColor());
-                textHeaderCopy.setLabelAnnotation(oldHeader.getLabelAnnotation());
-                textHeaderCopy.setLabelPattern(oldHeader.getLabelPattern());
-                textHeaderCopy.setLabelSource(oldHeader.getLabelSource());
-                headerCopy = textHeaderCopy;
-            }
-            else if (hh instanceof HeatmapColoredLabelsHeader)
-            {
-                //headerCopy = hh;
-                // Not working yet!
-
-                HeatmapColoredLabelsHeader oldHeader = (HeatmapColoredLabelsHeader) hh;
-                HeatmapColoredLabelsHeader colorHeaderCopy = new HeatmapColoredLabelsHeader(dim);
-                colorHeaderCopy.setLabelColor(oldHeader.getLabelColor());
-                colorHeaderCopy.setForceLabelColor(oldHeader.isForceLabelColor());
-                colorHeaderCopy.setLabelFont(oldHeader.getLabelFont());
-                colorHeaderCopy.setLabelRotated(oldHeader.isLabelRotated());
-                colorHeaderCopy.setLabelVisible(oldHeader.isLabelVisible());
-                colorHeaderCopy.setMargin(oldHeader.getMargin());
-                colorHeaderCopy.setSeparationGrid(oldHeader.isSeparationGrid());
-                colorHeaderCopy.setThickness(oldHeader.getThickness());
-
-                ColoredLabel[] clusters = oldHeader.getClusters();
-                ColoredLabel[] newClusters = new ColoredLabel[clusters.length];
-                int index = 0;
-
-                for (ColoredLabel cl : clusters)
-                {
-                    //newClusters[index] ;
-                    ColoredLabel newcl = new ColoredLabel(cl.getDisplayedLabel(), cl.getColor());
-                    newClusters[index] = newcl;
-                    index++;
-                }
-                colorHeaderCopy.setClusters(newClusters);
-                colorHeaderCopy.setAssignedColoredLabels(oldHeader.getAssignedColoredLabels());
-
-                dim.getAnnotations().getRows();
-
-                headerCopy = colorHeaderCopy;
-
-            }
-            headerCopy.setBackgroundColor(hh.getBackgroundColor());
-            //newHh.setHeatmapDim(dim);
-            headerCopy.setSize(hh.getSize());
-            headerCopy.setTitle(hh.getTitle());
-            headerCopy.setVisible(hh.isVisible());
-            dim.addHeader(headerCopy);
+        for (HeatmapHeader hh : headers)      {
+            dim.addHeader(SerialClone.xclone(hh));
         }
     }
 
