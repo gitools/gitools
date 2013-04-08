@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.*;
+import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 
@@ -84,6 +85,8 @@ public class DecoratorArchivePersistance
         xstream.omitField(NumericColorScale.class, "rangesList");
 
         xstream.omitField(Color.class, "alpha");
+
+        xstream.alias("edu.upf.bg.colorscale.ColorScalePoint", ColorScalePoint.class);
 
         xstream.setMode(XStream.NO_REFERENCES);
     }
