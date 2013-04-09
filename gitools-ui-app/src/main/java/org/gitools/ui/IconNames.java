@@ -30,6 +30,7 @@ public class IconNames
     public static final String info = "/img/info.png";
     public static final String fullscreen = "/img/fullscreen.png";
 
+    public static final String logoNoText = "/img/LogoNoText.png";
     public static final String logoMini = "/img/LogoMini.png";
     public static final String aboutLogo = "/img/AboutLogo.png";
 

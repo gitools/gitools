@@ -40,6 +40,13 @@ public class IconUtils
     }
 
     @NotNull
+    public static Image getImageResource(String name)
+    {
+        Icon icon = getImageIconResource(name);
+        return iconToImage(icon, icon.getIconWidth(), icon.getIconHeight());
+    }
+
+    @NotNull
     public static ImageIcon getImageIconResource(String name)
     {
         URL url = IconUtils.class.getResource(name);
@@ -60,9 +67,8 @@ public class IconUtils
         int h = icon.getIconHeight();
         double ratio = (double) height / (double) h;
         int width = (int) Math.floor(w * ratio);
-        ImageIcon image = new ImageIcon(iconToImage(icon, width, height));
 
-        return image;
+        return new ImageIcon(iconToImage(icon, width, height));
     }
 
     private static Image iconToImage(@NotNull Icon icon, int width, int height)
