@@ -38,5 +38,11 @@
             <artifactId>weblookandfeel</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.apple</groupId>
+            <artifactId>AppleJavaExtensions</artifactId>
+        </dependency>
+
+
     </dependencies>
 </project>

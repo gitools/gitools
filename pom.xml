@@ -216,6 +216,12 @@
                 <version>1.5.beta</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.apple</groupId>
+                <artifactId>AppleJavaExtensions</artifactId>
+                <version>1.4</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
