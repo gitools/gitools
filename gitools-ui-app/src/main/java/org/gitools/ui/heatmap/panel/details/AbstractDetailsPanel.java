@@ -33,8 +33,10 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.impl.CategoricalElementDecorator;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
+import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
@@ -186,8 +188,17 @@ public abstract class AbstractDetailsPanel extends WebPanel
 
             if (index == selectedIndex && value instanceof Double)
             {
+                if (selectedDecorator instanceof CategoricalElementDecorator) {
+                    CategoricalColorScale scale = (CategoricalColorScale) selectedDecorator.getScale();
+                    Double v = (Double) value;
+                    String name =  (scale.getColorScalePoint(v).getName().equals(""))  ? FORMATTER.format(value) : scale.getColorScalePoint(v).getName();
+                    item = new PropertyItem(prop.getName(), prop.getDescription(), name);
+                }
+
                 item.setColor(selectedDecorator.getScale().valueColor((Double) value));
+
             }
+
 
             values.add(item);
         }
