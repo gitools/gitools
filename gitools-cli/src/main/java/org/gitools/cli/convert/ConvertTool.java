@@ -27,7 +27,9 @@ import org.gitools.cli.Main;
 import org.gitools.persistence.*;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
@@ -44,9 +46,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ConvertTool extends AbstractTool
 {
 
@@ -129,8 +128,21 @@ public class ConvertTool extends AbstractTool
 
         Conversion targetConv = new Conversion(inputMime, outputMime);
         int convIndex = vc.indexOf(targetConv);
+
+        IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
+
         if (convIndex < 0)
         {
+            // We don't want to load all the tdm in memory this is why this conversion is not possible
+            // using the standard interface.
+            //TODO rethink the interface
+            if (inputMime.equals(FileSuffixes.OBJECT_MATRIX) && outputMime.equals(CompressMatrixFormat.EXTENSION))
+            {
+                CompressMatrixConversion converter = new CompressMatrixConversion();
+                converter.convert(args.inputFileName, args.outputFileName, monitor);
+                return;
+            }
+
             throw new ToolException("Unsupportted conversion from '" + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
         }
 
@@ -140,7 +152,7 @@ public class ConvertTool extends AbstractTool
             throw new ToolException("Unimplemented conversion from '" + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
         }
 
-        IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
+
 
         monitor.begin("Loading input file ...", 1);
 

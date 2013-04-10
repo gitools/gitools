@@ -32,9 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public abstract class BaseMatrix extends Artifact implements IMatrix, Serializable
 {
 

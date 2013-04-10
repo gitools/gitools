@@ -66,16 +66,6 @@ public class DoubleBinaryMatrix extends BaseMatrix
         return cells.columns();
     }
 
-    // Cells
-
-	/*public BitMatrix getCells() {
-        return cells;
-	}
-
-	public void setCells(BitMatrix cells) {
-		this.cells = cells;
-	}*/
-
     @Override
     public Object getCell(int row, int column)
     {

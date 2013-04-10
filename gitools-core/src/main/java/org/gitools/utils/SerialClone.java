@@ -31,7 +31,6 @@ import java.util.Queue;
 /**
  * Code obtained from http://weblogs.java.net/blog/emcmanus/archive/2007/04/cloning_java_ob.html
  *
- * @noinspection ALL
  */
 public class SerialClone
 {

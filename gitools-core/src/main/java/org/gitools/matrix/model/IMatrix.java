@@ -27,24 +27,54 @@ import org.gitools.persistence.IResource;
 
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public interface IMatrix extends IResource
 {
 
-    // rows
+    /**
+     * Total number of rows
+     *
+     * @return the row count
+     */
     int getRowCount();
 
+    /**
+     * Gets the identifier label at the given position
+     *
+     * @param index the index
+     * @return the row label
+     */
     String getRowLabel(int index);
 
+    /**
+     * Gets the index position of this row identifier
+     *
+     * @param label the label
+     * @return the row index
+     */
     int getRowIndex(String label);
 
-    // columns
+    /**
+     * Total number of columns
+     *
+     * @return the column count
+     */
     int getColumnCount();
 
+
+    /**
+     * Gets the identifier label at the given position
+     *
+     * @param index the index
+     * @return the column label
+     */
     String getColumnLabel(int index);
 
+    /**
+     * Gets the index position of this column identifier
+     *
+     * @param label the label
+     * @return the column index
+     */
     int getColumnIndex(String label);
 
     // cells

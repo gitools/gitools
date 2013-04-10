@@ -22,6 +22,7 @@
 package org.gitools.persistence;
 
 import org.gitools.persistence.formats.analysis.*;
+import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
 import org.gitools.persistence.formats.matrix.*;
 import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
 import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
@@ -57,6 +58,7 @@ public class PersistenceInitialization
         pm.registerFormat(new AnnotationMatrixFormat());
         pm.registerFormat(new TwoColumnModuleMapFormat());
         pm.registerFormat(new IndexedModuleMapFormat());
+        pm.registerFormat(new CompressMatrixFormat());
 
         pm.registerResourceFilter(new GzResourceFilter());
         pm.registerResourceFilter(new ZipResourceFilter());

@@ -267,8 +267,23 @@ public class HeatmapPanel extends JPanel
         rowSB.setValueIsAdjusting(false);
     }
 
+    private long lastUpdateViewPorts = -1;
     private void updateViewPorts()
     {
+        // Maximum of 20 updates per second
+        if (lastUpdateViewPorts != -1)
+        {
+            long interval = System.currentTimeMillis() - lastUpdateViewPorts;
+
+            if (interval < 50)
+            {
+                return;
+            }
+        }
+
+        lastUpdateViewPorts = System.currentTimeMillis();
+
+
         Dimension totalSize = bodyVP.getViewSize();
         Dimension visibleSize = bodyVP.getSize();
 
