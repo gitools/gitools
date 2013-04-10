@@ -282,7 +282,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     @Nullable
     private File getSelectedPath()
     {
-        File selectedFile = FileChooserUtils.selectPath("Select file", Settings.getDefault().getLastAnnotationPath());
+        File selectedFile = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
 
         if (selectedFile != null)
         {

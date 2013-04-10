@@ -26,11 +26,6 @@ import org.gitools.heatmap.HeatmapDim;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.jetbrains.annotations.NotNull;
 
-import java.beans.PropertyChangeEvent;
-
-/**
- * @noinspection ALL
- */
 public class HeatmapHeaderPanel extends AbstractHeatmapPanel
 {
 
@@ -49,22 +44,5 @@ public class HeatmapHeaderPanel extends AbstractHeatmapPanel
     public HeatmapHeaderDrawer getHeaderDrawer()
     {
         return (HeatmapHeaderDrawer) getDrawer();
-    }
-
-    @Override
-    protected void heatmapPropertyChanged(PropertyChangeEvent evt)
-    {
-        super.heatmapPropertyChanged(evt);
-
-          /*
-          String pname = evt.getPropertyName();
-          Object src = evt.getSource();
-
-          //System.out.println(getClass().getSimpleName() + " " + src + " " + pname);
-
-          if (src.equals(hdim) && HeatmapDim.HEADERS_CHANGED.equals(pname)
-                  || (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
-                  getHeaderDrawer().updateDrawers();    */
-
     }
 }
