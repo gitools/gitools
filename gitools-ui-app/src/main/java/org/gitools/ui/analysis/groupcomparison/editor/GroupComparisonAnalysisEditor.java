@@ -127,13 +127,15 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 {
                     heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
                 }
-                copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                if (analysis.getRowHeaders() != null)
+                    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
 
                 if (analysis.getColumnAnnotations() != null)
                 {
                     heatmap.getColumnDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
                 }
-                copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+                if (analysis.getColumnHeaders() != null)
+                    copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
