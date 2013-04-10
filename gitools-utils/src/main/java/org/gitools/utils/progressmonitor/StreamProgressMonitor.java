@@ -41,6 +41,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
 
     private String tabs;
     private boolean flag;
+    private boolean showingbar = false;
 
     private final boolean verbose;
     private final boolean debug;
@@ -67,6 +68,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     {
         super.begin(title, totalWork);
         flag = false;
+        showingbar = false;
         tabs = tabbulate(level);
         print("\n" + tabs + title);
         timer.start();
@@ -83,11 +85,26 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     public void worked(int workInc)
     {
         super.worked(workInc);
-        /*int progress = (worked * 100 / totalWork);
-        if (lastprogress != progress) {
-			lastprogress = progress;
-			out.println(tabbulate(title + " " + progress + "%", level));
-		}*/
+        double progress = ((double) getWorked() / (double) totalWork);
+
+        if (!showingbar)
+        {
+            print("\n");
+            showingbar = true;
+        }
+
+        int width = 70;
+        StringBuilder bar = new StringBuilder(width+5);
+        bar.append("\r[");
+        int i = 0;
+        for (; i <= (int)(progress*width); i++) {
+            bar.append(".");
+        }
+        for (; i < width; i++) {
+            bar.append(" ");
+        }
+        bar.append("] ").append((int) (progress * 100)).append("%");
+        print(bar.toString());
     }
 
     @NotNull
@@ -136,8 +153,10 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
         }
         else
         {
-            print(" " + time);
+            print("\n " + time);
         }
+
+        print("\n");
     }
 
     @Override
