@@ -92,10 +92,10 @@ public class CompressMatrixConversion
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            int range = (int) (MemoryUtils.getAvailableMemory() / ((long) ((totalLineLength/fileLinesCount) * columns.size()) + 32));
-            int count = 0;
-            int from = 0;
-            int to = (from + range > rows.size()) ? rows.size() : from + range;
+            long range = (MemoryUtils.getAvailableMemory() / ((long) ((totalLineLength/fileLinesCount) * columns.size()) + 32));
+            long count = 0;
+            long from = 0;
+            long to = (from + range > rows.size()) ? rows.size() : from + range;
             Map<String, NotCompressRow> groups = new HashMap<String, NotCompressRow>();
             List<String> rowsList = Arrays.asList(rows.getLabels());
 
@@ -104,7 +104,7 @@ public class CompressMatrixConversion
             {
                 progressMonitor.begin("> Computing rows between " + from + " to " + to + " of " + rows.size(), 1);
 
-                Set<String> someRows = new HashSet<String>(rowsList.subList(from, to));
+                Set<String> someRows = new HashSet<String>(rowsList.subList((int)from, (int)to));
 
                 CSVReader reader = new CSVReader(new FileReader(inputFile));
                 String[] line;
