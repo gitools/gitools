@@ -44,8 +44,8 @@ public class CompressMatrixConversion
     private byte[] dictionary;
     private byte[] outBuffer;
     private Deflater deflater = new Deflater();
-    private int fileLinesCount;
-    private int totalLineLength;
+    private long fileLinesCount;
+    private long totalLineLength;
 
 
     /**
@@ -124,12 +124,12 @@ public class CompressMatrixConversion
                 // Skip the file header
                 line = reader.readNext();
 
-                progressMonitor.begin("Start group by row...", fileLinesCount);
+                progressMonitor.begin("Start group by row...", (int) (fileLinesCount / 2000));
                 while ((line = reader.readNext()) != null)
                 {
                     if ((count % 2000) == 0)
                     {
-                        progressMonitor.worked(2000);
+                        progressMonitor.worked(1);
                     }
                     count++;
 
