@@ -41,9 +41,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class SortByMutualExclusionAction extends BaseAction
 {
 
@@ -126,7 +123,7 @@ public class SortByMutualExclusionAction extends BaseAction
                         break;
                 }
 
-                MatrixViewSorter.sortByMutualExclusion(matrixView, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS));
+                MatrixViewSorter.sortByMutualExclusion(matrixView, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS), monitor);
 
                 monitor.end();
             }

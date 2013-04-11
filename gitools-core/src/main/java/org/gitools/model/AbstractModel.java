@@ -28,9 +28,7 @@ import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
+
 public abstract class AbstractModel implements IModel, Serializable, Cloneable
 {
 
@@ -39,6 +37,8 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
     public static final String PROPERTY_CHANGED = "propertyChanged";
 
     private transient ArrayList<PropertyChangeListener> listeners;
+
+    private boolean quiet = false;
 
     protected AbstractModel()
     {
@@ -73,38 +73,48 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
 
     protected void firePropertyChange(PropertyChangeEvent evt)
     {
-        //System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
-
-        for (PropertyChangeListener l : getListeners())
-            l.propertyChange(evt);
+        if (!quiet)
+        {
+            for (PropertyChangeListener l : getListeners())
+                l.propertyChange(evt);
+        }
     }
 
     protected void firePropertyChange(String propName)
     {
-        //firePropertyChange(propName, null, null);
-
-        //System.out.println(new Date().toString() + " " + getClass().getSimpleName() + ": " + propName);
-
-        for (PropertyChangeListener l : getListeners())
+        if (!quiet)
         {
-            PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, null, null);
-            l.propertyChange(evt);
+            for (PropertyChangeListener l : getListeners())
+            {
+                PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, null, null);
+                l.propertyChange(evt);
+            }
         }
     }
 
     protected void firePropertyChange(String propName, @Nullable Object oldValue, @Nullable Object newValue)
     {
-
-        if ((oldValue != null && !oldValue.equals(newValue)) || (oldValue == null && newValue != null))
+        if (!quiet)
         {
-
-            //System.out.println("\nPropertyChange: " + propName + " " + oldValue + " -> " + newValue + " Class: " + this);
-            for (PropertyChangeListener l : getListeners())
+            if ((oldValue != null && !oldValue.equals(newValue)) || (oldValue == null && newValue != null))
             {
-                PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, oldValue, newValue);
-                //System.out.println("  >>> " + l);
-                l.propertyChange(evt);
+
+                for (PropertyChangeListener l : getListeners())
+                {
+                    PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, oldValue, newValue);
+                    l.propertyChange(evt);
+                }
             }
         }
+    }
+
+    public boolean isQuiet()
+    {
+        return quiet;
+    }
+
+    public void setQuiet(boolean quiet)
+    {
+        this.quiet = quiet;
     }
 }

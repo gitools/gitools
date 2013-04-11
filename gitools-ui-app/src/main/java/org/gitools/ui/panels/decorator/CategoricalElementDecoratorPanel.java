@@ -218,16 +218,4 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
     }
 
-
-	/*protected void maxValueChanged() {
-        try {
-			double value = Double.parseDouble(maxValTxt.getText());
-			//decorator.setMaxValue(value);
-
-			AppFrame.instance().setStatusText("Maximum value changed to " + value);
-		}
-		catch (Exception e) {
-			AppFrame.instance().setStatusText("Invalid value.");
-		}
-	}                  */
 }

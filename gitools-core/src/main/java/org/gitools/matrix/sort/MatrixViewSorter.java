@@ -31,8 +31,11 @@ import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
+import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
+import org.gitools.model.AbstractModel;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.SumAbsAggregator;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,27 +43,24 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public abstract class MatrixViewSorter
 {
 
 
-    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns)
+    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor)
     {
         if (applyToRows)
         {
-            sortRowsByMutualExclusion(matrixView, pattern, am, values, regExChecked);
+            sortRowsByMutualExclusion(matrixView, pattern, am, values, regExChecked, monitor);
         }
 
         if (applyToColumns)
         {
-            sortColumnsByMutualExclusion(matrixView, pattern, am, values, regExChecked);
+            sortColumnsByMutualExclusion(matrixView, pattern, am, values, regExChecked, monitor);
         }
     }
 
-    private static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked)
+    private static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor)
     {
 
         int[] selColumns = matrixView.getSelectedColumns();
@@ -85,52 +85,14 @@ public abstract class MatrixViewSorter
 
 
         final int[] selectedColumns = selColumns;
-        final double[] valueBuffer = new double[selectedColumns.length];
 
-        Comparator<Integer> comparator = new Comparator<Integer>()
-        {
-            @Override
-            public int compare(Integer idx1, Integer idx2)
-            {
+        Comparator<Integer> comparator = new MutualExclusionComparator(matrixView, numRows, selectedColumns, monitor);
 
-                double aggr1 = 0.0;
-                double aggr2 = 0.0;
+        if (monitor.isCancelled()) {
+            return;
+        }
 
-                //int criteriaIndex = 0;
-
-                //while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
-                //criteria = criteriaArray[criteriaIndex];
-
-                IAggregator aggregator = SumAbsAggregator.INSTANCE;
-                int propIndex = matrixView.getSelectedPropertyIndex();
-
-                SortDirection sortDirection = SortDirection.DESCENDING;
-
-                aggr1 = aggregateValue(matrixView, selectedColumns, idx1, propIndex, aggregator, valueBuffer);
-                aggr2 = aggregateValue(matrixView, selectedColumns, idx2, propIndex, aggregator, valueBuffer);
-
-                //	criteriaIndex++;
-                //}
-
-                int res = (int) Math.signum(aggr1 - aggr2);
-                return res * sortDirection.getFactor();
-            }
-
-            private double aggregateValue(@NotNull IMatrixView matrixView, @NotNull int[] selectedColumns, int idx, int propIndex, @NotNull IAggregator aggregator, double[] valueBuffer)
-            {
-
-                for (int i = 0; i < selectedColumns.length; i++)
-                {
-                    int col = selectedColumns[i];
-
-                    Object valueObject = matrixView.getCellValue(idx, col, propIndex);
-                    valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
-                }
-
-                return aggregator.aggregate(valueBuffer);
-            }
-        };
-
+        monitor.begin("Sorting...", 0);
         Arrays.sort(indices, comparator);
 
         //put the chosen indices at the top of the matrix
@@ -162,18 +124,35 @@ public abstract class MatrixViewSorter
         int index = matrixView.getSelectedPropertyIndex();
         criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
+        monitor.begin("Sorting rows...", numRows);
+
+        if (matrixView instanceof AbstractModel)
+        {
+            ((AbstractModel) matrixView).setQuiet(true);
+        }
+
         for (int i = numRows - 1; i >= 0; i--)
         {
-            //selRows[i] = i;
+            monitor.worked(1);
+            if (monitor.isCancelled()) {
+                break;
+            }
+
             int[] exclusiveRow = new int[1];
             exclusiveRow[0] = i;
             sortColumnsByValue(matrixView, null, exclusiveRow, criteriaArray);
         }
 
+        if (matrixView instanceof AbstractModel)
+        {
+            ((AbstractModel) matrixView).setQuiet(false);
+            matrixView.setVisibleColumns(matrixView.getVisibleColumns());
+        }
+
 
     }
 
-    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, AnnotationMatrix am, List<String> values, boolean regExChecked)
+    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, AnnotationMatrix am, List<String> values, boolean regExChecked, IProgressMonitor monitor)
     {
 
 

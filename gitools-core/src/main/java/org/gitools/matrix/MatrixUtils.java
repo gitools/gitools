@@ -39,13 +39,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class MatrixUtils
 {
 
     private static final int MAX_UNIQUE = 30;
+    public static final int MAXIMUM_ROWS_TO_SCAN = 2000;
 
     public static interface DoubleCast
     {
@@ -300,7 +298,7 @@ public class MatrixUtils
         return map;
     }
 
-    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor)
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor)
     {
         return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
@@ -313,7 +311,7 @@ public class MatrixUtils
 
     private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
     {
-        /* returns all values DIFFERENT from a heatmap dimension except if it is too man (50), it returns
+        /* returns all values DIFFERENT from a heatmap dimension except if it is too many (50), it returns
         * an equally distributed array values from min to max*/
 
         Double[] values = null;
@@ -327,7 +325,6 @@ public class MatrixUtils
 
         IProgressMonitor submonitor = monitor.subtask();
         String valueDimensionName = data.getCellAttributes().get(valueDimension).getName();
-        submonitor.begin("Reading all values in data matrix for " + valueDimensionName, rowNb);
 
         int randomRows = 50 > rowNb ? rowNb : 50;
         int[] randomRowsIdx = new int[randomRows];
@@ -336,6 +333,10 @@ public class MatrixUtils
 
 
         int rr = 0;
+        rowNb = (rowNb > MAXIMUM_ROWS_TO_SCAN) ? MAXIMUM_ROWS_TO_SCAN : rowNb;
+        colNb = (colNb > MAXIMUM_ROWS_TO_SCAN) ? MAXIMUM_ROWS_TO_SCAN : colNb;
+
+        submonitor.begin("Reading some values in data matrix for " + valueDimensionName, rowNb);
         for (int r = 0; r < rowNb; r++)
         {
             monitor.worked(1);

@@ -23,6 +23,7 @@ package org.gitools.utils;
 
 public class MemoryUtils
 {
+
     public static long getAvailableMemory() {
         Runtime runtime = Runtime.getRuntime();
         long totalMemory = runtime.totalMemory();

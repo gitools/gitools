@@ -24,7 +24,6 @@ package org.gitools.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.cache.Weigher;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
@@ -34,10 +33,7 @@ import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.Inflater;
 
 /**
@@ -50,6 +46,7 @@ import java.util.zip.Inflater;
 public class CompressElementAdapter implements IElementAdapter
 {
     private static final char SEPARATOR = '\t';
+    public static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
     private static DoubleTranslator TRANSLATOR = new DoubleTranslator();
 
     private final byte[] dictionary;
@@ -57,7 +54,8 @@ public class CompressElementAdapter implements IElementAdapter
     private final List<IElementAttribute> properties;
     private final Map<Integer, CompressRow> values;
     private final CompressDimension columns;
-    private final LoadingCache<Integer, Map<Integer, String>> cache;
+
+    private final LoadingCache<Integer, Map<Integer, Double[]>> rowsCache;
 
 
     /**
@@ -81,54 +79,70 @@ public class CompressElementAdapter implements IElementAdapter
             this.properties.add(new CompressElementAttribute(headers[i], double.class));
         }
 
-
-        // A weigher that estimates the size of an uncompressed row
-        Weigher<Integer, Map<Integer, String>> weigher = new Weigher<Integer, Map<Integer, String>>()
-        {
-            public int weigh(Integer row, Map<Integer, String> values)
-            {
-                // We use the expanded buffer size and some bytes per map key
-                return CompressElementAdapter.this.values.get(row).getLength() + 8 * values.size();
-            }
-        };
-
         // Force a garbage collector now
         Runtime.getRuntime().gc();
 
-        // Use a maximum of 80% of the available memory
-        long maxMemory = 8 * MemoryUtils.getAvailableMemory() / 10;
+        // Use a maximum of 50% of the available memory
+        long availableMemory = MemoryUtils.getAvailableMemory() / 2;
 
-        // Create the dynamic cache
-        cache = CacheBuilder.newBuilder()
-                .maximumWeight(maxMemory)
-                .weigher(weigher)
+        // Estimate uncompress matrix size
+        int matrixSize = 0;
+        for (CompressRow value : values.values())
+        {
+            matrixSize = matrixSize + value.getLength() + 4;
+        }
+
+        // Calculate rows cache size
+        double fact = (double) availableMemory / (double) matrixSize;
+        int cacheSize = (int) ((double) values.size() * fact);
+        cacheSize = (cacheSize > values.size() ? values.size() : cacheSize);
+        cacheSize = (cacheSize < 40 ? 40 : cacheSize);
+
+        // Create the rows cache
+        rowsCache = CacheBuilder.newBuilder()
+                .maximumSize(cacheSize)
                 .build(
-                        new CacheLoader<Integer, Map<Integer, String>>()
+                        new CacheLoader<Integer, Map<Integer, Double[]>>()
                         {
-                            public Map<Integer, String> load(Integer row)
+                            public Map<Integer, Double[]> load(Integer row)
                             {
                                 return uncompress(CompressElementAdapter.this.values.get(row));
                             }
                         });
 
+        // Create a timer that watches every 5 seconds the available memory
+        // and evict all the cache if it is below a minimum threshold.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate( new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD)
+                {
+                    System.out.println("WARNING: Memory too low, cleaning cache.");
+                    rowsCache.invalidateAll();
+                    System.gc();
+                }
+            }
+        }, 5000, 5000);
+
     }
 
     /**
-     * @param values A map of column to attributes values
-     * @param column The target column
+     * @param values A string with all values
      * @param index  The target attribute identifier
-     * @return Returns null if the row or the attribute don't exist, otherwise the double value.
+     * @return Double value
      */
-    private static Object toDouble(Map<Integer, String> values, int column, int index)
+    private Double toDouble(String values, int index)
     {
-        String columnValues = values.get(column);
 
-        if (columnValues == null)
+        if (values == null)
         {
             return null;
         }
 
-        String value = parseField(columnValues, index);
+        String value = parseField(values, index);
         return TRANSLATOR.stringToValue(value);
     }
 
@@ -203,11 +217,16 @@ public class CompressElementAdapter implements IElementAdapter
         int column = rowAndColumn[1];
 
         // The cache is who loads the value if it's not already loaded.
-        Map<Integer, String> rowValues = cache.getUnchecked(row);
+        Map<Integer, Double[]> rowValues = rowsCache.getUnchecked(row);
 
         if (rowValues != null)
         {
-            return toDouble(rowValues, column, index);
+            Double[] columnValues = rowValues.get(column);
+
+            if (columnValues != null)
+            {
+                return columnValues[index];
+            }
         }
 
         return null;
@@ -225,10 +244,10 @@ public class CompressElementAdapter implements IElementAdapter
      * @param compressRow The compressed row
      * @return A map from column to an array of strings with the values
      */
-    private Map<Integer, String> uncompress(CompressRow compressRow)
+    private Map<Integer, Double[]> uncompress(CompressRow compressRow)
     {
 
-        Map<Integer, String> values = new HashMap<Integer, String>(columns.size() / 4);
+        Map<Integer, Double[]> values = new HashMap<Integer, Double[]>(columns.size() / 4);
 
         try
         {
@@ -247,7 +266,15 @@ public class CompressElementAdapter implements IElementAdapter
             while (in.available() > 0)
             {
                 int column = in.readInt();
-                values.put(column, new String(CompressMatrixFormat.readBuffer(in), "UTF-8"));
+
+                String line = new String(CompressMatrixFormat.readBuffer(in), "UTF-8");
+                Double properties[] = new Double[getPropertyCount()];
+                for (int i=0; i < getPropertyCount(); i++)
+                {
+                    properties[i] = toDouble(line, i);
+                }
+
+                values.put(column, properties);
             }
             in.close();
 
