@@ -401,9 +401,6 @@ public class HeatmapEditor extends AbstractEditor
             }
         }
 
-        // Force heatmap IMatrixView detach to allow GC to free memory
-        this.heatmap.detach();
-
         // Force GC
         System.gc();
 
@@ -514,5 +511,11 @@ public class HeatmapEditor extends AbstractEditor
     void mouseClicked(int row, int col, MouseEvent e)
     {
         //throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void detach()
+    {
+        this.heatmap.detach();
     }
 }

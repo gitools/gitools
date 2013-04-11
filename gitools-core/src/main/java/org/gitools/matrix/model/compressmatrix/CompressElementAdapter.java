@@ -287,4 +287,9 @@ public class CompressElementAdapter implements IElementAdapter
     }
 
 
+    public void detach()
+    {
+        this.rowsCache.invalidateAll();
+        System.gc();
+    }
 }

@@ -165,4 +165,10 @@ public class DiagonalMatrix implements IMatrix
         return m.getCellAttributeIndex(id);
     }
 
+    @Override
+    public void detach()
+    {
+        m.detach();
+    }
+
 }

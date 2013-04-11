@@ -57,4 +57,12 @@ public interface IEditor extends IView
      * @return true -> close, false -> cancel close
      */
     boolean doClose();
+
+    /**
+     * This method is called when the editor lose the focus.
+     *
+     * It's a good practice to free all the memory that is not
+     * needed.
+     */
+    void detach();
 }

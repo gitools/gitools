@@ -30,9 +30,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractEditor extends AbstractView implements IEditor
 {
 
@@ -158,14 +155,17 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
         return true;
     }
 
+    @Override
+    public void detach()
+    {
+        // Override if needed
+    }
+
     public void addEditorListener(EditorListener listener)
     {
         listeners.add(listener);
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     public void removeEditorListener(EditorListener listener)
     {
         listeners.add(listener);

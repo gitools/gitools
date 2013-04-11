@@ -144,6 +144,12 @@ public class EditorTabComponent extends JPanel
         label.setToolTipText(toolTip);
     }
 
+    @NotNull
+    public AbstractEditor getEditor()
+    {
+        return editor;
+    }
+
     private class TabButton extends JButton implements ActionListener
     {
 
@@ -229,4 +235,7 @@ public class EditorTabComponent extends JPanel
             }
         }
     };
+
+
+
 }

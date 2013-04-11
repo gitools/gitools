@@ -320,4 +320,10 @@ public class TransposedMatrixView implements IMatrixView
         return mv.getCellAttributeIndex(id);
     }
 
+    @Override
+    public void detach()
+    {
+        mv.detach();
+    }
+
 }

@@ -131,7 +131,7 @@ public class ResourceReference<R extends IResource>
         this.properties = properties;
     }
 
-    final boolean isLoaded()
+    public final boolean isLoaded()
     {
         return loaded;
     }

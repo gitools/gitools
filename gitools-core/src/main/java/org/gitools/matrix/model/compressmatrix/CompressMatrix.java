@@ -145,6 +145,15 @@ public class CompressMatrix extends Artifact implements IMatrix
     }
 
     @Override
+    public void detach()
+    {
+        if (elementAdapter!=null)
+        {
+            elementAdapter.detach();
+        }
+    }
+
+    @Override
     public IResourceLocator getLocator()
     {
         return locator;

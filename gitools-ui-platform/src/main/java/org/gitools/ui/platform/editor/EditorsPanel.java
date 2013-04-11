@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -55,10 +56,25 @@ public class EditorsPanel extends WebTabbedPane
             @Override
             public void stateChanged(ChangeEvent evt)
             {
+
                 AbstractEditor selectedEditor = getSelectedEditor();
                 if (selectedEditor != null)
                 {
                     selectedEditor.doVisible();
+
+                    for (int i=0; i < getTabCount(); i++)
+                    {
+                        Component component = getTabComponentAt(i);
+                        if (component instanceof EditorTabComponent)
+                        {
+                            AbstractEditor editor = ((EditorTabComponent)component).getEditor();
+
+                            if (editor != selectedEditor)
+                            {
+                                editor.detach();
+                            }
+                        }
+                    }
                 }
 
                 refreshActions();

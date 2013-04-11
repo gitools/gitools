@@ -682,6 +682,15 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         return contents.get().getCellAttributeIndex(id);
     }
 
+    @Override
+    public void detach()
+    {
+        if (contents != null && contents.isLoaded())
+        {
+            contents.get().detach();
+        }
+    }
+
     // internal operations
 
     private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection)

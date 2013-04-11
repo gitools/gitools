@@ -375,6 +375,12 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
+    public void detach()
+    {
+        mv.detach();
+    }
+
+    @Override
     public void addPropertyChangeListener(@Nullable PropertyChangeListener listener)
     {
         if (listener != null)

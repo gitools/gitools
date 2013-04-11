@@ -96,4 +96,11 @@ public interface IMatrix extends IResource
 
     int getCellAttributeIndex(String id);
 
+    /**
+     * This method is called when the matrix is not in use.
+     *
+     * It's a good practice to free all the caching memory usage.
+     */
+    void detach();
+
 }

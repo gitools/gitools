@@ -264,4 +264,10 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         sb.append(getRowCount()).append(" rows");
         return sb.toString();
     }
+
+    @Override
+    public void detach()
+    {
+        // Method to Override
+    }
 }

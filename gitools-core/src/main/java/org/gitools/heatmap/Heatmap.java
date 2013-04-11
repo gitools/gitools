@@ -353,7 +353,11 @@ public class Heatmap extends Artifact implements Serializable, IResource
 
     public void detach()
     {
-        this.matrixView = null;
+        if (matrixView!=null)
+        {
+            this.matrixView.detach();
+        }
+
     }
 
 }
