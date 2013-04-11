@@ -36,8 +36,7 @@ import java.io.*;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Settings
-{
+public class Settings {
 
     private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
     private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
@@ -59,35 +58,29 @@ public class Settings
     private static Settings instance;
 
     @Nullable
-    public static Settings getDefault()
-    {
-        if (instance == null)
-        {
+    public static Settings getDefault() {
+        if (instance == null) {
             instance = load();
         }
         return instance;
     }
 
     @Nullable
-    private static Settings load()
-    {
+    private static Settings load() {
         Settings settings = null;
-        try
-        {
+        try {
             Reader reader = new FileReader(configFile);
             JAXBContext context = JAXBContext.newInstance(Settings.class);
             Unmarshaller u = context.createUnmarshaller();
             settings = (Settings) u.unmarshal(reader);
 
             reader.close();
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("Settings file doesn't exist: " + configFile);
             System.err.println("Created one with defaults.");
             settings = new Settings();
             settings.save();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace(); //TODO Deberia lanzar una excepción?
             settings = new Settings();
         }
@@ -115,6 +108,8 @@ public class Settings
     private boolean showCorrelationExamplePage = true;
     private boolean showOverlapExamplePage = true;
     private boolean showCombinationExamplePage = true;
+    private boolean showTipsAtStartup = true;
+
 
     // Port parameters
     private boolean portEnabled = true;
@@ -128,20 +123,16 @@ public class Settings
     private boolean previewFeatures = false;
 
 
-    private Settings()
-    {
+    private Settings() {
     }
 
-    public void save()
-    {
+    public void save() {
         File path = new File(CONFIG_PATH);
-        if (!path.exists())
-        {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        try
-        {
+        try {
             FileWriter writer = new FileWriter(configFile);
 
             JAXBContext context = JAXBContext.newInstance(Settings.class);
@@ -150,232 +141,196 @@ public class Settings
             m.marshal(this, writer);
 
             writer.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getLastPath()
-    {
+    public String getLastPath() {
         return lastPath;
     }
 
-    public void setLastPath(String lastPath)
-    {
+    public void setLastPath(String lastPath) {
         this.lastPath = lastPath;
     }
 
-    public String getLastImportPath()
-    {
+    public String getLastImportPath() {
         return lastImportPath;
     }
 
-    public void setLastImportPath(String lastImportPath)
-    {
+    public void setLastImportPath(String lastImportPath) {
         this.lastImportPath = lastImportPath;
     }
 
-    public String getLastExportPath()
-    {
+    public String getLastExportPath() {
         return lastExportPath;
     }
 
-    public void setLastExportPath(String lastExportPath)
-    {
+    public void setLastExportPath(String lastExportPath) {
         this.lastExportPath = lastExportPath;
     }
 
-    public String getLastWorkPath()
-    {
+    public String getLastWorkPath() {
         return lastWorkPath;
     }
 
-    public void setLastWorkPath(String lastWorkPath)
-    {
+    public void setLastWorkPath(String lastWorkPath) {
         this.lastWorkPath = lastWorkPath;
     }
 
-    public String getLastDataPath()
-    {
+    public String getLastDataPath() {
         return lastDataPath;
     }
 
-    public void setLastDataPath(String lastDataPath)
-    {
+    public void setLastDataPath(String lastDataPath) {
         this.lastDataPath = lastDataPath;
     }
 
-    public String getLastMapPath()
-    {
+    public String getLastMapPath() {
         return lastMapPath;
     }
 
-    public void setLastMapPath(String lastMapPath)
-    {
+    public void setLastMapPath(String lastMapPath) {
         this.lastMapPath = lastMapPath;
     }
 
-    public String getLastAnnotationPath()
-    {
+    public String getLastAnnotationPath() {
         return lastAnnotationPath;
     }
 
-    public void setLastAnnotationPath(String lastAnnotationPath)
-    {
+    public void setLastAnnotationPath(String lastAnnotationPath) {
         this.lastAnnotationPath = lastAnnotationPath;
     }
 
-    public String getLastFilterPath()
-    {
+    public String getLastFilterPath() {
         return lastFilterPath;
     }
 
-    public void setLastFilterPath(String lastFilterPath)
-    {
+    public void setLastFilterPath(String lastFilterPath) {
         this.lastFilterPath = lastFilterPath;
     }
 
-    public String getIntogenOncomodulesUrl()
-    {
+    public String getIntogenOncomodulesUrl() {
         return intogenOncomodulesUrl;
     }
 
-    public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl)
-    {
+    public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
         this.intogenOncomodulesUrl = intogenOncomodulesUrl;
     }
 
-    public String getIntogenDataUrl()
-    {
+    public String getIntogenDataUrl() {
         return intogenDataUrl;
     }
 
-    public void setIntogenDataUrl(String intogenDataUrl)
-    {
+    public void setIntogenDataUrl(String intogenDataUrl) {
         this.intogenDataUrl = intogenDataUrl;
     }
 
-    public boolean isShowEnrichmentExamplePage()
-    {
+    public boolean isShowEnrichmentExamplePage() {
         return showEnrichmentExamplePage;
     }
 
-    public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage)
-    {
+    public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
         this.showEnrichmentExamplePage = showEnrichmentExamplePage;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public boolean isShowOncodriveExamplePage()
-    {
+    public boolean isShowOncodriveExamplePage() {
         return showOncodriveExamplePage;
     }
 
-    public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage)
-    {
+    public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
         this.showOncodriveExamplePage = showOncodriveExamplePage;
     }
 
-    public boolean isShowCorrelationExamplePage()
-    {
+    public boolean isShowCorrelationExamplePage() {
         return showCorrelationExamplePage;
     }
 
-    public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage)
-    {
+    public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
         this.showCorrelationExamplePage = showCorrelationExamplePage;
     }
 
-    public boolean isShowCombinationExamplePage()
-    {
+    public boolean isShowCombinationExamplePage() {
         return showCombinationExamplePage;
     }
 
-    public void setShowCombinationExamplePage(boolean showCombinationExamplePage)
-    {
+    public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
         this.showCombinationExamplePage = showCombinationExamplePage;
     }
 
-    public boolean isShowOverlapExamplePage()
-    {
+
+    public boolean isShowTipsAtStartup() {
+        return showTipsAtStartup;
+    }
+
+    public void setShowTipsAtStartup(boolean showTipsAtStartup) {
+        this.showTipsAtStartup = showTipsAtStartup;
+    }
+
+    public boolean isShowOverlapExamplePage() {
         return showOverlapExamplePage;
     }
 
-    public void setShowOverlapExamplePage(boolean showOverlapExamplePage)
-    {
+    public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
         this.showOverlapExamplePage = showOverlapExamplePage;
     }
 
-    public boolean isPortEnabled()
-    {
+    public boolean isPortEnabled() {
         return portEnabled;
     }
 
-    public void setPortEnabled(boolean portEnabled)
-    {
+    public void setPortEnabled(boolean portEnabled) {
         this.portEnabled = portEnabled;
     }
 
-    public int getDefaultPort()
-    {
+    public int getDefaultPort() {
         return defaultPort;
     }
 
-    public void setDefaultPort(int defaultPort)
-    {
+    public void setDefaultPort(int defaultPort) {
         this.defaultPort = defaultPort;
     }
 
-    public String getIgvUrl()
-    {
+    public String getIgvUrl() {
         return igvUrl;
     }
 
-    public void setIgvUrl(String igvUrl)
-    {
+    public void setIgvUrl(String igvUrl) {
         this.igvUrl = igvUrl;
     }
 
-    public boolean isShowIGVLink()
-    {
+    public boolean isShowIGVLink() {
         return showIGVLink;
     }
 
-    public void setShowIGVLink(boolean showIGVLink)
-    {
+    public void setShowIGVLink(boolean showIGVLink) {
         this.showIGVLink = showIGVLink;
     }
 
-    public boolean isPreviewFeatures()
-    {
+    public boolean isPreviewFeatures() {
         return previewFeatures;
     }
 
-    public void setPreviewFeatures(boolean previewFeatures)
-    {
+    public void setPreviewFeatures(boolean previewFeatures) {
         this.previewFeatures = previewFeatures;
     }
 
-    public int getEditorTabLength()
-    {
+    public int getEditorTabLength() {
         return editorTabLength;
     }
 
-    public void setEditorTabLength(int editorTabLength)
-    {
+    public void setEditorTabLength(int editorTabLength) {
         this.editorTabLength = editorTabLength;
     }
 }

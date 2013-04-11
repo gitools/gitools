@@ -1,3 +1,24 @@
+/*
+ * #%L
+ * gitools-core
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.matrix.sort.mutualexclusion;
 
 
@@ -11,16 +32,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MutualExclusionComparator implements Comparator<Integer>
-{
+public class MutualExclusionComparator implements Comparator<Integer> {
 
     private final IMatrixView matrixView;
     private final int[] selectedColumns;
     private final double[] valueBuffer;
     private final Map<Integer, Double> aggregationCache;
 
-    public MutualExclusionComparator(IMatrixView matrixView, int numRows, int[] selectedColumns, IProgressMonitor monitor)
-    {
+    public MutualExclusionComparator(IMatrixView matrixView, int numRows, int[] selectedColumns, IProgressMonitor monitor) {
         this.matrixView = matrixView;
         this.selectedColumns = selectedColumns;
         this.valueBuffer = new double[selectedColumns.length];
@@ -28,20 +47,17 @@ public class MutualExclusionComparator implements Comparator<Integer>
         this.aggregationCache = new HashMap<Integer, Double>(numRows);
 
         monitor.begin("Aggregating values...", numRows);
-        for (int i=0; i < numRows; i++)
-        {
+        for (int i = 0; i < numRows; i++) {
             this.aggregationCache.put(i, aggregateValue(i));
             monitor.worked(1);
-            if (monitor.isCancelled())
-            {
+            if (monitor.isCancelled()) {
                 return;
             }
         }
     }
 
     @Override
-    public int compare(Integer idx1, Integer idx2)
-    {
+    public int compare(Integer idx1, Integer idx2) {
         double value1 = aggregationCache.get(idx1);
         double value2 = aggregationCache.get(idx2);
 
@@ -49,11 +65,9 @@ public class MutualExclusionComparator implements Comparator<Integer>
         return res * ValueSortCriteria.SortDirection.DESCENDING.getFactor();
     }
 
-    private double aggregateValue( int idx )
-    {
+    private double aggregateValue(int idx) {
 
-        for (int i = 0; i < selectedColumns.length; i++)
-        {
+        for (int i = 0; i < selectedColumns.length; i++) {
             int col = selectedColumns[i];
 
             Object valueObject = matrixView.getCellValue(idx, col, matrixView.getSelectedPropertyIndex());

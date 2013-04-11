@@ -23,13 +23,11 @@ package org.gitools.ui.platform;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
+import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.welcome.WelcomeEditor;
-import org.jdesktop.swingx.JXTipOfTheDay;
-import org.jdesktop.swingx.tips.DefaultTip;
-import org.jdesktop.swingx.tips.DefaultTipOfTheDayModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,20 +41,17 @@ import java.net.URLConnection;
 /**
  * @noinspection ALL
  */
-public class AppFrame extends JFrame
-{
+public class AppFrame extends JFrame {
 
     private static final long serialVersionUID = -6899584212813749990L;
     private static final String appName;
     private static String appVersion;
 
-    static
-    {
+    static {
         appName = "Gitools";
 
         appVersion = AppFrame.class.getPackage().getImplementationVersion();
-        if (appVersion == null)
-        {
+        if (appVersion == null) {
             appVersion = "SNAPSHOT";
         }
     }
@@ -69,25 +64,20 @@ public class AppFrame extends JFrame
 
     private static AppFrame instance;
 
-    public static AppFrame get()
-    {
-        if (instance == null)
-        {
+    public static AppFrame get() {
+        if (instance == null) {
             instance = new AppFrame();
         }
         return instance;
     }
 
-    private AppFrame()
-    {
+    private AppFrame() {
 
         createComponents();
 
-        addWindowListener(new WindowAdapter()
-        {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e)
-            {
+            public void windowClosing(WindowEvent e) {
                 Settings.getDefault().save();
                 System.exit(0);
             }
@@ -100,18 +90,15 @@ public class AppFrame extends JFrame
         pack();
     }
 
-    public static String getAppName()
-    {
+    public static String getAppName() {
         return appName;
     }
 
-    public static String getAppVersion()
-    {
+    public static String getAppVersion() {
         return appVersion;
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
         setJMenuBar(Actions.menuActionSet.createMenuBar());
 
         toolBar = Actions.toolBarActionSet.createToolBar();
@@ -125,41 +112,33 @@ public class AppFrame extends JFrame
     }
 
 
-    private void configureLayout()
-    {
+    private void configureLayout() {
         setLayout(new BorderLayout());
         add(toolBar, BorderLayout.NORTH);
         add(editorsPanel, BorderLayout.CENTER);
         add(statusBar, BorderLayout.SOUTH);
     }
 
-    private void createWelcomeView()
-    {
+    private void createWelcomeView() {
         AbstractEditor view = new WelcomeEditor();
         editorsPanel.addEditor(view);
     }
 
-    public void start()
-    {
+    public void start() {
         createWelcomeView();
         editorsPanel.setSelectedIndex(0);
 
         setLocationByPlatform(true);
         setVisible(true);
 
-        Runnable runnable = new Runnable()
-        {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
-                    if (!isLatestGitools())
-                    {
+            public void run() {
+                try {
+                    if (!isLatestGitools()) {
                         JOptionPane.showMessageDialog(AppFrame.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
                     }
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
 
                 }
             }
@@ -168,33 +147,16 @@ public class AppFrame extends JFrame
         Thread t = new Thread(runnable);
         t.start();
 
-        JXTipOfTheDay tipOfTheDay = new JXTipOfTheDay(new DefaultTipOfTheDayModel(new DefaultTip[] {
-            new DefaultTip("michi", "<html><p style='margin:30px'>Michi will <b>work</b> on the tip store system!</p></html>")
-        }));
-        tipOfTheDay.showDialog(this, new JXTipOfTheDay.ShowOnStartupChoice()
-        {
-            @Override
-            public void setShowingOnStartup(boolean showOnStartup)
-            {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            @Override
-            public boolean isShowingOnStartup()
-            {
-                return true;
-            }
-        });
+        TipsDialog tipsDialog = new TipsDialog();
+        tipsDialog.show();
 
 
     }
 
-    boolean isLatestGitools() throws Exception
-    {
+    boolean isLatestGitools() throws Exception {
 
         String thisVersion = AppFrame.getAppVersion();
-        if (thisVersion.toLowerCase().contains("snapshot"))
-        {
+        if (thisVersion.toLowerCase().contains("snapshot")) {
             return true;
         }
 
@@ -210,31 +172,26 @@ public class AppFrame extends JFrame
         latestVersion = in.readLine();
         in.close();
 
-        if (latestUrl != null && !latestVersion.equals(thisVersion))
-        {
+        if (latestUrl != null && !latestVersion.equals(thisVersion)) {
             return false;
         }
         return true;
     }
 
-    public EditorsPanel getEditorsPanel()
-    {
+    public EditorsPanel getEditorsPanel() {
         return editorsPanel;
     }
 
-    public JToolBar getToolBar()
-    {
+    public JToolBar getToolBar() {
         return toolBar;
     }
 
-    public void setStatusText(String text)
-    {
+    public void setStatusText(String text) {
         statusBar.setText(text);
         repaint();
     }
 
-    public void refresh()
-    {
+    public void refresh() {
     }
 
 }

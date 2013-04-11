@@ -27,13 +27,11 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 
-public class MenuActionSet extends ActionSet
-{
+public class MenuActionSet extends ActionSet {
 
     private static final long serialVersionUID = -7702905459240675073L;
 
-    public MenuActionSet()
-    {
+    public MenuActionSet() {
         super(new BaseAction[]{
                 new ActionSet("File",
                         new BaseAction[]{
@@ -134,13 +132,13 @@ public class MenuActionSet extends ActionSet
                         new BaseAction[]{
                                 HelpActions.welcomeAction,
                                 BaseAction.separator,
+                                HelpActions.showTipsAction,
                                 HelpActions.aboutAction
                         })
         });
     }
 
-    public JMenuBar createMenuBar()
-    {
+    public JMenuBar createMenuBar() {
         return ActionSetUtils.createMenuBar(this);
     }
 }

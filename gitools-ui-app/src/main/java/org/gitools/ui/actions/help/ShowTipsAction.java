@@ -19,19 +19,33 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.actions;
+package org.gitools.ui.actions.help;
 
-import org.gitools.ui.actions.help.AboutAction;
-import org.gitools.ui.actions.help.ShowTipsAction;
-import org.gitools.ui.actions.help.WelcomeAction;
+import org.gitools.ui.dialog.TipsDialog;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 
-final class HelpActions {
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
-    public static final BaseAction aboutAction = new AboutAction();
 
-    public static final BaseAction showTipsAction = new ShowTipsAction();
+/**
+ * @noinspection ALL
+ */
+public class ShowTipsAction extends BaseAction {
 
-    public static final BaseAction welcomeAction = new WelcomeAction();
+    private final TipsDialog tipsDialog = new TipsDialog();
+
+    public ShowTipsAction() {
+        super("Show tips about " + AppFrame.getAppName() + "...");
+        setDesc("Get useful tips about Gitools");
+        setMnemonic(KeyEvent.VK_T);
+        setDefaultEnabled(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        tipsDialog.show(true);
+    }
 
 }
