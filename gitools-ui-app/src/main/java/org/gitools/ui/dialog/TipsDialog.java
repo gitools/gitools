@@ -9,6 +9,7 @@ import org.jdesktop.swingx.tips.TipOfTheDayModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Random;
 
 public class TipsDialog {
     public TipsDialog() {
@@ -30,6 +31,11 @@ public class TipsDialog {
         final boolean settingsShowDialog = Settings.getDefault().isShowTipsAtStartup();
 
         JXTipOfTheDay tipOfTheDay = new JXTipOfTheDay(loadedTips);
+
+        Random generator = new Random();
+        int i = generator.nextInt(loadedTips.getTipCount());
+        tipOfTheDay.setCurrentTip(i);
+
         tipOfTheDay.showDialog(AppFrame.get(), new JXTipOfTheDay.ShowOnStartupChoice() {
             @Override
             public void setShowingOnStartup(boolean showOnStartup) {
