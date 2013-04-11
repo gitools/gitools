@@ -27,6 +27,9 @@ import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.welcome.WelcomeEditor;
+import org.jdesktop.swingx.JXTipOfTheDay;
+import org.jdesktop.swingx.tips.DefaultTip;
+import org.jdesktop.swingx.tips.DefaultTipOfTheDayModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -164,6 +167,24 @@ public class AppFrame extends JFrame
 
         Thread t = new Thread(runnable);
         t.start();
+
+        JXTipOfTheDay tipOfTheDay = new JXTipOfTheDay(new DefaultTipOfTheDayModel(new DefaultTip[] {
+            new DefaultTip("michi", "<html><p style='margin:30px'>Michi will <b>work</b> on the tip store system!</p></html>")
+        }));
+        tipOfTheDay.showDialog(this, new JXTipOfTheDay.ShowOnStartupChoice()
+        {
+            @Override
+            public void setShowingOnStartup(boolean showOnStartup)
+            {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public boolean isShowingOnStartup()
+            {
+                return true;
+            }
+        });
 
 
     }
