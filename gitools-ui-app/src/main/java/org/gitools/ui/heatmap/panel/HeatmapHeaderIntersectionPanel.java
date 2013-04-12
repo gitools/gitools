@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -60,9 +60,9 @@ public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel
         Object src = evt.getSource();
 
 
-        if (src instanceof HeatmapDim && HeatmapDim.HEADERS_CHANGED.equals(pname))
+        if (src instanceof HeatmapDimension && HeatmapDimension.HEADERS_CHANGED.equals(pname))
         {
-            getHeaderDrawer().updateDrawers((HeatmapDim) src);
+            getHeaderDrawer().updateDrawers((HeatmapDimension) src);
         }
         else if (src instanceof HeatmapHeader && HeatmapHeader.VISIBLE_CHANGED.equals(pname))
         {

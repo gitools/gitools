@@ -24,12 +24,9 @@ package org.gitools.ui.analysis.groupcomparison.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
@@ -118,24 +115,22 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap = new Heatmap(analysis.getData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 if (analysis.getRowAnnotations() != null)
                 {
-                    heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
+                    heatmap.getRows().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
                 }
                 if (analysis.getRowHeaders() != null)
-                    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                    copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
 
                 if (analysis.getColumnAnnotations() != null)
                 {
-                    heatmap.getColumnDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
+                    heatmap.getColumns().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
                 }
                 if (analysis.getColumnHeaders() != null)
-                    copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+                    copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
@@ -156,7 +151,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
 
-    private void copyHeaders(@NotNull HeatmapDim dim, @NotNull List<HeatmapHeader> headers)
+    private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers)
     {
         for (HeatmapHeader hh : headers)      {
             dim.addHeader(SerialClone.xclone(hh));
@@ -180,22 +175,20 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap =  new Heatmap(analysis.getResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 if (analysis.getRowHeaders() != null)
                 {
                     if (analysis.getRowAnnotations() != null)
                     {
-                        heatmap.getRowDim().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
+                        heatmap.getRows().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
                     }
 
-                    heatmap.getRowDim().removeHeader(0);
+                    heatmap.getRows().removeHeader(0);
                     for (HeatmapHeader hh : analysis.getRowHeaders())
                     {
-                        heatmap.getRowDim().addHeader(SerialClone.xclone(hh));
+                        heatmap.getRows().addHeader(SerialClone.xclone(hh));
                     }
                 }
 

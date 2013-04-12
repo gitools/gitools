@@ -53,7 +53,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer
 
     public final void updateDrawers()
     {
-        List<HeatmapHeader> headers = horizontal ? heatmap.getColumnDim().getHeaders() : heatmap.getRowDim().getHeaders();
+        List<HeatmapHeader> headers = horizontal ? heatmap.getColumns().getHeaders() : heatmap.getRows().getHeaders();
 
         drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
 

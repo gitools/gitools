@@ -55,7 +55,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         initComponents();
         updateModel();
 
-        boolean hasAnnotation = applyToRows ? heatmap.getColumnDim().getAnnotations() != null : heatmap.getRowDim().getAnnotations() != null;
+        boolean hasAnnotation = applyToRows ? heatmap.getColumns().getAnnotations() != null : heatmap.getRows().getAnnotations() != null;
         separateAggregationCb.setEnabled(hasAnnotation);
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));

@@ -305,7 +305,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
 
         IElementAttribute attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;
@@ -324,7 +324,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
         combinationParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
         combinationParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
         combinationParamsPage.setTransposeEnabled(a.isTransposeData());

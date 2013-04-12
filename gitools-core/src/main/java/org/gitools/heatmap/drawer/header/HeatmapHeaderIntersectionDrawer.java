@@ -23,7 +23,7 @@ package org.gitools.heatmap.drawer.header;
 
 import org.apache.commons.collections.map.MultiValueMap;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
@@ -86,15 +86,15 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         return answer;
     }
 
-    public final void updateDrawers(HeatmapDim evtSrc)
+    public final void updateDrawers(HeatmapDimension evtSrc)
     {
 
-        if (heatmap.getRowDim() == evtSrc)
+        if (heatmap.getRows() == evtSrc)
         {
             rowDrawer.updateDrawers();
         }
 
-        if (heatmap.getColumnDim() == evtSrc)
+        if (heatmap.getColumns() == evtSrc)
         {
             colDrawer.updateDrawers();
         }
@@ -107,8 +107,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         YCoordinates = new HashMap<Object, Integer>();
         List<AbstractHeatmapHeaderDrawer> colHeaderDrawers = colDrawer.getDrawers();
         List<AbstractHeatmapHeaderDrawer> rowHeaderDrawers = rowDrawer.getDrawers();
-        List<HeatmapHeader> rowHeaders = heatmap.getRowDim().getHeaders();
-        List<HeatmapHeader> colHeaders = heatmap.getColumnDim().getHeaders();
+        List<HeatmapHeader> rowHeaders = heatmap.getRows().getHeaders();
+        List<HeatmapHeader> colHeaders = heatmap.getColumns().getHeaders();
         headerLegendDrawers = new MultiValueMap();
 
         int XPosition = 0;

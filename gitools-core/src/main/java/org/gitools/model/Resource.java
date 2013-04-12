@@ -21,18 +21,17 @@
  */
 package org.gitools.model;
 
+import org.gitools.persistence.IResource;
+import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"title", "description", "attributes"})
-public class Artifact extends AbstractModel
+@XmlType(propOrder = {"title", "description", "properties"})
+public class Resource extends AbstractModel implements IResource
 {
 
     private static final long serialVersionUID = 5752318457428475330L;
@@ -54,21 +53,25 @@ public class Artifact extends AbstractModel
     /**
      * Extra attributes *
      */
-    @XmlElementWrapper(name = "attributes")
-    @XmlElement(name = "attribute")
-    private List<Attribute> attributes = new ArrayList<Attribute>(0);
+    @XmlElementWrapper(name = "properties")
+    @XmlElement(name = "property")
+    private List<Property> properties = new ArrayList<Property>(0);
 
 	/* constructors */
 
-    protected Artifact()
+    @XmlTransient
+    private IResourceLocator locator;
+
+
+    protected Resource()
     {
     }
 
-    public Artifact(@NotNull Artifact artifact)
+    public Resource(@NotNull Resource artifact)
     {
         this.title = artifact.getTitle();
         this.description = artifact.getDescription();
-        this.attributes = (List<Attribute>) ((ArrayList<Attribute>) artifact.getAttributes()).clone();
+        this.properties = (List<Property>) ((ArrayList<Property>) artifact.getProperties()).clone();
     }
 
 	/* getters and setters */
@@ -97,15 +100,25 @@ public class Artifact extends AbstractModel
         firePropertyChange(DESC_CHANGED, oldValue, description);
     }
 
-    public List<Attribute> getAttributes()
+    public List<Property> getProperties()
     {
-        return attributes;
+        return properties;
     }
 
-    public void setAttributes(List<Attribute> attributes)
+    public void setProperties(List<Property> properties)
     {
-        List<Attribute> oldValue = this.attributes;
-        this.attributes = attributes;
-        firePropertyChange(ATTRIBUTES_CHANGED, oldValue, attributes);
+        List<Property> oldValue = this.properties;
+        this.properties = properties;
+        firePropertyChange(ATTRIBUTES_CHANGED, oldValue, properties);
+    }
+
+    public IResourceLocator getLocator()
+    {
+        return locator;
+    }
+
+    public void setLocator(IResourceLocator locator)
+    {
+        this.locator = locator;
     }
 }

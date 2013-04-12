@@ -22,8 +22,6 @@
 package org.gitools.persistence.formats.analysis;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileFormat;
@@ -49,15 +47,8 @@ public class HeatmapFormat extends AbstractXmlFormat<Heatmap>
     void afterRead(InputStream inputStream, IResourceLocator resourceLocator, Heatmap resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
-        // Initialize the MatrixView
-        resource.getMatrixView().init();
-
-        // Initialize decorators adapters
-        IElementAdapter adapter = resource.getMatrixView().getContents().getCellAdapter();
-        for (ElementDecorator decorator : resource.getCellDecorators())
-        {
-            decorator.setAdapter(adapter);
-        }
+        // Initialize the heatmap
+        resource.init();
 
     }
 }

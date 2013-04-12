@@ -26,7 +26,6 @@ import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
@@ -97,8 +96,8 @@ public class CorrelationsAction extends BaseAction
         {
             if (matrixView.getSelectedColumns().length > 0)
             {
-                MatrixView mv = new MatrixView(matrixView);
-                mv.visibleColumnsFromSelection();
+                Heatmap mv = new Heatmap(matrixView);
+                mv.getColumns().visibleFromSelection();
                 matrixView = mv;
             }
         }
@@ -106,8 +105,8 @@ public class CorrelationsAction extends BaseAction
         {
             if (matrixView.getSelectedRows().length > 0)
             {
-                MatrixView mv = new MatrixView(matrixView);
-                mv.visibleRowsFromSelection();
+                Heatmap mv = new Heatmap(matrixView);
+                mv.getRows().visibleFromSelection();
                 matrixView = mv;
             }
         }

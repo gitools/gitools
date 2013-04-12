@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.textlabels;
 
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -29,13 +29,13 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 public class TextLabelsHeaderWizard extends AbstractWizard
 {
 
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
     private final HeatmapTextLabelsHeader header;
 
     private TextLabelsSourcePage sourcePage;
     private TextLabelsConfigPage configPage;
 
-    public TextLabelsHeaderWizard(HeatmapDim hdim, HeatmapTextLabelsHeader header)
+    public TextLabelsHeaderWizard(HeatmapDimension hdim, HeatmapTextLabelsHeader header)
     {
         this.hdim = hdim;
         this.header = header;

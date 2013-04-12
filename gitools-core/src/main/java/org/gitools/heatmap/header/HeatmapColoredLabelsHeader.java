@@ -22,19 +22,21 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.clustering.ClusteringResults;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapColoredLabelsHeader extends HeatmapHeader
 {
 
@@ -62,7 +64,12 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
      */
     private Map<String, Integer> dataColoredLabelIndices;
 
-    public HeatmapColoredLabelsHeader(HeatmapDim hdim)
+    public HeatmapColoredLabelsHeader()
+    {
+        super();
+    }
+
+    public HeatmapColoredLabelsHeader(HeatmapDimension hdim)
     {
         super(hdim);
 

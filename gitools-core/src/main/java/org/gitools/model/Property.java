@@ -23,35 +23,27 @@ package org.gitools.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlValue;
 import java.io.Serializable;
 
-/**
- * Annotation for items, adds a dynamic attribute to the desired item *
- *
- * @noinspection ALL
- */
-
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Attribute implements Serializable
+public class Property implements Serializable
 {
 
     private static final long serialVersionUID = -391476933832883165L;
 
-    /**
-     * Name *
-     */
+    @XmlAttribute
     private String name;
 
-    /**
-     * Value *
-     */
+    @XmlValue
     private String value;
 
-    public Attribute()
+    public Property()
     {
     }
 
-    public Attribute(String name, String value)
+    public Property(String name, String value)
     {
         this.name = name;
         this.value = value;

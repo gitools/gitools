@@ -30,7 +30,7 @@ import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.model.Attribute;
+import org.gitools.model.Property;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
@@ -173,21 +173,21 @@ public class GroupComparisonCommand extends AnalysisCommand
     }
 
     @NotNull
-    private List<Attribute> getGroupAttributes(@NotNull ColumnGroup[] groups)
+    private List<Property> getGroupAttributes(@NotNull ColumnGroup[] groups)
     {
-        List<Attribute> analysisAttributes = new ArrayList<Attribute>();
+        List<Property> analysisAttributes = new ArrayList<Property>();
         if (groupDescriptions.length > 1)
         {
             for (int i = 0; i < groupDescriptions.length; i++)
             {
-                analysisAttributes.add(new Attribute("Group " + Integer.toString(i + 1), groupDescriptions[i]));
+                analysisAttributes.add(new Property("Group " + Integer.toString(i + 1), groupDescriptions[i]));
             }
         }
         else
         {
             for (int i = 0; i < groups.length; i++)
             {
-                analysisAttributes.add(new Attribute("Group " + Integer.toString(i + 1), groups[i].getName()));
+                analysisAttributes.add(new Property("Group " + Integer.toString(i + 1), groups[i].getName()));
             }
         }
         return analysisAttributes;
@@ -206,10 +206,10 @@ public class GroupComparisonCommand extends AnalysisCommand
             try
             {
                 ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data.get());
-                List<Attribute> attributes = getGroupAttributes(columnGroups);
+                List<Property> attributes = getGroupAttributes(columnGroups);
                 analysis.setGroup1(columnGroups[0]);
                 analysis.setGroup2(columnGroups[1]);
-                analysis.setAttributes(attributes);
+                analysis.setProperties(attributes);
 
             } catch (IOException e)
             {

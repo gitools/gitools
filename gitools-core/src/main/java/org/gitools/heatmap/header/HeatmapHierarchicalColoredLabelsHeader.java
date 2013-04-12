@@ -22,17 +22,28 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.clustering.HierarchicalClusteringResults;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabelsHeader
 {
 
     private static final String CLUSTERING_RESULTS_CHANGED = "clusteringResults";
     private static final String TREE_LEVEL_CHANGED = "treeLevel";
 
-    private HierarchicalClusteringResults clusteringResults;
+    private transient HierarchicalClusteringResults clusteringResults;
 
-    public HeatmapHierarchicalColoredLabelsHeader(HeatmapDim hdim)
+    public HeatmapHierarchicalColoredLabelsHeader()
+    {
+        super();
+    }
+
+    public HeatmapHierarchicalColoredLabelsHeader(HeatmapDimension hdim)
     {
         super(hdim);
     }

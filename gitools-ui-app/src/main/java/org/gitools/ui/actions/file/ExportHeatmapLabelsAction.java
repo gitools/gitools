@@ -29,7 +29,6 @@ import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
@@ -114,22 +113,22 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     {
                         case VISIBLE_ROWS:
                             labelProvider = new MatrixRowsLabelProvider(matrixView);
-                            annMatrix = hm.getRowDim().getAnnotations();
+                            annMatrix = hm.getRows().getAnnotations();
                             break;
 
                         case VISIBLE_COLUMNS:
                             labelProvider = new MatrixColumnsLabelProvider(matrixView);
-                            annMatrix = hm.getColumnDim().getAnnotations();
+                            annMatrix = hm.getColumns().getAnnotations();
                             break;
 
                         case HIDDEN_ROWS:
                             labelProvider = hiddenRowsLabelProvider(matrixView);
-                            annMatrix = hm.getRowDim().getAnnotations();
+                            annMatrix = hm.getRows().getAnnotations();
                             break;
 
                         case HIDDEN_COLUMNS:
                             labelProvider = hiddenColumnsLabelProvider(matrixView);
-                            annMatrix = hm.getColumnDim().getAnnotations();
+                            annMatrix = hm.getColumns().getAnnotations();
                             break;
                     }
 
@@ -174,7 +173,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                 hiddenIndices[j++] = i;
             }
 
-        IMatrixView hiddenView = new MatrixView(matrixView);
+        IMatrixView hiddenView = new Heatmap(matrixView);
         hiddenView.setVisibleRows(hiddenIndices);
         return new MatrixRowsLabelProvider(hiddenView);
     }
@@ -198,7 +197,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                 hiddenIndices[j++] = i;
             }
 
-        IMatrixView hiddenView = new MatrixView(matrixView);
+        IMatrixView hiddenView = new Heatmap(matrixView);
         hiddenView.setVisibleColumns(hiddenIndices);
         return new MatrixColumnsLabelProvider(hiddenView);
     }

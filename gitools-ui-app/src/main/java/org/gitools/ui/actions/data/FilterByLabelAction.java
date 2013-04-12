@@ -94,10 +94,10 @@ public class FilterByLabelAction extends BaseAction
                 switch (dim)
                 {
                     case ROWS:
-                        am = hm.getRowDim().getAnnotations();
+                        am = hm.getRows().getAnnotations();
                         break;
                     case COLUMNS:
-                        am = hm.getColumnDim().getAnnotations();
+                        am = hm.getColumns().getAnnotations();
                         break;
                 }
 

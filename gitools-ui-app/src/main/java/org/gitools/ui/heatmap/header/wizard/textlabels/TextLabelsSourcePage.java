@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.textlabels;
 
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -34,10 +34,10 @@ import java.awt.event.ActionListener;
 public class TextLabelsSourcePage extends AbstractWizardPage
 {
 
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
     private final HeatmapTextLabelsHeader header;
 
-    public TextLabelsSourcePage(HeatmapDim hdim, HeatmapTextLabelsHeader header)
+    public TextLabelsSourcePage(HeatmapDimension hdim, HeatmapTextLabelsHeader header)
     {
         this.hdim = hdim;
         this.header = header;

@@ -23,9 +23,6 @@ package org.gitools.newick;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class NewickTree<VT>
 {
 

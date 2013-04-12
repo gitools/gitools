@@ -25,8 +25,7 @@ package org.gitools.matrix.model.compressmatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.Artifact;
-import org.gitools.persistence.IResourceLocator;
+import org.gitools.model.Resource;
 
 import java.util.List;
 
@@ -36,10 +35,8 @@ import java.util.List;
  * This format keep the rows compressed at memory, and has a dynamic cache that can expand or
  * contract depending on the user free memory.
  */
-public class CompressMatrix extends Artifact implements IMatrix
+public class CompressMatrix extends Resource implements IMatrix
 {
-    private IResourceLocator locator;
-
     private CompressDimension rows;
     private CompressDimension columns;
 
@@ -153,15 +150,4 @@ public class CompressMatrix extends Artifact implements IMatrix
         }
     }
 
-    @Override
-    public IResourceLocator getLocator()
-    {
-        return locator;
-    }
-
-    @Override
-    public void setLocator(IResourceLocator locator)
-    {
-        this.locator = locator;
-    }
 }

@@ -213,7 +213,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
 
         //a.setAttributeIndex(corrPage.getAttributeIndex());
         a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);
@@ -226,7 +226,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
         corrPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
         if (a.getReplaceNanValue() != null)
         {

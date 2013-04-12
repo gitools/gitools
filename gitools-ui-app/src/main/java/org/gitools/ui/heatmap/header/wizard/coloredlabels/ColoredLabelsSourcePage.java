@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -37,10 +37,10 @@ import javax.swing.event.*;
 public class ColoredLabelsSourcePage extends AbstractWizardPage
 {
 
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
     private final AnnPatClusteringMethod method;
 
-    public ColoredLabelsSourcePage(@NotNull HeatmapDim hdim, AnnPatClusteringMethod method)
+    public ColoredLabelsSourcePage(@NotNull HeatmapDimension hdim, AnnPatClusteringMethod method)
     {
         this.hdim = hdim;
         this.method = method;

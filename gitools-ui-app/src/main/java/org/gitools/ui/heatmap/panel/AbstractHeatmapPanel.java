@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.matrix.model.IMatrixView;
 import org.jetbrains.annotations.NotNull;
@@ -118,15 +118,15 @@ class AbstractHeatmapPanel extends JPanel
         }
         else if (src.equals(heatmap.getMatrixView()))
         {
-            if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname) || IMatrixView.VISIBLE_ROWS_CHANGED.equals(pname))
+            if (IMatrixView.VISIBLE_CHANGED.equals(pname))
             {
                 updateSize();
             }
         }
-        else if (src.equals(heatmap.getRowDim()) || src.equals(heatmap.getColumnDim()))
+        else if (src.equals(heatmap.getRows()) || src.equals(heatmap.getColumns()))
         {
 
-            if (HeatmapDim.HEADER_SIZE_CHANGED.equals(pname) || HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname))
+            if (HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname) || HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname))
             {
                 updateSize();
             }

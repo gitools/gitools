@@ -24,7 +24,7 @@ package org.gitools.ui.heatmap.panel.details;
 import com.alee.laf.panel.WebPanel;
 import info.clearthought.layout.SingleFiledLayout;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.UrlLink;
@@ -161,7 +161,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
         int column = getMatrixView().getLeadSelectionColumn();
         String columnIdentifier = heatmap.getColumnLabel(column);
 
-        return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRowDim())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumnDim())), getProperties(row, column));
+        return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRows())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumns())), getProperties(row, column));
     }
 
     @Nullable
@@ -207,7 +207,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
     }
 
     @Nullable
-    private String getLink(String value, @NotNull HeatmapDim dim)
+    private String getLink(String value, @NotNull HeatmapDimension dim)
     {
         IdType idType = dim.getIdType();
         if (idType != null)

@@ -27,7 +27,7 @@ import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -48,7 +48,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
 {
 
     private final Heatmap heatmap;
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
     private final boolean applyToRows;
 
     private boolean editionMode;
@@ -62,7 +62,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     private ColoredLabelsConfigPage headerPage;
     private ColoredLabelsGroupsPage clustersPage;
 
-    public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, HeatmapColoredLabelsHeader header, boolean applyToRows)
+    public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDimension hdim, HeatmapColoredLabelsHeader header, boolean applyToRows)
     {
         super();
 

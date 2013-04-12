@@ -83,7 +83,7 @@ public class SortByLabelAction extends BaseAction
             {
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByLabel(matrixView, page.isApplyToRowsSelected(), page.getRowsPattern(), hm.getRowDim().getAnnotations(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), hm.getColumnDim().getAnnotations(), page.getColumnsDirection(), page.getColumnsNumeric());
+                MatrixViewSorter.sortByLabel(matrixView, page.isApplyToRowsSelected(), page.getRowsPattern(), hm.getRows().getAnnotations(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), hm.getColumns().getAnnotations(), page.getColumnsDirection(), page.getColumnsNumeric());
 
                 monitor.end();
             }

@@ -136,7 +136,7 @@ public class LabelFilterPage extends AbstractWizardPage
 
     private void selectRowsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getRows().getAnnotations(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())
@@ -150,7 +150,7 @@ public class LabelFilterPage extends AbstractWizardPage
 
     private void selectColsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getColumns().getAnnotations(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())

@@ -25,19 +25,16 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.model.Artifact;
-import org.gitools.persistence.IResourceLocator;
+import org.gitools.model.Resource;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class BaseMatrix extends Artifact implements IMatrix, Serializable
+public abstract class BaseMatrix extends Resource implements IMatrix, Serializable
 {
 
     private static final long serialVersionUID = 4021765485781500318L;
-
-    private IResourceLocator locator;
 
     ObjectMatrix1D rows;
     ObjectMatrix1D columns;
@@ -58,16 +55,6 @@ public abstract class BaseMatrix extends Artifact implements IMatrix, Serializab
         this.columns = columns;
 
         this.cellAdapter = cellAdapter;
-    }
-
-    public IResourceLocator getLocator()
-    {
-        return locator;
-    }
-
-    public void setLocator(IResourceLocator locator)
-    {
-        this.locator = locator;
     }
 
     public void make(int numRows, int numColumns)

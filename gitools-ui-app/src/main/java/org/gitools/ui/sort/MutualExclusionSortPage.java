@@ -144,7 +144,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
 
     private void selectRowsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getRowDim().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getRows().getAnnotations(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())
@@ -158,7 +158,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
 
     private void selectColsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getColumns().getAnnotations(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())
@@ -218,7 +218,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm.getMatrixView()) : new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRowDim().getAnnotations() : hm.getColumnDim().getAnnotations();
+            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
@@ -237,7 +237,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm.getMatrixView()) : new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRowDim().getAnnotations() : hm.getColumnDim().getAnnotations();
+            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 

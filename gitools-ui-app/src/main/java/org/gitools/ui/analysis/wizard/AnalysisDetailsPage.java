@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.model.Attribute;
+import org.gitools.model.Property;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -49,18 +49,18 @@ public class AnalysisDetailsPage extends AbstractWizardPage
     {
 
         @Nullable
-        private final List<Attribute> attrs;
+        private final List<Property> attrs;
         @NotNull
         private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         public AttributesModel()
         {
-            attrs = new ArrayList<Attribute>();
+            attrs = new ArrayList<Property>();
         }
 
-        public AttributesModel(@Nullable List<Attribute> attrs)
+        public AttributesModel(@Nullable List<Property> attrs)
         {
-            this.attrs = attrs != null ? attrs : new ArrayList<Attribute>();
+            this.attrs = attrs != null ? attrs : new ArrayList<Property>();
         }
 
         @Override
@@ -98,7 +98,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
         @Override
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            Attribute attr = attrs.get(rowIndex);
+            Property attr = attrs.get(rowIndex);
             return columnIndex == 0 ? attr.getName() : attr.getValue();
         }
 
@@ -121,26 +121,26 @@ public class AnalysisDetailsPage extends AbstractWizardPage
         }
 
         @Nullable
-        public List<Attribute> getAttributes()
+        public List<Property> getAttributes()
         {
             return attrs;
         }
 
-        public Attribute getAttribute(int index)
+        public Property getAttribute(int index)
         {
             return attrs.get(index);
         }
 
-        public void addAttribute(Attribute attr)
+        public void addAttribute(Property attr)
         {
             attrs.add(attr);
             for (TableModelListener l : listeners)
                 l.tableChanged(new TableModelEvent(this));
         }
 
-        private void modifyAttribute(int index, @NotNull Attribute attribute)
+        private void modifyAttribute(int index, @NotNull Property attribute)
         {
-            Attribute attr = getAttribute(index);
+            Property attr = getAttribute(index);
             attr.setName(attribute.getName());
             attr.setValue(attribute.getValue());
             for (TableModelListener l : listeners)
@@ -212,12 +212,12 @@ public class AnalysisDetailsPage extends AbstractWizardPage
     }
 
     @Nullable
-    public List<Attribute> getAnalysisAttributes()
+    public List<Property> getAnalysisAttributes()
     {
         return attrModel.getAttributes();
     }
 
-    public void setAnalysisAttributes(List<Attribute> attrs)
+    public void setAnalysisAttributes(List<Property> attrs)
     {
         attrTable.setModel(attrModel = new AttributesModel(attrs));
     }

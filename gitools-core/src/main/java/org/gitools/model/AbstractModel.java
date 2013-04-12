@@ -23,22 +23,21 @@ package org.gitools.model;
 
 import org.jetbrains.annotations.Nullable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractModel implements IModel, Serializable, Cloneable
 {
-
-    private static final long serialVersionUID = -8918954049958104274L;
-
     public static final String PROPERTY_CHANGED = "propertyChanged";
 
     private transient ArrayList<PropertyChangeListener> listeners;
 
-    private boolean quiet = false;
+    private transient boolean quiet = false;
 
     protected AbstractModel()
     {
@@ -117,4 +116,6 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
     {
         this.quiet = quiet;
     }
+
 }
+

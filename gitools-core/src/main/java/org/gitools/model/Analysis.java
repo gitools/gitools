@@ -21,25 +21,15 @@
  */
 package org.gitools.model;
 
-import org.gitools.persistence.IResource;
-import org.gitools.persistence.IResourceLocator;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.Date;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Analysis extends Artifact implements IResource
+public class Analysis extends Resource
 {
 
     private static final long serialVersionUID = 44219853082656184L;
-
-    @XmlTransient
-    private IResourceLocator locator;
 
     /**
      * Analysis start time
@@ -53,16 +43,6 @@ public class Analysis extends Artifact implements IResource
 
     protected Analysis()
     {
-    }
-
-    public IResourceLocator getLocator()
-    {
-        return locator;
-    }
-
-    public void setLocator(IResourceLocator locator)
-    {
-        this.locator = locator;
     }
 
     public Date getStartTime()

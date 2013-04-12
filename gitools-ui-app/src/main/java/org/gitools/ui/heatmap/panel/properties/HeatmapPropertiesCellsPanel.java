@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel.properties;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecorator;
@@ -96,7 +96,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             {
                 if (!updatingControls)
                 {
-                    getHeatmap().getRowDim().setGridColor(color);
+                    getHeatmap().getRows().setGridColor(color);
                 }
             }
         });
@@ -108,7 +108,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             {
                 if (!updatingControls)
                 {
-                    getHeatmap().getColumnDim().setGridColor(color);
+                    getHeatmap().getColumns().setGridColor(color);
                 }
             }
         });
@@ -133,8 +133,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     {
         updatingControls = true;
 
-        HeatmapDim rdim = getHeatmap().getRowDim();
-        HeatmapDim cdim = getHeatmap().getColumnDim();
+        HeatmapDimension rdim = getHeatmap().getRows();
+        HeatmapDimension cdim = getHeatmap().getColumns();
 
         cellWidth.setValue(getHeatmap().getCellWidth());
         cellHeight.setValue(getHeatmap().getCellHeight());
@@ -480,24 +480,24 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
 
     private void rowsGridEnabledStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_rowsGridEnabledStateChanged
-        getHeatmap().getRowDim().setGridEnabled(rowsGridEnabled.isSelected());
+        getHeatmap().getRows().setGridEnabled(rowsGridEnabled.isSelected());
     }//GEN-LAST:event_rowsGridEnabledStateChanged
 
     private void columnsGridEnabledStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_columnsGridEnabledStateChanged
-        getHeatmap().getColumnDim().setGridEnabled(columnsGridEnabled.isSelected());
+        getHeatmap().getColumns().setGridEnabled(columnsGridEnabled.isSelected());
     }//GEN-LAST:event_columnsGridEnabledStateChanged
 
     private void rowsGridSizeStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_rowsGridSizeStateChanged
         int size = (Integer) rowsGridSize.getValue();
-        getHeatmap().getRowDim().setGridSize(size);
+        getHeatmap().getRows().setGridSize(size);
     }//GEN-LAST:event_rowsGridSizeStateChanged
 
     private void columnsGridSizeStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_columnsGridSizeStateChanged
         int size = (Integer) columnsGridSize.getValue();
-        getHeatmap().getColumnDim().setGridSize(size);
+        getHeatmap().getColumns().setGridSize(size);
     }//GEN-LAST:event_columnsGridSizeStateChanged
 
     private void saveScaleActionPerformed(java.awt.event.ActionEvent evt)

@@ -21,8 +21,6 @@
  */
 package org.gitools.persistence;
 
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixFactory;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.persistence.locators.filters.IResourceFilter;
@@ -166,13 +164,6 @@ public class PersistenceManager implements Serializable
 
     public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
     {
-
-        //TODO Look for another way to manage this singular case
-        if (resource instanceof IMatrixView)
-        {
-            resource = (R) MatrixFactory.create((IMatrixView) resource);
-        }
-
         // Add filters
         resourceLocator = applyFilters(resourceLocator);
 

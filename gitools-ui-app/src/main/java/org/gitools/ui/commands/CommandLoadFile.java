@@ -29,12 +29,9 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.util.HeatmapUtil;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.compressmatrix.MatrixConversion;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
@@ -174,19 +171,18 @@ public class CommandLoadFile extends AbstractCommand
             matrix = resource;
         }
 
-        final IMatrixView matrixView = new MatrixView( matrix );
-        Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
+        Heatmap heatmap = new Heatmap( matrix );
 
         if (rowsAnnotations != null)
         {
             File rowsFile = download(rowsAnnotations, progressMonitor);
-            loadAnnotations(rowsFile, heatmap.getRowDim());
+            loadAnnotations(rowsFile, heatmap.getRows());
         }
 
         if (columnsAnnotations != null)
         {
             File colsFile = download(columnsAnnotations, progressMonitor);
-            loadAnnotations(colsFile, heatmap.getColumnDim());
+            loadAnnotations(colsFile, heatmap.getColumns());
 
         }
 
@@ -242,7 +238,7 @@ public class CommandLoadFile extends AbstractCommand
         return resultFile;
     }
 
-    private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDim hdim)
+    private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDimension hdim)
     {
         hdim.setAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class));
     }

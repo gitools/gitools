@@ -19,9 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.model;
+package org.gitools.heatmap;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.AbstractModel;
@@ -39,7 +41,7 @@ import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixView extends AbstractModel implements Serializable, IMatrixView
+class MatrixView extends AbstractModel implements Serializable, IMatrixView
 {
 
     private static final long serialVersionUID = -8602409555044803568L;
@@ -55,11 +57,9 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     private int[] visibleColumns;
 
-    //@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     @XmlTransient
     private int[] selectedRows;
 
-    //@XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     @XmlTransient
     private int[] selectedColumns;
 
@@ -93,7 +93,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
 
     public MatrixView(@NotNull IMatrix contents)
     {
-        initFromMatrix(contents, true);
+        //initFromMatrix(contents, true);
     }
 
     public MatrixView(@NotNull IMatrixView matrixView)
@@ -111,7 +111,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
         else
         {
-            initFromMatrix(matrixView.getContents(), true);
+           // initFromMatrix(matrixView.getContents(), true);
         }
 
         selectedColumnsBitmap = newSelectionBitmap(contents.get().getColumnCount());
@@ -128,57 +128,17 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         this.locator = locator;
     }
 
-    public void init()
-    {
-        initFromMatrix(contents.get(), false);
-    }
-
-    private void initFromMatrix(@NotNull IMatrix contents, boolean visible)
-    {
-        this.contents = new ResourceReference<IMatrix>("contents", contents);
-
-        // initialize visible rows and columns
-        if (visible)
-        {
-            visibleRows = new int[contents.getRowCount()];
-            for (int i = 0; i < contents.getRowCount(); i++)
-                visibleRows[i] = i;
-
-            visibleColumns = new int[contents.getColumnCount()];
-            for (int i = 0; i < contents.getColumnCount(); i++)
-                visibleColumns[i] = i;
-        }
-
-
-        // initialize selection
-        selectedRows = new int[0];
-        selectedColumns = new int[0];
-
-        selectedColumnsBitmap = newSelectionBitmap(contents.getColumnCount());
-        selectedRowsBitmap = newSelectionBitmap(contents.getRowCount());
-
-        selectionLeadRow = selectionLeadColumn = -1;
-
-        // selected property
-        /*
-        int i = 0;
-        for (IElementAttribute attr : contents.getCellAttributes())
-        {
-            if ("right-p-value".equals(attr.getId()) || "p-value".equals(attr.getId()))
-            {
-                selectedPropertyIndex = i;
-                break;
-            }
-            i++;
-        }  */
-    }
-
 	/* visibility */
 
     @Override
     public IMatrix getContents()
     {
         return contents.get();
+    }
+
+    public ResourceReference<IMatrix> getContentsReference()
+    {
+        return contents;
     }
 
     @Override
@@ -211,7 +171,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         this.visibleRows = indices;
-        firePropertyChange(VISIBLE_ROWS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
 
         setSelectedRows(selection);
 
@@ -251,7 +211,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         this.visibleColumns = indices;
-        firePropertyChange(VISIBLE_COLUMNS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
 
         setSelectedColumns(selection);
 
@@ -274,7 +234,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         arrayMoveLeft(visibleRows, indices, selectedRows);
-        firePropertyChange(VISIBLE_ROWS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
         firePropertyChange(SELECTION_CHANGED);
     }
 
@@ -291,7 +251,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         arrayMoveRight(visibleRows, indices, selectedRows);
-        firePropertyChange(VISIBLE_ROWS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
         firePropertyChange(SELECTION_CHANGED);
     }
 
@@ -308,7 +268,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         arrayMoveLeft(visibleColumns, indices, selectedColumns);
-        firePropertyChange(VISIBLE_COLUMNS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
         firePropertyChange(SELECTION_CHANGED);
     }
 
@@ -325,7 +285,7 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
         }
 
         arrayMoveRight(visibleColumns, indices, selectedColumns);
-        firePropertyChange(VISIBLE_COLUMNS_CHANGED);
+        firePropertyChange(VISIBLE_CHANGED);
         firePropertyChange(SELECTION_CHANGED);
     }
 
@@ -822,4 +782,6 @@ public class MatrixView extends AbstractModel implements Serializable, IMatrixVi
 
         setVisibleRows(newview);
     }
+
+
 }

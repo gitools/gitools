@@ -35,6 +35,7 @@
     <rows count="1">
         <row index="0">
             <id-type>not_specified</id-type>
+            <cell-size>14</cell-size>
             <annotations path="row_annotations.tsv.gz" mime="application/annotations"/>
             <headers>
                 <labels> <!-- ... --> </labels>
@@ -56,6 +57,7 @@
     <columns count="2">
         <column index="0">
             <idType>not_specified</idType>
+            <cell-size>14</cell-size>
             <annotations path="col_annotations.tsv.gz" mime="application/annotations"/>
             <headers>
                 <labels> <!-- ... --> </labels>
@@ -77,8 +79,6 @@
     <bodies>
         <body col="0" row="0">
             <data path="20_all_tumor_types_upreg.cdm.gz" mime="application/gene-cluster-text"/>
-            <cell-width>14</cell-width>
-            <cell-height>14</cell-height>
             <selected-view>0</selected-view>
             <views>
                 <view name="Enrichment P-Values">

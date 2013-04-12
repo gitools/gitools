@@ -21,9 +21,9 @@
  */
 package org.gitools.matrix;
 
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
@@ -55,7 +55,7 @@ public class TransposedMatrixView implements IMatrixView
 
     public final void setMatrix(@NotNull IMatrix matrix)
     {
-        this.mv = matrix instanceof IMatrixView ? (IMatrixView) matrix : new MatrixView(matrix);
+        this.mv = matrix instanceof IMatrixView ? (IMatrixView) matrix : new Heatmap(matrix);
     }
 
     public IResourceLocator getLocator()
@@ -216,12 +216,6 @@ public class TransposedMatrixView implements IMatrixView
     public void setSelectedPropertyIndex(int index)
     {
         mv.setSelectedPropertyIndex(index);
-    }
-
-    @Override
-    public void init()
-    {
-        mv.init();
     }
 
     @Override

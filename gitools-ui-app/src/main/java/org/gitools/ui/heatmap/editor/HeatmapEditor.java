@@ -28,7 +28,7 @@ import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
@@ -194,7 +194,7 @@ public class HeatmapEditor extends AbstractEditor
             {
             }
         }
-        else if ((src instanceof HeatmapDim) && HeatmapDim.IDTYPE_CHANGED.equals(pname))
+        else if ((src instanceof HeatmapDimension) && HeatmapDimension.IDTYPE_CHANGED.equals(pname))
         {
             refreshCellDetails();
         }
@@ -209,11 +209,7 @@ public class HeatmapEditor extends AbstractEditor
         {
             refreshCellDetails();
         }
-        else if (IMatrixView.VISIBLE_COLUMNS_CHANGED.equals(propertyName))
-        {
-            setDirty(true);
-        }
-        else if (IMatrixView.VISIBLE_ROWS_CHANGED.equalsIgnoreCase(propertyName))
+        else if (IMatrixView.VISIBLE_CHANGED.equals(propertyName))
         {
             setDirty(true);
         }
@@ -434,7 +430,7 @@ public class HeatmapEditor extends AbstractEditor
         { // Row
             String label = mv.getRowLabel(row);
             sb.append(label);
-            HeatmapDim rowDim = heatmap.getRowDim();
+            HeatmapDimension rowDim = heatmap.getRows();
             AnnotationMatrix am = rowDim.getAnnotations();
             if (am != null)
             {
@@ -463,7 +459,7 @@ public class HeatmapEditor extends AbstractEditor
         { // Column
             String label = mv.getColumnLabel(col);
             sb.append(label);
-            HeatmapDim colDim = heatmap.getColumnDim();
+            HeatmapDimension colDim = heatmap.getColumns();
             AnnotationMatrix am = colDim.getAnnotations();
             if (am != null)
             {

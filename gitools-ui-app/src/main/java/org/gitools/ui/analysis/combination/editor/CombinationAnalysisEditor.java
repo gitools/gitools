@@ -24,9 +24,6 @@ package org.gitools.ui.analysis.combination.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
@@ -140,9 +137,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                 {
                     monitor.begin("Creating new heatmap from data ...", 1);
 
-                    IMatrixView dataTable = new MatrixView(analysis.getData().get());
-
-                    Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                    Heatmap heatmap = new Heatmap(analysis.getData().get());
                     heatmap.setTitle(analysis.getTitle() + " (data)");
 
                     final HeatmapEditor editor = new HeatmapEditor(heatmap);
@@ -187,9 +182,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                 try
                 {
-                    IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-
-                    Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                    Heatmap heatmap = new Heatmap(analysis.getResults().get());
                     heatmap.setTitle(analysis.getTitle() + " (results)");
 
                     final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
@@ -216,8 +209,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     @NotNull
     private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
     {
-        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
     }

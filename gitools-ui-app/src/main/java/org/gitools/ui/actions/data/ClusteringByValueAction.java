@@ -26,7 +26,7 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.clustering.HierarchicalClusteringResults;
 import org.gitools.clustering.method.value.ClusterUtils;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.matrix.TransposedMatrixView;
@@ -119,7 +119,7 @@ public class ClusteringByValueAction extends BaseAction
                     {
                         boolean hcl = results instanceof HierarchicalClusteringResults;
 
-                        HeatmapDim hdim = wiz.isApplyToRows() ? heatmap.getRowDim() : heatmap.getColumnDim();
+                        HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
 
                         HeatmapColoredLabelsHeader header = hcl ? new HeatmapHierarchicalColoredLabelsHeader(hdim) : new HeatmapColoredLabelsHeader(hdim);
 
@@ -139,11 +139,11 @@ public class ClusteringByValueAction extends BaseAction
 
                         if (wiz.isApplyToRows())
                         {
-                            heatmap.getRowDim().addHeader(header);
+                            heatmap.getRows().addHeader(header);
                         }
                         else
                         {
-                            heatmap.getColumnDim().addHeader(header);
+                            heatmap.getColumns().addHeader(header);
                         }
                     }
 

@@ -24,10 +24,8 @@ package org.gitools.ui.analysis.correlation.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 import org.gitools.persistence.IResourceLocator;
@@ -122,9 +120,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap =  new Heatmap(analysis.getData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
@@ -161,9 +157,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap = new Heatmap(analysis.getResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));

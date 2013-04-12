@@ -22,11 +22,10 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.jetbrains.annotations.NotNull;
@@ -218,8 +217,8 @@ public class HeatmapPanel extends JPanel
 
         Point leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
 
-        HeatmapDim rowDim = heatmap.getRowDim();
-        HeatmapDim colDim = heatmap.getColumnDim();
+        HeatmapDimension rowDim = heatmap.getRows();
+        HeatmapDimension colDim = heatmap.getColumns();
 
         int leadPointXEnd = leadPoint.x + heatmap.getCellWidth() + (colDim.isGridEnabled() ? colDim.getGridSize() : 0);
         int leadPointYEnd = leadPoint.y + heatmap.getCellHeight() + (rowDim.isGridEnabled() ? rowDim.getGridSize() : 0);
@@ -393,7 +392,7 @@ public class HeatmapPanel extends JPanel
         String pname = evt.getPropertyName();
         Object src = evt.getSource();
 
-        boolean updateAll = (src.equals(heatmap) && Heatmap.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDim) && (HeatmapDim.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDim.HEADERS_CHANGED.equals(pname) || HeatmapDim.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap.getMatrixView()) && (MatrixView.VISIBLE_COLUMNS_CHANGED.equals(pname) || MatrixView.VISIBLE_ROWS_CHANGED.equals(pname) || MatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
+        boolean updateAll = (src.equals(heatmap) && Heatmap.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDimension) && (HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDimension.HEADERS_CHANGED.equals(pname) || HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap.getMatrixView()) && (IMatrixView.VISIBLE_CHANGED.equals(pname) || IMatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
 
         if (updateAll)
         {

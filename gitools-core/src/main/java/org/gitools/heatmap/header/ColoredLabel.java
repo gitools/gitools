@@ -23,12 +23,12 @@ package org.gitools.heatmap.header;
 
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ColoredLabel
 {
 

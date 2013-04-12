@@ -23,7 +23,7 @@ package org.gitools.cli;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.model.Analysis;
-import org.gitools.model.Attribute;
+import org.gitools.model.Property;
 import org.gitools.model.KeyValue;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceFormat;
@@ -50,7 +50,7 @@ public class AnalysisTool extends AbstractTool
     protected static final String LIST_L_FMT = "\t* %-48s%s";
 
     @NotNull
-    private final List<Attribute> analysisAttributes = new ArrayList<Attribute>(0);
+    private final List<Property> analysisAttributes = new ArrayList<Property>(0);
 
     @Override
     public void validate(Object argsObject) throws ToolException
@@ -76,7 +76,7 @@ public class AnalysisTool extends AbstractTool
             {
                 throw new ToolValidationException("Malformed analysis attribute: " + attr);
             }
-            analysisAttributes.add(new Attribute(a[0], a[1]));
+            analysisAttributes.add(new Property(a[0], a[1]));
         }
     }
 
@@ -128,7 +128,7 @@ public class AnalysisTool extends AbstractTool
     {
         analysis.setTitle(args.analysisTitle);
         analysis.setDescription(args.analysisNotes);
-        analysis.setAttributes(analysisAttributes);
+        analysis.setProperties(analysisAttributes);
     }
 
     protected void printDataFormats(@NotNull PrintStream out)

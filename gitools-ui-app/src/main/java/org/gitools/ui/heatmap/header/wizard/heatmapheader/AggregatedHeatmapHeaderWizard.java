@@ -31,13 +31,12 @@ import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -72,7 +71,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     private boolean editionMode;
     private final boolean labelVisible;
     private final HeatmapDataHeatmapHeader header;
-    private HeatmapDim heatmapDim;
+    private HeatmapDimension heatmapDim;
     private String[] aggregationTitles;
     private Map<String, int[]> dataIndicesToAggregateByTitle;
 
@@ -105,13 +104,13 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
                 dataSourceAggregationPage = new AggregationDataSourcePage(heatmap, applyToRows);
                 addPage(dataSourceAggregationPage);
 
-                heatmapDim = applyToRows ? heatmap.getColumnDim() : heatmap.getRowDim();
+                heatmapDim = applyToRows ? heatmap.getColumns() : heatmap.getRows();
                 dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The aggregation is calculated for each " + "distinct value of the chosen annotation individually");
                 addPage(dataSourceAnnotationPage);
             }
             else if (dataSource == DataSourceEnum.annotation)
             {
-                heatmapDim = applyToRows ? heatmap.getRowDim() : heatmap.getColumnDim();
+                heatmapDim = applyToRows ? heatmap.getRows() : heatmap.getColumns();
                 dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The annotation column must not contain " + "numeric values");
                 addPage(dataSourceAnnotationPage);
             }
@@ -352,7 +351,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             rowNames = aggregationTitles;
         }
 
-        return new Heatmap(new MatrixView(new DoubleMatrix("Data Annotation", columnNames, rowNames, valueMatrix)));
+        return new Heatmap(new DoubleMatrix("Data Annotation", columnNames, rowNames, valueMatrix));
     }
 
     private void getIndecesByAnnotation()
@@ -404,7 +403,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         if (applyToRows)
         {
 
-            AnnotationMatrix annotations = heatmap.getRowDim().getAnnotations();
+            AnnotationMatrix annotations = heatmap.getRows().getAnnotations();
             int annColIdx = annotations.getColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
 
             int[] rows = heatmap.getMatrixView().getVisibleRows();
@@ -445,7 +444,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         else
         {
 
-            AnnotationMatrix annotations = heatmap.getColumnDim().getAnnotations();
+            AnnotationMatrix annotations = heatmap.getColumns().getAnnotations();
             int annColIdx = annotations.getColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
 
             int[] columns = heatmap.getMatrixView().getVisibleColumns();
@@ -472,7 +471,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         }
 
 
-        return new Heatmap(new MatrixView(new DoubleMatrix("Data Annotation", columnNames, rowNames, valueMatrix)));
+        return new Heatmap(new DoubleMatrix("Data Annotation", columnNames, rowNames, valueMatrix));
     }
 
     void setAggregationTitles(String[] aggregationTitles)

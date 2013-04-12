@@ -60,7 +60,6 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     {
         dependencies = new ArrayList<ResourceReference>();
         unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
-
     }
 
     void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, @NotNull Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException
@@ -92,6 +91,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         try
         {
             JAXBContext context = JAXBContext.newInstance(getResourceClass());
+
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
 

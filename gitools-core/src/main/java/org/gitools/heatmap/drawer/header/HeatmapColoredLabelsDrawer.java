@@ -22,7 +22,7 @@
 package org.gitools.heatmap.drawer.header;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.ColoredLabel;
@@ -59,7 +59,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         g.setColor(header.getBackgroundColor());
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        final HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        final HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         IMatrixView data = heatmap.getMatrixView();
 
         g.setFont(header.getLabelFont());
@@ -224,12 +224,12 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     @Override
     public Dimension getSize()
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
         int extBorder = /*2 * 1 - 1*/ 0;
 
-        HeatmapDim dim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension dim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         headerTotalSize = header.getSize();
 
         if (horizontal)
@@ -250,7 +250,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     @Override
     public HeatmapPosition getPosition(@NotNull Point p)
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
         int row = -1;
@@ -282,7 +282,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     @Override
     public Point getPoint(@NotNull HeatmapPosition p)
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
         int x = 0;

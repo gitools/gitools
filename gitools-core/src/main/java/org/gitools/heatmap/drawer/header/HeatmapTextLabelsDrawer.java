@@ -22,7 +22,7 @@
 package org.gitools.heatmap.drawer.header;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
@@ -108,7 +108,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         g.setColor(header.getBackgroundColor());
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        final HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        final HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         IMatrixView data = heatmap.getMatrixView();
 
         g.setFont(header.getFont());
@@ -220,7 +220,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     @Override
     public Dimension getSize()
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
         int extBorder = /*2 * 1 - 1*/ 0;
 
@@ -244,7 +244,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     @Override
     public HeatmapPosition getPosition(@NotNull Point p)
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
         int row = -1;
@@ -276,7 +276,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     @Override
     public Point getPoint(@NotNull HeatmapPosition p)
     {
-        HeatmapDim hdim = horizontal ? heatmap.getColumnDim() : heatmap.getRowDim();
+        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
 
         int x = 0;

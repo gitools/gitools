@@ -24,7 +24,7 @@ package org.gitools.ui.analysis.groupcomparison.wizard;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.model.Attribute;
+import org.gitools.model.Property;
 import org.gitools.model.ToolConfig;
 import org.gitools.stats.test.factory.TestFactory;
 import org.gitools.ui.IconNames;
@@ -165,7 +165,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
         a.setTransposeData(false);
 
         ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
@@ -174,10 +174,10 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
         a.setColumnGrouping(attrSelectPage.getColumnGrouping());
         a.setToolConfig(toolConfig);
         a.setMtc(attrSelectPage.getMtc().getShortName());
-        a.setRowAnnotations(heatmap.getRowDim().getAnnotations());
-        a.setRowHeaders(heatmap.getRowDim().getHeaders());
-        a.setColumnAnnotations(heatmap.getColumnDim().getAnnotations());
-        a.setColumnHeaders(heatmap.getColumnDim().getHeaders());
+        a.setRowAnnotations(heatmap.getRows().getAnnotations());
+        a.setRowHeaders(heatmap.getRows().getHeaders());
+        a.setColumnAnnotations(heatmap.getColumns().getAnnotations());
+        a.setColumnHeaders(heatmap.getColumns().getHeaders());
 
         if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL))
         {
@@ -194,11 +194,11 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
 
     private void updateAnalysisDetails()
     {
-        List<Attribute> analysisAttributes = new ArrayList<Attribute>();
+        List<Property> analysisAttributes = new ArrayList<Property>();
         if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL))
         {
-            analysisAttributes.add(new Attribute("Group 1", "user defined group"));
-            analysisAttributes.add(new Attribute("Group 2", "user defined group"));
+            analysisAttributes.add(new Property("Group 1", "user defined group"));
+            analysisAttributes.add(new Property("Group 2", "user defined group"));
         }
         else
         {
@@ -212,7 +212,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
                 String name = cutoffAttributeString + " " +
                         groupCutoffCmps[i].getLongName() + " " +
                         String.valueOf(groupCutoffValues[i]);
-                analysisAttributes.add(new Attribute(group, name));
+                analysisAttributes.add(new Property(group, name));
             }
         }
         analysisDetailsPage.setAnalysisAttributes(analysisAttributes);

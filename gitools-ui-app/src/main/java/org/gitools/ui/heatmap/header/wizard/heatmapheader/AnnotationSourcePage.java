@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -35,11 +35,11 @@ import javax.swing.*;
 public class AnnotationSourcePage extends AbstractWizardPage
 {
 
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
     public String infoMessage = "";
     private int[] selectedIndices;
 
-    public AnnotationSourcePage(HeatmapDim hdim, String infoMessage)
+    public AnnotationSourcePage(HeatmapDimension hdim, String infoMessage)
     {
         this.hdim = hdim;
 

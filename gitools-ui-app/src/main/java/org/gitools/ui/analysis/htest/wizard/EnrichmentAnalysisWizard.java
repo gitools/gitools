@@ -239,7 +239,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
 
         analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
         analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
-        analysis.setAttributes(analysisDetailsPage.getAnalysisAttributes());
+        analysis.setProperties(analysisDetailsPage.getAnalysisAttributes());
 
         analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
         if (dataFilterPage.isBinaryCutoffEnabled())
@@ -260,7 +260,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard
     {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getAttributes());
+        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
         dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
         dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
         dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());

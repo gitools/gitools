@@ -24,11 +24,9 @@ package org.gitools.ui.analysis.overlapping;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.IResourceLocator;
@@ -129,9 +127,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getSourceData().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap =  new Heatmap(analysis.getSourceData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
@@ -168,9 +164,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
             {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getCellResults().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap = new Heatmap(analysis.getCellResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));

@@ -25,9 +25,6 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ToolConfig;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.BinaryElementDecorator;
@@ -153,9 +150,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
             {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                IMatrixView dataTable = new MatrixView(analysis.getData().get());
-
-                Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+                Heatmap heatmap = new Heatmap(analysis.getData().get());
                 String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
                 if (!testName.equals(TestFactory.ZSCORE_TEST))
                 {
@@ -220,8 +215,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
     @NotNull
     private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis)
     {
-        IMatrixView dataTable = new MatrixView(analysis.getResults().get());
-        Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
+        Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
     }

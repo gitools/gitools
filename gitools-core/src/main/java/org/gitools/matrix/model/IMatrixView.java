@@ -28,13 +28,10 @@ public interface IMatrixView extends IModel, IMatrix
 
     // events
 
-    String VISIBLE_COLUMNS_CHANGED = "visibleColsChanged";
-    String VISIBLE_ROWS_CHANGED = "visibleRowsChanged";
+    String VISIBLE_CHANGED = "visibleChanged";
 
     String SELECTED_LEAD_CHANGED = "selectionLead";
     String SELECTION_CHANGED = "selectionChanged";
-    //String SELECTED_COLUMNS_CHANGED = "selectionColumns";
-    //String SELECTED_ROWS_CHANGED = "selectionRows";
 
     String CELL_VALUE_CHANGED = "cellValueChanged";
 
@@ -98,5 +95,4 @@ public interface IMatrixView extends IModel, IMatrix
 
     void setSelectedPropertyIndex(int index);
 
-    void init();
 }

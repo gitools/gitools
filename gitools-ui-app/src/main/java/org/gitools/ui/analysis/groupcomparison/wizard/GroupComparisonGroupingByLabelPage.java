@@ -125,7 +125,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
     private void selectColsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumnDim().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getColumns().getAnnotations(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())
@@ -194,7 +194,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
         //conversion to
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
-        AnnotationMatrix am = hm.getColumnDim().getAnnotations();
+        AnnotationMatrix am = hm.getColumns().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         int[] visibleCols = hm.getMatrixView().getVisibleColumns();
         int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
@@ -214,7 +214,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumnDim().getAnnotations(), getPattern());
+            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
@@ -242,7 +242,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumnDim().getAnnotations(), getPattern());
+            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();

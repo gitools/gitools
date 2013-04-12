@@ -21,19 +21,19 @@
  */
 package org.gitools.heatmap.header;
 
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.model.AbstractModel;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
 import org.jetbrains.annotations.Nullable;
 
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDataHeatmapHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
 public abstract class HeatmapHeader extends AbstractModel
 {
 
@@ -106,7 +106,12 @@ public abstract class HeatmapHeader extends AbstractModel
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     Color labelColor;
 
-    HeatmapHeader(HeatmapDim dim)
+    public HeatmapHeader()
+    {
+
+    }
+
+    HeatmapHeader(HeatmapDimension dim)
     {
         this.dim = dim;
         this.title = "";
@@ -123,14 +128,14 @@ public abstract class HeatmapHeader extends AbstractModel
     }
 
     @XmlTransient
-    private HeatmapDim dim;
+    private HeatmapDimension dim;
 
-    public HeatmapDim getHeatmapDim()
+    public HeatmapDimension getHeatmapDim()
     {
         return dim;
     }
 
-    public void setHeatmapDim(HeatmapDim dim)
+    public void setHeatmapDim(HeatmapDimension dim)
     {
         this.dim = dim;
     }

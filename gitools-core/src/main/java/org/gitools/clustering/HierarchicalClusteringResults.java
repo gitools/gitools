@@ -30,9 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class HierarchicalClusteringResults extends GenericClusteringResults
 {
 

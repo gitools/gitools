@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel.properties;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.*;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
@@ -71,7 +71,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
     private final boolean rowMode;
 
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
 
     private final boolean updatingModel = false;
 
@@ -79,7 +79,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     {
         super(heatmap);
         this.rowMode = rowMode;
-        this.hdim = rowMode ? heatmap.getRowDim() : heatmap.getColumnDim();
+        this.hdim = rowMode ? heatmap.getRows() : heatmap.getColumns();
 
         initComponents();
 
@@ -268,11 +268,11 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
         }
         else if (src.equals(hdim))
         {
-            if (HeatmapDim.ANNOTATIONS_CHANGED.equals(pname))
+            if (HeatmapDimension.ANNOTATIONS_CHANGED.equals(pname))
             {
                 updateAnnotations();
             }
-            else if (HeatmapDim.HEADERS_CHANGED.equals(pname))
+            else if (HeatmapDimension.HEADERS_CHANGED.equals(pname))
             {
                 updateHeaders();
             }

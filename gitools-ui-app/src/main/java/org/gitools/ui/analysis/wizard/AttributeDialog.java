@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.model.Attribute;
+import org.gitools.model.Property;
 import org.jetbrains.annotations.NotNull;
 
 class AttributeDialog extends javax.swing.JDialog
@@ -46,16 +46,16 @@ class AttributeDialog extends javax.swing.JDialog
         initComponents();
     }
 
-    public void setAttribute(@NotNull Attribute attr)
+    public void setAttribute(@NotNull Property attr)
     {
         name.setText(attr.getName());
         value.setText(attr.getValue());
     }
 
     @NotNull
-    public Attribute getAttribute()
+    public Property getAttribute()
     {
-        return new Attribute(name.getText(), value.getText());
+        return new Property(name.getText(), value.getText());
     }
 
     public boolean isCancelled()

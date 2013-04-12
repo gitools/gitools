@@ -22,10 +22,8 @@
 package org.gitools.ui.analysis.htest.editor.actions;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.util.HeatmapUtil;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
@@ -127,13 +125,11 @@ public class ViewRelatedDataFromRowAction extends BaseAction
             newView[i++] = index;
 
         // Create heatmap
-        final IMatrixView matrixView = new MatrixView(matrix);
-        matrixView.setVisibleRows(newView);
-
-        Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
+        Heatmap heatmap = new Heatmap(matrix);
+        heatmap.setVisibleRows(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
-        heatmap.setColumnDim(SerialClone.xclone(srcHeatmap.getColumnDim()));
+        heatmap.setColumns(SerialClone.xclone(srcHeatmap.getColumns()));
 
 
         // Create editor

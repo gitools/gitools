@@ -21,7 +21,7 @@
  */
 package org.gitools.heatmap.header;
 
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.AnnotationMatrix;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +31,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapTextLabelsHeader extends HeatmapHeader
@@ -64,7 +61,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         this(null);
     }
 
-    public HeatmapTextLabelsHeader(@Nullable HeatmapDim hdim)
+    public HeatmapTextLabelsHeader(@Nullable HeatmapDimension hdim)
     {
         super(hdim);
 

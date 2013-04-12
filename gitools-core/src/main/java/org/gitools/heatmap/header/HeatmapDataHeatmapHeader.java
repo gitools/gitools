@@ -22,17 +22,19 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapDataHeatmapHeader extends HeatmapHeader
 {
 
@@ -51,7 +53,12 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
 
     private boolean forceLabelColor;
 
-    public HeatmapDataHeatmapHeader(HeatmapDim hdim)
+    public HeatmapDataHeatmapHeader()
+    {
+        super();
+    }
+
+    public HeatmapDataHeatmapHeader(HeatmapDimension hdim)
     {
         super(hdim);
 

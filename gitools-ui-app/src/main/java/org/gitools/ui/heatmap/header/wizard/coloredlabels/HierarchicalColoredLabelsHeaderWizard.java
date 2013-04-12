@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
 import org.gitools.ui.platform.AppFrame;
@@ -40,7 +40,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
 {
 
     private final Heatmap heatmap;
-    private final HeatmapDim hdim;
+    private final HeatmapDimension hdim;
 
     private final HeatmapHierarchicalColoredLabelsHeader header;
     private final int previousLevel;
@@ -49,7 +49,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
     private ColoredLabelsGroupsPage clustersPage;
     private HclLevelPage hclPage;
 
-    public HierarchicalColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDim hdim, @NotNull HeatmapHierarchicalColoredLabelsHeader header)
+    public HierarchicalColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDimension hdim, @NotNull HeatmapHierarchicalColoredLabelsHeader header)
     {
 
         super();
