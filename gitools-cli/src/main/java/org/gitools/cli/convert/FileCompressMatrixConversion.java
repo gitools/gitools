@@ -81,7 +81,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long range = (MemoryUtils.getAvailableMemory() / (getAverageLineLength() * getColumns().size()) + 32) / 2;
+            long range = (MemoryUtils.getAvailableMemory() / (getAverageLineLength() * getColumns().size()) + 32) / 3;
             long count = 0;
             long from = 0;
             long to = (from + range > getRows().size()) ? getRows().size() : from + range;
