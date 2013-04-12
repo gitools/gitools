@@ -193,10 +193,10 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         }
 
         //conversion to
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
+        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
         AnnotationMatrix am = hm.getColumns().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
-        int[] visibleCols = hm.getMatrixView().getVisibleColumns();
+        int[] visibleCols = hm.getColumns().getVisible();
         int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
         for (int i = 0; i < groupCols.length; i++)
@@ -211,13 +211,13 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     private ArrayList<String> getSelectedColumns()
     {
         ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
+        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
-        int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
+        int[] selectedIndices = hm.getColumns().getSelected(  );
         for (int i = 0; i < selectedIndices.length; i++)
             selected.add(labelProvider.getLabel(selectedIndices[i]));
 
@@ -239,17 +239,14 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     private ArrayList<String> getUnselectedColumns()
     {
         ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm.getMatrixView());
+        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
-        int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
-        int visibleColumnsCount = hm.getMatrixView().getColumns().size();
-            /*for (int i=0; i < selectedIndices.length; i++) {
-                visibleIndices = ArrayUtils.removeElement(visibleIndices, selectedIndices[i]);
-			}*/
+        int[] selectedIndices = hm.getColumns().getSelected(  );
+        int visibleColumnsCount = hm.getColumns().size();
         int[] unselectedIndices = new int[visibleColumnsCount - selectedIndices.length];
         int count = 0;
         for (int i = 0; i < visibleColumnsCount; i++)

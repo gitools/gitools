@@ -47,8 +47,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
         Heatmap headerHeatmap = header.getHeaderHeatmap();
-        IMatrixView headerData = header.getHeaderHeatmap().getMatrixView();
-        IMatrixView data = heatmap.getMatrixView();
+        IMatrixView headerData = header.getHeaderHeatmap();
+        IMatrixView data = heatmap  ;
 
 
         g.setColor(header.getBackgroundColor());
@@ -96,7 +96,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
             rowsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
 
-            cellHeight = heatmap.getCellWidth() + rowsGridSize;
+            cellHeight = heatmap.getColumns().getCellSize() + rowsGridSize;
 
             colStart = (clip.y - box.y) / cellHeight;
             colEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
@@ -114,7 +114,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
             rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
 
-            cellHeight = heatmap.getCellHeight() + rowsGridSize;
+            cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
 
             rowStart = (clip.y - box.y) / cellHeight;
             rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
@@ -131,8 +131,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         ElementDecorator deco = headerHeatmap.getActiveCellDecorator();
         ElementDecoration decoration = new ElementDecoration();
 
-        int leadRow = headerHeatmap.getMatrixView().getLeadSelectionRow();
-        int leadColumn = headerHeatmap.getMatrixView().getLeadSelectionColumn();
+        int leadRow = headerHeatmap.getRows().getSelectionLead(  );
+        int leadColumn = headerHeatmap.getColumns().getSelectionLead(  );
 
         int y = (horizontal) ? box.y + colStart * cellHeight : box.y + rowStart * cellHeight;
         int Yoriginal = y;
@@ -190,11 +190,11 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     boolean selected = false;
                     if (horizontal)
                     {
-                        selected = data.isColumnSelected(col) && !pictureMode;
+                        selected = data.getColumns().isSelected(  col) && !pictureMode;
                     }
                     else
                     {
-                        selected = !pictureMode && data.isRowSelected(row);
+                        selected = !pictureMode && data.getRows().isSelected(  row);
                     }
 
 
@@ -311,8 +311,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
         int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
-        int rowCount = heatmap.getMatrixView().getRows().size();
-        int columnCount = heatmap.getMatrixView().getColumns().size();
+        int rowCount = heatmap  .getRows().size();
+        int columnCount = heatmap  .getColumns().size();
         int extBorder = /*2 * 1 - 1*/ 0;
 
 
@@ -320,14 +320,14 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int totalHeight;
         if (horizontal)
         {
-            totalWidth = (heatmap.getCellWidth() + columnsGridSize) * columnCount + extBorder;
+            totalWidth = (heatmap.getColumns().getCellSize() + columnsGridSize) * columnCount + extBorder;
             totalHeight = header.getSize();
 
         }
         else
         {
             totalWidth = header.getSize();
-            totalHeight = (heatmap.getCellHeight() + rowsGridSize) * rowCount + extBorder;
+            totalHeight = (heatmap.getRows().getCellSize() + rowsGridSize) * rowCount + extBorder;
         }
         return new Dimension(totalWidth, totalHeight);
     }
@@ -346,12 +346,12 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap.getMatrixView().getRows().size();
-        int columnCount = heatmap.getMatrixView().getColumns().size();
+        int rowCount = heatmap  .getRows().size();
+        int columnCount = heatmap  .getColumns().size();
 
         if (horizontal)
         {
-            cellWidth = heatmap.getCellWidth() + columnsGridSize;
+            cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
             cellHeight = header.getSize();
             totalWidth = cellWidth * columnCount + extBorder;
             totalHeight = header.getSize();
@@ -359,7 +359,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         else
         {
             cellWidth = header.getSize();
-            cellHeight = heatmap.getCellHeight() + rowsGridSize;
+            cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
             totalWidth = header.getSize();
             totalHeight = cellHeight * rowCount + extBorder;
         }
@@ -384,12 +384,12 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap.getMatrixView().getRows().size();
-        int columnCount = heatmap.getMatrixView().getColumns().size();
+        int rowCount = heatmap  .getRows().size();
+        int columnCount = heatmap  .getColumns().size();
 
         if (horizontal)
         {
-            cellWidth = heatmap.getCellWidth() + columnsGridSize;
+            cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
             cellHeight = header.getSize();
             totalWidth = cellWidth * columnCount + extBorder;
             totalHeight = header.getSize();
@@ -397,7 +397,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         else
         {
             cellWidth = header.getSize();
-            cellHeight = heatmap.getCellHeight() + rowsGridSize;
+            cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
             totalWidth = header.getSize();
             totalHeight = cellHeight * rowCount + extBorder;
         }

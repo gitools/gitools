@@ -117,169 +117,112 @@ public class DiagonalMatrixView implements IMatrixView
         return mv.getContents();
     }
 
-    @Override
-    public int[] getVisibleRows()
+    //TODO
+    public void internalRowsSetVisible(int[] indices)
     {
-        return mv.getVisibleRows();
-    }
-
-    @Override
-    public void setVisibleRows(int[] indices)
-    {
-        int[] selection = mv.getSelectedRows();
-        mv.setVisibleColumns(indices);
-        mv.setSelectedRows(selection);
+        int[] selection = mv.getRows().getSelected(  );
+        mv.getColumns().setVisible(indices);
+        mv.getRows().setSelected(  selection);
         indices = Arrays.copyOf(indices, indices.length);
-        mv.setVisibleRows(indices);
+        mv.getRows().setVisible(indices);
     }
 
-    @Override
-    public int[] getVisibleColumns()
+    //TODO
+    public void internalColumnsSetVisible(int[] indices)
     {
-        return mv.getVisibleRows();
-    }
-
-    @Override
-    public void setVisibleColumns(int[] indices)
-    {
-        int[] selection = mv.getSelectedColumns();
-        mv.setVisibleRows(indices);
-        mv.setSelectedColumns(selection);
+        int[] selection = mv.getColumns().getSelected(  );
+        mv.getRows().setVisible(indices);
+        mv.getColumns().setSelected(  selection);
         indices = Arrays.copyOf(indices, indices.length);
-        mv.setVisibleColumns(indices);
+        mv.getColumns().setVisible(indices);
+    }
+
+    /*
+    @Override
+    public void getRows().move(org.gitools.matrix.model.Direction.UP , int[] indices)
+    {
+        int[] selection = mv.getRows().getSelected(  );
+        mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  indices);
+        mv.getRows().setSelected(  selection);
+        mv.getRows().move(org.gitools.matrix.model.Direction.UP , indices);
+    }   */
+
+    /*
+    @Override
+    public void getRows().move(org.gitools.matrix.model.Direction.DOWN,  int[] indices)
+    {
+        int[] selection = mv.getRows().getSelected(  );
+        mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  indices);
+        mv.getRows().setSelected(  selection);
+        mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  indices);
+    }  */
+
+    /*
+    public void getColumns().move(org.gitools.matrix.model.Direction.LEFT,  int[] indices)
+    {
+        int[] selection = mv.getColumns().getSelected(  );
+        //mv.getRows().move(org.gitools.matrix.model.Direction.UP , indices);
+        mv.getColumns().setSelected(  selection);
+        mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  indices);
+    }  */
+
+    /*
+    @Override
+    public void getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  int[] indices)
+    {
+        int[] selection = mv.getColumns().getSelected(  );
+        mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  indices);
+        mv.getColumns().setSelected(  selection);
+        mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  indices);
+    }   */
+
+    /*
+    @Override
+    public void getRows().hide(  int[] indices)
+    {
+        mv.getRows().hide(  indices);
+        mv.getColumns().hide(  indices);
+    }       */
+
+    /*
+    @Override
+    public void getColumns().hide(  int[] indices)
+    {
+        getRows().hide(  indices);
+    } */
+
+    /*
+    @Override
+    public int[] getRows().getSelected(  )
+    {
+        return mv.getRows().getSelected(  );
+    }*/
+
+    /*
+    @Override
+    public void getRows().setSelected(  int[] indices)
+    {
+        mv.getRows().setSelected(  indices);
+    }
+      */
+
+    /*
+    @Override
+    public boolean getRows().isSelected(  int index)
+    {
+        return mv.getRows().isSelected(  index);
+    } */
+
+    @Override
+    public int getSelectedLayer()
+    {
+        return mv.getSelectedLayer();
     }
 
     @Override
-    public void moveRowsUp(int[] indices)
+    public void setSelectedLayer(int index)
     {
-        int[] selection = mv.getSelectedRows();
-        mv.moveColumnsLeft(indices);
-        mv.setSelectedRows(selection);
-        mv.moveRowsUp(indices);
-    }
-
-    @Override
-    public void moveRowsDown(int[] indices)
-    {
-        int[] selection = mv.getSelectedRows();
-        mv.moveColumnsRight(indices);
-        mv.setSelectedRows(selection);
-        mv.moveRowsDown(indices);
-    }
-
-    @Override
-    public void moveColumnsLeft(int[] indices)
-    {
-        int[] selection = mv.getSelectedColumns();
-        mv.moveRowsUp(indices);
-        mv.setSelectedColumns(selection);
-        mv.moveColumnsLeft(indices);
-    }
-
-    @Override
-    public void moveColumnsRight(int[] indices)
-    {
-        int[] selection = mv.getSelectedColumns();
-        mv.moveRowsDown(indices);
-        mv.setSelectedColumns(selection);
-        mv.moveColumnsRight(indices);
-    }
-
-    @Override
-    public void hideRows(int[] indices)
-    {
-        mv.hideRows(indices);
-        mv.hideColumns(indices);
-    }
-
-    @Override
-    public void hideColumns(int[] indices)
-    {
-        hideRows(indices);
-    }
-
-    @Override
-    public int[] getSelectedRows()
-    {
-        return mv.getSelectedRows();
-    }
-
-    @Override
-    public void setSelectedRows(int[] indices)
-    {
-        mv.setSelectedRows(indices);
-    }
-
-    @Override
-    public boolean isRowSelected(int index)
-    {
-        return mv.isRowSelected(index);
-    }
-
-    @Override
-    public int[] getSelectedColumns()
-    {
-        return mv.getSelectedColumns();
-    }
-
-    @Override
-    public void setSelectedColumns(int[] indices)
-    {
-        mv.setSelectedColumns(indices);
-    }
-
-    @Override
-    public boolean isColumnSelected(int index)
-    {
-        return mv.isColumnSelected(index);
-    }
-
-    @Override
-    public void selectAll()
-    {
-        mv.selectAll();
-    }
-
-    @Override
-    public void invertSelection()
-    {
-        mv.invertSelection();
-    }
-
-    @Override
-    public void clearSelection()
-    {
-        mv.clearSelection();
-    }
-
-    @Override
-    public int getLeadSelectionRow()
-    {
-        return mv.getLeadSelectionRow();
-    }
-
-    @Override
-    public int getLeadSelectionColumn()
-    {
-        return mv.getLeadSelectionColumn();
-    }
-
-    @Override
-    public void setLeadSelection(int row, int column)
-    {
-        mv.setLeadSelection(row, column);
-    }
-
-    @Override
-    public int getSelectedPropertyIndex()
-    {
-        return mv.getSelectedPropertyIndex();
-    }
-
-    @Override
-    public void setSelectedPropertyIndex(int index)
-    {
-        mv.setSelectedPropertyIndex(index);
+        mv.setSelectedLayer(index);
     }
 
     @Override

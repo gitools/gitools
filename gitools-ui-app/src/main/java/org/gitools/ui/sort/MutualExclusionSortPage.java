@@ -215,14 +215,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage
     {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm.getMatrixView()) : new MatrixColumnsLabelProvider(hm.getMatrixView());
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
             AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getMatrixView().getSelectedRows() : hm.getMatrixView().getSelectedColumns();
+        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected(  ) : hm.getColumns().getSelected(  );
         for (int i = 0; i < selectedIndices.length; i++)
             selected.add(labelProvider.getLabel(selectedIndices[i]));
 
@@ -234,15 +234,15 @@ public class MutualExclusionSortPage extends AbstractWizardPage
     {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm.getMatrixView()) : new MatrixColumnsLabelProvider(hm.getMatrixView());
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
             AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getMatrixView().getSelectedRows() : hm.getMatrixView().getSelectedColumns();
-        int visibleCount = dim == FilterDimension.ROWS ? hm.getMatrixView().getRows().size() : hm.getMatrixView().getColumns().size();
+        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected(  ) : hm.getColumns().getSelected(  );
+        int visibleCount = dim == FilterDimension.ROWS ? hm.getRows().size() : hm.getColumns().size();
 
 
         int[] unselectedIndices = new int[visibleCount - selectedIndices.length];

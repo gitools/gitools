@@ -186,7 +186,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
                 valueCb.setSelectedIndex(i);
             }
 
-        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+        getTable().setSelectedLayer(decorator.getValueIndex());
     }
 
     private void valueChanged()
@@ -198,7 +198,7 @@ public class CategoricalElementDecoratorPanel extends AbstractElementDecoratorPa
 
         decorator.setValueIndex(propAdapter.getIndex());
         updateCategoriesLabel();
-        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+        getTable().setSelectedLayer(propAdapter.getIndex());
     }
 
     private void changeDecorator()

@@ -78,7 +78,7 @@ public class SortByMutualExclusionAction extends BaseAction
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
 
 
-        if (hm.getMatrixView().getSelectedColumns().length > 0)
+        if (hm.getColumns().getSelected(  ).length > 0)
         {
             page.setFilterDimension(FilterDimension.COLUMNS);
         }
@@ -102,7 +102,7 @@ public class SortByMutualExclusionAction extends BaseAction
             }
 
 
-        final IMatrixView matrixView = hm.getMatrixView();
+        final IMatrixView matrixView = hm;
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

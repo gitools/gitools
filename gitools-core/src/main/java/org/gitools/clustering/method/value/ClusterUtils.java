@@ -124,9 +124,9 @@ public class ClusterUtils
     public static void updateVisibility(@NotNull IMatrixView matrixView, @NotNull Map<String, int[]> clusterResults)
     {
 
-        int[] visibleData = matrixView.getVisibleColumns();
+        int[] visibleData = matrixView.getColumns().getVisible();
 
-        final int[] sortedVisibleData = new int[matrixView.getVisibleColumns().length];
+        final int[] sortedVisibleData = new int[matrixView.getColumns().getVisible().length];
 
         int index = 0;
 
@@ -139,7 +139,7 @@ public class ClusterUtils
             for (Integer val : clusterResults.get(i))
                 sortedVisibleData[index++] = visibleData[val];
 
-        matrixView.setVisibleColumns(sortedVisibleData);
+        matrixView.getColumns().setVisible(sortedVisibleData);
 
     }
 

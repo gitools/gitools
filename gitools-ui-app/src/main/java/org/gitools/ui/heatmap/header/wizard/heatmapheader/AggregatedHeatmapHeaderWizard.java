@@ -184,7 +184,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             header.setHeaderHeatmap(headerValueHeatmap);
 
             //generate Label to id map
-            Map<String, Integer> map = generateMap(headerValueHeatmap.getMatrixView());
+            Map<String, Integer> map = generateMap(headerValueHeatmap);
             header.setLabelIndexMap(map);
 
             // generate title
@@ -226,26 +226,26 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             {
                 if (useAll)
                 {
-                    aggregationGroups = new int[heatmap.getMatrixView().getColumns().size()];
-                    for (int i = 0; i < heatmap.getMatrixView().getColumns().size(); i++)
+                    aggregationGroups = new int[heatmap  .getColumns().size()];
+                    for (int i = 0; i < heatmap  .getColumns().size(); i++)
                         aggregationGroups[i] = i;
                 }
                 else
                 {
-                    aggregationGroups = heatmap.getMatrixView().getSelectedColumns();
+                    aggregationGroups = heatmap  .getColumns().getSelected(  );
                 }
             }
             else
             {
                 if (useAll)
                 {
-                    aggregationGroups = new int[heatmap.getMatrixView().getRows().size()];
-                    for (int i = 0; i < heatmap.getMatrixView().getRows().size(); i++)
+                    aggregationGroups = new int[heatmap  .getRows().size()];
+                    for (int i = 0; i < heatmap  .getRows().size(); i++)
                         aggregationGroups[i] = i;
                 }
                 else
                 {
-                    aggregationGroups = heatmap.getMatrixView().getSelectedRows();
+                    aggregationGroups = heatmap  .getRows().getSelected(  );
                 }
             }
             indicesMap.put(aggregationTitles[0], aggregationGroups);
@@ -253,7 +253,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             headerValueHeatmap = aggregateToHeatmap();
             header.setHeaderHeatmap(headerValueHeatmap);
             //generate Label to id map
-            Map<String, Integer> map = generateMap(headerValueHeatmap.getMatrixView());
+            Map<String, Integer> map = generateMap(headerValueHeatmap);
             header.setLabelIndexMap(map);
         }
 
@@ -271,12 +271,12 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         Map<String, Integer> map = new HashMap<String, Integer>();
         if (applyToRows)
         {
-            for (int i : data.getVisibleRows())
+            for (int i : data.getRows().getVisible())
                 map.put(data.getRows().getLabel(i), i);
         }
         else
         {
-            for (int i : data.getVisibleColumns())
+            for (int i : data.getColumns().getVisible())
                 map.put(data.getColumns().getLabel(i), i);
         }
         return map;
@@ -298,7 +298,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         if (applyToRows)
         {
 
-            int[] rows = heatmap.getMatrixView().getVisibleRows();
+            int[] rows = heatmap  .getRows().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(rows.length, aggregationTitles.length, 0.0);
 
             for (int i = 0; i < aggregationTitles.length; i++)
@@ -310,14 +310,14 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
                 for (int j = 0; j < rows.length; j++)
                 {
-                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(), columns, j, valueIndex, aggregator, valueBuffer);
+                    double aggregatedValue = aggregateValue(heatmap  , columns, j, valueIndex, aggregator, valueBuffer);
                     valueMatrix.set(j, i, aggregatedValue);
                 }
             }
 
             rowNames = new String[rows.length];
             for (int i = 0; i < rows.length; i++)
-                rowNames[i] = heatmap.getMatrixView().getRows().getLabel(i);
+                rowNames[i] = heatmap  .getRows().getLabel(i);
 
             columnNames = aggregationTitles;
 
@@ -326,7 +326,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         else
         {
 
-            int[] columns = heatmap.getMatrixView().getVisibleColumns();
+            int[] columns = heatmap  .getColumns().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(aggregationTitles.length, columns.length, 0.0);
 
 
@@ -339,14 +339,14 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
                 for (int j = 0; j < columns.length; j++)
                 {
-                    double aggregatedValue = aggregateValue(heatmap.getMatrixView(), rows, j, valueIndex, aggregator, valueBuffer);
+                    double aggregatedValue = aggregateValue(heatmap  , rows, j, valueIndex, aggregator, valueBuffer);
                     valueMatrix.set(i, j, aggregatedValue);
                 }
             }
 
             columnNames = new String[columns.length];
             for (int i = 0; i < columnNames.length; i++)
-                columnNames[i] = heatmap.getMatrixView().getColumns().getLabel(i);
+                columnNames[i] = heatmap  .getColumns().getLabel(i);
 
             rowNames = aggregationTitles;
         }
@@ -356,7 +356,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
     private void getIndecesByAnnotation()
     {
-        IMatrixView mv = heatmap.getMatrixView();
+        IMatrixView mv = heatmap  ;
         AnnotationMatrix am = heatmapDim.getAnnotations();
         String pattern = dataSourceAnnotationPage.getSelectedPattern();
         header.setAnnotationPattern(pattern);
@@ -381,7 +381,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
                     header.setHeaderHeatmap(headerValueHeatmap);
 
                     //generate Label to id map
-                    Map<String, Integer> map = generateMap(headerValueHeatmap.getMatrixView());
+                    Map<String, Integer> map = generateMap(headerValueHeatmap);
                     header.setLabelIndexMap(map);
 
                 } catch (Throwable ex)
@@ -406,7 +406,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             AnnotationMatrix annotations = heatmap.getRows().getAnnotations();
             int annColIdx = annotations.internalColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
 
-            int[] rows = heatmap.getMatrixView().getVisibleRows();
+            int[] rows = heatmap  .getRows().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(rows.length, 1, 0.0);
 
             DoubleTranslator doubleTranslator = new DoubleTranslator();
@@ -415,7 +415,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
             for (int i = 0; i < rows.length; i++)
             {
-                String rowLabel = heatmap.getMatrixView().getRows().getLabel(i);
+                String rowLabel = heatmap  .getRows().getLabel(i);
                 rowNames[i] = rowLabel;
                 int annRowIdx;
                 annRowIdx = annotations.internalRowIndex(rowLabel);
@@ -447,13 +447,13 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             AnnotationMatrix annotations = heatmap.getColumns().getAnnotations();
             int annColIdx = annotations.internalColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
 
-            int[] columns = heatmap.getMatrixView().getVisibleColumns();
+            int[] columns = heatmap  .getColumns().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(1, columns.length, 0.0);
 
             columnNames = new String[columns.length];
             for (int i = 0; i < columnNames.length; i++)
             {
-                String colLabel = heatmap.getMatrixView().getColumns().getLabel(i);
+                String colLabel = heatmap  .getColumns().getLabel(i);
                 columnNames[i] = colLabel;
                 int annRowIdx;
                 annRowIdx = annotations.internalRowIndex(colLabel);
@@ -495,7 +495,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     {
         if (!editionMode || header.isLabelVisible() != this.labelVisible)
         {
-            int elements = this.applyToRows ? header.getHeaderHeatmap().getMatrixView().getVisibleColumns().length : header.getHeaderHeatmap().getMatrixView().getVisibleRows().length;
+            int elements = this.applyToRows ? header.getHeaderHeatmap().getColumns().getVisible().length : header.getHeaderHeatmap().getRows().getVisible().length;
             int minLabelLenght = header.getLargestLabelLength() * elements;
             if (header.isLabelVisible())
             {

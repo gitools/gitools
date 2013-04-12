@@ -56,7 +56,7 @@ public class ActionUtils
         }
         else if (model instanceof Heatmap)
         {
-            matrixView = ((Heatmap) model).getMatrixView();
+            matrixView = ((Heatmap) model);
         }
 
         return matrixView;

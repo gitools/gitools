@@ -70,10 +70,10 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
 
         // Check selection
         Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
-        IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
+        IMatrixView srcMatrixView = srcHeatmap;
         IMatrix srcMatrix = srcMatrixView.getContents();
-        int[] selColumns = srcMatrixView.getSelectedColumns();
-        int leadColumn = srcMatrixView.getLeadSelectionColumn();
+        int[] selColumns = srcMatrixView.getColumns().getSelected(  );
+        int leadColumn = srcMatrixView.getColumns().getSelectionLead(  );
         if ((selColumns == null || selColumns.length == 0) && leadColumn != -1)
         {
             selColumns = new int[]{leadColumn};
@@ -85,7 +85,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         }
 
         // Retrieve elements
-        int[] view = srcMatrixView.getVisibleColumns();
+        int[] view = srcMatrixView.getColumns().getVisible();
 
         Set<Integer> elements = new HashSet<Integer>();
 
@@ -125,7 +125,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
             newView[i++] = index;
 
         Heatmap heatmap =  new Heatmap(matrix);
-        heatmap.setVisibleColumns(newView);
+        heatmap.getColumns().setVisible(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());
 

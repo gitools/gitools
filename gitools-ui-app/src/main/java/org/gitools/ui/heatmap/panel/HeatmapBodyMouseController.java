@@ -183,13 +183,13 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         }
         else
         {
-            int width = heatmap.getCellWidth() + rotation * -1;
+            int width = heatmap.getColumns().getCellSize() + rotation * -1;
             if (width < 1)
             {
                 width = 1;
             }
 
-            int height = heatmap.getCellHeight() + rotation * -1;
+            int height = heatmap.getRows().getCellSize() + rotation * -1;
             if (height < 1)
             {
                 height = 1;
@@ -207,10 +207,11 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         point.translate(viewPosition.x, viewPosition.y);
         coord = bodyPanel.getDrawer().getPosition(point);
 
-        IMatrixView mv = heatmap.getMatrixView();
-        mv.setLeadSelection(coord.row, coord.column);
-        mv.setSelectedRows(new int[0]);
-        mv.setSelectedColumns(new int[0]);
+        IMatrixView mv = heatmap  ;
+        mv.getRows().setSelectionLead(coord.row);
+        mv.getColumns().setSelectionLead(coord.column);
+        mv.getRows().setSelected(  new int[0]);
+        mv.getColumns().setSelected(  new int[0]);
 
         //System.out.println(mode + " " + point + " -> " + coord);
     }

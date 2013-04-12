@@ -108,7 +108,7 @@ public class FastSortRowsAction extends BaseAction
             return;
         }
 
-        final int propIndex = matrixView.getSelectedPropertyIndex();
+        final int propIndex = matrixView.getSelectedLayer();
 
         final ValueSortCriteria.SortDirection sort = currentSort;
         currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);

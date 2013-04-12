@@ -118,7 +118,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final boolean isCellSelected()
     {
-        return (getMatrixView().getLeadSelectionColumn() != -1 && getMatrixView().getLeadSelectionRow() != -1);
+        return (getMatrixView().getColumns().getSelectionLead(  ) != -1 && getMatrixView().getRows().getSelectionLead(  ) != -1);
     }
 
     /**
@@ -155,10 +155,10 @@ public abstract class AbstractDetailsPanel extends WebPanel
             return null;
         }
 
-        int row = getMatrixView().getLeadSelectionRow();
+        int row = getMatrixView().getRows().getSelectionLead(  );
         String rowIdentifier = heatmap.getRows().getLabel(row);
 
-        int column = getMatrixView().getLeadSelectionColumn();
+        int column = getMatrixView().getColumns().getSelectionLead(  );
         String columnIdentifier = heatmap.getColumns().getLabel(column);
 
         return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRows())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumns())), getProperties(row, column));
@@ -167,14 +167,14 @@ public abstract class AbstractDetailsPanel extends WebPanel
     @Nullable
     private IMatrixView getMatrixView()
     {
-        return heatmap.getMatrixView();
+        return heatmap  ;
     }
 
     @NotNull
     @Deprecated
     private Collection<PropertyItem> getProperties(int row, int column)
     {
-        int selectedIndex = getMatrixView().getSelectedPropertyIndex();
+        int selectedIndex = getMatrixView().getSelectedLayer();
         ElementDecorator selectedDecorator = heatmap.getActiveCellDecorator();
         Object cellElement = getMatrixView().getCell(row, column);
         IElementAdapter cellAdapter = getMatrixView().getCellAdapter();

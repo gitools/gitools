@@ -109,7 +109,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         final HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        IMatrixView data = heatmap.getMatrixView();
+        IMatrixView data = heatmap  ;
 
         g.setFont(header.getFont());
 
@@ -119,7 +119,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         int maxWidth = clip.width;
         int width = header.getSize();
-        int cellHeight = horizontal ? heatmap.getCellWidth() : heatmap.getCellHeight();
+        int cellHeight = horizontal ? heatmap.getColumns().getCellSize() : heatmap.getRows().getCellSize();
         int height = cellHeight + gridSize;
 
         width = width < maxWidth ? maxWidth : width;
@@ -139,18 +139,18 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         float fontDesc = lm.getDescent();
         int fontOffset = (int) Math.ceil(((fontHeight + cellHeight) / 2) - fontDesc);
 
-        int leadRow = data.getLeadSelectionRow();
-        int leadColumn = data.getLeadSelectionColumn();
+        int leadRow = data.getRows().getSelectionLead(  );
+        int leadColumn = data.getColumns().getSelectionLead(  );
 
         LabelProvider matrixLabelProvider = null;
 
         if (horizontal)
         {
-            matrixLabelProvider = new MatrixColumnsLabelProvider(heatmap.getMatrixView());
+            matrixLabelProvider = new MatrixColumnsLabelProvider(heatmap  );
         }
         else
         {
-            matrixLabelProvider = new MatrixRowsLabelProvider(heatmap.getMatrixView());
+            matrixLabelProvider = new MatrixRowsLabelProvider(heatmap  );
         }
 
         LabelProvider labelProvider = null;
@@ -183,7 +183,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 bgColor = highlightingColor;
             }
 
-            boolean selected = !pictureMode && (horizontal ? data.isColumnSelected(index) : data.isRowSelected(index));
+            boolean selected = !pictureMode && (horizontal ? data.getColumns().isSelected(  index) : data.getRows().isSelected(  index));
 
             if (selected)
             {
@@ -226,15 +226,15 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         if (horizontal)
         {
-            int cellWidth = heatmap.getCellWidth() + gridSize;
-            int columnCount = heatmap.getMatrixView().getColumns().size();
+            int cellWidth = heatmap.getColumns().getCellSize() + gridSize;
+            int columnCount = heatmap  .getColumns().size();
             int headerSize = header.getSize();
             return new Dimension(cellWidth * columnCount + extBorder, headerSize /*- colorAnnSize*/);
         }
         else
         {
-            int cellHeight = heatmap.getCellHeight() + gridSize;
-            int rowCount = heatmap.getMatrixView().getRows().size();
+            int cellHeight = heatmap.getRows().getCellSize() + gridSize;
+            int rowCount = heatmap  .getRows().size();
             int headerSize = header.getSize();
             return new Dimension(headerSize, cellHeight * rowCount + extBorder);
         }
@@ -252,8 +252,8 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         if (horizontal)
         {
-            int cellSize = heatmap.getCellWidth() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getColumns().size();
+            int cellSize = heatmap.getColumns().getCellSize() + gridSize;
+            int totalSize = cellSize * heatmap  .getColumns().size();
             if (p.x >= 0 && p.x < totalSize)
             {
                 col = p.x / cellSize;
@@ -261,8 +261,8 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         }
         else
         {
-            int cellSize = heatmap.getCellHeight() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getRows().size();
+            int cellSize = heatmap.getRows().getCellSize() + gridSize;
+            int totalSize = cellSize * heatmap  .getRows().size();
             if (p.y >= 0 && p.y < totalSize)
             {
                 row = p.y / cellSize;
@@ -284,8 +284,8 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         if (horizontal)
         {
-            int cellSize = heatmap.getCellWidth() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getColumns().size();
+            int cellSize = heatmap.getColumns().getCellSize() + gridSize;
+            int totalSize = cellSize * heatmap  .getColumns().size();
             x = p.column >= 0 ? p.column * cellSize : 0;
             if (x > totalSize)
             {
@@ -294,8 +294,8 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         }
         else
         {
-            int cellSize = heatmap.getCellHeight() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getRows().size();
+            int cellSize = heatmap.getRows().getCellSize() + gridSize;
+            int totalSize = cellSize * heatmap  .getRows().size();
             y = p.row >= 0 ? p.row * cellSize : 0;
             if (y > totalSize)
             {

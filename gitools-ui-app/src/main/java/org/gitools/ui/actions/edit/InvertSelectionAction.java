@@ -58,7 +58,8 @@ public class InvertSelectionAction extends BaseAction
 
         if (matrixView != null)
         {
-            matrixView.invertSelection();
+            matrixView.getRows().invertSelection();
+            matrixView.getColumns().invertSelection();
         }
 
         AppFrame.get().setStatusText("Selection inverted");

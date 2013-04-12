@@ -23,8 +23,8 @@ package org.gitools.cli;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.model.Analysis;
-import org.gitools.model.Property;
 import org.gitools.model.KeyValue;
+import org.gitools.model.Property;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;

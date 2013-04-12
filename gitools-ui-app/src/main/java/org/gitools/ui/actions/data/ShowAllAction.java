@@ -96,7 +96,7 @@ public class ShowAllAction extends BaseAction
             for (int i = 0; i < rowCount; i++)
                 visibleRows[i] = i;
 
-            matrixView.setVisibleRows(visibleRows);
+            matrixView.getRows().setVisible(visibleRows);
 
             AppFrame.get().setStatusText(visibleRows.length + " rows");
         }
@@ -109,7 +109,7 @@ public class ShowAllAction extends BaseAction
             for (int i = 0; i < columnCount; i++)
                 visibleColumns[i] = i;
 
-            matrixView.setVisibleColumns(visibleColumns);
+            matrixView.getColumns().setVisible(visibleColumns);
 
             AppFrame.get().setStatusText(visibleColumns.length + " columns");
         }

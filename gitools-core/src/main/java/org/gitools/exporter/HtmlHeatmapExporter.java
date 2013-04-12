@@ -66,7 +66,7 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter
             Map<String, Object> context = new HashMap<String, Object>();
             context.put("fmt", new GenericFormatter());
             context.put("figure", figure);
-            context.put("matrix", figure.getMatrixView());
+            context.put("matrix", figure);
             context.put("cellDecoration", new ElementDecoration());
             eng.setContext(context);
 

@@ -79,7 +79,7 @@ public class ExportMatrixAction extends BaseAction
         for (int i = 0; i < properties.size(); i++)
             propNames[i] = properties.get(i).getName();
 
-        int selectedPropIndex = matrixView.getSelectedPropertyIndex();
+        int selectedPropIndex = matrixView.getSelectedLayer();
         selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
         selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
 

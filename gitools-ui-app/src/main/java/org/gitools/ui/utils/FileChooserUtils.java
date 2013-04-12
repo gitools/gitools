@@ -144,6 +144,7 @@ public class FileChooserUtils
     private static File selectPathVFS(String title, String currentPath)
     {
         VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
+        fileChooser.setFileHidingEnabled(false);
 
         fileChooser.setDialogTitle(title);
         fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.DIRECTORIES_ONLY);

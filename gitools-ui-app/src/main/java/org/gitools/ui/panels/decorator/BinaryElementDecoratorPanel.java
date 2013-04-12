@@ -189,7 +189,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel
                 valueCb.setSelectedIndex(i);
             }
 
-        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+        getTable().setSelectedLayer(decorator.getValueIndex());
 
         CutoffCmp cmp = decorator.getCutoffCmp();
         for (int i = 0; i < cmpCb.getItemCount(); i++)
@@ -211,7 +211,7 @@ public class BinaryElementDecoratorPanel extends AbstractElementDecoratorPanel
 
         decorator.setValueIndex(propAdapter.getIndex());
 
-        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+        getTable().setSelectedLayer(propAdapter.getIndex());
     }
 
     private void changeDecorator()

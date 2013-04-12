@@ -62,7 +62,8 @@ public class UnselectAllAction extends BaseAction
 
         if (matrixView != null)
         {
-            matrixView.clearSelection();
+            matrixView.getColumns().clearSelection();
+            matrixView.getRows().clearSelection();
         }
 
         AppFrame.get().setStatusText("Unselected all.");

@@ -40,12 +40,12 @@ public class MatrixViewValueFilter
 
         if (applyToRows)
         {
-            filterRows(matrixView, matrixView.getSelectedColumns(), criteriaList, allCriteria, allElements, invertCriteria);
+            filterRows(matrixView, matrixView.getColumns().getSelected(  ), criteriaList, allCriteria, allElements, invertCriteria);
         }
 
         if (applyToColumns)
         {
-            filterColumns(matrixView, matrixView.getSelectedRows(), criteriaList, allCriteria, allElements, invertCriteria);
+            filterColumns(matrixView, matrixView.getRows().getSelected(  ), criteriaList, allCriteria, allElements, invertCriteria);
         }
     }
 
@@ -97,12 +97,12 @@ public class MatrixViewValueFilter
             }
         }
 
-        int[] visibleRows = matrixView.getVisibleRows();
+        int[] visibleRows = matrixView.getRows().getVisible();
         int[] filterRows = new int[filterin.size()];
         for (int i = 0; i < filterin.size(); i++)
             filterRows[i] = visibleRows[filterin.get(i)];
 
-        matrixView.setVisibleRows(filterRows);
+        matrixView.getRows().setVisible(filterRows);
     }
 
     private static void filterColumns(IMatrixView matrixView, int[] selection, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match

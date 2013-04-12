@@ -64,14 +64,14 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard
     {
         // Column Selection
         attrSelectPage = new GroupComparisonSelectAttributePage();
-        attrSelectPage.setAttributes(heatmap.getMatrixView().getCellAttributes());
+        attrSelectPage.setAttributes(heatmap  .getCellAttributes());
         addPage(attrSelectPage);
 
         groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap);
         addPage(groupByLabelPage);
 
         groupByValuePage = new GroupComparisonGroupingByValuePage();
-        groupByValuePage.setAttributes(heatmap.getMatrixView().getCellAttributes());
+        groupByValuePage.setAttributes(heatmap  .getCellAttributes());
         addPage(groupByValuePage);
 
         // Analysis details

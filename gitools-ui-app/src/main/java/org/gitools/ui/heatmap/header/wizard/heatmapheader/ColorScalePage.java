@@ -132,7 +132,7 @@ public class ColorScalePage extends AbstractWizardPage
             for (int i = 0; i < cellDecoratorCb.getItemCount(); i++)
             {
                 descriptor = (ElementDecoratorDescriptor) cellDecoratorCb.getItemAt(i);
-                ElementDecorator decorator = ElementDecoratorFactory.create(descriptor, heatmap.getMatrixView().getCellAdapter());
+                ElementDecorator decorator = ElementDecoratorFactory.create(descriptor, heatmap  .getCellAdapter());
                 decoratorCache.put(descriptor, decorator);
             }
             ElementDecoratorDescriptor d = ElementDecoratorFactory.getDescriptor(heatmap.getActiveCellDecorator().getClass());

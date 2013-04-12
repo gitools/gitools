@@ -70,10 +70,10 @@ public class ViewRelatedDataFromRowAction extends BaseAction
 
         // Check selection
         Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
-        IMatrixView srcMatrixView = srcHeatmap.getMatrixView();
+        IMatrixView srcMatrixView = srcHeatmap;
         IMatrix srcMatrix = srcMatrixView.getContents();
-        int[] selRows = srcMatrixView.getSelectedRows();
-        int leadRow = srcMatrixView.getLeadSelectionRow();
+        int[] selRows = srcMatrixView.getRows().getSelected(  );
+        int leadRow = srcMatrixView.getRows().getSelectionLead(  );
         if ((selRows == null || selRows.length == 0) && leadRow != -1)
         {
             selRows = new int[]{leadRow};
@@ -85,7 +85,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction
         }
 
         // Retrieve elements
-        int[] view = srcMatrixView.getVisibleRows();
+        int[] view = srcMatrixView.getRows().getVisible();
 
         Set<Integer> elements = new HashSet<Integer>();
 
@@ -126,7 +126,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction
 
         // Create heatmap
         Heatmap heatmap = new Heatmap(matrix);
-        heatmap.setVisibleRows(newView);
+        heatmap.getRows().setVisible(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
         heatmap.setColumns(SerialClone.xclone(srcHeatmap.getColumns()));

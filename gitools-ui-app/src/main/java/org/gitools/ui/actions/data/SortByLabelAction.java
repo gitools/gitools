@@ -74,7 +74,7 @@ public class SortByLabelAction extends BaseAction
             return;
         }
 
-        final IMatrixView matrixView = hm.getMatrixView();
+        final IMatrixView matrixView = hm;
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

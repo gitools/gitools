@@ -69,7 +69,7 @@ public class DataDetailsPage extends AbstractWizardPage
             String existingName;
             String originalWantedName = nameField.getText();
             String wantedName = originalWantedName.toLowerCase().trim();
-            IElementAdapter adapter = hm.getMatrixView().getCellAdapter();
+            IElementAdapter adapter = hm.getCellAdapter();
             int c = 0;
             for (IElementAttribute iElementAttribute : adapter.getProperties())
             {

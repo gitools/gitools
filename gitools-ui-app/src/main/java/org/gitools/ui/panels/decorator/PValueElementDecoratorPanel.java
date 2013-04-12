@@ -256,7 +256,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
                 valueCb.setSelectedIndex(i);
             }
 
-        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+        getTable().setSelectedLayer(decorator.getValueIndex());
         showCorrChkBox.setSelected(decorator.getUseCorrection());
 
         corrValueCb.setEnabled(decorator.getUseCorrection());
@@ -279,7 +279,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
         changeDecorator();
 
         decorator.setValueIndex(propAdapter.getIndex());
-        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+        getTable().setSelectedLayer(propAdapter.getIndex());
 
         // search for corresponding corrected value
 

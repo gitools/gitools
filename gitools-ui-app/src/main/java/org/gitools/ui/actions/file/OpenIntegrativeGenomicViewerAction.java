@@ -86,11 +86,11 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
         }
 
         Heatmap heatmap = (Heatmap) editor.getModel();
-        IMatrixView matrixView = heatmap.getMatrixView();
+        IMatrixView matrixView = heatmap  ;
 
         // No row selected
-        int[] rows = matrixView.getSelectedRows();
-        if (matrixView.getLeadSelectionRow() == -1 && rows.length == 0)
+        int[] rows = matrixView.getRows().getSelected(  );
+        if (matrixView.getRows().getSelectionLead(  ) == -1 && rows.length == 0)
         {
             showMessage("Please select one or more rows");
             return;
@@ -100,13 +100,13 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
         // cell selection
         if (rows.length == 0)
         {
-            rows = new int[]{matrixView.getLeadSelectionRow()};
+            rows = new int[]{matrixView.getRows().getSelectionLead(  )};
         }
 
         String rowQuery = "";
         for (int i : rows)
         {
-            rowQuery = rowQuery + heatmap.getMatrixView().getRows().getLabel(i) + " ";
+            rowQuery = rowQuery + heatmap  .getRows().getLabel(i) + " ";
         }
 
         // Execute the command

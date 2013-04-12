@@ -53,7 +53,7 @@ public abstract class AbstractElementDecoratorPanel extends JPanel
     @Nullable
     IMatrixView getTable()
     {
-        return model.getMatrixView();
+        return model;
     }
 
     ElementDecorator getDecorator()

@@ -116,7 +116,7 @@ public class MatrixViewLabelFilter
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
-                matrixView.setVisibleRows(filterLabels(labelProvider, values, useRegex, matrixView.getVisibleRows()));
+                matrixView.getRows().setVisible(filterLabels(labelProvider, values, useRegex, matrixView.getRows().getVisible()));
                 break;
 
             case COLUMNS:
@@ -126,7 +126,7 @@ public class MatrixViewLabelFilter
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
-                matrixView.setVisibleColumns(filterLabels(labelProvider, values, useRegex, matrixView.getVisibleColumns()));
+                matrixView.getColumns().setVisible(filterLabels(labelProvider, values, useRegex, matrixView.getColumns().getVisible()));
                 break;
         }
     }

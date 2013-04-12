@@ -504,7 +504,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
     private void annFilterActionPerformed(java.awt.event.ActionEvent evt)
     {//GEN-FIRST:event_annFilterActionPerformed
-        IMatrixView matrixView = getHeatmap().getMatrixView();
+        IMatrixView matrixView = getHeatmap();
 
         int count = rowMode ? matrixView.getRows().size() : matrixView.getColumns().size();
 
@@ -523,7 +523,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
             }
         }
 
-        int[] view = rowMode ? matrixView.getVisibleRows() : matrixView.getVisibleColumns();
+        int[] view = rowMode ? matrixView.getRows().getVisible() : matrixView.getColumns().getVisible();
 
         int[] newView = new int[indices.size()];
         for (int i = 0; i < indices.size(); i++)
@@ -531,11 +531,11 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         if (rowMode)
         {
-            matrixView.setVisibleRows(newView);
+            matrixView.getRows().setVisible(newView);
         }
         else
         {
-            matrixView.setVisibleColumns(newView);
+            matrixView.getColumns().setVisible(newView);
         }
     }//GEN-LAST:event_annFilterActionPerformed
 

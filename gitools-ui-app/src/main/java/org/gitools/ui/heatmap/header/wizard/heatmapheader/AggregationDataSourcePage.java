@@ -42,7 +42,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
     public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows)
     {
 
-        List<IElementAttribute> attributes = heatmap.getMatrixView().getCellAttributes();
+        List<IElementAttribute> attributes = heatmap  .getCellAttributes();
         String[] cellAttributes = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
             cellAttributes[i] = attributes.get(i).getName();
@@ -59,7 +59,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         separateAggregationCb.setEnabled(hasAnnotation);
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
-        valueCb.setSelectedIndex(heatmap.getMatrixView().getSelectedPropertyIndex());
+        valueCb.setSelectedIndex(heatmap  .getSelectedLayer());
         valueCb.addActionListener(new ActionListener()
         {
             @Override

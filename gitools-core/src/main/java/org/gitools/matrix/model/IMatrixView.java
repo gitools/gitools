@@ -35,60 +35,12 @@ public interface IMatrixView extends IModel, IMatrix
     // contents
     IMatrixViewDimension getRows();
     IMatrixViewDimension getColumns();
+
     IMatrix getContents();
 
-    // visibility
+    int getSelectedLayer();
 
-    int[] getVisibleRows();
+    void setSelectedLayer(int index);
 
-    void setVisibleRows(int[] indices);
-
-    int[] getVisibleColumns();
-
-    void setVisibleColumns(int[] indices);
-
-    void moveRowsUp(int[] indices);
-
-    void moveRowsDown(int[] indices);
-
-    void moveColumnsLeft(int[] indices);
-
-    void moveColumnsRight(int[] indices);
-
-    void hideRows(int[] indices);
-
-    void hideColumns(int[] indices);
-
-    // selection
-
-    int[] getSelectedRows();
-
-    void setSelectedRows(int[] indices);
-
-    boolean isRowSelected(int index);
-
-    int[] getSelectedColumns();
-
-    void setSelectedColumns(int[] indices);
-
-    boolean isColumnSelected(int index);
-
-    void selectAll();
-
-    void invertSelection();
-
-    void clearSelection();
-
-    int getLeadSelectionRow();
-
-    int getLeadSelectionColumn();
-
-    void setLeadSelection(int row, int column);
-
-    // properties
-
-    int getSelectedPropertyIndex();
-
-    void setSelectedPropertyIndex(int index);
 
 }

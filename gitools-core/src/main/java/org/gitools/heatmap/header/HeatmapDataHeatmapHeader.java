@@ -121,9 +121,9 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
             return;
         }
 
-        int rows = headerHeatmap.getMatrixView().getRows().size();
-        int cols = headerHeatmap.getMatrixView().getColumns().size();
-        IMatrixView data = headerHeatmap.getMatrixView();
+        int rows = headerHeatmap.getRows().size();
+        int cols = headerHeatmap.getColumns().size();
+        IMatrixView data = headerHeatmap;
 
         // Formatter for value labels
         GenericFormatter gf = new GenericFormatter();
@@ -153,19 +153,19 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
         String[] values;
         if (horizontal)
         {
-            int size = headerHeatmap.getMatrixView().getColumns().size();
+            int size = headerHeatmap.getColumns().size();
             values = new String[size];
             for (int i = 0; i < size; i++)
             {
-                values[i] = headerHeatmap.getMatrixView().getColumns().getLabel(i);
+                values[i] = headerHeatmap.getColumns().getLabel(i);
             }
         }
         else
         {
-            int size = headerHeatmap.getMatrixView().getRows().size();
+            int size = headerHeatmap.getRows().size();
             values = new String[size];
             for (int i = 0; i < size; i++)
-                values[i] = headerHeatmap.getMatrixView().getRows().getLabel(i);
+                values[i] = headerHeatmap.getRows().getLabel(i);
         }
 
         return values;

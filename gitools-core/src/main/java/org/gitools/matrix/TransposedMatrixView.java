@@ -75,148 +75,113 @@ public class TransposedMatrixView implements IMatrixView
         return mv.getContents(); //FIXME return TransposedMatrix(mv.getContents)
     }
 
+
+    /*
     @Override
-    public int[] getVisibleRows()
+    public void getRows().move(org.gitools.matrix.model.Direction.DOWN,  int[] indices)
     {
-        return mv.getVisibleColumns();
+        mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  indices);
+    } */
+
+    /*
+    public void getColumns().move(org.gitools.matrix.model.Direction.LEFT,  int[] indices)
+    {
+        //TODO
+    } */
+
+    /*
+    @Override
+    public void getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  int[] indices)
+    {
+        mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  indices);
+    } */
+
+    /*
+    @Override
+    public void getRows().hide(  int[] indices)
+    {
+        mv.getColumns().hide(  indices);
+    }  */
+
+    /*@Override
+    public void getColumns().hide(  int[] indices)
+    {
+        mv.getRows().hide(  indices);
+    }  */
+
+    /*
+    @Override
+    public int[] getRows().getSelected(  )
+    {
+        return mv.getColumns().getSelected(  );
+    }
+                  */
+
+ /*   @Override
+    public void getRows().setSelected(  int[] indices)
+    {
+        mv.getColumns().setSelected(  indices);
+    }*/
+
+    /*
+    @Override
+    public boolean getRows().isSelected(  int index)
+    {
+        return mv.getColumns().isSelected(  index);
+    } */
+    /*
+
+    @Override
+    public int[] getColumns().getSelected(  )
+    {
+        return mv.getRows().getSelected(  );
+    } */
+
+    /*
+    @Override
+    public void getColumns().setSelected(  int[] indices)
+    {
+        mv.getRows().setSelected(  indices);
+    }    */
+
+    /*
+    @Override
+    public boolean getColumns().isSelected(  int index)
+    {
+        return mv.getRows().isSelected(  index);
+    }   */
+
+    /*
+    @Override
+    public int getRows().getSelectionLead(  )
+    {
+        return mv.getColumns().getSelectionLead(  );
+    }   */
+
+    /*
+    @Override
+    public int getColumns().getSelectionLead(  )
+    {
+        return mv.getRows().getSelectionLead(  );
+    }      */
+
+    /*
+    @Override
+    public void strangeprefixsetLeadSelection(int row, int column)
+    {
+        mv.strangeprefixsetLeadSelection(column, row);
+    } */
+
+    @Override
+    public int getSelectedLayer()
+    {
+        return mv.getSelectedLayer();
     }
 
     @Override
-    public void setVisibleRows(int[] indices)
+    public void setSelectedLayer(int index)
     {
-        mv.setVisibleColumns(indices);
-    }
-
-    @Override
-    public int[] getVisibleColumns()
-    {
-        return mv.getVisibleRows();
-    }
-
-    @Override
-    public void setVisibleColumns(int[] indices)
-    {
-        mv.setVisibleRows(indices);
-    }
-
-    @Override
-    public void moveRowsUp(int[] indices)
-    {
-        mv.moveColumnsLeft(indices);
-    }
-
-    @Override
-    public void moveRowsDown(int[] indices)
-    {
-        mv.moveColumnsRight(indices);
-    }
-
-    @Override
-    public void moveColumnsLeft(int[] indices)
-    {
-        mv.moveRowsUp(indices);
-    }
-
-    @Override
-    public void moveColumnsRight(int[] indices)
-    {
-        mv.moveRowsDown(indices);
-    }
-
-    @Override
-    public void hideRows(int[] indices)
-    {
-        mv.hideColumns(indices);
-    }
-
-    @Override
-    public void hideColumns(int[] indices)
-    {
-        mv.hideRows(indices);
-    }
-
-    @Override
-    public int[] getSelectedRows()
-    {
-        return mv.getSelectedColumns();
-    }
-
-    @Override
-    public void setSelectedRows(int[] indices)
-    {
-        mv.setSelectedColumns(indices);
-    }
-
-    @Override
-    public boolean isRowSelected(int index)
-    {
-        return mv.isColumnSelected(index);
-    }
-
-    @Override
-    public int[] getSelectedColumns()
-    {
-        return mv.getSelectedRows();
-    }
-
-    @Override
-    public void setSelectedColumns(int[] indices)
-    {
-        mv.setSelectedRows(indices);
-    }
-
-    @Override
-    public boolean isColumnSelected(int index)
-    {
-        return mv.isRowSelected(index);
-    }
-
-    @Override
-    public void selectAll()
-    {
-        mv.selectAll(); //FIXME by columns
-    }
-
-    @Override
-    public void invertSelection()
-    {
-        mv.invertSelection();
-    }
-
-    @Override
-    public void clearSelection()
-    {
-        mv.clearSelection();
-    }
-
-    @Override
-    public int getLeadSelectionRow()
-    {
-        return mv.getLeadSelectionColumn();
-    }
-
-    @Override
-    public int getLeadSelectionColumn()
-    {
-        return mv.getLeadSelectionRow();
-    }
-
-    @Override
-    public void setLeadSelection(int row, int column)
-    {
-        mv.setLeadSelection(column, row);
-    }
-
-    @Override
-    public int getSelectedPropertyIndex()
-    {
-        return mv.getSelectedPropertyIndex();
-    }
-
-    @Override
-    public void setSelectedPropertyIndex(int index)
-    {
-        mv.setSelectedPropertyIndex(index);
+        mv.setSelectedLayer(index);
     }
 
     @Override

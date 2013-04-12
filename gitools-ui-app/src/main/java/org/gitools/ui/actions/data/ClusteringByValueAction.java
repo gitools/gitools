@@ -97,12 +97,12 @@ public class ClusteringByValueAction extends BaseAction
                     {
                         if (wiz.isApplyToRows())
                         {
-                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap.getMatrixView());
+                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap  );
                             ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
                         }
                         else
                         {
-                            ClusterUtils.updateVisibility(heatmap.getMatrixView(), results.getDataIndicesByClusterTitle());
+                            ClusterUtils.updateVisibility(heatmap  , results.getDataIndicesByClusterTitle());
                         }
                     }
 

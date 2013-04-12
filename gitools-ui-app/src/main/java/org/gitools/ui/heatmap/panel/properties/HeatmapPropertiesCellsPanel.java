@@ -136,8 +136,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         HeatmapDimension rdim = getHeatmap().getRows();
         HeatmapDimension cdim = getHeatmap().getColumns();
 
-        cellWidth.setValue(getHeatmap().getCellWidth());
-        cellHeight.setValue(getHeatmap().getCellHeight());
+        cellWidth.setValue(getHeatmap().getColumns().getCellSize());
+        cellHeight.setValue(getHeatmap().getRows().getCellSize());
         rowsGridEnabled.setSelected(rdim.isGridEnabled());
         rowsGridColor.setColor(rdim.getGridColor());
         rowsGridSize.setValue(rdim.getGridSize());
@@ -168,8 +168,8 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         {
             if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
             {
-                cellWidth.setValue(getHeatmap().getCellWidth());
-                cellHeight.setValue(getHeatmap().getCellHeight());
+                cellWidth.setValue(getHeatmap().getColumns().getCellSize());
+                cellHeight.setValue(getHeatmap().getRows().getCellSize());
             }
             else if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname))
             {
@@ -183,9 +183,9 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             {
                 ElementDecorator oldDecorator = (ElementDecorator) evt.getOldValue();
                 ElementDecoratorDescriptor oldDescriptor = ElementDecoratorFactory.getDescriptor(oldDecorator.getClass());
-                int newIndex = getHeatmap().getMatrixView().getSelectedPropertyIndex();
-                String newDataDimensionName = getHeatmap().getMatrixView().getCellAttributes().get(newIndex).getName();
-                String oldDataDimensionName = getHeatmap().getMatrixView().getCellAttributes().get(oldDecorator.getValueIndex()).getName();
+                int newIndex = getHeatmap().getSelectedLayer();
+                String newDataDimensionName = getHeatmap().getCellAttributes().get(newIndex).getName();
+                String oldDataDimensionName = getHeatmap().getCellAttributes().get(oldDecorator.getValueIndex()).getName();
 
 
                 descriptorMap.put(oldDataDimensionName, oldDescriptor);
@@ -212,7 +212,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             ElementDecoratorDescriptor descriptor = (ElementDecoratorDescriptor) evt.getItem();
 
             ElementDecorator[] decorators = getDecoratorsForDescriptor(descriptor);
-            int selectedDataDimension = getHeatmap().getMatrixView().getSelectedPropertyIndex();
+            int selectedDataDimension = getHeatmap().getSelectedLayer();
             if (decorators[selectedDataDimension].getValueIndex() != selectedDataDimension)
             {
                 decorators[selectedDataDimension] = setValueIndex(decorators[selectedDataDimension], decorators[selectedDataDimension].getAdapter(), selectedDataDimension);
@@ -246,7 +246,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
                 if (categoricalScale)
                 {
                     double[] values;
-                    values = MatrixUtils.getUniquedValuesFromMatrix(getHeatmap().getMatrixView().getContents(), cellAdapter, i);
+                    values = MatrixUtils.getUniquedValuesFromMatrix(getHeatmap().getContents(), cellAdapter, i);
                     CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
                     scale.setValues(values);
                 }
@@ -451,11 +451,11 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     private void cellWidthStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_cellWidthStateChanged
         int width = (Integer) cellWidth.getValue();
-        int dif = width - getHeatmap().getCellWidth();
+        int dif = width - getHeatmap().getColumns().getCellSize();
         getHeatmap().setCellWidth(width);
         if (cellSyncSize.isSelected())
         {
-            int height = getHeatmap().getCellHeight() + dif;
+            int height = getHeatmap().getRows().getCellSize() + dif;
             if (height > 0)
             {
                 getHeatmap().setCellHeight(height);
@@ -466,11 +466,11 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     private void cellHeightStateChanged(javax.swing.event.ChangeEvent evt)
     {//GEN-FIRST:event_cellHeightStateChanged
         int height = (Integer) cellHeight.getValue();
-        int dif = height - getHeatmap().getCellHeight();
+        int dif = height - getHeatmap().getRows().getCellSize();
         getHeatmap().setCellHeight(height);
         if (cellSyncSize.isSelected())
         {
-            int width = getHeatmap().getCellWidth() + dif;
+            int width = getHeatmap().getColumns().getCellSize() + dif;
             if (width > 0)
             {
                 getHeatmap().setCellWidth(width);
@@ -535,7 +535,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             return;
         }
         ElementDecorator loadedDecorator = dialog.getSelectedDecorator();
-        loadedDecorator = setValueIndex(loadedDecorator, d.getAdapter(), getHeatmap().getMatrixView().getSelectedPropertyIndex());
+        loadedDecorator = setValueIndex(loadedDecorator, d.getAdapter(), getHeatmap().getSelectedLayer());
         try
         {
             getHeatmap().replaceActiveDecorator(loadedDecorator);

@@ -246,7 +246,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
                 valueCb.setSelectedIndex(i);
             }
 
-        getTable().setSelectedPropertyIndex(decorator.getValueIndex());
+        getTable().setSelectedLayer(decorator.getValueIndex());
     }
 
     private void valueChanged()
@@ -258,7 +258,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 
         decorator.setValueIndex(propAdapter.getIndex());
 
-        getTable().setSelectedPropertyIndex(propAdapter.getIndex());
+        getTable().setSelectedLayer(propAdapter.getIndex());
     }
 
     private void changeDecorator()

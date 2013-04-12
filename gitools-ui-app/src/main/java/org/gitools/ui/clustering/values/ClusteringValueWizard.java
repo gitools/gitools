@@ -67,8 +67,8 @@ public class ClusteringValueWizard extends AbstractWizard
         methodPage = new ClusteringMethodsPage();
         addPage(methodPage);
 
-        IMatrixView mv = heatmap.getMatrixView();
-        optionsPage = new ClusteringOptionsPage(mv.getContents().getCellAttributes(), mv.getSelectedPropertyIndex());
+        IMatrixView mv = heatmap  ;
+        optionsPage = new ClusteringOptionsPage(mv.getContents().getCellAttributes(), mv.getSelectedLayer());
         addPage(optionsPage);
 
         newickPage = new SaveFilePage();
@@ -178,7 +178,7 @@ public class ClusteringValueWizard extends AbstractWizard
     public ClusteringData getClusterData()
     {
         int attr = optionsPage.getDataAttribute();
-        IMatrixView mv = heatmap.getMatrixView();
+        IMatrixView mv = heatmap  ;
         return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, attr) : new MatrixColumnClusteringData(mv, attr);
     }
 

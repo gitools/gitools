@@ -115,7 +115,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
             return;
         }
 
-        IMatrixView mv = heatmap.getMatrixView();
+        IMatrixView mv = heatmap  ;
         AnnotationMatrix am = hdim.getAnnotations();
         header.setAnnotationPattern(pattern);
 

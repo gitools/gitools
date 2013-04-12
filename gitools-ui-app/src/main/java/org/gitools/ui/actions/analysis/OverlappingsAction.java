@@ -93,7 +93,7 @@ public class OverlappingsAction extends BaseAction
 
         if (!analysis.isTransposeData())
         {
-            if (matrixView.getSelectedColumns().length > 0)
+            if (matrixView.getColumns().getSelected(  ).length > 0)
             {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getColumns().visibleFromSelection();
@@ -102,7 +102,7 @@ public class OverlappingsAction extends BaseAction
         }
         else
         {
-            if (matrixView.getSelectedRows().length > 0)
+            if (matrixView.getRows().getSelected(  ).length > 0)
             {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getRows().visibleFromSelection();

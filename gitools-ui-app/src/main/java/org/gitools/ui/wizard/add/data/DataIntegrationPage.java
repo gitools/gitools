@@ -91,7 +91,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         setTitle("Data Dimension Integration");
         setMessage("Choose which data dimensions and what cut-offs" + " to integrate");
 
-        List<IElementAttribute> attributes = hm.getMatrixView().getContents().getCellAdapter().getProperties();
+        List<IElementAttribute> attributes = hm.getContents().getCellAdapter().getProperties();
 
         this.attrNames = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)

@@ -62,7 +62,8 @@ public class SelectAllAction extends BaseAction
 
         if (matrixView != null)
         {
-            matrixView.selectAll();
+            matrixView.getRows().selectAll();
+            matrixView.getColumns().selectAll();
         }
 
         AppFrame.get().setStatusText("Selected all.");

@@ -90,7 +90,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
             return;
         }
 
-        final IMatrixView matrixView = hm.getMatrixView();
+        final IMatrixView matrixView = hm;
 
         final File file = wiz.getSavePage().getPathAsFile();
 
@@ -157,7 +157,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
     @NotNull
     private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView)
     {
-        int[] visibleIndices = matrixView.getVisibleRows();
+        int[] visibleIndices = matrixView.getRows().getVisible();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
             visibleSet.add(visibleIndices[i]);
@@ -174,14 +174,14 @@ public class ExportHeatmapLabelsAction extends BaseAction
             }
 
         IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.setVisibleRows(hiddenIndices);
+        hiddenView.getRows().setVisible(hiddenIndices);
         return new MatrixRowsLabelProvider(hiddenView);
     }
 
     @NotNull
     private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView)
     {
-        int[] visibleIndices = matrixView.getVisibleColumns();
+        int[] visibleIndices = matrixView.getColumns().getVisible();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
             visibleSet.add(visibleIndices[i]);
@@ -198,7 +198,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
             }
 
         IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.setVisibleColumns(hiddenIndices);
+        hiddenView.getColumns().setVisible(hiddenIndices);
         return new MatrixColumnsLabelProvider(hiddenView);
     }
 

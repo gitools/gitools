@@ -116,7 +116,7 @@ class AbstractHeatmapPanel extends JPanel
                 updateSize();
             }
         }
-        else if (src.equals(heatmap.getMatrixView()))
+        else if (src.equals(heatmap  ))
         {
             if (IMatrixView.VISIBLE_CHANGED.equals(pname))
             {

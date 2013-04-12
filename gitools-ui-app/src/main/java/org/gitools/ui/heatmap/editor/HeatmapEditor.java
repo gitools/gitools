@@ -112,7 +112,7 @@ public class HeatmapEditor extends AbstractEditor
         }
 
 
-        final IMatrixView matrixView = heatmap.getMatrixView();
+        final IMatrixView matrixView = heatmap  ;
 
         this.blockSelectionUpdate = false;
 
@@ -298,7 +298,7 @@ public class HeatmapEditor extends AbstractEditor
     @Nullable
     protected IMatrixView getMatrixView()
     {
-        return heatmap.getMatrixView();
+        return heatmap  ;
     }
 
     @Override
@@ -422,7 +422,7 @@ public class HeatmapEditor extends AbstractEditor
         lastMouseRow = row;
         lastMouseCol = col;
 
-        IMatrixView mv = heatmap.getMatrixView();
+        IMatrixView mv = heatmap  ;
 
         StringBuilder sb = new StringBuilder();
 
