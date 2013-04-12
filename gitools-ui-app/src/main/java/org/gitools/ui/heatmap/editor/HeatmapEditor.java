@@ -428,13 +428,13 @@ public class HeatmapEditor extends AbstractEditor
 
         if (row != -1 && col == -1)
         { // Row
-            String label = mv.getRowLabel(row);
+            String label = mv.getRows().getLabel(row);
             sb.append(label);
             HeatmapDimension rowDim = heatmap.getRows();
             AnnotationMatrix am = rowDim.getAnnotations();
             if (am != null)
             {
-                int annRow = am.getRowIndex(label);
+                int annRow = am.internalRowIndex(label);
                 if (annRow != -1)
                 {
                     boolean first = true;
@@ -447,7 +447,7 @@ public class HeatmapEditor extends AbstractEditor
                             {
                                 continue;
                             }
-                            int annCol = am.getColumnIndex(annLabel);
+                            int annCol = am.internalColumnIndex(annLabel);
                             sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
                             first = false;
                         }
@@ -457,13 +457,13 @@ public class HeatmapEditor extends AbstractEditor
         }
         else if (row == -1 && col != -1)
         { // Column
-            String label = mv.getColumnLabel(col);
+            String label = mv.getColumns().getLabel(col);
             sb.append(label);
             HeatmapDimension colDim = heatmap.getColumns();
             AnnotationMatrix am = colDim.getAnnotations();
             if (am != null)
             {
-                int annRow = am.getRowIndex(label);
+                int annRow = am.internalRowIndex(label);
                 if (annRow != -1)
                 {
                     boolean first = true;
@@ -476,7 +476,7 @@ public class HeatmapEditor extends AbstractEditor
                             {
                                 continue;
                             }
-                            int annCol = am.getColumnIndex(annLabel);
+                            int annCol = am.internalColumnIndex(annLabel);
                             sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
                             first = false;
                         }
@@ -486,8 +486,8 @@ public class HeatmapEditor extends AbstractEditor
         }
         else if (row != -1 && col != -1)
         { // Cell
-            String rowLabel = mv.getRowLabel(row);
-            String colLabel = mv.getColumnLabel(col);
+            String rowLabel = mv.getRows().getLabel(row);
+            String colLabel = mv.getColumns().getLabel(col);
             sb.append(colLabel).append(", ").append(rowLabel);
             List<IElementAttribute> attrs = mv.getCellAttributes();
             if (attrs.size() > 0)

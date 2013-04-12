@@ -70,10 +70,10 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         backgroundColor = Color.WHITE;
         font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
         AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
-        if (am != null && am.getColumnCount() > 0)
+        if (am != null && am.getColumns().size() > 0)
         {
             labelSource = LabelSource.ANNOTATION;
-            labelAnnotation = am.getColumnLabel(0);
+            labelAnnotation = am.internalColumnLabel(0);
         }
         else
         {

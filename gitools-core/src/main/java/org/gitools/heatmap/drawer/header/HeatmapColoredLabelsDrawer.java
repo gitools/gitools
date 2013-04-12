@@ -92,7 +92,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
         int clipStart = clip.y - box.y;
         int clipEnd = clipStart + clip.height;
-        int count = horizontal ? data.getColumnCount() : data.getRowCount();
+        int count = horizontal ? data.getColumns().size() : data.getRows().size();
 
         int start = (clipStart - height) / height;
         int end = (clipEnd + height - 1) / height;
@@ -235,13 +235,13 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         if (horizontal)
         {
             int cellWidth = heatmap.getCellWidth() + gridSize;
-            int columnCount = heatmap.getMatrixView().getColumnCount();
+            int columnCount = heatmap.getMatrixView().getColumns().size();
             return new Dimension(cellWidth * columnCount + extBorder, headerTotalSize);
         }
         else
         {
             int cellHeight = heatmap.getCellHeight() + gridSize;
-            int rowCount = heatmap.getMatrixView().getRowCount();
+            int rowCount = heatmap.getMatrixView().getRows().size();
             return new Dimension(headerTotalSize, cellHeight * rowCount + extBorder);
         }
     }
@@ -259,7 +259,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         if (horizontal)
         {
             int cellSize = heatmap.getCellWidth() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getColumnCount();
+            int totalSize = cellSize * heatmap.getMatrixView().getColumns().size();
             if (p.x >= 0 && p.x < totalSize)
             {
                 col = p.x / cellSize;
@@ -268,7 +268,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         else
         {
             int cellSize = heatmap.getCellHeight() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getRowCount();
+            int totalSize = cellSize * heatmap.getMatrixView().getRows().size();
             if (p.y >= 0 && p.y < totalSize)
             {
                 row = p.y / cellSize;
@@ -291,7 +291,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         if (horizontal)
         {
             int cellSize = heatmap.getCellWidth() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getColumnCount();
+            int totalSize = cellSize * heatmap.getMatrixView().getColumns().size();
             x = p.column >= 0 ? p.column * cellSize : 0;
             if (x > totalSize)
             {
@@ -301,7 +301,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         else
         {
             int cellSize = heatmap.getCellHeight() + gridSize;
-            int totalSize = cellSize * heatmap.getMatrixView().getRowCount();
+            int totalSize = cellSize * heatmap.getMatrixView().getRows().size();
             y = p.row >= 0 ? p.row * cellSize : 0;
             if (y > totalSize)
             {

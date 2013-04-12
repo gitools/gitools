@@ -34,12 +34,12 @@ public class MatrixRowsLabelProvider extends MatrixLabelProvider
     @Override
     public int getCount()
     {
-        return matrix.getRowCount();
+        return matrix.getRows().size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getRowLabel(index);
+        return matrix.getRows().getLabel(index);
     }
 }

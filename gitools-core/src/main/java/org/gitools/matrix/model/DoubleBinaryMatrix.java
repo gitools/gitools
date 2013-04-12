@@ -54,16 +54,14 @@ public class DoubleBinaryMatrix extends BaseMatrix
         makeCells(rowNames.length, colNames.length);
     }
 
-    @Override
-    public int getRowCount()
-    {
-        return cells.rows();
-    }
-
-    @Override
-    public int getColumnCount()
+    protected int internalColumnCount()
     {
         return cells.columns();
+    }
+
+    protected int internalRowCount()
+    {
+        return cells.rows();
     }
 
     @Override

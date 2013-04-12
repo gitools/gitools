@@ -100,7 +100,7 @@ public class GroupComparisonCommand extends AnalysisCommand
                     String line = null;
                     while ((line = bufferedReader.readLine()) != null)
                     {
-                        int i = data.getColumnIndex(line);
+                        int i = data.getColumns().getIndex(line);
                         if (i != -1)
                         {
                             colIndices.add(i);

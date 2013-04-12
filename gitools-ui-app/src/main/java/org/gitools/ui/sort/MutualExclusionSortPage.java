@@ -242,7 +242,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         }
 
         int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getMatrixView().getSelectedRows() : hm.getMatrixView().getSelectedColumns();
-        int visibleCount = dim == FilterDimension.ROWS ? hm.getMatrixView().getRowCount() : hm.getMatrixView().getColumnCount();
+        int visibleCount = dim == FilterDimension.ROWS ? hm.getMatrixView().getRows().size() : hm.getMatrixView().getColumns().size();
 
 
         int[] unselectedIndices = new int[visibleCount - selectedIndices.length];

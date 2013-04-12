@@ -78,7 +78,7 @@ public abstract class MatrixViewSorter
 
         if (selColumns == null || selColumns.length == 0)
         {
-            selColumns = new int[matrixView.getColumnCount()];
+            selColumns = new int[matrixView.getColumns().size()];
             for (int i = 0; i < selColumns.length; i++)
                 selColumns[i] = i;
         }
@@ -183,7 +183,7 @@ public abstract class MatrixViewSorter
 
         if (selRows == null || selRows.length == 0)
         {
-            selRows = new int[matrixView.getRowCount()];
+            selRows = new int[matrixView.getRows().size()];
             for (int i = 0; i < selRows.length; i++)
                 selRows[i] = i;
         }
@@ -195,7 +195,7 @@ public abstract class MatrixViewSorter
 
         if (selColumns == null || selColumns.length == 0)
         {
-            selColumns = new int[matrixView.getColumnCount()];
+            selColumns = new int[matrixView.getColumns().size()];
             for (int i = 0; i < selColumns.length; i++)
                 selColumns[i] = i;
         }
@@ -270,7 +270,7 @@ public abstract class MatrixViewSorter
 
         if (selColumns == null || selColumns.length == 0)
         {
-            selColumns = new int[matrixView.getColumnCount()];
+            selColumns = new int[matrixView.getColumns().size()];
             for (int i = 0; i < selColumns.length; i++)
                 selColumns[i] = i;
         }
@@ -279,7 +279,7 @@ public abstract class MatrixViewSorter
 
         if (selRows == null || selRows.length == 0)
         {
-            selRows = new int[matrixView.getRowCount()];
+            selRows = new int[matrixView.getRows().size()];
             for (int i = 0; i < selRows.length; i++)
                 selRows[i] = i;
         }

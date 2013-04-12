@@ -25,8 +25,7 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.IdTypeXmlAdapter;
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.*;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
@@ -46,7 +45,7 @@ import java.util.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapDimension extends AbstractModel implements PropertyChangeListener
+public class HeatmapDimension extends AbstractModel implements IMatrixViewDimension, PropertyChangeListener
 {
     public static final String IDTYPE_CHANGED = "idType";
     public static final String HEADERS_CHANGED = "headers";
@@ -55,8 +54,6 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
     public static final String ANNOTATIONS_CHANGED = "annotations";
     public static final String HIGHLIGHTING_CHANGED = "highlighting";
     private static final int INT_BIT_SIZE = 32;
-
-    int size;
 
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
     private IdType idType;
@@ -91,12 +88,15 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
     @XmlTransient
     private int selectionLead;
 
+    @XmlTransient
+    private IMatrixDimension matrixDimension;
+
     public HeatmapDimension()
     {
-        this(0);
+        this(null);
     }
 
-    public HeatmapDimension(int size)
+    public HeatmapDimension(IMatrixDimension matrixDimension)
     {
         this.idType = IdTypeManager.getDefault().getDefaultIdType();
         this.headers = new ArrayList<HeatmapHeader>();
@@ -104,15 +104,15 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
-        this.size = size;
+        this.matrixDimension = matrixDimension;
         resetVisible();
         init();
     }
 
     private void resetVisible()
     {
-        visible = new int[size];
-        for (int i = 0; i < size; i++)
+        visible = new int[size()];
+        for (int i = 0; i < size(); i++)
         {
             visible[i] = i;
         }
@@ -122,7 +122,7 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
     {
         this.highlightedLabels = new HashSet<String>();
         selected = new int[0];
-        selectedBitmap = newSelectionBitmap(size);
+        selectedBitmap = newSelectionBitmap(size());
         selectionLead = -1;
     }
 
@@ -383,7 +383,7 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
         if (indices != null && indices.length > 0)
         {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < size - 1 && Arrays.binarySearch(indices, selectionLead) >= 0)
+            if (indices[indices.length - 1] < size() - 1 && Arrays.binarySearch(indices, selectionLead) >= 0)
             {
                 selectionLead++;
             }
@@ -478,8 +478,8 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
 
     public void selectAll()
     {
-        selected = new int[size];
-        for (int i = 0; i < size; i++)
+        selected = new int[size()];
+        for (int i = 0; i < size(); i++)
             selected[i] = i;
 
         Arrays.fill(selectedBitmap, 0);
@@ -495,7 +495,7 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
         }
         else
         {
-            setSelected(invertSelectionArray(selected, size));
+            setSelected(invertSelectionArray(selected, size()));
         }
 
     }
@@ -523,9 +523,10 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
         }
     }
 
+    @Override
     public int size()
     {
-        return size;
+        return matrixDimension.size();
     }
 
     public int visibleSize()
@@ -625,5 +626,17 @@ public class HeatmapDimension extends AbstractModel implements PropertyChangeLis
             invArray[j++] = lastIndex++;
 
         return invArray;
+    }
+
+    @Override
+    public String getLabel(int index)
+    {
+        return matrixDimension.getLabel(index);
+    }
+
+    @Override
+    public int getIndex(String label)
+    {
+        return matrixDimension.getIndex(label);
     }
 }

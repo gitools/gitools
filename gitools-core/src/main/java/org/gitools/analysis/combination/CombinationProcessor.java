@@ -60,12 +60,12 @@ public class CombinationProcessor implements AnalysisProcessor
             data = new TransposedMatrixView(data);
         }
 
-        final int numCols = data.getColumnCount();
-        final int numRows = data.getRowCount();
+        final int numCols = data.getColumns().size();
+        final int numRows = data.getRows().size();
 
         String[] labels = new String[numCols];
         for (int i = 0; i < numCols; i++)
-            labels[i] = data.getColumnLabel(i);
+            labels[i] = data.getColumns().getLabel(i);
 
         String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
@@ -88,7 +88,7 @@ public class CombinationProcessor implements AnalysisProcessor
         cclabels = Arrays.copyOf(cclabels, cclabels.length);
         String[] rlabels = new String[numRows];
         for (int i = 0; i < numRows; i++)
-            rlabels[i] = data.getRowLabel(i);
+            rlabels[i] = data.getRows().getLabel(i);
 
         results.setColumns(cclabels);
         results.setRows(rlabels);

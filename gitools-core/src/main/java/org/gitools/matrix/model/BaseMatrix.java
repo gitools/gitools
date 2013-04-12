@@ -68,7 +68,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     // rows
 
-    public ObjectMatrix1D getRows()
+    public ObjectMatrix1D getInternalRows()
     {
         return rows;
     }
@@ -98,15 +98,14 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     }
 
     @NotNull
-    @Deprecated // Use getRowLabel() instead
+    @Deprecated // Use getRows().getLabel() instead
     public String getRowString(int index)
     {
         return (String) rows.get(index);
     }
 
     @NotNull
-    @Override
-    public String getRowLabel(int index)
+    public String internalRowLabel(int index)
     {
         return (String) rows.get(index);
     }
@@ -118,7 +117,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     // columns
 
-    public ObjectMatrix1D getColumns()
+    public ObjectMatrix1D getInternalColumns()
     {
         return columns;
     }
@@ -142,21 +141,8 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         this.columns = ObjectFactory1D.dense.make(names);
     }
 
-    public Object getColumn(int index)
-    {
-        return columns.get(index);
-    }
-
     @NotNull
-    @Deprecated // Use getColumnLabel() instead
-    public String getColumnString(int index)
-    {
-        return (String) columns.get(index);
-    }
-
-    @NotNull
-    @Override
-    public String getColumnLabel(int index)
+    public String internalColumnLabel(int index)
     {
         return (String) columns.get(index);
     }
@@ -212,10 +198,9 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         return index.intValue();
     }
 
-    @Override
-    public int getRowIndex(String label)
+    public int internalRowIndex(String label)
     {
-        Object[] rows = getRows().toArray();
+        Object[] rows = getInternalRows().toArray();
         for (int i = 0; i < rows.length; i++)
         {
             String s = (String) rows[i];
@@ -227,10 +212,9 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         return -1;
     }
 
-    @Override
-    public int getColumnIndex(String label)
+    public int internalColumnIndex(String label)
     {
-        Object[] cols = getColumns().toArray();
+        Object[] cols = getInternalColumns().toArray();
         for (int i = 0; i < cols.length; i++)
         {
             String s = (String) cols[i];
@@ -247,8 +231,8 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(getColumnCount()).append(" columns, ");
-        sb.append(getRowCount()).append(" rows");
+        sb.append(getColumns().size()).append(" columns, ");
+        sb.append(getRows().size()).append(" rows");
         return sb.toString();
     }
 
@@ -257,4 +241,58 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     {
         // Method to Override
     }
+
+    @Override
+    public IMatrixDimension getRows()
+    {
+        return new IMatrixDimension()
+        {
+            @Override
+            public int size()
+            {
+                return BaseMatrix.this.internalRowCount();
+            }
+
+            @Override
+            public String getLabel(int index)
+            {
+                return BaseMatrix.this.internalRowLabel(index);
+            }
+
+            @Override
+            public int getIndex(String label)
+            {
+                return BaseMatrix.this.internalRowIndex(label);
+            }
+        };
+    }
+
+    @Override
+    public IMatrixDimension getColumns()
+    {
+        return new IMatrixDimension()
+        {
+            @Override
+            public int size()
+            {
+                return BaseMatrix.this.internalColumnCount();
+            }
+
+            @Override
+            public String getLabel(int index)
+            {
+                return BaseMatrix.this.internalColumnLabel(index);
+            }
+
+            @Override
+            public int getIndex(String label)
+            {
+                return BaseMatrix.this.internalColumnIndex(label);
+            }
+        };
+    }
+
+    protected abstract int internalRowCount();
+
+    protected abstract int internalColumnCount();
 }

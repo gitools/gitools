@@ -210,12 +210,12 @@ public class MatrixViewLabelFilter
 
 	private static void filterByNames(IMatrixView mv, List<String> values, List<Integer> rows) {
 
-		int rowCount = mv.getRowCount();
+		int rowCount = mv.getRows().size();
 
 		Map<String, Integer> rowIndexMap = new HashMap<String, Integer>();
 
 		for (int i = 0; i < rowCount; i++) {
-			final String rowName = mv.getRowLabel(i);
+			final String rowName = mv.getRows().getLabel(i);
 			rowIndexMap.put(rowName, i);
 		}
 
@@ -233,11 +233,11 @@ public class MatrixViewLabelFilter
 		for (String name : values)
 			patterns.add(Pattern.compile(name));
 
-		int rowCount = mv.getRowCount();
+		int rowCount = mv.getRows().size();
 
 		// Check patterns
 		for (int i = 0; i < rowCount; i++) {
-			final String rowName = mv.getRowLabel(i);
+			final String rowName = mv.getRows().getLabel(i);
 			for (int j = 0; j < patterns.size(); j++) {
 				if (patterns.get(j).matcher(rowName).matches()) {
 					rows.add(i);

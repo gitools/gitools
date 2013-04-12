@@ -24,6 +24,7 @@ package org.gitools.matrix;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.IMatrixViewDimension;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
@@ -231,39 +232,15 @@ public class TransposedMatrixView implements IMatrixView
     }
 
     @Override
-    public int getRowCount()
+    public IMatrixViewDimension getRows()
     {
-        return mv.getColumnCount();
+        return mv.getRows();
     }
 
     @Override
-    public int getColumnCount()
+    public IMatrixViewDimension getColumns()
     {
-        return mv.getRowCount();
-    }
-
-    @Override
-    public String getRowLabel(int index)
-    {
-        return mv.getColumnLabel(index);
-    }
-
-    @Override
-    public int getRowIndex(String label)
-    {
-        return mv.getRowIndex(label);
-    }
-
-    @Override
-    public String getColumnLabel(int index)
-    {
-        return mv.getRowLabel(index);
-    }
-
-    @Override
-    public int getColumnIndex(String label)
-    {
-        return mv.getColumnIndex(label);
+        return mv.getColumns();
     }
 
     @Override

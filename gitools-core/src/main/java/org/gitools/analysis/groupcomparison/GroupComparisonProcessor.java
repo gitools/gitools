@@ -64,7 +64,7 @@ public class GroupComparisonProcessor extends HtestProcessor
             data = new TransposedMatrixView(data);
         }
 
-        final int numRows = data.getRowCount();
+        final int numRows = data.getRows().size();
 
 
         // Prepare results matrix
@@ -74,7 +74,7 @@ public class GroupComparisonProcessor extends HtestProcessor
         columnLabels[0] = analysis.getTest().getName();
         String[] rlabels = new String[numRows];
         for (int i = 0; i < numRows; i++)
-            rlabels[i] = data.getRowLabel(i);
+            rlabels[i] = data.getRows().getLabel(i);
 
         resultsMatrix.setColumns(columnLabels);
         resultsMatrix.setRows(rlabels);
@@ -168,7 +168,7 @@ public class GroupComparisonProcessor extends HtestProcessor
         BinaryCutoff binaryCutoff = group.getBinaryCutoff();
 
         List<Integer> columnIndicesList = new ArrayList<Integer>();
-        for (int col = 0; col < data.getColumnCount(); col++)
+        for (int col = 0; col < data.getColumns().size(); col++)
         {
             Object value = data.getCellValue(row, col, attrIndex);
             Double v = cast.getDoubleValue(value);

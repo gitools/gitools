@@ -60,12 +60,12 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         patOpt.addChangeListener(optListener);
 
         AnnotationMatrix am = hdim.getAnnotations();
-        if (am != null && am.getColumnCount() > 0)
+        if (am != null && am.getColumns().size() > 0)
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumnCount(); i++)
-                model.addElement(am.getColumnLabel(i));
+            for (int i = 0; i < am.getColumns().size(); i++)
+                model.addElement(am.internalColumnLabel(i));
             annList.setModel(model);
             annList.setSelectedIndex(0);
         }
@@ -136,13 +136,13 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         int[] indices = annList.getSelectedIndices();
 
         sb.append("${");
-        sb.append(am.getColumnLabel(indices[0]));
+        sb.append(am.internalColumnLabel(indices[0]));
         sb.append("}");
         for (int i = 1; i < indices.length; i++)
         {
             sb.append(annSepCb.getSelectedItem());
             sb.append("${");
-            sb.append(am.getColumnLabel(indices[i]));
+            sb.append(am.internalColumnLabel(indices[i]));
             sb.append("}");
         }
 
@@ -160,11 +160,11 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         StringBuilder sb = new StringBuilder();
         int[] indices = annList.getSelectedIndices();
 
-        sb.append(am.getColumnLabel(indices[0]));
+        sb.append(am.internalColumnLabel(indices[0]));
         for (int i = 1; i < indices.length; i++)
         {
             sb.append(annSepCb.getSelectedItem());
-            sb.append(am.getColumnLabel(indices[i]));
+            sb.append(am.internalColumnLabel(indices[i]));
         }
 
         return sb.toString();

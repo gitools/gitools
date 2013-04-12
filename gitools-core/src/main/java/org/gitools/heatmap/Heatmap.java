@@ -22,10 +22,7 @@
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.*;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Resource;
@@ -69,8 +66,8 @@ public class Heatmap extends Resource implements IMatrixView
     public Heatmap(IMatrix data)
     {
         this.body = new HeatmapBody(data);
-        this.rows = new HeatmapDimension(data.getRowCount());
-        this.columns = new HeatmapDimension(data.getColumnCount());
+        this.rows = new HeatmapDimension(data.getRows());
+        this.columns = new HeatmapDimension(data.getColumns());
 
         particularInitialization();
     }
@@ -472,42 +469,6 @@ public class Heatmap extends Resource implements IMatrixView
     public void setSelectedPropertyIndex(int index)
     {
         body.setSelectedView(index);
-    }
-
-    @Override
-    public int getRowCount()
-    {
-        return rows.visibleSize();
-    }
-
-    @Override
-    public String getRowLabel(int index)
-    {
-        return getContents().getRowLabel(rows.getVisible()[index]);
-    }
-
-    @Override
-    public int getRowIndex(String label)
-    {
-        return getContents().getRowIndex(label);
-    }
-
-    @Override
-    public int getColumnCount()
-    {
-        return columns.visibleSize();
-    }
-
-    @Override
-    public String getColumnLabel(int index)
-    {
-        return getContents().getColumnLabel(columns.getVisible()[index]);
-    }
-
-    @Override
-    public int getColumnIndex(String label)
-    {
-        return getContents().getColumnIndex(label);
     }
 
     @Override

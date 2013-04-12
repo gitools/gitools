@@ -141,7 +141,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
 
             in.close();
 
-            progressMonitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
+            progressMonitor.info(matrix.getColumns().size() + " columns and " + matrix.getRows().size() + " rows");
 
             progressMonitor.end();
         } catch (IOException e)
@@ -155,7 +155,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
     @Override
     protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
-        progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
+        progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
 
         try
         {
@@ -163,18 +163,18 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            final int rowCount = matrix.getRowCount();
+            final int rowCount = matrix.getRows().size();
 
-            for (int ci = 0; ci < matrix.getColumnCount(); ci++)
+            for (int ci = 0; ci < matrix.getColumns().size(); ci++)
             {
-                pw.append(matrix.getColumnLabel(ci));
+                pw.append(matrix.internalColumnLabel(ci));
                 pw.append('\t'); // description, but currently not used
                 for (int ri = 0; ri < rowCount; ri++)
                 {
                     Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
                     if (value == 1.0)
                     {
-                        pw.append('\t').append(matrix.getRowLabel(ri));
+                        pw.append('\t').append(matrix.internalRowLabel(ri));
                     }
                 }
                 pw.println();

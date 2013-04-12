@@ -128,7 +128,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final int getRowsCount()
     {
-        return getMatrixView().getRowCount();
+        return getMatrixView().getRows().size();
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final int getColumnsCount()
     {
-        return getMatrixView().getColumnCount();
+        return getMatrixView().getColumns().size();
     }
 
     /**
@@ -156,10 +156,10 @@ public abstract class AbstractDetailsPanel extends WebPanel
         }
 
         int row = getMatrixView().getLeadSelectionRow();
-        String rowIdentifier = heatmap.getRowLabel(row);
+        String rowIdentifier = heatmap.getRows().getLabel(row);
 
         int column = getMatrixView().getLeadSelectionColumn();
-        String columnIdentifier = heatmap.getColumnLabel(column);
+        String columnIdentifier = heatmap.getColumns().getLabel(column);
 
         return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRows())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumns())), getProperties(row, column));
     }

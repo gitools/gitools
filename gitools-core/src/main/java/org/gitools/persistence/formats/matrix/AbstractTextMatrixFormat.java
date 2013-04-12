@@ -169,7 +169,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             throw new PersistenceException(e);
         }
 
-        progressMonitor.info(matrix.getColumns().cardinality() + " columns and " + matrix.getRows().cardinality() + " rows");
+        progressMonitor.info(matrix.getInternalColumns().cardinality() + " columns and " + matrix.getInternalRows().cardinality() + " rows");
 
         progressMonitor.end();
     }
@@ -179,8 +179,8 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
         progressMonitor.begin("Reading data ...", 1);
 
-        int numColumns = matrix.getColumns().cardinality();
-        int numRows = matrix.getRows().cardinality();
+        int numColumns = matrix.getInternalColumns().cardinality();
+        int numRows = matrix.getInternalRows().cardinality();
 
         String[] columnNames = matrix.getColumnStrings();
         String[] rowNames = matrix.getRowStrings();
@@ -312,14 +312,14 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
     void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException
     {
 
-        monitor.begin("Saving matrix...", matrix.getColumnCount());
+        monitor.begin("Saving matrix...", matrix.getColumns().size());
 
         try
         {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            int numCols = matrix.getColumnCount();
+            int numCols = matrix.getColumns().size();
 
             final String[] colNames = matrix.getColumnStrings();
 
@@ -334,7 +334,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
             pw.print('\n');
 
-            int numRows = matrix.getRowCount();
+            int numRows = matrix.getRows().size();
 
             final String[] rowNames = matrix.getRowStrings();
 

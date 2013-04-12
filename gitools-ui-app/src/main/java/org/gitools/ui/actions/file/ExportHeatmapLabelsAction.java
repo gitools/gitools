@@ -165,7 +165,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         IMatrix contents = matrixView.getContents();
 
         int j = 0;
-        int count = contents.getRowCount();
+        int count = contents.getRows().size();
         int[] hiddenIndices = new int[count - visibleIndices.length];
         for (int i = 0; i < count; i++)
             if (!visibleSet.contains(i))
@@ -189,7 +189,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         IMatrix contents = matrixView.getContents();
 
         int j = 0;
-        int count = contents.getColumnCount();
+        int count = contents.getColumns().size();
         int[] hiddenIndices = new int[count - visibleIndices.length];
         for (int i = 0; i < count; i++)
             if (!visibleSet.contains(i))
@@ -247,23 +247,23 @@ public class ExportHeatmapLabelsAction extends BaseAction
 					PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			
 					if (visibleRows.equals(selected)) {
-						for (int i = 0; i < matrixView.getRowCount(); i++)
-							pw.println(matrixView.getRowLabel(i));
+						for (int i = 0; i < matrixView.getRows().size(); i++)
+							pw.println(matrixView.getRows().getLabel(i));
 					}
 					else if (visibleCols.equals(selected)) {
-						for (int i = 0; i < matrixView.getColumnCount(); i++)
-							pw.println(matrixView.getColumnLabel(i));
+						for (int i = 0; i < matrixView.getColumns().size(); i++)
+							pw.println(matrixView.getColumns().getLabel(i));
 					}
 					else if (hiddenRows.equals(selected)) {
-						for (int i = 0; i < contents.getRowCount(); i++) {
+						for (int i = 0; i < contents.getRows().size(); i++) {
 							if (!inArray(i, matrixView.getVisibleRows()))
-									pw.println(contents.getRowLabel(i));
+									pw.println(contents.getRows().getLabel(i));
 						}
 					}
 					else if (hiddenCols.equals(selected)) {
-						for (int i = 0; i < contents.getColumnCount(); i++) {
+						for (int i = 0; i < contents.getColumns().size(); i++) {
 							if (!inArray(i, matrixView.getVisibleColumns()))
-									pw.println(contents.getColumnLabel(i));
+									pw.println(contents.getColumns().getLabel(i));
 						}
 					}
 

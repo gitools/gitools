@@ -506,7 +506,7 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
     {//GEN-FIRST:event_annFilterActionPerformed
         IMatrixView matrixView = getHeatmap().getMatrixView();
 
-        int count = rowMode ? matrixView.getRowCount() : matrixView.getColumnCount();
+        int count = rowMode ? matrixView.getRows().size() : matrixView.getColumns().size();
 
         AnnotationMatrix annotations = hdim.getAnnotations();
 
@@ -514,9 +514,9 @@ public class HeatmapPropertiesHeaderPanel extends HeatmapPropertiesAbstractPanel
 
         for (int i = 0; i < count; i++)
         {
-            String element = rowMode ? matrixView.getRowLabel(i) : matrixView.getColumnLabel(i);
+            String element = rowMode ? matrixView.getRows().getLabel(i) : matrixView.getColumns().getLabel(i);
 
-            int j = annotations.getRowIndex(element);
+            int j = annotations.internalRowIndex(element);
             if (j >= 0)
             {
                 indices.add(i);

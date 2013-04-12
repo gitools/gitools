@@ -185,22 +185,22 @@ public class EnrichmentCommand extends HtestCommand
             Set<String> backgroundNames = new HashSet<String>();
             backgroundNames.addAll(Arrays.asList(names));
 
-            for (int i = 0; i < dataMatrix.get().getRowCount(); i++)
-                if (backgroundNames.contains(dataMatrix.get().getRowLabel(i)))
+            for (int i = 0; i < dataMatrix.get().getRows().size(); i++)
+                if (backgroundNames.contains(dataMatrix.get().internalRowLabel(i)))
                 {
                     rows.add(i);
                 }
 
             int numRows = rows.size();
-            int numColumns = dataMatrix.get().getColumnCount();
+            int numColumns = dataMatrix.get().getColumns().size();
 
             fmatrix.make(numRows, numColumns);
-            fmatrix.setColumns(dataMatrix.get().getColumns());
+            fmatrix.setColumns(dataMatrix.get().getInternalColumns());
 
             for (int ri = 0; ri < numRows; ri++)
             {
                 int srcRow = rows.get(ri);
-                fmatrix.setRow(ri, dataMatrix.get().getRowLabel(srcRow));
+                fmatrix.setRow(ri, dataMatrix.get().internalRowLabel(srcRow));
                 for (int ci = 0; ci < numColumns; ci++)
                 {
                     Object value = dataMatrix.get().getCellValue(srcRow, ci, 0);

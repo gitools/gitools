@@ -66,7 +66,7 @@ public class AnnotationResolver implements VariableValueResolver
 
         if (am != null)
         {
-            annRow = am.getRowIndex(label);
+            annRow = am.internalRowIndex(label);
         }
     }
 
@@ -83,7 +83,7 @@ public class AnnotationResolver implements VariableValueResolver
             return na;
         }
 
-        int annCol = am != null ? am.getColumnIndex(variableName) : -1;
+        int annCol = am != null ? am.internalColumnIndex(variableName) : -1;
         if (annCol == -1)
         {
             return "${" + variableName + "}";

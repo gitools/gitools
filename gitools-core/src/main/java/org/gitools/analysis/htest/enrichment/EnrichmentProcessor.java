@@ -89,20 +89,20 @@ public class EnrichmentProcessor extends HtestProcessor
 
         IMatrix dataMatrix = analysis.getData().get();
 
-        final int numConditions = dataMatrix.getColumnCount();
-        final int numRows = dataMatrix.getRowCount();
+        final int numConditions = dataMatrix.getColumns().size();
+        final int numRows = dataMatrix.getRows().size();
 
         String[] labels = new String[numRows];
         for (int i = 0; i < labels.length; i++)
-            labels[i] = dataMatrix.getRowLabel(i);
+            labels[i] = dataMatrix.getRows().getLabel(i);
 
         ModuleMap mmap = analysis.getModuleMap().get();
         mmap = mmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
 
         //DoubleMatrix2D data = null;
-        ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumnCount());
+        ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumns().size());
         for (int i = 0; i < numConditions; i++)
-            conditions.setQuick(i, dataMatrix.getColumnLabel(i));
+            conditions.setQuick(i, dataMatrix.getColumns().getLabel(i));
 
         ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
 
@@ -144,7 +144,7 @@ public class EnrichmentProcessor extends HtestProcessor
         {
 
             //final String condName = conditions.getQuick(condIndex).toString();
-            final String condName = dataMatrix.getColumnLabel(condIndex);
+            final String condName = dataMatrix.getColumns().getLabel(condIndex);
 
             //final DoubleMatrix1D condItems = data.viewRow(condIndex);
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);

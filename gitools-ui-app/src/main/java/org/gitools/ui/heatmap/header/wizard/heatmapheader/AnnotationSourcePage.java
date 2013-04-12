@@ -60,11 +60,11 @@ public class AnnotationSourcePage extends AbstractWizardPage
 
         AnnotationMatrix am = hdim.getAnnotations();
         int seomvar = annList.getModel().getSize();
-        if (am != null && am.getColumnCount() > 0 && annList.getModel().getSize() != am.getColumnCount())
+        if (am != null && am.getColumns().size() > 0 && annList.getModel().getSize() != am.getColumns().size())
         {
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumnCount(); i++)
-                model.addElement(am.getColumnLabel(i));
+            for (int i = 0; i < am.getColumns().size(); i++)
+                model.addElement(am.internalColumnLabel(i));
             annList.setModel(model);
         }
         annList.setSelectedIndices(selectedIndices);

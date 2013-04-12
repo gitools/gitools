@@ -93,7 +93,7 @@ public class PatternSourcePage extends AbstractWizardPage
     {
         super.updateControls();
 
-        if (am != null && am.getColumnCount() > 0)
+        if (am != null && am.getColumns().size() > 0)
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
@@ -101,8 +101,8 @@ public class PatternSourcePage extends AbstractWizardPage
             {
                 model.addElement("id");
             }
-            for (int i = 0; i < am.getColumnCount(); i++)
-                model.addElement(am.getColumnLabel(i));
+            for (int i = 0; i < am.getColumns().size(); i++)
+                model.addElement(am.internalColumnLabel(i));
             annList.setModel(model);
             annList.setSelectedIndex(0);
         }

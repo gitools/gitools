@@ -23,6 +23,7 @@ package org.gitools.matrix.model.compressmatrix;
 
 
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Resource;
@@ -57,39 +58,15 @@ public class CompressMatrix extends Resource implements IMatrix
     }
 
     @Override
-    public int getRowCount()
+    public IMatrixDimension getColumns()
     {
-        return rows.size();
+        return columns;
     }
 
     @Override
-    public String getRowLabel(int index)
+    public IMatrixDimension getRows()
     {
-        return rows.getLabel(index);
-    }
-
-    @Override
-    public int getRowIndex(String label)
-    {
-        return rows.getIndex(label);
-    }
-
-    @Override
-    public int getColumnCount()
-    {
-        return columns.size();
-    }
-
-    @Override
-    public String getColumnLabel(int index)
-    {
-        return columns.getLabel(index);
-    }
-
-    @Override
-    public int getColumnIndex(String label)
-    {
-        return columns.getIndex(label);
+        return rows;
     }
 
     @Override
@@ -127,7 +104,6 @@ public class CompressMatrix extends Resource implements IMatrix
     {
         return elementAdapter;
     }
-
 
     @Override
     public List<IElementAttribute> getCellAttributes()

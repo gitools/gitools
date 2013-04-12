@@ -95,6 +95,7 @@ public class FileChooserUtils
         } */
 
         VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
+        fileChooser.setFileHidingEnabled(false);
 
         //TODO Fix VFS integration
         //fileChooser.setAccessory(new DefaultAccessoriesPanel(fileChooser));

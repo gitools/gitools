@@ -141,7 +141,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
             in.close();
 
-            progressMonitor.info(matrix.getColumnCount() + " columns and " + matrix.getRowCount() + " rows");
+            progressMonitor.info(matrix.getColumns().size() + " columns and " + matrix.getRows().size() + " rows");
 
             progressMonitor.end();
         } catch (IOException e)
@@ -156,24 +156,24 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
     @Override
     protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
     {
-        progressMonitor.begin("Saving matrix...", matrix.getColumnCount());
+        progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
 
         try
         {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            int numColumns = matrix.getColumnCount();
-            int numRows = matrix.getRowCount();
+            int numColumns = matrix.getColumns().size();
+            int numRows = matrix.getRows().size();
 
             // column labels
-            pw.append(matrix.getColumnLabel(0));
-            for (int col = 1; col < matrix.getColumnCount(); col++)
-                pw.append('\t').append(matrix.getColumnLabel(col));
+            pw.append(matrix.internalColumnLabel(0));
+            for (int col = 1; col < matrix.getColumns().size(); col++)
+                pw.append('\t').append(matrix.internalColumnLabel(col));
             pw.println();
 
             // descriptions
-            for (int col = 1; col < matrix.getColumnCount(); col++)
+            for (int col = 1; col < matrix.getColumns().size(); col++)
                 pw.append('\t');
             pw.println();
 
@@ -201,7 +201,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
                         if (value == 1.0)
                         {
-                            line.append(matrix.getRowLabel(row));
+                            line.append(matrix.internalRowLabel(row));
                             validLine = true;
                         }
 

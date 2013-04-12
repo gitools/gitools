@@ -263,23 +263,23 @@ public class MatrixUtils
     @NotNull
     public static ModuleMap matrixToModuleMap(@NotNull IMatrix matrix)
     {
-        String[] itemNames = new String[matrix.getRowCount()];
-        for (int i = 0; i < matrix.getRowCount(); i++)
-            itemNames[i] = matrix.getRowLabel(i);
+        String[] itemNames = new String[matrix.getRows().size()];
+        for (int i = 0; i < matrix.getRows().size(); i++)
+            itemNames[i] = matrix.getRows().getLabel(i);
 
-        String[] modNames = new String[matrix.getColumnCount()];
-        for (int i = 0; i < matrix.getColumnCount(); i++)
-            modNames[i] = matrix.getColumnLabel(i);
+        String[] modNames = new String[matrix.getColumns().size()];
+        for (int i = 0; i < matrix.getColumns().size(); i++)
+            modNames[i] = matrix.getColumns().getLabel(i);
 
         ModuleMap map = new ModuleMap();
         map.setItemNames(itemNames);
         map.setModuleNames(modNames);
 
-        int[][] mapIndices = new int[matrix.getColumnCount()][];
-        for (int col = 0; col < matrix.getColumnCount(); col++)
+        int[][] mapIndices = new int[matrix.getColumns().size()][];
+        for (int col = 0; col < matrix.getColumns().size(); col++)
         {
             List<Integer> indexList = new ArrayList<Integer>();
-            for (int row = 0; row < matrix.getRowCount(); row++)
+            for (int row = 0; row < matrix.getRows().size(); row++)
             {
                 double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
                 if (value == 1.0)
@@ -320,8 +320,8 @@ public class MatrixUtils
         Double min = Double.POSITIVE_INFINITY;
         Double max = Double.NEGATIVE_INFINITY;
 
-        int colNb = data.getColumnCount();
-        int rowNb = data.getRowCount();
+        int colNb = data.getColumns().size();
+        int rowNb = data.getRows().size();
 
         IProgressMonitor submonitor = monitor.subtask();
         String valueDimensionName = data.getCellAttributes().get(valueDimension).getName();

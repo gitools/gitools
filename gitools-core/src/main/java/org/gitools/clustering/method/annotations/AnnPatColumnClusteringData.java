@@ -96,19 +96,19 @@ public class AnnPatColumnClusteringData implements ClusteringData
     @Override
     public int getSize()
     {
-        return matrix.getColumnCount();
+        return matrix.getColumns().size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getColumnLabel(index);
+        return matrix.getColumns().getLabel(index);
     }
 
     @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index)
     {
-        return new Instance(new AnnotationResolver(am, matrix.getColumnLabel(index), "N/A"));
+        return new Instance(new AnnotationResolver(am, matrix.getColumns().getLabel(index), "N/A"));
     }
 }

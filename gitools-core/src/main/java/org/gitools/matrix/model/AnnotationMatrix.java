@@ -94,7 +94,7 @@ public class AnnotationMatrix extends StringMatrix
         updateColumnsMap();
     }
 
-    public int getRowIndex(String id)
+    public int internalRowIndex(String id)
     {
         int index = -1;
         Integer idx = rowMap.get(id);
@@ -105,7 +105,7 @@ public class AnnotationMatrix extends StringMatrix
         return index;
     }
 
-    public int getColumnIndex(String id)
+    public int internalColumnIndex(String id)
     {
         int index = -1;
         Integer idx = colMap.get(id);
@@ -120,16 +120,16 @@ public class AnnotationMatrix extends StringMatrix
     public List<Annotation> getAnnotations(String label)
     {
         List<Annotation> ann = new ArrayList<Annotation>();
-        int index = getRowIndex(label);
+        int index = internalRowIndex(label);
         if (index >= 0)
         {
-            int numAnn = getColumnCount();
+            int numAnn = getColumns().size();
             for (int i = 0; i < numAnn; i++)
             {
                 String value = getCell(index, i);
                 if (value != null)
                 {
-                    String key = getColumnLabel(i);
+                    String key = internalColumnLabel(i);
                     ann.add(new Annotation(key, value));
                 }
             }

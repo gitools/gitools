@@ -22,6 +22,7 @@
 package org.gitools.matrix;
 
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
@@ -51,39 +52,15 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public int getRowCount()
+    public IMatrixDimension getRows()
     {
-        return m.getRowCount();
+        return m.getRows();
     }
 
     @Override
-    public String getRowLabel(int index)
+    public IMatrixDimension getColumns()
     {
-        return m.getRowLabel(index);
-    }
-
-    @Override
-    public int getRowIndex(String label)
-    {
-        return m.getRowIndex(label);
-    }
-
-    @Override
-    public int getColumnCount()
-    {
-        return m.getColumnCount();
-    }
-
-    @Override
-    public String getColumnLabel(int index)
-    {
-        return m.getColumnLabel(index);
-    }
-
-    @Override
-    public int getColumnIndex(String label)
-    {
-        return m.getColumnIndex(label);
+        return m.getColumns();
     }
 
     @Override

@@ -56,7 +56,7 @@ public class MatrixViewValueFilter
 
         if (selection == null || selection.length == 0)
         {
-            int numColumns = matrixView.getColumnCount();
+            int numColumns = matrixView.getColumns().size();
             int[] sel = new int[numColumns];
             for (int i = 0; i < sel.length; i++)
                 sel[i] = i;
@@ -65,7 +65,7 @@ public class MatrixViewValueFilter
 
         List<Integer> filterin = new ArrayList<Integer>();
 
-        for (int row = 0; row < matrixView.getRowCount(); row++)
+        for (int row = 0; row < matrixView.getRows().size(); row++)
         {
             boolean cellsAnd = true;
             boolean cellsOr = false;

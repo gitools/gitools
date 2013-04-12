@@ -100,10 +100,10 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
             colStart = (clip.y - box.y) / cellHeight;
             colEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
-            colEnd = colEnd < data.getColumnCount() ? colEnd : data.getColumnCount();
+            colEnd = colEnd < data.getColumns().size() ? colEnd : data.getColumns().size();
 
             rowStart = (clip.x - box.x) / headerSize;
-            rowEnd = headerData.getRowCount();
+            rowEnd = headerData.getRows().size();
 
             cellWidth = (headerSize - margin - columnsGridSize * rowEnd) / rowEnd;
 
@@ -118,10 +118,10 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
             rowStart = (clip.y - box.y) / cellHeight;
             rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
-            rowEnd = rowEnd < data.getRowCount() ? rowEnd : data.getRowCount();
+            rowEnd = rowEnd < data.getRows().size() ? rowEnd : data.getRows().size();
 
             colStart = (clip.x - box.x) / headerSize;
-            colEnd = headerData.getColumnCount();
+            colEnd = headerData.getColumns().size();
 
             cellWidth = (headerSize - margin - columnsGridSize * colEnd) / colEnd;
 
@@ -158,7 +158,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
                 if (horizontal)
                 {
-                    String label = data.getColumnLabel(col);
+                    String label = data.getColumns().getLabel(col);
                     valueExists = labelIndexMap.containsKey(label) ? true : false;
                     if (valueExists)
                     {
@@ -168,7 +168,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                 }
                 else
                 {
-                    String label = data.getRowLabel(row);
+                    String label = data.getRows().getLabel(row);
                     valueExists = labelIndexMap.containsKey(label) ? true : false;
                     if (valueExists)
                     {
@@ -311,8 +311,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
         int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
-        int rowCount = heatmap.getMatrixView().getRowCount();
-        int columnCount = heatmap.getMatrixView().getColumnCount();
+        int rowCount = heatmap.getMatrixView().getRows().size();
+        int columnCount = heatmap.getMatrixView().getColumns().size();
         int extBorder = /*2 * 1 - 1*/ 0;
 
 
@@ -346,8 +346,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap.getMatrixView().getRowCount();
-        int columnCount = heatmap.getMatrixView().getColumnCount();
+        int rowCount = heatmap.getMatrixView().getRows().size();
+        int columnCount = heatmap.getMatrixView().getColumns().size();
 
         if (horizontal)
         {
@@ -384,8 +384,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap.getMatrixView().getRowCount();
-        int columnCount = heatmap.getMatrixView().getColumnCount();
+        int rowCount = heatmap.getMatrixView().getRows().size();
+        int columnCount = heatmap.getMatrixView().getColumns().size();
 
         if (horizontal)
         {

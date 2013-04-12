@@ -52,13 +52,13 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver
             return label;
         }
 
-        int annRow = am != null ? am.getRowIndex(label) : -1;
+        int annRow = am != null ? am.internalRowIndex(label) : -1;
         if (annRow == -1)
         {
             return "${" + variableName + "}";
         }
 
-        int annCol = am.getColumnIndex(variableName);
+        int annCol = am.internalColumnIndex(variableName);
         return am.getCell(annRow, annCol);
     }
 }

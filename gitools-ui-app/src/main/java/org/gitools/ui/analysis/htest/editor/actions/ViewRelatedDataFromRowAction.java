@@ -90,14 +90,14 @@ public class ViewRelatedDataFromRowAction extends BaseAction
         Set<Integer> elements = new HashSet<Integer>();
 
         Map<String, Integer> itemNameMap = new HashMap<String, Integer>();
-        for (int i = 0; i < matrix.getRowCount(); i++)
-            itemNameMap.put(matrix.getRowLabel(i), i);
+        for (int i = 0; i < matrix.getRows().size(); i++)
+            itemNameMap.put(matrix.getRows().getLabel(i), i);
 
         StringBuilder moduleNames = new StringBuilder();
 
         for (int i = 0; i < selRows.length; i++)
         {
-            String modName = srcMatrix.getRowLabel(view[selRows[i]]);
+            String modName = srcMatrix.getRows().getLabel(view[selRows[i]]);
             if (i != 0)
             {
                 moduleNames.append(", ");

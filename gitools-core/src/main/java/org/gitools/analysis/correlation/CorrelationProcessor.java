@@ -64,14 +64,14 @@ public class CorrelationProcessor implements AnalysisProcessor
             data = mt;
         }
 
-        int numRows = data.getRowCount();
-        int numColumns = data.getColumnCount();
+        int numRows = data.getRows().size();
+        int numColumns = data.getColumns().size();
 
         monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
 
         String[] labels = new String[numColumns];
         for (int i = 0; i < numColumns; i++)
-            labels[i] = data.getColumnLabel(i);
+            labels[i] = data.getColumns().getLabel(i);
 
         final ObjectMatrix results = new ObjectMatrix();
         analysis.setResults(new ResourceReference<IMatrix>("results", results));
@@ -111,7 +111,7 @@ public class CorrelationProcessor implements AnalysisProcessor
 
             for (int j = i; j < numColumns && !monitor.isCancelled(); j++)
             {
-                monitor.info("Correlating " + data.getColumnLabel(i) + " with " + data.getColumnLabel(j));
+                monitor.info("Correlating " + data.getColumns().getLabel(i) + " with " + data.getColumns().getLabel(j));
 
                 //TODO Parallelize
                 {

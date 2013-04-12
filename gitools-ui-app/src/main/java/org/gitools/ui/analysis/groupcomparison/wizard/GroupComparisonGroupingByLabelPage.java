@@ -246,7 +246,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         }
 
         int[] selectedIndices = hm.getMatrixView().getSelectedColumns();
-        int visibleColumnsCount = hm.getMatrixView().getColumnCount();
+        int visibleColumnsCount = hm.getMatrixView().getColumns().size();
             /*for (int i=0; i < selectedIndices.length; i++) {
                 visibleIndices = ArrayUtils.removeElement(visibleIndices, selectedIndices[i]);
 			}*/

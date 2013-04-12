@@ -34,12 +34,12 @@ public class MatrixColumnsLabelProvider extends MatrixLabelProvider
     @Override
     public int getCount()
     {
-        return matrix.getColumnCount();
+        return matrix.getColumns().size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getColumnLabel(index);
+        return matrix.getColumns().getLabel(index);
     }
 }

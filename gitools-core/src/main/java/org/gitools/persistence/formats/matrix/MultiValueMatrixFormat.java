@@ -449,7 +449,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
         boolean orderByColumn = true;
 
-        monitor.begin("Saving results...", results.getRowCount() * results.getColumnCount());
+        monitor.begin("Saving results...", results.getRows().size() * results.getColumns().size());
 
         try
         {
@@ -494,8 +494,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
         out.writeNewLine();
 
-        int numColumns = resultsMatrix.getColumnCount();
-        int numRows = resultsMatrix.getRowCount();
+        int numColumns = resultsMatrix.getColumns().size();
+        int numRows = resultsMatrix.getRows().size();
 
         if (orderByColumn)
         {
@@ -520,8 +520,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             return;
         }
 
-        final String colName = resultsMatrix.getColumnLabel(colIndex);
-        final String rowName = resultsMatrix.getRowLabel(rowIndex);
+        final String colName = resultsMatrix.internalColumnLabel(colIndex);
+        final String rowName = resultsMatrix.internalRowLabel(rowIndex);
 
         out.writeQuotedValue(colName);
         out.writeSeparator();

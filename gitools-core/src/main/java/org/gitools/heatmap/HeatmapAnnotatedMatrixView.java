@@ -23,6 +23,7 @@ package org.gitools.heatmap;
 
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.IMatrixViewDimension;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
@@ -223,39 +224,15 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView
     }
 
     @Override
-    public int getRowCount()
+    public IMatrixViewDimension getRows()
     {
-        return mv.getRowCount();
+        return mv.getRows();
     }
 
     @Override
-    public String getRowLabel(int index)
+    public IMatrixViewDimension getColumns()
     {
-        return hm.getRowLabel(index);
-    }
-
-    @Override
-    public int getRowIndex(String label)
-    {
-        return mv.getRowIndex(label);
-    }
-
-    @Override
-    public int getColumnCount()
-    {
-        return mv.getColumnCount();
-    }
-
-    @Override
-    public String getColumnLabel(int index)
-    {
-        return hm.getColumnLabel(index);
-    }
-
-    @Override
-    public int getColumnIndex(String label)
-    {
-        return mv.getColumnIndex(label);
+        return mv.getColumns();
     }
 
     @Override

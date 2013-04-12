@@ -80,15 +80,15 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         }
 
         AnnotationMatrix am = hdim.getAnnotations();
-        if (am != null && am.getColumnCount() > 0)
+        if (am != null && am.getColumns().size() > 0)
         {
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumnCount(); i++)
-                model.addElement(am.getColumnLabel(i));
+            for (int i = 0; i < am.getColumns().size(); i++)
+                model.addElement(am.internalColumnLabel(i));
             annList.setModel(model);
 
             String label = header.getLabelAnnotation();
-            int annIndex = am.getColumnIndex(label);
+            int annIndex = am.internalColumnIndex(label);
             if (annIndex > -1)
             {
                 annList.setSelectedIndex(annIndex);

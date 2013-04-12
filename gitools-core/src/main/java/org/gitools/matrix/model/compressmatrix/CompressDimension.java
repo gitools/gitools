@@ -21,13 +21,15 @@
  */
 package org.gitools.matrix.model.compressmatrix;
 
+import org.gitools.matrix.model.IMatrixDimension;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Represents one dimension (rows or columns) of a {@link CompressMatrix}.
  */
-public class CompressDimension
+public class CompressDimension implements IMatrixDimension
 {
 
     private String[] labels;
@@ -55,6 +57,7 @@ public class CompressDimension
      *
      * @return the int
      */
+    @Override
     public int size()
     {
         return labels.length;
@@ -66,6 +69,7 @@ public class CompressDimension
      * @param index the index
      * @return the label
      */
+    @Override
     public String getLabel(int index)
     {
          return labels[index];
@@ -77,6 +81,7 @@ public class CompressDimension
      * @param label the label
      * @return the index
      */
+    @Override
     public int getIndex(String label)
     {
         return labelsToIndex.get(label);

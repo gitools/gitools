@@ -48,10 +48,10 @@ public abstract class HtestProcessor implements AnalysisProcessor
 
         monitor.begin(mtc.getName() + " correction...", 1);
 
-        DoubleMatrix2D adjpvalues = DoubleFactory2D.dense.make(3, res.getRowCount());
-        for (int condIdx = 0; condIdx < res.getColumnCount(); condIdx++)
+        DoubleMatrix2D adjpvalues = DoubleFactory2D.dense.make(3, res.getRows().size());
+        for (int condIdx = 0; condIdx < res.getColumns().size(); condIdx++)
         {
-            for (int moduleIdx = 0; moduleIdx < res.getRowCount(); moduleIdx++)
+            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
             {
                 CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
                 adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
@@ -63,7 +63,7 @@ public abstract class HtestProcessor implements AnalysisProcessor
             mtc.correct(adjpvalues.viewRow(1).viewSelection(notNaNProc));
             mtc.correct(adjpvalues.viewRow(2).viewSelection(notNaNProc));
 
-            for (int moduleIdx = 0; moduleIdx < res.getRowCount(); moduleIdx++)
+            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
             {
                 CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
                 if (r != null)

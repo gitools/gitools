@@ -89,7 +89,7 @@ public class ShowAllAction extends BaseAction
 
         if (type == ElementType.ROWS)
         {
-            int rowCount = contents.getRowCount();
+            int rowCount = contents.getRows().size();
 
             int[] visibleRows = new int[rowCount];
 
@@ -102,7 +102,7 @@ public class ShowAllAction extends BaseAction
         }
         else if (type == ElementType.COLUMNS)
         {
-            int columnCount = contents.getColumnCount();
+            int columnCount = contents.getColumns().size();
 
             int[] visibleColumns = new int[columnCount];
 

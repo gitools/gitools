@@ -56,8 +56,8 @@ public class MatrixConversion implements ConversionDelegate
             throw new Exception("Unsupported mime type for destination matrix: " + dstFormat);
         }
 
-        int numCols = srcMatrix.getColumnCount();
-        int numRows = srcMatrix.getRowCount();
+        int numCols = srcMatrix.getColumns().size();
+        int numRows = srcMatrix.getRows().size();
 
         progressMonitor.begin("Converting matrix ...", numRows);
 
@@ -76,8 +76,8 @@ public class MatrixConversion implements ConversionDelegate
                 progressMonitor.worked(1);
             }
 
-            dstMatrix.setColumns(srcMatrix.getColumns());
-            dstMatrix.setRows(srcMatrix.getRows());
+            dstMatrix.setColumns(srcMatrix.getInternalColumns());
+            dstMatrix.setRows(srcMatrix.getInternalRows());
         }
         else
         {

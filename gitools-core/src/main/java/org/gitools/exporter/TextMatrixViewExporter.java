@@ -40,13 +40,13 @@ public class TextMatrixViewExporter
     {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
-        int rowCount = matrixView.getRowCount();
-        int colCount = matrixView.getColumnCount();
+        int rowCount = matrixView.getRows().size();
+        int colCount = matrixView.getColumns().size();
 
         //header
 
         for (int c = 0; c < colCount; c++)
-            pw.print("\t" + matrixView.getColumnLabel(c));
+            pw.print("\t" + matrixView.getColumns().getLabel(c));
         pw.println();
 
         // body
@@ -57,7 +57,7 @@ public class TextMatrixViewExporter
 
         for (int r = 0; r < rowCount; r++)
         {
-            pw.print(matrixView.getRowLabel(r).toString());
+            pw.print(matrixView.getRows().getLabel(r).toString());
             for (int c = 0; c < colCount; c++)
             {
                 Object value = matrixView.getCellValue(r, c, propIndex);
@@ -76,8 +76,8 @@ public class TextMatrixViewExporter
 
         List<IElementAttribute> attributes = matrixView.getCellAttributes();
 
-        final int rowCount = matrixView.getRowCount();
-        final int colCount = matrixView.getColumnCount();
+        final int rowCount = matrixView.getRows().size();
+        final int colCount = matrixView.getColumns().size();
 
         final int propCount = propIndices.length;
 
@@ -105,8 +105,8 @@ public class TextMatrixViewExporter
 
             if (matrixView.getCell(r, c) != null)
             {
-                pw.print(matrixView.getColumnLabel(c));
-                pw.print("\t" + matrixView.getRowLabel(r));
+                pw.print(matrixView.getColumns().getLabel(c));
+                pw.print("\t" + matrixView.getRows().getLabel(r));
                 for (int p = 0; p < propCount; p++)
                 {
                     Object value = matrixView.getCellValue(r, c, propIndices[p]);

@@ -1,4 +1,4 @@
-package org.gitools.heatmap;
+package org.gitools.matrix.model;
 
 public enum Direction
 {

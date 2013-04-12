@@ -208,14 +208,14 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             return false;
         }
 
-        int annRow = am.getRowIndex(label);
+        int annRow = am.internalRowIndex(label);
         if (annRow == -1)
         {
             return false;
         }
 
         boolean found = false;
-        for (int i = 0; i < am.getColumnCount() && !found; i++)
+        for (int i = 0; i < am.getColumns().size() && !found; i++)
             found = searchPat.matcher(am.getCell(annRow, i)).find();
 
         return found;
@@ -277,10 +277,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             {
                 AnnotationMatrix am = hm.getRows().getAnnotations();
 
-                int rowCount = mv.getRowCount();
+                int rowCount = mv.getRows().size();
                 for (int index = 0; index < rowCount; index++)
                 {
-                    String label = mv.getRowLabel(index);
+                    String label = mv.getRows().getLabel(index);
                     if (checkMatch(mv, am, label))
                     {
                         highlighted.add(label);
@@ -302,10 +302,10 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             {
                 AnnotationMatrix am = hm.getColumns().getAnnotations();
 
-                int colCount = mv.getColumnCount();
+                int colCount = mv.getColumns().size();
                 for (int index = 0; index < colCount; index++)
                 {
-                    String label = mv.getColumnLabel(index);
+                    String label = mv.getColumns().getLabel(index);
                     if (checkMatch(mv, am, label))
                     {
                         highlighted.add(label);
@@ -329,7 +329,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         boolean searchRows = searchRows();
         boolean found = false;
 
-        int rowCount = mv.getRowCount();
+        int rowCount = mv.getRows().size();
         if (searchRows && leadRow == -1)
         {
             leadRow = rowCount - 1;
@@ -348,7 +348,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             while (index != leadRow)
             {
-                found = checkMatch(mv, am, mv.getRowLabel(index));
+                found = checkMatch(mv, am, mv.getRows().getLabel(index));
                 if (found)
                 {
                     break;
@@ -361,7 +361,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             if (index == leadRow)
             {
-                found = checkMatch(mv, am, mv.getRowLabel(index));
+                found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
             mv.setLeadSelection(index, leadCol);
 
@@ -372,7 +372,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             // Column search
             AnnotationMatrix am = hm.getColumns().getAnnotations();
 
-            int colCount = mv.getColumnCount();
+            int colCount = mv.getColumns().size();
             int index = leadCol - 1;
             if (index < 0)
             {
@@ -380,7 +380,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             while (index != leadCol)
             {
-                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                found = checkMatch(mv, am, mv.getColumns().getLabel(index));
                 if (found)
                 {
                     break;
@@ -393,7 +393,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             if (index == leadCol)
             {
-                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
             mv.setLeadSelection(leadRow, index);
         }
@@ -426,7 +426,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             // Row search
             AnnotationMatrix am = hm.getRows().getAnnotations();
 
-            int rowCount = mv.getRowCount();
+            int rowCount = mv.getRows().size();
             int index = leadRow + 1;
             if (index >= rowCount)
             {
@@ -434,7 +434,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             while (index != leadRow)
             {
-                found = checkMatch(mv, am, mv.getRowLabel(index));
+                found = checkMatch(mv, am, mv.getRows().getLabel(index));
                 if (found)
                 {
                     break;
@@ -447,7 +447,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             if (index == leadRow)
             {
-                found = checkMatch(mv, am, mv.getRowLabel(index));
+                found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
             mv.setLeadSelection(index, leadCol);
         }
@@ -457,7 +457,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             // Column search
             AnnotationMatrix am = hm.getColumns().getAnnotations();
 
-            int colCount = mv.getColumnCount();
+            int colCount = mv.getColumns().size();
             int index = leadCol + 1;
             if (index >= colCount)
             {
@@ -465,7 +465,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             while (index != leadCol)
             {
-                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                found = checkMatch(mv, am, mv.getColumns().getLabel(index));
                 if (found)
                 {
                     break;
@@ -478,7 +478,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             }
             if (index == leadCol)
             {
-                found = checkMatch(mv, am, mv.getColumnLabel(index));
+                found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
             mv.setLeadSelection(leadRow, index);
         }

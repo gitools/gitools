@@ -83,9 +83,9 @@ public class OncodriveProcessor extends HtestProcessor
 
         IMatrix dataMatrix = analysis.getData().get();
 
-        String[] labels = new String[dataMatrix.getColumnCount()];
+        String[] labels = new String[dataMatrix.getColumns().size()];
         for (int i = 0; i < labels.length; i++)
-            labels[i] = dataMatrix.getColumnLabel(i);
+            labels[i] = dataMatrix.getColumns().getLabel(i);
 
         ModuleMap csmap = analysis.getModuleMap().get();
         if (csmap != null)
@@ -99,10 +99,10 @@ public class OncodriveProcessor extends HtestProcessor
 
         analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", csmap));
 
-        final int numRows = dataMatrix.getRowCount();
+        final int numRows = dataMatrix.getRows().size();
         ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);
         for (int i = 0; i < numRows; i++)
-            rowLabels.setQuick(i, dataMatrix.getRowLabel(i));
+            rowLabels.setQuick(i, dataMatrix.getRows().getLabel(i));
 
         ObjectMatrix1D csetLabels = ObjectFactory1D.dense.make(csmap.getModuleNames());
 

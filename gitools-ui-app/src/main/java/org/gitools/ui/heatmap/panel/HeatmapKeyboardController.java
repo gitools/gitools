@@ -122,7 +122,7 @@ class HeatmapKeyboardController extends KeyAdapter
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_DOWN:
-                if (row < mv.getRowCount() - 1)
+                if (row < mv.getRows().size() - 1)
                 {
                     row++;
                 }
@@ -138,7 +138,7 @@ class HeatmapKeyboardController extends KeyAdapter
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumnCount() - 1)
+                if (col >= 0 && col < mv.getColumns().size() - 1)
                 {
                     col++;
                 }
@@ -154,7 +154,7 @@ class HeatmapKeyboardController extends KeyAdapter
                 }
                 else if (col == -1)
                 {
-                    col = mv.getColumnCount() - 1;
+                    col = mv.getColumns().size() - 1;
                 }
                 break;
             case KeyEvent.VK_PAGE_UP:
@@ -179,17 +179,17 @@ class HeatmapKeyboardController extends KeyAdapter
                 if (row != -1)
                 {
                     row += rowPageSize;
-                    if (row >= mv.getRowCount())
+                    if (row >= mv.getRows().size())
                     {
-                        row = mv.getRowCount() - 1;
+                        row = mv.getRows().size() - 1;
                     }
                 }
                 else if (row == -1 && col != -1)
                 {
                     col += colPageSize;
-                    if (col >= mv.getColumnCount())
+                    if (col >= mv.getColumns().size())
                     {
-                        col = mv.getColumnCount() - 1;
+                        col = mv.getColumns().size() - 1;
                     }
                 }
                 break;
@@ -206,11 +206,11 @@ class HeatmapKeyboardController extends KeyAdapter
             case KeyEvent.VK_END:
                 if (row != -1)
                 {
-                    row = mv.getRowCount() - 1;
+                    row = mv.getRows().size() - 1;
                 }
                 else if (row == -1 && col != -1)
                 {
-                    col = mv.getColumnCount() - 1;
+                    col = mv.getColumns().size() - 1;
                 }
                 break;
         }
@@ -298,25 +298,25 @@ class HeatmapKeyboardController extends KeyAdapter
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_DOWN:
-                if (row >= 0 && row < mv.getRowCount() - 1)
+                if (row >= 0 && row < mv.getRows().size() - 1)
                 {
                     mv.moveRowsDown(new int[]{row});
                 }
                 break;
             case KeyEvent.VK_UP:
-                if (row > 0 && row < mv.getRowCount())
+                if (row > 0 && row < mv.getRows().size())
                 {
                     mv.moveRowsUp(new int[]{row});
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumnCount() - 1)
+                if (col >= 0 && col < mv.getColumns().size() - 1)
                 {
                     mv.moveColumnsRight(new int[]{col});
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (col > 0 && col < mv.getColumnCount())
+                if (col > 0 && col < mv.getColumns().size())
                 {
                     mv.moveColumnsLeft(new int[]{col});
                 }
@@ -341,25 +341,25 @@ class HeatmapKeyboardController extends KeyAdapter
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_DOWN:
-                if (row >= 0 && row < mv.getRowCount() - 1)
+                if (row >= 0 && row < mv.getRows().size() - 1)
                 {
                     mv.moveRowsDown(sel);
                 }
                 break;
             case KeyEvent.VK_UP:
-                if (row > 0 && row < mv.getRowCount())
+                if (row > 0 && row < mv.getRows().size())
                 {
                     mv.moveRowsUp(sel);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumnCount() - 1)
+                if (col >= 0 && col < mv.getColumns().size() - 1)
                 {
                     mv.moveColumnsRight(sel);
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (col > 0 && col < mv.getColumnCount())
+                if (col > 0 && col < mv.getColumns().size())
                 {
                     mv.moveColumnsLeft(sel);
                 }

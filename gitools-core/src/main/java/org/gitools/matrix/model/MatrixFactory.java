@@ -50,17 +50,17 @@ public class MatrixFactory
         }
 
 
-        int rowNb = matrixView.getRowCount();
-        int colNb = matrixView.getColumnCount();
+        int rowNb = matrixView.getRows().size();
+        int colNb = matrixView.getColumns().size();
         int dimNb = matrixView.getCellAdapter().getPropertyCount();
 
         String[] rowNames = new String[rowNb];
         String[] colNames = new String[colNb];
 
         for (int i = 0; i < rowNb; i++)
-            rowNames[i] = matrixView.getRowLabel(i);
+            rowNames[i] = matrixView.getRows().getLabel(i);
         for (int j = 0; j < colNb; j++)
-            colNames[j] = matrixView.getColumnLabel(j);
+            colNames[j] = matrixView.getColumns().getLabel(j);
 
 
         IMatrix matrix = null;

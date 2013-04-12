@@ -45,13 +45,13 @@ public class MatrixRowClusteringData implements ClusteringData
         @Override
         public int getNumAttributes()
         {
-            return matrix.getColumnCount();
+            return matrix.getColumns().size();
         }
 
         @Override
         public String getAttributeName(int attribute)
         {
-            return matrix.getColumnLabel(attribute);
+            return matrix.getColumns().getLabel(attribute);
         }
 
         @Override
@@ -93,13 +93,13 @@ public class MatrixRowClusteringData implements ClusteringData
     @Override
     public int getSize()
     {
-        return matrix.getRowCount();
+        return matrix.getRows().size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getRowLabel(index);
+        return matrix.getRows().getLabel(index);
     }
 
     @NotNull
@@ -131,6 +131,6 @@ public class MatrixRowClusteringData implements ClusteringData
 
     public int getNumAttributes()
     {
-        return matrix.getColumnCount();
+        return matrix.getColumns().size();
     }
 }

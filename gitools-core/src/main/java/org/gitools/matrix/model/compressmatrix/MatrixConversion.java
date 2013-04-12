@@ -26,7 +26,7 @@ public class MatrixConversion extends AbstractCompressor
         CompressDimension columns = getColumns();
         IElementAdapter cellAdapter = inputMatrix.getCellAdapter();
 
-        Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(inputMatrix.getRowCount());
+        Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(inputMatrix.getRows().size());
 
         progressMonitor.begin("Compressing rows...", rows.size());
         int totalProperties = inputMatrix.getCellAttributes().size();
@@ -34,17 +34,17 @@ public class MatrixConversion extends AbstractCompressor
         {
             NotCompressRow notCompressRow = new NotCompressRow( columns );
 
-            int row = inputMatrix.getRowIndex( rows.getLabel(r) );
+            int row = inputMatrix.getRows().getIndex( rows.getLabel(r) );
             for (int c=0; c < columns.size(); c++)
             {
-                int column = inputMatrix.getColumnIndex( columns.getLabel(c) );
+                int column = inputMatrix.getColumns().getIndex( columns.getLabel(c) );
                 Object cell = inputMatrix.getCell(row, column);
 
                 if (cell!=null)
                 {
                     StringBuilder line = new StringBuilder(totalProperties*8);
-                    line.append( inputMatrix.getColumnLabel(column) ).append(SEPARATOR);
-                    line.append( inputMatrix.getRowLabel(row) ).append(SEPARATOR);
+                    line.append( inputMatrix.getColumns().getLabel(column) ).append(SEPARATOR);
+                    line.append( inputMatrix.getRows().getLabel(row) ).append(SEPARATOR);
                     for (int p=0; p < totalProperties; p++)
                     {
                          line.append( MatrixUtils.doubleValue( cellAdapter.getValue(cell, p) ) ).append(SEPARATOR);
@@ -85,7 +85,7 @@ public class MatrixConversion extends AbstractCompressor
 
         private MatrixReader(IMatrix matrix, IProgressMonitor progressMonitor)
         {
-            progressMonitor.begin("Preparing compression...", matrix.getRowCount());
+            progressMonitor.begin("Preparing compression...", matrix.getRows().size());
             this.matrix = matrix;
             this.row = -1;
             this.col = -1;
@@ -98,7 +98,7 @@ public class MatrixConversion extends AbstractCompressor
         {
             String[] values = new String[numProperties + 2];
 
-            if (row == matrix.getRowCount() )
+            if (row == matrix.getRows().size() )
             {
                 return null;
             }
@@ -117,14 +117,14 @@ public class MatrixConversion extends AbstractCompressor
             {
                 for (int i=0; i < numProperties; i++)
                 {
-                    values[0] = matrix.getColumnLabel(col);
-                    values[1] = matrix.getRowLabel(row);
+                    values[0] = matrix.getColumns().getLabel(col);
+                    values[1] = matrix.getRows().getLabel(row);
                     values[i + 2] = Double.toString( MatrixUtils.doubleValue( matrix.getCellValue(row, col, i)));
                 }
                 col++;
             }
 
-            if (col == matrix.getColumnCount())
+            if (col == matrix.getColumns().size())
             {
                 row++;
                 col = 0;

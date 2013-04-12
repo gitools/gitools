@@ -28,9 +28,6 @@ import org.gitools.matrix.model.element.DoubleElementAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @noinspection ALL
- */
 public class DoubleMatrix extends BaseMatrix
 {
 
@@ -61,14 +58,12 @@ public class DoubleMatrix extends BaseMatrix
 
     // rows and columns
 
-    @Override
-    public int getColumnCount()
+    protected int internalColumnCount()
     {
         return columns.cardinality();
     }
 
-    @Override
-    public int getRowCount()
+    protected int internalRowCount()
     {
         return rows.cardinality();
     }

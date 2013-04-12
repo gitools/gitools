@@ -442,7 +442,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private int getIndexCount()
     {
-        return horizontal ? heatmap.getMatrixView().getColumnCount() : heatmap.getMatrixView().getRowCount();
+        return horizontal ? heatmap.getMatrixView().getColumns().size() : heatmap.getMatrixView().getRows().size();
     }
 
     private boolean isValidIndex(int index)

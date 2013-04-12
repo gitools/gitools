@@ -96,19 +96,19 @@ public class AnnPatRowClusteringData implements ClusteringData
     @Override
     public int getSize()
     {
-        return matrix.getRowCount();
+        return matrix.getRows().size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getRowLabel(index);
+        return matrix.getRows().getLabel(index);
     }
 
     @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index)
     {
-        return new Instance(new AnnotationResolver(am, matrix.getRowLabel(index), "N/A"));
+        return new Instance(new AnnotationResolver(am, matrix.getRows().getLabel(index), "N/A"));
     }
 }

@@ -106,7 +106,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction
         String rowQuery = "";
         for (int i : rows)
         {
-            rowQuery = rowQuery + heatmap.getMatrixView().getRowLabel(i) + " ";
+            rowQuery = rowQuery + heatmap.getMatrixView().getRows().getLabel(i) + " ";
         }
 
         // Execute the command

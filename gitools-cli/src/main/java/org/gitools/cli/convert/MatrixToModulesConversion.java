@@ -48,15 +48,15 @@ public class MatrixToModulesConversion implements ConversionDelegate
 
         MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getCellAttributes().get(attrIndex).getValueClass());
 
-        int numRows = matrix.getRowCount();
-        int numCols = matrix.getColumnCount();
+        int numRows = matrix.getRows().size();
+        int numCols = matrix.getColumns().size();
         for (int row = 0; row < numRows; row++)
         {
-            String rowLabel = matrix.getRowLabel(row);
+            String rowLabel = matrix.getRows().getLabel(row);
             Set<String> items = new HashSet<String>();
             for (int col = 0; col < numCols; col++)
             {
-                String colLabel = matrix.getColumnLabel(col);
+                String colLabel = matrix.getColumns().getLabel(col);
                 Object cellValue = matrix.getCellValue(row, col, attrIndex);
                 double value = cast.getDoubleValue(cellValue);
                 if (value == 1.0)

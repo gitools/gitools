@@ -97,8 +97,8 @@ public class MtcAction extends BaseAction
 
                 IMatrix contents = matrixView.getContents();
 
-                int rowCount = contents.getRowCount();
-                int columnCount = contents.getColumnCount();
+                int rowCount = contents.getRows().size();
+                int columnCount = contents.getColumns().size();
 
                 monitor.begin("Multiple test correction for  " + mtc.getName() + " ...", columnCount * 3);
 

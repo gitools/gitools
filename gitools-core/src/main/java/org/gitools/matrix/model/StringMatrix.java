@@ -61,17 +61,14 @@ public class StringMatrix extends ObjectMatrix
     }
 
     @XmlTransient
-    @Override
-    public int getRowCount()
-    {
-        return cells.rows();
-    }
-
-    @XmlTransient
-    @Override
-    public int getColumnCount()
+    protected int internalColumnCount()
     {
         return cells.columns();
+    }
+
+    protected int internalRowCount()
+    {
+        return cells.rows();
     }
 
     @NotNull
