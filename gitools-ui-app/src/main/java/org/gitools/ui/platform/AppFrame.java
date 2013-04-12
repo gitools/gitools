@@ -38,10 +38,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * @noinspection ALL
- */
-public class AppFrame extends JFrame {
+public class AppFrame extends JFrame
+{
 
     private static final long serialVersionUID = -6899584212813749990L;
     private static final String appName;

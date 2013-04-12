@@ -57,8 +57,9 @@ public class CompressRow
      *
      * @return the length
      */
-    public int getLength()
+    public int getNotCompressedLength()
     {
         return length;
     }
+
 }

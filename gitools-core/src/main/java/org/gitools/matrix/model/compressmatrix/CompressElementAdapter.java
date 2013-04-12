@@ -89,7 +89,7 @@ public class CompressElementAdapter implements IElementAdapter
         int matrixSize = 0;
         for (CompressRow value : values.values())
         {
-            matrixSize = matrixSize + value.getLength() + 4;
+            matrixSize = matrixSize + value.getNotCompressedLength() + 4;
         }
 
         // Calculate rows cache size
@@ -251,7 +251,7 @@ public class CompressElementAdapter implements IElementAdapter
 
         try
         {
-            byte[] result = new byte[compressRow.getLength()];
+            byte[] result = new byte[compressRow.getNotCompressedLength()];
 
             // Expand the row
             decompresser.setInput(compressRow.getContent());

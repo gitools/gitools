@@ -138,7 +138,7 @@ public class ConvertTool extends AbstractTool
             //TODO rethink the interface
             if (inputMime.equals(FileSuffixes.OBJECT_MATRIX) && outputMime.equals(CompressMatrixFormat.EXTENSION))
             {
-                CompressMatrixConversion converter = new CompressMatrixConversion();
+                FileCompressMatrixConversion converter = new FileCompressMatrixConversion();
                 converter.convert(args.inputFileName, args.outputFileName, monitor);
                 return;
             }

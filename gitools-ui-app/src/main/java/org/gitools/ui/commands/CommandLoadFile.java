@@ -35,6 +35,7 @@ import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.MatrixView;
+import org.gitools.matrix.model.compressmatrix.MatrixConversion;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
@@ -160,7 +161,20 @@ public class CommandLoadFile extends AbstractCommand
     private AbstractEditor createHeatmapEditor(@NotNull IMatrix resource, @NotNull IProgressMonitor progressMonitor) throws CommandException
     {
 
-        final IMatrixView matrixView = new MatrixView(resource);
+        MatrixConversion conversion = new MatrixConversion();
+
+        IMatrix matrix;
+        try
+        {
+            //TODO matrix = conversion.convert(resource, progressMonitor);
+            matrix = resource;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            matrix = resource;
+        }
+
+        final IMatrixView matrixView = new MatrixView( matrix );
         Heatmap heatmap = HeatmapUtil.createFromMatrixView(matrixView);
 
         if (rowsAnnotations != null)
