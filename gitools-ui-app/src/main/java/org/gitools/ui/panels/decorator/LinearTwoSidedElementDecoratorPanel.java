@@ -24,7 +24,7 @@ package org.gitools.ui.panels.decorator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
+import org.gitools.model.decorator.impl.LinearElementDecorator;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.component.ColorChooserLabel;
 import org.gitools.ui.platform.component.ColorChooserLabel.ColorChangeListener;
@@ -46,7 +46,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
 
     private static final long serialVersionUID = 8422331422677024364L;
 
-    private LinearTwoSidedElementDecorator decorator;
+    private LinearElementDecorator decorator;
 
     private JComboBox valueCb;
 
@@ -63,7 +63,7 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
     {
         super(model);
 
-        this.decorator = (LinearTwoSidedElementDecorator) model.getActiveCellDecorator();
+        this.decorator = (LinearElementDecorator) model.getActiveCellDecorator();
 
         final IElementAdapter adapter = decorator.getAdapter();
 
@@ -265,9 +265,9 @@ public class LinearTwoSidedElementDecoratorPanel extends AbstractElementDecorato
     {
 
         ElementDecorator elementDecorator = model.getActiveCellDecorator();
-        if (elementDecorator instanceof LinearTwoSidedElementDecorator)
+        if (elementDecorator instanceof LinearElementDecorator)
         {
-            this.decorator = (LinearTwoSidedElementDecorator) elementDecorator;
+            this.decorator = (LinearElementDecorator) elementDecorator;
         }
         else
         {

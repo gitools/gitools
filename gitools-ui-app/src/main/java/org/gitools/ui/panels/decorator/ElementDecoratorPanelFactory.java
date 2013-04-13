@@ -47,7 +47,7 @@ public class ElementDecoratorPanelFactory
         {
             return new BinaryElementDecoratorPanel(model);
         }
-        else if (LinearTwoSidedElementDecorator.class.equals(decoratorClass))
+        else if (LinearElementDecorator.class.equals(decoratorClass))
         {
             return new LinearTwoSidedElementDecoratorPanel(model);
         }

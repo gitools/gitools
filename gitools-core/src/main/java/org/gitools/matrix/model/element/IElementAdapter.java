@@ -32,7 +32,7 @@ public interface IElementAdapter
 
     ILayerDescriptor getProperty(int index);
 
-    IMatrixLayers getProperties();
+    IMatrixLayers<? extends ILayerDescriptor> getProperties();
 
     int getPropertyIndex(String string);
 

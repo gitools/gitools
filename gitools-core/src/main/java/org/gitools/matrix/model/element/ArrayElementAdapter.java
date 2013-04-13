@@ -22,6 +22,7 @@
 package org.gitools.matrix.model.element;
 
 
+import org.gitools.matrix.model.SimpleLayerDescriptor;
 import org.gitools.matrix.model.SimpleMatrixLayers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,14 +38,14 @@ public class ArrayElementAdapter extends AbstractElementAdapter
 
     private static final long serialVersionUID = 5864596809781257355L;
 
-    private static class ArrayElementProperty extends AbstractElementAttribute
+    private static class ArrayElementProperty extends SimpleLayerDescriptor
     {
 
         private static final long serialVersionUID = 7803752573190009823L;
 
         public ArrayElementProperty(String id, String name, String description)
         {
-            super(id, name, description, double.class);
+            super(id, double.class, name, description);
         }
     }
 

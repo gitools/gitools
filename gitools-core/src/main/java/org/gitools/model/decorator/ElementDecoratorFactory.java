@@ -21,8 +21,12 @@
  */
 package org.gitools.model.decorator;
 
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.*;
+import org.gitools.stats.test.results.CommonResult;
+import org.gitools.stats.test.results.ZScoreResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +43,7 @@ public class ElementDecoratorFactory
     {
         descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.BINARY, BinaryElementDecorator.class));
 
-        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.LINEAR_TWO_SIDED, LinearTwoSidedElementDecorator.class));
+        descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.LINEAR_TWO_SIDED, LinearElementDecorator.class));
 
         descriptors.add(new ElementDecoratorDescriptor(ElementDecoratorNames.PVALUE, PValueElementDecorator.class));
 
@@ -99,4 +103,38 @@ public class ElementDecoratorFactory
     {
         return descriptors;
     }
+
+    public static ElementDecorator defaultDecorator(IMatrix matrix, int layer)
+    {
+        ElementDecorator decorator;
+        IElementAdapter adapter = matrix.getCellAdapter();
+
+        if (matrix instanceof ObjectMatrix)
+        {
+            ObjectMatrix om = (ObjectMatrix) matrix;
+
+            Class<?> c = adapter.getElementClass();
+
+            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c)
+            {
+                decorator = new ZScoreElementDecorator(adapter);
+            }
+            else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c)
+            {
+                decorator = new PValueElementDecorator(adapter);
+            }
+            else
+            {
+                decorator = new LinearElementDecorator(adapter);
+            }
+
+        }
+        else
+        {
+            decorator = new LinearElementDecorator(adapter);
+        }
+
+        return decorator;
+    }
+
 }

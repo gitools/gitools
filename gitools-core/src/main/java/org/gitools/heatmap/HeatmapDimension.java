@@ -53,6 +53,8 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     public static final String GRID_PROPERTY_CHANGED = "gridProperty";
     public static final String ANNOTATIONS_CHANGED = "annotations";
     public static final String HIGHLIGHTING_CHANGED = "highlighting";
+    public static final String CELL_SIZE_CHANGED = "cellSize";
+
     private static final int INT_BIT_SIZE = 32;
 
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
@@ -222,9 +224,11 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         return cellSize;
     }
 
-    public void setCellSize(int cellSize)
+    public void setCellSize(int newValue)
     {
-        this.cellSize = cellSize;
+        int oldValue = this.cellSize;
+        this.cellSize = newValue;
+        firePropertyChange(CELL_SIZE_CHANGED, oldValue, newValue);
     }
 
     public List<HeatmapHeader> getHeaders()

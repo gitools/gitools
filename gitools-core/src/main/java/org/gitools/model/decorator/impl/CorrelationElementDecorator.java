@@ -24,7 +24,7 @@ package org.gitools.model.decorator.impl;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 
-public class CorrelationElementDecorator extends LinearTwoSidedElementDecorator
+public class CorrelationElementDecorator extends LinearElementDecorator
 {
 
     public CorrelationElementDecorator()

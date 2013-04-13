@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class LinearTwoSidedElementDecorator extends ElementDecorator
+public class LinearElementDecorator extends ElementDecorator
 {
 
     private static final long serialVersionUID = -181427286948958314L;
@@ -43,17 +43,17 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator
 
     private final static GenericFormatter fmt = new GenericFormatter("<");
 
-    public LinearTwoSidedElementDecorator()
+    public LinearElementDecorator()
     {
         this(null, new LinearTwoSidedColorScale());
     }
 
-    public LinearTwoSidedElementDecorator(IElementAdapter adapter)
+    public LinearElementDecorator(IElementAdapter adapter)
     {
         this(adapter, new LinearTwoSidedColorScale());
     }
 
-    public LinearTwoSidedElementDecorator(IElementAdapter adapter, LinearTwoSidedColorScale scale)
+    public LinearElementDecorator(IElementAdapter adapter, LinearTwoSidedColorScale scale)
     {
         super(adapter);
 

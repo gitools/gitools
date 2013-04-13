@@ -47,7 +47,6 @@ public class Heatmap extends Resource implements IMatrixView
 
     public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
     public static final String VALUE_DIMENSION_SWITCHED = "valueDimensionSwitched";
-    public static final String CELL_SIZE_CHANGED = "cellSize";
     private static final String ROW_DIMENSION_CHANGED = "rowDim";
     private static final String COLUMN_DIMENSION_CHANGED = "columnDim";
     private static final long serialVersionUID = 325437934312047512L;
@@ -136,6 +135,7 @@ public class Heatmap extends Resource implements IMatrixView
         };
         this.rows.addPropertyChangeListener(propertyListener);
         this.columns.addPropertyChangeListener(propertyListener);
+        this.layers.addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
         this.rows.init(matrix.getRows());
@@ -155,6 +155,7 @@ public class Heatmap extends Resource implements IMatrixView
 
     }
 
+    @Deprecated
     public final void switchActiveCellDecorator(int newindex)
     {
         // switches from active ElementDecorator to ElementDecorator
@@ -168,6 +169,7 @@ public class Heatmap extends Resource implements IMatrixView
         firePropertyChange(VALUE_DIMENSION_SWITCHED, layers.getCellDecorators()[oldindex], layers.getCellDecorators()[newindex]);
     }
 
+    @Deprecated
     public void replaceActiveDecorator(@NotNull ElementDecorator newDecorator) throws Exception
     {
         // removes the actual ElementDecorator for the propertyIndex displayed
@@ -188,6 +190,7 @@ public class Heatmap extends Resource implements IMatrixView
         }
     }
 
+    @Deprecated
     public final void setCellDecorators(@NotNull ElementDecorator[] decorators)
     {
         // The ElementDecorator Type has been changed and thus a new
@@ -223,39 +226,19 @@ public class Heatmap extends Resource implements IMatrixView
         firePropertyChange(CELL_DECORATOR_CHANGED, old, decorators[propIndex]);
     }
 
+    @Deprecated
     public ElementDecorator getActiveCellDecorator()
     {
         return layers.getCellDecorators()[layers.getTopLayer()];
     }
 
-    /**
-     * Sets cell width.
-     *
-     * @param cellWidth the cell width
-     * @deprecated use {@link #getColumns()}.setCellSize(...) instead
-     */
-    public void setCellWidth(int cellWidth)
+    @Deprecated
+    public ElementDecorator[] getCellDecorators()
     {
-        int old = getColumns().getCellSize();
-        getColumns().setCellSize(cellWidth);
-        firePropertyChange(CELL_SIZE_CHANGED, old, cellWidth);
-    }
-
-    /**
-     * Sets cell height.
-     *
-     * @param cellHeight the cell height
-     * @deprecated use {@link #getRows()}.setCellSize(...) instead
-     */
-    public void setCellHeight(int cellHeight)
-    {
-        int old = getRows().getCellSize();
-        getRows().setCellSize(cellHeight);
-        firePropertyChange(CELL_SIZE_CHANGED, old, cellHeight);
+        return layers.getCellDecorators();
     }
 
     // IMatrixView adaptor methods
-
     @Override
     public IMatrix getContents()
     {
@@ -291,7 +274,7 @@ public class Heatmap extends Resource implements IMatrixView
     }
 
     @Override
-    public IMatrixViewLayers getLayers()
+    public HeatmapLayers getLayers()
     {
         return layers;
     }
@@ -322,8 +305,4 @@ public class Heatmap extends Resource implements IMatrixView
         }
     }
 
-    public ElementDecorator[] getCellDecorators()
-    {
-        return layers.getCellDecorators();
-    }
 }

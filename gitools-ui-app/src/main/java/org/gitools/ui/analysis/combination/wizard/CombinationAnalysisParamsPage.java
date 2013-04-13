@@ -88,7 +88,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable IMatrixLayers attrs)
+    public void setAttributes(@Nullable IMatrixLayers<? extends ILayerDescriptor> attrs)
     {
         this.attrs = attrs;
 

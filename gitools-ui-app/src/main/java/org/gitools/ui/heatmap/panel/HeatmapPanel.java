@@ -394,7 +394,7 @@ public class HeatmapPanel extends JPanel
         String pname = evt.getPropertyName();
         Object src = evt.getSource();
 
-        boolean updateAll = (src.equals(heatmap) && Heatmap.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDimension) && (HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDimension.HEADERS_CHANGED.equals(pname) || HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap  ) && (IMatrixView.VISIBLE_CHANGED.equals(pname) || IMatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
+        boolean updateAll = (src.equals(heatmap) && HeatmapDimension.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDimension) && (HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDimension.HEADERS_CHANGED.equals(pname) || HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap  ) && (IMatrixView.VISIBLE_CHANGED.equals(pname) || IMatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
 
         if (updateAll)
         {

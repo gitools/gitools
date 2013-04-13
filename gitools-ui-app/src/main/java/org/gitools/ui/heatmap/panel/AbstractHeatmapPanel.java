@@ -111,7 +111,7 @@ class AbstractHeatmapPanel extends JPanel
 
         if (src.equals(heatmap))
         {
-            if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
+            if (HeatmapDimension.CELL_SIZE_CHANGED.equals(pname))
             {
                 updateSize();
             }

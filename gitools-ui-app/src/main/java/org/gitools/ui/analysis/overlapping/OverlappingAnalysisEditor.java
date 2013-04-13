@@ -27,7 +27,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
+import org.gitools.model.decorator.impl.LinearElementDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
@@ -192,10 +192,10 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         int propertiesNb = results.getLayers().size();
-        LinearTwoSidedElementDecorator[] dec = new LinearTwoSidedElementDecorator[propertiesNb];
+        LinearElementDecorator[] dec = new LinearElementDecorator[propertiesNb];
         for (int i = 0; i < propertiesNb; i++)
         {
-            dec[i] = new LinearTwoSidedElementDecorator(results.getCellAdapter());
+            dec[i] = new LinearElementDecorator(results.getCellAdapter());
             int valueIndex = results.getLayers().findId("jaccard-index");
             Color minColor = new Color(0x63, 0xdc, 0xfe);
             Color maxColor = new Color(0xff, 0x00, 0x5f);

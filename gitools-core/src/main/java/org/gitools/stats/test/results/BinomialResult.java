@@ -23,9 +23,6 @@ package org.gitools.stats.test.results;
 
 import org.gitools.matrix.model.element.AttributeDef;
 
-/**
- * @noinspection ALL
- */
 public class BinomialResult extends CommonResult
 {
 

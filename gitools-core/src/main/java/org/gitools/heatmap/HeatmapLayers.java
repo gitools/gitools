@@ -7,28 +7,22 @@ import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
 import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.stats.test.results.CommonResult;
-import org.gitools.stats.test.results.ZScoreResult;
-import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.*;
-import java.util.Iterator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers
+public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers<HeatmapLayer>
 {
     @XmlElement(name = "top-layer")
     private int topLayer;
 
-    @XmlElementWrapper(name = "decorators")
-    @XmlElement(name = "decorator")
-    private ElementDecorator[] decorators;
-
-    @XmlTransient
-    private IMatrixLayers matrixLayers;
+    @XmlElement(name = "layer")
+    private List<HeatmapLayer> layers;
+    private transient Map<String, Integer> layersIdToIndex;
 
     public HeatmapLayers()
     {
@@ -38,13 +32,31 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers
     public HeatmapLayers(IMatrix matrix)
     {
         this();
-        this.decorators = cellDecoratorFromMatrix(matrix);
+        createLayers(matrix);
         init(matrix);
+    }
+
+    private void createLayers(IMatrix matrix)
+    {
+        IMatrixLayers<? extends ILayerDescriptor> matrixLayers = matrix.getLayers();
+        this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
+
+        for (int i=0; i < matrixLayers.size(); i++)
+        {
+            ILayerDescriptor layer = matrixLayers.get(i);
+            ElementDecorator defaultDecorator = ElementDecoratorFactory.defaultDecorator(matrix, i);
+            this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
+        }
     }
 
     public void init(IMatrix matrix)
     {
-        this.matrixLayers = matrix.getLayers();
+        IMatrixLayers matrixLayers = matrix.getLayers();
+        this.layersIdToIndex = new HashMap<String, Integer>(matrixLayers.size());
+        for(int i=0; i < layers.size(); i++)
+        {
+            this.layersIdToIndex.put(layers.get(i).getId(), i);
+        }
 
         // Initialize decorators adapters
         IElementAdapter adapter = matrix.getCellAdapter();
@@ -59,15 +71,28 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers
      * Get cell decorators.
      *
      * @return the element decorator [ ]
+     * @deprecated
      */
     public ElementDecorator[] getCellDecorators()
     {
-        return this.decorators;
+        ElementDecorator[] decorators = new ElementDecorator[layers.size()];
+
+        for (int i=0; i < layers.size(); i++)
+        {
+            decorators[i] = layers.get(i).getDecorator();
+        }
+
+        return decorators;
     }
 
+    @Deprecated
     public void setCellDecorators(ElementDecorator[] decorators)
     {
-        this.decorators = decorators;
+
+        for (int i=0; i < decorators.length; i++)
+        {
+            layers.get(i).setDecorator(decorators[i]);
+        }
     }
 
     @Override
@@ -83,77 +108,26 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers
     }
 
     @Override
-    public ILayerDescriptor get(int layerIndex)
+    public HeatmapLayer get(int layerIndex)
     {
-        return matrixLayers.get(layerIndex);
+        return layers.get(layerIndex);
     }
 
     @Override
     public int findId(String id)
     {
-        return matrixLayers.findId(id);
+        return layersIdToIndex.get(id);
     }
 
     @Override
     public int size()
     {
-        return matrixLayers.size();
+        return layers.size();
     }
 
     @Override
-    public Iterator<ILayerDescriptor> iterator()
+    public Iterator<HeatmapLayer> iterator()
     {
-        return matrixLayers.iterator();
-    }
-
-
-    @Deprecated
-    private static ElementDecorator[] cellDecoratorFromMatrix(@NotNull IMatrix matrix)
-    {
-
-        ElementDecorator decorator = null;
-
-        IElementAdapter adapter = matrix.getCellAdapter();
-        IMatrixLayers attributes = matrix.getLayers();
-
-        int attrIndex = 0;
-        if (attrIndex >= 0 && attrIndex < attributes.size())
-        {
-            Class<?> elementClass = attributes.get(attrIndex).getValueClass();
-
-            Class<?> c = adapter.getElementClass();
-
-            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c)
-            {
-                decorator = ElementDecoratorFactory.create(ElementDecoratorNames.ZSCORE, adapter);
-            }
-            else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c)
-            {
-                decorator = ElementDecoratorFactory.create(ElementDecoratorNames.PVALUE, adapter);
-            }
-            else if (elementClass == double.class || double.class.isInstance(elementClass))
-            {
-                decorator = ElementDecoratorFactory.create(ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
-            }
-        }
-
-        if (decorator == null)
-        {
-            decorator = ElementDecoratorFactory.create(ElementDecoratorNames.LINEAR_TWO_SIDED, adapter);
-        }
-
-        return getCellDecoratorsFromDecorator(decorator, matrix.getLayers().size());
-    }
-
-    @Deprecated
-    private static ElementDecorator[] getCellDecoratorsFromDecorator(@NotNull ElementDecorator cellDecorator, int attributesNb)
-    {
-        ElementDecorator[] cellDecorators = new ElementDecorator[attributesNb];
-        for (int i = 0; i < attributesNb; i++)
-        {
-            ElementDecoratorDescriptor descriptor = ElementDecoratorFactory.getDescriptor(cellDecorator.getClass());
-            cellDecorators[i] = ElementDecoratorFactory.create(descriptor, cellDecorator.getAdapter());
-        }
-        return cellDecorators;
+        return layers.iterator();
     }
 }

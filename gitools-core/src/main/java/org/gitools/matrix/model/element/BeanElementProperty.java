@@ -21,19 +21,15 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.gitools.matrix.model.SimpleLayerDescriptor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Method;
 
-/**
- * @noinspection ALL
- */
-@XmlRootElement
-public class BeanElementProperty extends AbstractElementAttribute
+public class BeanElementProperty extends SimpleLayerDescriptor
 {
 
     private static final long serialVersionUID = 1735870808859461498L;
@@ -41,24 +37,13 @@ public class BeanElementProperty extends AbstractElementAttribute
     private Method getterMethod;
     private Method setterMethod;
 
-    BeanElementProperty()
-    {
-    }
-
     public BeanElementProperty(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod)
     {
 
-        super(id, name, description, valueClass);
+        super(id, valueClass, name, description);
 
         this.getterMethod = getterMethod;
         this.setterMethod = setterMethod;
-    }
-
-    @XmlElement(name = "Class")
-    @Override
-    public Class<?> getValueClass()
-    {
-        return valueClass;
     }
 
     private static class MethodAdapter extends XmlAdapter<String, Method>

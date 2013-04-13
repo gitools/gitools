@@ -61,8 +61,8 @@ public class DecoratorArchivePersistance
         xstream.alias("binaryDecorator", BinaryElementDecorator.class);
         xstream.omitField(BinaryElementDecorator.class, "valueIndex");
 
-        xstream.alias("linearTwoSidedDecorator", LinearTwoSidedElementDecorator.class);
-        xstream.omitField(LinearTwoSidedElementDecorator.class, "valueIndex");
+        xstream.alias("linearTwoSidedDecorator", LinearElementDecorator.class);
+        xstream.omitField(LinearElementDecorator.class, "valueIndex");
 
         xstream.alias("formattedTextDecorator", FormattedTextElementDecorator.class);
         xstream.omitField(FormattedTextElementDecorator.class, "valueIndex");

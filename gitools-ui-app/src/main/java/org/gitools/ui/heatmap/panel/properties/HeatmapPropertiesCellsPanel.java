@@ -166,7 +166,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
         String pname = evt.getPropertyName();
         if (evt.getSource().equals(getHeatmap()))
         {
-            if (Heatmap.CELL_SIZE_CHANGED.equals(pname))
+            if (HeatmapDimension.CELL_SIZE_CHANGED.equals(pname))
             {
                 cellWidth.setValue(getHeatmap().getColumns().getCellSize());
                 cellHeight.setValue(getHeatmap().getRows().getCellSize());
@@ -452,13 +452,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     {//GEN-FIRST:event_cellWidthStateChanged
         int width = (Integer) cellWidth.getValue();
         int dif = width - getHeatmap().getColumns().getCellSize();
-        getHeatmap().setCellWidth(width);
+        getHeatmap().getColumns().setCellSize(width);
         if (cellSyncSize.isSelected())
         {
             int height = getHeatmap().getRows().getCellSize() + dif;
             if (height > 0)
             {
-                getHeatmap().setCellHeight(height);
+                getHeatmap().getRows().setCellSize(height);
             }
         }
     }//GEN-LAST:event_cellWidthStateChanged
@@ -467,13 +467,13 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
     {//GEN-FIRST:event_cellHeightStateChanged
         int height = (Integer) cellHeight.getValue();
         int dif = height - getHeatmap().getRows().getCellSize();
-        getHeatmap().setCellHeight(height);
+        getHeatmap().getRows().setCellSize(height);
         if (cellSyncSize.isSelected())
         {
             int width = getHeatmap().getColumns().getCellSize() + dif;
             if (width > 0)
             {
-                getHeatmap().setCellWidth(width);
+                getHeatmap().getColumns().setCellSize(width);
             }
         }
     }//GEN-LAST:event_cellHeightStateChanged

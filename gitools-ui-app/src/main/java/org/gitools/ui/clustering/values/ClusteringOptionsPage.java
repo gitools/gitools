@@ -61,7 +61,7 @@ class ClusteringOptionsPage extends AbstractWizardPage
         }
     }
 
-    public ClusteringOptionsPage(IMatrixLayers cellAttributes, int index)
+    public ClusteringOptionsPage(IMatrixLayers<? extends ILayerDescriptor> cellAttributes, int index)
     {
 
         initComponents();

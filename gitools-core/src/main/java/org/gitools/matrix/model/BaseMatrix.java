@@ -24,6 +24,7 @@ package org.gitools.matrix.model;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.Resource;
 import org.jetbrains.annotations.NotNull;
 
@@ -163,7 +164,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     // attributes
     @Override
-    public IMatrixLayers getLayers()
+    public IMatrixLayers<? extends ILayerDescriptor> getLayers()
     {
         return cellAdapter.getProperties();
     }

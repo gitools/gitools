@@ -195,8 +195,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
                 height = 1;
             }
 
-            heatmap.setCellWidth(width);
-            heatmap.setCellHeight(height);
+            heatmap.getColumns().setCellSize(width);
+            heatmap.getRows().setCellSize(height);
         }
     }
 

@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({BinaryElementDecorator.class, FormattedTextElementDecorator.class, LinearTwoSidedElementDecorator.class, PValueElementDecorator.class, ZScoreElementDecorator.class, CorrelationElementDecorator.class, CategoricalElementDecorator.class})
+@XmlSeeAlso({BinaryElementDecorator.class, FormattedTextElementDecorator.class, LinearElementDecorator.class, PValueElementDecorator.class, ZScoreElementDecorator.class, CorrelationElementDecorator.class, CategoricalElementDecorator.class})
 public abstract class ElementDecorator extends AbstractModel
 {
 
