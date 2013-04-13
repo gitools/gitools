@@ -121,7 +121,7 @@ public abstract class MatrixViewSorter
         matrixView.getRows().setVisible(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
-        int index = matrixView.getSelectedLayer();
+        int index = matrixView.getLayers().getTopLayer();
         criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
         monitor.begin("Sorting rows...", numRows);

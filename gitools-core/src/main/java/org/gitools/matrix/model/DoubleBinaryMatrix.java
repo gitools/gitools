@@ -65,6 +65,11 @@ public class DoubleBinaryMatrix extends BaseMatrix
     }
 
     @Override
+    public boolean isEmpty(int row, int column)
+    {
+        return getCell(row, column) == null;
+    }
+
     public Object getCell(int row, int column)
     {
         if (cellsNan.getQuick(column, row))
@@ -78,13 +83,13 @@ public class DoubleBinaryMatrix extends BaseMatrix
     }
 
     @Override
-    public Object getCellValue(int row, int column, int index)
+    public Object getCellValue(int row, int column, int layer)
     {
         return getCell(row, column);
     }
 
     @Override
-    public void setCellValue(int row, int column, int index, @Nullable Object value)
+    public void setCellValue(int row, int column, int layer, @Nullable Object value)
     {
         if (value != null)
         {

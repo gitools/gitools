@@ -173,7 +173,7 @@ public class EnrichmentCommand extends HtestCommand
             try
             {
                 fmatrix = dataMatrix.get().getClass().newInstance();
-                fmatrix.setCellAdapter(dataMatrix.get().getCellAdapter());
+                fmatrix.setObjectCellAdapter(dataMatrix.get().getObjectCellAdapter());
             } catch (Exception ex)
             {
                 throw new PersistenceException("Error filtering data matrix.", ex);

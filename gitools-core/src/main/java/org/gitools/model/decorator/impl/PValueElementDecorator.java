@@ -22,6 +22,7 @@
 package org.gitools.model.decorator.impl;
 
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -29,13 +30,9 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public class PValueElementDecorator extends ElementDecorator
 {
 
@@ -182,24 +179,14 @@ public class PValueElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration, IMatrix matrix, int row, int column)
     {
 
         decoration.reset();
 
-		/*if (element == null) {
-            decoration.setBgColor(ColorConstants.emptyColor);
-			decoration.setToolTip("Empty cell");
-			return;
-		}*/
+        double v = toDouble(matrix, row, column, valueIndex);
 
-        //Object value = adapter.getValue(element, valueIndex);
-
-        Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
-
-        double v = MatrixUtils.doubleValue(value);
-
-        if (element == null || Double.isNaN(v))
+        if (Double.isNaN(v))
         {
             decoration.setBgColor(scale.getEmptyColor());
             decoration.setToolTip("Empty cell");
@@ -210,7 +197,7 @@ public class PValueElementDecorator extends ElementDecorator
 
         if (useCorrection)
         {
-            Object corrValue = correctedValueIndex >= 0 ? adapter.getValue(element, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? matrix.getCellValue(row, column, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 

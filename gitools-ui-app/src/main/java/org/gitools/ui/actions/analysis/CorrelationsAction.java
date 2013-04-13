@@ -25,8 +25,8 @@ import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
 import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
@@ -45,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class CorrelationsAction extends BaseAction
 {
@@ -76,7 +75,7 @@ public class CorrelationsAction extends BaseAction
             return;
         }
 
-        List<IElementAttribute> attributes = matrixView.getCellAttributes();
+        IMatrixLayers attributes = matrixView.getLayers();
         String[] attributeNames = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
             attributeNames[i] = attributes.get(i).getName();

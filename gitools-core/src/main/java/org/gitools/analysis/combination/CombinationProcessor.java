@@ -94,7 +94,7 @@ public class CombinationProcessor implements AnalysisProcessor
         results.setRows(rlabels);
         results.makeCells();
 
-        results.setCellAdapter(new BeanElementAdapter(CombinationResult.class));
+        results.setObjectCellAdapter(new BeanElementAdapter(CombinationResult.class));
 
         analysis.setResults(new ResourceReference<IMatrix>("results", results));
 
@@ -105,7 +105,7 @@ public class CombinationProcessor implements AnalysisProcessor
             sizeIndex = analysis.getSizeAttrIndex();*/
         if (sizeAttrName != null && !sizeAttrName.isEmpty())
         {
-            sizeIndex = data.getCellAdapter().getPropertyIndex(sizeAttrName);
+            sizeIndex = data.getLayers().findId(sizeAttrName);
         }
 
         int pvalueIndex = 0;
@@ -114,17 +114,17 @@ public class CombinationProcessor implements AnalysisProcessor
             pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
         {
-            pvalueIndex = data.getCellAdapter().getPropertyIndex(pvalueAttrName);
+            pvalueIndex = data.getLayers().findId(pvalueAttrName);
         }
 
         MatrixUtils.DoubleCast sizeCast = null;
 
         if (sizeIndex >= 0)
         {
-            sizeCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(sizeIndex).getValueClass());
+            sizeCast = MatrixUtils.createDoubleCast(data.getLayers().get(sizeIndex).getValueClass());
         }
 
-        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getCellAdapter().getProperty(pvalueIndex).getValueClass());
+        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getLayers().get(pvalueIndex).getValueClass());
 
         int numCC = cmap.getModuleCount();
 
@@ -143,7 +143,7 @@ public class CombinationProcessor implements AnalysisProcessor
                 {
                     int mci = cindices[ci];
 
-                    if (data.getCell(ri, mci) != null)
+                    if (!data.isEmpty(ri, mci))
                     {
                         double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(ri, mci, sizeIndex));
 

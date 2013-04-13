@@ -21,7 +21,7 @@
  */
 package org.gitools.model.decorator.impl;
 
-import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -30,13 +30,9 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public class CategoricalElementDecorator extends ElementDecorator
 {
 
@@ -84,26 +80,6 @@ public class CategoricalElementDecorator extends ElementDecorator
         firePropertyChange(PROPERTY_CHANGED, old, valueIndex);
     }
 
-    public final double getMinValue()
-    {
-        return scale.getMin().getValue();
-    }
-
-    public final double getMaxValue()
-    {
-        return scale.getMax().getValue();
-    }
-
-    public final Color getMinColor()
-    {
-        return scale.getMin().getColor();
-    }
-
-    public final Color getMaxColor()
-    {
-        return scale.getMax().getColor();
-    }
-
     public final void setColor(double value, Color valueColor)
     {
         if (scale.getColorScalePoint(value) != null)
@@ -127,15 +103,13 @@ public class CategoricalElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration,  IMatrix matrix, int row, int column)
     {
         decoration.reset();
 
-        Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+        double v = toDouble(matrix, row, column, valueIndex);
 
-        double v = MatrixUtils.doubleValue(value);
-
-        if (element == null || Double.isNaN(v))
+        if (Double.isNaN(v))
         {
             decoration.setBgColor(scale.getEmptyColor());
             decoration.setToolTip("Empty cell");
@@ -164,22 +138,6 @@ public class CategoricalElementDecorator extends ElementDecorator
     public IColorScale getScale()
     {
         return scale;
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public boolean isCagetoricalSpans()
-    {
-        return scale.isCagetoricalSpans();
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public void setCagetoricalSpans(boolean cagetoricalSpans)
-    {
-        scale.setCagetoricalSpans(cagetoricalSpans);
     }
 
 }

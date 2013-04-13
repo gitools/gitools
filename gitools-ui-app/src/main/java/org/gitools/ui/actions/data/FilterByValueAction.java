@@ -24,8 +24,8 @@ package org.gitools.ui.actions.data;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewValueFilter;
 import org.gitools.matrix.filter.ValueFilterCriteria;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.ValueFilterDialog;
 import org.gitools.ui.platform.AppFrame;
@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -70,7 +69,7 @@ public class FilterByValueAction extends BaseAction
             return;
         }
 
-        List<IElementAttribute> attributes = matrixView.getContents().getCellAdapter().getProperties();
+        IMatrixLayers attributes = matrixView.getContents().getLayers();
 
         int pvalueIndex = -1;
         String[] attrNames = new String[attributes.size()];

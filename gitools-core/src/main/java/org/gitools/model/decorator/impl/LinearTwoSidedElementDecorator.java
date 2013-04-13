@@ -21,7 +21,7 @@
  */
 package org.gitools.model.decorator.impl;
 
-import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -29,13 +29,9 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public class LinearTwoSidedElementDecorator extends ElementDecorator
 {
 
@@ -162,16 +158,13 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator
         firePropertyChange(PROPERTY_CHANGED, old, color);
     }
 
-    @Override
-    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration,  IMatrix matrix, int row, int column)
     {
         decoration.reset();
 
-        Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+        double v = toDouble(matrix, row, column, valueIndex);
 
-        double v = MatrixUtils.doubleValue(value);
-
-        if (element == null || Double.isNaN(v))
+        if (Double.isNaN(v))
         {
             decoration.setBgColor(scale.getEmptyColor());
             decoration.setToolTip("Empty cell");
@@ -189,19 +182,4 @@ public class LinearTwoSidedElementDecorator extends ElementDecorator
     {
         return scale;
     }
-
-	/*@Deprecated
-    @Override
-	public Map<String, String> getConfiguration() {
-		
-		Map<String, String> configuration = new HashMap <String, String>();
-		configuration.put("valueIndex;", Integer.toString(valueIndex));
-		return configuration;
-	}
-
-	@Deprecated
-	@Override
-	public void setConfiguration(Map<String, String> configuration) {
-		this.valueIndex = Integer.parseInt((String) configuration.get("valueIndex"));	
-	}*/
 }

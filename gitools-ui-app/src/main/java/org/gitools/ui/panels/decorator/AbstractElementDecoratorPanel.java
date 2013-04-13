@@ -24,7 +24,7 @@ package org.gitools.ui.panels.decorator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.decorator.ElementDecorator;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +78,7 @@ public abstract class AbstractElementDecoratorPanel extends JPanel
 
         for (int i = 0; i < numProps; i++)
         {
-            final IElementAttribute property = adapter.getProperty(i);
+            final ILayerDescriptor property = adapter.getProperty(i);
             properties.add(new IndexedProperty(i, property));
         }
 

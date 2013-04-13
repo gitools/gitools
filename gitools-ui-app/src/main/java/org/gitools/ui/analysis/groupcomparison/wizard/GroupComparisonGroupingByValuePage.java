@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -33,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -81,19 +81,19 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
     public class AttrOption
     {
         private String name;
-        private IElementAttribute attr;
+        private ILayerDescriptor attr;
 
         public AttrOption(String name)
         {
             this.name = name;
         }
 
-        public AttrOption(IElementAttribute attr)
+        public AttrOption(ILayerDescriptor attr)
         {
             this.attr = attr;
         }
 
-        public IElementAttribute getAttr()
+        public ILayerDescriptor getAttr()
         {
             return attr;
         }
@@ -228,7 +228,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
         return new double[]{Double.parseDouble(cutoffValueGroup1.getText()), Double.parseDouble(cutoffValueGroup2.getText())};
     }
 
-    public void setAttributes(@Nullable List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable IMatrixLayers attrs)
     {
 
         if (attrs != null)

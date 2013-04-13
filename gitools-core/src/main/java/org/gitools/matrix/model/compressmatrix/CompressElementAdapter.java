@@ -25,8 +25,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.datafilters.DoubleTranslator;
+import org.gitools.matrix.model.SimpleMatrixLayers;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
 import org.gitools.utils.MemoryUtils;
@@ -51,7 +53,7 @@ public class CompressElementAdapter implements IElementAdapter
 
     private final byte[] dictionary;
     private final Inflater decompresser = new Inflater();
-    private final List<IElementAttribute> properties;
+    private final SimpleMatrixLayers properties;
     private final Map<Integer, CompressRow> values;
     private final CompressDimension columns;
 
@@ -73,11 +75,7 @@ public class CompressElementAdapter implements IElementAdapter
         this.columns = columns;
 
         // We assume that all the attributes are doubles.
-        this.properties = new ArrayList<IElementAttribute>(headers.length);
-        for (int i = 2; i < headers.length; i++)
-        {
-            this.properties.add(new CompressElementAttribute(headers[i], double.class));
-        }
+        this.properties = new SimpleMatrixLayers(double.class, headers);
 
         // Force a garbage collector now
         Runtime.getRuntime().gc();
@@ -183,13 +181,13 @@ public class CompressElementAdapter implements IElementAdapter
     }
 
     @Override
-    public IElementAttribute getProperty(int index)
+    public ILayerDescriptor getProperty(int index)
     {
         return properties.get(index);
     }
 
     @Override
-    public List<IElementAttribute> getProperties()
+    public IMatrixLayers getProperties()
     {
         return properties;
     }
@@ -230,6 +228,11 @@ public class CompressElementAdapter implements IElementAdapter
         }
 
         return null;
+    }
+
+    public boolean isEmpty(int row, int column)
+    {
+        return (getValue(row, column) == null);
     }
 
     @Override

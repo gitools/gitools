@@ -27,7 +27,6 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.LinearTwoSidedElementDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
@@ -192,13 +191,12 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
-        IElementAdapter cellAdapter = results.getCellAdapter();
-        int propertiesNb = cellAdapter.getProperties().size();
+        int propertiesNb = results.getLayers().size();
         LinearTwoSidedElementDecorator[] dec = new LinearTwoSidedElementDecorator[propertiesNb];
         for (int i = 0; i < propertiesNb; i++)
         {
-            dec[i] = new LinearTwoSidedElementDecorator(cellAdapter);
-            int valueIndex = cellAdapter.getPropertyIndex("jaccard-index");
+            dec[i] = new LinearTwoSidedElementDecorator(results.getCellAdapter());
+            int valueIndex = results.getLayers().findId("jaccard-index");
             Color minColor = new Color(0x63, 0xdc, 0xfe);
             Color maxColor = new Color(0xff, 0x00, 0x5f);
             dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);

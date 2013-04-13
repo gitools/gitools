@@ -21,7 +21,7 @@
  */
 package org.gitools.matrix.model.element;
 
-import java.util.List;
+import org.gitools.matrix.model.IMatrixLayers;
 
 public interface IElementAdapter
 {
@@ -30,9 +30,9 @@ public interface IElementAdapter
 
     int getPropertyCount();
 
-    IElementAttribute getProperty(int index);
+    ILayerDescriptor getProperty(int index);
 
-    List<IElementAttribute> getProperties();
+    IMatrixLayers getProperties();
 
     int getPropertyIndex(String string);
 

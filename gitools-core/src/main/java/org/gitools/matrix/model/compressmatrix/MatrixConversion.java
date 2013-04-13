@@ -2,7 +2,6 @@ package org.gitools.matrix.model.compressmatrix;
 
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.HashMap;
@@ -24,12 +23,12 @@ public class MatrixConversion extends AbstractCompressor
 
         CompressDimension rows = getRows();
         CompressDimension columns = getColumns();
-        IElementAdapter cellAdapter = inputMatrix.getCellAdapter();
+       // IElementAdapter cellAdapter = inputMatrix.getCellAdapter();
 
         Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(inputMatrix.getRows().size());
 
         progressMonitor.begin("Compressing rows...", rows.size());
-        int totalProperties = inputMatrix.getCellAttributes().size();
+        int totalProperties = inputMatrix.getLayers().size();
         for (int r=0; r < rows.size(); r++)
         {
             NotCompressRow notCompressRow = new NotCompressRow( columns );
@@ -38,16 +37,15 @@ public class MatrixConversion extends AbstractCompressor
             for (int c=0; c < columns.size(); c++)
             {
                 int column = inputMatrix.getColumns().getIndex( columns.getLabel(c) );
-                Object cell = inputMatrix.getCell(row, column);
 
-                if (cell!=null)
+                if (!inputMatrix.isEmpty(row, column))
                 {
                     StringBuilder line = new StringBuilder(totalProperties*8);
                     line.append( inputMatrix.getColumns().getLabel(column) ).append(SEPARATOR);
                     line.append( inputMatrix.getRows().getLabel(row) ).append(SEPARATOR);
                     for (int p=0; p < totalProperties; p++)
                     {
-                         line.append( MatrixUtils.doubleValue( cellAdapter.getValue(cell, p) ) ).append(SEPARATOR);
+                         line.append( MatrixUtils.doubleValue( inputMatrix.getCellValue(row, column, p) ) ).append(SEPARATOR);
                     }
                     notCompressRow.append(line.toString());
                 }
@@ -89,7 +87,7 @@ public class MatrixConversion extends AbstractCompressor
             this.matrix = matrix;
             this.row = -1;
             this.col = -1;
-            this.numProperties = matrix.getCellAttributes().size();
+            this.numProperties = matrix.getLayers().size();
             this.progressMonitor = progressMonitor;
         }
 
@@ -109,7 +107,7 @@ public class MatrixConversion extends AbstractCompressor
                 {
                     values[0] = "column";
                     values[1] = "row";
-                    values[i + 2] = matrix.getCellAttributes().get(i).getId();
+                    values[i + 2] = matrix.getLayers().get(i).getId();
                 }
                 row++; col++;
             }

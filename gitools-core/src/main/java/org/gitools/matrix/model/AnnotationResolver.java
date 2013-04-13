@@ -89,6 +89,6 @@ public class AnnotationResolver implements VariableValueResolver
             return "${" + variableName + "}";
         }
 
-        return am.getCell(annRow, annCol);
+        return am.getCellAsString(annRow, annCol);
     }
 }

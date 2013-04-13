@@ -24,11 +24,9 @@ package org.gitools.matrix.model.compressmatrix;
 
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixDimension;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Resource;
-
-import java.util.List;
 
 /**
  * The type Compress matrix.
@@ -64,37 +62,25 @@ public class CompressMatrix extends Resource implements IMatrix
     }
 
     @Override
+    public boolean isEmpty(int row, int column)
+    {
+        return elementAdapter.isEmpty(row, column);
+    }
+
+    @Override
     public IMatrixDimension getRows()
     {
         return rows;
     }
 
     @Override
-    public Object getCell(int row, int column)
+    public Object getCellValue(int row, int column, int layer)
     {
-        return new int[] { row, column };
+        return elementAdapter.getValue(new int[]{row, column}, layer);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int index)
-    {
-        return elementAdapter.getValue(getCell(row, column), index);
-    }
-
-    @Override
-    public Object getCellValue(int row, int column, String id)
-    {
-        return getCellValue(row, column, getCellAttributeIndex(id));
-    }
-
-    @Override
-    public void setCellValue(int row, int column, int index, Object value)
-    {
-        throw new UnsupportedOperationException("Read only matrix");
-    }
-
-    @Override
-    public void setCellValue(int row, int column, String id, Object value)
+    public void setCellValue(int row, int column, int layer, Object value)
     {
         throw new UnsupportedOperationException("Read only matrix");
     }
@@ -106,15 +92,9 @@ public class CompressMatrix extends Resource implements IMatrix
     }
 
     @Override
-    public List<IElementAttribute> getCellAttributes()
+    public IMatrixLayers getLayers()
     {
         return elementAdapter.getProperties();
-    }
-
-    @Override
-    public int getCellAttributeIndex(String id)
-    {
-        return elementAdapter.getPropertyIndex(id);
     }
 
     @Override

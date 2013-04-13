@@ -23,8 +23,8 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.exporter.TextMatrixViewExporter;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.attributes.AttributesSelectionDialog;
 import org.gitools.ui.platform.AppFrame;
@@ -74,7 +74,7 @@ public class ExportTableAction extends BaseAction
             return;
         }
 
-        final List<IElementAttribute> properties = matrixView.getCellAdapter().getProperties();
+        final IMatrixLayers properties = matrixView.getLayers();
         final String[] attributeNames = new String[properties.size()];
         for (int i = 0; i < properties.size(); i++)
             attributeNames[i] = properties.get(i).getName();

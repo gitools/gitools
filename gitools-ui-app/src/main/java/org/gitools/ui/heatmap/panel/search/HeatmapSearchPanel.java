@@ -214,7 +214,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
 
         boolean found = false;
         for (int i = 0; i < am.getColumns().size() && !found; i++)
-            found = searchPat.matcher(am.getCell(annRow, i)).find();
+            found = searchPat.matcher(am.getCellAsString(annRow, i)).find();
 
         return found;
     }

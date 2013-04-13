@@ -29,9 +29,6 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class GenericFormatter implements Serializable
 {
 

@@ -87,7 +87,7 @@ public class MatrixColumnClusteringData implements ClusteringData
     {
         this.matrix = matrix;
         this.matrixAttribute = matrixAttribute;
-        this.attributeClass = matrix.getCellAttributes().get(matrixAttribute).getValueClass();
+        this.attributeClass = matrix.getLayers().get(matrixAttribute).getValueClass();
     }
 
     @Override

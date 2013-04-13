@@ -21,6 +21,8 @@
  */
 package org.gitools.model.decorator;
 
+import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.AbstractModel;
 import org.gitools.model.decorator.impl.*;
@@ -38,7 +40,7 @@ public abstract class ElementDecorator extends AbstractModel
     private static final long serialVersionUID = -2101303088018509837L;
 
     @XmlTransient
-    protected IElementAdapter adapter;
+    private IElementAdapter adapter;
 
     private int valueIndex;
 
@@ -76,7 +78,7 @@ public abstract class ElementDecorator extends AbstractModel
         this.adapter = adapter;
     }
 
-    public abstract void decorate(ElementDecoration decoration, Object element);
+    public abstract void decorate(ElementDecoration decoration, IMatrix matrix, int row, int column);
 
     public abstract IColorScale getScale();
 
@@ -89,14 +91,6 @@ public abstract class ElementDecorator extends AbstractModel
     {
         this.name = name;
     }
-
-/*	@Deprecated //FIXME use JAXB to save state
-    public Map<String, String> getConfiguration() {
-		return null;
-	}
-
-	@Deprecated
-	public abstract void setConfiguration(Map<String, String> configuration);*/
 
     protected int getPropertyIndex(@NotNull String[] names)
     {
@@ -119,5 +113,19 @@ public abstract class ElementDecorator extends AbstractModel
         }
 
         return index;
+    }
+
+    protected static double toDouble(IMatrix matrix, int row, int column, int layer)
+    {
+        boolean empty = matrix.isEmpty(row, column);
+
+        if (empty)
+        {
+            return Double.NaN;
+        }
+
+        return MatrixUtils.doubleValue(
+                matrix.getCellValue(row, column, layer)
+        );
     }
 }

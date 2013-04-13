@@ -52,7 +52,7 @@ public class MatrixFactory
 
         int rowNb = matrixView.getRows().size();
         int colNb = matrixView.getColumns().size();
-        int dimNb = matrixView.getCellAdapter().getPropertyCount();
+        int dimNb = matrixView.getLayers().size();
 
         String[] rowNames = new String[rowNb];
         String[] colNames = new String[colNb];
@@ -69,7 +69,7 @@ public class MatrixFactory
         {
 
             ObjectMatrix ob = ((ObjectMatrix) contents);
-            matrix = new ObjectMatrix(ob.getTitle(), rowNames, colNames, ob.getCellAdapter());
+            matrix = new ObjectMatrix(ob.getTitle(), rowNames, colNames, ob.getObjectCellAdapter());
 
         }
         else if (contentsClass == DoubleBinaryMatrix.class)
@@ -90,13 +90,7 @@ public class MatrixFactory
         {
             DiagonalMatrix dm = ((DiagonalMatrix) contents);
             matrix = new ObjectMatrix("", rowNames, colNames, dm.getCellAdapter());
-        }/* else if (c == StringMatrix.class) {
-
-            
-        } else if (c == AnnotationMatrix.class) {
-            
-        }   */
-
+        }
 
         for (int r = 0; r < rowNb; r++)
         {

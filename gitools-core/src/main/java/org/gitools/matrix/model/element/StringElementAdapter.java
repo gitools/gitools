@@ -43,10 +43,4 @@ public class StringElementAdapter extends AbstractElementAdapter
         return element;
     }
 
-    @Override
-    public void setValue(Object element, int index, Object value)
-    {
-        throw new UnsupportedOperationException(getClass().getSimpleName() + " doesn't support change string value.");
-    }
-
 }

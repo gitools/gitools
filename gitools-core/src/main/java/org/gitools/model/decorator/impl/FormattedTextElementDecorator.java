@@ -21,6 +21,7 @@
  */
 package org.gitools.model.decorator.impl;
 
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -30,9 +31,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.IllegalFormatException;
 
-/**
- * @noinspection ALL
- */
 public class FormattedTextElementDecorator extends ElementDecorator
 {
 
@@ -91,23 +89,25 @@ public class FormattedTextElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(@NotNull ElementDecoration decoration, @NotNull Object element)
+    public void decorate(@NotNull ElementDecoration decoration,  IMatrix matrix, int row, int column)
     {
         String cellText;
         try
         {
             if (this.valueIndex >= 0)
             {
-                cellText = String.format(formatString, this.adapter.getValue(element, valueIndex));
+                cellText = String.format(formatString, matrix.getCellValue(row, column, valueIndex));
             }
             else
             {
-                cellText = String.format(formatString, element);
+                //TODO cellText = String.format(formatString, element);
+                throw new RuntimeException("Unimplemented String.format at FormattedTextElementDecorator");
             }
 
         } catch (IllegalFormatException e)
         {
-            cellText = element.toString();
+            //TODO cellText = element.toString();
+            throw new RuntimeException("Unimplemented String.format at FormattedTextElementDecorator");
         }
         decoration.setText(cellText);
         decoration.setToolTip(cellText);

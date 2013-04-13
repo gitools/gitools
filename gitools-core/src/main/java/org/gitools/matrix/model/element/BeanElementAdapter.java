@@ -21,6 +21,7 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.gitools.matrix.model.SimpleMatrixLayers;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -58,7 +59,7 @@ public class BeanElementAdapter extends AbstractElementAdapter
 
     void readProperties()
     {
-        List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
+        List<ILayerDescriptor> properties = new ArrayList<ILayerDescriptor>();
 
         for (Method m : elementClass.getMethods())
         {
@@ -99,13 +100,13 @@ public class BeanElementAdapter extends AbstractElementAdapter
                 {
                 }
 
-                IElementAttribute prop = new BeanElementProperty(id, name, description, propertyClass, m, setterMethod);
+                ILayerDescriptor prop = new BeanElementProperty(id, name, description, propertyClass, m, setterMethod);
 
                 properties.add(prop);
             }
         }
 
-        setProperties(properties);
+        setProperties(new SimpleMatrixLayers(properties));
     }
 
     @Nullable

@@ -24,12 +24,10 @@ package org.gitools.matrix.model;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.Resource;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.List;
 
 public abstract class BaseMatrix extends Resource implements IMatrix, Serializable
 {
@@ -98,13 +96,6 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     }
 
     @NotNull
-    @Deprecated // Use getRows().getLabel() instead
-    public String getRowString(int index)
-    {
-        return (String) rows.get(index);
-    }
-
-    @NotNull
     public String internalRowLabel(int index)
     {
         return (String) rows.get(index);
@@ -152,50 +143,29 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         columns.set(index, column);
     }
 
-    // cells
-
-    @Override
-    public Object getCellValue(int row, int column, String id)
-    {
-        return getCellValue(row, column, getCellAttributeIndex(id));
-    }
-
-    @Override
-    public void setCellValue(int row, int column, String id, Object value)
-    {
-        setCellValue(row, column, getCellAttributeIndex(id), value);
-    }
-
     // adapters
 
-    @Override
-    public IElementAdapter getCellAdapter()
+    public IElementAdapter getObjectCellAdapter()
     {
         return cellAdapter;
     }
 
-    public void setCellAdapter(IElementAdapter cellAdapter)
+    @Override
+    public IElementAdapter getCellAdapter()
+    {
+        return getObjectCellAdapter();
+    }
+
+    public void setObjectCellAdapter(IElementAdapter cellAdapter)
     {
         this.cellAdapter = cellAdapter;
     }
 
     // attributes
     @Override
-    public List<IElementAttribute> getCellAttributes()
+    public IMatrixLayers getLayers()
     {
         return cellAdapter.getProperties();
-    }
-
-    @Override
-    public int getCellAttributeIndex(String id)
-    {
-        Integer index = cellAdapter.getPropertyIndex(id);
-        if (index == null)
-        {
-            throw new RuntimeException("There isn't any property with id: " + id);
-        }
-
-        return index.intValue();
     }
 
     public int internalRowIndex(String label)
@@ -291,6 +261,9 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
             }
         };
     }
+
+    @Override
+    public abstract boolean isEmpty(int row, int column);
 
     protected abstract int internalRowCount();
 

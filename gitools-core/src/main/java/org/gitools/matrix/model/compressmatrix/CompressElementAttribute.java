@@ -21,13 +21,13 @@
  */
 package org.gitools.matrix.model.compressmatrix;
 
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 
 
 /**
  * The type Compress element attribute.
  */
-public class CompressElementAttribute implements IElementAttribute
+public class CompressElementAttribute implements ILayerDescriptor
 {
 
     private String id;

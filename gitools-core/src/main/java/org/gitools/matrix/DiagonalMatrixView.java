@@ -25,8 +25,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.IMatrixViewDimension;
+import org.gitools.matrix.model.IMatrixViewLayers;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -214,18 +214,6 @@ public class DiagonalMatrixView implements IMatrixView
     } */
 
     @Override
-    public int getSelectedLayer()
-    {
-        return mv.getSelectedLayer();
-    }
-
-    @Override
-    public void setSelectedLayer(int index)
-    {
-        mv.setSelectedLayer(index);
-    }
-
-    @Override
     public IMatrixViewDimension getRows()
     {
         return mv.getRows();
@@ -237,37 +225,24 @@ public class DiagonalMatrixView implements IMatrixView
         return mv.getColumns();
     }
 
-    @Nullable
     @Override
-    public Object getCell(int row, int column)
+    public boolean isEmpty(int row, int column)
     {
-        return column >= row ? mv.getCell(row, column) : null;
+        return mv.isEmpty(row, column);
     }
+
 
     @Nullable
     @Override
-    public Object getCellValue(int row, int column, int index)
+    public Object getCellValue(int row, int column, int layer)
     {
-        return column >= row ? mv.getCellValue(row, column, index) : null;
-    }
-
-    @Nullable
-    @Override
-    public Object getCellValue(int row, int column, String id)
-    {
-        return column >= row ? mv.getCellValue(row, column, id) : null;
+        return column >= row ? mv.getCellValue(row, column, layer) : null;
     }
 
     @Override
-    public void setCellValue(int row, int column, int index, Object value)
+    public void setCellValue(int row, int column, int layer, Object value)
     {
-        mv.setCellValue(row, column, index, value);
-    }
-
-    @Override
-    public void setCellValue(int row, int column, String id, Object value)
-    {
-        mv.setCellValue(row, column, id, value);
+        mv.setCellValue(row, column, layer, value);
     }
 
     @Override
@@ -277,15 +252,9 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
-    public List<IElementAttribute> getCellAttributes()
+    public IMatrixViewLayers getLayers()
     {
-        return mv.getCellAttributes();
-    }
-
-    @Override
-    public int getCellAttributeIndex(String id)
-    {
-        return mv.getCellAttributeIndex(id);
+        return mv.getLayers();
     }
 
     @Override

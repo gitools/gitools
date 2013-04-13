@@ -120,7 +120,7 @@ public class OncodriveProcessor extends HtestProcessor
         resultsMatrix.setRows(rowLabels);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(new BeanElementAdapter(test.getResultClass()));
+        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(test.getResultClass()));
 
         int numProcs = ThreadManager.getNumThreads();
 

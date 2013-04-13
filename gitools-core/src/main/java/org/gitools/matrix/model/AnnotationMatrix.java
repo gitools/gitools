@@ -126,7 +126,7 @@ public class AnnotationMatrix extends StringMatrix
             int numAnn = getColumns().size();
             for (int i = 0; i < numAnn; i++)
             {
-                String value = getCell(index, i);
+                String value = getCellAsString(index, i);
                 if (value != null)
                 {
                     String key = internalColumnLabel(i);

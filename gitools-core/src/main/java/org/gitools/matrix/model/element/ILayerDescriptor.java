@@ -21,7 +21,7 @@
  */
 package org.gitools.matrix.model.element;
 
-public interface IElementAttribute
+public interface ILayerDescriptor
 {
 
     String getId();

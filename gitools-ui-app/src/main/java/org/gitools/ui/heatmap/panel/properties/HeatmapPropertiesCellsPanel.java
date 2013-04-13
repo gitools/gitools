@@ -183,9 +183,9 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             {
                 ElementDecorator oldDecorator = (ElementDecorator) evt.getOldValue();
                 ElementDecoratorDescriptor oldDescriptor = ElementDecoratorFactory.getDescriptor(oldDecorator.getClass());
-                int newIndex = getHeatmap().getSelectedLayer();
-                String newDataDimensionName = getHeatmap().getCellAttributes().get(newIndex).getName();
-                String oldDataDimensionName = getHeatmap().getCellAttributes().get(oldDecorator.getValueIndex()).getName();
+                int newIndex = getHeatmap().getLayers().getTopLayer();
+                String newDataDimensionName = getHeatmap().getLayers().get(newIndex).getName();
+                String oldDataDimensionName = getHeatmap().getLayers().get(oldDecorator.getValueIndex()).getName();
 
 
                 descriptorMap.put(oldDataDimensionName, oldDescriptor);
@@ -212,7 +212,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             ElementDecoratorDescriptor descriptor = (ElementDecoratorDescriptor) evt.getItem();
 
             ElementDecorator[] decorators = getDecoratorsForDescriptor(descriptor);
-            int selectedDataDimension = getHeatmap().getSelectedLayer();
+            int selectedDataDimension = getHeatmap().getLayers().getTopLayer();
             if (decorators[selectedDataDimension].getValueIndex() != selectedDataDimension)
             {
                 decorators[selectedDataDimension] = setValueIndex(decorators[selectedDataDimension], decorators[selectedDataDimension].getAdapter(), selectedDataDimension);
@@ -246,7 +246,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
                 if (categoricalScale)
                 {
                     double[] values;
-                    values = MatrixUtils.getUniquedValuesFromMatrix(getHeatmap().getContents(), cellAdapter, i);
+                    values = MatrixUtils.getUniquedValuesFromMatrix(getHeatmap().getContents(), i);
                     CategoricalColorScale scale = (CategoricalColorScale) decorator.getScale();
                     scale.setValues(values);
                 }
@@ -535,7 +535,7 @@ public class HeatmapPropertiesCellsPanel extends HeatmapPropertiesAbstractPanel
             return;
         }
         ElementDecorator loadedDecorator = dialog.getSelectedDecorator();
-        loadedDecorator = setValueIndex(loadedDecorator, d.getAdapter(), getHeatmap().getSelectedLayer());
+        loadedDecorator = setValueIndex(loadedDecorator, d.getAdapter(), getHeatmap().getLayers().getTopLayer());
         try
         {
             getHeatmap().replaceActiveDecorator(loadedDecorator);

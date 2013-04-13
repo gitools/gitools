@@ -23,11 +23,9 @@ package org.gitools.matrix;
 
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixDimension;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
-
-import java.util.List;
 
 public class DiagonalMatrix implements IMatrix
 {
@@ -64,7 +62,15 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public Object getCell(int row, int column)
+    public boolean isEmpty(int row, int column)
+    {
+        return m.isEmpty(row, column);
+    }
+
+
+
+    @Override
+    public Object getCellValue(int row, int column, int layer)
     {
         if (column < row)
         {
@@ -72,35 +78,11 @@ public class DiagonalMatrix implements IMatrix
             column = row;
             row = tmp;
         }
-        return m.getCell(row, column);
+        return m.getCellValue(row, column, layer);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int index)
-    {
-        if (column < row)
-        {
-            int tmp = column;
-            column = row;
-            row = tmp;
-        }
-        return m.getCellValue(row, column, index);
-    }
-
-    @Override
-    public Object getCellValue(int row, int column, String id)
-    {
-        if (column < row)
-        {
-            int tmp = column;
-            column = row;
-            row = tmp;
-        }
-        return m.getCellValue(row, column, id);
-    }
-
-    @Override
-    public void setCellValue(int row, int column, int index, Object value)
+    public void setCellValue(int row, int column, int layer, Object value)
     {
         if (column < row)
         {
@@ -109,19 +91,7 @@ public class DiagonalMatrix implements IMatrix
             row = tmp;
         }
 
-        m.setCellValue(row, column, index, value);
-    }
-
-    @Override
-    public void setCellValue(int row, int column, String id, Object value)
-    {
-        if (column < row)
-        {
-            int tmp = column;
-            column = row;
-            row = tmp;
-        }
-        m.setCellValue(row, column, id, value);
+        m.setCellValue(row, column, layer, value);
     }
 
     @Override
@@ -131,15 +101,9 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public List<IElementAttribute> getCellAttributes()
+    public IMatrixLayers getLayers()
     {
-        return m.getCellAttributes();
-    }
-
-    @Override
-    public int getCellAttributeIndex(String id)
-    {
-        return m.getCellAttributeIndex(id);
+        return m.getLayers();
     }
 
     @Override

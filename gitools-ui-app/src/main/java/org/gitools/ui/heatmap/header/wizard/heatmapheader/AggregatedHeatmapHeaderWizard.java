@@ -422,7 +422,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
                 Double v = Double.NaN;
                 if (annRowIdx >= 0 && annColIdx >= 0)
                 {
-                    String value = annotations.getCell(annRowIdx, annColIdx);
+                    String value = annotations.getCellAsString(annRowIdx, annColIdx);
                     v = doubleTranslator.stringToValue(value, false);
                 }
                 valueMatrix.set(i, 0, v);
@@ -460,7 +460,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
                 Double v = Double.NaN;
                 if (annColIdx >= 0 && annRowIdx >= 0)
                 {
-                    v = Double.parseDouble(annotations.getCell(annRowIdx, annColIdx));
+                    v = Double.parseDouble(annotations.getCellAsString(annRowIdx, annColIdx));
                 }
                 valueMatrix.set(0, i, v);
             }

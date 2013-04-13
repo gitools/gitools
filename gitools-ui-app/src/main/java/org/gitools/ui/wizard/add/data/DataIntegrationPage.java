@@ -23,7 +23,7 @@ package org.gitools.ui.wizard.add.data;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.data.integration.DataIntegrationCriteria;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -91,7 +91,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         setTitle("Data Dimension Integration");
         setMessage("Choose which data dimensions and what cut-offs" + " to integrate");
 
-        List<IElementAttribute> attributes = hm.getContents().getCellAdapter().getProperties();
+        IMatrixLayers attributes = hm.getContents().getLayers();
 
         this.attrNames = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)

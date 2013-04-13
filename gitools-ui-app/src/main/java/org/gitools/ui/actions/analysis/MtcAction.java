@@ -29,7 +29,6 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
@@ -78,10 +77,10 @@ public class MtcAction extends BaseAction
             return;
         }
 
-        IElementAdapter cellAdapter = matrixView.getCellAdapter();
+        //IElementAdapter cellAdapter = matrixView.getCellAdapter();
 
-        final int propIndex = matrixView.getSelectedLayer();
-        final int corrPropIndex = MatrixUtils.correctedValueIndex(cellAdapter, cellAdapter.getProperty(propIndex));
+        final int propIndex = matrixView.getLayers().getTopLayer();
+        final int corrPropIndex = MatrixUtils.correctedValueIndex(matrixView.getLayers(), matrixView.getLayers().get(propIndex));
 
         if (corrPropIndex < 0)
         {

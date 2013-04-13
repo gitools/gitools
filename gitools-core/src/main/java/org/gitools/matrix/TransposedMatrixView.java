@@ -25,13 +25,12 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.IMatrixViewDimension;
+import org.gitools.matrix.model.IMatrixViewLayers;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
-import java.util.List;
 
 public class TransposedMatrixView implements IMatrixView
 {
@@ -173,18 +172,6 @@ public class TransposedMatrixView implements IMatrixView
     } */
 
     @Override
-    public int getSelectedLayer()
-    {
-        return mv.getSelectedLayer();
-    }
-
-    @Override
-    public void setSelectedLayer(int index)
-    {
-        mv.setSelectedLayer(index);
-    }
-
-    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
         mv.addPropertyChangeListener(listener);
@@ -209,33 +196,21 @@ public class TransposedMatrixView implements IMatrixView
     }
 
     @Override
-    public Object getCell(int row, int column)
+    public boolean isEmpty(int row, int column)
     {
-        return mv.getCell(column, row);
+        return mv.isEmpty(row, column);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int index)
+    public Object getCellValue(int row, int column, int layer)
     {
-        return mv.getCellValue(column, row, index);
+        return mv.getCellValue(column, row, layer);
     }
 
     @Override
-    public Object getCellValue(int row, int column, String id)
+    public void setCellValue(int row, int column, int layer, Object value)
     {
-        return mv.getCellValue(column, row, id);
-    }
-
-    @Override
-    public void setCellValue(int row, int column, int index, Object value)
-    {
-        mv.setCellValue(column, row, index, value);
-    }
-
-    @Override
-    public void setCellValue(int row, int column, String id, Object value)
-    {
-        mv.setCellValue(column, row, id, value);
+        mv.setCellValue(column, row, layer, value);
     }
 
     @Override
@@ -245,15 +220,9 @@ public class TransposedMatrixView implements IMatrixView
     }
 
     @Override
-    public List<IElementAttribute> getCellAttributes()
+    public IMatrixViewLayers getLayers()
     {
-        return mv.getCellAttributes();
-    }
-
-    @Override
-    public int getCellAttributeIndex(String id)
-    {
-        return mv.getCellAttributeIndex(id);
+        return mv.getLayers();
     }
 
     @Override

@@ -22,8 +22,7 @@
 package org.gitools.ui.wizard.add.data;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -69,9 +68,7 @@ public class DataDetailsPage extends AbstractWizardPage
             String existingName;
             String originalWantedName = nameField.getText();
             String wantedName = originalWantedName.toLowerCase().trim();
-            IElementAdapter adapter = hm.getCellAdapter();
-            int c = 0;
-            for (IElementAttribute iElementAttribute : adapter.getProperties())
+            for (ILayerDescriptor iElementAttribute : hm.getLayers())
             {
                 existingName = iElementAttribute.getName().toLowerCase();
                 if (existingName.equals(wantedName))

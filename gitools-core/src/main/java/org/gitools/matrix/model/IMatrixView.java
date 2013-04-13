@@ -25,22 +25,18 @@ import org.gitools.model.IModel;
 
 public interface IMatrixView extends IModel, IMatrix
 {
-    // events
     String VISIBLE_CHANGED = "visibleChanged";
     String SELECTED_LEAD_CHANGED = "selectionLead";
     String SELECTION_CHANGED = "selectionChanged";
     String CELL_VALUE_CHANGED = "cellValueChanged";
     String CELL_DECORATION_CONTEXT_CHANGED = "cellDecorationContextChanged";
 
-    // contents
     IMatrixViewDimension getRows();
+
     IMatrixViewDimension getColumns();
 
+    IMatrixViewLayers getLayers();
+
     IMatrix getContents();
-
-    int getSelectedLayer();
-
-    void setSelectedLayer(int index);
-
 
 }

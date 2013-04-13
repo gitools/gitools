@@ -23,7 +23,8 @@ package org.gitools.ui.analysis.combination.wizard;
 
 
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
@@ -79,7 +80,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
     private boolean examplePageEnabled;
     private boolean dataFromMemory;
     @Nullable
-    private List<IElementAttribute> attributes;
+    private IMatrixLayers attributes;
     private boolean saveFilePageEnabled;
 
     private File dataFile;
@@ -278,12 +279,12 @@ public class CombinationAnalysisWizard extends AbstractWizard
     }
 
     @Nullable
-    public List<IElementAttribute> getAttributes()
+    public IMatrixLayers getAttributes()
     {
         return attributes;
     }
 
-    public void setAttributes(List<IElementAttribute> attributes)
+    public void setAttributes(IMatrixLayers attributes)
     {
         this.attributes = attributes;
     }
@@ -307,7 +308,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
         a.setProperties(analysisDetailsPage.getAnalysisAttributes());
 
-        IElementAttribute attr = combinationParamsPage.getSizeAttribute();
+        ILayerDescriptor attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;
         a.setSizeAttrName(sizeAttrName);
 

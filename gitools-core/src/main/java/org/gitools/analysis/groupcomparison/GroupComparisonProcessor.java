@@ -80,7 +80,7 @@ public class GroupComparisonProcessor extends HtestProcessor
         resultsMatrix.setRows(rlabels);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(new BeanElementAdapter(GroupComparisonResult.class));
+        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(GroupComparisonResult.class));
 
 
         // Run group comparison
@@ -89,7 +89,7 @@ public class GroupComparisonProcessor extends HtestProcessor
 
         int attrIndex = analysis.getAttributeIndex();
 
-        Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
+        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
 
@@ -161,7 +161,7 @@ public class GroupComparisonProcessor extends HtestProcessor
         }
 
         int attrIndex = group.getCutoffAttributeIndex();
-        Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
+        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
         //TODO: place the cast in a different place: inside Group??
 

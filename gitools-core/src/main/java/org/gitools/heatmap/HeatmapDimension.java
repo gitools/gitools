@@ -93,10 +93,16 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
 
     public HeatmapDimension()
     {
-        this(null);
+        commonInit();
     }
 
     public HeatmapDimension(IMatrixDimension matrixDimension)
+    {
+        commonInit();
+        init(matrixDimension);
+    }
+
+    private void commonInit()
     {
         this.idType = IdTypeManager.getDefault().getDefaultIdType();
         this.headers = new ArrayList<HeatmapHeader>();
@@ -104,26 +110,25 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
-        this.matrixDimension = matrixDimension;
-        resetVisible();
-        init();
-    }
-
-    private void resetVisible()
-    {
-        visible = new int[size()];
-        for (int i = 0; i < size(); i++)
-        {
-            visible[i] = i;
-        }
-    }
-
-    public void init()
-    {
         this.highlightedLabels = new HashSet<String>();
         selected = new int[0];
-        selectedBitmap = newSelectionBitmap(size());
         selectionLead = -1;
+    }
+
+    public void init(IMatrixDimension matrixDimension)
+    {
+        this.matrixDimension = matrixDimension;
+
+        if (visible == null)
+        {
+            visible = new int[size()];
+            for (int i = 0; i < size(); i++)
+            {
+                visible[i] = i;
+            }
+        }
+
+        selectedBitmap = newSelectionBitmap(size());
     }
 
     public int[] getVisible()

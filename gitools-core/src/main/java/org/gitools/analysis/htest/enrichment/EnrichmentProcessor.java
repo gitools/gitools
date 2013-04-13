@@ -120,7 +120,7 @@ public class EnrichmentProcessor extends HtestProcessor
         resultsMatrix.setRows(modules);
         resultsMatrix.makeCells();
 
-        resultsMatrix.setCellAdapter(new BeanElementAdapter(test.getResultClass()));
+        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(test.getResultClass()));
 
         int numProcs = ThreadManager.getNumThreads();
 

@@ -23,17 +23,9 @@ package org.gitools.matrix.model.element;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 
-/**
- * @noinspection ALL
- */
-@XmlRootElement
-@XmlSeeAlso(value = {BeanElementProperty.class})
-
-public abstract class AbstractElementAttribute implements IElementAttribute, Serializable
+public abstract class AbstractElementAttribute implements ILayerDescriptor, Serializable
 {
     private static final long serialVersionUID = -6293895024608178858L;
 

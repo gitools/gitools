@@ -24,7 +24,7 @@ package org.gitools.ui.panels.decorator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.PValueElementDecorator;
 import org.gitools.ui.platform.AppFrame;
@@ -80,7 +80,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
         corrValueProperties = new ArrayList<IndexedProperty>();
         for (int i = 0; i < numProps; i++)
         {
-            final IElementAttribute property = adapter.getProperty(i);
+            final ILayerDescriptor property = adapter.getProperty(i);
 
             if (property.getId().endsWith("p-value")
                     /*&& !property.getId().startsWith("corrected")*/)
@@ -256,7 +256,7 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
                 valueCb.setSelectedIndex(i);
             }
 
-        getTable().setSelectedLayer(decorator.getValueIndex());
+        getTable().getLayers().setTopLayer(decorator.getValueIndex());
         showCorrChkBox.setSelected(decorator.getUseCorrection());
 
         corrValueCb.setEnabled(decorator.getUseCorrection());
@@ -279,11 +279,11 @@ public class PValueElementDecoratorPanel extends AbstractElementDecoratorPanel
         changeDecorator();
 
         decorator.setValueIndex(propAdapter.getIndex());
-        getTable().setSelectedLayer(propAdapter.getIndex());
+        getTable().getLayers().setTopLayer(propAdapter.getIndex());
 
         // search for corresponding corrected value
 
-        int corrIndex = MatrixUtils.correctedValueIndex(decorator.getAdapter(), propAdapter.getProperty());
+        int corrIndex = MatrixUtils.correctedValueIndex(decorator.getAdapter().getProperties(), propAdapter.getProperty());
 
         if (corrIndex >= 0)
         {

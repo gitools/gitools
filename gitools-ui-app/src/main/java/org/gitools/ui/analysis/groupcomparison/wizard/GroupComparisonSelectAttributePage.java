@@ -22,7 +22,8 @@
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.Bonferroni;
 import org.gitools.stats.mtc.MTC;
@@ -35,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -89,7 +89,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
     public class AttrOption
     {
         private String name;
-        private IElementAttribute attr;
+        private ILayerDescriptor attr;
 
         /**
          * @noinspection UnusedDeclaration
@@ -99,12 +99,12 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
             this.name = name;
         }
 
-        public AttrOption(IElementAttribute attr)
+        public AttrOption(ILayerDescriptor attr)
         {
             this.attr = attr;
         }
 
-        public IElementAttribute getAttr()
+        public ILayerDescriptor getAttr()
         {
             return attr;
         }
@@ -220,7 +220,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
     }
 
 
-    public void setAttributes(@Nullable List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable IMatrixLayers attrs)
     {
 
         if (attrs != null)

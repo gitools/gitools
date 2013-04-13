@@ -91,7 +91,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 return "";
             }
 
-            return am.getCell(row, column);
+            return am.getCellAsString(row, column);
         }
     }
 

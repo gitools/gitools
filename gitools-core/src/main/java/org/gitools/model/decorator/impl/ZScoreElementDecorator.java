@@ -23,6 +23,7 @@ package org.gitools.model.decorator.impl;
 
 import cern.jet.stat.Probability;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.ElementDecoration;
 import org.gitools.model.decorator.ElementDecorator;
@@ -31,13 +32,9 @@ import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public class ZScoreElementDecorator extends ElementDecorator
 {
 
@@ -233,15 +230,13 @@ public class ZScoreElementDecorator extends ElementDecorator
     }
 
     @Override
-    public void decorate(@NotNull ElementDecoration decoration, @Nullable Object element)
+    public void decorate(@NotNull ElementDecoration decoration, IMatrix matrix, int row, int column)
     {
         decoration.reset();
 
-        Object value = element != null ? adapter.getValue(element, valueIndex) : Double.NaN;
+        double v = toDouble(matrix, row, column, valueIndex);
 
-        double v = MatrixUtils.doubleValue(value);
-
-        if (element == null || Double.isNaN(v))
+        if (Double.isNaN(v))
         {
             decoration.setBgColor(scale.getEmptyColor());
             decoration.setToolTip("Empty cell");
@@ -252,7 +247,7 @@ public class ZScoreElementDecorator extends ElementDecorator
 
         if (useCorrection)
         {
-            Object corrValue = correctedValueIndex >= 0 ? adapter.getValue(element, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? matrix.getCellValue(row, column, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 

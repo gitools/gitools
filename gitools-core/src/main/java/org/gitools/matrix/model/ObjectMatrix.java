@@ -28,14 +28,6 @@ import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.matrix.model.element.*;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-/**
- * @noinspection ALL
- */ //TODO remove JAXB support
-@XmlAccessorType(XmlAccessType.NONE)
-
 public class ObjectMatrix extends BaseMatrix
 {
 
@@ -89,8 +81,7 @@ public class ObjectMatrix extends BaseMatrix
         this.cells = cells;
     }
 
-    @Override
-    public Object getCell(int row, int column)
+    public Object getObjectCell(int row, int column)
     {
         return cells.get(row, column);
     }
@@ -101,15 +92,21 @@ public class ObjectMatrix extends BaseMatrix
     }
 
     @Override
-    public Object getCellValue(int row, int column, int property)
+    public Object getCellValue(int row, int column, int layer)
     {
-        return cellAdapter.getValue(getCell(row, column), property);
+        return cellAdapter.getValue(getObjectCell(row, column), layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int property, Object value)
+    public void setCellValue(int row, int column, int layer, Object value)
     {
-        cellAdapter.setValue(getCell(row, column), property, value);
+        cellAdapter.setValue(getObjectCell(row, column), layer, value);
+    }
+
+    @Override
+    public IElementAdapter getCellAdapter()
+    {
+        return getObjectCellAdapter();
     }
 
     public void makeCells()
@@ -142,5 +139,11 @@ public class ObjectMatrix extends BaseMatrix
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isEmpty(int row, int column)
+    {
+        return getObjectCell(row, column) == null;
     }
 }

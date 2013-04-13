@@ -21,20 +21,12 @@
  */
 package org.gitools.matrix.model.element;
 
+import org.gitools.matrix.model.IMatrixLayers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
-import java.util.*;
-
-/**
- * @noinspection ALL
- */
-@XmlRootElement
-@XmlSeeAlso(value = {BeanElementProperty.class})
 
 public abstract class AbstractElementAdapter implements IElementAdapter, Serializable
 {
@@ -44,9 +36,7 @@ public abstract class AbstractElementAdapter implements IElementAdapter, Seriali
     Class<?> elementClass;
 
     @NotNull
-    private /*transient*/ List<IElementAttribute> properties = new ArrayList<IElementAttribute>(0);
-
-    private /*transient*/ Map<String, Integer> propIdToIndexMap;
+    private IMatrixLayers properties;
 
     AbstractElementAdapter()
     {
@@ -76,33 +66,26 @@ public abstract class AbstractElementAdapter implements IElementAdapter, Seriali
     }
 
     @Override
-    public final IElementAttribute getProperty(int index)
+    public final ILayerDescriptor getProperty(int index)
     {
         return properties.get(index);
     }
 
-    //@XmlElement(name = "Property", type=ElementProperty.class)
     @Override
-    public final List<IElementAttribute> getProperties()
+    public final IMatrixLayers getProperties()
     {
-        return Collections.unmodifiableList(properties);
+        return properties;
     }
 
-    final void setProperties(@NotNull List<IElementAttribute> properties)
+    final void setProperties(IMatrixLayers properties)
     {
         this.properties = properties;
-        propIdToIndexMap = new HashMap<String, Integer>();
-        for (int index = 0; index < properties.size(); index++)
-        {
-            IElementAttribute prop = properties.get(index);
-            propIdToIndexMap.put(prop.getId(), index);
-        }
     }
 
     @Override
     public int getPropertyIndex(String id)
     {
-        Integer index = propIdToIndexMap.get(id);
+        Integer index = properties.findId(id);
         if (index == null)
         {
             return -1;
@@ -117,5 +100,8 @@ public abstract class AbstractElementAdapter implements IElementAdapter, Seriali
     public abstract Object getValue(Object element, int index);
 
     @Override
-    public abstract void setValue(Object element, int index, Object value);
+    public void setValue(Object element, int index, Object value)
+    {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " doesn't support change string value.");
+    }
 }

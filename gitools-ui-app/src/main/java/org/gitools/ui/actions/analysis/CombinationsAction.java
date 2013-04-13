@@ -80,7 +80,7 @@ public class CombinationsAction extends BaseAction
         final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
         wizard.setExamplePageEnabled(false);
         wizard.setDataFromMemory(true);
-        wizard.setAttributes(matrixView.getCellAttributes());
+        wizard.setAttributes(matrixView.getLayers());
         wizard.setSaveFilePageEnabled(false);
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);

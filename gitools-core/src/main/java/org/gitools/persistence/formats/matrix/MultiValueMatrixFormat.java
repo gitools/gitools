@@ -29,6 +29,7 @@ import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.ObjectMatrix;
 import org.gitools.matrix.model.element.*;
 import org.gitools.persistence.IResourceLocator;
@@ -96,7 +97,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @NotNull
-    private static String getElementClassId(@NotNull List<IElementAttribute> properties)
+    private static String getElementClassId(IMatrixLayers properties)
     {
         String[] ids = new String[properties.size()];
         for (int i = 0; i < properties.size(); i++)
@@ -356,7 +357,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             resultsMatrix.setRows(rows);
             resultsMatrix.makeCells();
 
-            resultsMatrix.setCellAdapter(destElementAdapter);
+            resultsMatrix.setObjectCellAdapter(destElementAdapter);
 
             for (Object[] result : list)
             {
@@ -380,7 +381,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Nullable
-    private Object parsePropertyValue(@NotNull IElementAttribute property, String string)
+    private Object parsePropertyValue(@NotNull ILayerDescriptor property, String string)
     {
 
         final Class<?> propertyClass = property.getValueClass();
@@ -455,7 +456,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         {
             OutputStream out = resourceLocator.openOutputStream();
             Writer writer = new OutputStreamWriter(out);
-            IElementAdapter cellAdapter = results.getCellAdapter();
+            IElementAdapter cellAdapter = results.getObjectCellAdapter();
 
             Class<?> elementClass = cellAdapter.getElementClass();
             String typeName = classToType.get(elementClass);
@@ -480,13 +481,12 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     {
 
         RawCsvWriter out = new RawCsvWriter(writer, '\t', '"');
-        IElementAdapter cellAdapter = resultsMatrix.getCellAdapter();
 
         out.writeQuotedValue("column");
         out.writeSeparator();
         out.writeQuotedValue("row");
 
-        for (IElementAttribute prop : cellAdapter.getProperties())
+        for (ILayerDescriptor prop : resultsMatrix.getLayers())
         {
             out.writeSeparator();
             out.writeQuotedValue(prop.getId());
@@ -514,8 +514,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     private void writeLine(@NotNull RawCsvWriter out, @NotNull ObjectMatrix resultsMatrix, int colIndex, int rowIndex, @NotNull IProgressMonitor progressMonitor)
     {
 
-        Object element = resultsMatrix.getCell(rowIndex, colIndex);
-        if (element == null)
+        if (resultsMatrix.isEmpty(rowIndex, colIndex))
         {
             return;
         }
@@ -527,9 +526,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         out.writeSeparator();
         out.writeQuotedValue(rowName);
 
-        IElementAdapter cellsAdapter = resultsMatrix.getCellAdapter();
-
-        int numProperties = cellsAdapter.getPropertyCount();
+        int numProperties = resultsMatrix.getLayers().size();
 
         DoubleTranslator doubleTrans = new DoubleTranslator();
 
@@ -537,7 +534,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         {
             out.writeSeparator();
 
-            Object value = cellsAdapter.getValue(element, propIndex);
+            Object value = resultsMatrix.getCellValue(rowIndex, colIndex, propIndex);
             if (value instanceof Double)
             {
                 Double v = (Double) value;
@@ -559,7 +556,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Deprecated
-    public static List<IElementAttribute> readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException
+    public static IMatrixLayers readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException
     {
         IElementAdapter elementAdapter = null;
 

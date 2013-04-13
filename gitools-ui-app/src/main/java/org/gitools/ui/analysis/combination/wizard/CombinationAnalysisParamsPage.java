@@ -21,40 +21,37 @@
  */
 package org.gitools.ui.analysis.combination.wizard;
 
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class CombinationAnalysisParamsPage extends AbstractWizardPage
 {
 
     @Nullable
-    private List<IElementAttribute> attrs;
+    private IMatrixLayers attrs;
 
     private static class AttrOption
     {
         private String name;
-        private IElementAttribute attr;
+        private ILayerDescriptor attr;
 
         public AttrOption(String name)
         {
             this.name = name;
         }
 
-        public AttrOption(IElementAttribute attr)
+        public AttrOption(ILayerDescriptor attr)
         {
             this.attr = attr;
         }
 
-        public IElementAttribute getAttr()
+        public ILayerDescriptor getAttr()
         {
             return attr;
         }
@@ -91,7 +88,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable List<IElementAttribute> attrs)
+    public void setAttributes(@Nullable IMatrixLayers attrs)
     {
         this.attrs = attrs;
 
@@ -111,7 +108,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
             int sizeIndex = -1;
             int pvalueIndex = -1;
             int i = 0;
-            for (IElementAttribute a : attrs)
+            for (ILayerDescriptor a : attrs)
             {
                 String aid = a.getId();
                 if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$")))
@@ -153,14 +150,14 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
     }
 
     @Nullable
-    public IElementAttribute getSizeAttribute()
+    public ILayerDescriptor getSizeAttribute()
     {
         AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
     @Nullable
-    public IElementAttribute getPvalueAttribute()
+    public ILayerDescriptor getPvalueAttribute()
     {
         AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;

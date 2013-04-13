@@ -59,6 +59,6 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver
         }
 
         int annCol = am.internalColumnIndex(variableName);
-        return am.getCell(annRow, annCol);
+        return am.getCellAsString(annRow, annCol);
     }
 }

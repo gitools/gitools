@@ -29,9 +29,9 @@ import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.UrlLink;
 import org.gitools.matrix.model.AnnotationResolver;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.model.decorator.impl.CategoricalElementDecorator;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
@@ -174,16 +174,14 @@ public abstract class AbstractDetailsPanel extends WebPanel
     @Deprecated
     private Collection<PropertyItem> getProperties(int row, int column)
     {
-        int selectedIndex = getMatrixView().getSelectedLayer();
+        int selectedIndex = getMatrixView().getLayers().getTopLayer();
         ElementDecorator selectedDecorator = heatmap.getActiveCellDecorator();
-        Object cellElement = getMatrixView().getCell(row, column);
-        IElementAdapter cellAdapter = getMatrixView().getCellAdapter();
         List<PropertyItem> values = new ArrayList<PropertyItem>();
-        final List<IElementAttribute> properties = cellAdapter.getProperties();
+        final IMatrixLayers properties = getMatrixView().getLayers();
         for (int index = 0; index < properties.size(); index++)
         {
-            final IElementAttribute prop = properties.get(index);
-            Object value = cellAdapter.getValue(cellElement, index);
+            final ILayerDescriptor prop = properties.get(index);
+            Object value = getMatrixView().getCellValue(row, column, index);
             PropertyItem item = new PropertyItem(prop.getName(), prop.getDescription(), FORMATTER.format(value));
 
             if (index == selectedIndex && value instanceof Double)

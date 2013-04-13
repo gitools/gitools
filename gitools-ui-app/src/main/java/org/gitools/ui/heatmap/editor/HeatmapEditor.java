@@ -32,9 +32,9 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.element.BeanElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.model.IModel;
 import org.gitools.model.decorator.ElementDecorator;
 import org.gitools.persistence.IResource;
@@ -72,7 +72,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.List;
 
 public class HeatmapEditor extends AbstractEditor
 {
@@ -448,7 +447,7 @@ public class HeatmapEditor extends AbstractEditor
                                 continue;
                             }
                             int annCol = am.internalColumnIndex(annLabel);
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCellAsString(annRow, annCol));
                             first = false;
                         }
                     }
@@ -477,7 +476,7 @@ public class HeatmapEditor extends AbstractEditor
                                 continue;
                             }
                             int annCol = am.internalColumnIndex(annLabel);
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCell(annRow, annCol));
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCellAsString(annRow, annCol));
                             first = false;
                         }
                     }
@@ -489,7 +488,7 @@ public class HeatmapEditor extends AbstractEditor
             String rowLabel = mv.getRows().getLabel(row);
             String colLabel = mv.getColumns().getLabel(col);
             sb.append(colLabel).append(", ").append(rowLabel);
-            List<IElementAttribute> attrs = mv.getCellAttributes();
+            IMatrixLayers attrs = mv.getLayers();
             if (attrs.size() > 0)
             {
                 sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getCellValue(row, col, 0));

@@ -26,7 +26,6 @@ import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.decorator.impl.CorrelationElementDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
@@ -183,13 +182,12 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         IMatrixView results = new DiagonalMatrixView(analysis.getResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
-        IElementAdapter cellAdapter = results.getCellAdapter();
-        int propertiesNb = cellAdapter.getProperties().size();
+        int propertiesNb = results.getLayers().size();
         CorrelationElementDecorator[] dec = new CorrelationElementDecorator[propertiesNb];
         for (int i = 0; i < propertiesNb; i++)
         {
-            dec[i] = new CorrelationElementDecorator(cellAdapter);
-            int valueIndex = cellAdapter.getPropertyIndex("score");
+            dec[i] = new CorrelationElementDecorator(results.getCellAdapter());
+            int valueIndex = results.getLayers().findId("score");
             dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
         }
         heatmap.setCellDecorators(dec);

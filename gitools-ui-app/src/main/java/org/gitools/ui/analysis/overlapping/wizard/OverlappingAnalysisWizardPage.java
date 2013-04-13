@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -34,7 +35,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -42,24 +42,24 @@ import java.util.List;
 public class OverlappingAnalysisWizardPage extends AbstractWizardPage
 {
     @Nullable
-    private List<IElementAttribute> attrs;
+    private IMatrixLayers attrs;
 
     private static class AttrOption
     {
         private String name;
-        private IElementAttribute attr;
+        private ILayerDescriptor attr;
 
         public AttrOption(String name)
         {
             this.name = name;
         }
 
-        public AttrOption(IElementAttribute attr)
+        public AttrOption(ILayerDescriptor attr)
         {
             this.attr = attr;
         }
 
-        public IElementAttribute getAttr()
+        public ILayerDescriptor getAttr()
         {
             return attr;
         }
@@ -186,7 +186,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
     }
 
 
-    public void setAttributes(@Nullable List<IElementAttribute> attrs)
+    public void setAttributes(IMatrixLayers attrs)
     {
         this.attrs = attrs;
 

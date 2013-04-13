@@ -46,7 +46,7 @@ public class MatrixToModulesConversion implements ConversionDelegate
 
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getCellAttributes().get(attrIndex).getValueClass());
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getLayers().get(attrIndex).getValueClass());
 
         int numRows = matrix.getRows().size();
         int numCols = matrix.getColumns().size();

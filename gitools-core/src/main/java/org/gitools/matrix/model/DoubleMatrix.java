@@ -81,19 +81,24 @@ public class DoubleMatrix extends BaseMatrix
     }
 
     @Override
+    public boolean isEmpty(int row, int column)
+    {
+        return getCell(row, column) == null;
+    }
+
     public Object getCell(int row, int column)
     {
         return cells.get(row, column);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int index)
+    public Object getCellValue(int row, int column, int layer)
     {
         return cells.get(row, column);
     }
 
     @Override
-    public void setCellValue(int row, int column, int index, @Nullable Object value)
+    public void setCellValue(int row, int column, int layer, @Nullable Object value)
     {
         // FIXME null and NaN are different things
         cells.set(row, column, value != null ? (Double) value : Double.NaN);

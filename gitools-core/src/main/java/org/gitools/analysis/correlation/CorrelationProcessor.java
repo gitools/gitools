@@ -80,7 +80,7 @@ public class CorrelationProcessor implements AnalysisProcessor
         results.setRows(labels);
         results.makeCells();
 
-        results.setCellAdapter(new BeanElementAdapter(method.getResultClass()));
+        results.setObjectCellAdapter(new BeanElementAdapter(method.getResultClass()));
 
         double[] x = new double[numRows];
         double[] y = new double[numRows];
@@ -93,7 +93,7 @@ public class CorrelationProcessor implements AnalysisProcessor
             replaceNanValue = Double.NaN;
         }
 
-        Class<?> valueClass = data.getCellAttributes().get(attributeIndex).getValueClass();
+        Class<?> valueClass = data.getLayers().get(attributeIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
         for (int i = 0; i < numColumns && !monitor.isCancelled(); i++)

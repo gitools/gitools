@@ -146,7 +146,7 @@ public class GroupComparisonCommand extends AnalysisCommand
                 {
                     dataDim = matcher.group(1);
                 }
-                dataDimIndex = data.getCellAttributeIndex(dataDim);
+                dataDimIndex = data.getLayers().findId(dataDim);
 
                 String[] parts = groupDefs[i].split(" ");
                 int partsNb = parts.length;

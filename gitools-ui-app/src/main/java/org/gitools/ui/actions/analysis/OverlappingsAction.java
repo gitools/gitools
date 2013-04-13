@@ -77,7 +77,7 @@ public class OverlappingsAction extends BaseAction
         final OverlappingAnalysisWizard wiz = new OverlappingAnalysisWizard();
         wiz.setExamplePageEnabled(false);
         wiz.setDataFromMemory(true);
-        wiz.setAttributes(matrixView.getCellAttributes());
+        wiz.setAttributes(matrixView.getLayers());
         wiz.setSaveFilePageEnabled(false);
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);

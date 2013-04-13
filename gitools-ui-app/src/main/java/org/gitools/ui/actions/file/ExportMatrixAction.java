@@ -23,8 +23,8 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.exporter.TextMatrixViewExporter;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -40,7 +40,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -74,12 +73,12 @@ public class ExportMatrixAction extends BaseAction
             return;
         }
 
-        final List<IElementAttribute> properties = matrixView.getCellAdapter().getProperties();
+        final IMatrixLayers properties = matrixView.getLayers();
         final String[] propNames = new String[properties.size()];
         for (int i = 0; i < properties.size(); i++)
             propNames[i] = properties.get(i).getName();
 
-        int selectedPropIndex = matrixView.getSelectedLayer();
+        int selectedPropIndex = matrixView.getLayers().getTopLayer();
         selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
         selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
 

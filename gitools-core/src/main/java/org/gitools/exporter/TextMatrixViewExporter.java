@@ -23,15 +23,15 @@ package org.gitools.exporter;
 
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.datafilters.ValueTranslatorFactory;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.utils.fileutils.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 public class TextMatrixViewExporter
 {
@@ -51,7 +51,7 @@ public class TextMatrixViewExporter
 
         // body
 
-        IElementAttribute attr = matrixView.getContents().getCellAttributes().get(propIndex);
+        ILayerDescriptor attr = matrixView.getContents().getLayers().get(propIndex);
 
         ValueTranslator vt = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
@@ -74,7 +74,7 @@ public class TextMatrixViewExporter
     {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
-        List<IElementAttribute> attributes = matrixView.getCellAttributes();
+        IMatrixLayers attributes = matrixView.getLayers();
 
         final int rowCount = matrixView.getRows().size();
         final int colCount = matrixView.getColumns().size();
@@ -88,7 +88,7 @@ public class TextMatrixViewExporter
         pw.print("column\trow");
         for (int i = 0; i < propIndices.length; i++)
         {
-            IElementAttribute attr = attributes.get(propIndices[i]);
+            ILayerDescriptor attr = attributes.get(propIndices[i]);
 
             vt[i] = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
@@ -103,7 +103,7 @@ public class TextMatrixViewExporter
             final int r = i / colCount;
             final int c = i % colCount;
 
-            if (matrixView.getCell(r, c) != null)
+            if (!matrixView.isEmpty(r, c))
             {
                 pw.print(matrixView.getColumns().getLabel(c));
                 pw.print("\t" + matrixView.getRows().getLabel(r));

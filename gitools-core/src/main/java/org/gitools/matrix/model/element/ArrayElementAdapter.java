@@ -22,12 +22,11 @@
 package org.gitools.matrix.model.element;
 
 
+import org.gitools.matrix.model.SimpleMatrixLayers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -59,14 +58,7 @@ public class ArrayElementAdapter extends AbstractElementAdapter
     {
         super(double[].class);
 
-        this.ids = ids;
-
-        List<IElementAttribute> properties = new ArrayList<IElementAttribute>();
-
-        for (String id : ids)
-            properties.add(new ArrayElementProperty(id, id, ""));
-
-        setProperties(properties);
+        setProperties(new SimpleMatrixLayers(double.class, ids));
     }
 
     @Nullable

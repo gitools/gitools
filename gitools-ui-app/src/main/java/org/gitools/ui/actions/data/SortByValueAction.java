@@ -22,8 +22,8 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.IElementAttribute;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.matrix.sort.ValueSortCriteria;
 import org.gitools.ui.actions.ActionUtils;
@@ -87,7 +87,7 @@ public class SortByValueAction extends BaseAction
 
         int attrIndex = -1;
 
-        List<IElementAttribute> cellProps = matrixView.getCellAdapter().getProperties();
+        IMatrixLayers cellProps = matrixView.getLayers();
         String[] attributeNames = new String[cellProps.size()];
         for (int i = 0; i < cellProps.size(); i++)
         {

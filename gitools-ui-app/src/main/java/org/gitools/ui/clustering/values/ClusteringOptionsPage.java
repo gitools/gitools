@@ -21,12 +21,11 @@
  */
 package org.gitools.ui.clustering.values;
 
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.List;
 
 /**
  * @noinspection ALL
@@ -38,19 +37,19 @@ class ClusteringOptionsPage extends AbstractWizardPage
     private static class MatrixAttributeWrapper
     {
 
-        private IElementAttribute attribute;
+        private ILayerDescriptor attribute;
 
-        public MatrixAttributeWrapper(IElementAttribute a)
+        public MatrixAttributeWrapper(ILayerDescriptor a)
         {
             this.attribute = a;
         }
 
-        public IElementAttribute getMatrixAttribute()
+        public ILayerDescriptor getMatrixAttribute()
         {
             return attribute;
         }
 
-        public void setMatrixAttribute(IElementAttribute a)
+        public void setMatrixAttribute(ILayerDescriptor a)
         {
             this.attribute = a;
         }
@@ -62,14 +61,14 @@ class ClusteringOptionsPage extends AbstractWizardPage
         }
     }
 
-    public ClusteringOptionsPage(@NotNull List<IElementAttribute> cellAttributes, int index)
+    public ClusteringOptionsPage(IMatrixLayers cellAttributes, int index)
     {
 
         initComponents();
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         MatrixAttributeWrapper attrWrapper = null;
-        for (IElementAttribute attr : cellAttributes)
+        for (ILayerDescriptor attr : cellAttributes)
         {
             attrWrapper = new MatrixAttributeWrapper(attr);
             model.addElement(attrWrapper);

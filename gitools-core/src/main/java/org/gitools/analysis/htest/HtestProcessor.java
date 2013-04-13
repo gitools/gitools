@@ -53,7 +53,7 @@ public abstract class HtestProcessor implements AnalysisProcessor
         {
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
             {
-                CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
+                CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
                 adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
                 adjpvalues.setQuick(1, moduleIdx, r != null ? r.getRightPvalue() : Double.NaN);
                 adjpvalues.setQuick(2, moduleIdx, r != null ? r.getTwoTailPvalue() : Double.NaN);
@@ -65,7 +65,7 @@ public abstract class HtestProcessor implements AnalysisProcessor
 
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
             {
-                CommonResult r = (CommonResult) res.getCell(moduleIdx, condIdx);
+                CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
                 if (r != null)
                 {
                     r.setCorrLeftPvalue(adjpvalues.getQuick(0, moduleIdx));

@@ -25,7 +25,6 @@ import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.matrix.model.element.StringElementAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -45,7 +44,7 @@ public class StringMatrix extends ObjectMatrix
     {
         super();
 
-        setCellAdapter(new StringElementAdapter());
+        setObjectCellAdapter(new StringElementAdapter());
     }
 
     StringMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells)
@@ -71,9 +70,7 @@ public class StringMatrix extends ObjectMatrix
         return cells.rows();
     }
 
-    @NotNull
-    @Override
-    public String getCell(int row, int column)
+    public String getCellAsString(int row, int column)
     {
         return (String) cells.get(row, column);
     }

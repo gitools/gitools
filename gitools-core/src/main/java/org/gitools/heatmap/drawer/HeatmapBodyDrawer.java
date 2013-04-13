@@ -67,8 +67,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         ElementDecorator deco = heatmap.getActiveCellDecorator();
         ElementDecoration decoration = new ElementDecoration();
 
-        int leadRow = heatmap  .getRows().getSelectionLead(  );
-        int leadColumn = heatmap  .getColumns().getSelectionLead(  );
+        int leadRow = heatmap.getRows().getSelectionLead(  );
+        int leadColumn = heatmap.getColumns().getSelectionLead(  );
 
         int y = box.y + rowStart * cellHeight;
         for (int row = rowStart; row < rowEnd; row++)
@@ -77,8 +77,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
             boolean rowSelected = data.getRows().isSelected(  row);
             for (int col = colStart; col < colEnd; col++)
             {
-                Object element = data.getCell(row, col);
-                deco.decorate(decoration, element);
+                deco.decorate(decoration, data, row, col);
 
                 Color color = decoration.getBgColor();
                 Color rowsGridColor = heatmap.getRows().getGridColor();

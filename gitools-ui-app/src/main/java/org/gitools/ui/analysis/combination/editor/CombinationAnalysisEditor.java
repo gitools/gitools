@@ -24,7 +24,7 @@ package org.gitools.ui.analysis.combination.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
@@ -37,7 +37,6 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.List;
 import java.util.Map;
 
 public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis>
@@ -75,7 +74,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         String pvalueAttr = analysis.getPvalueAttrName();
         if (pvalueAttr == null || pvalueAttr.isEmpty())
         {
-            List<IElementAttribute> attrs = analysis.getData().get().getCellAttributes();
+            IMatrixLayers attrs = analysis.getData().get().getLayers();
             if (attrs.size() > 0)
             {
                 pvalueAttr = attrs.get(0).getName();

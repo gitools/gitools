@@ -59,7 +59,7 @@ public class OverlappingProcessor implements AnalysisProcessor
         String attrName = analysis.getAttributeName();
         if (attrName != null && !attrName.isEmpty())
         {
-            attrIndex = data.getCellAttributeIndex(attrName);
+            attrIndex = data.getLayers().findId(attrName);
         }
 
         if (analysis.isTransposeData())
@@ -85,7 +85,7 @@ public class OverlappingProcessor implements AnalysisProcessor
         results.setRows(labels);
         results.makeCells();
 
-        results.setCellAdapter(new BeanElementAdapter(OverlappingResult.class));
+        results.setObjectCellAdapter(new BeanElementAdapter(OverlappingResult.class));
 
         BitSet x = new BitSet(numRows);
         BitSet xna = new BitSet(numRows);
@@ -100,7 +100,7 @@ public class OverlappingProcessor implements AnalysisProcessor
         CutoffCmp cutoffCmp = analysis.getBinaryCutoffCmp();
         Double cutoffValue = analysis.getBinaryCutoffValue();
 
-        Class<?> valueClass = data.getCellAttributes().get(attrIndex).getValueClass();
+        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
         for (int i = 0; i < numColumns && !monitor.isCancelled(); i++)

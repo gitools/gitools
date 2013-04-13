@@ -25,8 +25,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.matrix.model.BaseMatrix;
 import org.gitools.matrix.model.DoubleBinaryMatrix;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.model.ModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.*;
@@ -177,11 +177,11 @@ public class MatrixUtils
         double max = Double.NEGATIVE_INFINITY;
 
         IColorScale scale = null;
-        String dataDimName = data.getCellAttributes().get(valueIndex).getName();
+        String dataDimName = data.getLayers().get(valueIndex).getName();
         String pvalRegex = ("(?i:pval|p-val)");
         String zscoreRegex = ("(?i:z-score|zscore|zval|z-val)");
 
-        double[] values = getUniquedValuesFromMatrix(data, data.getCellAdapter(), valueIndex);
+        double[] values = getUniquedValuesFromMatrix(data, valueIndex);
         for (int i = 0; i < values.length; i++)
         {
             double v = values[i];
@@ -230,14 +230,13 @@ public class MatrixUtils
         return scale;
     }
 
-    public static int correctedValueIndex(@NotNull IElementAdapter adapter, @NotNull IElementAttribute prop)
+    public static int correctedValueIndex(IMatrixLayers layers,  ILayerDescriptor layer)
     {
-        int numProps = adapter.getPropertyCount();
 
-        String id = "corrected-" + prop.getId();
+        String id = "corrected-" + layer.getId();
 
-        for (int i = 0; i < numProps; i++)
-            if (id.equals(adapter.getProperty(i).getId()))
+        for (int i = 0; i < layers.size(); i++)
+            if (id.equals(layers.get(i).getId()))
             {
                 return i;
             }
@@ -298,25 +297,25 @@ public class MatrixUtils
         return map;
     }
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, IProgressMonitor monitor)
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, IProgressMonitor monitor)
     {
-        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
+        return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
-    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension)
+    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension)
     {
-        return getUniquedValuesFromMatrix(data, cellAdapter, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
+        return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, @NotNull IElementAdapter cellAdapter, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
     {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too many (50), it returns
         * an equally distributed array values from min to max*/
 
         Double[] values = null;
         List<Double> valueList = new ArrayList<Double>();
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(cellAdapter.getProperty(valueDimension).getValueClass());
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(data.getLayers().get(valueDimension).getValueClass());
         Double min = Double.POSITIVE_INFINITY;
         Double max = Double.NEGATIVE_INFINITY;
 
@@ -324,7 +323,7 @@ public class MatrixUtils
         int rowNb = data.getRows().size();
 
         IProgressMonitor submonitor = monitor.subtask();
-        String valueDimensionName = data.getCellAttributes().get(valueDimension).getName();
+        String valueDimensionName = data.getLayers().get(valueDimension).getName();
 
         int randomRows = 50 > rowNb ? rowNb : 50;
         int[] randomRowsIdx = new int[randomRows];

@@ -180,8 +180,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                 if (valueExists)
                 {
 
-                    Object element = headerData.getCell(headerRow, headerCol);
-                    deco.decorate(decoration, element);
+                    deco.decorate(decoration, headerData, headerRow, headerCol);
 
                     Color color = decoration.getBgColor();
                     Color rowsGridColor = heatmap.getRows().getGridColor();
@@ -208,7 +207,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     int colorRectWith = cellWidth;
                     int colorRectX = horizontal ? box.x + margin + (row * (cellWidth + columnsGridSize)) : box.x + margin + (col * (cellWidth + columnsGridSize));
                     int legendStart = x + margin;
-                    String valueLabel = gf.format(element);
+                    String valueLabel = gf.format(headerData.getCellValue(headerRow, headerCol, deco.getValueIndex()));
                     int legendLength = fm.stringWidth(valueLabel);
 
 

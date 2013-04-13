@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class AggregationDataSourcePage extends AbstractWizardPage
 {
@@ -42,7 +41,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
     public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows)
     {
 
-        List<IElementAttribute> attributes = heatmap  .getCellAttributes();
+        IMatrixLayers attributes = heatmap  .getLayers();
         String[] cellAttributes = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
             cellAttributes[i] = attributes.get(i).getName();
@@ -59,7 +58,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         separateAggregationCb.setEnabled(hasAnnotation);
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
-        valueCb.setSelectedIndex(heatmap  .getSelectedLayer());
+        valueCb.setSelectedIndex(heatmap.getLayers().getTopLayer());
         valueCb.addActionListener(new ActionListener()
         {
             @Override
