@@ -33,15 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
 
-/**
- * @author michi
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DecoratorArchive
 {
 
-    public transient final static String VERSION = "2.0";
+    public transient final static String VERSION = "3.0";
 
     @NotNull
     private final List<Decorator> scaleDecorators = new ArrayList<Decorator>();
@@ -52,7 +49,7 @@ public class DecoratorArchive
     {
     }
 
-    public void add(@NotNull Decorator[] decorators)
+    public void add(Decorator[] decorators)
     {
         for (Decorator d : decorators)
         {

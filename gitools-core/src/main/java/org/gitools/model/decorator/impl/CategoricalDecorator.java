@@ -43,7 +43,6 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale>
     public static final String PROPERTY_COLOR = "color";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
     public static final String PROPERTY_CATEGORIES = "categories";
-    public static final String PROPERTY_CATEGORIES_COUNT = "categoriesCount";
 
     private CategoricalColorScale scale;
 
@@ -120,13 +119,6 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale>
         ColorScalePoint[] old = getScale().getPointObjects();
         getScale().setPointObjects(newScalePoints);
         firePropertyChange(PROPERTY_CATEGORIES, old, newScalePoints);
-        firePropertyChange(PROPERTY_CATEGORIES_COUNT, old.length, newScalePoints.length);
     }
-
-    public String getCategoriesCount()
-    {
-        return String.valueOf(getScale().getPoints().length);
-    }
-
 
 }

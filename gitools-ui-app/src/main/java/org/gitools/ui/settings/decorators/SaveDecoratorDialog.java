@@ -28,9 +28,6 @@ import org.gitools.ui.utils.DocumentChangeListener;
 import javax.swing.event.DocumentEvent;
 import java.util.Set;
 
-/**
- * @noinspection ALL
- */
 public class SaveDecoratorDialog extends javax.swing.JDialog
 {
 

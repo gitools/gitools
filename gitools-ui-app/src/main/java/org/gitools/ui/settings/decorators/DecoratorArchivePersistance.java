@@ -23,20 +23,14 @@ package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
-import org.gitools.model.decorator.Decorator;
-import org.gitools.model.decorator.impl.*;
-import org.gitools.utils.colorscale.ColorScalePoint;
-import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 
-import java.awt.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.regex.Pattern;
 
 
-/**
- * @author michi
- */
 public class DecoratorArchivePersistance
 {
 
@@ -52,40 +46,9 @@ public class DecoratorArchivePersistance
 
     public DecoratorArchivePersistance()
     {
-        xstream = new XStream();
 
-        xstream.alias("decoratorArchive", DecoratorArchive.class);
 
-        xstream.alias("correlationColorScale", CorrelationColorScale.class);
 
-        xstream.alias("binaryDecorator", BinaryDecorator.class);
-        xstream.omitField(BinaryDecorator.class, "valueIndex");
-
-        xstream.alias("linearTwoSidedDecorator", LinearDecorator.class);
-        xstream.omitField(LinearDecorator.class, "valueIndex");
-
-        xstream.alias("pValueDecorator", PValueDecorator.class);
-        xstream.omitField(PValueDecorator.class, "valueIndex");
-        xstream.omitField(PValueDecorator.class, "correctedValueIndex");
-
-        xstream.alias("zScoreDecorator", ZScoreDecorator.class);
-        xstream.omitField(ZScoreDecorator.class, "valueIndex");
-        xstream.omitField(ZScoreDecorator.class, "correctedValueIndex");
-
-        xstream.alias("correlationDecorator", CorrelationDecorator.class);
-        xstream.omitField(CorrelationDecorator.class, "valueIndex");
-
-        xstream.omitField(Decorator.class, "valueIndex");
-        xstream.omitField(Decorator.class, "adapter");
-        xstream.useAttributeFor(Decorator.class, "name");
-
-        xstream.omitField(NumericColorScale.class, "rangesList");
-
-        xstream.omitField(Color.class, "alpha");
-
-        xstream.alias("edu.upf.bg.colorscale.ColorScalePoint", ColorScalePoint.class);
-
-        xstream.setMode(XStream.NO_REFERENCES);
     }
 
     public void save(DecoratorArchive archive)
@@ -101,7 +64,11 @@ public class DecoratorArchivePersistance
             FileWriter writer = new FileWriter(configFile);
 
             writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
-            xstream.toXML(archive, writer);
+
+            JAXBContext context = JAXBContext.newInstance(DecoratorArchive.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(archive, writer);
             writer.close();
 
         } catch (Exception e)
@@ -132,7 +99,9 @@ public class DecoratorArchivePersistance
             }
             else
             {
-                decoratorArchive = (DecoratorArchive) xstream.fromXML(reader, new DecoratorArchive());
+                JAXBContext context = JAXBContext.newInstance(DecoratorArchive.class);
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+                decoratorArchive = (DecoratorArchive) unmarshaller.unmarshal(reader);
                 reader.close();
             }
 

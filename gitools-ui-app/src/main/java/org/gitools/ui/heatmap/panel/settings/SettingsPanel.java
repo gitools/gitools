@@ -31,12 +31,21 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.model.Resource;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.settings.decorators.DecoratorArchive;
+import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
+import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
+import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SettingsPanel
 {
@@ -62,7 +71,7 @@ public class SettingsPanel
     private JLabel colorScaleOpen;
     private JComboBox layerselector;
 
-    public SettingsPanel(Heatmap heatmap)
+    public SettingsPanel(final Heatmap heatmap)
     {
         PresentationModel<Heatmap> model = new PresentationModel<Heatmap>(heatmap);
 
@@ -86,6 +95,26 @@ public class SettingsPanel
                 decoratorsPanels.getCurrentPanelModel()
         ));
 
+        colorScaleSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        colorScaleSave.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                saveScale(heatmap.getLayers().getTopLayer());
+            }
+        });
+
+        colorScaleOpen.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        colorScaleOpen.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                loadScale(heatmap.getLayers().getTopLayer());
+            }
+        });
+
         // Bind grid controls
         Bindings.bind(gridRowsColor, "color", rows.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
         Bindings.bind(gridColumnsColor, "color", columns.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
@@ -99,12 +128,50 @@ public class SettingsPanel
         // Bind cell size controls
         AbstractValueModel cellSizeRowsModel = rows.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
         cellSizeRows.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeRowsModel, 1, 0, 300, 1));
-
         AbstractValueModel cellSizeColumnsModel = columns.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
         cellSizeColumns.setModel( SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel , 1, 0, 300, 1) );
-
         cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
 
+
+    }
+
+    private void saveScale(HeatmapLayer topLayer) {
+
+        Decorator d = topLayer.getDecorator();
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
+        dialog.setExistingScaleNames(archive.getDecorators().keySet());
+        dialog.setName(d.getName());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+
+        d.setName(dialog.getScaleName());
+        archive.add(d);
+        archivePersistance.save(archive);
+    }
+
+    private void loadScale(HeatmapLayer topLayer) {
+
+        DecoratorArchivePersistance archivePersistance =
+                new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+
+        Decorator d = topLayer.getDecorator();
+
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
+                AppFrame.get(),
+                archive.getDecorators().values().toArray(),
+                d.getClass());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+        Decorator loadedDecorator = dialog.getSelectedDecorator();
+
+        topLayer.setDecorator(loadedDecorator);
 
     }
 

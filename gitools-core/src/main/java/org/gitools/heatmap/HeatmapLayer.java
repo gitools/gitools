@@ -26,6 +26,8 @@ import org.gitools.matrix.model.SimpleMatrixLayer;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.EventUtils;
 
+import java.beans.PropertyChangeEvent;
+
 
 public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer
 {
@@ -59,6 +61,7 @@ public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer
 
         firePropertyChange(PROPERTY_DECORATOR, oldValue, decorator);
         EventUtils.moveListeners(oldValue, decorator);
+
     }
 
     @Override

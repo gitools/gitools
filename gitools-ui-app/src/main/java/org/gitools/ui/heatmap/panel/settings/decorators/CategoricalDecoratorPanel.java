@@ -22,6 +22,7 @@
 package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
+import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.dialog.EditCategoricalScaleDialog;
@@ -34,6 +35,8 @@ import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class CategoricalDecoratorPanel extends DecoratorPanel
 {
@@ -56,11 +59,17 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
         });
     }
 
+    private CategoricalDecorator getDecorator()
+    {
+        return (CategoricalDecorator) getPanelModel().getBean();
+    }
+
+
     private void editCategoricalColorScale()
     {
 
 
-        CategoricalDecorator elementDecorator = (CategoricalDecorator) getPanelModel().getBean();
+        CategoricalDecorator elementDecorator = getDecorator();
         CategoricalColorScale scale = elementDecorator.getScale();
         ColorScalePoint[] scalePoints = scale.getPointObjects();
 
@@ -96,9 +105,20 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
     @Override
     public void bind()
     {
-        Bindings.bind(totalCategories, "text", model(CategoricalDecorator.PROPERTY_CATEGORIES_COUNT));
+        ValueModel categories = model(CategoricalDecorator.PROPERTY_CATEGORIES);
+        categories.addValueChangeListener(new PropertyChangeListener()
+        {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt)
+            {
+                totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
+            }
+        });
+        totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
         Bindings.bind(emptyColor, "color", model(CategoricalDecorator.PROPERTY_EMPTY_COLOR));
     }
+
+
 
     @Override
     public JPanel getRootPanel()

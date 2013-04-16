@@ -80,8 +80,7 @@ public abstract class DecoratorPanel
 
     protected AbstractValueModel model(String propertyName)
     {
-        AbstractValueModel model = getPanelModel().getModel(propertyName);
-        return model;
+        return getPanelModel().getModel(propertyName);
     }
 
     protected List<HeatmapLayer> getLayers()
@@ -106,5 +105,21 @@ public abstract class DecoratorPanel
     public Heatmap getHeatmap()
     {
         return heatmap;
+    }
+
+    public Class<? extends Decorator> getDecoratorClass()
+    {
+        return decoratorClass;
+    }
+
+    public Decorator newDecorator()
+    {
+        try
+        {
+            return decoratorClass.newInstance();
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }
