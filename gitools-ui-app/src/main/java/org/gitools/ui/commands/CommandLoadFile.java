@@ -30,7 +30,7 @@ import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.compressmatrix.MatrixConversion;
 import org.gitools.persistence.IResource;

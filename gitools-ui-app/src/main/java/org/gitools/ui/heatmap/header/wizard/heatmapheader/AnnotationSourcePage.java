@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;

@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.analysis.combination.wizard;
 
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -39,19 +39,19 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
     private static class AttrOption
     {
         private String name;
-        private ILayerDescriptor attr;
+        private IMatrixLayer attr;
 
         public AttrOption(String name)
         {
             this.name = name;
         }
 
-        public AttrOption(ILayerDescriptor attr)
+        public AttrOption(IMatrixLayer attr)
         {
             this.attr = attr;
         }
 
-        public ILayerDescriptor getAttr()
+        public IMatrixLayer getAttr()
         {
             return attr;
         }
@@ -88,7 +88,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable IMatrixLayers<? extends ILayerDescriptor> attrs)
+    public void setAttributes(@Nullable IMatrixLayers<? extends IMatrixLayer> attrs)
     {
         this.attrs = attrs;
 
@@ -108,7 +108,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
             int sizeIndex = -1;
             int pvalueIndex = -1;
             int i = 0;
-            for (ILayerDescriptor a : attrs)
+            for (IMatrixLayer a : attrs)
             {
                 String aid = a.getId();
                 if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$")))
@@ -150,14 +150,14 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
     }
 
     @Nullable
-    public ILayerDescriptor getSizeAttribute()
+    public IMatrixLayer getSizeAttribute()
     {
         AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
     @Nullable
-    public ILayerDescriptor getPvalueAttribute()
+    public IMatrixLayer getPvalueAttribute()
     {
         AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;

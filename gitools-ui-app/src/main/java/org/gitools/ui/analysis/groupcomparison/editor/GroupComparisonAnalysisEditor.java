@@ -26,13 +26,15 @@ import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -193,6 +195,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 }
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
 

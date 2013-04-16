@@ -29,9 +29,10 @@ import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.analysis.overlapping.OverlappingResult;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.ObjectMatrix;
-import org.gitools.matrix.model.element.*;
+import org.gitools.matrix.model.matrix.ObjectMatrix;
+import org.gitools.matrix.model.matrix.element.*;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
@@ -90,7 +91,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
         for (Class<?> elementClass : classes)
         {
-            IElementAdapter adapter = new BeanElementAdapter(elementClass);
+            AbstractElementAdapter adapter = new BeanElementAdapter(elementClass);
 
             elementClasses.put(getElementClassId(adapter.getProperties()), elementClass);
         }
@@ -241,8 +242,8 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
                 }
             }
 
-            IElementAdapter origElementAdapter = null;
-            IElementAdapter destElementAdapter = null;
+            AbstractElementAdapter origElementAdapter = null;
+            AbstractElementAdapter destElementAdapter = null;
             IElementFactory elementFactory = null;
             if (elementClass == null)
             {
@@ -381,7 +382,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Nullable
-    private Object parsePropertyValue(@NotNull ILayerDescriptor property, String string)
+    private Object parsePropertyValue(@NotNull IMatrixLayer property, String string)
     {
 
         final Class<?> propertyClass = property.getValueClass();
@@ -456,7 +457,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         {
             OutputStream out = resourceLocator.openOutputStream();
             Writer writer = new OutputStreamWriter(out);
-            IElementAdapter cellAdapter = results.getObjectCellAdapter();
+            AbstractElementAdapter cellAdapter = results.getObjectCellAdapter();
 
             Class<?> elementClass = cellAdapter.getElementClass();
             String typeName = classToType.get(elementClass);
@@ -486,7 +487,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         out.writeSeparator();
         out.writeQuotedValue("row");
 
-        for (ILayerDescriptor prop : resultsMatrix.getLayers())
+        for (IMatrixLayer prop : resultsMatrix.getLayers())
         {
             out.writeSeparator();
             out.writeQuotedValue(prop.getId());
@@ -558,7 +559,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     @Deprecated
     public static IMatrixLayers readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException
     {
-        IElementAdapter elementAdapter = null;
+        AbstractElementAdapter elementAdapter = null;
 
         Map<String, String> meta = readFormatAttributes(file, monitor);
 

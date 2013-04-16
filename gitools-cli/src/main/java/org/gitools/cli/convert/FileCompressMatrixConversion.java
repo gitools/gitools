@@ -81,11 +81,20 @@ public class FileCompressMatrixConversion extends AbstractCompressor
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long range = (MemoryUtils.getAvailableMemory() / (getAverageLineLength() * getColumns().size()) + 32) / 3;
+            long estimatedMemoryUsage = (long) ((getAverageLineLength() * getColumns().size()) + 32);
+
+            progressMonitor.debug("Average line length " + getAverageLineLength());
+            progressMonitor.debug("Columns " + getColumns().size());
+
+            long range = (long) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);
+
             long count = 0;
             long from = 0;
             long to = (from + range > getRows().size()) ? getRows().size() : from + range;
-            Map<String, NotCompressRow> groups = new HashMap<String, NotCompressRow>();
+
+            estimatedMemoryUsage = estimatedMemoryUsage * to;
+            progressMonitor.debug("Estimated memory usage " + estimatedMemoryUsage);
+
             List<String> rowsList = Arrays.asList(getRows().getLabels());
 
             // Start the 'group by' row process
@@ -99,10 +108,12 @@ public class FileCompressMatrixConversion extends AbstractCompressor
                 String line;
 
                 // Prepare group buffers
-                groups.clear();
+                Map<String, NotCompressRow> groups = new HashMap<String, NotCompressRow>();
                 System.gc();
 
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
+
+                long memoryBefore = MemoryUtils.getAvailableMemory();
 
                 progressMonitor.begin("Initializing buffers...", 1);
                 for (String row : someRows)
@@ -133,7 +144,11 @@ public class FileCompressMatrixConversion extends AbstractCompressor
                 }
                 reader.close();
 
+                long memoryAfter = MemoryUtils.getAvailableMemory();
+
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
+
+                progressMonitor.debug("Real memory usage: " + (memoryBefore - memoryAfter) + " (estimated " + estimatedMemoryUsage + " - over estimation " + 100*((double)(memoryBefore - memoryAfter - estimatedMemoryUsage) / (double)(- memoryBefore + memoryAfter)) + "%)");
 
                 // Compress the row and write to disk
                 progressMonitor.begin("Compressing...", groups.size());
@@ -196,6 +211,18 @@ public class FileCompressMatrixConversion extends AbstractCompressor
             } catch (IOException e)
             {
                 return null;
+            }
+        }
+
+        @Override
+        public void close()
+        {
+            try
+            {
+                reader.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
             }
         }
     }

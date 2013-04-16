@@ -22,7 +22,7 @@
 package org.gitools.persistence.formats.matrix;
 
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
+import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;

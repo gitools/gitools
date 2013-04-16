@@ -135,5 +135,10 @@ public class MatrixConversion extends AbstractCompressor
 
             return values;
         }
+
+        @Override
+        public void close()
+        {
+        }
     }
 }

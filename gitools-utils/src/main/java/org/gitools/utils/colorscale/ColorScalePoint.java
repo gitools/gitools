@@ -30,9 +30,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.io.Serializable;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint>
 {

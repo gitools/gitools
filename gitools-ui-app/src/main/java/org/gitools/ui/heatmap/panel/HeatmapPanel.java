@@ -23,13 +23,13 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,18 +39,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class HeatmapPanel extends JPanel
+public class HeatmapPanel extends JPanel implements PropertyChangeListener
 {
 
-    private static final long serialVersionUID = 5817479437770943868L;
-
+    // Bean
     private Heatmap heatmap;
-    @NotNull
-    private final PropertyChangeListener heatmapListener;
 
+    // Components
     private HeatmapBodyPanel bodyPanel;
     private HeatmapHeaderPanel columnHeaderPanel;
     private HeatmapHeaderPanel rowHeaderPanel;
@@ -74,36 +69,22 @@ public class HeatmapPanel extends JPanel
     {
         this.heatmap = heatmap;
 
-        heatmapListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                heatmapPropertyChanged(evt);
-            }
-        };
-
         createComponents();
 
-        heatmapChanged(null);
+        // Listen
+        heatmap.addPropertyChangeListener(this);
+        heatmap.getColumns().addPropertyChangeListener(this);
+        heatmap.getRows().addPropertyChangeListener(this);
+        heatmap.getLayers().addPropertyChangeListener(this);
+        heatmap.getLayers().getTopLayer().addPropertyChangeListener(this);
 
         setFocusable(true);
+        setBackground(Color.WHITE);
     }
 
     public Heatmap getHeatmap()
     {
         return heatmap;
-    }
-
-    public void setHeatmap(Heatmap heatmap)
-    {
-        Heatmap old = this.heatmap;
-        this.heatmap = heatmap;
-        bodyPanel.setHeatmap(heatmap);
-        columnHeaderPanel.setHeatmap(heatmap);
-        rowHeaderPanel.setHeatmap(heatmap);
-        headerIntersectPanel.setHeatmap(heatmap);
-        heatmapChanged(old);
     }
 
     private void createComponents()
@@ -194,10 +175,10 @@ public class HeatmapPanel extends JPanel
             @Override
             public void mousePressed(MouseEvent e)
             {
-                heatmap  .getRows().setSelectionLead(-1);
-                heatmap  .getColumns().setSelectionLead(-1);
-                heatmap  .getColumns().clearSelection();
-                heatmap  .getRows().clearSelection();
+                heatmap.getRows().setSelectionLead(-1);
+                heatmap.getColumns().setSelectionLead(-1);
+                heatmap.getColumns().clearSelection();
+                heatmap.getRows().clearSelection();
             }
         });
 
@@ -222,8 +203,8 @@ public class HeatmapPanel extends JPanel
         HeatmapDimension rowDim = heatmap.getRows();
         HeatmapDimension colDim = heatmap.getColumns();
 
-        int leadPointXEnd = leadPoint.x + heatmap.getColumns().getCellSize() + (colDim.isGridEnabled() ? colDim.getGridSize() : 0);
-        int leadPointYEnd = leadPoint.y + heatmap.getRows().getCellSize() + (rowDim.isGridEnabled() ? rowDim.getGridSize() : 0);
+        int leadPointXEnd = leadPoint.x + heatmap.getColumns().getCellSize() + colDim.getGridSize();
+        int leadPointYEnd = leadPoint.y + heatmap.getRows().getCellSize() + rowDim.getGridSize();
 
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
@@ -321,11 +302,6 @@ public class HeatmapPanel extends JPanel
         return rowVP;
     }
 
-    public JViewport getIntersectVP()
-    {
-        return intersectVP;
-    }
-
     public HeatmapBodyPanel getBodyPanel()
     {
         return bodyPanel;
@@ -378,36 +354,6 @@ public class HeatmapPanel extends JPanel
         rowSB.setValue(value);
     }
 
-    private void heatmapChanged(@Nullable Heatmap old)
-    {
-
-        if (old != null)
-        {
-            old.removePropertyChangeListener(heatmapListener);
-        }
-
-        heatmap.addPropertyChangeListener(heatmapListener);
-    }
-
-    private void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
-    {
-        String pname = evt.getPropertyName();
-        Object src = evt.getSource();
-
-        boolean updateAll = (src.equals(heatmap) && HeatmapDimension.CELL_SIZE_CHANGED.equals(pname)) || ((src instanceof HeatmapDimension) && (HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname) || HeatmapDimension.HEADERS_CHANGED.equals(pname) || HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname))) || (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname))) || (src.equals(heatmap  ) && (IMatrixView.VISIBLE_CHANGED.equals(pname) || IMatrixView.SELECTED_LEAD_CHANGED.equals(pname)));
-
-        if (updateAll)
-        {
-            bodyPanel.updateSize();
-            rowHeaderPanel.updateSize();
-            columnHeaderPanel.updateSize();
-            headerIntersectPanel.updateSize();
-            updateScrolls();
-            revalidate();
-            repaint();
-        }
-    }
-
     @Override
     protected void paintComponent(@NotNull Graphics g)
     {
@@ -421,11 +367,6 @@ public class HeatmapPanel extends JPanel
     public void addHeatmapMouseListener(HeatmapMouseListener listener)
     {
         mouseListeners.add(listener);
-    }
-
-    public void removeHeatmapMouseListener(HeatmapMouseListener listener)
-    {
-        mouseListeners.remove(listener);
     }
 
     public void mouseReleased(@NotNull MouseEvent e)
@@ -450,4 +391,30 @@ public class HeatmapPanel extends JPanel
     }
 
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        boolean updateAll =
+                EventUtils.isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_CELL_SIZE,
+                        HeatmapDimension.PROPERTY_VISIBLE,
+                        HeatmapDimension.PROPERTY_SELECTION_LEAD,
+                        HeatmapDimension.PROPERTY_GRID_SIZE,
+                        HeatmapDimension.PROPERTY_GRID_COLOR
+                ) ||
+                EventUtils.isAny(evt, HeatmapLayer.class,
+                        HeatmapLayer.PROPERTY_DECORATOR
+                );
+
+        if (updateAll)
+        {
+            bodyPanel.updateSize();
+            rowHeaderPanel.updateSize();
+            columnHeaderPanel.updateSize();
+            headerIntersectPanel.updateSize();
+            updateScrolls();
+            revalidate();
+            repaint();
+        }
+    }
 }

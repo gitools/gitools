@@ -23,8 +23,8 @@ package org.gitools.clustering.method.annotations;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.AnnotationResolver;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationResolver;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;

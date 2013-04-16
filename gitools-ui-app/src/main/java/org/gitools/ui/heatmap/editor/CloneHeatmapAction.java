@@ -77,7 +77,6 @@ public class CloneHeatmapAction extends BaseAction
         clone.setTitle(hm.getTitle());
         clone.setDescription(hm.getDescription());
         clone.setProperties(SerialClone.xclone(hm.getProperties()));
-        clone.setCellDecorators(SerialClone.xclone(hm.getCellDecorators()));
         clone.setColumns(SerialClone.xclone(hm.getColumns()));
         clone.setRows(SerialClone.xclone(hm.getRows()));
 

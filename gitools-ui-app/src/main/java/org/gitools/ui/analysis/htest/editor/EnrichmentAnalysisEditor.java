@@ -26,15 +26,16 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.model.ToolConfig;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
+import org.gitools.model.decorator.impl.BinaryDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.stats.test.factory.TestFactory;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -159,10 +160,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                 String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
                 if (testName != TestFactory.ZSCORE_TEST)
                 {
-                    //entry data is binary
-                    ElementDecorator[] decorators = new ElementDecorator[1];
-                    decorators[0] = new BinaryElementDecorator(heatmap.getActiveCellDecorator().getAdapter());
-                    heatmap.setCellDecorators(decorators);
+                    heatmap.getLayers().get(0).setDecorator(new BinaryDecorator());
                 }
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
@@ -201,6 +199,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), EnrichmentAnalysisFormat.EXTENSION, "-results", ""));
 

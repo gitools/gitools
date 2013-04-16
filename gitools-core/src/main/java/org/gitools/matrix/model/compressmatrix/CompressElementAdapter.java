@@ -25,17 +25,19 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.datafilters.DoubleTranslator;
-import org.gitools.matrix.model.SimpleMatrixLayers;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.ILayerDescriptor;
+import org.gitools.matrix.model.SimpleMatrixLayers;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
 import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.zip.Inflater;
 
 /**
@@ -45,7 +47,7 @@ import java.util.zip.Inflater;
  * Keeps a dynamic cache with the expanded values. The size of the cache
  * will grow depending on the available free memory.
  */
-public class CompressElementAdapter implements IElementAdapter
+public class CompressElementAdapter
 {
     private static final char SEPARATOR = '\t';
     public static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
@@ -168,31 +170,26 @@ public class CompressElementAdapter implements IElementAdapter
         return result.replace('"', ' ').trim();
     }
 
-    @Override
     public Class<?> getElementClass()
     {
         return int[].class;
     }
 
-    @Override
     public int getPropertyCount()
     {
         return properties.size();
     }
 
-    @Override
-    public ILayerDescriptor getProperty(int index)
+    public IMatrixLayer getProperty(int index)
     {
         return properties.get(index);
     }
 
-    @Override
     public IMatrixLayers getProperties()
     {
         return properties;
     }
 
-    @Override
     public int getPropertyIndex(String label)
     {
         for (int i = 0; i < properties.size(); i++)
@@ -206,7 +203,6 @@ public class CompressElementAdapter implements IElementAdapter
         return -1;
     }
 
-    @Override
     public Object getValue(Object element, int index)
     {
         int[] rowAndColumn = (int[]) element;
@@ -232,10 +228,9 @@ public class CompressElementAdapter implements IElementAdapter
 
     public boolean isEmpty(int row, int column)
     {
-        return (getValue(row, column) == null);
+        return (getValue(new int[] {row, column}, 0) == null);
     }
 
-    @Override
     public void setValue(Object element, int index, Object value)
     {
         throw new UnsupportedOperationException("Read only matrix");
@@ -247,7 +242,7 @@ public class CompressElementAdapter implements IElementAdapter
      * @param compressRow The compressed row
      * @return A map from column to an array of strings with the values
      */
-    private Map<Integer, Double[]> uncompress(CompressRow compressRow)
+    private synchronized Map<Integer, Double[]> uncompress(CompressRow compressRow)
     {
 
         Map<Integer, Double[]> values = new HashMap<Integer, Double[]>(columns.size() / 4);

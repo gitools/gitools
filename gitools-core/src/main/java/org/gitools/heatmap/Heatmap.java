@@ -22,13 +22,12 @@
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.*;
-import org.gitools.matrix.model.element.IElementAdapter;
+import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixView;
 import org.gitools.model.Resource;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorFactory;
-import org.gitools.model.decorator.ElementDecoratorNames;
-import org.gitools.model.decorator.impl.BinaryElementDecorator;
+import org.gitools.model.decorator.impl.BinaryDecorator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -40,16 +39,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement()
+@XmlRootElement
 @XmlType(propOrder = {"rows", "columns", "data", "layers"})
 public class Heatmap extends Resource implements IMatrixView
 {
-
-    public static final String CELL_DECORATOR_CHANGED = "cellDecorator";
-    public static final String VALUE_DIMENSION_SWITCHED = "valueDimensionSwitched";
-    private static final String ROW_DIMENSION_CHANGED = "rowDim";
-    private static final String COLUMN_DIMENSION_CHANGED = "columnDim";
-    private static final long serialVersionUID = 325437934312047512L;
+    public static final String PROPERTY_ROWS = "rows";
+    public static final String PROPERTY_COLUMNS = "columns";
+    public static final String PROPERTY_LAYERS = "layers";
 
     @XmlTransient
     private PropertyChangeListener propertyListener;
@@ -62,7 +58,6 @@ public class Heatmap extends Resource implements IMatrixView
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
-
 
     public Heatmap()
     {
@@ -92,7 +87,7 @@ public class Heatmap extends Resource implements IMatrixView
         rows.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.rows;
         this.rows = rows;
-        firePropertyChange(ROW_DIMENSION_CHANGED, old, rows);
+        firePropertyChange(PROPERTY_ROWS, old, rows);
     }
 
     public HeatmapDimension getColumns()
@@ -112,7 +107,7 @@ public class Heatmap extends Resource implements IMatrixView
         columns.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.columns;
         this.columns = columns;
-        firePropertyChange(COLUMN_DIMENSION_CHANGED, old, columns);
+        firePropertyChange(PROPERTY_COLUMNS, old, columns);
     }
 
     public void detach()
@@ -155,89 +150,6 @@ public class Heatmap extends Resource implements IMatrixView
 
     }
 
-    @Deprecated
-    public final void switchActiveCellDecorator(int newindex)
-    {
-        // switches from active ElementDecorator to ElementDecorator
-        // of same type, but for another propertyIndex (data dimension)
-        // no new ElementDecorator has been created and none will be removed
-
-        final int oldindex = layers.getTopLayer();
-        layers.setTopLayer(newindex);
-        layers.getCellDecorators()[oldindex].removePropertyChangeListener(propertyListener);
-        layers.getCellDecorators()[newindex].addPropertyChangeListener(propertyListener);
-        firePropertyChange(VALUE_DIMENSION_SWITCHED, layers.getCellDecorators()[oldindex], layers.getCellDecorators()[newindex]);
-    }
-
-    @Deprecated
-    public void replaceActiveDecorator(@NotNull ElementDecorator newDecorator) throws Exception
-    {
-        // removes the actual ElementDecorator for the propertyIndex displayed
-        // and puts the new one. Needs to have proper propertyIndex set!
-
-        int propIndex = layers.getTopLayer();
-        layers.getCellDecorators()[propIndex].removePropertyChangeListener(propertyListener);
-        newDecorator.addPropertyChangeListener(propertyListener);
-        ElementDecorator old = layers.getCellDecorators()[propIndex];
-        if (old.getAdapter().getElementClass().equals(newDecorator.getAdapter().getElementClass()))
-        {
-            layers.getCellDecorators()[propIndex] = newDecorator;
-            firePropertyChange(CELL_DECORATOR_CHANGED, old, newDecorator);
-        }
-        else
-        {
-            throw new Exception("Substituting decorator not of same class");
-        }
-    }
-
-    @Deprecated
-    public final void setCellDecorators(@NotNull ElementDecorator[] decorators)
-    {
-        // The ElementDecorator Type has been changed and thus a new
-        // set of ElementDecorators has to be put in place (for each
-        // propertyIndex one.
-
-        int propIndex = layers.getTopLayer();
-        ElementDecorator old = null;
-        if (layers.getCellDecorators() != null)
-        {
-            layers.getCellDecorators()[propIndex].removePropertyChangeListener(propertyListener);
-            old = layers.getCellDecorators()[propIndex];
-        }
-
-        //a new data dimension has been added
-        if (decorators.length > layers.getCellDecorators().length)
-        {
-            propIndex = decorators.length - 1;
-            layers.setTopLayer(propIndex);
-        }
-
-
-        if (decorators[propIndex].getValueIndex() != propIndex)
-        {
-            // the new decorator forces a new a ValueIndex different to the
-            // one that was selected
-            propIndex = decorators[propIndex].getValueIndex();
-            layers.setTopLayer(propIndex);
-        }
-        decorators[propIndex].addPropertyChangeListener(propertyListener);
-
-        this.layers.setCellDecorators(decorators);
-        firePropertyChange(CELL_DECORATOR_CHANGED, old, decorators[propIndex]);
-    }
-
-    @Deprecated
-    public ElementDecorator getActiveCellDecorator()
-    {
-        return layers.getCellDecorators()[layers.getTopLayer()];
-    }
-
-    @Deprecated
-    public ElementDecorator[] getCellDecorators()
-    {
-        return layers.getCellDecorators();
-    }
-
     // IMatrixView adaptor methods
     @Override
     public IMatrix getContents()
@@ -268,12 +180,6 @@ public class Heatmap extends Resource implements IMatrixView
     }
 
     @Override
-    public IElementAdapter getCellAdapter()
-    {
-        return getContents().getCellAdapter();
-    }
-
-    @Override
     public HeatmapLayers getLayers()
     {
         return layers;
@@ -282,26 +188,23 @@ public class Heatmap extends Resource implements IMatrixView
     @Deprecated
     private void particularInitialization(IMatrix matrix)
     {
-        final int propertiesNb = matrix.getLayers().size();
         if (matrix instanceof DoubleBinaryMatrix)
         {
-            BinaryElementDecorator[] decorators = new BinaryElementDecorator[propertiesNb];
-            for (int i = 0; i < decorators.length; i++)
+            for (HeatmapLayer layer : getLayers())
             {
-                BinaryElementDecorator decorator = (BinaryElementDecorator) ElementDecoratorFactory.create(ElementDecoratorNames.BINARY, matrix.getCellAdapter());
-                decorator.setValueIndex(i);
+                BinaryDecorator decorator = new BinaryDecorator();
                 decorator.setCutoff(1.0);
-                decorator.setCutoffCmp(CutoffCmp.EQ);
-                decorators[i] = decorator;
+                decorator.setComparator(CutoffCmp.EQ);
+                layer.setDecorator(decorator);
             }
-            layers.setCellDecorators(decorators);
-            getRows().setGridEnabled(false);
-            getColumns().setGridEnabled(false);
+
+            getRows().setGridSize(0);
+            getColumns().setGridSize(0);
         }
         else if (matrix instanceof DoubleMatrix)
         {
-            getRows().setGridEnabled(false);
-            getColumns().setGridEnabled(false);
+            getRows().setGridSize(0);
+            getColumns().setGridSize(0);
         }
     }
 

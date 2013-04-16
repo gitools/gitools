@@ -96,7 +96,7 @@ public class FastSortRowsAction extends BaseAction
         try
         {
             Heatmap heatmap = ActionUtils.getHeatmap();
-            defaultAggregator = heatmap.getActiveCellDecorator().getScale().defaultAggregator();
+            defaultAggregator = heatmap.getLayers().getTopLayer().getDecorator().getScale().defaultAggregator();
         } catch (Exception ex)
         {
             defaultAggregator = MultAggregator.INSTANCE;
@@ -108,7 +108,7 @@ public class FastSortRowsAction extends BaseAction
             return;
         }
 
-        final int propIndex = matrixView.getLayers().getTopLayer();
+        final int propIndex = matrixView.getLayers().getTopLayerIndex();
 
         final ValueSortCriteria.SortDirection sort = currentSort;
         currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);

@@ -26,7 +26,7 @@ import org.gitools.analysis.correlation.CorrelationCommand;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.threads.ThreadManager;

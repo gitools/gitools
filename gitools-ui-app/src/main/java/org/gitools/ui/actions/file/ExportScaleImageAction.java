@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence._DEPRECATED.PersistenceUtils;
@@ -93,7 +93,7 @@ public class ExportScaleImageAction extends BaseAction
 				});*/
 
         Heatmap hm = (Heatmap) model;
-        ElementDecorator cd = hm.getActiveCellDecorator();
+        Decorator cd = hm.getLayers().getTopLayer().getDecorator();
         final IColorScale scale = cd != null ? cd.getScale() : null;
 
         if (scale == null)

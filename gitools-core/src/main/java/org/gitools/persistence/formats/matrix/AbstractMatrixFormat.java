@@ -23,7 +23,7 @@ package org.gitools.persistence.formats.matrix;
 
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.AbstractResourceFormat;

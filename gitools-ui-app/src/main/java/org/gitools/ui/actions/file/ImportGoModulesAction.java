@@ -23,7 +23,7 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.IResourceLocator;

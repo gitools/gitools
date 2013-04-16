@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.settings.decorators;
 
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.Decorator;
+import org.gitools.model.decorator.DecoratorDescriptor;
+import org.gitools.model.decorator.DecoratorFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,7 +44,7 @@ public class DecoratorArchive
     public transient final static String VERSION = "2.0";
 
     @NotNull
-    private final List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
+    private final List<Decorator> scaleDecorators = new ArrayList<Decorator>();
 
     private transient final String DEFAULT = "Default";
 
@@ -52,15 +52,15 @@ public class DecoratorArchive
     {
     }
 
-    public void add(@NotNull ElementDecorator[] decorators)
+    public void add(@NotNull Decorator[] decorators)
     {
-        for (ElementDecorator d : decorators)
+        for (Decorator d : decorators)
         {
             add(d);
         }
     }
 
-    public void add(@NotNull ElementDecorator decorator)
+    public void add(@NotNull Decorator decorator)
     {
         String name = decorator.getName();
         Set<String> map = getDecorators().keySet();
@@ -75,9 +75,9 @@ public class DecoratorArchive
         }
     }
 
-    private void remove(@NotNull List<ElementDecorator> scaleDecorators, String name)
+    private void remove(@NotNull List<Decorator> scaleDecorators, String name)
     {
-        for (ElementDecorator d : scaleDecorators)
+        for (Decorator d : scaleDecorators)
         {
             if (d.getName().equals(name))
             {
@@ -88,11 +88,11 @@ public class DecoratorArchive
     }
 
     @NotNull
-    public Map<String, ElementDecorator> getDecorators()
+    public Map<String, Decorator> getDecorators()
     {
-        Map<String, ElementDecorator> decoratorMap = new HashMap<String, ElementDecorator>();
+        Map<String, Decorator> decoratorMap = new HashMap<String, Decorator>();
 
-        for (ElementDecorator d : scaleDecorators)
+        for (Decorator d : scaleDecorators)
         {
             decoratorMap.put(d.getName(), d);
         }
@@ -100,14 +100,14 @@ public class DecoratorArchive
     }
 
     @Nullable
-    public ElementDecorator[] getDefaultElementDecoratros()
+    public Decorator[] getDefaultElementDecoratros()
     {
-        List<ElementDecoratorDescriptor> descriptors = ElementDecoratorFactory.getDescriptors();
-        ElementDecorator[] decorators = new ElementDecorator[descriptors.size()];
+        List<DecoratorDescriptor> descriptors = DecoratorFactory.getDescriptors();
+        Decorator[] decorators = new Decorator[descriptors.size()];
         int i = 0;
-        for (ElementDecoratorDescriptor descriptor : descriptors)
+        for (DecoratorDescriptor descriptor : descriptors)
         {
-            ElementDecorator decorator = null;
+            Decorator decorator = null;
             try
             {
                 decorator = descriptor.getDecoratorClass().

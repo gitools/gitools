@@ -23,8 +23,8 @@ package org.gitools.ui.analysis.combination.wizard;
 
 
 import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
@@ -53,7 +53,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -308,7 +307,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
         a.setProperties(analysisDetailsPage.getAnalysisAttributes());
 
-        ILayerDescriptor attr = combinationParamsPage.getSizeAttribute();
+        IMatrixLayer attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;
         a.setSizeAttrName(sizeAttrName);
 

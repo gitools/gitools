@@ -11,6 +11,10 @@ public abstract class AbstractCompressor
 {
     protected static final char SEPARATOR = '\t';
 
+    private static final int MAX_LINES_TO_DICTIONARY = 5000000;
+    private static final int MIN_FREQUENCY = 2;
+    private static final int MAX_DICTIONARY_ENTRIES = 10000;
+
     private CompressDimension rows;
     private CompressDimension columns;
     private String[] header;
@@ -18,7 +22,7 @@ public abstract class AbstractCompressor
     private byte[] outBuffer;
     private Deflater deflater = new Deflater();
     private long fileLinesCount;
-    private long totalLineLength;
+    private long averageLineLength;
 
     public AbstractCompressor()
     {
@@ -46,7 +50,7 @@ public abstract class AbstractCompressor
 
     protected long getAverageLineLength()
     {
-        return totalLineLength / fileLinesCount;
+        return averageLineLength;
     }
 
     protected long getTotalLines()
@@ -215,7 +219,7 @@ public abstract class AbstractCompressor
         header = reader.readNext();
 
         int maxLineLength = 0;
-        totalLineLength = 0;
+        long totalLineLength = 0;
         fileLinesCount = 0;
         while ((fields = reader.readNext()) != null)
         {
@@ -232,23 +236,37 @@ public abstract class AbstractCompressor
             }
 
             // Update frequencies
-            int length = 0;
-            for (String field : fields)
-            {
-                length += field.length() + 1;
-                Integer freq = frequencies.get(field);
-                freq = (freq == null) ? 1 : freq + 1;
-                frequencies.put(field, freq);
+            if (fileLinesCount > MAX_LINES_TO_DICTIONARY) {
+                int length = 0;
+                for (int i=2; i < fields.length; i++)
+                {
+                    length += fields[i].length() + 1;
+                    Integer freq = frequencies.get(fields[i]);
+                    freq = (freq == null) ? 1 : freq + 1;
+                    frequencies.put(fields[i], freq);
+                }
+                totalLineLength += (length + fields[0].length() + fields[1].length());
+                if (length > maxLineLength)
+                {
+                    maxLineLength = length;
+                }
             }
-            totalLineLength += length;
-            if (length > maxLineLength)
+        }
+
+        averageLineLength = totalLineLength / (fileLinesCount < MAX_LINES_TO_DICTIONARY ? fileLinesCount : MAX_LINES_TO_DICTIONARY);
+        reader.close();
+
+        // Filter entries with frequency = 1
+        List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(frequencies.size());
+        for (Map.Entry<String, Integer> entry : frequencies.entrySet())
+        {
+            if (entry.getValue() > MIN_FREQUENCY)
             {
-                maxLineLength = length;
+                entries.add(entry);
             }
         }
 
         // Sort the frequency table by frequency
-        List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(frequencies.entrySet());
         Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>()
         {
             @Override
@@ -260,9 +278,15 @@ public abstract class AbstractCompressor
 
         // Convert the frequency table into a deflate dictionary
         StringBuilder buffer = new StringBuilder();
+        long count = 0;
         for (Map.Entry<String, Integer> entry : entries)
         {
             buffer.append(entry.getKey());
+
+            if (count++ > MAX_DICTIONARY_ENTRIES)
+            {
+                break;
+            }
         }
         buffer.append('\t');
         dictionary = buffer.toString().getBytes("UTF-8");
@@ -278,6 +302,8 @@ public abstract class AbstractCompressor
     public interface IMatrixReader {
 
         String[] readNext();
+
+        void close();
     }
 
 }

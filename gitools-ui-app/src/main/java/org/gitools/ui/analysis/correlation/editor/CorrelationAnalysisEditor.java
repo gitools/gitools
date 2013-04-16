@@ -24,14 +24,17 @@ package org.gitools.ui.analysis.correlation.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.decorator.impl.CorrelationElementDecorator;
+import org.gitools.model.decorator.impl.CorrelationDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -160,6 +163,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-results", ""));
 
@@ -183,14 +187,13 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         int propertiesNb = results.getLayers().size();
-        CorrelationElementDecorator[] dec = new CorrelationElementDecorator[propertiesNb];
-        for (int i = 0; i < propertiesNb; i++)
+        CorrelationDecorator[] dec = new CorrelationDecorator[propertiesNb];
+        for (HeatmapLayer layer : heatmap.getLayers())
         {
-            dec[i] = new CorrelationElementDecorator(results.getCellAdapter());
-            int valueIndex = results.getLayers().findId("score");
-            dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
+            layer.setDecorator(new CorrelationDecorator());
         }
-        heatmap.setCellDecorators(dec);
+
+        heatmap.getLayers().setTopLayerIndex(results.getLayers().findId("score"));
 
         heatmap.setTitle(analysis.getTitle());
 

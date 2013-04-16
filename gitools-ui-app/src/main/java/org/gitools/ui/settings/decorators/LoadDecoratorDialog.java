@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.settings.decorators;
 
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -37,9 +36,6 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 {
 
@@ -54,7 +50,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1)
         {
 
-            ElementDecorator d = (ElementDecorator) o;
+            Decorator d = (Decorator) o;
 
             Component listCellRendererComponent = super.getListCellRendererComponent(jlist, d.getName(), i, bln, bln1);
 
@@ -75,25 +71,23 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
     private static final String MESSAGE = "Select a scale";
 
-    private static IElementAdapter adapter;
 
     @NotNull
     private final List<T> listObjects = new ArrayList<T>();
 
     private final DefaultListModel model;
 
-    public LoadDecoratorDialog(java.awt.Window parent, IElementAdapter adapter, @NotNull T[] objects)
+    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects)
     {
-        this(parent, adapter, objects, null);
+        this(parent, objects, null);
     }
 
-    public LoadDecoratorDialog(java.awt.Window parent, IElementAdapter adapter, @NotNull T[] objects, @Nullable Class<? extends ElementDecorator> decoratorClass)
+    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects, @Nullable Class<? extends Decorator> decoratorClass)
     {
 
 
         super(parent);
 
-        LoadDecoratorDialog.adapter = adapter;
 
         setModal(true);
 
@@ -134,8 +128,8 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
             @Override
             public int compare(T o1, T o2)
             {
-                ElementDecorator d1 = (ElementDecorator) o1;
-                ElementDecorator d2 = (ElementDecorator) o2;
+                Decorator d1 = (Decorator) o1;
+                Decorator d2 = (Decorator) o2;
                 return d1.getName().compareToIgnoreCase(d2.getName());
             }
         });
@@ -186,10 +180,9 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
     }
 
     @NotNull
-    public ElementDecorator getSelectedDecorator()
+    public Decorator getSelectedDecorator()
     {
-        ElementDecorator d = (ElementDecorator) list.getSelectedValue();
-        d.setAdapter(adapter);
+        Decorator d = (Decorator) list.getSelectedValue();
         return d;
     }
 
@@ -204,7 +197,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
             }
             else
             {
-                ElementDecorator d = (ElementDecorator) o;
+                Decorator d = (Decorator) o;
                 String regexFilter = "(?i).*" + filter + ".*";
                 boolean b = d.getName().matches(regexFilter);
                 if (b)

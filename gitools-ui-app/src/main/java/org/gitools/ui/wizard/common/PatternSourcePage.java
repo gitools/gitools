@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.wizard.common;
 
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 

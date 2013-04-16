@@ -22,11 +22,10 @@
 package org.gitools.matrix;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
+import org.gitools.matrix.model.*;
+import org.gitools.matrix.model.IMatrixLayer;
+import org.gitools.matrix.model.matrix.BaseMatrix;
+import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.*;
@@ -230,7 +229,7 @@ public class MatrixUtils
         return scale;
     }
 
-    public static int correctedValueIndex(IMatrixLayers layers,  ILayerDescriptor layer)
+    public static int correctedValueIndex(IMatrixLayers layers,  IMatrixLayer layer)
     {
 
         String id = "corrected-" + layer.getId();

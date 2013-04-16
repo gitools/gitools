@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.combination;
 
-import org.gitools.matrix.model.element.AttributeDef;
+import org.gitools.matrix.model.matrix.element.AttributeDef;
 
 
 /**

@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -81,19 +81,19 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage
     public class AttrOption
     {
         private String name;
-        private ILayerDescriptor attr;
+        private IMatrixLayer attr;
 
         public AttrOption(String name)
         {
             this.name = name;
         }
 
-        public AttrOption(ILayerDescriptor attr)
+        public AttrOption(IMatrixLayer attr)
         {
             this.attr = attr;
         }
 
-        public ILayerDescriptor getAttr()
+        public IMatrixLayer getAttr()
         {
             return attr;
         }

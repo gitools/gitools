@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.panels.decorator;
 
-import org.gitools.matrix.model.element.ILayerDescriptor;
+import org.gitools.matrix.model.IMatrixLayer;
 
 class IndexedProperty
 {
     private final int index;
-    private final ILayerDescriptor property;
+    private final IMatrixLayer property;
 
-    public IndexedProperty(int index, ILayerDescriptor property)
+    public IndexedProperty(int index, IMatrixLayer property)
     {
         this.index = index;
         this.property = property;
@@ -39,7 +39,7 @@ class IndexedProperty
         return index;
     }
 
-    public ILayerDescriptor getProperty()
+    public IMatrixLayer getProperty()
     {
         return property;
     }

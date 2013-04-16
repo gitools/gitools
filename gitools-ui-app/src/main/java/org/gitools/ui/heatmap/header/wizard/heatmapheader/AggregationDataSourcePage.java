@@ -58,7 +58,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         separateAggregationCb.setEnabled(hasAnnotation);
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
-        valueCb.setSelectedIndex(heatmap.getLayers().getTopLayer());
+        valueCb.setSelectedIndex(heatmap.getLayers().getTopLayerIndex());
         valueCb.addActionListener(new ActionListener()
         {
             @Override

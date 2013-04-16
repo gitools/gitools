@@ -82,7 +82,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
 
         Color gridColor = hdim.getGridColor();
-        int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
+        int gridSize = hdim.getGridSize();
 
         int maxWidth = clip.width;
         int width = header.getSize();
@@ -225,7 +225,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     public Dimension getSize()
     {
         HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
+        int gridSize = hdim.getGridSize();
 
         int extBorder = /*2 * 1 - 1*/ 0;
 
@@ -251,7 +251,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     public HeatmapPosition getPosition(@NotNull Point p)
     {
         HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
+        int gridSize = hdim.getGridSize();
 
         int row = -1;
         int col = -1;
@@ -283,7 +283,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     public Point getPoint(@NotNull HeatmapPosition p)
     {
         HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.isGridEnabled() ? hdim.getGridSize() : 0;
+        int gridSize = hdim.getGridSize();
 
         int x = 0;
         int y = 0;

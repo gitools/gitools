@@ -22,7 +22,7 @@
 package org.gitools.exporter;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.model.decorator.ElementDecoration;
+import org.gitools.model.decorator.Decoration;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,7 +67,7 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter
             context.put("fmt", new GenericFormatter());
             context.put("figure", figure);
             context.put("matrix", figure);
-            context.put("cellDecoration", new ElementDecoration());
+            context.put("cellDecoration", new Decoration());
             eng.setContext(context);
 
             File file = new File(basePath, indexName);

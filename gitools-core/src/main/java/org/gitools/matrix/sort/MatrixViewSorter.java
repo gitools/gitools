@@ -28,7 +28,7 @@ import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
@@ -121,7 +121,7 @@ public abstract class MatrixViewSorter
         matrixView.getRows().setVisible(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
-        int index = matrixView.getLayers().getTopLayer();
+        int index = matrixView.getLayers().getTopLayerIndex();
         criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
         monitor.begin("Sorting rows...", numRows);

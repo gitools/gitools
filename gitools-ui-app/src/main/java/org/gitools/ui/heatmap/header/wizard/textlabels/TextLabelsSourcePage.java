@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.textlabels;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 

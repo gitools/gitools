@@ -23,7 +23,7 @@ package org.gitools.ui.settings.decorators;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.io.FileUtils;
-import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.model.decorator.impl.*;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.NumericColorScale;
@@ -58,29 +58,26 @@ public class DecoratorArchivePersistance
 
         xstream.alias("correlationColorScale", CorrelationColorScale.class);
 
-        xstream.alias("binaryDecorator", BinaryElementDecorator.class);
-        xstream.omitField(BinaryElementDecorator.class, "valueIndex");
+        xstream.alias("binaryDecorator", BinaryDecorator.class);
+        xstream.omitField(BinaryDecorator.class, "valueIndex");
 
-        xstream.alias("linearTwoSidedDecorator", LinearElementDecorator.class);
-        xstream.omitField(LinearElementDecorator.class, "valueIndex");
+        xstream.alias("linearTwoSidedDecorator", LinearDecorator.class);
+        xstream.omitField(LinearDecorator.class, "valueIndex");
 
-        xstream.alias("formattedTextDecorator", FormattedTextElementDecorator.class);
-        xstream.omitField(FormattedTextElementDecorator.class, "valueIndex");
+        xstream.alias("pValueDecorator", PValueDecorator.class);
+        xstream.omitField(PValueDecorator.class, "valueIndex");
+        xstream.omitField(PValueDecorator.class, "correctedValueIndex");
 
-        xstream.alias("pValueDecorator", PValueElementDecorator.class);
-        xstream.omitField(PValueElementDecorator.class, "valueIndex");
-        xstream.omitField(PValueElementDecorator.class, "correctedValueIndex");
+        xstream.alias("zScoreDecorator", ZScoreDecorator.class);
+        xstream.omitField(ZScoreDecorator.class, "valueIndex");
+        xstream.omitField(ZScoreDecorator.class, "correctedValueIndex");
 
-        xstream.alias("zScoreDecorator", ZScoreElementDecorator.class);
-        xstream.omitField(ZScoreElementDecorator.class, "valueIndex");
-        xstream.omitField(ZScoreElementDecorator.class, "correctedValueIndex");
+        xstream.alias("correlationDecorator", CorrelationDecorator.class);
+        xstream.omitField(CorrelationDecorator.class, "valueIndex");
 
-        xstream.alias("correlationDecorator", CorrelationElementDecorator.class);
-        xstream.omitField(CorrelationElementDecorator.class, "valueIndex");
-
-        xstream.omitField(ElementDecorator.class, "valueIndex");
-        xstream.omitField(ElementDecorator.class, "adapter");
-        xstream.useAttributeFor(ElementDecorator.class, "name");
+        xstream.omitField(Decorator.class, "valueIndex");
+        xstream.omitField(Decorator.class, "adapter");
+        xstream.useAttributeFor(Decorator.class, "name");
 
         xstream.omitField(NumericColorScale.class, "rangesList");
 

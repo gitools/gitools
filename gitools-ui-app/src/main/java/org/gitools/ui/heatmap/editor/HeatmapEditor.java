@@ -31,12 +31,9 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.BeanElementAdapter;
-import org.gitools.model.IModel;
-import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
@@ -48,10 +45,8 @@ import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.heatmap.panel.details.AbstractDetailsPanel;
 import org.gitools.ui.heatmap.panel.details.GenericDetailsPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesCellsPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesDocumentPanel;
-import org.gitools.ui.heatmap.panel.properties.HeatmapPropertiesHeaderPanel;
 import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
+import org.gitools.ui.heatmap.panel.settings.SettingsPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -60,178 +55,43 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
-import org.gitools.utils.colorscale.drawer.ColorScalePanel;
+import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
 public class HeatmapEditor extends AbstractEditor
 {
+    private static final int DEFAULT_ACCORDION_WIDTH = 290;
     protected final Heatmap heatmap;
-
     private HeatmapPanel heatmapPanel;
-
     private ColorScalePanel colorScalePanel;
-
     private HeatmapSearchPanel searchPanel;
-
     private AbstractDetailsPanel detailsView;
-
-    private final boolean blockSelectionUpdate;
-
-    private final PropertyChangeListener heatmapListener;
-    private final PropertyChangeListener cellDecoratorListener;
-
-    private final PropertyChangeListener rowDecoratorListener;
-
-    private final PropertyChangeListener colDecoratorListener;
-
-    private static final int DEFAULT_ACCORDION_WIDTH = 270;
+    private int lastMouseRow = -1;
+    private int lastMouseCol = -1;
 
     public HeatmapEditor(@NotNull Heatmap heatmap)
     {
+
+        // Initialize and create heatmap model
+        heatmap.init();
         this.heatmap = heatmap;
-        this.heatmap.init();
 
-        if (heatmap.getCellDecorators()[0].getAdapter() instanceof BeanElementAdapter)
-        {
-            this.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
-        }
-        else
-        {
-            this.setIcon(IconUtils.getIconResource(IconNames.heatmap16));
-        }
-
-
-        final IMatrixView matrixView = heatmap  ;
-
-        this.blockSelectionUpdate = false;
+        setIcon(IconUtils.getIconResource(IconNames.heatmap16));
 
         createComponents(this);
 
-        heatmapListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                heatmapPropertyChange(evt.getSource(), evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            }
-        };
-
-        cellDecoratorListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                colorScalePanel.update();
-                setDirty(true);
-            }
-        };
-
-        rowDecoratorListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                setDirty(true);
-            }
-        };
-
-        colDecoratorListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
-                setDirty(true);
-            }
-        };
-
-        heatmap.addPropertyChangeListener(heatmapListener);
-        heatmap.getActiveCellDecorator().addPropertyChangeListener(cellDecoratorListener);
-
-        matrixView.addPropertyChangeListener(new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                matrixPropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
-            }
-        });
-
         setSaveAllowed(true);
         setSaveAsAllowed(true);
+        setBackground(Color.WHITE);
     }
 
-    void heatmapPropertyChange(@NotNull Object src, String pname, Object oldValue, Object newValue)
-    {
-
-        if (src.equals(heatmap))
-        {
-            if (Heatmap.CELL_DECORATOR_CHANGED.equals(pname))
-            {
-                final ElementDecorator prevDecorator = (ElementDecorator) oldValue;
-                prevDecorator.removePropertyChangeListener(cellDecoratorListener);
-                final ElementDecorator nextDecorator = (ElementDecorator) newValue;
-                nextDecorator.addPropertyChangeListener(cellDecoratorListener);
-
-                colorScalePanel.setScale(nextDecorator.getScale());
-            }
-            if (Heatmap.VALUE_DIMENSION_SWITCHED.equals(pname))
-            {
-                final ElementDecorator nextDecorator = (ElementDecorator) newValue;
-                colorScalePanel.setScale(nextDecorator.getScale());
-            }
-            else if (Heatmap.PROPERTY_CHANGED.equals(pname))
-            {
-            }
-        }
-        else if ((src instanceof HeatmapDimension) && HeatmapDimension.IDTYPE_CHANGED.equals(pname))
-        {
-            refreshCellDetails();
-        }
-
-        setDirty(true);
-    }
-
-    void matrixPropertyChange(String propertyName, @Nullable Object oldValue, Object newValue)
-    {
-
-        if (IMatrixView.SELECTED_LEAD_CHANGED.equals(propertyName))
-        {
-            refreshCellDetails();
-        }
-        else if (IMatrixView.VISIBLE_CHANGED.equals(propertyName))
-        {
-            setDirty(true);
-        }
-        else if (IMatrixView.CELL_VALUE_CHANGED.equals(propertyName))
-        {
-        }
-        else if (IMatrixView.CELL_DECORATION_CONTEXT_CHANGED.equals(propertyName))
-        {
-            if (oldValue != null)
-            {
-                ((IModel) oldValue).removePropertyChangeListener(heatmapListener);
-            }
-
-            ((IModel) newValue).addPropertyChangeListener(heatmapListener);
-
-            setDirty(true);
-        }
-    }
-
-    private void refreshCellDetails()
-    {
-        //detailsView.updateContext(heatmap);
-    }
 
     private void createComponents(@NotNull JComponent container)
     {
@@ -242,9 +102,7 @@ public class HeatmapEditor extends AbstractEditor
         leftPanel.setUndecorated(true);
 
         detailsView = new GenericDetailsPanel(heatmap);
-        //detailsView.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 300));
-        colorScalePanel = new ColorScalePanel(heatmap.getActiveCellDecorator().getScale());
-        //colorScalePanel.setPreferredSize(new Dimension(DEFAULT_ACCORDION_WIDTH, 100));
+        colorScalePanel = new ColorScalePanel(heatmap);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
@@ -252,11 +110,7 @@ public class HeatmapEditor extends AbstractEditor
         details.setUndecorated(true);
         details.setBackground(Color.WHITE);
         leftPanel.addPane("Details", details);
-        leftPanel.addPane("Rows", new JScrollPane(new HeatmapPropertiesHeaderPanel(true, heatmap)));
-        leftPanel.addPane("Columns", new JScrollPane(new HeatmapPropertiesHeaderPanel(false, heatmap)));
-        leftPanel.addPane("Cells", new JScrollPane(new HeatmapPropertiesCellsPanel(heatmap)));
-        leftPanel.addPane("Document", new JScrollPane(new HeatmapPropertiesDocumentPanel(heatmap)));
-
+        leftPanel.addPane("Settings", new JScrollPane(new SettingsPanel(heatmap).getRootPanel()));
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
@@ -294,12 +148,6 @@ public class HeatmapEditor extends AbstractEditor
 
     }
 
-    @Nullable
-    protected IMatrixView getMatrixView()
-    {
-        return heatmap  ;
-    }
-
     @Override
     public IResource getModel()
     {
@@ -314,8 +162,6 @@ public class HeatmapEditor extends AbstractEditor
     @Override
     public void doVisible()
     {
-        //propertiesView.updateContext(heatmap);
-        refreshCellDetails();
         heatmapPanel.requestFocusInWindow();
     }
 
@@ -408,9 +254,6 @@ public class HeatmapEditor extends AbstractEditor
         searchPanel.setVisible(true);
     }
 
-    private int lastMouseRow = -1;
-    private int lastMouseCol = -1;
-
     void mouseMoved(int row, int col, MouseEvent e)
     {
         if (lastMouseRow == row && lastMouseCol == col)
@@ -421,7 +264,7 @@ public class HeatmapEditor extends AbstractEditor
         lastMouseRow = row;
         lastMouseCol = col;
 
-        IMatrixView mv = heatmap  ;
+        IMatrixView mv = heatmap;
 
         StringBuilder sb = new StringBuilder();
 

@@ -37,6 +37,10 @@ public class PropertyItem implements Serializable
     private final String link;
     private Color color;
 
+    private int index;
+    private boolean selectable = false;
+    private boolean selected = false;
+
     /**
      * Instantiates a new Property item.
      *
@@ -134,4 +138,38 @@ public class PropertyItem implements Serializable
         return this;
     }
 
+    /**
+     * Is the current top layer selection.
+     *
+     * @return the boolean
+     */
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
+    public void setSelected(boolean selected)
+    {
+        this.selected = selected;
+    }
+
+    public boolean isSelectable()
+    {
+        return selectable;
+    }
+
+    public void setSelectable(boolean selectable)
+    {
+        this.selectable = selectable;
+    }
+
+    public int getIndex()
+    {
+        return index;
+    }
+
+    public void setIndex(int index)
+    {
+        this.index = index;
+    }
 }

@@ -1,12 +1,10 @@
 package org.gitools.matrix.model;
 
 
-import org.gitools.matrix.model.element.ILayerDescriptor;
-
-public interface IMatrixViewLayers<L extends ILayerDescriptor> extends IMatrixLayers<L>
+public interface IMatrixViewLayers<L extends IMatrixLayer> extends IMatrixLayers<L>
 {
 
-    int getTopLayer();
+    int getTopLayerIndex();
 
-    void setTopLayer(int index);
+    void setTopLayerIndex(int index);
 }

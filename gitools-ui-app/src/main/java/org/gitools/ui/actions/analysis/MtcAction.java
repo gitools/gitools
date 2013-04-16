@@ -79,7 +79,7 @@ public class MtcAction extends BaseAction
 
         //IElementAdapter cellAdapter = matrixView.getCellAdapter();
 
-        final int propIndex = matrixView.getLayers().getTopLayer();
+        final int propIndex = matrixView.getLayers().getTopLayerIndex();
         final int corrPropIndex = MatrixUtils.correctedValueIndex(matrixView.getLayers(), matrixView.getLayers().get(propIndex));
 
         if (corrPropIndex < 0)

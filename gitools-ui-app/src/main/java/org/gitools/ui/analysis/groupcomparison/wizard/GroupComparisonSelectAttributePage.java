@@ -22,8 +22,8 @@
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.stats.mtc.Bonferroni;
 import org.gitools.stats.mtc.MTC;
@@ -89,7 +89,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
     public class AttrOption
     {
         private String name;
-        private ILayerDescriptor attr;
+        private IMatrixLayer attr;
 
         /**
          * @noinspection UnusedDeclaration
@@ -99,12 +99,12 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
             this.name = name;
         }
 
-        public AttrOption(ILayerDescriptor attr)
+        public AttrOption(IMatrixLayer attr)
         {
             this.attr = attr;
         }
 
-        public ILayerDescriptor getAttr()
+        public IMatrixLayer getAttr()
         {
             return attr;
         }

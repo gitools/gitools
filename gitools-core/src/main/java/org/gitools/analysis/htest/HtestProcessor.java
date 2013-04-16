@@ -25,7 +25,7 @@ import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.gitools.analysis.AnalysisProcessor;
-import org.gitools.matrix.model.ObjectMatrix;
+import org.gitools.matrix.model.matrix.ObjectMatrix;
 import org.gitools.stats.mtc.MTC;
 import org.gitools.stats.test.results.CommonResult;
 import org.gitools.utils.progressmonitor.IProgressMonitor;

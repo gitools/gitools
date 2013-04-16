@@ -23,61 +23,43 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.model.decorator.Decorator;
+import org.gitools.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * @noinspection ALL
- */
-class AbstractHeatmapPanel extends JPanel
+class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener
 {
 
-    private Heatmap heatmap;
-
     private final AbstractHeatmapDrawer drawer;
-    @NotNull
-    private final PropertyChangeListener heatmapListener;
+    private Heatmap heatmap;
 
     AbstractHeatmapPanel(Heatmap heatmap, @NotNull AbstractHeatmapDrawer drawer)
     {
         this.heatmap = heatmap;
         this.drawer = drawer;
+        this.drawer.setHeatmap(heatmap);
 
-        heatmapListener = new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                heatmapPropertyChanged(evt);
-            }
-        };
-
-        updateSubscriptions(null);
-
-        setPreferredSize(drawer.getSize());
+        heatmap.getColumns().addPropertyChangeListener(this);
+        heatmap.getRows().addPropertyChangeListener(this);
+        heatmap.getLayers().addPropertyChangeListener(this);
+        heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(this);
 
         setBorder(null);
+        setBackground(Color.WHITE);
+        setPreferredSize(drawer.getSize());
+
     }
 
     public Heatmap getHeatmap()
     {
         return heatmap;
-    }
-
-    public void setHeatmap(Heatmap heatmap)
-    {
-        Heatmap old = this.heatmap;
-        this.heatmap = heatmap;
-        this.drawer.setHeatmap(heatmap);
-        updateSubscriptions(old);
-        setPreferredSize(drawer.getSize());
     }
 
     public AbstractHeatmapDrawer getDrawer()
@@ -94,50 +76,28 @@ class AbstractHeatmapPanel extends JPanel
         drawer.draw((Graphics2D) g, box, clip);
     }
 
-    private void updateSubscriptions(@Nullable Heatmap old)
-    {
-        if (old != null)
-        {
-            old.removePropertyChangeListener(heatmapListener);
-        }
-
-        heatmap.addPropertyChangeListener(heatmapListener);
-    }
-
-    void heatmapPropertyChanged(@NotNull PropertyChangeEvent evt)
-    {
-        String pname = evt.getPropertyName();
-        Object src = evt.getSource();
-
-        if (src.equals(heatmap))
-        {
-            if (HeatmapDimension.CELL_SIZE_CHANGED.equals(pname))
-            {
-                updateSize();
-            }
-        }
-        else if (src.equals(heatmap  ))
-        {
-            if (IMatrixView.VISIBLE_CHANGED.equals(pname))
-            {
-                updateSize();
-            }
-        }
-        else if (src.equals(heatmap.getRows()) || src.equals(heatmap.getColumns()))
-        {
-
-            if (HeatmapDimension.HEADER_SIZE_CHANGED.equals(pname) || HeatmapDimension.GRID_PROPERTY_CHANGED.equals(pname))
-            {
-                updateSize();
-            }
-        }
-
-        repaint();
-    }
-
     public void updateSize()
     {
         setPreferredSize(drawer.getSize());
         revalidate();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (EventUtils.isAny(evt, HeatmapDimension.class,
+                HeatmapDimension.PROPERTY_CELL_SIZE,
+                HeatmapDimension.PROPERTY_VISIBLE,
+                HeatmapDimension.PROPERTY_GRID_SIZE)
+                ||
+                EventUtils.isAny(evt, Decorator.class)
+                ||
+                EventUtils.isAny(evt, HeatmapLayers.class,
+                        HeatmapLayers.PROPERTY_TOP_LAYER)
+                )
+        {
+            updateSize();
+            repaint();
+        }
     }
 }

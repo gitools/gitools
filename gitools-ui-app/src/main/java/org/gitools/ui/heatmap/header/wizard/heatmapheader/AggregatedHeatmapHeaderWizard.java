@@ -34,8 +34,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.AnnotationMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.AppFrame;
@@ -51,9 +51,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 {
 
@@ -78,7 +75,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     // wizard pages
     private AggregationDataSourcePage dataSourceAggregationPage;
     private AnnotationSourcePage dataSourceAnnotationPage;
-    private ColorScalePage colorScalePage;
+    //private ColorScalePage colorScalePage;
     private HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
@@ -119,8 +116,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         configPage = new HeatmapHeaderConfigPage(header);
         addPage(configPage);
 
-        colorScalePage = new ColorScalePage(header);
-        addPage(colorScalePage);
+        //colorScalePage = new ColorScalePage(header);
+        //addPage(colorScalePage);
 
         textConfigPage = new TextLabelsConfigPage(header);
         addPage(textConfigPage);
@@ -129,9 +126,9 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
     public boolean isLastPage(IWizardPage page)
     {
-        if (page == this.colorScalePage)
+        if (page == this.configPage)
         {
-            if (!header.isLabelVisible() && page == this.colorScalePage)
+            if (!header.isLabelVisible() && page == this.configPage)
             {
                 return true;
             }

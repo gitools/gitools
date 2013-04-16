@@ -24,16 +24,19 @@ package org.gitools.ui.analysis.overlapping;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.decorator.impl.LinearElementDecorator;
+import org.gitools.model.decorator.impl.LinearDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -167,6 +170,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-results", ""));
 
@@ -191,25 +195,22 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
-        int propertiesNb = results.getLayers().size();
-        LinearElementDecorator[] dec = new LinearElementDecorator[propertiesNb];
-        for (int i = 0; i < propertiesNb; i++)
+        for (HeatmapLayer layer : heatmap.getLayers())
         {
-            dec[i] = new LinearElementDecorator(results.getCellAdapter());
-            int valueIndex = results.getLayers().findId("jaccard-index");
+            LinearDecorator dec = new LinearDecorator();
             Color minColor = new Color(0x63, 0xdc, 0xfe);
             Color maxColor = new Color(0xff, 0x00, 0x5f);
-            dec[i].setValueIndex(valueIndex != -1 ? valueIndex : 0);
-            dec[i].setMinValue(0.0);
-            dec[i].setMinColor(minColor);
-            dec[i].setMidValue(1.0);
-            dec[i].setMidColor(maxColor);
-            dec[i].setMaxValue(1.0);
-            dec[i].setMaxColor(maxColor);
-            dec[i].setEmptyColor(Color.WHITE);
+            dec.setMinValue(0.0);
+            dec.setMinColor(minColor);
+            dec.setMidValue(1.0);
+            dec.setMidColor(maxColor);
+            dec.setMaxValue(1.0);
+            dec.setMaxColor(maxColor);
+            dec.setEmptyColor(Color.WHITE);
+            layer.setDecorator(dec);
         }
-        heatmap.setCellDecorators(dec);
 
+        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("jaccard-index"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;

@@ -25,7 +25,7 @@ import org.gitools.analysis.correlation.GroupComparisonCommand;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;

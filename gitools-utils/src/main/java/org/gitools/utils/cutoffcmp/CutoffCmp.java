@@ -28,10 +28,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
-@SuppressWarnings("serial")
 public abstract class CutoffCmp implements Serializable
 {
 

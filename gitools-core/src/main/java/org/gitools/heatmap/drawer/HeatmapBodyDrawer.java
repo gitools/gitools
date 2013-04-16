@@ -23,8 +23,8 @@ package org.gitools.heatmap.drawer;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.decorator.ElementDecoration;
-import org.gitools.model.decorator.ElementDecorator;
+import org.gitools.model.decorator.Decoration;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,14 +42,14 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
     {
 
-        int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
-        int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
+        int rowsGridSize = heatmap.getRows().getGridSize();
+        int columnsGridSize = heatmap.getColumns().getGridSize();
 
         // Clear background
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        IMatrixView data = heatmap  ;
+        IMatrixView data = heatmap;
 
         int cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
         int cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
@@ -64,8 +64,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < data.getColumns().size() ? colEnd : data.getColumns().size();
 
-        ElementDecorator deco = heatmap.getActiveCellDecorator();
-        ElementDecoration decoration = new ElementDecoration();
+        Decorator deco = heatmap.getLayers().getTopLayer().getDecorator();
+        Decoration decoration = new Decoration();
 
         int leadRow = heatmap.getRows().getSelectionLead(  );
         int leadColumn = heatmap.getColumns().getSelectionLead(  );
@@ -74,10 +74,10 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
         for (int row = rowStart; row < rowEnd; row++)
         {
             int x = box.x + colStart * cellWidth;
-            boolean rowSelected = data.getRows().isSelected(  row);
+            boolean rowSelected = data.getRows().isSelected(row);
             for (int col = colStart; col < colEnd; col++)
             {
-                deco.decorate(decoration, data, row, col);
+                deco.decorate(decoration, data, row, col, data.getLayers().getTopLayerIndex());
 
                 Color color = decoration.getBgColor();
                 Color rowsGridColor = heatmap.getRows().getGridColor();
@@ -139,8 +139,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     @Override
     public Dimension getSize()
     {
-        int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
-        int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
+        int rowsGridSize = heatmap.getRows().getGridSize();
+        int columnsGridSize = heatmap.getColumns().getGridSize();
         int cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
         int cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
         int rowCount = heatmap  .getRows().size();
@@ -153,8 +153,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     @Override
     public HeatmapPosition getPosition(@NotNull Point p)
     {
-        int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
-        int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
+        int rowsGridSize = heatmap.getRows().getGridSize();
+        int columnsGridSize = heatmap.getColumns().getGridSize();
         int extBorder = /*2 * 1 - 1*/ 0;
 
         int cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
@@ -175,8 +175,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer
     @Override
     public Point getPoint(@NotNull HeatmapPosition p)
     {
-        int rowsGridSize = heatmap.getRows().isGridEnabled() ? heatmap.getRows().getGridSize() : 0;
-        int columnsGridSize = heatmap.getColumns().isGridEnabled() ? heatmap.getColumns().getGridSize() : 0;
+        int rowsGridSize = heatmap.getRows().getGridSize();
+        int columnsGridSize = heatmap.getColumns().getGridSize();
         int extBorder = /*2 * 1 - 1*/ 0;
 
         int cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;

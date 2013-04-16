@@ -21,7 +21,7 @@
  */
 package org.gitools.persistence.formats.matrix;
 
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;

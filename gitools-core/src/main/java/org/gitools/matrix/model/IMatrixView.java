@@ -25,12 +25,6 @@ import org.gitools.model.IModel;
 
 public interface IMatrixView extends IModel, IMatrix
 {
-    String VISIBLE_CHANGED = "visibleChanged";
-    String SELECTED_LEAD_CHANGED = "selectionLead";
-    String SELECTION_CHANGED = "selectionChanged";
-    String CELL_VALUE_CHANGED = "cellValueChanged";
-    String CELL_DECORATION_CONTEXT_CHANGED = "cellDecorationContextChanged";
-
     IMatrixViewDimension getRows();
 
     IMatrixViewDimension getColumns();

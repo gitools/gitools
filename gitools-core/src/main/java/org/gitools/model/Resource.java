@@ -33,12 +33,9 @@ import java.util.List;
 @XmlType(propOrder = {"title", "description", "properties"})
 public class Resource extends AbstractModel implements IResource
 {
-
-    private static final long serialVersionUID = 5752318457428475330L;
-
-    private static final String TITLE_CHANGED = "titleChanged";
-    private static final String DESC_CHANGED = "descChanged";
-    private static final String ATTRIBUTES_CHANGED = "attributesChanged";
+    public static final String PROPERTY_TITLE = "title";
+    public static final String PROPERTY_DESCRIPTION = "description";
+    public static final String PROPERTY_PROPERTIES = "properties";
 
     /**
      * short description *
@@ -85,7 +82,7 @@ public class Resource extends AbstractModel implements IResource
     {
         String oldValue = this.title;
         this.title = title;
-        firePropertyChange(TITLE_CHANGED, oldValue, title);
+        firePropertyChange(PROPERTY_TITLE, oldValue, title);
     }
 
     public String getDescription()
@@ -97,7 +94,7 @@ public class Resource extends AbstractModel implements IResource
     {
         String oldValue = this.description;
         this.description = description;
-        firePropertyChange(DESC_CHANGED, oldValue, description);
+        firePropertyChange(PROPERTY_DESCRIPTION, oldValue, description);
     }
 
     public List<Property> getProperties()
@@ -109,7 +106,7 @@ public class Resource extends AbstractModel implements IResource
     {
         List<Property> oldValue = this.properties;
         this.properties = properties;
-        firePropertyChange(ATTRIBUTES_CHANGED, oldValue, properties);
+        firePropertyChange(PROPERTY_PROPERTIES, oldValue, properties);
     }
 
     public IResourceLocator getLocator()

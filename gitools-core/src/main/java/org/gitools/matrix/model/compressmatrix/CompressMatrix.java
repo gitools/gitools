@@ -25,7 +25,6 @@ package org.gitools.matrix.model.compressmatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.model.Resource;
 
 /**
@@ -83,12 +82,6 @@ public class CompressMatrix extends Resource implements IMatrix
     public void setCellValue(int row, int column, int layer, Object value)
     {
         throw new UnsupportedOperationException("Read only matrix");
-    }
-
-    @Override
-    public IElementAdapter getCellAdapter()
-    {
-        return elementAdapter;
     }
 
     @Override

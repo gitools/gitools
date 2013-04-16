@@ -27,9 +27,11 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -185,6 +187,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                     heatmap.setTitle(analysis.getTitle() + " (results)");
 
                     final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                    editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                     editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-results", ""));
 

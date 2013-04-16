@@ -36,7 +36,7 @@ public abstract class AbstractView extends JPanel implements IView
         return icon;
     }
 
-    protected void setIcon(Icon icon)
+    public void setIcon(Icon icon)
     {
         this.icon = icon;
     }

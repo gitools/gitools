@@ -23,9 +23,9 @@ package org.gitools.exporter;
 
 import org.gitools.datafilters.ValueTranslator;
 import org.gitools.datafilters.ValueTranslatorFactory;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.utils.fileutils.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +51,7 @@ public class TextMatrixViewExporter
 
         // body
 
-        ILayerDescriptor attr = matrixView.getContents().getLayers().get(propIndex);
+        IMatrixLayer attr = matrixView.getContents().getLayers().get(propIndex);
 
         ValueTranslator vt = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
@@ -88,7 +88,7 @@ public class TextMatrixViewExporter
         pw.print("column\trow");
         for (int i = 0; i < propIndices.length; i++)
         {
-            ILayerDescriptor attr = attributes.get(propIndices[i]);
+            IMatrixLayer attr = attributes.get(propIndices[i]);
 
             vt[i] = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 

@@ -24,7 +24,7 @@ package org.gitools.analysis.htest;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.ObjectMatrix;
+import org.gitools.matrix.model.matrix.ObjectMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;

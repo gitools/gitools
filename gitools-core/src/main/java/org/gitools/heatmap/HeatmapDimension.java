@@ -21,12 +21,15 @@
  */
 package org.gitools.heatmap;
 
+import com.jgoodies.binding.beans.Model;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.IdTypeXmlAdapter;
-import org.gitools.matrix.model.*;
-import org.gitools.model.AbstractModel;
+import org.gitools.matrix.model.Direction;
+import org.gitools.matrix.model.IMatrixDimension;
+import org.gitools.matrix.model.IMatrixViewDimension;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
@@ -39,23 +42,24 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapDimension extends AbstractModel implements IMatrixViewDimension, PropertyChangeListener
+public class HeatmapDimension extends Model implements IMatrixViewDimension
 {
-    public static final String IDTYPE_CHANGED = "idType";
-    public static final String HEADERS_CHANGED = "headers";
-    public static final String HEADER_SIZE_CHANGED = "headerSize";
-    public static final String GRID_PROPERTY_CHANGED = "gridProperty";
-    public static final String ANNOTATIONS_CHANGED = "annotations";
-    public static final String HIGHLIGHTING_CHANGED = "highlighting";
-    public static final String CELL_SIZE_CHANGED = "cellSize";
+    public static final String PROPERTY_GRID_COLOR = "gridColor";
+    public static final String PROPERTY_GRID_SIZE = "gridSize";
+    public static final String PROPERTY_CELL_SIZE = "cellSize";
+    public static final String PROPERTY_ID_TYPE = "idType";
+    public static final String PROPERTY_SELECTION_LEAD = "selectionLead";
+    public static final String PROPERTY_SELECTED = "selected";
+    public static final String PROPERTY_VISIBLE = "visible";
+    public static final String PROPERTY_HEADERS = "headers";
+    public static final String PROPERTY_HIGHLIGHTED_LABELS = "highlightedLabels";
 
     private static final int INT_BIT_SIZE = 32;
+
 
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
     private IdType idType;
@@ -65,8 +69,6 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
 
     @XmlTransient
     private List<HeatmapHeader> headers;
-
-    private boolean gridEnabled;
 
     private int gridSize;
 
@@ -108,7 +110,6 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         this.idType = IdTypeManager.getDefault().getDefaultIdType();
         this.headers = new ArrayList<HeatmapHeader>();
-        this.gridEnabled = true;
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
@@ -161,10 +162,9 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         }
 
         this.visible = indices;
-        firePropertyChange(IMatrixView.VISIBLE_CHANGED);
+        firePropertyChange(PROPERTY_VISIBLE, null, indices);
 
         setSelected(selection);
-
         if (updateLead)
         {
             setSelectionLead(nextLeadRow);
@@ -194,19 +194,6 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         return (bitmap[bindex] & bit) != 0;
     }
 
-    public void propertyChange(@NotNull PropertyChangeEvent evt)
-    {
-        Object src = evt.getSource();
-        String pname = evt.getPropertyName();
-
-        if (src instanceof HeatmapHeader && (HeatmapHeader.SIZE_CHANGED.equals(pname) || HeatmapHeader.VISIBLE_CHANGED.equals(pname)))
-        {
-            firePropertyChange(HEADER_SIZE_CHANGED);
-        }
-
-        firePropertyChange(evt);
-    }
-
     public IdType getIdType()
     {
         return idType;
@@ -216,7 +203,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         IdType old = this.idType;
         this.idType = idType;
-        firePropertyChange(IDTYPE_CHANGED, old, idType);
+        firePropertyChange(PROPERTY_ID_TYPE, old, idType);
     }
 
     public int getCellSize()
@@ -228,7 +215,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         int oldValue = this.cellSize;
         this.cellSize = newValue;
-        firePropertyChange(CELL_SIZE_CHANGED, oldValue, newValue);
+        firePropertyChange(PROPERTY_CELL_SIZE, oldValue, newValue);
     }
 
     public List<HeatmapHeader> getHeaders()
@@ -243,8 +230,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
             header.setHeatmapDim(this);
         }
         headers.add(header);
-        header.addPropertyChangeListener(this);
-        firePropertyChange(HEADERS_CHANGED);
+        firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
     public void removeHeader(int index)
@@ -254,9 +240,8 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
             return;
         }
         HeatmapHeader header = headers.get(index);
-        header.removePropertyChangeListener(this);
         headers.remove(header);
-        firePropertyChange(HEADERS_CHANGED);
+        firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
     public void upHeader(int index)
@@ -268,7 +253,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         HeatmapHeader header = headers.get(index);
         headers.set(index, headers.get(index - 1));
         headers.set(index - 1, header);
-        firePropertyChange(HEADERS_CHANGED);
+        firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
     public void downHeader(int index)
@@ -280,7 +265,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         HeatmapHeader header = headers.get(index);
         headers.set(index, headers.get(index + 1));
         headers.set(index + 1, header);
-        firePropertyChange(HEADERS_CHANGED);
+        firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
     public int getHeaderSize()
@@ -289,18 +274,6 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         for (HeatmapHeader h : headers)
             size += h.getSize();
         return size;
-    }
-
-    public boolean isGridEnabled()
-    {
-        return gridEnabled;
-    }
-
-    public void setGridEnabled(boolean enabled)
-    {
-        boolean old = this.gridEnabled;
-        this.gridEnabled = enabled;
-        firePropertyChange(GRID_PROPERTY_CHANGED, old, enabled);
     }
 
     public int getGridSize()
@@ -312,7 +285,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         int old = this.gridSize;
         this.gridSize = gridSize;
-        firePropertyChange(GRID_PROPERTY_CHANGED, old, gridSize);
+        firePropertyChange(PROPERTY_GRID_SIZE, old, gridSize);
     }
 
     public Color getGridColor()
@@ -324,7 +297,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         Color old = this.gridColor;
         this.gridColor = gridColor;
-        firePropertyChange(GRID_PROPERTY_CHANGED, old, gridColor);
+        firePropertyChange(PROPERTY_GRID_COLOR, old, gridColor);
     }
 
     @Nullable
@@ -337,7 +310,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         ResourceReference<AnnotationMatrix> old = this.annotations;
         this.annotations = annotations;
-        firePropertyChange(ANNOTATIONS_CHANGED, old, annotations);
+
     }
 
     public boolean isHighlighted(String label)
@@ -348,13 +321,13 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     public void setHighlightedLabels(Set<String> highlightedLabels)
     {
         this.highlightedLabels = highlightedLabels;
-        firePropertyChange(HIGHLIGHTING_CHANGED);
+        firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
     }
 
     public void clearHighlightedLabels()
     {
         highlightedLabels.clear();
-        firePropertyChange(HIGHLIGHTING_CHANGED);
+        firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
     }
 
     public void move(Direction direction, int[] indices)
@@ -383,8 +356,8 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         }
 
         arrayMoveLeft(visible, indices, selected);
-        firePropertyChange(IMatrixView.VISIBLE_CHANGED);
-        firePropertyChange(IMatrixView.SELECTION_CHANGED);
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     private void moveRight(int[] indices)
@@ -399,8 +372,8 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         }
 
         arrayMoveRight(visible, indices, selected);
-        firePropertyChange(IMatrixView.VISIBLE_CHANGED);
-        firePropertyChange(IMatrixView.SELECTION_CHANGED);
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public void hide(int[] indices)
@@ -458,7 +431,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
 
         setVisible(vrows, false);
 
-        firePropertyChange(IMatrixView.SELECTED_LEAD_CHANGED);
+        firePropertyChange(PROPERTY_SELECTION_LEAD, null, selectionLead);
     }
 
     public int[] getSelected()
@@ -470,7 +443,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         this.selected = indices;
         updateSelectionBitmap(selectedBitmap, indices, visible);
-        firePropertyChange(IMatrixView.SELECTION_CHANGED);
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public boolean isSelected(int index)
@@ -493,7 +466,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
 
         Arrays.fill(selectedBitmap, 0);
 
-        firePropertyChange(IMatrixView.SELECTION_CHANGED);
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public void invertSelection()
@@ -513,7 +486,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     {
         selected = new int[0];
         Arrays.fill(selectedBitmap, 0);
-        firePropertyChange(IMatrixView.SELECTION_CHANGED);
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public int getSelectionLead()
@@ -528,7 +501,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
         this.selectionLead = selectionLead;
         if (changed)
         {
-            firePropertyChange(IMatrixView.SELECTED_LEAD_CHANGED);
+            firePropertyChange(PROPERTY_SELECTION_LEAD, null, selectionLead);
         }
     }
 
@@ -640,7 +613,7 @@ public class HeatmapDimension extends AbstractModel implements IMatrixViewDimens
     @Override
     public String getLabel(int index)
     {
-        return matrixDimension.getLabel(index);
+        return matrixDimension.getLabel(visible[index]);
     }
 
     @Override

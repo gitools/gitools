@@ -134,7 +134,7 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader
         {
             for (int col = 0; col < cols; col++)
             {
-                Double element = (Double) data.getCellValue(row, col, data.getLayers().getTopLayer());
+                Double element = (Double) data.getCellValue(row, col, data.getLayers().getTopLayerIndex());
                 String valueLabel = gf.format(element);
                 int length = fm.stringWidth(valueLabel);
                 if (length > largestLabelLenght)

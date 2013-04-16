@@ -24,7 +24,7 @@ package org.gitools.analysis.htest.enrichment;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.matrix.model.BaseMatrix;
+import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;

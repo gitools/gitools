@@ -35,6 +35,8 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 
 /**
@@ -145,21 +147,33 @@ public class PropertiesBox extends WebPanel
     }
 
     @NotNull
-    private static WebLabel createNameLabel(@NotNull PropertyItem property)
+    private WebLabel createNameLabel(@NotNull PropertyItem property)
     {
         WebLabel label = new WebLabel(StringUtils.capitalize(property.getName()), JLabel.TRAILING);
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
+
 
         if (StringUtils.isNotEmpty(property.getDescription()))
         {
             TooltipManager.setTooltip(label, property.getDescription(), TooltipWay.down, 0);
         }
 
+        if (property.isSelected())
+        {
+            SwingUtils.setBoldFont(label);
+        }
+
+        if (property.isSelectable())
+        {
+            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            label.addMouseListener(new PropertyMouseListener(property));
+        }
+
         return label;
     }
 
-    private static WebLabel createValueLabel(@NotNull PropertyItem property, int maxLength)
+    private WebLabel createValueLabel(@NotNull PropertyItem property, int maxLength)
     {
 
         String value = property.getValue();
@@ -202,6 +216,12 @@ public class PropertiesBox extends WebPanel
             label.setShadeColor(property.getColor());
         }
 
+        if (property.isSelectable())
+        {
+            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            label.addMouseListener(new PropertyMouseListener(property));
+        }
+
         return label;
     }
 
@@ -225,6 +245,27 @@ public class PropertiesBox extends WebPanel
         }
 
         return max;
+    }
+
+    private class PropertyMouseListener extends MouseAdapter
+    {
+        private PropertyItem item;
+
+        private PropertyMouseListener(PropertyItem item)
+        {
+            this.item = item;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e)
+        {
+            onMouseClick(item);
+        }
+    }
+
+    protected void onMouseClick(PropertyItem propertyItem)
+    {
+        // Override
     }
 
 }

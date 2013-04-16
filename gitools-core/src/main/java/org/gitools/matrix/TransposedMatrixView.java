@@ -26,7 +26,6 @@ import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.IMatrixViewDimension;
 import org.gitools.matrix.model.IMatrixViewLayers;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
@@ -211,12 +210,6 @@ public class TransposedMatrixView implements IMatrixView
     public void setCellValue(int row, int column, int layer, Object value)
     {
         mv.setCellValue(column, row, layer, value);
-    }
-
-    @Override
-    public IElementAdapter getCellAdapter()
-    {
-        return mv.getCellAdapter();
     }
 
     @Override

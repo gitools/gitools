@@ -32,13 +32,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class EditCategoricalScaleDialog extends AbstractDialog
 {
 
-    private static final long serialVersionUID = -829366063374164258L;
 
     private final ColoredLabelsGroupsPage page;
 

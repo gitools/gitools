@@ -24,13 +24,8 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapBodyDrawer;
 
-/**
- * @noinspection ALL
- */
 public class HeatmapBodyPanel extends AbstractHeatmapPanel
 {
-
-    private static final long serialVersionUID = 930370133535101914L;
 
     public HeatmapBodyPanel(Heatmap heatmap)
     {

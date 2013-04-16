@@ -26,7 +26,7 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;

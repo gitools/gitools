@@ -28,9 +28,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-/**
- * @noinspection ALL
- */
 public class DialogHeaderPanel extends javax.swing.JPanel
 {
 

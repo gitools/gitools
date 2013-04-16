@@ -23,7 +23,6 @@ package org.gitools.ui.analysis.overlapping.wizard;
 
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.ILayerDescriptor;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
@@ -48,7 +47,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
 /**

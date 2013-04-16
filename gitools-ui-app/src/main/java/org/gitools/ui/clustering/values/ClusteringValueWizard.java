@@ -68,7 +68,7 @@ public class ClusteringValueWizard extends AbstractWizard
         addPage(methodPage);
 
         IMatrixView mv = heatmap  ;
-        optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayer());
+        optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayerIndex());
         addPage(optionsPage);
 
         newickPage = new SaveFilePage();

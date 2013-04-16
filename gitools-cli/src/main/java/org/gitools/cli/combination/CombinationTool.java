@@ -25,7 +25,7 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.IResourceFormat;
 import org.gitools.persistence._DEPRECATED.FileFormat;

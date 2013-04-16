@@ -22,7 +22,7 @@
 package org.gitools.ui.wizard.add.data;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.ILayerDescriptor;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -68,7 +68,7 @@ public class DataDetailsPage extends AbstractWizardPage
             String existingName;
             String originalWantedName = nameField.getText();
             String wantedName = originalWantedName.toLowerCase().trim();
-            for (ILayerDescriptor iElementAttribute : hm.getLayers())
+            for (IMatrixLayer iElementAttribute : hm.getLayers())
             {
                 existingName = iElementAttribute.getName().toLowerCase();
                 if (existingName.equals(wantedName))

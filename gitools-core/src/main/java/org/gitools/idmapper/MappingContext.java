@@ -27,9 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 
-/**
- * @noinspection ALL
- */
 public class MappingContext extends HashMap<String, Object>
 {
 

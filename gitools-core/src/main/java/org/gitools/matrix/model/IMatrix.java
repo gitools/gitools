@@ -21,7 +21,6 @@
  */
 package org.gitools.matrix.model;
 
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.persistence.IResource;
 
 public interface IMatrix extends IResource
@@ -45,9 +44,5 @@ public interface IMatrix extends IResource
      * It's a good practice to free all the caching memory usage.
      */
     void detach();
-
-    @Deprecated
-    IElementAdapter getCellAdapter();
-
 
 }

@@ -25,7 +25,6 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertiesBox;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class GenericDetailsPanel extends AbstractDetailsPanel
      *
      * @param heatmap the heatmap
      */
-    public GenericDetailsPanel(@NotNull final Heatmap heatmap)
+    public GenericDetailsPanel(Heatmap heatmap)
     {
         super(heatmap);
     }
@@ -52,19 +51,23 @@ public class GenericDetailsPanel extends AbstractDetailsPanel
     {
         List<PropertyItem> properties = new ArrayList<PropertyItem>();
 
-        if (isCellSelected())
-        {
-            Cell cell = getSelectedCell();
+        Cell cell = getSelectedCell();
 
-            properties.add(cell.getColumn());
-            properties.add(cell.getRow());
-            properties.addAll(cell.getValues());
-        }
-
+        properties.add(cell.getColumn());
+        properties.add(cell.getRow());
         properties.add(new PropertyItem("Size", "Matrix size: Columns x Rows", String.valueOf(getColumnsCount()) + " x " + String.valueOf(getRowsCount())));
+        properties.add(new PropertyItem("",""));
+        properties.addAll(cell.getValues());
 
         Dimension size = getSize();
-        add(new PropertiesBox(size.width, properties));
+        add(new PropertiesBox(size.width, properties){
+            @Override
+            protected void onMouseClick(PropertyItem propertyItem)
+            {
+                getHeatmap().getLayers().setTopLayerIndex(propertyItem.getIndex());
+            }
+        });
+
     }
 
 

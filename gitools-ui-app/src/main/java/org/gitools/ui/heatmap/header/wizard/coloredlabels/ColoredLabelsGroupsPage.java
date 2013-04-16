@@ -36,9 +36,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
-/**
- * @noinspection ALL
- */
 public class ColoredLabelsGroupsPage extends AbstractWizardPage
 {
 

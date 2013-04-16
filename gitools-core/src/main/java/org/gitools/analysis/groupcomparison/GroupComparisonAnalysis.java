@@ -23,7 +23,7 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;

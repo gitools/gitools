@@ -1,13 +1,13 @@
 package org.gitools.heatmap;
 
+import com.jgoodies.binding.beans.Model;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixViewLayers;
-import org.gitools.matrix.model.element.IElementAdapter;
-import org.gitools.matrix.model.element.ILayerDescriptor;
-import org.gitools.model.AbstractModel;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorFactory;
+import org.gitools.model.decorator.Decorator;
+import org.gitools.model.decorator.DecoratorFactory;
+import org.gitools.utils.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,8 +15,11 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers<HeatmapLayer>
+public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLayer>
 {
+    public static final String PROPERTY_TOP_LAYER_INDEX = "topLayerIndex";
+    public static final String PROPERTY_TOP_LAYER = "topLayer";
+
     @XmlElement(name = "top-layer")
     private int topLayer;
 
@@ -38,13 +41,13 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers<He
 
     private void createLayers(IMatrix matrix)
     {
-        IMatrixLayers<? extends ILayerDescriptor> matrixLayers = matrix.getLayers();
+        IMatrixLayers<? extends IMatrixLayer> matrixLayers = matrix.getLayers();
         this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
 
         for (int i=0; i < matrixLayers.size(); i++)
         {
-            ILayerDescriptor layer = matrixLayers.get(i);
-            ElementDecorator defaultDecorator = ElementDecoratorFactory.defaultDecorator(matrix, i);
+            IMatrixLayer layer = matrixLayers.get(i);
+            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
             this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
         }
     }
@@ -57,54 +60,38 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers<He
         {
             this.layersIdToIndex.put(layers.get(i).getId(), i);
         }
-
-        // Initialize decorators adapters
-        IElementAdapter adapter = matrix.getCellAdapter();
-        for (ElementDecorator decorator : getCellDecorators())
-        {
-            decorator.setAdapter(adapter);
-        }
     }
 
-
-    /**
-     * Get cell decorators.
-     *
-     * @return the element decorator [ ]
-     * @deprecated
-     */
-    public ElementDecorator[] getCellDecorators()
+    public HeatmapLayer getTopLayer()
     {
-        ElementDecorator[] decorators = new ElementDecorator[layers.size()];
-
-        for (int i=0; i < layers.size(); i++)
-        {
-            decorators[i] = layers.get(i).getDecorator();
-        }
-
-        return decorators;
+        return layers.get(topLayer);
     }
 
-    @Deprecated
-    public void setCellDecorators(ElementDecorator[] decorators)
+    public void setTopLayer(HeatmapLayer topLayer)
     {
-
-        for (int i=0; i < decorators.length; i++)
-        {
-            layers.get(i).setDecorator(decorators[i]);
-        }
+        setTopLayerIndex(layers.indexOf(topLayer));
     }
 
     @Override
-    public int getTopLayer()
+    public int getTopLayerIndex()
     {
         return topLayer;
     }
 
     @Override
-    public void setTopLayer(int layerIndex)
+    public void setTopLayerIndex(int layerIndex)
     {
+        int old = this.topLayer;
         this.topLayer = layerIndex;
+
+        firePropertyChange(PROPERTY_TOP_LAYER_INDEX, old, layerIndex);
+        firePropertyChange(PROPERTY_TOP_LAYER, layers.get(old), layers.get(layerIndex));
+
+        // Move listeners
+        HeatmapLayer oldLayer = layers.get(old);
+        HeatmapLayer newLayer = layers.get(layerIndex);
+        EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
+        EventUtils.moveListeners(oldLayer, newLayer);
     }
 
     @Override
@@ -129,5 +116,10 @@ public class HeatmapLayers extends AbstractModel implements IMatrixViewLayers<He
     public Iterator<HeatmapLayer> iterator()
     {
         return layers.iterator();
+    }
+
+    public List<HeatmapLayer> toList()
+    {
+        return layers;
     }
 }

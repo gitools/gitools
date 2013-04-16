@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.groupcomparison;
 
-import org.gitools.matrix.model.element.AttributeDef;
+import org.gitools.matrix.model.matrix.element.AttributeDef;
 import org.gitools.stats.test.results.CommonResult;
 
 

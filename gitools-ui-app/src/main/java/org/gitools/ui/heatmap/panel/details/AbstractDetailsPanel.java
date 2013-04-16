@@ -25,15 +25,16 @@ import com.alee.laf.panel.WebPanel;
 import info.clearthought.layout.SingleFiledLayout;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.UrlLink;
-import org.gitools.matrix.model.AnnotationResolver;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.element.ILayerDescriptor;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.impl.CategoricalElementDecorator;
+import org.gitools.matrix.model.matrix.AnnotationResolver;
+import org.gitools.model.decorator.Decorator;
+import org.gitools.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
@@ -43,8 +44,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -54,10 +55,11 @@ import java.util.List;
 /**
  * An abstract details panel of a {@link Heatmap}.
  */
-public abstract class AbstractDetailsPanel extends WebPanel
+public abstract class AbstractDetailsPanel extends WebPanel implements PropertyChangeListener, ComponentListener
 {
 
     private static final GenericFormatter FORMATTER = new GenericFormatter();
+    public static final String NONE = "None";
     @NotNull
     private final Heatmap heatmap;
 
@@ -74,27 +76,12 @@ public abstract class AbstractDetailsPanel extends WebPanel
         setBackground(Color.WHITE);
         setLayout(new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.CENTER, 5));
 
-        heatmap.addPropertyChangeListener(new PropertyChangeListener()
-        {
-            @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                if ("selectionLead".equals(evt.getPropertyName()))
-                {
-                    updateDetailsPanel();
-                }
-            }
-        });
-
-        addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentResized(ComponentEvent e)
-            {
-                updateDetailsPanel();
-            }
-        });
-
+        // Changes to track
+        heatmap.getRows().addPropertyChangeListener(HeatmapDimension.PROPERTY_SELECTION_LEAD, this);
+        heatmap.getColumns().addPropertyChangeListener(HeatmapDimension.PROPERTY_SELECTION_LEAD, this);
+        heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, this);
+        heatmap.getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, this);
+        addComponentListener(this);
 
         updateBoxes();
     }
@@ -118,7 +105,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final boolean isCellSelected()
     {
-        return (getMatrixView().getColumns().getSelectionLead(  ) != -1 && getMatrixView().getRows().getSelectionLead(  ) != -1);
+        return (getHeatmap().getColumns().getSelectionLead(  ) != -1 && getHeatmap().getRows().getSelectionLead(  ) != -1);
     }
 
     /**
@@ -128,7 +115,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final int getRowsCount()
     {
-        return getMatrixView().getRows().size();
+        return getHeatmap().getRows().size();
     }
 
     /**
@@ -138,7 +125,7 @@ public abstract class AbstractDetailsPanel extends WebPanel
      */
     final int getColumnsCount()
     {
-        return getMatrixView().getColumns().size();
+        return getHeatmap().getColumns().size();
     }
 
     /**
@@ -150,43 +137,54 @@ public abstract class AbstractDetailsPanel extends WebPanel
     final Cell getSelectedCell()
     {
 
-        if (!isCellSelected())
-        {
-            return null;
-        }
+        int row = getHeatmap().getRows().getSelectionLead();
+        String rowIdentifier = (row == -1 ? NONE : getHeatmap().getRows().getLabel(row));
 
-        int row = getMatrixView().getRows().getSelectionLead(  );
-        String rowIdentifier = heatmap.getRows().getLabel(row);
+        int column = getHeatmap().getColumns().getSelectionLead();
+        String columnIdentifier = (column == -1 ? NONE : getHeatmap().getColumns().getLabel(column));
 
-        int column = getMatrixView().getColumns().getSelectionLead(  );
-        String columnIdentifier = heatmap.getColumns().getLabel(column);
-
-        return new Cell(new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, heatmap.getRows())), new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, heatmap.getColumns())), getProperties(row, column));
+        return new Cell(
+                new PropertyItem("Row [" + (row + 1) + "]", null, rowIdentifier, getLink(rowIdentifier, getHeatmap().getRows())),
+                new PropertyItem("Column [" + (column + 1) + "]", null, columnIdentifier, getLink(columnIdentifier, getHeatmap().getColumns())),
+                getProperties(row, column)
+        );
     }
 
     @Nullable
-    private IMatrixView getMatrixView()
+    protected Heatmap getHeatmap()
     {
-        return heatmap  ;
+        return heatmap;
     }
 
     @NotNull
     @Deprecated
     private Collection<PropertyItem> getProperties(int row, int column)
     {
-        int selectedIndex = getMatrixView().getLayers().getTopLayer();
-        ElementDecorator selectedDecorator = heatmap.getActiveCellDecorator();
+        int selectedIndex = getHeatmap().getLayers().getTopLayerIndex();
+        Decorator selectedDecorator = getHeatmap().getLayers().getTopLayer().getDecorator();
         List<PropertyItem> values = new ArrayList<PropertyItem>();
-        final IMatrixLayers properties = getMatrixView().getLayers();
+        final IMatrixLayers properties = getHeatmap().getLayers();
+        int topLayer = getHeatmap().getLayers().getTopLayerIndex();
         for (int index = 0; index < properties.size(); index++)
         {
-            final ILayerDescriptor prop = properties.get(index);
-            Object value = getMatrixView().getCellValue(row, column, index);
+            final IMatrixLayer prop = properties.get(index);
+            Object value = null;
+            if (row != -1 && column != -1)
+            {
+                value = getHeatmap().getCellValue(row, column, index);
+            }
             PropertyItem item = new PropertyItem(prop.getName(), prop.getDescription(), FORMATTER.format(value));
+            item.setSelectable(true);
+            item.setIndex(index);
+
+            if (index == topLayer)
+            {
+                item.setSelected(true);
+            }
 
             if (index == selectedIndex && value instanceof Double)
             {
-                if (selectedDecorator instanceof CategoricalElementDecorator) {
+                if (selectedDecorator instanceof CategoricalDecorator) {
                     CategoricalColorScale scale = (CategoricalColorScale) selectedDecorator.getScale();
                     Double v = (Double) value;
                     String name =  (scale.getColorScalePoint(v).getName().equals(""))  ? FORMATTER.format(value) : scale.getColorScalePoint(v).getName();
@@ -223,6 +221,35 @@ public abstract class AbstractDetailsPanel extends WebPanel
         return null;
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        updateDetailsPanel();
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e)
+    {
+
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e)
+    {
+        updateDetailsPanel();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e)
+    {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e)
+    {
+        updateDetailsPanel();
+    }
 }
 
 

@@ -2,12 +2,12 @@ package org.gitools.matrix.model;
 
 import java.util.*;
 
-public class SimpleMatrixLayers implements IMatrixLayers<SimpleLayerDescriptor>
+public class SimpleMatrixLayers implements IMatrixLayers<SimpleMatrixLayer>
 {
-    private List<SimpleLayerDescriptor> descriptors;
+    private List<SimpleMatrixLayer> descriptors;
     private Map<String, Integer> idToIndex;
 
-    public SimpleMatrixLayers(List<SimpleLayerDescriptor> descriptors)
+    public SimpleMatrixLayers(List<SimpleMatrixLayer> descriptors)
     {
         this.descriptors = descriptors;
 
@@ -16,11 +16,11 @@ public class SimpleMatrixLayers implements IMatrixLayers<SimpleLayerDescriptor>
 
     public SimpleMatrixLayers(Class<?> valueClass, String... headers)
     {
-        this.descriptors = new ArrayList<SimpleLayerDescriptor>(headers.length);
+        this.descriptors = new ArrayList<SimpleMatrixLayer>(headers.length);
 
         for (String header : headers)
         {
-            this.descriptors.add(new SimpleLayerDescriptor(header, valueClass));
+            this.descriptors.add(new SimpleMatrixLayer(header, valueClass));
         }
 
         init();
@@ -36,7 +36,7 @@ public class SimpleMatrixLayers implements IMatrixLayers<SimpleLayerDescriptor>
     }
 
     @Override
-    public SimpleLayerDescriptor get(int layerIndex)
+    public SimpleMatrixLayer get(int layerIndex)
     {
         return descriptors.get(layerIndex);
     }
@@ -59,7 +59,7 @@ public class SimpleMatrixLayers implements IMatrixLayers<SimpleLayerDescriptor>
     }
 
     @Override
-    public Iterator<SimpleLayerDescriptor> iterator()
+    public Iterator<SimpleMatrixLayer> iterator()
     {
         return descriptors.iterator();
     }

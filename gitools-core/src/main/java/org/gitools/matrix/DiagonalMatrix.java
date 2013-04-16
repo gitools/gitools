@@ -24,7 +24,6 @@ package org.gitools.matrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.element.IElementAdapter;
 import org.gitools.persistence.IResourceLocator;
 
 public class DiagonalMatrix implements IMatrix
@@ -95,12 +94,6 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public IElementAdapter getCellAdapter()
-    {
-        return m.getCellAdapter();
-    }
-
-    @Override
     public IMatrixLayers getLayers()
     {
         return m.getLayers();
@@ -110,6 +103,11 @@ public class DiagonalMatrix implements IMatrix
     public void detach()
     {
         m.detach();
+    }
+
+    public IMatrix getWrappedMatrix()
+    {
+        return m;
     }
 
 }

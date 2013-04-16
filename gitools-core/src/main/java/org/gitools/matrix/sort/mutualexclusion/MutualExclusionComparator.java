@@ -58,10 +58,21 @@ public class MutualExclusionComparator implements Comparator<Integer> {
 
     @Override
     public int compare(Integer idx1, Integer idx2) {
-        double value1 = aggregationCache.get(idx1);
-        double value2 = aggregationCache.get(idx2);
+        Double value1 = aggregationCache.get(idx1);
+        Double value2 = aggregationCache.get(idx2);
 
-        int res = (int) Math.signum(value1 - value2);
+        int res;
+        if (value1 == null)
+        {
+            res = -1;
+        } else if (value2 == null)
+        {
+            res = 1;
+        } else
+        {
+            res = (int) Math.signum(value1 - value2);
+        }
+
         return res * ValueSortCriteria.SortDirection.DESCENDING.getFactor();
     }
 
@@ -70,7 +81,7 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         for (int i = 0; i < selectedColumns.length; i++) {
             int col = selectedColumns[i];
 
-            Object valueObject = matrixView.getCellValue(idx, col, matrixView.getLayers().getTopLayer());
+            Object valueObject = matrixView.getCellValue(idx, col, matrixView.getLayers().getTopLayerIndex());
             valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
         }
 

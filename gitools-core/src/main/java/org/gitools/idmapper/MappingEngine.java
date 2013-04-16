@@ -29,15 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-/**
- * @noinspection ALL
- */
 public class MappingEngine
 {
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     private static final Logger logger = LoggerFactory.getLogger(MappingEngine.class);
 
     private static class Edge

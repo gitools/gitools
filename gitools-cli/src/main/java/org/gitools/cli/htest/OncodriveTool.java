@@ -23,7 +23,7 @@ package org.gitools.cli.htest;
 
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
-import org.gitools.matrix.model.DoubleMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.model.ModuleMap;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.IResourceFormat;

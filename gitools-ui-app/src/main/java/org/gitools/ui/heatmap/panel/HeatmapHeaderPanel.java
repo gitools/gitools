@@ -22,25 +22,16 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
-import org.jetbrains.annotations.NotNull;
 
 public class HeatmapHeaderPanel extends AbstractHeatmapPanel
 {
 
-    private static final long serialVersionUID = 930370133535101914L;
-
-    private final HeatmapDimension hdim;
-
-    public HeatmapHeaderPanel(@NotNull Heatmap heatmap, boolean horizontal)
+    public HeatmapHeaderPanel(Heatmap heatmap, boolean horizontal)
     {
         super(heatmap, new HeatmapHeaderDrawer(heatmap, horizontal));
-
-        this.hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
     }
 
-    @NotNull
     public HeatmapHeaderDrawer getHeaderDrawer()
     {
         return (HeatmapHeaderDrawer) getDrawer();
