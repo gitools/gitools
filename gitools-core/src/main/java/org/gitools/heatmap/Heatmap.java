@@ -98,7 +98,7 @@ public class Heatmap extends Resource implements IMatrixView
     @Override
     public boolean isEmpty(int row, int column)
     {
-        return getContents().isEmpty(row, column);
+        return getContents().isEmpty(rows.getVisible()[row], columns.getVisible()[column]);
     }
 
     public void setColumns(@NotNull HeatmapDimension columns)
