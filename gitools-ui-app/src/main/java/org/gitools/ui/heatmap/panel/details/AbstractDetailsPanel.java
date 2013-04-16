@@ -57,8 +57,7 @@ import java.util.List;
 /**
  * An abstract details panel of a {@link Heatmap}.
  */
-public abstract class AbstractDetailsPanel extends WebPanel implements PropertyChangeListener, ComponentListener
-{
+public abstract class AbstractDetailsPanel extends WebPanel implements PropertyChangeListener, ComponentListener {
 
     private static final GenericFormatter FORMATTER = new GenericFormatter();
     public static final String NONE = "None";
@@ -70,8 +69,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
      *
      * @param heatmap the heatmap
      */
-    AbstractDetailsPanel(@NotNull final Heatmap heatmap)
-    {
+    AbstractDetailsPanel(@NotNull final Heatmap heatmap) {
         super();
         this.heatmap = heatmap;
 
@@ -88,8 +86,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
         updateBoxes();
     }
 
-    private void updateDetailsPanel()
-    {
+    private void updateDetailsPanel() {
         removeAll();
         updateBoxes();
     }
@@ -105,9 +102,8 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
      *
      * @return
      */
-    final boolean isCellSelected()
-    {
-        return (getHeatmap().getColumns().getSelectionLead(  ) != -1 && getHeatmap().getRows().getSelectionLead(  ) != -1);
+    final boolean isCellSelected() {
+        return (getHeatmap().getColumns().getSelectionLead() != -1 && getHeatmap().getRows().getSelectionLead() != -1);
     }
 
     /**
@@ -115,8 +111,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
      *
      * @return the rows count
      */
-    final int getRowsCount()
-    {
+    final int getRowsCount() {
         return getHeatmap().getRows().size();
     }
 
@@ -125,8 +120,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
      *
      * @return the columns count
      */
-    final int getColumnsCount()
-    {
+    final int getColumnsCount() {
         return getHeatmap().getColumns().size();
     }
 
@@ -136,8 +130,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
      * @return the selected cell
      */
     @Nullable
-    final Cell getSelectedCell()
-    {
+    final Cell getSelectedCell() {
 
         int row = getHeatmap().getRows().getSelectionLead();
         String rowIdentifier = (row == -1 ? NONE : getHeatmap().getRows().getLabel(row));
@@ -153,52 +146,46 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
     }
 
     @Nullable
-    protected Heatmap getHeatmap()
-    {
+    protected Heatmap getHeatmap() {
         return heatmap;
     }
 
     @NotNull
     @Deprecated
-    private Collection<PropertyItem> getProperties(int row, int column)
-    {
+    private Collection<PropertyItem> getProperties(int row, int column) {
         int selectedIndex = getHeatmap().getLayers().getTopLayerIndex();
         Decorator selectedDecorator = getHeatmap().getLayers().getTopLayer().getDecorator();
         List<PropertyItem> values = new ArrayList<PropertyItem>();
         final IMatrixLayers properties = getHeatmap().getLayers();
         int topLayer = getHeatmap().getLayers().getTopLayerIndex();
-        for (int index = 0; index < properties.size(); index++)
-        {
+        for (int index = 0; index < properties.size(); index++) {
             final IMatrixLayer prop = properties.get(index);
             Object value = null;
-            if (row != -1 && column != -1)
-            {
+            if (row != -1 && column != -1) {
                 value = getHeatmap().getCellValue(row, column, index);
             }
             PropertyItem item = new PropertyItem(prop.getName(), prop.getDescription(), FORMATTER.format(value));
             item.setSelectable(true);
             item.setIndex(index);
 
-            if (index == topLayer)
-            {
+            if (index == topLayer) {
                 item.setSelected(true);
             }
 
-            if (index == selectedIndex && value instanceof Double)
-            {
-                if (selectedDecorator instanceof CategoricalDecorator) {
-                    CategoricalColorScale scale = (CategoricalColorScale) selectedDecorator.getScale();
-                    Double v = (Double) value;
-
-                    ColorScalePoint point = scale.getColorScalePoint(v);
-                    if (point != null) {
-                        String name = StringUtils.isEmpty(point.getName()) ? FORMATTER.format(value) : point.getName();
-                        item = new PropertyItem(prop.getName(), prop.getDescription(), name);
-                    }
+            if (heatmap.getLayers().get(index).getDecorator() instanceof CategoricalDecorator &&
+                    value instanceof Double) {
+                CategoricalColorScale scale = (CategoricalColorScale) heatmap.getLayers().get(index).getDecorator().getScale();
+                Double v = (Double) value;
+                ColorScalePoint point = scale.getColorScalePoint(v);
+                if (point != null) {
+                    String name = StringUtils.isEmpty(point.getName()) ? FORMATTER.format(value) : point.getName();
+                    item = new PropertyItem(prop.getName(), prop.getDescription(), name);
                 }
+            }
 
+
+            if (index == selectedIndex && value instanceof Double) {
                 item.setColor(selectedDecorator.getScale().valueColor((Double) value));
-
             }
 
 
@@ -209,16 +196,13 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
     }
 
     @Nullable
-    private String getLink(String value, @NotNull HeatmapDimension dim)
-    {
+    private String getLink(String value, @NotNull HeatmapDimension dim) {
         IdType idType = dim.getIdType();
-        if (idType != null)
-        {
+        if (idType != null) {
             String idTypeKey = idType.getKey();
             List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
             AnnotationResolver resolver = new AnnotationResolver(dim.getAnnotations(), value);
-            for (UrlLink link : tlinks)
-            {
+            for (UrlLink link : tlinks) {
                 TextPattern pat = link.getPattern();
                 return pat.generate(resolver);
             }
@@ -228,32 +212,27 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+    public void propertyChange(PropertyChangeEvent evt) {
         updateDetailsPanel();
     }
 
     @Override
-    public void componentHidden(ComponentEvent e)
-    {
+    public void componentHidden(ComponentEvent e) {
 
     }
 
     @Override
-    public void componentResized(ComponentEvent e)
-    {
+    public void componentResized(ComponentEvent e) {
         updateDetailsPanel();
     }
 
     @Override
-    public void componentMoved(ComponentEvent e)
-    {
+    public void componentMoved(ComponentEvent e) {
 
     }
 
     @Override
-    public void componentShown(ComponentEvent e)
-    {
+    public void componentShown(ComponentEvent e) {
         updateDetailsPanel();
     }
 }
