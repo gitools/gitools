@@ -122,7 +122,7 @@ public abstract class HeatmapHeader extends AbstractModel
         margin = 1;
         labelRotated = false;
         labelVisible = false;
-        labelColor = Color.BLACK;
+        labelColor = Color.GRAY;
         annotationPattern = null;
         annotationValues = new String[0];
     }

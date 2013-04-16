@@ -30,8 +30,8 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -136,6 +136,15 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         LineMetrics lm = header.getFont().getLineMetrics("yÍ;|", g.getFontRenderContext());
         float fontHeight = lm.getHeight();
+
+        float fontSize = g.getFont().getSize();
+        while (fontHeight > cellHeight && fontSize > 1) {
+            fontSize--;
+            g.setFont( g.getFont().deriveFont( fontSize ));
+            lm = g.getFont().getLineMetrics("yÍ;|", g.getFontRenderContext());
+            fontHeight = lm.getHeight();
+        }
+
         float fontDesc = lm.getDescent();
         int fontOffset = (int) Math.ceil(((fontHeight + cellHeight) / 2) - fontDesc);
 
@@ -146,11 +155,11 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         if (horizontal)
         {
-            matrixLabelProvider = new MatrixColumnsLabelProvider(heatmap  );
+            matrixLabelProvider = new MatrixColumnsLabelProvider(heatmap);
         }
         else
         {
-            matrixLabelProvider = new MatrixRowsLabelProvider(heatmap  );
+            matrixLabelProvider = new MatrixRowsLabelProvider(heatmap);
         }
 
         LabelProvider labelProvider = null;
@@ -192,7 +201,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 gColor = gridColor.darker();
             }
 
-            boolean lead = !pictureMode && (horizontal ? (leadColumn == index) /*&& (leadRow == -1)*/ : (leadRow == index) /*&& (leadColumn == -1)*/);
+            boolean lead = !pictureMode && (horizontal ? (leadColumn == index) : (leadRow == index));
 
             g.setColor(gColor);
             g.fillRect(x, y + cellHeight, width, gridSize);
@@ -206,11 +215,9 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 g.drawRect(x, y, width, cellHeight - 1);
             }
 
-            if (fontHeight <= cellHeight)
-            {
-                g.setColor(fgColor);
-                g.drawString(label, x + padding, y + fontOffset);
-            }
+            g.setColor(fgColor);
+            g.drawString(label, x + padding, y + fontOffset);
+
 
             y += height;
         }
@@ -222,14 +229,14 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     {
         HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
         int gridSize = hdim.getGridSize();
-        int extBorder = /*2 * 1 - 1*/ 0;
+        int extBorder = 0;
 
         if (horizontal)
         {
             int cellWidth = heatmap.getColumns().getCellSize() + gridSize;
             int columnCount = heatmap  .getColumns().size();
             int headerSize = header.getSize();
-            return new Dimension(cellWidth * columnCount + extBorder, headerSize /*- colorAnnSize*/);
+            return new Dimension(cellWidth * columnCount + extBorder, headerSize);
         }
         else
         {

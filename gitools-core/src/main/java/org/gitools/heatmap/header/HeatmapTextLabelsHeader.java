@@ -66,9 +66,9 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         super(hdim);
 
         size = 80;
-        labelColor = Color.BLACK;
+        labelColor = Color.darkGray;
         backgroundColor = Color.WHITE;
-        font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+        font = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
         if (am != null && am.getColumns().size() > 0)
         {
