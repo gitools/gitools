@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.panel.details;
 
 import com.alee.laf.panel.WebPanel;
 import info.clearthought.layout.SingleFiledLayout;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -37,6 +38,7 @@ import org.gitools.model.decorator.Decorator;
 import org.gitools.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
+import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.gitools.utils.textpatt.TextPattern;
@@ -187,8 +189,12 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
                 if (selectedDecorator instanceof CategoricalDecorator) {
                     CategoricalColorScale scale = (CategoricalColorScale) selectedDecorator.getScale();
                     Double v = (Double) value;
-                    String name =  (scale.getColorScalePoint(v).getName().equals(""))  ? FORMATTER.format(value) : scale.getColorScalePoint(v).getName();
-                    item = new PropertyItem(prop.getName(), prop.getDescription(), name);
+
+                    ColorScalePoint point = scale.getColorScalePoint(v);
+                    if (point != null) {
+                        String name = StringUtils.isEmpty(point.getName()) ? FORMATTER.format(value) : point.getName();
+                        item = new PropertyItem(prop.getName(), prop.getDescription(), name);
+                    }
                 }
 
                 item.setColor(selectedDecorator.getScale().valueColor((Double) value));
