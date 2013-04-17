@@ -520,7 +520,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             return;
         }
 
-        final String colName = resultsMatrix.internalColumnLabel(colIndex);
+        final String colName = resultsMatrix.getLabel(colIndex);
         final String rowName = resultsMatrix.internalRowLabel(rowIndex);
 
         out.writeQuotedValue(colName);

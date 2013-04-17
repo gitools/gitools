@@ -25,7 +25,8 @@ import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectFactory2D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrixImpl;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
@@ -39,21 +40,21 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix>
+public class AnnotationMatrixFormat extends AbstractResourceFormat<IAnnotations>
 {
 
 
     public AnnotationMatrixFormat()
     {
-        super(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
+        super(FileSuffixes.ANNOTATION_MATRIX, IAnnotations.class);
     }
 
     @NotNull
     @Override
-    protected AnnotationMatrix readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected IAnnotations readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
-        AnnotationMatrix matrix = new AnnotationMatrix();
+        AnnotationMatrixImpl matrix = new AnnotationMatrixImpl();
 
         try
         {

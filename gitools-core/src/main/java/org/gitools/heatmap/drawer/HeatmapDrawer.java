@@ -108,8 +108,5 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
         body.setPictureMode(pictureMode);
         rowsHeader.setPictureMode(pictureMode);
         colsHeader.setPictureMode(pictureMode);
-        //rowsClusterSet.setPictureMode(pictureMode);
-        //columnsClusterSet.setPictureMode(pictureMode);
     }
-
 }

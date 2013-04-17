@@ -29,16 +29,16 @@ import org.gitools.idtype.IdTypeXmlAdapter;
 import org.gitools.matrix.model.Direction;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixViewDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
@@ -65,10 +65,10 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     private IdType idType;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-    private ResourceReference<AnnotationMatrix> annotations;
+    private ResourceReference<IAnnotations> annotations;
 
-    @XmlTransient
-    private List<HeatmapHeader> headers;
+    @XmlElement
+    private LinkedList<HeatmapHeader> headers;
 
     private int gridSize;
 
@@ -109,7 +109,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     private void commonInit()
     {
         this.idType = IdTypeManager.getDefault().getDefaultIdType();
-        this.headers = new ArrayList<HeatmapHeader>();
+        this.headers = new LinkedList<HeatmapHeader>();
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
@@ -229,7 +229,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         {
             header.setHeatmapDim(this);
         }
-        headers.add(header);
+        headers.addFirst(header);
         firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
@@ -300,17 +300,19 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_GRID_COLOR, old, gridColor);
     }
 
-    @Nullable
-    public AnnotationMatrix getAnnotations()
+    public IAnnotations getAnnotations()
     {
-        return (annotations == null) ? null : annotations.get();
+        if (annotations == null)
+        {
+            return null;
+        }
+
+        return annotations.get();
     }
 
-    public void setAnnotations(ResourceReference<AnnotationMatrix> annotations)
+    public void setAnnotations(ResourceReference<IAnnotations> annotations)
     {
-        ResourceReference<AnnotationMatrix> old = this.annotations;
         this.annotations = annotations;
-
     }
 
     public boolean isHighlighted(String label)

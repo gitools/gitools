@@ -25,8 +25,8 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -102,7 +102,7 @@ public class MatrixViewLabelFilter
         }
     }
 
-    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, AnnotationMatrix annMatrix, @NotNull List<String> values, boolean useRegex)
+    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, IAnnotations annMatrix, @NotNull List<String> values, boolean useRegex)
     {
 
         LabelProvider labelProvider = null;

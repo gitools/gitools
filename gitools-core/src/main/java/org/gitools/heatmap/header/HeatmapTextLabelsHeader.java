@@ -22,9 +22,8 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -61,7 +60,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         this(null);
     }
 
-    public HeatmapTextLabelsHeader(@Nullable HeatmapDimension hdim)
+    public HeatmapTextLabelsHeader(HeatmapDimension hdim)
     {
         super(hdim);
 
@@ -69,11 +68,11 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         labelColor = Color.darkGray;
         backgroundColor = Color.WHITE;
         font = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
-        AnnotationMatrix am = hdim != null ? hdim.getAnnotations() : null;
-        if (am != null && am.getColumns().size() > 0)
+        IAnnotations am = hdim != null ? hdim.getAnnotations() : null;
+        if (am != null && am.getLabel().size() > 0)
         {
             labelSource = LabelSource.ANNOTATION;
-            labelAnnotation = am.internalColumnLabel(0);
+            labelAnnotation = am.getLabel().iterator().next();
         }
         else
         {
@@ -116,7 +115,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
     {
         Font old = this.font;
         this.font = font;
-        firePropertyChange(LABEL_FONT_CHANGED, old, font);
+        firePropertyChange(PROPERTY_FONT, old, font);
     }
 
     @Override

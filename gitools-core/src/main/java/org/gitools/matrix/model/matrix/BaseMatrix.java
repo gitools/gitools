@@ -137,7 +137,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     }
 
     @NotNull
-    public String internalColumnLabel(int index)
+    public String getLabel(int index)
     {
         return (String) columns.get(index);
     }
@@ -249,7 +249,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
             @Override
             public String getLabel(int index)
             {
-                return BaseMatrix.this.internalColumnLabel(index);
+                return BaseMatrix.this.getLabel(index);
             }
 
             @Override

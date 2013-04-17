@@ -23,7 +23,7 @@ package org.gitools.clustering.method.annotations;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.matrix.model.matrix.AnnotationResolver;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.utils.textpatt.TextPattern;
@@ -83,10 +83,10 @@ public class AnnPatRowClusteringData implements ClusteringData
     }
 
     private final IMatrix matrix;
-    private final AnnotationMatrix am;
+    private final IAnnotations am;
     private final TextPattern pat;
 
-    public AnnPatRowClusteringData(IMatrix matrix, AnnotationMatrix am, String pattern)
+    public AnnPatRowClusteringData(IMatrix matrix, IAnnotations am, String pattern)
     {
         this.matrix = matrix;
         this.am = am;

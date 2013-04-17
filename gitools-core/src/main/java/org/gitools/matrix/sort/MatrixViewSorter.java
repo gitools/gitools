@@ -28,7 +28,7 @@ import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
@@ -47,7 +47,7 @@ public abstract class MatrixViewSorter
 {
 
 
-    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor)
+    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor)
     {
         if (applyToRows)
         {
@@ -60,7 +60,7 @@ public abstract class MatrixViewSorter
         }
     }
 
-    private static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, AnnotationMatrix am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor)
+    private static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor)
     {
 
         int[] selColumns = matrixView.getColumns().getSelected(  );
@@ -152,7 +152,7 @@ public abstract class MatrixViewSorter
 
     }
 
-    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, AnnotationMatrix am, List<String> values, boolean regExChecked, IProgressMonitor monitor)
+    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, IAnnotations am, List<String> values, boolean regExChecked, IProgressMonitor monitor)
     {
 
 
@@ -351,7 +351,7 @@ public abstract class MatrixViewSorter
     }
 
     //TODO: sort by label with all selected properties!
-    public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, @NotNull String rowsPattern, AnnotationMatrix rowsAnnMatrix, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, AnnotationMatrix colsAnnMatrix, SortDirection colsDirection, boolean colsNumeric)
+    public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, @NotNull String rowsPattern, IAnnotations rowsAnnMatrix, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, IAnnotations colsAnnMatrix, SortDirection colsDirection, boolean colsNumeric)
     {
 
         if (sortRows)

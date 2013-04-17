@@ -25,50 +25,22 @@ import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@XmlAccessorType(XmlAccessType.NONE)
-public class AnnotationMatrix extends StringMatrix
+public class AnnotationMatrixImpl extends StringMatrix implements IAnnotations
 {
 
     private static final long serialVersionUID = 2941738380629859631L;
 
-    public static class Annotation
-    {
-        private final String key;
-        private final String value;
-
-        public Annotation(String key, String value)
-        {
-            this.key = key;
-            this.value = value;
-        }
-
-        public String getKey()
-        {
-            return key;
-        }
-
-        public String getValue()
-        {
-            return value;
-        }
-    }
-
     private Map<String, Integer> rowMap;
     private Map<String, Integer> colMap;
 
-    public AnnotationMatrix()
+    public AnnotationMatrixImpl()
     {
         super();
     }
 
-    public AnnotationMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells)
+    public AnnotationMatrixImpl(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells)
     {
 
         super(title, rows, columns, cells);
@@ -91,6 +63,7 @@ public class AnnotationMatrix extends StringMatrix
         updateColumnsMap();
     }
 
+    @Override
     public int internalRowIndex(String id)
     {
         int index = -1;
@@ -102,7 +75,7 @@ public class AnnotationMatrix extends StringMatrix
         return index;
     }
 
-    public int internalColumnIndex(String id)
+    public int getIndex(String id)
     {
         int index = -1;
         Integer idx = colMap.get(id);
@@ -126,12 +99,44 @@ public class AnnotationMatrix extends StringMatrix
                 String value = getCellAsString(index, i);
                 if (value != null)
                 {
-                    String key = internalColumnLabel(i);
+                    String key = getLabel(i);
                     ann.add(new Annotation(key, value));
                 }
             }
         }
         return ann;
+    }
+
+    @Override
+    public boolean hasIdentifier(String identifier)
+    {
+        return internalRowIndex(identifier) != -1;
+    }
+
+    @Override
+    public Collection<String> getLabel()
+    {
+        return colMap.keySet();
+    }
+
+    @Override
+    public String getAnnotation(String identifier, String annotationLabel)
+    {
+        int column = getIndex(annotationLabel);
+
+        if (column == -1)
+        {
+            return null;
+        }
+
+        int row = internalRowIndex(identifier);
+
+        if (row == -1)
+        {
+            return null;
+        }
+
+        return getCellAsString(row, column);
     }
 
     private void updateRowsMap()

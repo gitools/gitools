@@ -26,9 +26,6 @@ import org.gitools.heatmap.header.HeatmapHeader;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer
 {
 

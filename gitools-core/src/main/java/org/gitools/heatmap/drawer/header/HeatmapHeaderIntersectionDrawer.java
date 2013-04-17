@@ -91,12 +91,12 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 
         if (heatmap.getRows() == evtSrc)
         {
-            rowDrawer.updateDrawers();
+            rowDrawer.update();
         }
 
         if (heatmap.getColumns() == evtSrc)
         {
-            colDrawer.updateDrawers();
+            colDrawer.update();
         }
         getHeaderDrawers();
     }

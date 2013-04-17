@@ -31,7 +31,7 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,20 +48,14 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         private final LabelProvider labelProvider;
         @Nullable
-        private final AnnotationMatrix am;
+        private final IAnnotations am;
         private final String name;
-        private int column;
 
-        public AnnotationProvider(LabelProvider labelProvider, @Nullable AnnotationMatrix am, String name)
+        public AnnotationProvider(LabelProvider labelProvider, @Nullable IAnnotations am, String name)
         {
             this.labelProvider = labelProvider;
             this.am = am;
             this.name = name;
-            if (am != null)
-            {
-                this.column = am.internalColumnIndex(name);
-            }
-
         }
 
         @Override
@@ -80,18 +74,14 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             }
 
             String label = labelProvider.getLabel(index);
-            int row = am.internalRowIndex(label);
-            if (row == -1)
+            String annotation = am.getAnnotation(label, name);
+
+            if (annotation == null)
             {
                 return "";
             }
 
-            if (column == -1)
-            {
-                return "";
-            }
-
-            return am.getCellAsString(row, column);
+            return annotation;
         }
     }
 

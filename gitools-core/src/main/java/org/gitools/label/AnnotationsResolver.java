@@ -21,7 +21,7 @@
  */
 package org.gitools.label;
 
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,10 +29,10 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver
 {
 
     private final LabelProvider labelProvider;
-    private final AnnotationMatrix am;
+    private final IAnnotations am;
     private int index;
 
-    public AnnotationsResolver(LabelProvider labelProvider, AnnotationMatrix am)
+    public AnnotationsResolver(LabelProvider labelProvider, IAnnotations am)
     {
         this.labelProvider = labelProvider;
         this.am = am;
@@ -52,13 +52,18 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver
             return label;
         }
 
-        int annRow = am != null ? am.internalRowIndex(label) : -1;
-        if (annRow == -1)
+        String annotation = null;
+
+        if (am != null)
+        {
+            annotation = am.getAnnotation(label, variableName);
+        }
+
+        if (annotation == null)
         {
             return "${" + variableName + "}";
         }
 
-        int annCol = am.internalColumnIndex(variableName);
-        return am.getCellAsString(annRow, annCol);
+        return annotation;
     }
 }

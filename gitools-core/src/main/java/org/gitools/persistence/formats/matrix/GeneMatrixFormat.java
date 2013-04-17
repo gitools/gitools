@@ -167,9 +167,9 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
             int numRows = matrix.getRows().size();
 
             // column labels
-            pw.append(matrix.internalColumnLabel(0));
+            pw.append(matrix.getLabel(0));
             for (int col = 1; col < matrix.getColumns().size(); col++)
-                pw.append('\t').append(matrix.internalColumnLabel(col));
+                pw.append('\t').append(matrix.getLabel(col));
             pw.println();
 
             // descriptions

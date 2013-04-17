@@ -23,8 +23,8 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.ResourceReference;
@@ -70,7 +70,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
     protected String dataFile = "";
 
     @XmlTransient
-    private AnnotationMatrix rowAnnotations;
+    private IAnnotations rowAnnotations;
 
     @XmlTransient
     private List<HeatmapHeader> rowHeaders;
@@ -79,7 +79,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
     private List<HeatmapHeader> columnHeaders;
 
     @XmlTransient
-    private AnnotationMatrix columnAnnotations;
+    private IAnnotations columnAnnotations;
 
     @XmlTransient
     private ColumnGroup group1;
@@ -255,22 +255,22 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable
         this.results = results;
     }
 
-    public void setRowAnnotations(AnnotationMatrix annotations)
+    public void setRowAnnotations(IAnnotations annotations)
     {
         this.rowAnnotations = annotations;
     }
 
-    public AnnotationMatrix getRowAnnotations()
+    public IAnnotations getRowAnnotations()
     {
         return this.rowAnnotations;
     }
 
-    public AnnotationMatrix getColumnAnnotations()
+    public IAnnotations getColumnAnnotations()
     {
         return columnAnnotations;
     }
 
-    public void setColumnAnnotations(AnnotationMatrix columnAnnotations)
+    public void setColumnAnnotations(IAnnotations columnAnnotations)
     {
         this.columnAnnotations = columnAnnotations;
     }

@@ -167,7 +167,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
 
             for (int ci = 0; ci < matrix.getColumns().size(); ci++)
             {
-                pw.append(matrix.internalColumnLabel(ci));
+                pw.append(matrix.getLabel(ci));
                 pw.append('\t'); // description, but currently not used
                 for (int ri = 0; ri < rowCount; ri++)
                 {

@@ -37,16 +37,16 @@ import java.awt.*;
 public abstract class HeatmapHeader extends AbstractModel
 {
 
-    private static final String TITLE_CHANGED = "title";
-    public static final String SIZE_CHANGED = "size";
-    public static final String VISIBLE_CHANGED = "visible";
-    private static final String BG_COLOR_CHANGED = "bgColor";
-    private static final String MARGIN_CHANGED = "margin";
-    private static final String LABEL_VISIBLE_CHANGED = "labelVisible";
-    static final String LABEL_FONT_CHANGED = "labelFont";
-    private static final String LABEL_ROTATED_CHANGED = "labelRotated";
-    private static final String LABEL_COLOR_CHANGED = "labelColor";
-    private static final String LARGEST_LABEL_LENGTH_CHANGED = "largestLabelLength";
+    public static final String PROPERTY_TITLE = "title";
+    public static final String PROPERTY_SIZE = "size";
+    public static final String PROPERTY_VISIBLE = "visible";
+    public static final String PROPERTY_BACKGROUND_COLOR = "backgroundColor";
+    public static final String PROPERTY_MARGIN = "margin";
+    public static final String PROPERTY_LABEL_VISIBLE = "labelVisible";
+    public static final String PROPERTY_FONT = "labelFont";
+    public static final String PROPERTY_LABEL_ROTATED = "labelRotated";
+    public static final String PROPERTY_LABEL_COLOR = "labelColor";
+    public static final String PROPERTY_LARGEST_LABEL_LENGTH = "largestLabelLength";
 
     /**
      * The title of the cluster set
@@ -56,7 +56,7 @@ public abstract class HeatmapHeader extends AbstractModel
     /**
      * The height/width of the color band
      */
-    int size;
+    protected int size;
 
     /**
      * Wether the cluster set is visible
@@ -65,26 +65,26 @@ public abstract class HeatmapHeader extends AbstractModel
 
     /* Background color*/
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    Color backgroundColor;
+    protected Color backgroundColor;
 
     /* Color band margin */ int margin;
 
     /**
      * Whether to show labels of each cluster
      */
-    boolean labelVisible;
+    protected boolean labelVisible;
 
     /**
      * The font to use for labels
      */
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
-    Font font;
+    protected Font font;
 
     /**
      * If false the label is painted along the color band,
      * otherwise the label is perpendicular to the color band
      */
-    boolean labelRotated;
+    protected boolean labelRotated;
 
     /* If the header is referring to annotation from
     * the other dimension, the pattern is stored here*/
@@ -98,13 +98,13 @@ public abstract class HeatmapHeader extends AbstractModel
      * font settings
      */
 
-    int largestLabelLength;
+    protected int largestLabelLength;
 
     /**
      * Label foreground color
      */
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    Color labelColor;
+    protected Color labelColor;
 
     public HeatmapHeader()
     {
@@ -155,7 +155,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         String old = this.title;
         this.title = title;
-        firePropertyChange(TITLE_CHANGED, old, title);
+        firePropertyChange(PROPERTY_TITLE, old, title);
     }
 
     /**
@@ -173,7 +173,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         int old = this.size;
         this.size = size;
-        firePropertyChange(SIZE_CHANGED, old, size);
+        firePropertyChange(PROPERTY_SIZE, old, size);
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         boolean old = this.visible;
         this.visible = visible;
-        firePropertyChange(VISIBLE_CHANGED, old, visible);
+        firePropertyChange(PROPERTY_VISIBLE, old, visible);
     }
 
     public Color getBackgroundColor()
@@ -200,7 +200,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         Color old = this.backgroundColor;
         this.backgroundColor = color;
-        firePropertyChange(BG_COLOR_CHANGED, old, color);
+        firePropertyChange(PROPERTY_BACKGROUND_COLOR, old, color);
     }
 
     /* Color band margin */
@@ -214,7 +214,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         int old = this.margin;
         this.margin = margin;
-        firePropertyChange(MARGIN_CHANGED, old, margin);
+        firePropertyChange(PROPERTY_MARGIN, old, margin);
     }
 
     /**
@@ -224,7 +224,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         boolean old = this.labelVisible;
         this.labelVisible = labelVisible;
-        firePropertyChange(LABEL_VISIBLE_CHANGED, old, labelVisible);
+        firePropertyChange(PROPERTY_LABEL_VISIBLE, old, labelVisible);
     }
 
     public boolean isLabelVisible()
@@ -258,7 +258,7 @@ public abstract class HeatmapHeader extends AbstractModel
         Font old = this.font;
         this.font = font;
         updateLargestLabelLength(null);
-        firePropertyChange(LABEL_FONT_CHANGED, old, font);
+        firePropertyChange(PROPERTY_FONT, old, font);
     }
 
     /**
@@ -278,7 +278,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         boolean old = this.labelRotated;
         this.labelRotated = labelRotated;
-        firePropertyChange(LABEL_ROTATED_CHANGED, old, labelRotated);
+        firePropertyChange(PROPERTY_LABEL_ROTATED, old, labelRotated);
     }
 
     /**
@@ -296,7 +296,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         Color old = this.labelColor;
         this.labelColor = labelColor;
-        firePropertyChange(LABEL_COLOR_CHANGED, old, labelColor);
+        firePropertyChange(PROPERTY_LABEL_COLOR, old, labelColor);
     }
 
     public int getLargestLabelLength()
@@ -308,7 +308,7 @@ public abstract class HeatmapHeader extends AbstractModel
     {
         int old = this.largestLabelLength;
         this.largestLabelLength = largestLabelLength;
-        firePropertyChange(LARGEST_LABEL_LENGTH_CHANGED, old, largestLabelLength);
+        firePropertyChange(PROPERTY_LARGEST_LABEL_LENGTH, old, largestLabelLength);
     }
 
     @Nullable

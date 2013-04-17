@@ -26,19 +26,8 @@ import cern.colt.matrix.ObjectMatrix1D;
 import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.matrix.model.matrix.element.StringElementAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
-
-/**
- * @noinspection ALL
- */ //TODO remove JAXB support
-@XmlAccessorType(XmlAccessType.NONE)
-
 public class StringMatrix extends ObjectMatrix
 {
-
-    private static final long serialVersionUID = 5061265701379494159L;
 
     StringMatrix()
     {
@@ -59,7 +48,6 @@ public class StringMatrix extends ObjectMatrix
         cells = ObjectFactory2D.dense.make(rows.size(), columns.size());
     }
 
-    @XmlTransient
     protected int internalColumnCount()
     {
         return cells.columns();

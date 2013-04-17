@@ -30,24 +30,19 @@ public class AnnotationResolver implements VariableValueResolver
 
     private static final String DEFAULT_NA = "";
 
-    private final AnnotationMatrix am;
+    private final IAnnotations am;
 
     private String label;
-    private int annRow;
 
     private final String na;
 
-    public AnnotationResolver(AnnotationMatrix am)
-    {
-        this(am, null);
-    }
 
-    public AnnotationResolver(AnnotationMatrix am, String label)
+    public AnnotationResolver(IAnnotations am, String label)
     {
         this(am, label, DEFAULT_NA);
     }
 
-    public AnnotationResolver(AnnotationMatrix am, @Nullable String label, String na)
+    public AnnotationResolver(IAnnotations am, @Nullable String label, String na)
     {
         this.am = am;
         if (label != null)
@@ -60,11 +55,6 @@ public class AnnotationResolver implements VariableValueResolver
     final void setLabel(String label)
     {
         this.label = label;
-
-        if (am != null)
-        {
-            annRow = am.internalRowIndex(label);
-        }
     }
 
     @Override
@@ -75,17 +65,23 @@ public class AnnotationResolver implements VariableValueResolver
             return label;
         }
 
-        if (annRow == -1)
+        if (label == null)
         {
             return na;
         }
 
-        int annCol = am != null ? am.internalColumnIndex(variableName) : -1;
-        if (annCol == -1)
+        String annotation = null;
+
+        if (am != null)
+        {
+            annotation = am.getAnnotation(label, variableName);
+        }
+
+        if (annotation == null)
         {
             return "${" + variableName + "}";
         }
 
-        return am.getCellAsString(annRow, annCol);
+        return annotation;
     }
 }
