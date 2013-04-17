@@ -28,7 +28,7 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -194,7 +194,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
         //conversion to
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
-        AnnotationMatrix am = hm.getColumns().getAnnotations();
+        IAnnotations am = hm.getColumns().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         int[] visibleCols = hm.getColumns().getVisible();
         int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);

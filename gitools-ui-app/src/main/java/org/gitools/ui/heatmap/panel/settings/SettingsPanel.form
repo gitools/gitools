@@ -311,7 +311,7 @@
               <forms/>
             </constraints>
             <properties>
-              <icon value="com/alee/extended/filechooser/icons/edit.png"/>
+              <icon value="img/edit16.png"/>
               <text value=""/>
               <toolTipText value="Edit row headers"/>
             </properties>
@@ -322,7 +322,7 @@
               <forms/>
             </constraints>
             <properties>
-              <icon value="weka/classifiers/bayes/net/icons/new.png"/>
+              <icon value="img/add16.png"/>
               <text value=""/>
               <toolTipText value="Add new row header"/>
             </properties>
@@ -333,7 +333,7 @@
               <forms/>
             </constraints>
             <properties>
-              <icon value="com/alee/extended/filechooser/icons/edit.png"/>
+              <icon value="img/edit16.png"/>
               <text value=""/>
               <toolTipText value="Edit column headers"/>
             </properties>
@@ -344,7 +344,7 @@
               <forms/>
             </constraints>
             <properties>
-              <icon value="weka/classifiers/bayes/net/icons/new.png"/>
+              <icon value="img/add16.png"/>
               <text value=""/>
               <toolTipText value="Add new column header"/>
             </properties>

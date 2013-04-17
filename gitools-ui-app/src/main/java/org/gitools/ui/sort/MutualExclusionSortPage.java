@@ -28,7 +28,7 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -218,7 +218,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
+            IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
@@ -237,7 +237,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
         if (!getPattern().equalsIgnoreCase("${id}"))
         {
-            AnnotationMatrix am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
+            IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 

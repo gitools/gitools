@@ -25,6 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
@@ -85,15 +86,17 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        if (EventUtils.isAny(evt, HeatmapDimension.class,
-                HeatmapDimension.PROPERTY_CELL_SIZE,
-                HeatmapDimension.PROPERTY_VISIBLE,
-                HeatmapDimension.PROPERTY_GRID_SIZE)
-                ||
-                EventUtils.isAny(evt, Decorator.class)
-                ||
-                EventUtils.isAny(evt, HeatmapLayers.class,
-                        HeatmapLayers.PROPERTY_TOP_LAYER)
+        if (EventUtils.isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS))
+        {
+             if (getDrawer() instanceof HeatmapHeaderDrawer)
+             {
+                 ((HeatmapHeaderDrawer) getDrawer()).update();
+             }
+        }
+
+        if (EventUtils.isAny(evt, HeatmapDimension.class) ||
+                EventUtils.isAny(evt, Decorator.class) ||
+                EventUtils.isAny(evt, HeatmapLayers.class)
                 )
         {
             updateSize();

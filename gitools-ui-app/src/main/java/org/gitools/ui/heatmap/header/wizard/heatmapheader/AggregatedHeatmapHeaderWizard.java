@@ -34,7 +34,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
@@ -354,7 +354,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
     private void getIndecesByAnnotation()
     {
         IMatrixView mv = heatmap  ;
-        AnnotationMatrix am = heatmapDim.getAnnotations();
+        IAnnotations am = heatmapDim.getAnnotations();
         String pattern = dataSourceAnnotationPage.getSelectedPattern();
         header.setAnnotationPattern(pattern);
         final AggregatedHeatmapHeaderWizard wiz = this;
@@ -400,8 +400,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         if (applyToRows)
         {
 
-            AnnotationMatrix annotations = heatmap.getRows().getAnnotations();
-            int annColIdx = annotations.internalColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
+            IAnnotations annotations = heatmap.getRows().getAnnotations();
 
             int[] rows = heatmap  .getRows().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(rows.length, 1, 0.0);
@@ -412,14 +411,12 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
 
             for (int i = 0; i < rows.length; i++)
             {
-                String rowLabel = heatmap  .getRows().getLabel(i);
+                String rowLabel = heatmap.getRows().getLabel(i);
                 rowNames[i] = rowLabel;
-                int annRowIdx;
-                annRowIdx = annotations.internalRowIndex(rowLabel);
                 Double v = Double.NaN;
-                if (annRowIdx >= 0 && annColIdx >= 0)
+                if (annotations.hasIdentifier(rowLabel))
                 {
-                    String value = annotations.getCellAsString(annRowIdx, annColIdx);
+                    String value = annotations.getAnnotation(rowLabel, dataSourceAnnotationPage.getSelectedAnnotation());
                     v = doubleTranslator.stringToValue(value, false);
                 }
                 valueMatrix.set(i, 0, v);
@@ -441,8 +438,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         else
         {
 
-            AnnotationMatrix annotations = heatmap.getColumns().getAnnotations();
-            int annColIdx = annotations.internalColumnIndex(dataSourceAnnotationPage.getSelectedAnnotation());
+            IAnnotations annotations = heatmap.getColumns().getAnnotations();
 
             int[] columns = heatmap  .getColumns().getVisible();
             valueMatrix = DoubleFactory2D.dense.make(1, columns.length, 0.0);
@@ -452,12 +448,10 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
             {
                 String colLabel = heatmap  .getColumns().getLabel(i);
                 columnNames[i] = colLabel;
-                int annRowIdx;
-                annRowIdx = annotations.internalRowIndex(colLabel);
                 Double v = Double.NaN;
-                if (annColIdx >= 0 && annRowIdx >= 0)
+                if (annotations.hasIdentifier(colLabel))
                 {
-                    v = Double.parseDouble(annotations.getCellAsString(annRowIdx, annColIdx));
+                    v = Double.parseDouble(annotations.getAnnotation(colLabel, dataSourceAnnotationPage.getSelectedAnnotation()));
                 }
                 valueMatrix.set(0, i, v);
             }

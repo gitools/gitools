@@ -23,8 +23,8 @@ package org.gitools.ui.actions.data;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -111,7 +111,7 @@ public class SortByMutualExclusionAction extends BaseAction
             {
                 monitor.begin("Sorting ...", 1);
 
-                AnnotationMatrix am = null;
+                IAnnotations am = null;
                 FilterDimension dim = page.getFilterDimension();
                 switch (dim)
                 {
@@ -128,31 +128,6 @@ public class SortByMutualExclusionAction extends BaseAction
                 monitor.end();
             }
         });
-
-
-/*
-        final List<ValueSortCriteria> criteriaList = dlg.getCriteriaList();
-		if (criteriaList.size() == 0) {
-			AppFrame.instance().setStatusText("No criteria specified.");
-			return;
-		}
-
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				monitor.begin("Sorting ...", 1);
-
-				ValueSortCriteria[] criteriaArray =
-						new ValueSortCriteria[criteriaList.size()];
-
-				MatrixViewSorter.sortByValue(matrixView,
-						criteriaList.toArray(criteriaArray),
-						dlg.isApplyToRowsChecked(),
-						dlg.isApplyToColumnsChecked());
-
-				monitor.end();
-			}
-		});*/
 
         AppFrame.get().setStatusText("Sorted.");
     }

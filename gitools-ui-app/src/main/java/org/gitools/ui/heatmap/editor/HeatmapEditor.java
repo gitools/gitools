@@ -33,7 +33,7 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;
@@ -273,11 +273,10 @@ public class HeatmapEditor extends AbstractEditor
             String label = mv.getRows().getLabel(row);
             sb.append(label);
             HeatmapDimension rowDim = heatmap.getRows();
-            AnnotationMatrix am = rowDim.getAnnotations();
+            IAnnotations am = rowDim.getAnnotations();
             if (am != null)
             {
-                int annRow = am.internalRowIndex(label);
-                if (annRow != -1)
+                if (am.hasIdentifier(label))
                 {
                     boolean first = true;
                     for (HeatmapHeader header : rowDim.getHeaders())
@@ -289,8 +288,7 @@ public class HeatmapEditor extends AbstractEditor
                             {
                                 continue;
                             }
-                            int annCol = am.internalColumnIndex(annLabel);
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCellAsString(annRow, annCol));
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
                             first = false;
                         }
                     }
@@ -302,11 +300,10 @@ public class HeatmapEditor extends AbstractEditor
             String label = mv.getColumns().getLabel(col);
             sb.append(label);
             HeatmapDimension colDim = heatmap.getColumns();
-            AnnotationMatrix am = colDim.getAnnotations();
+            IAnnotations am = colDim.getAnnotations();
             if (am != null)
             {
-                int annRow = am.internalRowIndex(label);
-                if (annRow != -1)
+                if (am.hasIdentifier(label))
                 {
                     boolean first = true;
                     for (HeatmapHeader header : colDim.getHeaders())
@@ -318,8 +315,7 @@ public class HeatmapEditor extends AbstractEditor
                             {
                                 continue;
                             }
-                            int annCol = am.internalColumnIndex(annLabel);
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getCellAsString(annRow, annCol));
+                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
                             first = false;
                         }
                     }

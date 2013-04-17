@@ -21,20 +21,17 @@
  */
 package org.gitools.ui.wizard.common;
 
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 
 import javax.swing.*;
 import javax.swing.event.*;
 
-/**
- * @noinspection ALL
- */
 public class PatternSourcePage extends AbstractWizardPage
 {
 
-    private AnnotationMatrix am;
+    private IAnnotations am;
 
     private boolean idOptVisible;
 
@@ -43,7 +40,7 @@ public class PatternSourcePage extends AbstractWizardPage
         this(null, idOptVisible);
     }
 
-    public PatternSourcePage(AnnotationMatrix am, boolean idOptVisible)
+    public PatternSourcePage(IAnnotations am, boolean idOptVisible)
     {
         this.am = am;
         this.idOptVisible = idOptVisible;
@@ -93,7 +90,7 @@ public class PatternSourcePage extends AbstractWizardPage
     {
         super.updateControls();
 
-        if (am != null && am.getColumns().size() > 0)
+        if (am != null && !am.getLabel().isEmpty())
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
@@ -101,8 +98,8 @@ public class PatternSourcePage extends AbstractWizardPage
             {
                 model.addElement("id");
             }
-            for (int i = 0; i < am.getColumns().size(); i++)
-                model.addElement(am.internalColumnLabel(i));
+            for (String key : am.getLabel())
+                model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
         }
@@ -196,7 +193,7 @@ public class PatternSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
-    public void setAnnotationMatrix(AnnotationMatrix am)
+    public void setAnnotationMatrix(IAnnotations am)
     {
         this.am = am;
         updateControls();

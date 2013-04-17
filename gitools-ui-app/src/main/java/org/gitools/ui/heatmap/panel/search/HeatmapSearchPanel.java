@@ -22,8 +22,8 @@
 package org.gitools.ui.heatmap.panel.search;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -188,7 +188,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         }
     }
 
-    private boolean checkMatch(IMatrixView mv, @Nullable AnnotationMatrix am, String label)
+    private boolean checkMatch(IMatrixView mv, @Nullable IAnnotations am, String label)
     {
 
         if (searchPat == null)
@@ -206,15 +206,20 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             return false;
         }
 
-        int annRow = am.internalRowIndex(label);
-        if (annRow == -1)
+        if (!am.hasIdentifier(label))
         {
             return false;
         }
 
         boolean found = false;
-        for (int i = 0; i < am.getColumns().size() && !found; i++)
-            found = searchPat.matcher(am.getCellAsString(annRow, i)).find();
+        for (String annotation : am.getLabel()) {
+            found = searchPat.matcher(am.getAnnotation(label, annotation)).find();
+
+            if (found)
+            {
+                break;
+            }
+        }
 
         return found;
     }
@@ -273,7 +278,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             // Search rows
             if (highlightAllChk.isSelected())
             {
-                AnnotationMatrix am = hm.getRows().getAnnotations();
+                IAnnotations am = hm.getRows().getAnnotations();
 
                 int rowCount = mv.getRows().size();
                 for (int index = 0; index < rowCount; index++)
@@ -298,7 +303,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
             // Column search
             if (highlightAllChk.isSelected())
             {
-                AnnotationMatrix am = hm.getColumns().getAnnotations();
+                IAnnotations am = hm.getColumns().getAnnotations();
 
                 int colCount = mv.getColumns().size();
                 for (int index = 0; index < colCount; index++)
@@ -337,7 +342,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         {
 
             // Row search
-            AnnotationMatrix am = hm.getRows().getAnnotations();
+            IAnnotations am = hm.getRows().getAnnotations();
 
             int index = leadRow - 1;
             if (index < 0)
@@ -368,7 +373,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         {
 
             // Column search
-            AnnotationMatrix am = hm.getColumns().getAnnotations();
+            IAnnotations am = hm.getColumns().getAnnotations();
 
             int colCount = mv.getColumns().size();
             int index = leadCol - 1;
@@ -422,7 +427,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         {
 
             // Row search
-            AnnotationMatrix am = hm.getRows().getAnnotations();
+            IAnnotations am = hm.getRows().getAnnotations();
 
             int rowCount = mv.getRows().size();
             int index = leadRow + 1;
@@ -453,7 +458,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         {
 
             // Column search
-            AnnotationMatrix am = hm.getColumns().getAnnotations();
+            IAnnotations am = hm.getColumns().getAnnotations();
 
             int colCount = mv.getColumns().size();
             int index = leadCol + 1;

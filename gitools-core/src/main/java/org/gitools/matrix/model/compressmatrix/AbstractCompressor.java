@@ -237,7 +237,8 @@ public abstract class AbstractCompressor
         String[] fields;
 
         // Read the headers
-        header = reader.readNext();
+        String[] headers = reader.readNext();
+        header = Arrays.copyOfRange(headers, 2, headers.length);
 
         int maxLineLength = 0;
         long totalLineLength = 0;

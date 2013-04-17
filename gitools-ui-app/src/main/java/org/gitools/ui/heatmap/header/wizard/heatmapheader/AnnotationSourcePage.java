@@ -22,16 +22,13 @@
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public class AnnotationSourcePage extends AbstractWizardPage
 {
 
@@ -58,13 +55,13 @@ public class AnnotationSourcePage extends AbstractWizardPage
     {
         super.updateControls();
 
-        AnnotationMatrix am = hdim.getAnnotations();
+        IAnnotations am = hdim.getAnnotations();
         int seomvar = annList.getModel().getSize();
-        if (am != null && am.getColumns().size() > 0 && annList.getModel().getSize() != am.getColumns().size())
+        if (am != null && !am.getLabel().isEmpty() && annList.getModel().getSize() != am.getLabel().size())
         {
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumns().size(); i++)
-                model.addElement(am.internalColumnLabel(i));
+            for (String key : am.getLabel())
+                model.addElement(key);
             annList.setModel(model);
         }
         annList.setSelectedIndices(selectedIndices);

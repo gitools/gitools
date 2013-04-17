@@ -26,9 +26,9 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixColumnsLabelProvider;
 import org.gitools.label.MatrixRowsLabelProvider;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
@@ -107,7 +107,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 
                     LabelProvider labelProvider = null;
-                    AnnotationMatrix annMatrix = null;
+                    IAnnotations annMatrix = null;
 
                     switch (wiz.getWhichLabels())
                     {

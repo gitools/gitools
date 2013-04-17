@@ -24,8 +24,8 @@ package org.gitools.ui.actions.data;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.dialog.filter.LabelFilterPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -89,7 +89,7 @@ public class FilterByLabelAction extends BaseAction
             {
                 monitor.begin("Filtering ...", 1);
 
-                AnnotationMatrix am = null;
+                IAnnotations am = null;
                 FilterDimension dim = page.getFilterDimension();
                 switch (dim)
                 {

@@ -26,7 +26,7 @@ import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
@@ -122,14 +122,14 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 if (analysis.getRowAnnotations() != null)
                 {
-                    heatmap.getRows().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getRowAnnotations()));
+                    heatmap.getRows().setAnnotations(new ResourceReference<IAnnotations>("annotations", analysis.getRowAnnotations()));
                 }
                 if (analysis.getRowHeaders() != null)
                     copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
 
                 if (analysis.getColumnAnnotations() != null)
                 {
-                    heatmap.getColumns().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", analysis.getColumnAnnotations()));
+                    heatmap.getColumns().setAnnotations(new ResourceReference<IAnnotations>("annotations", analysis.getColumnAnnotations()));
                 }
                 if (analysis.getColumnHeaders() != null)
                     copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());
@@ -184,7 +184,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 {
                     if (analysis.getRowAnnotations() != null)
                     {
-                        heatmap.getRows().setAnnotations(new ResourceReference<AnnotationMatrix>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
+                        heatmap.getRows().setAnnotations(new ResourceReference<IAnnotations>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
                     }
 
                     heatmap.getRows().removeHeader(0);

@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.textlabels;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,20 +79,18 @@ public class TextLabelsSourcePage extends AbstractWizardPage
                 break;
         }
 
-        AnnotationMatrix am = hdim.getAnnotations();
-        if (am != null && am.getColumns().size() > 0)
+        IAnnotations am = hdim.getAnnotations();
+        if (am != null && !am.getLabel().isEmpty())
         {
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumns().size(); i++)
-                model.addElement(am.internalColumnLabel(i));
-            annList.setModel(model);
-
-            String label = header.getLabelAnnotation();
-            int annIndex = am.internalColumnIndex(label);
-            if (annIndex > -1)
+            for (String annotationKey : am.getLabel())
             {
-                annList.setSelectedIndex(annIndex);
+                model.addElement(annotationKey);
             }
+
+            annList.setModel(model);
+            annList.setSelectedValue(header.getLabelAnnotation(), true);
+
         }
 
         pattText.setText(header.getLabelPattern());

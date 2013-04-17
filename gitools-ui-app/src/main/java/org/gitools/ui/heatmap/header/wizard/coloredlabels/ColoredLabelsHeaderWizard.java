@@ -30,8 +30,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -116,7 +116,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
         }
 
         IMatrixView mv = heatmap  ;
-        AnnotationMatrix am = hdim.getAnnotations();
+        IAnnotations am = hdim.getAnnotations();
         header.setAnnotationPattern(pattern);
 
         final ClusteringData data = applyToRows ? new AnnPatRowClusteringData(mv, am, pattern) : new AnnPatColumnClusteringData(mv, am, pattern);

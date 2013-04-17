@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.jetbrains.annotations.NotNull;
@@ -59,13 +59,13 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         annOpt.addChangeListener(optListener);
         patOpt.addChangeListener(optListener);
 
-        AnnotationMatrix am = hdim.getAnnotations();
-        if (am != null && am.getColumns().size() > 0)
+        IAnnotations am = hdim.getAnnotations();
+        if (am != null && !am.getLabel().isEmpty())
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
-            for (int i = 0; i < am.getColumns().size(); i++)
-                model.addElement(am.internalColumnLabel(i));
+            for (String key : am.getLabel())
+                model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
         }
@@ -131,18 +131,18 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
             return patText.getText();
         }
 
-        AnnotationMatrix am = hdim.getAnnotations();
+        IAnnotations am = hdim.getAnnotations();
         StringBuilder sb = new StringBuilder();
-        int[] indices = annList.getSelectedIndices();
+        Object[] selectedValues = annList.getSelectedValues();
 
         sb.append("${");
-        sb.append(am.internalColumnLabel(indices[0]));
+        sb.append(selectedValues[0]);
         sb.append("}");
-        for (int i = 1; i < indices.length; i++)
+        for (int i = 1; i < selectedValues.length; i++)
         {
             sb.append(annSepCb.getSelectedItem());
             sb.append("${");
-            sb.append(am.internalColumnLabel(indices[i]));
+            sb.append(selectedValues[i]);
             sb.append("}");
         }
 
@@ -156,15 +156,15 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
             return patText.getText();
         }
 
-        AnnotationMatrix am = hdim.getAnnotations();
+        IAnnotations am = hdim.getAnnotations();
         StringBuilder sb = new StringBuilder();
-        int[] indices = annList.getSelectedIndices();
+        Object[] indices = annList.getSelectedValues();
 
-        sb.append(am.internalColumnLabel(indices[0]));
+        sb.append(indices[0]);
         for (int i = 1; i < indices.length; i++)
         {
             sb.append(annSepCb.getSelectedItem());
-            sb.append(am.internalColumnLabel(indices[i]));
+            sb.append(indices[i]);
         }
 
         return sb.toString();
