@@ -23,11 +23,18 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.io.File;
 
 public class AnnotationSourcePage extends AbstractWizardPage
 {
@@ -113,19 +120,17 @@ public class AnnotationSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         annList = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
+        loadAnnotations = new javax.swing.JButton();
 
         annList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        annList.addListSelectionListener(new javax.swing.event.ListSelectionListener()
-        {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt)
-            {
+        annList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 annListValueChanged(evt);
             }
         });
@@ -133,10 +138,38 @@ public class AnnotationSourcePage extends AbstractWizardPage
 
         jLabel1.setText("Available annotations");
 
+        loadAnnotations.setText("Load file");
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadAnnotationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(24, 24, 24).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel1).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(29, 29, 29).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(29, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(loadAnnotations))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(loadAnnotations))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void annListValueChanged(javax.swing.event.ListSelectionEvent evt)
@@ -156,11 +189,27 @@ public class AnnotationSourcePage extends AbstractWizardPage
         }
     }//GEN-LAST:event_annListValueChanged
 
+    private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
+        try {
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
+
+            if (file != null) {
+                hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+                updateControls();
+                //annFile.setText(file.getName());
+            }
+        }
+        catch (Exception ex) {
+            LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
+        }
+    }//GEN-LAST:event_loadAnnotationsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList annList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadAnnotations;
     private javax.swing.ButtonGroup optGroup;
     // End of variables declaration//GEN-END:variables
 

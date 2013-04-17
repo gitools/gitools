@@ -81,7 +81,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     {
         if (!editionMode)
         {
-            sourcePage = new PatternSourcePage(hdim.getAnnotations(), true);
+            sourcePage = new PatternSourcePage(hdim, true);
             addPage(sourcePage);
         }
 

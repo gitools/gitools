@@ -141,7 +141,7 @@ public class LabelSortPage extends AbstractWizardPage
 
     private void selectRowsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getRows().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())
@@ -155,7 +155,7 @@ public class LabelSortPage extends AbstractWizardPage
 
     private void selectColsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumns().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())

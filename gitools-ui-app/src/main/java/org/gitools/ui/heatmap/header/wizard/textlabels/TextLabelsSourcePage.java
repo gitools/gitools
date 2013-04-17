@@ -24,12 +24,19 @@ package org.gitools.ui.heatmap.header.wizard.textlabels;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.LogUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class TextLabelsSourcePage extends AbstractWizardPage
 {
@@ -158,8 +165,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         idOpt = new javax.swing.JRadioButton();
@@ -168,6 +174,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         annList = new javax.swing.JList();
         patOpt = new javax.swing.JRadioButton();
         pattText = new javax.swing.JTextField();
+        loadAnnotations = new javax.swing.JButton();
 
         optGroup.add(idOpt);
         idOpt.setText("The ID");
@@ -185,11 +192,74 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         pattText.setText("${id}");
         pattText.setEnabled(false);
 
+        loadAnnotations.setText("Load file");
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                loadAnnotationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGap(24, 24, 24).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(idOpt).addComponent(annOpt))).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(12, 12, 12).addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)).addComponent(patOpt)))).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(idOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(annOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE).addGap(18, 18, 18).addComponent(patOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(24, 24, 24)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(idOpt)
+                                            .addComponent(annOpt))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(loadAnnotations))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(12, 12, 12)
+                                                    .addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                                            .addComponent(patOpt))))
+                    .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                    .addComponent(idOpt)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(annOpt))
+                            .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                    .addGap(18, 18, 18)
+                    .addComponent(patOpt)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
+        try {
+			File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
+
+			if (file != null) {
+				hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+                updateControls();
+				//annFile.setText(file.getName());
+			}
+		}
+		catch (Exception ex) {
+			LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
+		}
+    }//GEN-LAST:event_loadAnnotationsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -197,6 +267,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     private javax.swing.JRadioButton annOpt;
     private javax.swing.JRadioButton idOpt;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadAnnotations;
     private javax.swing.ButtonGroup optGroup;
     private javax.swing.JRadioButton patOpt;
     private javax.swing.JTextField pattText;

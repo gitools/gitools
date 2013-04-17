@@ -21,17 +21,25 @@
  */
 package org.gitools.ui.wizard.common;
 
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.LogUtils;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.event.*;
+import java.io.File;
 
 public class PatternSourcePage extends AbstractWizardPage
 {
 
-    private IAnnotations am;
+    private HeatmapDimension hdim;
 
     private boolean idOptVisible;
 
@@ -40,9 +48,9 @@ public class PatternSourcePage extends AbstractWizardPage
         this(null, idOptVisible);
     }
 
-    public PatternSourcePage(IAnnotations am, boolean idOptVisible)
+    public PatternSourcePage(HeatmapDimension hdim, boolean idOptVisible)
     {
-        this.am = am;
+        this.hdim = hdim;
         this.idOptVisible = idOptVisible;
 
         initComponents();
@@ -90,7 +98,7 @@ public class PatternSourcePage extends AbstractWizardPage
     {
         super.updateControls();
 
-        if (am != null && !am.getLabel().isEmpty())
+        if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabel().isEmpty())
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
@@ -98,7 +106,7 @@ public class PatternSourcePage extends AbstractWizardPage
             {
                 model.addElement("id");
             }
-            for (String key : am.getLabel())
+            for (String key : hdim.getAnnotations().getLabel())
                 model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
@@ -193,9 +201,9 @@ public class PatternSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
-    public void setAnnotationMatrix(IAnnotations am)
+    public void setHeatmapDimension(HeatmapDimension heatmapDimension)
     {
-        this.am = am;
+        this.hdim = heatmapDimension;
         updateControls();
     }
 
@@ -219,8 +227,7 @@ public class PatternSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         annOpt = new javax.swing.JRadioButton();
@@ -232,6 +239,7 @@ public class PatternSourcePage extends AbstractWizardPage
         annSepLabel = new javax.swing.JLabel();
         annSepCb = new javax.swing.JComboBox();
         idOpt = new javax.swing.JRadioButton();
+        loadAnnotations = new javax.swing.JButton();
 
         optGroup.add(annOpt);
         annOpt.setText("Annotations");
@@ -253,11 +261,90 @@ public class PatternSourcePage extends AbstractWizardPage
         optGroup.add(idOpt);
         idOpt.setText("Identifiers");
 
+        loadAnnotations.setText("Load file");
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                loadAnnotationsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(24, 24, 24).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addGap(24, 24, 24).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel1).addGroup(layout.createSequentialGroup().addComponent(annSepLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(patOpt)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(idOpt)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(annOpt)).addGroup(layout.createSequentialGroup().addGap(24, 24, 24).addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addComponent(idOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(annOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel1).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(annSepLabel).addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(patOpt).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                    .addGap(24, 24, 24)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                    .addGap(24, 24, 24)
+                                    .addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(idOpt)
+                                            .addComponent(annOpt))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(loadAnnotations))
+                            .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addGap(24, 24, 24)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jLabel1)
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                    .addComponent(annSepLabel)
+                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                    .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                    .addContainerGap()
+                                                    .addComponent(patOpt)))
+                                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                    .addComponent(idOpt)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(annOpt))
+                            .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1)
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(annSepLabel)
+                            .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(patOpt)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
+        try {
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
+
+            if (file != null) {
+                hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+                updateControls();
+                //annFile.setText(file.getName());
+            }
+        }
+        catch (Exception ex) {
+            LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
+        }
+    }//GEN-LAST:event_loadAnnotationsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -268,6 +355,7 @@ public class PatternSourcePage extends AbstractWizardPage
     private javax.swing.JRadioButton idOpt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadAnnotations;
     private javax.swing.ButtonGroup optGroup;
     private javax.swing.JRadioButton patOpt;
     private javax.swing.JTextField patText;

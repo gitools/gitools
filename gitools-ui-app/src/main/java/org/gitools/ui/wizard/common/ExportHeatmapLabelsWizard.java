@@ -80,12 +80,12 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
             {
                 case VISIBLE_ROWS:
                 case HIDDEN_ROWS:
-                    patPage.setAnnotationMatrix(hm.getRows().getAnnotations());
+                    patPage.setHeatmapDimension(hm.getRows());
                     break;
 
                 case VISIBLE_COLUMNS:
                 case HIDDEN_COLUMNS:
-                    patPage.setAnnotationMatrix(hm.getColumns().getAnnotations());
+                    patPage.setHeatmapDimension(hm.getColumns());
                     break;
             }
         }

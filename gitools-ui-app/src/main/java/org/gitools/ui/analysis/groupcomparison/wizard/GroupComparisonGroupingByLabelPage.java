@@ -125,7 +125,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
     private void selectColsPattern()
     {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumns().getAnnotations(), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled())

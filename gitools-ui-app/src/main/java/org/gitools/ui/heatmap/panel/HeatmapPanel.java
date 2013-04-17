@@ -265,7 +265,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
 
         lastUpdateViewPorts = System.currentTimeMillis();
 
-
         Dimension totalSize = bodyVP.getViewSize();
         Dimension visibleSize = bodyVP.getSize();
 
@@ -285,6 +284,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         rowVP.setViewPosition(new Point(0, rowValue));
         bodyVP.setViewPosition(new Point(colValue, rowValue));
         intersectVP.setViewPosition(new Point(0, 0));
+
+        lastUpdateViewPorts = System.currentTimeMillis();
     }
 
     public JViewport getBodyViewPort()
