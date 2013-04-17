@@ -33,24 +33,21 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Converts a 'tdm' file into a compressed 'ctdm' direct from the file.
+ * Converts a 'tdm' file into a compressed 'cmatrix' direct from the file.
  * This conversion doesn't need to full load the input matrix into the memory.
  */
-public class FileCompressMatrixConversion extends AbstractCompressor
-{
+public class FileCompressMatrixConversion extends AbstractCompressor {
 
     /**
-     * Convert a 'tdm' matrix into a compressed 'ctdm'.
+     * Convert a 'tdm' matrix into a compressed 'cmatrix'.
      *
-     * @param inputFile the 'tdm' input file
-     * @param outputFile the 'ctdm' output file
+     * @param inputFile       the 'tdm' input file
+     * @param outputFile      the 'cmatrix' output file
      * @param progressMonitor the progress monitor
      * @throws ToolException
      */
-    public void convert(String inputFile, String outputFile, IProgressMonitor progressMonitor) throws ToolException
-    {
-        try
-        {
+    public void convert(String inputFile, String outputFile, IProgressMonitor progressMonitor) throws ToolException {
+        try {
             DataOutputStream out = new DataOutputStream(new FileOutputStream(outputFile));
 
             // Build the compression dictionary calculating the
@@ -98,11 +95,10 @@ public class FileCompressMatrixConversion extends AbstractCompressor
             List<String> rowsList = Arrays.asList(getRows().getLabels());
 
             // Start the 'group by' row process
-            while (from < rowsList.size())
-            {
+            while (from < rowsList.size()) {
                 progressMonitor.begin("> Computing rows between " + from + " to " + to + " of " + getRows().size(), 1);
 
-                Set<String> someRows = new HashSet<String>(rowsList.subList((int)from, (int)to));
+                Set<String> someRows = new HashSet<String>(rowsList.subList((int) from, (int) to));
 
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));
                 String line;
@@ -116,8 +112,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor
                 long memoryBefore = MemoryUtils.getAvailableMemory();
 
                 progressMonitor.begin("Initializing buffers...", 1);
-                for (String row : someRows)
-                {
+                for (String row : someRows) {
                     groups.put(row, new NotCompressRow(getColumns()));
                 }
 
@@ -127,17 +122,14 @@ public class FileCompressMatrixConversion extends AbstractCompressor
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
                 progressMonitor.begin("Start group by row...", (int) (getTotalLines() / 2000));
-                while ((line = reader.readLine()) != null)
-                {
-                    if ((count % 2000) == 0)
-                    {
+                while ((line = reader.readLine()) != null) {
+                    if ((count % 2000) == 0) {
                         progressMonitor.worked(1);
                     }
                     count++;
 
                     String row = parseField(line, 1);
-                    if (someRows.contains(row))
-                    {
+                    if (someRows.contains(row)) {
                         NotCompressRow group = groups.get(row);
                         group.append(line);
                     }
@@ -148,12 +140,11 @@ public class FileCompressMatrixConversion extends AbstractCompressor
 
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
-                progressMonitor.debug("Real memory usage: " + (memoryBefore - memoryAfter) + " (estimated " + estimatedMemoryUsage + " - over estimation " + 100*((double)(memoryBefore - memoryAfter - estimatedMemoryUsage) / (double)(- memoryBefore + memoryAfter)) + "%)");
+                progressMonitor.debug("Real memory usage: " + (memoryBefore - memoryAfter) + " (estimated " + estimatedMemoryUsage + " - over estimation " + 100 * ((double) (memoryBefore - memoryAfter - estimatedMemoryUsage) / (double) (-memoryBefore + memoryAfter)) + "%)");
 
                 // Compress the row and write to disk
                 progressMonitor.begin("Compressing...", groups.size());
-                for (Map.Entry<String, NotCompressRow> group : groups.entrySet())
-                {
+                for (Map.Entry<String, NotCompressRow> group : groups.entrySet()) {
                     progressMonitor.worked(1);
 
                     // The row position
@@ -184,44 +175,35 @@ public class FileCompressMatrixConversion extends AbstractCompressor
             out.close();
             progressMonitor.end();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
 
     }
 
 
-
     public static class FileMatrixReader implements IMatrixReader {
 
         private CSVReader reader;
 
-        public FileMatrixReader(CSVReader reader)
-        {
+        public FileMatrixReader(CSVReader reader) {
             this.reader = reader;
         }
 
         @Override
-        public String[] readNext()
-        {
-            try
-            {
+        public String[] readNext() {
+            try {
                 return reader.readNext();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 return null;
             }
         }
 
         @Override
-        public void close()
-        {
-            try
-            {
+        public void close() {
+            try {
                 reader.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -232,8 +214,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor
      *
      * @param args
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         FileCompressMatrixConversion test = new FileCompressMatrixConversion();
 
         String inputFile = args[0];
@@ -241,11 +222,9 @@ public class FileCompressMatrixConversion extends AbstractCompressor
 
         IProgressMonitor progressMonitor = new StreamProgressMonitor(System.out, true, true);
 
-        try
-        {
+        try {
             test.convert(inputFile, outputFile, progressMonitor);
-        } catch (ToolException e)
-        {
+        } catch (ToolException e) {
             e.printStackTrace();
         }
     }

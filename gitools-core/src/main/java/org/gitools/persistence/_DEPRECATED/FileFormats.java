@@ -21,9 +21,10 @@
  */
 package org.gitools.persistence._DEPRECATED;
 
+import org.gitools.persistence.formats.compressmatrix.CompressedMatrixFormat;
+
 @Deprecated
-public class FileFormats
-{
+public class FileFormats {
     // Data
     public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", FileSuffixes.GENE_MATRIX);
 
@@ -40,6 +41,8 @@ public class FileFormats
     public static final FileFormat MODULES_2C_MAP = new FileFormat("Two columns mappings", FileSuffixes.MODULES_2C_MAP);
 
     public static final FileFormat MULTIVALUE_DATA_MATRIX = new FileFormat("Multivalue data matrix", FileSuffixes.OBJECT_MATRIX);
+
+    public static final FileFormat COMPRESSED_MATRIX = new FileFormat("Compressed matrix", CompressedMatrixFormat.EXTENSION);
 
     // Image
     public static final FileFormat PNG = new FileFormat("PNG", "png", true, false);

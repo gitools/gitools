@@ -41,13 +41,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class OpenAction extends BaseAction
-{
+public class OpenAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public OpenAction()
-    {
+    public OpenAction() {
         super("from filesystem...");
         setDesc("Open a heatmap or an analysis from the filesystem");
         setSmallIconFromResource(IconNames.openMatrix16);
@@ -57,8 +55,7 @@ public class OpenAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         FileFormatFilter[] filters = new FileFormatFilter[]{
 
                 new FileFormatFilter("All known formats",
@@ -70,6 +67,7 @@ public class OpenAction extends BaseAction
                                 FileFormats.GENE_CLUSTER_TEXT,
                                 FileFormats.GENE_MATRIX,
                                 FileFormats.GENE_MATRIX_TRANSPOSED,
+                                FileFormats.COMPRESSED_MATRIX,
                                 EnrichmentAnalysisFormat.FILE_FORMAT,
                                 OncodriveAnalysisFormat.FILE_FORMAT,
                                 CorrelationAnalysisFormat.FILE_FORMAT,
@@ -118,8 +116,7 @@ public class OpenAction extends BaseAction
 
         final File file = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
 
-        if (file == null)
-        {
+        if (file == null) {
             return;
         }
 

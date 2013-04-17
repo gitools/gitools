@@ -29,7 +29,7 @@ import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.SimpleMatrixLayers;
 import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
+import org.gitools.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
@@ -47,8 +47,7 @@ import java.util.zip.Inflater;
  * Keeps a dynamic cache with the expanded values. The size of the cache
  * will grow depending on the available free memory.
  */
-public class CompressElementAdapter
-{
+public class CompressElementAdapter {
     private static final char SEPARATOR = '\t';
     public static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
     private static DoubleTranslator TRANSLATOR = new DoubleTranslator();
@@ -70,8 +69,7 @@ public class CompressElementAdapter
      * @param values     the values a map with the row position as a key and a {@link CompressRow} with all the column values.
      * @param columns    the column dimension of the matrix.
      */
-    public CompressElementAdapter(byte[] dictionary, String[] headers, Map<Integer, CompressRow> values, CompressDimension columns)
-    {
+    public CompressElementAdapter(byte[] dictionary, String[] headers, Map<Integer, CompressRow> values, CompressDimension columns) {
         this.dictionary = dictionary;
         this.values = values;
         this.columns = columns;
@@ -87,8 +85,7 @@ public class CompressElementAdapter
 
         // Estimate uncompress matrix size
         int matrixSize = 0;
-        for (CompressRow value : values.values())
-        {
+        for (CompressRow value : values.values()) {
             matrixSize = matrixSize + value.getNotCompressedLength() + 4;
         }
 
@@ -102,10 +99,8 @@ public class CompressElementAdapter
         rowsCache = CacheBuilder.newBuilder()
                 .maximumSize(cacheSize)
                 .build(
-                        new CacheLoader<Integer, Map<Integer, Double[]>>()
-                        {
-                            public Map<Integer, Double[]> load(Integer row)
-                            {
+                        new CacheLoader<Integer, Map<Integer, Double[]>>() {
+                            public Map<Integer, Double[]> load(Integer row) {
                                 return uncompress(CompressElementAdapter.this.values.get(row));
                             }
                         });
@@ -113,13 +108,10 @@ public class CompressElementAdapter
         // Create a timer that watches every 5 seconds the available memory
         // and evict all the cache if it is below a minimum threshold.
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate( new TimerTask()
-        {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
-            public void run()
-            {
-                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD)
-                {
+            public void run() {
+                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD) {
                     System.out.println("WARNING: Memory too low, cleaning cache.");
                     rowsCache.invalidateAll();
                     System.gc();
@@ -134,11 +126,9 @@ public class CompressElementAdapter
      * @param index  The target attribute identifier
      * @return Double value
      */
-    private Double toDouble(String values, int index)
-    {
+    private Double toDouble(String values, int index) {
 
-        if (values == null)
-        {
+        if (values == null) {
             return null;
         }
 
@@ -152,7 +142,6 @@ public class CompressElementAdapter
      * @param str The string to split using SEPARATOR
      * @param num The position to return
      * @return The string at 'num' position using 'SEPARATOR' in 'str' string.
-     *
      */
     private static String parseField(String str, int num) {
         int start = -1;
@@ -170,32 +159,25 @@ public class CompressElementAdapter
         return result.replace('"', ' ').trim();
     }
 
-    public Class<?> getElementClass()
-    {
+    public Class<?> getElementClass() {
         return int[].class;
     }
 
-    public int getPropertyCount()
-    {
+    public int getPropertyCount() {
         return properties.size();
     }
 
-    public IMatrixLayer getProperty(int index)
-    {
+    public IMatrixLayer getProperty(int index) {
         return properties.get(index);
     }
 
-    public IMatrixLayers getProperties()
-    {
+    public IMatrixLayers getProperties() {
         return properties;
     }
 
-    public int getPropertyIndex(String label)
-    {
-        for (int i = 0; i < properties.size(); i++)
-        {
-            if (properties.get(i).getId().equals(label))
-            {
+    public int getPropertyIndex(String label) {
+        for (int i = 0; i < properties.size(); i++) {
+            if (properties.get(i).getId().equals(label)) {
                 return i;
             }
         }
@@ -203,8 +185,7 @@ public class CompressElementAdapter
         return -1;
     }
 
-    public Object getValue(Object element, int index)
-    {
+    public Object getValue(Object element, int index) {
         int[] rowAndColumn = (int[]) element;
 
         int row = rowAndColumn[0];
@@ -213,12 +194,10 @@ public class CompressElementAdapter
         // The cache is who loads the value if it's not already loaded.
         Map<Integer, Double[]> rowValues = rowsCache.getUnchecked(row);
 
-        if (rowValues != null)
-        {
+        if (rowValues != null) {
             Double[] columnValues = rowValues.get(column);
 
-            if (columnValues != null)
-            {
+            if (columnValues != null) {
                 return columnValues[index];
             }
         }
@@ -226,13 +205,11 @@ public class CompressElementAdapter
         return null;
     }
 
-    public boolean isEmpty(int row, int column)
-    {
-        return (getValue(new int[] {row, column}, 0) == null);
+    public boolean isEmpty(int row, int column) {
+        return (getValue(new int[]{row, column}, 0) == null);
     }
 
-    public void setValue(Object element, int index, Object value)
-    {
+    public void setValue(Object element, int index, Object value) {
         throw new UnsupportedOperationException("Read only matrix");
     }
 
@@ -242,13 +219,11 @@ public class CompressElementAdapter
      * @param compressRow The compressed row
      * @return A map from column to an array of strings with the values
      */
-    private synchronized Map<Integer, Double[]> uncompress(CompressRow compressRow)
-    {
+    private synchronized Map<Integer, Double[]> uncompress(CompressRow compressRow) {
 
         Map<Integer, Double[]> values = new HashMap<Integer, Double[]>(columns.size() / 4);
 
-        try
-        {
+        try {
             byte[] result = new byte[compressRow.getNotCompressedLength()];
 
             // Expand the row
@@ -261,14 +236,12 @@ public class CompressElementAdapter
             // Read all the columns
             // [column position int],[values length int],[values byte buffer]
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(result));
-            while (in.available() > 0)
-            {
+            while (in.available() > 0) {
                 int column = in.readInt();
 
-                String line = new String(CompressMatrixFormat.readBuffer(in), "UTF-8");
+                String line = new String(CompressedMatrixFormat.readBuffer(in), "UTF-8");
                 Double properties[] = new Double[getPropertyCount()];
-                for (int i=0; i < getPropertyCount(); i++)
-                {
+                for (int i = 0; i < getPropertyCount(); i++) {
                     properties[i] = toDouble(line, i);
                 }
 
@@ -278,15 +251,13 @@ public class CompressElementAdapter
 
             return values;
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
     }
 
 
-    public void detach()
-    {
+    public void detach() {
         this.rowsCache.invalidateAll();
         System.gc();
     }

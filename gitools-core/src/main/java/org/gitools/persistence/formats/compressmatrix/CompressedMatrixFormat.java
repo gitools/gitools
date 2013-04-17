@@ -37,22 +37,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class CompressMatrixFormat extends AbstractResourceFormat<CompressMatrix>
-{
+public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatrix> {
 
-    public static final String EXTENSION = "ctdm";
+    public static final String EXTENSION = "cmatrix";
 
-    public CompressMatrixFormat()
-    {
+    public CompressedMatrixFormat() {
         super(EXTENSION, CompressMatrix.class);
     }
 
     @Override
-    protected CompressMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected CompressMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        try
-        {
+        try {
             DataInputStream in = new DataInputStream(resourceLocator.openInputStream());
 
             // Dictionary
@@ -70,11 +66,10 @@ public class CompressMatrixFormat extends AbstractResourceFormat<CompressMatrix>
             // Values
             Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(rows.length);
 
-            for (int i=0; i < rows.length; i++)
-            {
+            for (int i = 0; i < rows.length; i++) {
                 int row = in.readInt();
                 int uncompressLength = in.readInt();
-                values.put( row, new CompressRow(uncompressLength, readBuffer( in )));
+                values.put(row, new CompressRow(uncompressLength, readBuffer(in)));
             }
 
             in.close();
@@ -85,8 +80,7 @@ public class CompressMatrixFormat extends AbstractResourceFormat<CompressMatrix>
                     rowDim, colDim, new CompressElementAdapter(dictionary, headers, values, colDim)
             );
 
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new PersistenceException(e);
         }
 
@@ -100,13 +94,11 @@ public class CompressMatrixFormat extends AbstractResourceFormat<CompressMatrix>
      * @return the byte array
      * @throws IOException
      */
-    public static byte[] readBuffer(DataInputStream in) throws IOException
-    {
+    public static byte[] readBuffer(DataInputStream in) throws IOException {
 
         int length = in.readInt();
         byte[] buffer = new byte[length];
-        if (in.read(buffer) != length)
-        {
+        if (in.read(buffer) != length) {
             throw new PersistenceException("Incorrect buffer length");
         }
 
@@ -114,8 +106,8 @@ public class CompressMatrixFormat extends AbstractResourceFormat<CompressMatrix>
     }
 
     private static Pattern TAB = Pattern.compile("\t");
-    private static String[] splitBuffer(byte[] buffer) throws UnsupportedEncodingException
-    {
+
+    private static String[] splitBuffer(byte[] buffer) throws UnsupportedEncodingException {
         String line = new String(buffer, "UTF-8");
         return TAB.split(line);
     }

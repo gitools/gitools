@@ -22,7 +22,7 @@
 package org.gitools.persistence;
 
 import org.gitools.persistence.formats.analysis.*;
-import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
+import org.gitools.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.persistence.formats.matrix.*;
 import org.gitools.persistence.formats.modulemap.IndexedModuleMapFormat;
 import org.gitools.persistence.formats.modulemap.TwoColumnModuleMapFormat;
@@ -31,16 +31,13 @@ import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
 import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
 import org.jetbrains.annotations.NotNull;
 
-public class PersistenceInitialization
-{
+public class PersistenceInitialization {
 
-    public static void registerFormats()
-    {
+    public static void registerFormats() {
         registerFormats(PersistenceManager.get());
     }
 
-    private static void registerFormats(@NotNull PersistenceManager pm)
-    {
+    private static void registerFormats(@NotNull PersistenceManager pm) {
         pm.registerFormat(new EnrichmentAnalysisFormat());
         pm.registerFormat(new OncodriveAnalysisFormat());
         pm.registerFormat(new CorrelationAnalysisFormat());
@@ -58,7 +55,7 @@ public class PersistenceInitialization
         pm.registerFormat(new AnnotationMatrixFormat());
         pm.registerFormat(new TwoColumnModuleMapFormat());
         pm.registerFormat(new IndexedModuleMapFormat());
-        pm.registerFormat(new CompressMatrixFormat());
+        pm.registerFormat(new CompressedMatrixFormat());
 
         pm.registerResourceFilter(new GzResourceFilter());
         pm.registerResourceFilter(new ZipResourceFilter());

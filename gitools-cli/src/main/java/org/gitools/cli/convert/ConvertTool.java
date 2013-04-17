@@ -29,7 +29,7 @@ import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence._DEPRECATED.FileFormats;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence._DEPRECATED.MimeTypes;
-import org.gitools.persistence.formats.compressmatrix.CompressMatrixFormat;
+import org.gitools.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
@@ -46,11 +46,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConvertTool extends AbstractTool
-{
+public class ConvertTool extends AbstractTool {
 
-    public static class Arguments extends GitoolsArguments
-    {
+    public static class Arguments extends GitoolsArguments {
 
         @Option(name = "-i", aliases = "-input", metaVar = "<path>",
                 usage = "Input file.")
@@ -70,51 +68,42 @@ public class ConvertTool extends AbstractTool
     }
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
         super.validate(argsObject);
 
         Arguments args = (Arguments) argsObject;
 
-        if (args.version)
-        {
+        if (args.version) {
             Main.printVersion();
         }
 
-        if (args.inputFileName == null)
-        {
+        if (args.inputFileName == null) {
             throw new ToolValidationException("An input file is required.");
         }
 
-        if (args.inputFileFormat == null)
-        {
+        if (args.inputFileFormat == null) {
             args.inputFileFormat = PersistenceManager.get().getFormatExtension(args.inputFileName);
 
-            if (args.inputFileFormat == null)
-            {
+            if (args.inputFileFormat == null) {
                 throw new ToolValidationException("Unknown input file format.\n" + "You can use the option -input-format");
             }
         }
 
-        if (args.outputFileName == null)
-        {
+        if (args.outputFileName == null) {
             throw new ToolValidationException("An output file is required.");
         }
 
-        if (args.outputFileFormat == null)
-        {
+        if (args.outputFileFormat == null) {
             args.outputFileFormat = PersistenceManager.get().getFormatExtension(args.outputFileName);
 
-            if (args.outputFileFormat == null)
-            {
+            if (args.outputFileFormat == null) {
                 throw new ToolValidationException("Unknown output file format.\n" + "You can use the option -output-format");
             }
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
         super.run(argsObject);
 
         Arguments args = (Arguments) argsObject;
@@ -131,13 +120,11 @@ public class ConvertTool extends AbstractTool
 
         IProgressMonitor monitor = new StreamProgressMonitor(System.out, args.verbose, args.debug);
 
-        if (convIndex < 0)
-        {
+        if (convIndex < 0) {
             // We don't want to load all the tdm in memory this is why this conversion is not possible
             // using the standard interface.
             //TODO rethink the interface
-            if (inputMime.equals(FileSuffixes.OBJECT_MATRIX) && outputMime.equals(CompressMatrixFormat.EXTENSION))
-            {
+            if (inputMime.equals(FileSuffixes.OBJECT_MATRIX) && outputMime.equals(CompressedMatrixFormat.EXTENSION)) {
                 FileCompressMatrixConversion converter = new FileCompressMatrixConversion();
                 converter.convert(args.inputFileName, args.outputFileName, monitor);
                 return;
@@ -147,54 +134,45 @@ public class ConvertTool extends AbstractTool
         }
 
         targetConv = vc.get(convIndex);
-        if (targetConv.delegate == null)
-        {
+        if (targetConv.delegate == null) {
             throw new ToolException("Unimplemented conversion from '" + args.inputFileFormat + "' to '" + args.outputFileFormat + "'");
         }
-
 
 
         monitor.begin("Loading input file ...", 1);
 
 
         IResource resource = null;
-        try
-        {
+        try {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.inputFileName));
             IResourceFormat format = PersistenceManager.get().getFormat(inputMime, IResource.class);
             resource = PersistenceManager.get().load(resourceLocator, format, monitor.subtask());
-        } catch (PersistenceException ex)
-        {
+        } catch (PersistenceException ex) {
             monitor.exception(ex);
             throw new ToolException(ex);
         }
 
-        if (resource == null)
-        {
+        if (resource == null) {
             throw new ToolException("Unexpected error loading " + args.inputFileName);
         }
 
         monitor.end();
 
         IResource dstObject = null;
-        try
-        {
+        try {
             dstObject = (IResource) targetConv.delegate.convert(args.inputFileFormat, resource, args.outputFileFormat, monitor);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             monitor.exception(ex);
             throw new ToolException(ex);
         }
 
         monitor.begin("Saving output file ...", 1);
 
-        try
-        {
+        try {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(args.outputFileName));
             IResourceFormat format = PersistenceManager.get().getFormat(outputMime, IResource.class);
             PersistenceManager.get().store(resourceLocator, dstObject, format, monitor.subtask());
-        } catch (PersistenceException ex)
-        {
+        } catch (PersistenceException ex) {
             monitor.exception(ex);
             throw new ToolException(ex);
         }
@@ -202,8 +180,7 @@ public class ConvertTool extends AbstractTool
         monitor.end();
     }
 
-    private void initConversionList(@NotNull List<Conversion> vc)
-    {
+    private void initConversionList(@NotNull List<Conversion> vc) {
         vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
         vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
         vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
@@ -241,10 +218,8 @@ public class ConvertTool extends AbstractTool
 
     private static final String LIST_L_FMT = "\t* %-48s%s";
 
-    String mimeFromFormat(String format, String fileName)
-    {
-        if (StringUtils.isEmpty(format))
-        {
+    String mimeFromFormat(String format, String fileName) {
+        if (StringUtils.isEmpty(format)) {
             format = fileName;
         }
 
@@ -252,8 +227,7 @@ public class ConvertTool extends AbstractTool
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
