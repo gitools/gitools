@@ -31,8 +31,7 @@ import java.io.*;
 import java.util.regex.Pattern;
 
 
-public class DecoratorArchivePersistance
-{
+public class DecoratorArchivePersistance {
 
     private transient static XStream xstream;
 
@@ -40,27 +39,22 @@ public class DecoratorArchivePersistance
 
     private static final String CONFIG_PATH = userPath + File.separator + ".gitools";
 
-    private static final String configFileName = "scales.xml";
+    private static final String configFileName = "scales-2.x.xml";
 
     private static final String configFile = CONFIG_PATH + File.separator + configFileName;
 
-    public DecoratorArchivePersistance()
-    {
-
+    public DecoratorArchivePersistance() {
 
 
     }
 
-    public void save(DecoratorArchive archive)
-    {
+    public void save(DecoratorArchive archive) {
         File path = new File(CONFIG_PATH);
-        if (!path.exists())
-        {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        try
-        {
+        try {
             FileWriter writer = new FileWriter(configFile);
 
             writer.write("<!-- scales.xml version " + DecoratorArchive.VERSION + " -->\n");
@@ -71,23 +65,19 @@ public class DecoratorArchivePersistance
             marshaller.marshal(archive, writer);
             writer.close();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public DecoratorArchive load()
-    {
+    public DecoratorArchive load() {
         DecoratorArchive decoratorArchive;
-        try
-        {
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(configFile));
 
             String firstLine = reader.readLine();
 
-            if (!firstLine.matches("(.*)" + Pattern.quote("version " + DecoratorArchive.VERSION) + "(.*)"))
-            {
+            if (!firstLine.matches("(.*)" + Pattern.quote("version " + DecoratorArchive.VERSION) + "(.*)")) {
                 System.err.println("Current scales.xml file not compatible with current version.");
                 reader.close();
                 FileUtils.copyFile(new File(configFile), new File(configFile + ".backup"));
@@ -96,9 +86,7 @@ public class DecoratorArchivePersistance
                 save(decoratorArchive);
                 System.err.println("Created scales file with defaults and there is a backup copy on " + configFileName + ".backup");
 
-            }
-            else
-            {
+            } else {
                 JAXBContext context = JAXBContext.newInstance(DecoratorArchive.class);
                 Unmarshaller unmarshaller = context.createUnmarshaller();
                 decoratorArchive = (DecoratorArchive) unmarshaller.unmarshal(reader);
@@ -106,15 +94,13 @@ public class DecoratorArchivePersistance
             }
 
 
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("Settings file doesn't exist: " + configFile);
             System.err.println("Created scales file with defaults.");
             decoratorArchive = new DecoratorArchive();
             decoratorArchive.add(decoratorArchive.getDefaultElementDecoratros());
             save(decoratorArchive);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             decoratorArchive = new DecoratorArchive();
             e.printStackTrace();
         }
