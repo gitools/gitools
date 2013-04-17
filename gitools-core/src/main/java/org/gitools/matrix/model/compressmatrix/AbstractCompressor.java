@@ -258,7 +258,7 @@ public abstract class AbstractCompressor
             }
 
             // Update frequencies
-            if (fileLinesCount > MAX_LINES_TO_DICTIONARY) {
+            if (fileLinesCount < MAX_LINES_TO_DICTIONARY) {
                 int length = 0;
                 for (int i=2; i < fields.length; i++)
                 {

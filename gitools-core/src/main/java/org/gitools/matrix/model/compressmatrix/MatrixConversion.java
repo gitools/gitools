@@ -44,7 +44,6 @@ public class MatrixConversion extends AbstractCompressor
 
         CompressDimension rows = getRows();
         CompressDimension columns = getColumns();
-       // IElementAdapter cellAdapter = inputMatrix.getCellAdapter();
 
         Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(inputMatrix.getRows().size());
 
