@@ -23,9 +23,9 @@ package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.value.ValueHolder;
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.EventUtils;
 
@@ -36,8 +36,9 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class DecoratorPanelContainer extends JPanel implements PropertyChangeListener {
-    private Heatmap heatmap;
 
+    private IMatrixLayers layers;
+    private ValueModel decoratorModel;
     private ValueModel currentPanelModel;
     private List<DecoratorPanel> panels;
 
@@ -50,11 +51,10 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         this.currentPanelModel.addValueChangeListener(this);
     }
 
-    public void init(List<DecoratorPanel> panels, Heatmap heatmap) {
-        this.heatmap = heatmap;
+    public void init(List<DecoratorPanel> panels, List<HeatmapLayer> layers, ValueModel decoratorModel) {
+        this.decoratorModel = decoratorModel;
         this.panels = panels;
-        this.heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, this);
-        this.heatmap.getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, this);
+        this.decoratorModel.addValueChangeListener(this);
 
         removeAll();
         for (DecoratorPanel panel : panels) {
@@ -66,21 +66,21 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
                 panel.setValue(getCurrentDecorator());
             }
 
-            panel.setHeatmap(heatmap);
+            panel.setLayers(layers);
             panel.bind();
         }
 
-        updateFromHeatmap();
+        updateFromModel();
 
         showCurrentPanel();
     }
 
     private Decorator getCurrentDecorator() {
-        return heatmap.getLayers().getTopLayer().getDecorator();
+        return (Decorator) decoratorModel.getValue();
     }
 
     private void setCurrentDecorator(Decorator decorator) {
-        heatmap.getLayers().getTopLayer().setDecorator(decorator);
+        decoratorModel.setValue(decorator);
     }
 
     private void showCurrentPanel() {
@@ -99,10 +99,16 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         return (CardLayout) DecoratorPanelContainer.this.getLayout();
     }
 
-    private void updateFromHeatmap() {
+    private void updateFromModel() {
         Decorator decorator = getCurrentDecorator();
 
         for (DecoratorPanel panel : panels) {
+
+            if (decorator == null) {
+                getCurrentPanelModel().setValue(panel);
+                return;
+            }
+
             if (panel.isValid(decorator)) {
                 getCurrentPanelModel().setValue(panel);
                 panel.setValue(decorator);
@@ -114,7 +120,7 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         Class<? extends Decorator> decoratorClass = getCurrentPanel().getDecoratorClass();
         Decorator currentDecorator = getCurrentDecorator();
 
-        if (!decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
+        if (currentDecorator==null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
             setCurrentDecorator(getCurrentPanel().newDecorator());
         }
     }
@@ -123,7 +129,7 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
     public void propertyChange(PropertyChangeEvent evt) {
         if (EventUtils.isAny(evt, HeatmapLayers.class, HeatmapLayers.PROPERTY_TOP_LAYER) ||
                 EventUtils.isAny(evt, HeatmapLayer.class, HeatmapLayer.PROPERTY_DECORATOR)) {
-            updateFromHeatmap();
+            updateFromModel();
         } else {
             updateFromPanel();
         }

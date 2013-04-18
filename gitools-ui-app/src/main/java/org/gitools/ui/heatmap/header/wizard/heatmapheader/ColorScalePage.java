@@ -23,7 +23,10 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.binding.value.AbstractValueModel;
+import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.model.decorator.Decorator;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
@@ -36,7 +39,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class NewColorScalePage extends AbstractWizardPage {
+public class ColorScalePage extends AbstractWizardPage {
     private JPanel mainPanel;
     private JComboBox decoratorPanelSelector;
     private JLabel colorScaleSave;
@@ -44,15 +47,27 @@ public class NewColorScalePage extends AbstractWizardPage {
     private JPanel decoratorPanels;
 
 
-    public NewColorScalePage(HeatmapDataHeatmapHeader header) {
+    public ColorScalePage(final HeatmapDataHeatmapHeader header) {
         super();
 
         // Bind color scale controls
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
 
-        //TODO
-        //decoratorsPanels.init(decorators, heatmap);
+        final ValueModel decoratorModel = new AbstractValueModel() {
+            @Override
+            public Object getValue() {
+                return header.getDecorator();
+            }
+
+            @Override
+            public void setValue(Object newValue) {
+                header.setDecorator((Decorator) newValue);
+            }
+        };
+
+        decoratorsPanels.init(decorators, header.getHeatmap().getLayers().toList(), decoratorModel);
+
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
@@ -62,8 +77,7 @@ public class NewColorScalePage extends AbstractWizardPage {
         colorScaleSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //TODO
-                SaveDecoratorDialog.actionSaveDecorator(null);
+                SaveDecoratorDialog.actionSaveDecorator(header.getDecorator());
             }
         });
 
@@ -71,8 +85,7 @@ public class NewColorScalePage extends AbstractWizardPage {
         colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //TODO
-                SaveDecoratorDialog.actionLoadDecorator(null);
+                SaveDecoratorDialog.actionLoadDecorator(decoratorModel);
             }
         });
     }

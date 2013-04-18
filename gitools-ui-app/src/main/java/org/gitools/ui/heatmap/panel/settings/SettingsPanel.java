@@ -75,6 +75,7 @@ public class SettingsPanel {
         PresentationModel<HeatmapDimension> rows = new PresentationModel<HeatmapDimension>(model.getModel(Heatmap.PROPERTY_ROWS));
         PresentationModel<HeatmapDimension> columns = new PresentationModel<HeatmapDimension>(model.getModel(Heatmap.PROPERTY_COLUMNS));
         PresentationModel<HeatmapLayers> layers = new PresentationModel<HeatmapLayers>(model.getModel(Heatmap.PROPERTY_LAYERS));
+        PresentationModel<HeatmapLayer> topLayer = new PresentationModel<HeatmapLayer>(layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER));
 
         // Layer selector
         Bindings.bind(layerselector, new SelectionInList<HeatmapLayer>(
@@ -85,7 +86,7 @@ public class SettingsPanel {
         // Bind color scale controls
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
-        decoratorsPanels.init(decorators, heatmap);
+        decoratorsPanels.init(decorators, heatmap.getLayers().toList(), topLayer.getModel(HeatmapLayer.PROPERTY_DECORATOR));
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()

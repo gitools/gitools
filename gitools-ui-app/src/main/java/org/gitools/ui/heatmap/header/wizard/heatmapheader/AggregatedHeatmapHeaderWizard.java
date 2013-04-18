@@ -72,7 +72,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
     // wizard pages
     private AggregationDataSourcePage dataSourceAggregationPage;
     private AnnotationSourcePage dataSourceAnnotationPage;
-    private NewColorScalePage colorScalePage;
+    private ColorScalePage colorScalePage;
     private HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
@@ -83,6 +83,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         this.applyToRows = applyToRows;
 
         this.header = header;
+        this.header.setHeatmap(heatmap);
         this.labelVisible = header.isLabelVisible();
 
     }
@@ -95,11 +96,11 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
                 addPage(dataSourceAggregationPage);
 
                 heatmapDim = applyToRows ? heatmap.getColumns() : heatmap.getRows();
-                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The aggregation is calculated for each " + "distinct value of the chosen annotation individually");
+                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The aggregation is calculated for each distinct value of the chosen annotation individually");
                 addPage(dataSourceAnnotationPage);
             } else if (dataSource == DataSourceEnum.annotation) {
                 heatmapDim = applyToRows ? heatmap.getRows() : heatmap.getColumns();
-                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The annotation column must not contain " + "numeric values");
+                dataSourceAnnotationPage = new AnnotationSourcePage(heatmapDim, "The annotation column must not contain numeric values");
                 addPage(dataSourceAnnotationPage);
             }
         }
@@ -107,7 +108,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         configPage = new HeatmapHeaderConfigPage(header);
         addPage(configPage);
 
-        colorScalePage = new NewColorScalePage(header);
+        colorScalePage = new ColorScalePage(header);
         addPage(colorScalePage);
 
         textConfigPage = new TextLabelsConfigPage(header);
@@ -116,7 +117,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
     }
 
     public boolean isLastPage(IWizardPage page) {
-        if (page == this.configPage) {
+        if (page == this.colorScalePage) {
             if (!header.isLabelVisible() && page == this.configPage) {
                 return true;
             } else {
@@ -177,7 +178,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         boolean useAll = dataSourceAggregationPage.useAllColumnsOrRows();
 
         if (dataSourceAggregationPage.aggregateAnnotationsSeparately()) {
-            getIndecesByAnnotation();
+            getIndicesByAnnotation();
         } else {
             //get all indices
             setAggregationTitles(new String[]{"All Cols"});
@@ -295,7 +296,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         return new Heatmap(new DoubleMatrix("Data Annotation", columnNames, rowNames, valueMatrix));
     }
 
-    private void getIndecesByAnnotation() {
+    private void getIndicesByAnnotation() {
         IMatrixView mv = heatmap;
         IAnnotations am = heatmapDim.getAnnotations();
         String pattern = dataSourceAnnotationPage.getSelectedPattern();

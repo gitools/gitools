@@ -26,6 +26,7 @@ import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
 import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.model.decorator.impl.PValueDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 

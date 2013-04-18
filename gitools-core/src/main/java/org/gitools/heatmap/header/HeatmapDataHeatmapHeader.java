@@ -23,6 +23,7 @@ package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.model.decorator.Decorator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -44,7 +45,6 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
         inside
     }
 
-
     private static final String HEADER_HEATMAP_CHANGED = "headerHeatmap";
 
     @XmlElement(name = "label-position")
@@ -59,6 +59,9 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
     @XmlElement(name = "force-label-color")
     private boolean forceLabelColor;
+
+    @XmlElement
+    private Decorator decorator;
 
     public HeatmapDataHeatmapHeader() {
         super();
@@ -117,6 +120,14 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
 
     public void setForceLabelColor(boolean forceLabelColor) {
         this.forceLabelColor = forceLabelColor;
+    }
+
+    public Decorator getDecorator() {
+        return decorator;
+    }
+
+    public void setDecorator(Decorator decorator) {
+        this.decorator = decorator;
     }
 
     @Override

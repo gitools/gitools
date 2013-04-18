@@ -125,7 +125,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
         this.matrixDimension = matrixDimension;
 
         if (visible == null) {
-            visible = new int[size()];
+            visible = new int[matrixDimension.size()];
             for (int i = 0; i < size(); i++) {
                 visible[i] = i;
             }
@@ -425,10 +425,6 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
 
     @Override
     public int size() {
-        return matrixDimension.size();
-    }
-
-    public int visibleSize() {
         return visible.length;
     }
 
