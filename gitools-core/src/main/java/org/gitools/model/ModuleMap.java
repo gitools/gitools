@@ -29,9 +29,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.*;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.NONE)
 public class ModuleMap extends Resource
 {

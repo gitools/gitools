@@ -29,6 +29,7 @@ import org.gitools.idtype.IdTypeXmlAdapter;
 import org.gitools.matrix.model.Direction;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixViewDimension;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
@@ -65,7 +66,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     private IdType idType;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-    private ResourceReference<IAnnotations> annotations;
+    private ResourceReference<AnnotationMatrix> annotations;
 
     @XmlElement
     private LinkedList<HeatmapHeader> headers;
@@ -100,9 +101,10 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         commonInit();
     }
 
-    public HeatmapDimension(IMatrixDimension matrixDimension)
+    public HeatmapDimension(IMatrixDimension matrixDimension, String label)
     {
         commonInit();
+        this.annotations = new ResourceReference<AnnotationMatrix>(label + "-annotations", new AnnotationMatrix());
         init(matrixDimension);
     }
 
@@ -280,9 +282,9 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         return annotations.get();
     }
 
-    public void setAnnotations(ResourceReference<IAnnotations> annotations)
+    public void addAnnotations(IAnnotations annotations)
     {
-        this.annotations = annotations;
+        this.annotations.get().addAnnotations(annotations);
     }
 
     public boolean isHighlighted(String label)

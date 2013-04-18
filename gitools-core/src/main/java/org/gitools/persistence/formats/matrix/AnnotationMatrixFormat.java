@@ -21,86 +21,57 @@
  */
 package org.gitools.persistence.formats.matrix;
 
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectFactory2D;
-import cern.colt.matrix.ObjectMatrix1D;
-import cern.colt.matrix.ObjectMatrix2D;
-import org.gitools.matrix.model.matrix.AnnotationMatrixImpl;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnotationMatrixFormat extends AbstractResourceFormat<IAnnotations>
+public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix>
 {
 
 
     public AnnotationMatrixFormat()
     {
-        super(FileSuffixes.ANNOTATION_MATRIX, IAnnotations.class);
+        super(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
     }
 
     @NotNull
     @Override
-    protected IAnnotations readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
+    protected AnnotationMatrix readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
     {
 
-        AnnotationMatrixImpl matrix = new AnnotationMatrixImpl();
+        AnnotationMatrix matrix = new AnnotationMatrix();
 
         try
         {
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            // header
-            String[] hdr = parser.readNext();
-            int numColumns = hdr.length - 1;
-            ObjectMatrix1D columns = ObjectFactory1D.dense.make(numColumns);
-            for (int i = 0; i < numColumns; i++)
-                columns.set(i, hdr[i + 1]);
-            matrix.setColumns(columns);
+            // Header
+            String[] headers = parser.readNext();
 
-            // body
-            List<String> rawData = new ArrayList<String>();
+            // Annotations
             String[] fields;
             while ((fields = parser.readNext()) != null)
             {
-                if (fields.length > hdr.length)
+                for (int i=1; (i < headers.length) && (i < fields.length); i++ )
                 {
-                    throw new PersistenceException("Number of fields greater than number of header fields at line " + parser.getLineNumber());
+                    matrix.setAnnotation(fields[0], headers[i], fields[i]);
                 }
-
-                for (int i = 0; i < fields.length; i++)
-                    rawData.add(fields[i]);
-
-                for (int i = 0; i < (hdr.length - fields.length); i++)
-                    rawData.add(new String(""));
             }
 
-            int numRows = rawData.size() / hdr.length;
-            ObjectMatrix1D rows = ObjectFactory1D.dense.make(numRows);
-            ObjectMatrix2D data = ObjectFactory2D.dense.make(numRows, numColumns);
-            int offs = 0;
-            for (int row = 0; row < numRows; row++)
-            {
-                rows.setQuick(row, rawData.get(offs++));
-                for (int col = 0; col < numColumns; col++)
-                    data.setQuick(row, col, rawData.get(offs++));
-            }
-
-            matrix.setRows(rows);
-            matrix.setCells(data);
-
-            rawData.clear();
             in.close();
         } catch (Exception e)
         {
@@ -110,4 +81,36 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<IAnnotations>
         return matrix;
     }
 
+
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, AnnotationMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException
+    {
+        try
+        {
+            OutputStream out = resourceLocator.openOutputStream();
+            RawCsvWriter writer = new RawCsvWriter(new OutputStreamWriter(out), '\t', '"');
+
+            // Header
+            List<String> labels = new ArrayList<String>();
+            labels.addAll(resource.getLabels());
+            writer.writePropertyList("identifier", labels);
+
+            // Annotations
+            String[] annotations = new String[labels.size()];
+            for (String identifier : resource.getIdentifiers())
+            {
+                for (int i=1; i < labels.size(); i++)
+                {
+                    annotations[i] = resource.getAnnotation(identifier, labels.get(i));
+                }
+                writer.writePropertyList(identifier, annotations);
+            }
+
+            writer.close();
+            out.close();
+        } catch (Exception e)
+        {
+            throw new PersistenceException(e);
+        }
+    }
 }

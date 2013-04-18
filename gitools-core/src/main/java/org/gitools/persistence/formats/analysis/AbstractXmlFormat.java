@@ -118,7 +118,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         for (ResourceReference dependency : dependencies)
         {
             IResourceLocator dependencyLocator = dependency.getLocator();
-            PersistenceManager.get().store(dependencyLocator, dependency.get(), progressMonitor);
+            PersistenceManager.get().store(dependencyLocator, dependency.get(), dependency.getResourceFormat(), progressMonitor);
         }
     }
 

@@ -212,7 +212,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel
         }
 
         boolean found = false;
-        for (String annotation : am.getLabel()) {
+        for (String annotation : am.getLabels()) {
             found = searchPat.matcher(am.getAnnotation(label, annotation)).find();
 
             if (found)

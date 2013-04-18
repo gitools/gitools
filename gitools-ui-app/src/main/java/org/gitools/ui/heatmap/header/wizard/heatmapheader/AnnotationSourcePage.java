@@ -22,6 +22,7 @@
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -64,10 +65,10 @@ public class AnnotationSourcePage extends AbstractWizardPage
 
         IAnnotations am = hdim.getAnnotations();
         int seomvar = annList.getModel().getSize();
-        if (am != null && !am.getLabel().isEmpty() && annList.getModel().getSize() != am.getLabel().size())
+        if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size())
         {
             DefaultListModel model = new DefaultListModel();
-            for (String key : am.getLabel())
+            for (String key : am.getLabels())
                 model.addElement(key);
             annList.setModel(model);
         }
@@ -194,7 +195,7 @@ public class AnnotationSourcePage extends AbstractWizardPage
             File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
 
             if (file != null) {
-                hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+                hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
                 updateControls();
                 //annFile.setText(file.getName());
             }

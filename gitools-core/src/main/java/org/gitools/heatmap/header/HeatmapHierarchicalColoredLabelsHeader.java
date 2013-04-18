@@ -26,10 +26,8 @@ import org.gitools.heatmap.HeatmapDimension;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabelsHeader
 {
 

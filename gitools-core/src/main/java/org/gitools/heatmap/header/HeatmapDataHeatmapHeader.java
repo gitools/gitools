@@ -29,12 +29,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 import java.util.Map;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapDataHeatmapHeader extends HeatmapHeader
 {
 

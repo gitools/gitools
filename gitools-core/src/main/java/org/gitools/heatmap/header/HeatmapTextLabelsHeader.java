@@ -27,11 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapTextLabelsHeader extends HeatmapHeader
 {
 
@@ -69,10 +67,10 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         backgroundColor = Color.WHITE;
         font = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         IAnnotations am = hdim != null ? hdim.getAnnotations() : null;
-        if (am != null && am.getLabel().size() > 0)
+        if (am != null && am.getLabels().size() > 0)
         {
             labelSource = LabelSource.ANNOTATION;
-            labelAnnotation = am.getLabel().iterator().next();
+            labelAnnotation = am.getLabels().iterator().next();
         }
         else
         {

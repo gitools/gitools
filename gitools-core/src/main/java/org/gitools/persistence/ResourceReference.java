@@ -61,14 +61,6 @@ public class ResourceReference<R extends IResource>
         this(baseName, null, resourceClass);
     }
 
-    private ResourceReference(String baseName, R resource, Class<? extends R> resourceClass)
-    {
-        this.loaded = true;
-        this.baseName = baseName;
-        this.resourceClass = resourceClass;
-        this.resource = resource;
-    }
-
     public ResourceReference(@NotNull IResourceLocator locator, @NotNull Class<? extends R> resourceClass)
     {
         this(locator, PersistenceManager.get().getFormat(locator.getExtension(), resourceClass));
@@ -81,6 +73,15 @@ public class ResourceReference<R extends IResource>
         this.locator = locator;
         this.resourceFormat = resourceFormat;
     }
+
+    private ResourceReference(String baseName, R resource, Class<? extends R> resourceClass)
+    {
+        this.loaded = true;
+        this.baseName = baseName;
+        this.resourceClass = resourceClass;
+        this.resource = resource;
+    }
+
 
     @Nullable
     public final R get()
@@ -119,6 +120,11 @@ public class ResourceReference<R extends IResource>
     {
         this.locator = locator;
         this.baseName = locator.getBaseName();
+    }
+
+    public final IResourceFormat getResourceFormat()
+    {
+        return this.resourceFormat;
     }
 
     public final Properties getProperties()

@@ -32,8 +32,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.compressmatrix.MatrixConversion;
-import org.gitools.matrix.model.matrix.AnnotationMatrixImpl;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceManager;
@@ -241,6 +240,6 @@ public class CommandLoadFile extends AbstractCommand
 
     private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDimension hdim)
     {
-        hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+        hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
     }
 }

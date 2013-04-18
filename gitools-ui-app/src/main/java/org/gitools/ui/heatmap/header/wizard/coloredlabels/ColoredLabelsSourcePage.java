@@ -60,11 +60,11 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         patOpt.addChangeListener(optListener);
 
         IAnnotations am = hdim.getAnnotations();
-        if (am != null && !am.getLabel().isEmpty())
+        if (am != null && !am.getLabels().isEmpty())
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
-            for (String key : am.getLabel())
+            for (String key : am.getLabels())
                 model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);

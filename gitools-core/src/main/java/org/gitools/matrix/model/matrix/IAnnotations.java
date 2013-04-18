@@ -29,7 +29,9 @@ public interface IAnnotations extends IResource {
 
     boolean hasIdentifier(String identifier);
 
-    Collection<String> getLabel();
+    Collection<String> getIdentifiers();
+
+    Collection<String> getLabels();
 
     String getAnnotation(String identifier, String annotationLabel);
 

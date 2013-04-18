@@ -53,8 +53,13 @@ public class PersistenceManager implements Serializable
     {
     }
 
-    public <R extends IResource> IResourceFormat<R> getFormat(String fileNameOrExtension, @NotNull Class<R> resourceClass)
+    public <R extends IResource> IResourceFormat<R> getFormat(String fileNameOrExtension, Class<R> resourceClass)
     {
+        if (resourceClass == null)
+        {
+            resourceClass = (Class<R>) IResource.class;
+        }
+
         String extension = getFormatExtension(fileNameOrExtension);
 
         Map<String, IResourceFormat> extensions = formats.get(resourceClass);
@@ -162,8 +167,13 @@ public class PersistenceManager implements Serializable
         store(resourceLocator, resource, (IResourceFormat<R>) getFormat(resourceLocator.getExtension(), resource.getClass()), progressMonitor);
     }
 
-    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
+    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
     {
+        if (resourceFormat == null)
+        {
+            resourceFormat = (IResourceFormat<R>) getFormat(resourceLocator.getName(), resource.getClass());
+        }
+
         // Add filters
         resourceLocator = applyFilters(resourceLocator);
 

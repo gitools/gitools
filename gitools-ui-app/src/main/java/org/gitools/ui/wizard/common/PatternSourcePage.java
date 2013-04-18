@@ -22,7 +22,7 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -98,7 +98,7 @@ public class PatternSourcePage extends AbstractWizardPage
     {
         super.updateControls();
 
-        if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabel().isEmpty())
+        if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty())
         {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
@@ -106,7 +106,7 @@ public class PatternSourcePage extends AbstractWizardPage
             {
                 model.addElement("id");
             }
-            for (String key : hdim.getAnnotations().getLabel())
+            for (String key : hdim.getAnnotations().getLabels())
                 model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
@@ -336,7 +336,7 @@ public class PatternSourcePage extends AbstractWizardPage
             File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
 
             if (file != null) {
-                hdim.setAnnotations(new ResourceReference<IAnnotations>(new UrlResourceLocator(file), IAnnotations.class));
+                hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
                 updateControls();
                 //annFile.setText(file.getName());
             }

@@ -30,13 +30,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapColoredLabelsHeader extends HeatmapHeader
 {
 
