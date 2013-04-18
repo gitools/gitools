@@ -21,9 +21,7 @@
  */
 package org.gitools.ui.actions;
 
-import org.gitools.ui.actions.edit.InvertSelectionAction;
-import org.gitools.ui.actions.edit.SelectAllAction;
-import org.gitools.ui.actions.edit.UnselectAllAction;
+import org.gitools.ui.actions.edit.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
 public final class EditActions {
@@ -33,5 +31,13 @@ public final class EditActions {
     public static final BaseAction invertSelectionAction = new InvertSelectionAction();
 
     public static final BaseAction unselectAllAction = new UnselectAllAction();
+
+    public static final BaseAction addRowHeader = new AddHeaderAction(AddHeaderAction.DimensionEnum.ROW);
+
+    public static final BaseAction addColumnHeader = new AddHeaderAction(AddHeaderAction.DimensionEnum.COLUMN);
+
+    public static final BaseAction editRowHeader = new EditHeaderAction(EditHeaderAction.DimensionEnum.ROW);
+
+    public static final BaseAction editColumnHeader = new EditHeaderAction(EditHeaderAction.DimensionEnum.COLUMN);
 
 }

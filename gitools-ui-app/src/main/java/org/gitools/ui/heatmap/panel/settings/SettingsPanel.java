@@ -32,15 +32,16 @@ import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.model.Resource;
 import org.gitools.model.decorator.Decorator;
+import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
-import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -104,7 +105,7 @@ public class SettingsPanel {
         colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SaveDecoratorDialog.actionLoadDecorator(new AbstractValueModel(){
+                SaveDecoratorDialog.actionLoadDecorator(new AbstractValueModel() {
 
                     @Override
                     public Object getValue() {
@@ -125,7 +126,7 @@ public class SettingsPanel {
         newColumnsHeader.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getColumns());
+                EditActions.addColumnHeader.actionPerformed(new ActionEvent(this, 1, ""));
             }
         });
 
@@ -133,7 +134,7 @@ public class SettingsPanel {
         editColumnsHeader.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                actionEditHeaders(heatmap, heatmap.getColumns());
+                EditActions.editColumnHeader.actionPerformed(new ActionEvent(this, 1, ""));
             }
         });
 
@@ -141,7 +142,7 @@ public class SettingsPanel {
         newRowsHeader.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getRows());
+                EditActions.addRowHeader.actionPerformed(new ActionEvent(this, 1, ""));
             }
         });
 
@@ -149,7 +150,7 @@ public class SettingsPanel {
         editRowHeaders.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                actionEditHeaders(heatmap, heatmap.getRows());
+                EditActions.editRowHeader.actionPerformed(new ActionEvent(this, 1, ""));
             }
         });
 
@@ -171,15 +172,6 @@ public class SettingsPanel {
         cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
 
 
-    }
-
-
-    private void actionEditHeaders(Heatmap heatmap, HeatmapDimension dimension) {
-        HeadersEditPanel dialog = new HeadersEditPanel(heatmap, dimension);
-        dialog.setSize(500, 400);
-        dialog.setLocationRelativeTo(null);
-        dialog.pack();
-        dialog.setVisible(true);
     }
 
     public JPanel getRootPanel() {
