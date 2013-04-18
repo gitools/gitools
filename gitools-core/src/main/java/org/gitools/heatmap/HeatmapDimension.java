@@ -220,7 +220,12 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
 
     public List<HeatmapHeader> getHeaders()
     {
-        return Collections.unmodifiableList(headers);
+        return headers;
+    }
+
+    public void updateHeaders()
+    {
+        firePropertyChange(PROPERTY_HEADERS, null, null);
     }
 
     public void addHeader(@NotNull HeatmapHeader header)
@@ -230,41 +235,6 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
             header.setHeatmapDim(this);
         }
         headers.addFirst(header);
-        firePropertyChange(PROPERTY_HEADERS, null, headers);
-    }
-
-    public void removeHeader(int index)
-    {
-        if (index >= headers.size())
-        {
-            return;
-        }
-        HeatmapHeader header = headers.get(index);
-        headers.remove(header);
-        firePropertyChange(PROPERTY_HEADERS, null, headers);
-    }
-
-    public void upHeader(int index)
-    {
-        if (index == 0 || index >= headers.size())
-        {
-            return;
-        }
-        HeatmapHeader header = headers.get(index);
-        headers.set(index, headers.get(index - 1));
-        headers.set(index - 1, header);
-        firePropertyChange(PROPERTY_HEADERS, null, headers);
-    }
-
-    public void downHeader(int index)
-    {
-        if (index >= headers.size() - 1)
-        {
-            return;
-        }
-        HeatmapHeader header = headers.get(index);
-        headers.set(index, headers.get(index + 1));
-        headers.set(index + 1, header);
         firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 

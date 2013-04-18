@@ -26,17 +26,16 @@ import cern.colt.matrix.DoubleMatrix2D;
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringMethod;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
-import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
 import org.gitools.datafilters.DoubleTranslator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.matrix.IAnnotations;
-import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
+import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -359,7 +358,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard
         header.setAnnotationPattern(pattern);
         final AggregatedHeatmapHeaderWizard wiz = this;
 
-        final ClusteringData data = applyToRows ? new AnnPatColumnClusteringData(mv, am, pattern) : new AnnPatRowClusteringData(mv, am, pattern);
+        final ClusteringData data = applyToRows ? new AnnPatClusteringData(heatmap.getRows(), pattern) : new AnnPatClusteringData(heatmap.getColumns(), pattern);
 
         JobThread.execute(AppFrame.get(), new JobRunnable()
         {

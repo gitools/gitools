@@ -190,4 +190,5 @@ public class IconNames
     public static final String SEARCH16 = "/img/Search16.png";
     public static final String SEARCH24 = "/img/Search24.png";
 
+    public static final String drag = "/img/drag.png";
 }

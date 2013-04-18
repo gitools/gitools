@@ -23,14 +23,11 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringResults;
+import org.gitools.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.clustering.method.annotations.AnnPatColumnClusteringData;
-import org.gitools.clustering.method.annotations.AnnPatRowClusteringData;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -41,15 +38,10 @@ import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class ColoredLabelsHeaderWizard extends AbstractWizard
 {
 
-    private final Heatmap heatmap;
     private final HeatmapDimension hdim;
-    private final boolean applyToRows;
 
     private boolean editionMode;
 
@@ -62,13 +54,11 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     private ColoredLabelsConfigPage headerPage;
     private ColoredLabelsGroupsPage clustersPage;
 
-    public ColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDimension hdim, HeatmapColoredLabelsHeader header, boolean applyToRows)
+    public ColoredLabelsHeaderWizard(HeatmapDimension hdim, HeatmapColoredLabelsHeader header)
     {
         super();
 
-        this.heatmap = heatmap;
         this.hdim = hdim;
-        this.applyToRows = applyToRows;
 
         this.lastPattern = "";
         this.header = header;
@@ -115,11 +105,10 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
             return;
         }
 
-        IMatrixView mv = heatmap  ;
         IAnnotations am = hdim.getAnnotations();
         header.setAnnotationPattern(pattern);
 
-        final ClusteringData data = applyToRows ? new AnnPatRowClusteringData(mv, am, pattern) : new AnnPatColumnClusteringData(mv, am, pattern);
+        final ClusteringData data = new AnnPatClusteringData(hdim, pattern);
 
         header.setTitle("Colors: " + sourcePage.getPatternTitle());
 

@@ -30,23 +30,13 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.model.Resource;
 import org.gitools.model.decorator.Decorator;
-import org.gitools.ui.heatmap.header.AddHeaderPage;
-import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregatedHeatmapHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
+import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.wizard.IWizard;
-import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.decorators.DecoratorArchive;
 import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
 import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
@@ -133,7 +123,7 @@ public class SettingsPanel
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                actionNewHeaders(heatmap, heatmap.getColumns());
+                HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getColumns());
             }
         });
 
@@ -143,7 +133,7 @@ public class SettingsPanel
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                actionEditHeaders(heatmap.getColumns());
+                actionEditHeaders(heatmap, heatmap.getColumns());
             }
         });
 
@@ -153,7 +143,7 @@ public class SettingsPanel
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                actionNewHeaders(heatmap, heatmap.getRows());
+                HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getRows());
             }
         });
 
@@ -163,7 +153,7 @@ public class SettingsPanel
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                actionEditHeaders(heatmap.getRows());
+                actionEditHeaders(heatmap, heatmap.getRows());
             }
         });
 
@@ -187,58 +177,15 @@ public class SettingsPanel
 
     }
 
-    private void actionNewHeaders(Heatmap heatmap, HeatmapDimension heatmapDimension)
+
+
+    private void actionEditHeaders(Heatmap heatmap, HeatmapDimension dimension)
     {
-        AddHeaderPage headerPage = new AddHeaderPage();
-        PageDialog tdlg = new PageDialog(AppFrame.get(), headerPage);
-        tdlg.setTitle("Header type selection");
-        tdlg.setVisible(true);
-        if (tdlg.isCancelled())
-            return;
-
-        HeatmapHeader header = null;
-        IWizard wizard = null;
-        Class<? extends HeatmapHeader> cls = headerPage.getHeaderClass();
-        String headerTitle = headerPage.getHeaderTitle();
-
-        if (cls.equals(HeatmapTextLabelsHeader.class)) {
-            HeatmapTextLabelsHeader h = new HeatmapTextLabelsHeader(heatmapDimension);
-            wizard = new TextLabelsHeaderWizard(heatmapDimension, h);
-            header = h;
-        }
-        else if (cls.equals(HeatmapColoredLabelsHeader.class)) {
-            HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(heatmapDimension);
-            wizard = new ColoredLabelsHeaderWizard(heatmap, heatmapDimension, h, heatmapDimension == heatmap.getRows());
-            header = h;
-        }
-        else if (cls.equals(HeatmapDataHeatmapHeader.class)) {
-            HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(heatmapDimension);
-            wizard = new AggregatedHeatmapHeaderWizard(heatmap, h, heatmapDimension == heatmap.getRows());
-            header = h;
-
-            if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
-                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
-                        AggregatedHeatmapHeaderWizard.DataSourceEnum.annotation);
-            } else {
-                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
-                        AggregatedHeatmapHeaderWizard.DataSourceEnum.aggregatedData);
-            }
-
-        }
-
-        WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);
-        wdlg.setTitle("Add header");
-        wdlg.setVisible(true);
-        if (wdlg.isCancelled())
-            return;
-
-        heatmapDimension.addHeader(header);
-
-    }
-
-    private void actionEditHeaders(HeatmapDimension dimension)
-    {
-
+        HeadersEditPanel dialog = new HeadersEditPanel(heatmap, dimension);
+        dialog.setSize(500,400);
+        dialog.setLocationRelativeTo(null);
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     private void actionSaveScale(HeatmapLayer topLayer) {

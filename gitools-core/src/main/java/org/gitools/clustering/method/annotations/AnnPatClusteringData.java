@@ -23,14 +23,13 @@ package org.gitools.clustering.method.annotations;
 
 import org.gitools.clustering.ClusteringData;
 import org.gitools.clustering.ClusteringDataInstance;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.matrix.AnnotationResolver;
-import org.gitools.matrix.model.IMatrix;
 import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.jetbrains.annotations.NotNull;
 
-public class AnnPatColumnClusteringData implements ClusteringData
+public class AnnPatClusteringData implements ClusteringData
 {
 
     public class Instance implements ClusteringDataInstance
@@ -82,33 +81,31 @@ public class AnnPatColumnClusteringData implements ClusteringData
         }
     }
 
-    private final IMatrix matrix;
-    private final IAnnotations am;
+    private final HeatmapDimension dimension;
     private final TextPattern pat;
 
-    public AnnPatColumnClusteringData(IMatrix matrix, IAnnotations am, String pattern)
+    public AnnPatClusteringData(HeatmapDimension dimension, String pattern)
     {
-        this.matrix = matrix;
-        this.am = am;
+        this.dimension = dimension;
         this.pat = new TextPattern(pattern);
     }
 
     @Override
     public int getSize()
     {
-        return matrix.getColumns().size();
+        return dimension.size();
     }
 
     @Override
     public String getLabel(int index)
     {
-        return matrix.getColumns().getLabel(index);
+        return dimension.getLabel(index);
     }
 
     @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index)
     {
-        return new Instance(new AnnotationResolver(am, matrix.getColumns().getLabel(index), "N/A"));
+        return new Instance(new AnnotationResolver(dimension.getAnnotations(), dimension.getLabel(index), "N/A"));
     }
 }

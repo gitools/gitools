@@ -187,7 +187,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                         heatmap.getRows().setAnnotations(new ResourceReference<IAnnotations>("annotations", SerialClone.xclone(analysis.getRowAnnotations())));
                     }
 
-                    heatmap.getRows().removeHeader(0);
+                    heatmap.getRows().getHeaders().remove(0);
                     for (HeatmapHeader hh : analysis.getRowHeaders())
                     {
                         heatmap.getRows().addHeader(SerialClone.xclone(hh));
