@@ -28,8 +28,7 @@ import java.io.Serializable;
  *
  * @noinspection ALL
  */
-public class KeyValue implements Serializable
-{
+public class KeyValue implements Serializable {
 
     private static final long serialVersionUID = -391476933832883165L;
 
@@ -40,38 +39,31 @@ public class KeyValue implements Serializable
     /**
      * @noinspection UnusedDeclaration
      */
-    public KeyValue()
-    {
+    public KeyValue() {
     }
 
-    public KeyValue(String key, String value)
-    {
+    public KeyValue(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    void setKey(String key)
-    {
+    void setKey(String key) {
         this.key = key;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    void setValue(String value)
-    {
+    void setValue(String value) {
         this.value = value;
     }
 
-    public void setKeyAndValue(String name, String value)
-    {
+    public void setKeyAndValue(String name, String value) {
         setKey(name);
         setValue(value);
     }

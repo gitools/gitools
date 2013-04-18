@@ -45,32 +45,27 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class OverlappingsAction extends BaseAction
-{
+public class OverlappingsAction extends BaseAction {
 
-    public OverlappingsAction()
-    {
+    public OverlappingsAction() {
         super("Overlapping");
         setDesc("Overlapping analysis");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -84,26 +79,20 @@ public class OverlappingsAction extends BaseAction
 
         dlg.open();
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         final OverlappingAnalysis analysis = wiz.getAnalysis();
 
-        if (!analysis.isTransposeData())
-        {
-            if (matrixView.getColumns().getSelected(  ).length > 0)
-            {
+        if (!analysis.isTransposeData()) {
+            if (matrixView.getColumns().getSelected().length > 0) {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getColumns().visibleFromSelection();
                 matrixView = mv;
             }
-        }
-        else
-        {
-            if (matrixView.getRows().getSelected(  ).length > 0)
-            {
+        } else {
+            if (matrixView.getRows().getSelected().length > 0) {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getRows().visibleFromSelection();
                 matrixView = mv;
@@ -112,17 +101,13 @@ public class OverlappingsAction extends BaseAction
 
         analysis.setSourceData(new ResourceReference<IMatrix>("source-data", matrixView));
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     new OverlappingProcessor(analysis).run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -132,20 +117,15 @@ public class OverlappingsAction extends BaseAction
 
                     String analysisTitle = analysis.getTitle();
 
-                    if (!analysisTitle.equals(""))
-                    {
+                    if (!analysisTitle.equals("")) {
                         editor.setName(analysis.getTitle() + "." + OverlappingAnalysisFormat.EXTENSION);
-                    }
-                    else
-                    {
+                    } else {
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", OverlappingAnalysisFormat.EXTENSION));
                     }
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -154,8 +134,7 @@ public class OverlappingsAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

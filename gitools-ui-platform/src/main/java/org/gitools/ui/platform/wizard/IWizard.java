@@ -29,8 +29,7 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public interface IWizard
-{
+public interface IWizard {
 
     String getTitle();
 

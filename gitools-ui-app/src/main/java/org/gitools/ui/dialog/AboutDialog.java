@@ -36,16 +36,14 @@ import java.awt.event.ActionListener;
 /**
  * @noinspection ALL
  */
-public class AboutDialog extends JDialog
-{
+public class AboutDialog extends JDialog {
 
     private static final long serialVersionUID = -5869809986725283792L;
 
     private final String appName;
     private final String appVersion;
 
-    public AboutDialog(JFrame owner)
-    {
+    public AboutDialog(JFrame owner) {
         super(owner);
 
         appName = AppFrame.getAppName();
@@ -59,8 +57,7 @@ public class AboutDialog extends JDialog
         pack();
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
         JLabel imageLabel = new JLabel(IconUtils.getIconResource(IconNames.aboutLogo));
         imageLabel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 0));
         imageLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -70,26 +67,22 @@ public class AboutDialog extends JDialog
         Dimension dim = new Dimension(550, 374);
         creditsPane.setPreferredSize(dim);
         creditsPane.setMaximumSize(dim);
-        try
-        {
+        try {
             creditsPane.setTemplateFromResource("/vm/about.vm");
             VelocityContext context = new VelocityContext();
             context.put("appName", appName);
             context.put("appVersion", appVersion);
             creditsPane.setContext(context);
             creditsPane.render();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             System.err.println("Unexpected error creating credits pane.");
         }
 
         JButton acceptBtn = new JButton("Close");
         acceptBtn.setMargin(new Insets(0, 30, 0, 30));
-        acceptBtn.addActionListener(new ActionListener()
-        {
+        acceptBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 closeDialog();
             }
         });
@@ -110,8 +103,7 @@ public class AboutDialog extends JDialog
         add(contPanel, BorderLayout.CENTER);
     }
 
-    void closeDialog()
-    {
+    void closeDialog() {
         setVisible(false);
     }
 }

@@ -35,20 +35,17 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Map;
 
-public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<HeatmapDataHeatmapHeader>
-{
+public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<HeatmapDataHeatmapHeader> {
 
-    public HeatmapDataHeatmapDrawer(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean horizontal)
-    {
+    public HeatmapDataHeatmapDrawer(Heatmap heatmap, HeatmapDataHeatmapHeader header, boolean horizontal) {
         super(heatmap, header, horizontal);
     }
 
     @Override
-    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip)
-    {
-        Heatmap headerHeatmap = header.getHeaderHeatmap();
-        IMatrixView headerData = header.getHeaderHeatmap();
-        IMatrixView data = heatmap  ;
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
+        Heatmap headerHeatmap = header.getHeatmap();
+        IMatrixView headerData = header.getHeatmap();
+        IMatrixView data = heatmap;
 
 
         g.setColor(header.getBackgroundColor());
@@ -78,8 +75,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         GenericFormatter gf = new GenericFormatter();
 
         // legend will not fit even though user asked for it
-        if (header.isLabelVisible() && header.getSize() <= largestLegendLength + legendPadding)
-        {
+        if (header.isLabelVisible() && header.getSize() <= largestLegendLength + legendPadding) {
             largestLegendLength = 0;
         }
 
@@ -91,8 +87,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         columnsGridSize = headerHeatmap.getColumns().getGridSize();
 
-        if (horizontal)
-        {
+        if (horizontal) {
 
             rowsGridSize = heatmap.getColumns().getGridSize();
 
@@ -108,9 +103,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
             cellWidth = (headerSize - margin - columnsGridSize * rowEnd) / rowEnd;
 
 
-        }
-        else
-        {
+        } else {
 
             rowsGridSize = heatmap.getRows().getGridSize();
 
@@ -131,54 +124,43 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         Decorator deco = headerHeatmap.getLayers().getTopLayer().getDecorator();
         Decoration decoration = new Decoration();
 
-        int leadRow = headerHeatmap.getRows().getSelectionLead(  );
-        int leadColumn = headerHeatmap.getColumns().getSelectionLead(  );
+        int leadRow = headerHeatmap.getRows().getSelectionLead();
+        int leadColumn = headerHeatmap.getColumns().getSelectionLead();
 
         int y = (horizontal) ? box.y + colStart * cellHeight : box.y + rowStart * cellHeight;
         int Yoriginal = y;
-        for (int row = rowStart; row < rowEnd; row++)
-        {
+        for (int row = rowStart; row < rowEnd; row++) {
             int x;
-            if (horizontal)
-            {
+            if (horizontal) {
                 y = Yoriginal;
                 x = box.x + row * (cellWidth + columnsGridSize);
-            }
-            else
-            {
+            } else {
                 x = box.x + colStart * (cellWidth + columnsGridSize);
             }
 
-            for (int col = colStart; col < colEnd; col++)
-            {
+            for (int col = colStart; col < colEnd; col++) {
 
                 int headerCol = col;
                 int headerRow = row;
                 boolean valueExists;
 
-                if (horizontal)
-                {
+                if (horizontal) {
                     String label = data.getColumns().getLabel(col);
                     valueExists = labelIndexMap.containsKey(label) ? true : false;
-                    if (valueExists)
-                    {
+                    if (valueExists) {
                         headerCol = labelIndexMap.get(label);
                         //headerRow = 0;
                     }
-                }
-                else
-                {
+                } else {
                     String label = data.getRows().getLabel(row);
                     valueExists = labelIndexMap.containsKey(label) ? true : false;
-                    if (valueExists)
-                    {
+                    if (valueExists) {
                         headerRow = labelIndexMap.get(label);
                         //headerCol = 0;
                     }
                 }
 
-                if (valueExists)
-                {
+                if (valueExists) {
 
                     deco.decorate(decoration, headerData, headerRow, headerCol, data.getLayers().getTopLayerIndex());
 
@@ -187,18 +169,14 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     Color columnsGridColor = heatmap.getColumns().getGridColor();
 
                     boolean selected = false;
-                    if (horizontal)
-                    {
-                        selected = data.getColumns().isSelected(  col) && !pictureMode;
-                    }
-                    else
-                    {
-                        selected = !pictureMode && data.getRows().isSelected(  row);
+                    if (horizontal) {
+                        selected = data.getColumns().isSelected(col) && !pictureMode;
+                    } else {
+                        selected = !pictureMode && data.getRows().isSelected(row);
                     }
 
 
-                    if (selected)
-                    {
+                    if (selected) {
                         color = color.darker();
                         rowsGridColor = rowsGridColor.darker();
                         columnsGridColor = columnsGridColor.darker();
@@ -211,10 +189,8 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     int legendLength = fm.stringWidth(valueLabel);
 
 
-                    if (header.isLabelVisible())
-                    {
-                        switch (labelPosition)
-                        {
+                    if (header.isLabelVisible()) {
+                        switch (labelPosition) {
                             case rightOf:
                                 colorRectWith = cellWidth - legendPadding - largestLegendLength;
                                 legendStart = x + legendPadding + margin + colorRectWith;
@@ -246,35 +222,25 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                     //g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
 
 
-                    if (largestLegendLength > 0)
-                    {
-                        if (labelPosition != HeatmapDataHeatmapHeader.LabelPositionEnum.inside || header.isForceLabelColor())
-                        {
+                    if (largestLegendLength > 0) {
+                        if (labelPosition != HeatmapDataHeatmapHeader.LabelPositionEnum.inside || header.isForceLabelColor()) {
                             g.setColor(header.getLabelColor());
-                        }
-                        else
-                        {
+                        } else {
                             g.setColor(ColorUtils.invert(color));
                         }
                         int fontHeight = g.getFontMetrics().getHeight();
                         g.drawString(valueLabel, legendStart, y + fontHeight);
                     }
 
-                    if (!pictureMode)
-                    {
-                        if (row == leadRow && col == leadColumn)
-                        {
+                    if (!pictureMode) {
+                        if (row == leadRow && col == leadColumn) {
                             g.setColor(ColorUtils.invert(color));
                             g.drawRect(x, y, cellWidth - 1, cellHeight - rowsGridSize - 1);
-                        }
-                        else if (row == leadRow && col != leadColumn)
-                        {
+                        } else if (row == leadRow && col != leadColumn) {
                             g.setColor(ColorUtils.invert(color));
                             int x2 = x + cellWidth - 1;
                             int y2 = y + cellHeight - rowsGridSize - 1;
-                        }
-                        else if (row != leadRow && col == leadColumn)
-                        {
+                        } else if (row != leadRow && col == leadColumn) {
                             g.setColor(ColorUtils.invert(color));
                             int x2 = x + cellWidth - 1;
                             int y2 = y + cellHeight - rowsGridSize - 1;
@@ -283,21 +249,15 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
                 }
 
 
-                if (horizontal)
-                {
+                if (horizontal) {
                     y += cellHeight;
-                }
-                else
-                {
+                } else {
                     x += cellWidth + columnsGridSize;
                 }
             }
-            if (horizontal)
-            {
+            if (horizontal) {
                 x += cellWidth + columnsGridSize;
-            }
-            else
-            {
+            } else {
                 y += cellHeight;
             }
         }
@@ -305,8 +265,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
     @NotNull
     @Override
-    public Dimension getSize()
-    {
+    public Dimension getSize() {
 
         int rowsGridSize = heatmap.getRows().getGridSize();
         int columnsGridSize = heatmap.getColumns().getGridSize();
@@ -317,14 +276,11 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
         int totalWidth;
         int totalHeight;
-        if (horizontal)
-        {
+        if (horizontal) {
             totalWidth = (heatmap.getColumns().getCellSize() + columnsGridSize) * columnCount + extBorder;
             totalHeight = header.getSize();
 
-        }
-        else
-        {
+        } else {
             totalWidth = header.getSize();
             totalHeight = (heatmap.getRows().getCellSize() + rowsGridSize) * rowCount + extBorder;
         }
@@ -333,8 +289,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
     @NotNull
     @Override
-    public HeatmapPosition getPosition(@NotNull Point p)
-    {
+    public HeatmapPosition getPosition(@NotNull Point p) {
 
         int rowsGridSize = heatmap.getRows().getGridSize();
         int columnsGridSize = heatmap.getColumns().getGridSize();
@@ -345,18 +300,15 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap  .getRows().size();
-        int columnCount = heatmap  .getColumns().size();
+        int rowCount = heatmap.getRows().size();
+        int columnCount = heatmap.getColumns().size();
 
-        if (horizontal)
-        {
+        if (horizontal) {
             cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
             cellHeight = header.getSize();
             totalWidth = cellWidth * columnCount + extBorder;
             totalHeight = header.getSize();
-        }
-        else
-        {
+        } else {
             cellWidth = header.getSize();
             cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
             totalWidth = header.getSize();
@@ -371,8 +323,7 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
 
     @NotNull
     @Override
-    public Point getPoint(@NotNull HeatmapPosition p)
-    {
+    public Point getPoint(@NotNull HeatmapPosition p) {
 
         int rowsGridSize = heatmap.getRows().getGridSize();
         int columnsGridSize = heatmap.getColumns().getGridSize();
@@ -383,18 +334,15 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         int cellWidth;
         int cellHeight;
 
-        int rowCount = heatmap  .getRows().size();
-        int columnCount = heatmap  .getColumns().size();
+        int rowCount = heatmap.getRows().size();
+        int columnCount = heatmap.getColumns().size();
 
-        if (horizontal)
-        {
+        if (horizontal) {
             cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
             cellHeight = header.getSize();
             totalWidth = cellWidth * columnCount + extBorder;
             totalHeight = header.getSize();
-        }
-        else
-        {
+        } else {
             cellWidth = header.getSize();
             cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
             totalWidth = header.getSize();
@@ -402,14 +350,12 @@ public class HeatmapDataHeatmapDrawer extends AbstractHeatmapHeaderDrawer<Heatma
         }
 
         int x = p.column >= 0 ? p.column * cellWidth : 0;
-        if (x > totalWidth)
-        {
+        if (x > totalWidth) {
             x = totalWidth;
         }
 
         int y = p.row >= 0 ? p.row * cellHeight : 0;
-        if (y > totalHeight)
-        {
+        if (y > totalHeight) {
             y = totalHeight;
         }
 

@@ -52,8 +52,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes
-{
+public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes {
 
     private static final Logger logger = LoggerFactory.getLogger(EnsemblKeggModulesImporter.class);
 
@@ -67,8 +66,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     private static final Map<String, String> goDescId = new HashMap<String, String>();
 
-    static
-    {
+    static {
         goDescId.put(GO_BP, "name_1006");
         goDescId.put(GO_MF, "go_molecular_function__dm_name_1006");
         goDescId.put(GO_CL, "go_cellular_component__dm_name_1006");
@@ -81,8 +79,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     private static final Map<String, EnsemblKeggFeatureCategory> featMap = new HashMap<String, EnsemblKeggFeatureCategory>();
 
-    static
-    {
+    static {
         for (EnsemblKeggFeatureCategory f : COMMON_FEATURES)
             featMap.put(f.getId(), f);
     }
@@ -124,20 +121,17 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     private Map<String, EnsemblKeggFeatureCategory> keggFeatMap;
     private List<EnsemblKeggFeatureCategory> ensemblFeats;
 
-    public EnsemblKeggModulesImporter(boolean keggEnabled, boolean goEnabled)
-    {
+    public EnsemblKeggModulesImporter(boolean keggEnabled, boolean goEnabled) {
         this.keggEnabled = keggEnabled;
         this.goEnabled = goEnabled;
 
         List<ModuleCategory> mc = new ArrayList<ModuleCategory>();
 
-        if (keggEnabled)
-        {
+        if (keggEnabled) {
             mc.addAll(Arrays.asList(KEGG_MODULE_CATEGORIES));
         }
 
-        if (goEnabled)
-        {
+        if (goEnabled) {
             mc.addAll(Arrays.asList(GO_MODULE_CATEGORIES));
         }
 
@@ -145,15 +139,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @Nullable
-    private BiomartService getBiomartService() throws BiomartServiceException, ModulesImporterException
-    {
-        if (biomartService != null)
-        {
+    private BiomartService getBiomartService() throws BiomartServiceException, ModulesImporterException {
+        if (biomartService != null) {
             return biomartService;
         }
 
-        if (version == null)
-        {
+        if (version == null) {
             throw new ModulesImporterException("Ensembl biomart source not defined.");
         }
 
@@ -161,18 +152,15 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @Nullable
-    private MartLocation getMart() throws BiomartServiceException, ModulesImporterException
-    {
+    private MartLocation getMart() throws BiomartServiceException, ModulesImporterException {
         BiomartService bs = getBiomartService();
         List<MartLocation> registry = bs.getRegistry();
         Iterator<MartLocation> it = registry.iterator();
 
         martLocation = null;
-        while (martLocation == null && it.hasNext())
-        {
+        while (martLocation == null && it.hasNext()) {
             MartLocation m = it.next();
-            if (m.getName().equals("ENSEMBL_MART_ENSEMBL"))
-            {
+            if (m.getName().equals("ENSEMBL_MART_ENSEMBL")) {
                 martLocation = m;
             }
         }
@@ -182,28 +170,21 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     @NotNull
     @Override
-    public Version[] getVersions()
-    {
+    public Version[] getVersions() {
         LinkedList<Version> sources = new LinkedList<Version>();
 
         Version latestVersion = null;
-        for (BiomartSource src : BiomartSourceManager.getDefault().getSources())
-        {
-            if (src.getName().matches(".*ensembl.*"))
-            {
-                if (src.getName().matches(".*last.*"))
-                {
+        for (BiomartSource src : BiomartSourceManager.getDefault().getSources()) {
+            if (src.getName().matches(".*ensembl.*")) {
+                if (src.getName().matches(".*last.*")) {
                     latestVersion = new EnsemblKeggVersion(src);
-                }
-                else
-                {
+                } else {
                     sources.add(new EnsemblKeggVersion(src));
                 }
             }
         }
 
-        if (latestVersion != null)
-        {
+        if (latestVersion != null) {
             sources.add(0, latestVersion);
         }
 
@@ -212,78 +193,63 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     @Nullable
     @Override
-    public Organism[] getOrganisms() throws ModulesImporterException
-    {
-        if (cachedOrganisms != null)
-        {
+    public Organism[] getOrganisms() throws ModulesImporterException {
+        if (cachedOrganisms != null) {
             return cachedOrganisms;
         }
 
         List<EnsemblKeggOrganism> orgs = new ArrayList<EnsemblKeggOrganism>();
         Map<String, EnsemblKeggOrganism> orgsMap = new HashMap<String, EnsemblKeggOrganism>();
 
-        try
-        {
+        try {
             // Ensembl organisms
 
             BiomartService bs = getBiomartService();
             MartLocation mart = getMart();
 
             List<DatasetInfo> datasets = bs.getDatasets(mart);
-            for (DatasetInfo ds : datasets)
-            {
+            for (DatasetInfo ds : datasets) {
                 String id = ds.getDisplayName().replaceAll(" genes [(].*[)]", "").toLowerCase();
                 EnsemblKeggOrganism o = orgsMap.get(id);
-                if (o == null)
-                {
+                if (o == null) {
                     o = new EnsemblKeggOrganism(id, id, ds);
                     orgs.add(o);
                     orgsMap.put(id, o);
-                }
-                else
-                {
+                } else {
                     o.setEnsemblDataset(ds);
                 }
             }
 
             // KEGG organisms
 
-            if (keggEnabled)
-            {
+            if (keggEnabled) {
                 KeggService serv = getKeggService();
 
                 List<KeggOrganism> orgDefs = serv.getOrganisms();
 
-                for (KeggOrganism def : orgDefs)
-                {
+                for (KeggOrganism def : orgDefs) {
                     String id = def.getDescription().replaceAll(" [(].*[)]", "").toLowerCase();
                     EnsemblKeggOrganism o = orgsMap.get(id);
-                    if (o == null)
-                    {
+                    if (o == null) {
                         o = new EnsemblKeggOrganism(id, id, def);
                         orgs.add(o);
                         orgsMap.put(id, o);
-                    }
-                    else
-                    {
+                    } else {
                         o.setKeggDef(def);
                     }
                 }
 
                 // Remove organism of Ensembl not in KEGG
                 Iterator<EnsemblKeggOrganism> it = orgs.iterator();
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     EnsemblKeggOrganism o = it.next();
-                    if (o.getKeggOrganism() == null)
-                    {
+                    if (o.getKeggOrganism() == null) {
                         it.remove();
                         orgsMap.remove(o.getId());
                     }
                 }
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new ModulesImporterException(ex);
         }
 
@@ -291,30 +257,25 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @Override
-    public ModuleCategory[] getModuleCategories()
-    {
+    public ModuleCategory[] getModuleCategories() {
         return moduleCategories;
     }
 
     @Nullable
     @Override
-    public FeatureCategory[] getFeatureCategories() throws ModulesImporterException
-    {
-        if (cachedFeatures != null)
-        {
+    public FeatureCategory[] getFeatureCategories() throws ModulesImporterException {
+        if (cachedFeatures != null) {
             return cachedFeatures;
         }
 
-        if (modCategory == null)
-        {
+        if (modCategory == null) {
             throw new ModulesImporterException("Module category not defined.");
         }
 
         List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
 
 		/* if this importer is activated for KEGG and the selected organism exists in KEGG*/
-        if (keggEnabled && organism.getKeggOrganism() != null)
-        {
+        if (keggEnabled && organism.getKeggOrganism() != null) {
 
             keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
             keggFeatMap.put(KEGG_GENES, featMap.get(KEGG_GENES));
@@ -331,8 +292,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             // String[] idList = new String[] { ENSEMBL_GENES, NCBI_GENES, UNIPROT, PDB};
             String[] idList = new String[]{NCBI_GENES, UNIPROT};
 
-            for (String id : idList)
-            {
+            for (String id : idList) {
                 EnsemblKeggFeatureCategory f = featMap.get(id);
                 feats.add(f);
                 keggFeatMap.put(id, f);
@@ -340,23 +300,20 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         }
 
 		/* if the selected organism has a dataset in ensembl */
-        if (organism.getEnsemblDataset() != null)
-        {
+        if (organism.getEnsemblDataset() != null) {
             ensemblFeats = new ArrayList<EnsemblKeggFeatureCategory>();
 
             ensemblFeats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[]{featMap.get(ENSEMBL_GENES), featMap.get(ENSEMBL_TRANSCRIPTS), featMap.get(ENSEMBL_PROTEINS)}));
 
             List<AttributePage> attrs = null;
-            try
-            {
+            try {
                 BiomartService bs = getBiomartService();
 
                 MartLocation mart = getMart();
                 DatasetInfo dataset = organism.getEnsemblDataset();
 
                 attrs = bs.getAttributes(mart, dataset);
-            } catch (BiomartServiceException ex)
-            {
+            } catch (BiomartServiceException ex) {
                 throw new ModulesImporterException(ex);
             }
 
@@ -372,38 +329,31 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
             for (AttributePage p : attrs)
                 for (AttributeGroup g : p.getAttributeGroups())
-                    for (AttributeCollection c : g.getAttributeCollections())
-                    {
+                    for (AttributeCollection c : g.getAttributeCollections()) {
                         boolean isXref = c.getInternalName().equals("xrefs");
                         boolean isMicroarray = c.getInternalName().equals("microarray");
-                        if (isXref || isMicroarray)
-                        {
+                        if (isXref || isMicroarray) {
 
                             logger.debug("Collection: " + c.getDisplayName() + " [" + c.getInternalName() + "]");
 
-                            for (AttributeDescription a : c.getAttributeDescriptions())
-                            {
+                            for (AttributeDescription a : c.getAttributeDescriptions()) {
                                 String dname = a.getDisplayName();
-                                if (a.isHidden() || dname == null || dname.isEmpty())
-                                {
+                                if (a.isHidden() || dname == null || dname.isEmpty()) {
                                     continue;
                                 }
 
                                 String iname = a.getInternalName();
-                                if (idremove.contains(iname))
-                                {
+                                if (idremove.contains(iname)) {
                                     continue;
                                 }
 
                                 String id = idmap.get(iname);
-                                if (id == null)
-                                {
+                                if (id == null) {
                                     id = "ensembl:" + iname;
                                 }
 
                                 EnsemblKeggFeatureCategory feat = featMap.get(id);
-                                if (feat == null)
-                                {
+                                if (feat == null) {
                                     String section = isMicroarray ? "Microarrays" : "Others";
                                     feat = new EnsemblKeggFeatureCategory(section, id, dname);
                                 }
@@ -420,15 +370,11 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         // remove duplicated features
         Set<String> featIds = new HashSet<String>();
         Iterator<EnsemblKeggFeatureCategory> featIt = feats.iterator();
-        while (featIt.hasNext())
-        {
+        while (featIt.hasNext()) {
             EnsemblKeggFeatureCategory feat = featIt.next();
-            if (featIds.contains(feat.getId()))
-            {
+            if (featIds.contains(feat.getId())) {
                 featIt.remove();
-            }
-            else
-            {
+            } else {
                 featIds.add(feat.getId());
             }
         }
@@ -439,14 +385,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     // Importer state
 
     @Override
-    public ModuleCategory getModuleCategory()
-    {
+    public ModuleCategory getModuleCategory() {
         return modCategory;
     }
 
     @Override
-    public void setModuleCategory(ModuleCategory category)
-    {
+    public void setModuleCategory(ModuleCategory category) {
         this.modCategory = (EnsemblKeggModuleCategory) category;
         organism = null;
         featCategory = null;
@@ -455,14 +399,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @Override
-    public Version getVersion()
-    {
+    public Version getVersion() {
         return version;
     }
 
     @Override
-    public void setVersion(Version version)
-    {
+    public void setVersion(Version version) {
         this.version = (EnsemblKeggVersion) version;
         biomartService = null;
         cachedOrganisms = null;
@@ -471,14 +413,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     @Nullable
     @Override
-    public Organism getOrganism()
-    {
+    public Organism getOrganism() {
         return organism;
     }
 
     @Override
-    public void setOrganism(Organism organismId)
-    {
+    public void setOrganism(Organism organismId) {
         this.organism = (EnsemblKeggOrganism) organismId;
         featCategory = null;
         cachedFeatures = null;
@@ -486,40 +426,34 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     @Nullable
     @Override
-    public FeatureCategory getFeatureCategory()
-    {
+    public FeatureCategory getFeatureCategory() {
         return featCategory;
     }
 
     @Override
-    public void setFeatCategory(FeatureCategory featCategory)
-    {
+    public void setFeatCategory(FeatureCategory featCategory) {
         this.featCategory = (EnsemblKeggFeatureCategory) featCategory;
     }
 
     // Import
 
     @Nullable
-    public ModuleMap importMap(@NotNull IProgressMonitor monitor) throws ModulesImporterException
-    {
+    public ModuleMap importMap(@NotNull IProgressMonitor monitor) throws ModulesImporterException {
         ModuleMap mmap = null;
 
         MappingEngine mapping = new MappingEngine();
 
         // Build KEGG network
-        if (organism.getKeggOrganism() != null)
-        {
+        if (organism.getKeggOrganism() != null) {
 
             monitor.info("KEGG");
 
             String keggorg = organism.getKeggOrganism().getId();
 
             KeggService ks = null;
-            try
-            {
+            try {
                 ks = getKeggService();
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new ModulesImporterException(ex);
             }
 
@@ -532,22 +466,18 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         // Build Ensembl network
         Integer numericRelease = null;
         String release = version.getSource().getRelease();
-        if (release != null && !release.isEmpty())
-        {
+        if (release != null && !release.isEmpty()) {
             numericRelease = Integer.parseInt(release);
         }
 
-        if (organism.getEnsemblDataset() != null)
-        {
+        if (organism.getEnsemblDataset() != null) {
 
             monitor.info("Ensembl");
 
             BiomartService bs = null;
-            try
-            {
+            try {
                 bs = getBiomartService();
-            } catch (BiomartServiceException ex)
-            {
+            } catch (BiomartServiceException ex) {
                 throw new ModulesImporterException(ex);
             }
 
@@ -557,36 +487,28 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
             String linkId = null;
 
-            if (keggEnabled && organism.getKeggOrganism() != null && !keggFeatMap.containsKey(ENSEMBL_GENES))
-            {
+            if (keggEnabled && organism.getKeggOrganism() != null && !keggFeatMap.containsKey(ENSEMBL_GENES)) {
 
                 List<String> idList = Arrays.asList(new String[]{ENSEMBL_GENES, NCBI_GENES, PDB, UNIPROT});
                 Iterator<String> it = idList.iterator();
-                while (linkId == null && it.hasNext())
-                {
+                while (linkId == null && it.hasNext()) {
                     String id = it.next();
-                    if (keggFeatMap.containsKey(id))
-                    {
+                    if (keggFeatMap.containsKey(id)) {
                         linkId = id;
                     }
                 }
-                if (linkId != null)
-                {
+                if (linkId != null) {
                     mapping.addMapper(linkId, ENSEMBL_GENES, new EnsemblMapper(bs, dsName));
                 }
-            }
-            else
-            {
+            } else {
                 linkId = ENSEMBL_GENES;
             }
 
             Set<String> sinks = new HashSet<String>();
 
-            for (FeatureCategory f : ensemblFeats)
-            {
+            for (FeatureCategory f : ensemblFeats) {
                 String id = f.getRef();
-                if (!id.equals(linkId))
-                {
+                if (!id.equals(linkId)) {
                     sinks.add(id);
                 }
             }
@@ -594,20 +516,15 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             for (String id : sinks)
                 mapping.addMapper(linkId, id, new EnsemblMapper(bs, dsName));
 
-            if (goEnabled)
-            {
-                if (numericRelease != null && numericRelease >= 62)
-                {
+            if (goEnabled) {
+                if (numericRelease != null && numericRelease >= 62) {
                     for (String id : sinks)
                         mapping.addMapper(GO_ID, id, new EnsemblMapper(bs, dsName));
 
                     mapping.addMapper(GO_ID, linkId, new EnsemblMapper(bs, dsName));
 
-                }
-                else
-                {
-                    for (String id : sinks)
-                    {
+                } else {
+                    for (String id : sinks) {
                         mapping.addMapper(GO_BP, id, new EnsemblMapper(bs, dsName));
                         mapping.addMapper(GO_MF, id, new EnsemblMapper(bs, dsName));
                         mapping.addMapper(GO_CL, id, new EnsemblMapper(bs, dsName));
@@ -620,42 +537,31 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             }
         }
 
-        try
-        {
+        try {
             String src = modCategory.getId();
 
             Map<String, String> modDesc = null;
             String[] ids = null;
             MappingData data = null;
 
-            if (isCategory(src, KEGG_MODULE_CATEGORIES))
-            {
+            if (isCategory(src, KEGG_MODULE_CATEGORIES)) {
                 modDesc = retrieveKeggsModules(src, monitor.subtask());
-            }
-            else if (isCategory(src, GO_MODULE_CATEGORIES))
-            {
-                if (numericRelease != null && numericRelease >= 62)
-                {
+            } else if (isCategory(src, GO_MODULE_CATEGORIES)) {
+                if (numericRelease != null && numericRelease >= 62) {
                     modDesc = retrieveGoModulesEns62(src, monitor.subtask());
                     src = GO_ID;
-                }
-                else
-                {
+                } else {
                     modDesc = retrieveGoModules(src, monitor.subtask());
                 }
-            }
-            else
-            {
+            } else {
                 throw new ModulesImporterException("Unknown category id: " + src);
             }
 
             ids = modDesc.keySet().toArray(new String[modDesc.size()]);
             data = mapping.run(ids, src, featCategory.getId(), monitor);
 
-            if (!monitor.isCancelled())
-            {
-                if (!src.equals(data.getSrcNode().getId()) || !featCategory.getId().equals(data.getDstNode().getId()))
-                {
+            if (!monitor.isCancelled()) {
+                if (!src.equals(data.getSrcNode().getId()) || !featCategory.getId().equals(data.getDstNode().getId())) {
                     monitor.exception(new ModulesImporterException("There was an unexpected mapping error."));
                 }
 
@@ -663,13 +569,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
                 boolean plainGo = goEnabled && (modCategory.getId().equals(GO_BP) || modCategory.getId().equals(GO_MF) || modCategory.getId().equals(GO_CL));
 
-                if (plainGo)
-                {
+                if (plainGo) {
                     tree = retrieveGoTree(monitor);
                     data = plainGoData(data, tree, monitor);
-                }
-                else
-                {
+                } else {
                     tree = new HashMap<String, Set<String>>();
                 }
 
@@ -681,8 +584,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 //if (plainGo)
                 //mmap = mmap.plain();
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new ModulesImporterException(ex);
         }
 
@@ -691,12 +593,10 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 
     @NotNull
-    private Map<String, String> retrieveKeggsModules(final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
-    {
+    private Map<String, String> retrieveKeggsModules(final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException {
         final Map<String, String> desc = new HashMap<String, String>();
         monitor.begin("Getting KEGG pathways ...", 1);
-        try
-        {
+        try {
             String keggorg = organism.getKeggOrganism().getId();
 
             KeggService ks = getKeggService();
@@ -704,8 +604,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             List<KeggPathway> pathwaysDefs = ks.getPathways(keggorg);
             for (KeggPathway d : pathwaysDefs)
                 desc.put(d.getId(), d.getDescription());
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new ModulesImporterException(ex);
         }
         monitor.end();
@@ -713,14 +612,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private Map<String, String> retrieveGoModulesEns62(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
-    {
+    private Map<String, String> retrieveGoModulesEns62(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException {
         final Map<String, String> desc = new HashMap<String, String>();
 
         monitor.begin("Getting Gene Ontology names ...", 1);
         BiomartService bs = null;
-        try
-        {
+        try {
             bs = getBiomartService();
 
             Query q = EnsemblMapper.createQuery(organism.getEnsemblDataset().getName(), EnsemblMapper.getInternalName(GO_ID), goDescId.get(GO_ID));
@@ -729,32 +626,25 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             a.setName("namespace_1003");
             q.getDatasets().get(0).getAttribute().add(a);
 
-            bs.queryTable(q, new BiomartQueryHandler()
-            {
+            bs.queryTable(q, new BiomartQueryHandler() {
                 @Override
-                public void begin() throws Exception
-                {
+                public void begin() throws Exception {
                 }
 
                 @Override
-                public void line(@NotNull String[] fields) throws Exception
-                {
-                    if (fields.length == 3)
-                    {
-                        if ((src.equals(GO_CL) && fields[2].equals("cellular_component")) || (src.equals(GO_MF) && fields[2].equals("molecular_function")) || (src.equals(GO_BP) && fields[2].equals("biological_process")))
-                        {
+                public void line(@NotNull String[] fields) throws Exception {
+                    if (fields.length == 3) {
+                        if ((src.equals(GO_CL) && fields[2].equals("cellular_component")) || (src.equals(GO_MF) && fields[2].equals("molecular_function")) || (src.equals(GO_BP) && fields[2].equals("biological_process"))) {
                             desc.put(fields[0], fields[1]);
                         }
                     }
                 }
 
                 @Override
-                public void end()
-                {
+                public void end() {
                 }
             }, true, "", monitor.subtask());
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             throw new ModulesImporterException(ex);
         }
         monitor.end();
@@ -763,42 +653,34 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private Map<String, String> retrieveGoModules(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException
-    {
+    private Map<String, String> retrieveGoModules(@NotNull final String src, @NotNull IProgressMonitor monitor) throws ModulesImporterException {
         final Map<String, String> desc = new HashMap<String, String>();
 
         monitor.begin("Getting Gene Ontology names ...", 1);
         BiomartService bs = null;
-        try
-        {
+        try {
             bs = getBiomartService();
 
             Query q = EnsemblMapper.createQuery(organism.getEnsemblDataset().getName(), EnsemblMapper.getInternalName(src), goDescId.get(src));
 
-            bs.queryTable(q, new BiomartQueryHandler()
-            {
+            bs.queryTable(q, new BiomartQueryHandler() {
                 @Override
-                public void begin() throws Exception
-                {
+                public void begin() throws Exception {
                 }
 
                 @Override
-                public void line(@NotNull String[] fields) throws Exception
-                {
-                    if (fields.length == 2)
-                    {
+                public void line(@NotNull String[] fields) throws Exception {
+                    if (fields.length == 2) {
                         desc.put(fields[0], fields[1]);
                     }
                 }
 
                 @Override
-                public void end()
-                {
+                public void end() {
                 }
             }, true, "", monitor.subtask());
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             throw new ModulesImporterException(ex);
         }
         monitor.end();
@@ -806,11 +688,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return desc;
     }
 
-    private boolean isCategory(String src, @NotNull EnsemblKeggModuleCategory[] categories)
-    {
+    private boolean isCategory(String src, @NotNull EnsemblKeggModuleCategory[] categories) {
         for (EnsemblKeggModuleCategory c : categories)
-            if (c.getId().equals(src))
-            {
+            if (c.getId().equals(src)) {
                 return true;
             }
 
@@ -818,8 +698,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private Map<String, Set<String>> retrieveGoTree(@NotNull IProgressMonitor monitor) throws IOException
-    {
+    private Map<String, Set<String>> retrieveGoTree(@NotNull IProgressMonitor monitor) throws IOException {
         monitor.begin("Reading Gene Ontology graph ...", 1);
 
         URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
@@ -828,35 +707,26 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
 
         OBOEvent evt = oboReader.nextEvent();
-        while (evt != null)
-        {
+        while (evt != null) {
             while (evt != null && evt.getType() != STANZA_START)
                 evt = oboReader.nextEvent();
 
-            if (evt != null && evt.getStanzaName().equalsIgnoreCase("term"))
-            {
+            if (evt != null && evt.getStanzaName().equalsIgnoreCase("term")) {
                 evt = oboReader.nextEvent();
 
                 String id = null;
                 Set<String> isA = new HashSet<String>();
                 boolean obsolete = false;
 
-                while (evt != null && evt.getType() != STANZA_START)
-                {
+                while (evt != null && evt.getType() != STANZA_START) {
 
-                    if (evt != null && evt.getType() == TAG_START)
-                    {
+                    if (evt != null && evt.getType() == TAG_START) {
                         String tagName = evt.getTagName();
-                        if (tagName.equalsIgnoreCase("id"))
-                        {
+                        if (tagName.equalsIgnoreCase("id")) {
                             id = evt.getTagContents();
-                        }
-                        else if (tagName.equalsIgnoreCase("is_a"))
-                        {
+                        } else if (tagName.equalsIgnoreCase("is_a")) {
                             isA.add(evt.getTagContents());
-                        }
-                        else if (tagName.equalsIgnoreCase("is_obsolete"))
-                        {
+                        } else if (tagName.equalsIgnoreCase("is_obsolete")) {
                             obsolete = evt.getTagContents().equalsIgnoreCase("true");
                         }
 
@@ -869,22 +739,17 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                         evt = oboReader.nextEvent();
                 }
 
-                if (id != null && !obsolete)
-                {
-                    for (String parent : isA)
-                    {
+                if (id != null && !obsolete) {
+                    for (String parent : isA) {
                         Set<String> set = tree.get(parent);
-                        if (set == null)
-                        {
+                        if (set == null) {
                             set = new HashSet<String>();
                             tree.put(parent, set);
                         }
                         set.add(id);
                     }
                 }
-            }
-            else if (evt != null)
-            {
+            } else if (evt != null) {
                 evt = oboReader.nextEvent();
             }
         }
@@ -903,8 +768,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     }
 
     @NotNull
-    private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws IOException
-    {
+    private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws IOException {
         monitor.begin("Plaining Gene Ontology hierarchy ...", 1);
 
 		/*Map<String, Set<String>> m = data.getMap();
@@ -917,8 +781,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
         MappingData plainData = new MappingData(data.getSrcNode().getId(), data.getDstNode().getId());
 
-        for (String id : data.getSrcIds())
-        {
+        for (String id : data.getSrcIds()) {
             Set<String> dstIds = new HashSet<String>(data.get(id));
 
             plainGoTerm(id, new HashSet<String>(), dstIds, data.getMap(), tree);
@@ -931,25 +794,20 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         return plainData;
     }
 
-    private void plainGoTerm(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree)
-    {
+    private void plainGoTerm(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree) {
 
-        if (path.contains(id))
-        {
+        if (path.contains(id)) {
             throw new RuntimeException("Circular reference in path " + path + " for term " + id);
         }
 
         Set<String> childrenList = childrenTree.get(id);
-        if (childrenList == null)
-        {
+        if (childrenList == null) {
             return;
         }
 
-        for (String child : childrenList)
-        {
+        for (String child : childrenList) {
             Set<String> ids = map.get(child);
-            if (ids == null)
-            {
+            if (ids == null) {
                 continue;
             }
 
@@ -960,11 +818,9 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         }
     }
 
-    KeggService getKeggService()
-    {
+    KeggService getKeggService() {
 
-        if (keggService == null)
-        {
+        if (keggService == null) {
             keggService = new KeggService();
         }
 

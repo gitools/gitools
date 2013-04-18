@@ -29,8 +29,7 @@ import java.io.PrintStream;
 /**
  * @noinspection ALL
  */
-public class StreamProgressMonitor extends DefaultProgressMonitor
-{
+public class StreamProgressMonitor extends DefaultProgressMonitor {
 
     private static final String indentString = "  ";
 
@@ -46,8 +45,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     private final boolean verbose;
     private final boolean debug;
 
-    protected StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug)
-    {
+    protected StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug) {
         super(parent);
         this.out = out;
         this.timer = new Timer();
@@ -58,14 +56,12 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
         this.debug = debug;
     }
 
-    public StreamProgressMonitor(PrintStream out, boolean verbose, boolean debug)
-    {
+    public StreamProgressMonitor(PrintStream out, boolean verbose, boolean debug) {
         this(null, out, verbose, debug);
     }
 
     @Override
-    public void begin(String title, int totalWork)
-    {
+    public void begin(String title, int totalWork) {
         super.begin(title, totalWork);
         flag = false;
         showingbar = false;
@@ -75,29 +71,26 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     }
 
     @Override
-    public void title(String title)
-    {
+    public void title(String title) {
         super.title(title);
         print("\n" + tabs + title);
     }
 
     @Override
-    public void worked(int workInc)
-    {
+    public void worked(int workInc) {
         super.worked(workInc);
         double progress = ((double) getWorked() / (double) totalWork);
 
-        if (!showingbar)
-        {
+        if (!showingbar) {
             print("\n");
             showingbar = true;
         }
 
         int width = 70;
-        StringBuilder bar = new StringBuilder(width+5);
+        StringBuilder bar = new StringBuilder(width + 5);
         bar.append("\r[");
         int i = 0;
-        for (; i <= (int)(progress*width); i++) {
+        for (; i <= (int) (progress * width); i++) {
             bar.append(".");
         }
         for (; i < width; i++) {
@@ -109,8 +102,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
 
     @NotNull
     @Override
-    public IProgressMonitor subtask()
-    {
+    public IProgressMonitor subtask() {
         IProgressMonitor subtask = createSubtaskMonitor(this, out, verbose, debug);
         subtask.setLevel(level + 1);
         flag = true;
@@ -118,15 +110,13 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     }
 
     @NotNull
-    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug)
-    {
+    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
 
         return new StreamProgressMonitor(parentMonitor, out, verbose, debug);
     }
 
     @Override
-    public void end()
-    {
+    public void end() {
         super.end();
 
         double millis = timer.millis();
@@ -134,25 +124,17 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
         double mins = timer.minutes();
 
         String time = "";
-        if (millis < 1000)
-        {
+        if (millis < 1000) {
             time = Double.toString(millis) + " millisecs";
-        }
-        else if (secs < 60)
-        {
+        } else if (secs < 60) {
             time = Double.toString(secs) + " secs";
-        }
-        else
-        {
+        } else {
             time = Double.toString(mins) + " mins";
         }
 
-        if (flag)
-        {
+        if (flag) {
             print("\n" + tabs + title + " " + time);
-        }
-        else
-        {
+        } else {
             print("\n " + time);
         }
 
@@ -160,45 +142,37 @@ public class StreamProgressMonitor extends DefaultProgressMonitor
     }
 
     @Override
-    public void exception(@NotNull Throwable cause)
-    {
+    public void exception(@NotNull Throwable cause) {
         super.exception(cause);
 
         print("\n\nEXCEPTION: " + cause.getLocalizedMessage());
     }
 
     @Override
-    public void info(String msg)
-    {
-        if (verbose)
-        {
+    public void info(String msg) {
+        if (verbose) {
             log(msg);
         }
     }
 
     @Override
-    public void debug(String msg)
-    {
-        if (debug)
-        {
+    public void debug(String msg) {
+        if (debug) {
             log(msg);
         }
     }
 
-    private void log(String msg)
-    {
+    private void log(String msg) {
         print("\n" + tabs + indentString + msg);
         flag = true;
     }
 
-    protected void print(String text)
-    {
+    protected void print(String text) {
         out.print(text);
     }
 
     @NotNull
-    private String tabbulate(int level)
-    {
+    private String tabbulate(int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++)
             sb.append(indentString);

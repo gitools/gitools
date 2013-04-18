@@ -30,13 +30,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 
-public class HclLevelPage extends AbstractWizardPage
-{
+public class HclLevelPage extends AbstractWizardPage {
 
     private final HeatmapHierarchicalColoredLabelsHeader header;
 
-    public HclLevelPage(@NotNull HeatmapHierarchicalColoredLabelsHeader header)
-    {
+    public HclLevelPage(@NotNull HeatmapHierarchicalColoredLabelsHeader header) {
         this.header = header;
 
         initComponents();
@@ -45,14 +43,12 @@ public class HclLevelPage extends AbstractWizardPage
         HierarchicalClusteringResults hclResults = header.getClusteringResults();
         NewickTree tree = hclResults.getTree();
         int maxLevels = tree.getDepth() - 1;
-        if (maxLevels < 1)
-        {
+        if (maxLevels < 1) {
             maxLevels = 1;
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < maxLevels; i++)
-        {
+        for (int i = 0; i < maxLevels; i++) {
             sb.append("Level ").append(i).append(": ");
             sb.append(tree.getRoot().getLeaves(i).size());
             sb.append(" clusters");
@@ -67,18 +63,15 @@ public class HclLevelPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
         levels.setSelectedIndex(header.getTreeLevel());
     }
 
-    public int getLevel()
-    {
+    public int getLevel() {
         int level = levels.getSelectedIndex();
-        if (level == -1)
-        {
+        if (level == -1) {
             level = 0;
         }
         return level;
@@ -92,8 +85,7 @@ public class HclLevelPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         levels = new javax.swing.JList();

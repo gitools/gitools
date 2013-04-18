@@ -33,13 +33,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class FilterRadioComponent extends FilterComponent
-{
+public class FilterRadioComponent extends FilterComponent {
 
     private final Integer RADIO_HEIGHT = 45;
 
-    public FilterRadioComponent(FilterDescription d, FilterDescriptionPanel descriptionParent)
-    {
+    public FilterRadioComponent(FilterDescription d, FilterDescriptionPanel descriptionParent) {
 
         super(d, descriptionParent);
         initComponents();
@@ -47,8 +45,7 @@ public class FilterRadioComponent extends FilterComponent
         buildComponent();
     }
 
-    public FilterRadioComponent(Option o)
-    {
+    public FilterRadioComponent(Option o) {
 
         super(o);
         initComponents();
@@ -64,8 +61,7 @@ public class FilterRadioComponent extends FilterComponent
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         radioComponents = new javax.swing.ButtonGroup();
 
@@ -81,21 +77,18 @@ public class FilterRadioComponent extends FilterComponent
     // End of variables declaration//GEN-END:variables
 
     //FIXME : Test initialisation String list of options
-    private void buildComponent()
-    {
+    private void buildComponent() {
 
         String[] options;
 
         //Retrieve list of text from options
         options = getListTextOptions();
 
-        if (options != null)
-        {
+        if (options != null) {
             JRadioButton radio = null;
             this.setLayout(new GridLayout(options.length, 1));
 
-            for (int i = 0; i < options.length; i++)
-            {
+            for (int i = 0; i < options.length; i++) {
                 radio = new JRadioButton(options[i], (i == 0) ? true : false);
                 radioComponents.add(radio);
                 this.add(radio);
@@ -109,8 +102,7 @@ public class FilterRadioComponent extends FilterComponent
     @NotNull
     @Override
     // FIXME : Check if get filter from radio value/s is correct
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();
 
@@ -119,32 +111,23 @@ public class FilterRadioComponent extends FilterComponent
         JRadioButton r = null;
 
         // Could happen filterDescription null, if this component is a child (belongs to a container component)
-        if (filterDescription != null && filterDescription.getInternalName() != null)
-        {
+        if (filterDescription != null && filterDescription.getInternalName() != null) {
             f.setName(filterDescription.getInternalName());
         }
 
-        for (Enumeration<AbstractButton> enumRadio = radioComponents.getElements(); enumRadio.hasMoreElements(); )
-        {
+        for (Enumeration<AbstractButton> enumRadio = radioComponents.getElements(); enumRadio.hasMoreElements(); ) {
 
             r = (JRadioButton) enumRadio.nextElement();
-            if (r.isSelected())
-            {
+            if (r.isSelected()) {
 
-                if (r.getText().toLowerCase().equals("excluded"))
-                {
+                if (r.getText().toLowerCase().equals("excluded")) {
                     f.setRadio(true);
                     f.setValue("1");
-                }
-                else
-                {
-                    if (r.getText().toLowerCase().equals("only"))
-                    {
+                } else {
+                    if (r.getText().toLowerCase().equals("only")) {
                         f.setValue("0");
                         f.setRadio(true);
-                    }
-                    else
-                    {
+                    } else {
                         f.setValue(r.getText());
                     }
                 }
@@ -160,8 +143,7 @@ public class FilterRadioComponent extends FilterComponent
     @NotNull
     @Override
     //Always render filter from select component filter
-    public Boolean hasChanged()
-    {
+    public Boolean hasChanged() {
         return true;
 
     }
@@ -174,29 +156,22 @@ public class FilterRadioComponent extends FilterComponent
      * @return
      */
     @Nullable
-    private String[] getListTextOptions()
-    {
+    private String[] getListTextOptions() {
         String res[] = null;
-        if (filterOptions != null)
-        {
+        if (filterOptions != null) {
             res = new String[filterOptions.getOptions().size()];
-            for (int i = 0; i < filterOptions.getOptions().size(); i++)
-            {
+            for (int i = 0; i < filterOptions.getOptions().size(); i++) {
                 res[i] = filterOptions.getOptions().get(i).getValue();
             }
 
-        }
-        else
-        {
-            if (filterDescription == null)
-            {
+        } else {
+            if (filterDescription == null) {
                 return res;
             }
 
             res = new String[filterDescription.getOptions().size()];
 
-            for (int i = 0; i < filterDescription.getOptions().size(); i++)
-            {
+            for (int i = 0; i < filterDescription.getOptions().size(); i++) {
                 res[i] = filterDescription.getOptions().get(i).getValue();
             }
         }
@@ -204,8 +179,7 @@ public class FilterRadioComponent extends FilterComponent
     }
 
     @Override
-    public void setListOptions(List<Option> optionList)
-    {
+    public void setListOptions(List<Option> optionList) {
         return;
     }
 

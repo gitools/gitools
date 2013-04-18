@@ -33,29 +33,23 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-class ListenerProxy<L> implements InvocationHandler
-{
+class ListenerProxy<L> implements InvocationHandler {
 
     @NotNull
     private final List<L> listeners = new ArrayList<L>();
 
-    public void addListener(L listener)
-    {
+    public void addListener(L listener) {
         listeners.add(listener);
     }
 
     @Nullable
     @Override
-    public Object invoke(Object proxy, @NotNull Method method, Object[] args) throws Throwable
-    {
-        for (L listener : listeners)
-        {
-            try
-            {
+    public Object invoke(Object proxy, @NotNull Method method, Object[] args) throws Throwable {
+        for (L listener : listeners) {
+            try {
                 /*Object result =*/
                 method.invoke(listener, args);
-            } catch (InvocationTargetException ex)
-            {
+            } catch (InvocationTargetException ex) {
                 throw ex.getTargetException();
             }
         }

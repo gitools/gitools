@@ -34,19 +34,16 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class AttributesTreeModel extends DefaultTreeModel
-{
+public class AttributesTreeModel extends DefaultTreeModel {
 
     /**
      * @noinspection UnusedDeclaration
      */
     private static final long serialVersionUID = 8325493802045161663L;
 
-    public static class AttributeWrapper
-    {
+    public static class AttributeWrapper {
 
-        public enum NodeType
-        {
+        public enum NodeType {
             ROOT, PAGE, GROUP, COLLECTION, ATTRIBUTE
         }
 
@@ -54,56 +51,42 @@ public class AttributesTreeModel extends DefaultTreeModel
         private final NodeType type;
         private String name;
 
-        public AttributeWrapper(Object object)
-        {
+        public AttributeWrapper(Object object) {
             this.object = object;
             type = nodeType(object);
             name = nodeName(object, type);
-            if (name.endsWith(":"))
-            {
+            if (name.endsWith(":")) {
                 name = name.substring(0, name.length() - 1);
             }
         }
 
         @NotNull
-        private NodeType nodeType(Object o)
-        {
-            if (o == this)
-            {
+        private NodeType nodeType(Object o) {
+            if (o == this) {
                 return NodeType.ROOT;
-            }
-            else if (o instanceof AttributePage)
-            {
+            } else if (o instanceof AttributePage) {
                 return NodeType.PAGE;
-            }
-            else if (o instanceof AttributeGroup)
-            {
+            } else if (o instanceof AttributeGroup) {
                 return NodeType.GROUP;
-            }
-            else if (o instanceof AttributeCollection)
-            {
+            } else if (o instanceof AttributeCollection) {
                 return NodeType.COLLECTION;
             }
             return NodeType.ATTRIBUTE;
         }
 
-        private String nodeName(Object o, @NotNull NodeType type)
-        {
+        private String nodeName(Object o, @NotNull NodeType type) {
             String nodeName = "unknown type";
-            switch (type)
-            {
+            switch (type) {
                 case ROOT:
                     return "root";
 
                 case PAGE:
                     AttributePage page = ((AttributePage) object);
                     nodeName = page.getDisplayName();
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = page.getDescription();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = "Attribute page without name";
                     }
                     break;
@@ -111,16 +94,13 @@ public class AttributesTreeModel extends DefaultTreeModel
                 case GROUP:
                     AttributeGroup group = ((AttributeGroup) object);
                     nodeName = group.getDisplayName();
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = group.getDescription();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = group.getInternalName();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = "Attribute group without name";
                     }
                     break;
@@ -128,16 +108,13 @@ public class AttributesTreeModel extends DefaultTreeModel
                 case COLLECTION:
                     AttributeCollection coll = ((AttributeCollection) object);
                     nodeName = coll.getDisplayName();
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = coll.getDescription();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = coll.getInternalName();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = "Attribute collection without name";
                     }
                     break;
@@ -145,16 +122,13 @@ public class AttributesTreeModel extends DefaultTreeModel
                 case ATTRIBUTE:
                     AttributeDescription desc = ((AttributeDescription) object);
                     nodeName = desc.getDisplayName();
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = desc.getDescription();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = desc.getInternalName();
                     }
-                    if (nodeName == null)
-                    {
+                    if (nodeName == null) {
                         nodeName = "Attribute group without name";
                     }
                     break;
@@ -162,50 +136,40 @@ public class AttributesTreeModel extends DefaultTreeModel
             return nodeName;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
-        public NodeType getType()
-        {
+        public NodeType getType() {
             return type;
         }
 
-        public Object getObject()
-        {
+        public Object getObject() {
             return object;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return name;
         }
     }
 
-    public AttributesTreeModel(@NotNull List<AttributePage> pages)
-    {
+    public AttributesTreeModel(@NotNull List<AttributePage> pages) {
         this(pages, "");
     }
 
-    public AttributesTreeModel(@NotNull List<AttributePage> pages, String filterText)
-    {
+    public AttributesTreeModel(@NotNull List<AttributePage> pages, String filterText) {
         super(new DefaultMutableTreeNode("root"));
 
         filterText = filterText.toLowerCase();
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) getRoot();
-        for (AttributePage page : pages)
-        {
-            if (!page.isHidden() && !page.isHideDisplay())
-            {
-                if (page.getOutFormats().toLowerCase().contains("tsv"))
-                {
+        for (AttributePage page : pages) {
+            if (!page.isHidden() && !page.isHideDisplay()) {
+                if (page.getOutFormats().toLowerCase().contains("tsv")) {
                     DefaultMutableTreeNode pageNode = new DefaultMutableTreeNode(new AttributeWrapper(page));
 
-                    if (populatePage(pageNode, page.getAttributeGroups(), filterText) > 0)
-                    {
+                    if (populatePage(pageNode, page.getAttributeGroups(), filterText) > 0) {
                         node.add(pageNode);
                     }
                 }
@@ -213,15 +177,12 @@ public class AttributesTreeModel extends DefaultTreeModel
         }
     }
 
-    private int populatePage(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeGroup> groups, @NotNull String filterText)
-    {
+    private int populatePage(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeGroup> groups, @NotNull String filterText) {
 
-        for (AttributeGroup group : groups)
-        {
+        for (AttributeGroup group : groups) {
             DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(new AttributeWrapper(group));
 
-            if (populateGroup(groupNode, group.getAttributeCollections(), filterText) > 0)
-            {
+            if (populateGroup(groupNode, group.getAttributeCollections(), filterText) > 0) {
                 node.add(groupNode);
             }
         }
@@ -229,15 +190,12 @@ public class AttributesTreeModel extends DefaultTreeModel
         return node.getChildCount();
     }
 
-    private int populateGroup(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeCollection> collections, @NotNull String filterText)
-    {
+    private int populateGroup(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeCollection> collections, @NotNull String filterText) {
 
-        for (AttributeCollection coll : collections)
-        {
+        for (AttributeCollection coll : collections) {
             DefaultMutableTreeNode collNode = new DefaultMutableTreeNode(new AttributeWrapper(coll));
 
-            if (populateCollection(collNode, coll.getAttributeDescriptions(), filterText) > 0)
-            {
+            if (populateCollection(collNode, coll.getAttributeDescriptions(), filterText) > 0) {
                 node.add(collNode);
             }
         }
@@ -245,16 +203,13 @@ public class AttributesTreeModel extends DefaultTreeModel
         return node.getChildCount();
     }
 
-    private int populateCollection(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeDescription> attrs, @NotNull String filterText)
-    {
+    private int populateCollection(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeDescription> attrs, @NotNull String filterText) {
 
-        for (AttributeDescription attr : attrs)
-        {
+        for (AttributeDescription attr : attrs) {
             if (attr.getDisplayName() != null) //xrp: identified null displayNames
             {
                 AttributeWrapper aw = new AttributeWrapper(attr);
-                if (filterText.isEmpty() || aw.getName().toLowerCase().contains(filterText))
-                {
+                if (filterText.isEmpty() || aw.getName().toLowerCase().contains(filterText)) {
                     node.add(new DefaultMutableTreeNode(aw));
                 }
             }

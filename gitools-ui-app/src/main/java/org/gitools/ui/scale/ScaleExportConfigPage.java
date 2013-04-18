@@ -31,32 +31,26 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ScaleExportConfigPage extends AbstractWizardPage
-{
+public class ScaleExportConfigPage extends AbstractWizardPage {
 
     /**
      * Creates new form ScaleExportConfigPage
      */
-    public ScaleExportConfigPage()
-    {
+    public ScaleExportConfigPage() {
         initComponents();
 
         setTitle("Scale export settings");
 
-        DocumentChangeListener docListener = new DocumentChangeListener()
-        {
+        DocumentChangeListener docListener = new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 validateValues();
             }
         };
 
-        partialRangeCheck.addActionListener(new ActionListener()
-        {
+        partialRangeCheck.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 rangeMin.setEnabled(partialRangeCheck.isSelected());
                 rangeMax.setEnabled(partialRangeCheck.isSelected());
             }
@@ -77,8 +71,7 @@ public class ScaleExportConfigPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         partialRangeCheck = new javax.swing.JCheckBox();
@@ -112,39 +105,31 @@ public class ScaleExportConfigPage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    void validateValues()
-    {
+    void validateValues() {
         setComplete(true);
         setMessage(MessageStatus.INFO, "");
 
-        try
-        {
+        try {
             Double.parseDouble(rangeMin.getText());
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             setComplete(false);
             setMessage(MessageStatus.ERROR, "Invalid range value: " + rangeMin.getText());
         }
 
-        try
-        {
+        try {
             Double.parseDouble(rangeMax.getText());
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             setComplete(false);
             setMessage(MessageStatus.ERROR, "Invalid range value: " + rangeMax.getText());
         }
 
-        try
-        {
+        try {
             Integer.parseInt(scaleSize.getText());
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             setComplete(false);
             setMessage(MessageStatus.ERROR, "Invalid size: " + scaleSize.getText());
         }
@@ -159,29 +144,24 @@ public class ScaleExportConfigPage extends AbstractWizardPage
     private javax.swing.JTextField scaleSize;
     // End of variables declaration//GEN-END:variables
 
-    public void setRange(double min, double max)
-    {
+    public void setRange(double min, double max) {
         rangeMin.setText(Double.toString(min));
         rangeMax.setText(Double.toString(max));
     }
 
-    public boolean isPartialRange()
-    {
+    public boolean isPartialRange() {
         return partialRangeCheck.isSelected();
     }
 
-    public double getRangeMin()
-    {
+    public double getRangeMin() {
         return Double.parseDouble(rangeMin.getText());
     }
 
-    public double getRangeMax()
-    {
+    public double getRangeMax() {
         return Double.parseDouble(rangeMax.getText());
     }
 
-    public int getScaleSize()
-    {
+    public int getScaleSize() {
         return Integer.parseInt(scaleSize.getText());
     }
 }

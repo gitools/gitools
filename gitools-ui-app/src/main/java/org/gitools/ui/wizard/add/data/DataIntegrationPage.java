@@ -42,13 +42,10 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class DataIntegrationPage extends AbstractWizardPage
-{
+public class DataIntegrationPage extends AbstractWizardPage {
 
-    private static class DataIntegrationCriteriaListCellRender extends JTextArea implements TableCellRenderer
-    {
-        public DataIntegrationCriteriaListCellRender()
-        {
+    private static class DataIntegrationCriteriaListCellRender extends JTextArea implements TableCellRenderer {
+        public DataIntegrationCriteriaListCellRender() {
             setLineWrap(true);
             setWrapStyleWord(true);
             //setOpaque(true);
@@ -56,17 +53,14 @@ public class DataIntegrationPage extends AbstractWizardPage
 
         @NotNull
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-        {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) value;
             String intend = "    ";
             String rendering = "";
-            for (DataIntegrationCriteria c : criteriaList)
-            {
+            for (DataIntegrationCriteria c : criteriaList) {
                 Operator op = c.getOperator();
                 intend = (!op.equals(Operator.OR)) ? "    " : "";
-                if (!op.equals(Operator.EMPTY))
-                {
+                if (!op.equals(Operator.EMPTY)) {
                     rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
                 }
 
@@ -82,8 +76,7 @@ public class DataIntegrationPage extends AbstractWizardPage
     private final String[] attrNames;
     private final DefaultTableModel model;
 
-    public DataIntegrationPage(@NotNull Heatmap hm)
-    {
+    public DataIntegrationPage(@NotNull Heatmap hm) {
 
         initComponents();
         setComplete(false);
@@ -94,8 +87,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         IMatrixLayers attributes = hm.getContents().getLayers();
 
         this.attrNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-        {
+        for (int i = 0; i < attributes.size(); i++) {
             this.attrNames[i] = attributes.get(i).getName();
         }
         //this.model = new DefaultTableModel();
@@ -105,33 +97,27 @@ public class DataIntegrationPage extends AbstractWizardPage
         table.getColumnModel().getColumn(0).setMaxWidth(65);
         table.getColumnModel().getColumn(1).setMaxWidth(100);
         table.getColumnModel().getColumn(2).setCellRenderer(new DataIntegrationCriteriaListCellRender());
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 updateButtons();
             }
         });
     }
 
     @NotNull
-    public double[] getValues()
-    {
+    public double[] getValues() {
         double values[] = new double[table.getRowCount()];
-        for (int i = 0; i < table.getRowCount(); i++)
-        {
+        for (int i = 0; i < table.getRowCount(); i++) {
             values[i] = Double.parseDouble((String) table.getValueAt(i, 1));
         }
         return values;
     }
 
     @NotNull
-    public List<ArrayList<DataIntegrationCriteria>> getCriteria()
-    {
+    public List<ArrayList<DataIntegrationCriteria>> getCriteria() {
         ArrayList<ArrayList<DataIntegrationCriteria>> criteria = new ArrayList<ArrayList<DataIntegrationCriteria>>();
-        for (int i = 0; i < table.getRowCount(); i++)
-        {
+        for (int i = 0; i < table.getRowCount(); i++) {
             ArrayList<DataIntegrationCriteria> c = (ArrayList<DataIntegrationCriteria>) table.getValueAt(i, 2);
             criteria.add(c);
         }
@@ -139,8 +125,7 @@ public class DataIntegrationPage extends AbstractWizardPage
     }
 
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         int rowNb = table.getRowCount();
         removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
         upBtn.setEnabled(rowNb > 1 && table.getSelectedRow() >= 0);
@@ -149,10 +134,8 @@ public class DataIntegrationPage extends AbstractWizardPage
         setComplete(rowNb > 0);
     }
 
-    private void updateRowHeightsAndPriorities()
-    {
-        for (int i = 0; i < table.getRowCount(); i++)
-        {
+    private void updateRowHeightsAndPriorities() {
+        for (int i = 0; i < table.getRowCount(); i++) {
             table.setValueAt(i + 1, i, 0);
 
             List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) table.getValueAt(i, 2);
@@ -172,8 +155,7 @@ public class DataIntegrationPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -188,58 +170,47 @@ public class DataIntegrationPage extends AbstractWizardPage
         jLabel1.setText("Add integration rules according to their priorities");
 
         tableAddBtn.setText("Add");
-        tableAddBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tableAddBtnActionPerformed(evt);
             }
         });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
-        removeBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeBtnActionPerformed(evt);
             }
         });
 
         upBtn.setText("Up");
         upBtn.setEnabled(false);
-        upBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        upBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 upBtnActionPerformed(evt);
             }
         });
 
         downBtn.setText("Down");
         downBtn.setEnabled(false);
-        downBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        downBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downBtnActionPerformed(evt);
             }
         });
 
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-        }, new String[]{"Priority", "Value", "Criteria"})
-        {
+        }, new String[]{"Priority", "Value", "Criteria"}) {
             @NotNull
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class};
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
 
-            public boolean isCellEditable(int row, int column)
-            {
+            public boolean isCellEditable(int row, int column) {
                 return false;//This causes all cells to be not editable
             }
         });
@@ -251,10 +222,8 @@ public class DataIntegrationPage extends AbstractWizardPage
 
         editBtn.setText("Edit");
         editBtn.setEnabled(false);
-        editBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editBtnActionPerformed(evt);
             }
         });
@@ -265,14 +234,12 @@ public class DataIntegrationPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(removeBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(upBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(downBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(editBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
         final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
         dlg.setVisible(true);
 
-        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)
-        {
+        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
             return;
         }
         List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
@@ -282,15 +249,13 @@ public class DataIntegrationPage extends AbstractWizardPage
         updateButtons();
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
-    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_removeBtnActionPerformed
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         model.removeRow(table.getSelectedRow());
         updateRowHeightsAndPriorities();
         updateButtons();
     }//GEN-LAST:event_removeBtnActionPerformed
 
-    private void downBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_downBtnActionPerformed
+    private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
         int selectedPosition = table.getSelectedRow();
         int wantedPosition = (selectedPosition + 1 == table.getRowCount()) ? selectedPosition : selectedPosition + 1;
         model.moveRow(selectedPosition, selectedPosition, wantedPosition);
@@ -298,8 +263,7 @@ public class DataIntegrationPage extends AbstractWizardPage
         table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
     }//GEN-LAST:event_downBtnActionPerformed
 
-    private void upBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_upBtnActionPerformed
+    private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
         int selectedPosition = table.getSelectedRow();
         int wantedPosition = (selectedPosition == 0) ? selectedPosition : selectedPosition - 1;
         model.moveRow(selectedPosition, selectedPosition, wantedPosition);
@@ -307,16 +271,14 @@ public class DataIntegrationPage extends AbstractWizardPage
         table.getSelectionModel().setSelectionInterval(wantedPosition, wantedPosition);
     }//GEN-LAST:event_upBtnActionPerformed
 
-    private void editBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_editBtnActionPerformed
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
         List<DataIntegrationCriteria> criteria = (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
         String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
         final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, criteria, setToValue);
         dlg.setVisible(true);
 
-        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK)
-        {
+        if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
             return;
         }
         int selectedRow = table.getSelectedRow();

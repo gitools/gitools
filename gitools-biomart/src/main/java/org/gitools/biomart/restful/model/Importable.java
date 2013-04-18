@@ -26,8 +26,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-class Importable
-{
+class Importable {
 
     @XmlAttribute
     private String filters;
@@ -62,113 +61,91 @@ class Importable
     @XmlAttribute
     private String hideDisplay;
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getFilters()
-    {
+    public String getFilters() {
         return filters;
     }
 
-    public void setFilters(String filters)
-    {
+    public void setFilters(String filters) {
         this.filters = filters;
     }
 
-    public String getHidden()
-    {
+    public String getHidden() {
         return hidden;
     }
 
-    public void setHidden(String hidden)
-    {
+    public void setHidden(String hidden) {
         this.hidden = hidden;
     }
 
-    public String getHideDisplay()
-    {
+    public String getHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(String hideDisplay)
-    {
+    public void setHideDisplay(String hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public String getLinkName()
-    {
+    public String getLinkName() {
         return linkName;
     }
 
-    public void setLinkName(String linkName)
-    {
+    public void setLinkName(String linkName) {
         this.linkName = linkName;
     }
 
-    public String getLinkVersion()
-    {
+    public String getLinkVersion() {
         return linkVersion;
     }
 
-    public void setLinkVersion(String linkVersion)
-    {
+    public void setLinkVersion(String linkVersion) {
         this.linkVersion = linkVersion;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getOrderBy()
-    {
+    public String getOrderBy() {
         return orderBy;
     }
 
-    public void setOrderBy(String orderBy)
-    {
+    public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 }

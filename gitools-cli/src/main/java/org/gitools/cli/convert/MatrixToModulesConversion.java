@@ -33,13 +33,11 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class MatrixToModulesConversion implements ConversionDelegate
-{
+public class MatrixToModulesConversion implements ConversionDelegate {
 
     @NotNull
     @Override
-    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception
-    {
+    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
         final int attrIndex = 0; // TODO get from configuration
 
         IMatrix matrix = (IMatrix) src;
@@ -50,17 +48,14 @@ public class MatrixToModulesConversion implements ConversionDelegate
 
         int numRows = matrix.getRows().size();
         int numCols = matrix.getColumns().size();
-        for (int row = 0; row < numRows; row++)
-        {
+        for (int row = 0; row < numRows; row++) {
             String rowLabel = matrix.getRows().getLabel(row);
             Set<String> items = new HashSet<String>();
-            for (int col = 0; col < numCols; col++)
-            {
+            for (int col = 0; col < numCols; col++) {
                 String colLabel = matrix.getColumns().getLabel(col);
                 Object cellValue = matrix.getCellValue(row, col, attrIndex);
                 double value = cast.getDoubleValue(cellValue);
-                if (value == 1.0)
-                {
+                if (value == 1.0) {
                     items.add(colLabel);
                 }
             }

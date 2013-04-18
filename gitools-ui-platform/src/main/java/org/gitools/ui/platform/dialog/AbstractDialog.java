@@ -30,8 +30,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractDialog extends JDialog
-{
+public abstract class AbstractDialog extends JDialog {
 
     private static final long serialVersionUID = 5886096207448862426L;
 
@@ -50,8 +49,7 @@ public abstract class AbstractDialog extends JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    protected AbstractDialog(Window owner, String title, String header, String message, @NotNull MessageStatus status, Icon logo)
-    {
+    protected AbstractDialog(Window owner, String title, String header, String message, @NotNull MessageStatus status, Icon logo) {
 
         super(owner, title);
         setModal(true);
@@ -65,28 +63,23 @@ public abstract class AbstractDialog extends JDialog
         setMinimumSize(new Dimension(300, 260));
     }
 
-    protected AbstractDialog(Window owner, String title, Icon icon)
-    {
+    protected AbstractDialog(Window owner, String title, Icon icon) {
         this(owner, title, "", "", MessageStatus.INFO, icon);
     }
 
-    public void open()
-    {
+    public void open() {
         setVisible(true);
     }
 
-    protected JComponent getContainer()
-    {
+    protected JComponent getContainer() {
         return container;
     }
 
-    protected void setContainer(JComponent container)
-    {
+    protected void setContainer(JComponent container) {
         this.container = container;
     }
 
-    protected void createComponents(String header, String message, @NotNull MessageStatus status, Icon logo)
-    {
+    protected void createComponents(String header, String message, @NotNull MessageStatus status, Icon logo) {
 
         hdrPanel = new DialogHeaderPanel();
         hdrPanel.setTitle(header);
@@ -110,15 +103,13 @@ public abstract class AbstractDialog extends JDialog
 
         setLayout(new BorderLayout());
         add(hp, BorderLayout.NORTH);
-        if (container != null)
-        {
+        if (container != null) {
             add(container, BorderLayout.CENTER);
         }
         add(bp, BorderLayout.SOUTH);
     }
 
-    protected DialogHeaderPanel getHeaderPanel()
-    {
+    protected DialogHeaderPanel getHeaderPanel() {
         return hdrPanel;
     }
 
@@ -126,8 +117,7 @@ public abstract class AbstractDialog extends JDialog
 
     protected abstract List<JButton> createButtons();
 
-    protected void doClose(int retStatus)
-    {
+    protected void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -136,8 +126,7 @@ public abstract class AbstractDialog extends JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 

@@ -23,8 +23,7 @@ package org.gitools.matrix.model;
 
 import org.gitools.persistence.IResource;
 
-public interface IMatrix extends IResource
-{
+public interface IMatrix extends IResource {
 
     IMatrixDimension getRows();
 
@@ -40,7 +39,7 @@ public interface IMatrix extends IResource
 
     /**
      * This method is called when the matrix is not in use.
-     *
+     * <p/>
      * It's a good practice to free all the caching memory usage.
      */
     void detach();

@@ -45,13 +45,11 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ExportTableAction extends BaseAction
-{
+public class ExportTableAction extends BaseAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
-    public ExportTableAction()
-    {
+    public ExportTableAction() {
         super("Export table ...");
 
         setDesc("Export a table");
@@ -59,18 +57,15 @@ public class ExportTableAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -82,16 +77,14 @@ public class ExportTableAction extends BaseAction
         AttributesSelectionDialog dlg = new AttributesSelectionDialog(AppFrame.get(), attributeNames);
         dlg.setVisible(true);
 
-        if (dlg.getReturnStatus() != AttributesSelectionDialog.RET_OK)
-        {
+        if (dlg.getReturnStatus() != AttributesSelectionDialog.RET_OK) {
             AppFrame.get().setStatusText("Table export cancelled.");
             return;
         }
 
         final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
 
-        if (file == null)
-        {
+        if (file == null) {
             return;
         }
 
@@ -99,13 +92,10 @@ public class ExportTableAction extends BaseAction
 
         final List<Integer> selectedIndices = dlg.getSelectedIndices();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Exporting table ...", 1);
                     monitor.info("File: " + file.getName());
 
@@ -116,8 +106,7 @@ public class ExportTableAction extends BaseAction
                     TextMatrixViewExporter.exportTable(matrixView, attributeIndices, file);
 
                     monitor.end();
-                } catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     monitor.exception(ex);
                 }
             }

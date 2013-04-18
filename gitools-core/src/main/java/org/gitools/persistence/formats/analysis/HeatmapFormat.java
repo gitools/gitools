@@ -30,22 +30,19 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 
-public class HeatmapFormat extends AbstractXmlFormat<Heatmap>
-{
+public class HeatmapFormat extends AbstractXmlFormat<Heatmap> {
 
     public static final String EXTENSION = "heatmap";
     private static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Heatmap", EXTENSION);
 
 
-    public HeatmapFormat()
-    {
+    public HeatmapFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 
     @Override
-    void afterRead(InputStream inputStream, IResourceLocator resourceLocator, Heatmap resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    void afterRead(InputStream inputStream, IResourceLocator resourceLocator, Heatmap resource, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Initialize the heatmap
         resource.init();

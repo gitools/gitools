@@ -27,8 +27,7 @@ import org.gitools.matrix.model.IMatrixLayer;
 /**
  * The type Compress element attribute.
  */
-public class CompressElementAttribute implements IMatrixLayer
-{
+public class CompressElementAttribute implements IMatrixLayer {
 
     private String id;
     private String name;
@@ -38,11 +37,10 @@ public class CompressElementAttribute implements IMatrixLayer
     /**
      * Instantiates a new Compress element attribute.
      *
-     * @param id the identifier of the attribute
+     * @param id         the identifier of the attribute
      * @param valueClass the class of the attribute value
      */
-    public CompressElementAttribute(String id, Class<?> valueClass)
-    {
+    public CompressElementAttribute(String id, Class<?> valueClass) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = id;
@@ -50,26 +48,22 @@ public class CompressElementAttribute implements IMatrixLayer
     }
 
     @Override
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public Class<?> getValueClass()
-    {
+    public Class<?> getValueClass() {
         return valueClass;
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 }

@@ -29,13 +29,11 @@ import java.awt.datatransfer.StringSelection;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ExceptionDialog extends javax.swing.JDialog
-{
+public class ExceptionDialog extends javax.swing.JDialog {
 
     private final Throwable cause;
 
-    public static void show(Window parent, @NotNull Throwable cause)
-    {
+    public static void show(Window parent, @NotNull Throwable cause) {
         ExceptionDialog dlg = new ExceptionDialog(parent, cause);
         dlg.setVisible(true);
     }
@@ -43,8 +41,7 @@ public class ExceptionDialog extends javax.swing.JDialog
     /**
      * Creates new form ExceptionDialog
      */
-    public ExceptionDialog(Window parent, @NotNull Throwable cause)
-    {
+    public ExceptionDialog(Window parent, @NotNull Throwable cause) {
         super(parent);
         setModal(true);
 
@@ -69,8 +66,7 @@ public class ExceptionDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         closeButton = new javax.swing.JButton();
         copyButton = new javax.swing.JButton();
@@ -83,28 +79,22 @@ public class ExceptionDialog extends javax.swing.JDialog
         jSeparator1 = new javax.swing.JSeparator();
 
         setTitle("There was an error...");
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         closeButton.setText("Close");
-        closeButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtonActionPerformed(evt);
             }
         });
 
         copyButton.setText("Copy");
-        copyButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        copyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyButtonActionPerformed(evt);
             }
         });
@@ -130,13 +120,11 @@ public class ExceptionDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_closeButtonActionPerformed
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         doClose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
-    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_copyButtonActionPerformed
+    private void copyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyButtonActionPerformed
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         pw.println(cause.getMessage());
@@ -151,13 +139,11 @@ public class ExceptionDialog extends javax.swing.JDialog
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose();
     }//GEN-LAST:event_closeDialog
 
-    private void doClose()
-    {
+    private void doClose() {
         setVisible(false);
         dispose();
     }

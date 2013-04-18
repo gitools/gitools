@@ -29,26 +29,22 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.zip.GZIPOutputStream;
 
-public class TsvFileQueryHandler implements BiomartQueryHandler
-{
+public class TsvFileQueryHandler implements BiomartQueryHandler {
 
     private final File file;
     private final boolean compressionEnabled;
 
     private PrintWriter writer;
 
-    public TsvFileQueryHandler(File file, boolean compresssionEnabled)
-    {
+    public TsvFileQueryHandler(File file, boolean compresssionEnabled) {
         this.file = file;
         this.compressionEnabled = compresssionEnabled;
     }
 
     @Override
-    public void begin() throws Exception
-    {
+    public void begin() throws Exception {
         OutputStream stream = new FileOutputStream(file);
-        if (compressionEnabled)
-        {
+        if (compressionEnabled) {
             stream = new GZIPOutputStream(stream);
         }
 
@@ -56,13 +52,10 @@ public class TsvFileQueryHandler implements BiomartQueryHandler
     }
 
     @Override
-    public void line(@NotNull String[] rowFields)
-    {
-        if (rowFields.length > 0)
-        {
+    public void line(@NotNull String[] rowFields) {
+        if (rowFields.length > 0) {
             writer.print(rowFields[0]);
-            for (int i = 1; i < rowFields.length; i++)
-            {
+            for (int i = 1; i < rowFields.length; i++) {
                 writer.print('\t');
                 writer.print(rowFields[i]);
             }
@@ -71,8 +64,7 @@ public class TsvFileQueryHandler implements BiomartQueryHandler
     }
 
     @Override
-    public void end()
-    {
+    public void end() {
         writer.close();
     }
 

@@ -38,8 +38,7 @@ import java.util.zip.GZIPInputStream;
  * @date 9/22/11
  * @noinspection ALL
  */
-public class HttpUtils
-{
+public class HttpUtils {
 
     private static final Logger log = Logger.getLogger(HttpUtils.class);
 
@@ -66,10 +65,8 @@ public class HttpUtils
     /**
      * @return the single instance
      */
-    public static HttpUtils getInstance()
-    {
-        if (instance == null)
-        {
+    public static HttpUtils getInstance() {
+        if (instance == null) {
             instance = new HttpUtils();
         }
         return instance;
@@ -78,8 +75,7 @@ public class HttpUtils
     /**
      * Constructor
      */
-    private HttpUtils()
-    {
+    private HttpUtils() {
 
         disableCertificateValidation();
         CookieHandler.setDefault(new IGVCookieManager());
@@ -89,8 +85,7 @@ public class HttpUtils
     }
 
 
-    public static boolean isRemoteURL(@NotNull String string)
-    {
+    public static boolean isRemoteURL(@NotNull String string) {
         String lcString = string.toLowerCase();
         return lcString.startsWith("http://") || lcString.startsWith("https://") || lcString.startsWith("ftp://");
     }
@@ -100,8 +95,7 @@ public class HttpUtils
      *
      * @return
      */
-    public static void disableByteRange(boolean b)
-    {
+    public static void disableByteRange(boolean b) {
         BYTE_RANGE_DISABLED = b;
     }
 
@@ -120,24 +114,19 @@ public class HttpUtils
      * @param joiner
      * @return
      */
-    public static String buildURLString(@NotNull Iterable<String> elements, String joiner)
-    {
+    public static String buildURLString(@NotNull Iterable<String> elements, String joiner) {
 
         Iterator<String> iter = elements.iterator();
-        if (!iter.hasNext())
-        {
+        if (!iter.hasNext()) {
             return "";
         }
         String wholequery = iter.next();
-        try
-        {
-            while (iter.hasNext())
-            {
+        try {
+            while (iter.hasNext()) {
                 wholequery += joiner + URLEncoder.encode(iter.next(), "UTF-8");
             }
             return wholequery;
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException("Bad argument in genelist: " + e.getMessage());
         }
     }
@@ -152,42 +141,34 @@ public class HttpUtils
      * @throws IOException
      */
     @NotNull
-    public String getContentsAsString(@NotNull URL url) throws IOException
-    {
+    public String getContentsAsString(@NotNull URL url) throws IOException {
 
         InputStream is = null;
         HttpURLConnection conn = openConnection(url, null);
-        try
-        {
+        try {
             is = conn.getInputStream();
             return readContents(is);
 
-        } finally
-        {
-            if (is != null)
-            {
+        } finally {
+            if (is != null) {
                 is.close();
             }
         }
     }
 
     @NotNull
-    public String getContentsAsJSON(@NotNull URL url) throws IOException
-    {
+    public String getContentsAsJSON(@NotNull URL url) throws IOException {
 
         InputStream is = null;
         Map<String, String> reqProperties = new HashMap();
         reqProperties.put("Accept", "application/json,text/plain");
         HttpURLConnection conn = openConnection(url, reqProperties);
-        try
-        {
+        try {
             is = conn.getInputStream();
             return readContents(is);
 
-        } finally
-        {
-            if (is != null)
-            {
+        } finally {
+            if (is != null) {
                 is.close();
             }
         }
@@ -201,69 +182,55 @@ public class HttpUtils
      * @throws IOException
      */
     @Nullable
-    public InputStream openConnectionStream(@NotNull URL url) throws IOException
-    {
+    public InputStream openConnectionStream(@NotNull URL url) throws IOException {
         return openConnectionStream(url, null);
     }
 
     @Nullable
-    InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException
-    {
+    InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException {
 
         HttpURLConnection conn = openConnection(url, requestProperties);
-        if (conn == null)
-        {
+        if (conn == null) {
             return null;
         }
         InputStream input = conn.getInputStream();
-        if ("gzip".equals(conn.getContentEncoding()))
-        {
+        if ("gzip".equals(conn.getContentEncoding())) {
             input = new GZIPInputStream(input);
         }
         return input;
     }
 
 
-    public boolean resourceAvailable(@NotNull URL url)
-    {
-        try
-        {
+    public boolean resourceAvailable(@NotNull URL url) {
+        try {
             HttpURLConnection conn = openConnection(url, null, "HEAD");
             int code = conn.getResponseCode();
             return code == 200;
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             return false;
         }
     }
 
     @Nullable
-    String getHeaderField(@NotNull URL url, String key) throws IOException
-    {
+    String getHeaderField(@NotNull URL url, String key) throws IOException {
         HttpURLConnection conn = openConnection(url, null, "HEAD");
-        if (conn == null)
-        {
+        if (conn == null) {
             return null;
         }
         return conn.getHeaderField(key);
     }
 
-    public long getContentLength(@NotNull URL url) throws IOException
-    {
+    public long getContentLength(@NotNull URL url) throws IOException {
 
         String contentLengthString = getHeaderField(url, "Content-Length");
-        if (contentLengthString == null)
-        {
+        if (contentLengthString == null) {
             return -1;
-        }
-        else
-        {
+        } else {
             return Long.parseLong(contentLengthString);
         }
     }
 
-    public boolean downloadFile(String url, @NotNull File outputFile) throws IOException
-    {
+    public boolean downloadFile(String url, @NotNull File outputFile) throws IOException {
 
         log.info("Downloading " + url + " to " + outputFile.getAbsolutePath());
 
@@ -271,8 +238,7 @@ public class HttpUtils
 
         long contentLength = -1;
         String contentLengthString = conn.getHeaderField("Content-Length");
-        if (contentLengthString != null)
-        {
+        if (contentLengthString != null) {
             contentLength = Long.parseLong(contentLengthString);
         }
 
@@ -282,28 +248,23 @@ public class HttpUtils
         InputStream is = null;
         OutputStream out = null;
 
-        try
-        {
+        try {
             is = conn.getInputStream();
             out = new FileOutputStream(outputFile);
 
             byte[] buf = new byte[64 * 1024];
             int downloaded = 0;
             int bytesRead = 0;
-            while ((bytesRead = is.read(buf)) != -1)
-            {
+            while ((bytesRead = is.read(buf)) != -1) {
                 out.write(buf, 0, bytesRead);
                 downloaded += bytesRead;
             }
             log.info("Download complete.  Total bytes downloaded = " + downloaded);
-        } finally
-        {
-            if (is != null)
-            {
+        } finally {
+            if (is != null) {
                 is.close();
             }
-            if (out != null)
-            {
+            if (out != null) {
                 out.flush();
                 out.close();
             }
@@ -314,8 +275,7 @@ public class HttpUtils
     }
 
 
-    public void uploadGenomeSpaceFile(String uri, @NotNull File file, Map<String, String> headers) throws IOException
-    {
+    public void uploadGenomeSpaceFile(String uri, @NotNull File file, Map<String, String> headers) throws IOException {
 
         HttpURLConnection urlconnection = null;
         OutputStream bos = null;
@@ -329,16 +289,14 @@ public class HttpUtils
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
         int i;
         // read byte by byte until end of stream
-        while ((i = bis.read()) > 0)
-        {
+        while ((i = bis.read()) > 0) {
             bos.write(i);
         }
         bos.close();
         int responseCode = urlconnection.getResponseCode();
 
         // Error messages below.
-        if (responseCode >= 400)
-        {
+        if (responseCode >= 400) {
             String message = readErrorStream(urlconnection);
             throw new IOException("Error uploading " + file.getName() + " : " + message);
         }
@@ -346,8 +304,7 @@ public class HttpUtils
 
 
     @NotNull
-    public String createGenomeSpaceDirectory(@NotNull URL url, @NotNull String body) throws IOException
-    {
+    public String createGenomeSpaceDirectory(@NotNull URL url, @NotNull String body) throws IOException {
 
         HttpURLConnection urlconnection = null;
         OutputStream bos = null;
@@ -369,29 +326,22 @@ public class HttpUtils
         StringBuffer buf = new StringBuffer();
         InputStream inputStream;
 
-        if (responseCode >= 200 && responseCode < 300)
-        {
+        if (responseCode >= 200 && responseCode < 300) {
             inputStream = urlconnection.getInputStream();
-        }
-        else
-        {
+        } else {
             inputStream = urlconnection.getErrorStream();
         }
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
         String nextLine;
-        while ((nextLine = br.readLine()) != null)
-        {
+        while ((nextLine = br.readLine()) != null) {
             buf.append(nextLine);
             buf.append('\n');
         }
         inputStream.close();
 
-        if (responseCode >= 200 && responseCode < 300)
-        {
+        if (responseCode >= 200 && responseCode < 300) {
             return buf.toString();
-        }
-        else
-        {
+        } else {
             throw new IOException("Error creating GS directory: " + buf.toString());
         }
     }
@@ -399,70 +349,55 @@ public class HttpUtils
     /**
      * Code for disabling SSL certification
      */
-    private void disableCertificateValidation()
-    {
+    private void disableCertificateValidation() {
         // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager()
-        {
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
             @NotNull
-            public java.security.cert.X509Certificate[] getAcceptedIssuers()
-            {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                 return new java.security.cert.X509Certificate[0];
             }
 
-            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType)
-            {
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
             }
 
-            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType)
-            {
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
             }
         }};
 
         // Install the all-trusting trust manager
-        try
-        {
+        try {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, null);
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (NoSuchAlgorithmException e)
-        {
-        } catch (KeyManagementException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
+        } catch (KeyManagementException e) {
         }
 
     }
 
     @NotNull
-    private String readContents(InputStream is) throws IOException
-    {
+    private String readContents(InputStream is) throws IOException {
         BufferedInputStream bis = new BufferedInputStream(is);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         int b;
-        while ((b = bis.read()) >= 0)
-        {
+        while ((b = bis.read()) >= 0) {
             bos.write(b);
         }
         return new String(bos.toByteArray());
     }
 
     @Nullable
-    private String readErrorStream(@NotNull HttpURLConnection connection) throws IOException
-    {
+    private String readErrorStream(@NotNull HttpURLConnection connection) throws IOException {
         InputStream inputStream = null;
 
-        try
-        {
+        try {
             inputStream = connection.getErrorStream();
-            if (inputStream == null)
-            {
+            if (inputStream == null) {
                 return null;
             }
             return readContents(inputStream);
-        } finally
-        {
-            if (inputStream != null)
-            {
+        } finally {
+            if (inputStream != null) {
                 inputStream.close();
             }
         }
@@ -471,14 +406,12 @@ public class HttpUtils
     }
 
     @Nullable
-    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties) throws IOException
-    {
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties) throws IOException {
         return openConnection(url, requestProperties, "GET");
     }
 
     @Nullable
-    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties, @NotNull String method) throws IOException
-    {
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties, @NotNull String method) throws IOException {
         return openConnection(url, requestProperties, method, 0);
     }
 
@@ -492,23 +425,18 @@ public class HttpUtils
      * @throws IOException
      */
     @Nullable
-    private HttpURLConnection openConnection(@NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException
-    {
+    private HttpURLConnection openConnection(@NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException {
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
-        if (GSUtils.isGenomeSpace(url))
-        {
+        if (GSUtils.isGenomeSpace(url)) {
             String token = GSUtils.getGSToken();
-            if (token != null)
-            {
+            if (token != null) {
                 conn.setRequestProperty("Cookie", "gs-token=" + token);
             }
             conn.setRequestProperty("Accept", "application/json,text/plain");
-        }
-        else
-        {
+        } else {
             conn.setRequestProperty("Accept", "text/plain");
         }
 
@@ -517,31 +445,24 @@ public class HttpUtils
         conn.setReadTimeout(READ_TIMEOUT);
         conn.setRequestMethod(method);
         conn.setRequestProperty("Connection", "Keep-Alive");
-        if (requestProperties != null)
-        {
-            for (Map.Entry<String, String> prop : requestProperties.entrySet())
-            {
+        if (requestProperties != null) {
+            for (Map.Entry<String, String> prop : requestProperties.entrySet()) {
                 conn.setRequestProperty(prop.getKey(), prop.getValue());
             }
         }
         conn.setRequestProperty("User-Agent", "Gitools");
 
-        if (method.equals("PUT"))
-        {
+        if (method.equals("PUT")) {
             return conn;
-        }
-        else
-        {
+        } else {
 
             int code = conn.getResponseCode();
 
             // Redirects.  These can occur even if followRedirects == true if there is a change in protocol,
             // for example http -> https.
-            if (code >= 300 && code < 400)
-            {
+            if (code >= 300 && code < 400) {
 
-                if (redirectCount > MAX_REDIRECTS)
-                {
+                if (redirectCount > MAX_REDIRECTS) {
                     throw new IOException("Too many redirects");
                 }
 
@@ -552,25 +473,19 @@ public class HttpUtils
             }
 
             // TODO -- handle other response codes.
-            else if (code >= 400)
-            {
+            else if (code >= 400) {
 
                 String message;
-                if (code == 404)
-                {
+                if (code == 404) {
                     message = "File not found: " + url.toString();
                     throw new FileNotFoundException(message);
-                }
-                else if (code == 401)
-                {
+                } else if (code == 401) {
                     // Looks like this only happens when user hits "Cancel".
                     // message = "Not authorized to view this file";
                     // JOptionPane.showMessageDialog(null, message, "HTTP error", JOptionPane.ERROR_MESSAGE);
                     redirectCount = MAX_REDIRECTS + 1;
                     return null;
-                }
-                else
-                {
+                } else {
                     message = conn.getResponseMessage();
                 }
                 String details = readErrorStream(conn);
@@ -584,18 +499,15 @@ public class HttpUtils
         return conn;
     }
 
-    public void setDefaultPassword(@NotNull String defaultPassword)
-    {
+    public void setDefaultPassword(@NotNull String defaultPassword) {
         this.defaultPassword = defaultPassword.toCharArray();
     }
 
-    public void setDefaultUserName(String defaultUserName)
-    {
+    public void setDefaultUserName(String defaultUserName) {
         this.defaultUserName = defaultUserName;
     }
 
-    public void clearDefaultCredentials()
-    {
+    public void clearDefaultCredentials() {
         this.defaultPassword = null;
         this.defaultUserName = null;
     }
@@ -603,8 +515,7 @@ public class HttpUtils
     /**
      * The default authenticator
      */
-    public class IGVAuthenticator extends Authenticator
-    {
+    public class IGVAuthenticator extends Authenticator {
 
         @NotNull
         final Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
@@ -618,8 +529,7 @@ public class HttpUtils
          */
         @Nullable
         @Override
-        protected synchronized PasswordAuthentication getPasswordAuthentication()
-        {
+        protected synchronized PasswordAuthentication getPasswordAuthentication() {
 
             RequestorType type = getRequestorType();
             String urlString = getRequestingURL().toString();
@@ -629,42 +539,33 @@ public class HttpUtils
             // user enters their credentials, causing needless reentry.
             String pKey = type.toString() + getRequestingProtocol() + getRequestingHost();
             PasswordAuthentication pw = pwCache.get(pKey);
-            if (pw != null)
-            {
+            if (pw != null) {
                 // Prevents infinite loop if credentials are incorrect
-                if (cacheAttempts.contains(urlString))
-                {
+                if (cacheAttempts.contains(urlString)) {
                     cacheAttempts.remove(urlString);
-                }
-                else
-                {
+                } else {
                     cacheAttempts.add(urlString);
                     return pw;
                 }
             }
 
-            if (defaultUserName != null && defaultPassword != null)
-            {
+            if (defaultUserName != null && defaultPassword != null) {
                 return new PasswordAuthentication(defaultUserName, defaultPassword);
             }
 
             Frame owner = AppFrame.get();
 
             boolean isGenomeSpace = GSUtils.isGenomeSpace(getRequestingURL());
-            if (isGenomeSpace)
-            {
+            if (isGenomeSpace) {
                 // If we are being challenged by GS the token must be bad/expired
                 GSUtils.logout();
             }
 
             LoginDialog dlg = new LoginDialog(owner, isGenomeSpace, urlString, false);
             dlg.setVisible(true);
-            if (dlg.isCanceled())
-            {
+            if (dlg.isCanceled()) {
                 return null;
-            }
-            else
-            {
+            } else {
                 final String userString = dlg.getUsername();
                 final char[] userPass = dlg.getPassword();
 
@@ -679,8 +580,7 @@ public class HttpUtils
     /**
      * Provide override for unit tests
      */
-    public void setAuthenticator(Authenticator authenticator)
-    {
+    public void setAuthenticator(Authenticator authenticator) {
         Authenticator.setDefault(authenticator);
     }
 
@@ -689,8 +589,7 @@ public class HttpUtils
      *
      * @noinspection UnusedDeclaration
      */
-    public void resetAuthenticator()
-    {
+    public void resetAuthenticator() {
         Authenticator.setDefault(new IGVAuthenticator());
 
     }
@@ -706,32 +605,23 @@ public class HttpUtils
     private final static Pattern equalPattern = Pattern.compile("=");
     private final static Pattern semicolonPattern = Pattern.compile(";");
 
-    private static class IGVCookieManager extends CookieManager
-    {
+    private static class IGVCookieManager extends CookieManager {
 
 
         @Override
-        public void put(@NotNull URI uri, @NotNull Map<String, List<String>> stringListMap) throws IOException
-        {
-            if (uri.toString().startsWith(GSUtils.DEFAULT_GS_IDENTITY_SERVER))
-            {
+        public void put(@NotNull URI uri, @NotNull Map<String, List<String>> stringListMap) throws IOException {
+            if (uri.toString().startsWith(GSUtils.DEFAULT_GS_IDENTITY_SERVER)) {
                 List<String> cookies = stringListMap.get("Set-Cookie");
-                if (cookies != null)
-                {
-                    for (String cstring : cookies)
-                    {
+                if (cookies != null) {
+                    for (String cstring : cookies) {
                         String[] tokens = equalPattern.split(cstring);
-                        if (tokens.length >= 2)
-                        {
+                        if (tokens.length >= 2) {
                             String cookieName = tokens[0];
                             String[] vTokens = semicolonPattern.split(tokens[1]);
                             String value = vTokens[0];
-                            if (cookieName.equals("gs-token"))
-                            {
+                            if (cookieName.equals("gs-token")) {
                                 GSUtils.setGSToken(value);
-                            }
-                            else if (cookieName.equals("gs-username"))
-                            {
+                            } else if (cookieName.equals("gs-username")) {
                                 GSUtils.setGSUser(value);
                             }
                         }

@@ -29,8 +29,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Filter", propOrder = {"name", "value", "excluded"})
-public class Filter
-{
+public class Filter {
 
     @XmlAttribute(required = true)
     private String name;
@@ -53,23 +52,19 @@ public class Filter
      *         {@link String }
      */
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -79,8 +74,7 @@ public class Filter
      * @return possible object is
      *         {@link String }
      */
-    public Boolean getRadio()
-    {
+    public Boolean getRadio() {
         return radio;
     }
 
@@ -91,18 +85,15 @@ public class Filter
      * @param value allowed object is
      *              {@link String }
      */
-    public void setRadio(Boolean radio)
-    {
+    public void setRadio(Boolean radio) {
         this.radio = radio;
     }
 
-    public int getExcluded()
-    {
+    public int getExcluded() {
         return excluded;
     }
 
-    public void setExcluded(int excluded)
-    {
+    public void setExcluded(int excluded) {
         this.excluded = excluded;
     }
 

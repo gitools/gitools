@@ -39,17 +39,13 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Main
-{
+public class Main {
 
-    public static void main(@NotNull String[] args)
-    {
+    public static void main(@NotNull String[] args) {
 
         CommandExecutor cmdExecutor = new CommandExecutor();
-        if (args.length > 0)
-        {
-            if (!cmdExecutor.checkArguments(args, new PrintWriter(System.err)))
-            {
+        if (args.length > 0) {
+            if (!cmdExecutor.checkArguments(args, new PrintWriter(System.err))) {
                 return;
             }
         }
@@ -68,12 +64,10 @@ public class Main
 
 
         // Initialize help system
-        try
-        {
+        try {
             Help.getDefault().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));
             Help.getDefault().loadUrlMap(Main.class.getResourceAsStream("/help/help.mappings"));
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             System.err.println("Error loading help system:");
             ex.printStackTrace();
         }
@@ -81,11 +75,9 @@ public class Main
         // Start CommandListener
         boolean portEnabled = Settings.getDefault().isPortEnabled();
         String portString = null;
-        if (portEnabled || portString != null)
-        {
+        if (portEnabled || portString != null) {
             int port = Settings.getDefault().getDefaultPort();
-            if (portString != null)
-            {
+            if (portString != null) {
                 port = Integer.parseInt(portString);
             }
             CommandListener.start(port, args);
@@ -100,8 +92,7 @@ public class Main
         // Launch frame
         AppFrame.get().start();
 
-        if (args.length > 0)
-        {
+        if (args.length > 0) {
             cmdExecutor.execute(args, new PrintWriter(System.err));
         }
 

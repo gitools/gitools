@@ -25,17 +25,12 @@ import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.function.DoubleFunction;
 import org.jetbrains.annotations.NotNull;
 
-abstract class AbstractAggregator implements IAggregator
-{
+abstract class AbstractAggregator implements IAggregator {
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue)
-    {
-        if (data.length == 0)
-        {
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue) {
+        if (data.length == 0) {
             return 0;
-        }
-        else if (data.length == 1)
-        {
+        } else if (data.length == 1) {
             return mapFunc.apply(checkNaN(data[0], nanValue));
         }
 
@@ -47,14 +42,10 @@ abstract class AbstractAggregator implements IAggregator
         return value;
     }
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue)
-    {
-        if (data.length == 0)
-        {
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue) {
+        if (data.length == 0) {
             return 0;
-        }
-        else if (data.length == 1)
-        {
+        } else if (data.length == 1) {
             return checkNaN(data[0], nanValue);
         }
 
@@ -66,8 +57,7 @@ abstract class AbstractAggregator implements IAggregator
         return value;
     }
 
-    private double checkNaN(double d, double nanValue)
-    {
+    private double checkNaN(double d, double nanValue) {
         return Double.isNaN(d) ? nanValue : d;
     }
 }

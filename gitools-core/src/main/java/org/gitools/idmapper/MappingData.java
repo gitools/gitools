@@ -25,8 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class MappingData
-{
+public class MappingData {
 
     private final MappingNode srcNode;
     private MappingNode dstNode;
@@ -34,8 +33,7 @@ public class MappingData
     private final Set<String> dstIds;
     private final Map<String, Set<String>> map;
 
-    public MappingData(String srcId, String dstId)
-    {
+    public MappingData(String srcId, String dstId) {
         this.srcNode = new StringMappingNode(srcId);
         this.dstNode = new StringMappingNode(dstId);
 
@@ -43,47 +41,38 @@ public class MappingData
         map = new HashMap<String, Set<String>>();
     }
 
-    public MappingNode getSrcNode()
-    {
+    public MappingNode getSrcNode() {
         return srcNode;
     }
 
-    public MappingNode getDstNode()
-    {
+    public MappingNode getDstNode() {
         return dstNode;
     }
 
-    public void setDstNode(MappingNode dstNode)
-    {
+    public void setDstNode(MappingNode dstNode) {
         this.dstNode = dstNode;
     }
 
     @NotNull
-    public Set<String> getSrcIds()
-    {
+    public Set<String> getSrcIds() {
         return map.keySet();
     }
 
-    public Set<String> getDstIds()
-    {
+    public Set<String> getDstIds() {
         return dstIds;
     }
 
-    public Set<String> get(String srcId)
-    {
+    public Set<String> get(String srcId) {
         Set<String> d = map.get(srcId);
-        if (d == null)
-        {
+        if (d == null) {
             d = new HashSet<String>();
         }
         return d;
     }
 
-    public void put(String srcId, String dstId)
-    {
+    public void put(String srcId, String dstId) {
         Set<String> ids = map.get(srcId);
-        if (ids == null)
-        {
+        if (ids == null) {
             ids = new HashSet<String>();
             map.put(srcId, ids);
         }
@@ -91,34 +80,27 @@ public class MappingData
         ids.add(dstId);
     }
 
-    void clearDstIds()
-    {
+    void clearDstIds() {
         dstIds.clear();
     }
 
-    public void set(String srcId, Set<String> dids)
-    {
+    public void set(String srcId, Set<String> dids) {
         map.put(srcId, dids);
         dstIds.addAll(dids);
     }
 
-    public Map<String, Set<String>> getMap()
-    {
+    public Map<String, Set<String>> getMap() {
         return map;
     }
 
-    public void map(@NotNull Map<String, Set<String>> dstmap)
-    {
+    public void map(@NotNull Map<String, Set<String>> dstmap) {
         clearDstIds();
 
-        for (Map.Entry<String, Set<String>> e : map.entrySet())
-        {
+        for (Map.Entry<String, Set<String>> e : map.entrySet()) {
             Set<String> dset = new HashSet<String>();
-            for (String sname : e.getValue())
-            {
+            for (String sname : e.getValue()) {
                 Set<String> dnames = dstmap.get(sname);
-                if (dnames != null)
-                {
+                if (dnames != null) {
                     dset.addAll(dnames);
                 }
             }
@@ -126,31 +108,26 @@ public class MappingData
         }
     }
 
-    void clear()
-    {
+    void clear() {
         dstIds.clear();
         map.clear();
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return map.keySet().isEmpty();
     }
 
-    public void identity(@NotNull Set<String> set)
-    {
+    public void identity(@NotNull Set<String> set) {
         clear();
 
         for (String id : set)
             put(id, id);
     }
 
-    public void removeEmptyKeys()
-    {
+    public void removeEmptyKeys() {
         List<String> rm = new ArrayList<String>();
         for (Map.Entry<String, Set<String>> e : map.entrySet())
-            if (e.getValue().isEmpty())
-            {
+            if (e.getValue().isEmpty()) {
                 rm.add(e.getKey());
             }
 
@@ -160,8 +137,7 @@ public class MappingData
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(map.size()).append(" keys, ");
         sb.append(dstIds.size()).append(" distinct values. ");

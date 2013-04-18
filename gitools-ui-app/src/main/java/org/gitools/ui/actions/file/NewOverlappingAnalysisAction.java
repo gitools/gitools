@@ -45,13 +45,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class NewOverlappingAnalysisAction extends BaseAction
-{
+public class NewOverlappingAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8917512377366424724L;
 
-    public NewOverlappingAnalysisAction()
-    {
+    public NewOverlappingAnalysisAction() {
         super("Overlapping analysis ...");
 
         setDesc("Run an overlapping analysis");
@@ -61,16 +59,14 @@ public class NewOverlappingAnalysisAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final OverlappingAnalysisWizard wizard = new OverlappingAnalysisWizard();
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -82,17 +78,13 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
         final OverlappingCommand cmd = new OverlappingCommand(analysis, wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -100,11 +92,9 @@ public class NewOverlappingAnalysisAction extends BaseAction
 
                     editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -113,8 +103,7 @@ public class NewOverlappingAnalysisAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

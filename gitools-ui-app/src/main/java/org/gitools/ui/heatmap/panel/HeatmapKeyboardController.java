@@ -30,8 +30,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-class HeatmapKeyboardController extends KeyAdapter
-{
+class HeatmapKeyboardController extends KeyAdapter {
 
     private final HeatmapPanel panel;
     private final Heatmap hm;
@@ -40,8 +39,7 @@ class HeatmapKeyboardController extends KeyAdapter
     private int selEnd;
     private int selLast;
 
-    HeatmapKeyboardController(@NotNull HeatmapPanel panel)
-    {
+    HeatmapKeyboardController(@NotNull HeatmapPanel panel) {
         this.panel = panel;
         this.hm = panel.getHeatmap();
 
@@ -51,12 +49,11 @@ class HeatmapKeyboardController extends KeyAdapter
     }
 
     @Override
-    public void keyPressed(@NotNull KeyEvent e)
-    {
+    public void keyPressed(@NotNull KeyEvent e) {
         IMatrixView mv = hm;
 
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
         int key = e.getKeyCode();
 
@@ -65,31 +62,21 @@ class HeatmapKeyboardController extends KeyAdapter
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
         boolean altDown = ((modifiers & InputEvent.ALT_MASK) != 0);
 
-        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN)
-        {
+        if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN) {
 
-            if (((!shiftDown && !ctrlDown) || (shiftDown && !ctrlDown) || (!shiftDown && ctrlDown)) && !altDown)
-            {
+            if (((!shiftDown && !ctrlDown) || (shiftDown && !ctrlDown) || (!shiftDown && ctrlDown)) && !altDown) {
                 changeLead(e);
-            }
-            else if (shiftDown && ctrlDown && !altDown)
-            {
+            } else if (shiftDown && ctrlDown && !altDown) {
                 moveLead(e);
-            }
-            else if (!shiftDown && !ctrlDown && altDown)
-            {
+            } else if (!shiftDown && !ctrlDown && altDown) {
                 moveSelection(e);
             }
 
-            if (ctrlDown)
-            {
+            if (ctrlDown) {
                 e.consume();
             }
-        }
-        else
-        {
-            switch (key)
-            {
+        } else {
+            switch (key) {
                 case KeyEvent.VK_DELETE:
                     hideLead(e);
                     break;
@@ -102,16 +89,15 @@ class HeatmapKeyboardController extends KeyAdapter
     }
 
     //TODO shift selection
-    private void changeLead(@NotNull KeyEvent e)
-    {
+    private void changeLead(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
         int prevRow = row;
         int prevCol = col;
@@ -119,97 +105,70 @@ class HeatmapKeyboardController extends KeyAdapter
         final int rowPageSize = 10; //FIXME should depend on screen size
         final int colPageSize = 10; //FIXME should depend on screen size
 
-        switch (e.getKeyCode())
-        {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
-                if (row < mv.getRows().size() - 1)
-                {
+                if (row < mv.getRows().size() - 1) {
                     row++;
                 }
                 break;
             case KeyEvent.VK_UP:
-                if (row > 0)
-                {
+                if (row > 0) {
                     row--;
-                }
-                else if (col != -1)
-                {
+                } else if (col != -1) {
                     row = -1;
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumns().size() - 1)
-                {
+                if (col >= 0 && col < mv.getColumns().size() - 1) {
                     col++;
-                }
-                else if (row != -1)
-                {
+                } else if (row != -1) {
                     col = -1;
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (col > 0)
-                {
+                if (col > 0) {
                     col--;
-                }
-                else if (col == -1)
-                {
+                } else if (col == -1) {
                     col = mv.getColumns().size() - 1;
                 }
                 break;
             case KeyEvent.VK_PAGE_UP:
-                if (row != -1)
-                {
+                if (row != -1) {
                     row -= rowPageSize;
-                    if (row < 0)
-                    {
+                    if (row < 0) {
                         row = 0;
                     }
-                }
-                else if (row == -1 && col != -1)
-                {
+                } else if (row == -1 && col != -1) {
                     col -= colPageSize;
-                    if (col < 0)
-                    {
+                    if (col < 0) {
                         col = 0;
                     }
                 }
                 break;
             case KeyEvent.VK_PAGE_DOWN:
-                if (row != -1)
-                {
+                if (row != -1) {
                     row += rowPageSize;
-                    if (row >= mv.getRows().size())
-                    {
+                    if (row >= mv.getRows().size()) {
                         row = mv.getRows().size() - 1;
                     }
-                }
-                else if (row == -1 && col != -1)
-                {
+                } else if (row == -1 && col != -1) {
                     col += colPageSize;
-                    if (col >= mv.getColumns().size())
-                    {
+                    if (col >= mv.getColumns().size()) {
                         col = mv.getColumns().size() - 1;
                     }
                 }
                 break;
             case KeyEvent.VK_HOME:
-                if (row != -1)
-                {
+                if (row != -1) {
                     row = 0;
-                }
-                else if (row == -1 && col != -1)
-                {
+                } else if (row == -1 && col != -1) {
                     col = 0;
                 }
                 break;
             case KeyEvent.VK_END:
-                if (row != -1)
-                {
+                if (row != -1) {
                     row = mv.getRows().size() - 1;
-                }
-                else if (row == -1 && col != -1)
-                {
+                } else if (row == -1 && col != -1) {
                     col = mv.getColumns().size() - 1;
                 }
                 break;
@@ -224,15 +183,11 @@ class HeatmapKeyboardController extends KeyAdapter
 
         int[] sel = null;
 
-        if (onBody || (!shiftDown && !ctrlDown))
-        {
+        if (onBody || (!shiftDown && !ctrlDown)) {
             selStart = selEnd = -1;
-        }
-        else if (!onBody && (shiftDown && !ctrlDown))
-        {
+        } else if (!onBody && (shiftDown && !ctrlDown)) {
             selEnd = onRow ? row : col;
-            if (selStart == -1)
-            {
+            if (selStart == -1) {
                 selStart = selLast != -1 ? selLast : selEnd;
             }
 
@@ -245,9 +200,7 @@ class HeatmapKeyboardController extends KeyAdapter
                 sel[i - start] = i;
 
             clearSelection = false;
-        }
-        else if (!shiftDown && ctrlDown)
-        {
+        } else if (!shiftDown && ctrlDown) {
             clearSelection = false;
         }
 
@@ -256,127 +209,103 @@ class HeatmapKeyboardController extends KeyAdapter
         mv.getColumns().setSelectionLead(col);
         mv.getRows().setSelectionLead(row);
 
-        if (clearSelection)
-        {
+        if (clearSelection) {
             mv.getRows().clearSelection();
             mv.getColumns().clearSelection();
-        }
-        else if (!onBody && sel != null)
-        {
-            if (onRow)
-            {
-                mv.getRows().setSelected(  sel);
-            }
-            else
-            {
-                mv.getColumns().setSelected(  sel);
+        } else if (!onBody && sel != null) {
+            if (onRow) {
+                mv.getRows().setSelected(sel);
+            } else {
+                mv.getColumns().setSelected(sel);
             }
         }
     }
 
-    private void hideLead(KeyEvent e)
-    {
+    private void hideLead(KeyEvent e) {
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
-        if (row != -1)
-        {
-            mv.getRows().hide(  mv.getRows().getSelected(  ));
+        if (row != -1) {
+            mv.getRows().hide(mv.getRows().getSelected());
         }
 
-        if (col != -1)
-        {
-            mv.getColumns().hide(  mv.getColumns().getSelected(  ));
+        if (col != -1) {
+            mv.getColumns().hide(mv.getColumns().getSelected());
         }
     }
 
-    private void moveLead(@NotNull KeyEvent e)
-    {
+    private void moveLead(@NotNull KeyEvent e) {
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
-        switch (e.getKeyCode())
-        {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
-                if (row >= 0 && row < mv.getRows().size() - 1)
-                {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  new int[]{row});
+                if (row >= 0 && row < mv.getRows().size() - 1) {
+                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN, new int[]{row});
                 }
                 break;
             case KeyEvent.VK_UP:
-                if (row > 0 && row < mv.getRows().size())
-                {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.UP , new int[]{row});
+                if (row > 0 && row < mv.getRows().size()) {
+                    mv.getRows().move(org.gitools.matrix.model.Direction.UP, new int[]{row});
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumns().size() - 1)
-                {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  new int[]{col});
+                if (col >= 0 && col < mv.getColumns().size() - 1) {
+                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, new int[]{col});
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (col > 0 && col < mv.getColumns().size())
-                {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  new int[]{col});
+                if (col > 0 && col < mv.getColumns().size()) {
+                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT, new int[]{col});
                 }
                 break;
         }
     }
 
-    private void moveSelection(@NotNull KeyEvent e)
-    {
+    private void moveSelection(@NotNull KeyEvent e) {
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
         boolean horizontal = (row == -1 && col >= 0);
 
-        int[] sel = horizontal ? mv.getColumns().getSelected(  ) : mv.getRows().getSelected(  );
-        if (sel.length == 0 && ((horizontal && col != -1) || (!horizontal && row != -1)))
-        {
+        int[] sel = horizontal ? mv.getColumns().getSelected() : mv.getRows().getSelected();
+        if (sel.length == 0 && ((horizontal && col != -1) || (!horizontal && row != -1))) {
             sel = horizontal ? new int[]{col} : new int[]{row};
         }
 
-        switch (e.getKeyCode())
-        {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
-                if (row >= 0 && row < mv.getRows().size() - 1)
-                {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  sel);
+                if (row >= 0 && row < mv.getRows().size() - 1) {
+                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN, sel);
                 }
                 break;
             case KeyEvent.VK_UP:
-                if (row > 0 && row < mv.getRows().size())
-                {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.UP , sel);
+                if (row > 0 && row < mv.getRows().size()) {
+                    mv.getRows().move(org.gitools.matrix.model.Direction.UP, sel);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                if (col >= 0 && col < mv.getColumns().size() - 1)
-                {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  sel);
+                if (col >= 0 && col < mv.getColumns().size() - 1) {
+                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, sel);
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (col > 0 && col < mv.getColumns().size())
-                {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  sel);
+                if (col > 0 && col < mv.getColumns().size()) {
+                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT, sel);
                 }
                 break;
         }
     }
 
-    private void selectLead(@NotNull KeyEvent e)
-    {
+    private void selectLead(@NotNull KeyEvent e) {
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
-        if (row != -1 && col != -1)
-        {
+        if (row != -1 && col != -1) {
             return;
         }
 
@@ -390,39 +319,28 @@ class HeatmapKeyboardController extends KeyAdapter
 
         int[] sel = null;
 
-        if (!ctrlDown)
-        {
-            if (row >= 0 && col == -1)
-            {
+        if (!ctrlDown) {
+            if (row >= 0 && col == -1) {
                 sel = new int[]{row};
-            }
-            else if (row == -1 && col >= 0)
-            {
+            } else if (row == -1 && col >= 0) {
                 sel = new int[]{col};
             }
-        }
-        else
-        {
-            boolean selected = horizontal ? mv.getColumns().isSelected(  col) : mv.getRows().isSelected(  row);
+        } else {
+            boolean selected = horizontal ? mv.getColumns().isSelected(col) : mv.getRows().isSelected(row);
 
-            int[] prevSel = horizontal ? mv.getColumns().getSelected(  ) : mv.getRows().getSelected(  );
+            int[] prevSel = horizontal ? mv.getColumns().getSelected() : mv.getRows().getSelected();
 
-            if (!selected)
-            {
+            if (!selected) {
                 sel = new int[prevSel.length + 1];
                 System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
                 sel[sel.length - 1] = index;
                 Arrays.sort(sel);
-            }
-            else
-            {
+            } else {
                 sel = new int[prevSel.length - 1];
                 int i = 0;
                 int j = 0;
-                while (i < prevSel.length)
-                {
-                    if (prevSel[i] != index)
-                    {
+                while (i < prevSel.length) {
+                    if (prevSel[i] != index) {
                         sel[j++] = prevSel[i];
                     }
                     i++;
@@ -430,21 +348,16 @@ class HeatmapKeyboardController extends KeyAdapter
             }
         }
 
-        if (horizontal)
-        {
-            if (mv.getRows().getSelected(  ).length != 0)
-            {
-                mv.getRows().setSelected(  new int[0]);
+        if (horizontal) {
+            if (mv.getRows().getSelected().length != 0) {
+                mv.getRows().setSelected(new int[0]);
             }
-            mv.getColumns().setSelected(  sel);
-        }
-        else
-        {
-            if (mv.getColumns().getSelected(  ).length != 0)
-            {
-                mv.getColumns().setSelected(  new int[0]);
+            mv.getColumns().setSelected(sel);
+        } else {
+            if (mv.getColumns().getSelected().length != 0) {
+                mv.getColumns().setSelected(new int[0]);
             }
-            mv.getRows().setSelected(  sel);
+            mv.getRows().setSelected(sel);
         }
     }
 }

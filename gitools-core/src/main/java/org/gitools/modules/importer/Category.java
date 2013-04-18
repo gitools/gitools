@@ -24,25 +24,21 @@ package org.gitools.modules.importer;
 /**
  * @noinspection ALL
  */
-public abstract class Category extends RefImpl
-{
+public abstract class Category extends RefImpl {
 
     private final String section;
 
-    protected Category(String section, String id, String name)
-    {
+    protected Category(String section, String id, String name) {
         super(id, name);
         this.section = section;
     }
 
-    public String getSection()
-    {
+    public String getSection() {
         return section;
     }
 
     @Override
-    public String getRef()
-    {
+    public String getRef() {
         return super.getRef();
     }
 }

@@ -27,38 +27,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-class ReverseListIterator<T> implements Iterable<T>, Iterator<T>
-{
+class ReverseListIterator<T> implements Iterable<T>, Iterator<T> {
 
     private final ListIterator<T> iterator;
 
-    public ReverseListIterator(@NotNull List<T> list)
-    {
+    public ReverseListIterator(@NotNull List<T> list) {
         this.iterator = list.listIterator(list.size());
     }
 
     @NotNull
     @Override
-    public Iterator<T> iterator()
-    {
+    public Iterator<T> iterator() {
         return this;
     }
 
     @Override
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return iterator.hasPrevious();
     }
 
     @Override
-    public T next()
-    {
+    public T next() {
         return iterator.previous();
     }
 
     @Override
-    public void remove()
-    {
+    public void remove() {
         iterator.remove();
     }
 }

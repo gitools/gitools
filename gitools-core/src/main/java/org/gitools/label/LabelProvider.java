@@ -21,8 +21,7 @@
  */
 package org.gitools.label;
 
-public interface LabelProvider
-{
+public interface LabelProvider {
 
     int getCount();
 

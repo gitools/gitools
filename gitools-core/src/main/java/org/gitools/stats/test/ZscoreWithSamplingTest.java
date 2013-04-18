@@ -28,20 +28,17 @@ import cern.jet.random.sampling.RandomSampler;
 import org.gitools.stats.calc.Statistic;
 import org.jetbrains.annotations.NotNull;
 
-public class ZscoreWithSamplingTest extends ZscoreTest
-{
+public class ZscoreWithSamplingTest extends ZscoreTest {
 
     private final int numSamples;
 
-    public ZscoreWithSamplingTest(int numSamples, Statistic statCalc)
-    {
+    public ZscoreWithSamplingTest(int numSamples, Statistic statCalc) {
         super(statCalc);
         this.numSamples = numSamples;
     }
 
     @Override
-    protected void infereMeanAndStdev(@NotNull DoubleMatrix1D population, @NotNull DoubleMatrix1D groupItems, @NotNull PopulationStatistics expected)
-    {
+    protected void infereMeanAndStdev(@NotNull DoubleMatrix1D population, @NotNull DoubleMatrix1D groupItems, @NotNull PopulationStatistics expected) {
 
         final int sampleSize = groupItems.size();
 
@@ -53,8 +50,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
 
         RandomEngine randomEngine = new MersenneTwister();
 
-        for (int i = 0; i < numSamples; i++)
-        {
+        for (int i = 0; i < numSamples; i++) {
             RandomSampler.sample(sampleSize, population.size(), sampleSize, 0, lindices, 0, randomEngine);
 
             copyIndices(lindices, indices);
@@ -72,8 +68,7 @@ public class ZscoreWithSamplingTest extends ZscoreTest
         //Math.sqrt((sx2 - N * (expectedMean * expectedMean)) / (N - 1));
     }
 
-    private void copyIndices(@NotNull long[] lindices, int[] indices)
-    {
+    private void copyIndices(@NotNull long[] lindices, int[] indices) {
         for (int j = 0; j < lindices.length; j++)
             indices[j] = (int) lindices[j];
     }

@@ -32,25 +32,21 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod
-{
+public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod {
 
     public static final String ID = "pearson";
 
-    public PearsonCorrelationMethod()
-    {
+    public PearsonCorrelationMethod() {
         this(new Properties());
     }
 
-    public PearsonCorrelationMethod(Properties properties)
-    {
+    public PearsonCorrelationMethod(Properties properties) {
         super(ID, "Pearson's correlation", "Pearson's product-moment correlation", CorrelationResult.class, properties);
     }
 
     @NotNull
     @Override
-    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException
-    {
+    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
         CorrelationResult result = new CorrelationResult();
 
         double sumxy = 0;
@@ -60,8 +56,7 @@ public class PearsonCorrelationMethod extends AbstractMethod implements Correlat
         double sumy2 = 0;
         double n = indicesLength;
 
-        for (int k = 0; k < indicesLength; k++)
-        {
+        for (int k = 0; k < indicesLength; k++) {
             int i = indices[k];
             double xi = x[i];
             double yi = y[i];

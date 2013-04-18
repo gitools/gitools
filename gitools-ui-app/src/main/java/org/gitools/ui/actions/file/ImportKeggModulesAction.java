@@ -47,11 +47,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.PrintWriter;
 
-public class ImportKeggModulesAction extends BaseAction
-{
+public class ImportKeggModulesAction extends BaseAction {
 
-    public ImportKeggModulesAction()
-    {
+    public ImportKeggModulesAction() {
         super("KEGG Pathways ...");
         setLargeIconFromResource(IconNames.KEGG24);
         setSmallIconFromResource(IconNames.KEGG16);
@@ -59,8 +57,7 @@ public class ImportKeggModulesAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final EnsemblKeggModulesImporter importer = new EnsemblKeggModulesImporter(true, false);
 
@@ -69,33 +66,25 @@ public class ImportKeggModulesAction extends BaseAction
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wz);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     ModuleMap mmap = importer.importMap(monitor);
-                    if (!monitor.isCancelled())
-                    {
+                    if (!monitor.isCancelled()) {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (MimeTypes.GENE_MATRIX.equals(extension) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension))
-                        {
+                        if (MimeTypes.GENE_MATRIX.equals(extension) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension)) {
 
                             BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
                             IResourceFormat format = PersistenceManager.get().getFormat(extension, mat.getClass());
                             PersistenceManager.get().store(resourceLocator, mat, format, monitor);
-                        }
-                        else
-                        {
+                        } else {
                             IResourceFormat format = PersistenceManager.get().getFormat(extension, mmap.getClass());
                             PersistenceManager.get().store(resourceLocator, mmap, format, monitor);
                         }
@@ -106,8 +95,7 @@ public class ImportKeggModulesAction extends BaseAction
                         monitor.begin("Saving module annotations ...", mmap.getModuleCount());
                         PrintWriter pw = new PrintWriter(file);
                         pw.println("id\tname");
-                        for (int i = 0; i < mmap.getModuleCount(); i++)
-                        {
+                        for (int i = 0; i < mmap.getModuleCount(); i++) {
                             pw.print(mmap.getModuleName(i));
                             pw.print('\t');
                             pw.println(mmap.getModuleDescription(i));
@@ -117,26 +105,20 @@ public class ImportKeggModulesAction extends BaseAction
                         monitor.end();
 
                         setStatus("Ok");
-                    }
-                    else
-                    {
+                    } else {
                         setStatus("Operation cancelled");
                     }
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }
         });
     }
 
-    private void setStatus(final String msg)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    private void setStatus(final String msg) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 AppFrame.get().setStatusText(msg);
             }
         });

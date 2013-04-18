@@ -27,17 +27,14 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class ExportHeatmapLabelsPage extends AbstractWizardPage
-{
+public class ExportHeatmapLabelsPage extends AbstractWizardPage {
 
-    public enum WhichLabels
-    {
+    public enum WhichLabels {
         VISIBLE_ROWS, VISIBLE_COLUMNS,
         HIDDEN_ROWS, HIDDEN_COLUMNS
     }
 
-    public ExportHeatmapLabelsPage()
-    {
+    public ExportHeatmapLabelsPage() {
         initComponents();
 
         setTitle("What do you want to export ?");
@@ -45,22 +42,17 @@ public class ExportHeatmapLabelsPage extends AbstractWizardPage
     }
 
     @NotNull
-    public WhichLabels getWhichLabels()
-    {
-        if (vRowsRb.isSelected())
-        {
+    public WhichLabels getWhichLabels() {
+        if (vRowsRb.isSelected()) {
             return WhichLabels.VISIBLE_ROWS;
         }
-        if (vColsRb.isSelected())
-        {
+        if (vColsRb.isSelected()) {
             return WhichLabels.VISIBLE_COLUMNS;
         }
-        if (hRowsRb.isSelected())
-        {
+        if (hRowsRb.isSelected()) {
             return WhichLabels.HIDDEN_ROWS;
         }
-        if (hColsRb.isSelected())
-        {
+        if (hColsRb.isSelected()) {
             return WhichLabels.HIDDEN_COLUMNS;
         }
         return WhichLabels.VISIBLE_ROWS;
@@ -74,8 +66,7 @@ public class ExportHeatmapLabelsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         vRowsRb = new javax.swing.JRadioButton();

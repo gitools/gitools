@@ -26,8 +26,7 @@ import org.gitools.ui.actions.data.HideSelectionAction.ElementType;
 import org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public final class DataActions
-{
+public final class DataActions {
 
     public static final BaseAction filterByLabelAction = new FilterByLabelAction();
 

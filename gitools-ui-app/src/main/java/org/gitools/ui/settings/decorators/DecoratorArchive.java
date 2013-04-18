@@ -35,8 +35,7 @@ import java.util.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DecoratorArchive
-{
+public class DecoratorArchive {
 
     public transient final static String VERSION = "3.0";
 
@@ -45,39 +44,29 @@ public class DecoratorArchive
 
     private transient final String DEFAULT = "Default";
 
-    public DecoratorArchive()
-    {
+    public DecoratorArchive() {
     }
 
-    public void add(Decorator[] decorators)
-    {
-        for (Decorator d : decorators)
-        {
+    public void add(Decorator[] decorators) {
+        for (Decorator d : decorators) {
             add(d);
         }
     }
 
-    public void add(@NotNull Decorator decorator)
-    {
+    public void add(@NotNull Decorator decorator) {
         String name = decorator.getName();
         Set<String> map = getDecorators().keySet();
-        if (map.contains(name))
-        {
+        if (map.contains(name)) {
             remove(scaleDecorators, name);
             scaleDecorators.add(decorator);
-        }
-        else
-        {
+        } else {
             scaleDecorators.add(decorator);
         }
     }
 
-    private void remove(@NotNull List<Decorator> scaleDecorators, String name)
-    {
-        for (Decorator d : scaleDecorators)
-        {
-            if (d.getName().equals(name))
-            {
+    private void remove(@NotNull List<Decorator> scaleDecorators, String name) {
+        for (Decorator d : scaleDecorators) {
+            if (d.getName().equals(name)) {
                 scaleDecorators.remove(d);
                 return;
             }
@@ -85,32 +74,26 @@ public class DecoratorArchive
     }
 
     @NotNull
-    public Map<String, Decorator> getDecorators()
-    {
+    public Map<String, Decorator> getDecorators() {
         Map<String, Decorator> decoratorMap = new HashMap<String, Decorator>();
 
-        for (Decorator d : scaleDecorators)
-        {
+        for (Decorator d : scaleDecorators) {
             decoratorMap.put(d.getName(), d);
         }
         return decoratorMap;
     }
 
     @Nullable
-    public Decorator[] getDefaultElementDecoratros()
-    {
+    public Decorator[] getDefaultElementDecoratros() {
         List<DecoratorDescriptor> descriptors = DecoratorFactory.getDescriptors();
         Decorator[] decorators = new Decorator[descriptors.size()];
         int i = 0;
-        for (DecoratorDescriptor descriptor : descriptors)
-        {
+        for (DecoratorDescriptor descriptor : descriptors) {
             Decorator decorator = null;
-            try
-            {
+            try {
                 decorator = descriptor.getDecoratorClass().
                         getConstructor().newInstance();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 return null;
             }
             //decorator = (descriptor.getDecoratorClass()) decorator;

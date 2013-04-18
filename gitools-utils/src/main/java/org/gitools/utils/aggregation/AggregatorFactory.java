@@ -28,15 +28,13 @@ import java.util.*;
 /**
  * @noinspection ALL
  */
-public class AggregatorFactory
-{
+public class AggregatorFactory {
 
     private static final List<IAggregator> aggregators = new ArrayList<IAggregator>();
 
     private static final Map<String, IAggregator> aggregatorsMap = new HashMap<String, IAggregator>();
 
-    static
-    {
+    static {
         put(MultAggregator.INSTANCE);
         put(SumAggregator.INSTANCE);
         put(MeanAggregator.INSTANCE);
@@ -48,25 +46,21 @@ public class AggregatorFactory
         put(MaxAggregator.INSTANCE);
     }
 
-    private static void put(@NotNull IAggregator aggregator)
-    {
+    private static void put(@NotNull IAggregator aggregator) {
         aggregators.add(aggregator);
         aggregatorsMap.put(aggregator.toString(), aggregator);
     }
 
-    public static IAggregator create(String name)
-    {
+    public static IAggregator create(String name) {
         return aggregatorsMap.get(name);
     }
 
-    public static Collection<IAggregator> getAggregators()
-    {
+    public static Collection<IAggregator> getAggregators() {
         return Collections.unmodifiableCollection(aggregators);
     }
 
     @NotNull
-    public static IAggregator[] getAggregatorsArray()
-    {
+    public static IAggregator[] getAggregatorsArray() {
         final IAggregator[] aggregatorsArray = new IAggregator[aggregators.size()];
         aggregators.toArray(aggregatorsArray);
         return aggregatorsArray;

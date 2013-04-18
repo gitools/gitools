@@ -58,8 +58,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class CombinationAnalysisWizard extends AbstractWizard
-{
+public class CombinationAnalysisWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
@@ -84,8 +83,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
 
     private File dataFile;
 
-    public CombinationAnalysisWizard()
-    {
+    public CombinationAnalysisWizard() {
         super();
 
         examplePageEnabled = true;
@@ -98,19 +96,16 @@ public class CombinationAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         // Example
-        if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage())
-        {
+        if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
             examplePage = new ExamplePage("a combination analysis");
             examplePage.setTitle("Combination analysis");
             addPage(examplePage);
         }
 
         // Data
-        if (!dataFromMemory)
-        {
+        if (!dataFromMemory) {
             dataPage = new DataFilePage(dataFormats);
             addPage(dataPage);
         }
@@ -121,17 +116,14 @@ public class CombinationAnalysisWizard extends AbstractWizard
         addPage(combinationParamsPage);
 
         // Set of columns
-        columnSetsPage = new SelectFilePage(columnSetsFormats)
-        {
+        columnSetsPage = new SelectFilePage(columnSetsFormats) {
             @Override
-            protected String getLastPath()
-            {
+            protected String getLastPath() {
                 return Settings.getDefault().getLastMapPath();
             }
 
             @Override
-            protected void setLastPath(String path)
-            {
+            protected void setLastPath(String path) {
                 Settings.getDefault().setLastMapPath(path);
             }
         };
@@ -141,8 +133,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         addPage(columnSetsPage);
 
         // Destination
-        if (saveFilePageEnabled)
-        {
+        if (saveFilePageEnabled) {
             saveFilePage = new org.gitools.ui.wizard.common.SaveFilePage();
             saveFilePage.setTitle("Select destination file");
             saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
@@ -157,36 +148,26 @@ public class CombinationAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void pageEntered(IWizardPage page)
-    {
-        if (combinationParamsPage.equals(page))
-        {
-            if (!dataFromMemory && (dataFile == null || !dataPage.getFile().equals(dataFile)))
-            {
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+    public void pageEntered(IWizardPage page) {
+        if (combinationParamsPage.equals(page)) {
+            if (!dataFromMemory && (dataFile == null || !dataPage.getFile().equals(dataFile))) {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
+                    public void run(@NotNull IProgressMonitor monitor) {
                         monitor.begin("Reading data header ...", 1);
 
-                        try
-                        {
+                        try {
                             dataFile = dataPage.getFile();
 
                             IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
-                            if (dataFormat instanceof MultiValueMatrixFormat)
-                            {
+                            if (dataFormat instanceof MultiValueMatrixFormat) {
                                 attributes = MultiValueMatrixFormat.readMetaAttributes(dataFile, monitor);
-                            }
-                            else
-                            {
+                            } else {
                                 attributes = null;
                             }
 
                             combinationParamsPage.setAttributes(attributes);
-                        } catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             monitor.exception(ex);
                         }
                         monitor.end();
@@ -197,38 +178,29 @@ public class CombinationAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
-        if (currentPage == examplePage)
-        {
+    public void pageLeft(IWizardPage currentPage) {
+        if (currentPage == examplePage) {
             Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
-            if (examplePage.isExampleEnabled())
-            {
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+            if (examplePage.isExampleEnabled()) {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
+                    public void run(@NotNull IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("combination", monitor);
 
-                        if (basePath == null)
-                        {
+                        if (basePath == null) {
                             throw new RuntimeException("Unexpected error: There are no examples available");
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        try
-                        {
+                        try {
                             final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, props, monitor);
 
-                            SwingUtilities.invokeLater(new Runnable()
-                            {
+                            SwingUtilities.invokeLater(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     setAnalysis(a);
 
                                     dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
@@ -236,8 +208,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
                                     saveFilePage.setFileNameWithoutExtension("example");
                                 }
                             });
-                        } catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             monitor.exception(ex);
                         }
                     }
@@ -247,8 +218,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         IWizardPage page = getCurrentPage();
 
         boolean canFinish = super.canFinish();
@@ -257,50 +227,41 @@ public class CombinationAnalysisWizard extends AbstractWizard
         return canFinish;
     }
 
-    public boolean isExamplePageEnabled()
-    {
+    public boolean isExamplePageEnabled() {
         return examplePageEnabled;
     }
 
-    public void setExamplePageEnabled(boolean examplePageEnabled)
-    {
+    public void setExamplePageEnabled(boolean examplePageEnabled) {
         this.examplePageEnabled = examplePageEnabled;
     }
 
-    public boolean isDataFromMemory()
-    {
+    public boolean isDataFromMemory() {
         return dataFromMemory;
     }
 
-    public void setDataFromMemory(boolean dataFromMemory)
-    {
+    public void setDataFromMemory(boolean dataFromMemory) {
         this.dataFromMemory = dataFromMemory;
     }
 
     @Nullable
-    public IMatrixLayers getAttributes()
-    {
+    public IMatrixLayers getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(IMatrixLayers attributes)
-    {
+    public void setAttributes(IMatrixLayers attributes) {
         this.attributes = attributes;
     }
 
-    public boolean isSaveFilePageEnabled()
-    {
+    public boolean isSaveFilePageEnabled() {
         return saveFilePageEnabled;
     }
 
-    public void setSaveFilePageEnabled(boolean saveFilePageEnabled)
-    {
+    public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
         this.saveFilePageEnabled = saveFilePageEnabled;
     }
 
     @NotNull
-    public CombinationAnalysis getAnalysis()
-    {
+    public CombinationAnalysis getAnalysis() {
         CombinationAnalysis a = new CombinationAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
@@ -320,8 +281,7 @@ public class CombinationAnalysisWizard extends AbstractWizard
         return a;
     }
 
-    private void setAnalysis(@NotNull CombinationAnalysis a)
-    {
+    private void setAnalysis(@NotNull CombinationAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());
@@ -330,23 +290,19 @@ public class CombinationAnalysisWizard extends AbstractWizard
         combinationParamsPage.setTransposeEnabled(a.isTransposeData());
     }
 
-    public DataFilePage getDataFilePage()
-    {
+    public DataFilePage getDataFilePage() {
         return dataPage;
     }
 
-    public CombinationAnalysisParamsPage getCombinationParamsPage()
-    {
+    public CombinationAnalysisParamsPage getCombinationParamsPage() {
         return combinationParamsPage;
     }
 
-    public SelectFilePage getColumnSetsPage()
-    {
+    public SelectFilePage getColumnSetsPage() {
         return columnSetsPage;
     }
 
-    public SaveFilePage getSaveFilePage()
-    {
+    public SaveFilePage getSaveFilePage() {
         return saveFilePage;
     }
 }

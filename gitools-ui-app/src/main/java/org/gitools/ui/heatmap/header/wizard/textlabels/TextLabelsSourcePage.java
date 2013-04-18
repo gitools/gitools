@@ -39,24 +39,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class TextLabelsSourcePage extends AbstractWizardPage
-{
+public class TextLabelsSourcePage extends AbstractWizardPage {
 
     private final HeatmapDimension hdim;
     private final HeatmapTextLabelsHeader header;
 
-    public TextLabelsSourcePage(HeatmapDimension hdim, HeatmapTextLabelsHeader header)
-    {
+    public TextLabelsSourcePage(HeatmapDimension hdim, HeatmapTextLabelsHeader header) {
         this.hdim = hdim;
         this.header = header;
 
         initComponents();
 
-        ActionListener optionListener = new ActionListener()
-        {
+        ActionListener optionListener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 optionsChanged();
             }
         };
@@ -70,12 +66,10 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
-        switch (header.getLabelSource())
-        {
+        switch (header.getLabelSource()) {
             case ID:
                 idOpt.setSelected(true);
                 break;
@@ -88,11 +82,9 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         }
 
         IAnnotations am = hdim.getAnnotations();
-        if (am != null && !am.getLabels().isEmpty())
-        {
+        if (am != null && !am.getLabels().isEmpty()) {
             DefaultListModel model = new DefaultListModel();
-            for (String annotationKey : am.getLabels())
-            {
+            for (String annotationKey : am.getLabels()) {
                 model.addElement(annotationKey);
             }
 
@@ -107,8 +99,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
         header.setLabelSource(getLabelSource());
@@ -117,44 +108,32 @@ public class TextLabelsSourcePage extends AbstractWizardPage
     }
 
     @NotNull
-    HeatmapTextLabelsHeader.LabelSource getLabelSource()
-    {
-        if (idOpt.isSelected())
-        {
+    HeatmapTextLabelsHeader.LabelSource getLabelSource() {
+        if (idOpt.isSelected()) {
             return HeatmapTextLabelsHeader.LabelSource.ID;
-        }
-        else if (annOpt.isSelected())
-        {
+        } else if (annOpt.isSelected()) {
             return HeatmapTextLabelsHeader.LabelSource.ANNOTATION;
-        }
-        else if (patOpt.isSelected())
-        {
+        } else if (patOpt.isSelected()) {
             return HeatmapTextLabelsHeader.LabelSource.PATTERN;
         }
         return HeatmapTextLabelsHeader.LabelSource.ID;
     }
 
-    private void optionsChanged()
-    {
+    private void optionsChanged() {
         annList.setEnabled(annOpt.isSelected());
         pattText.setEnabled(patOpt.isSelected());
     }
 
     @NotNull
-    String getAnnotation()
-    {
-        if (annList.getSelectedIndex() != -1)
-        {
+    String getAnnotation() {
+        if (annList.getSelectedIndex() != -1) {
             return (String) annList.getSelectedValue();
-        }
-        else
-        {
+        } else {
             return "";
         }
     }
 
-    String getPattern()
-    {
+    String getPattern() {
         return pattText.getText();
     }
 
@@ -194,10 +173,8 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         pattText.setEnabled(false);
 
         loadAnnotations.setText("Load file");
-        loadAnnotations.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadAnnotationsActionPerformed(evt);
             }
         });
@@ -205,61 +182,60 @@ public class TextLabelsSourcePage extends AbstractWizardPage
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGap(24, 24, 24)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(idOpt)
-                                            .addComponent(annOpt))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(loadAnnotations))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                    .addGap(12, 12, 12)
-                                                    .addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                                            .addComponent(patOpt))))
-                    .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(idOpt)
+                                                        .addComponent(annOpt))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(loadAnnotations))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(12, 12, 12)
+                                                                .addComponent(pattText, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                                                        .addComponent(patOpt))))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                    .addComponent(idOpt)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(annOpt))
-                            .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
-                    .addGap(18, 18, 18)
-                    .addComponent(patOpt)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(idOpt)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(annOpt))
+                                        .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(patOpt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pattText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
         try {
-			File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
 
-			if (file != null) {
-				hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
+            if (file != null) {
+                hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
                 updateControls();
-				//annFile.setText(file.getName());
-			}
-		}
-		catch (Exception ex) {
-			LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
-		}
+                //annFile.setText(file.getName());
+            }
+        } catch (Exception ex) {
+            LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
+        }
     }//GEN-LAST:event_loadAnnotationsActionPerformed
 
 

@@ -26,23 +26,19 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class HelpContext
-{
+public class HelpContext {
 
     private final String id;
 
-    public HelpContext(String id)
-    {
+    public HelpContext(String id) {
         this.id = id;
     }
 
-    public HelpContext(@NotNull Class<?> cls)
-    {
+    public HelpContext(@NotNull Class<?> cls) {
         this.id = cls.getCanonicalName();
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 }

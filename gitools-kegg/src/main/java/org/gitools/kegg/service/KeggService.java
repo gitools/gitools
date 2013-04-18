@@ -37,8 +37,7 @@ import java.util.List;
 /**
  * This service interact with the KEGG REST API
  */
-public class KeggService
-{
+public class KeggService {
 
     private final static String REST_SERVER = "http://rest.kegg.jp";
 
@@ -47,15 +46,13 @@ public class KeggService
      * @throws IOException
      */
     @NotNull
-    public List<KeggOrganism> getOrganisms() throws IOException
-    {
+    public List<KeggOrganism> getOrganisms() throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/list/organism");
 
         String fields[];
         List<KeggOrganism> result = new ArrayList<KeggOrganism>();
-        while ((fields = reader.readNext()) != null)
-        {
+        while ((fields = reader.readNext()) != null) {
             result.add(new KeggOrganism(fields));
         }
 
@@ -71,15 +68,13 @@ public class KeggService
      * @throws IOException
      */
     @NotNull
-    public List<IdConversion> getConvert(String sourceDatabase, String targetDatabase) throws IOException
-    {
+    public List<IdConversion> getConvert(String sourceDatabase, String targetDatabase) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/conv/" + targetDatabase + "/" + sourceDatabase);
 
         String fields[];
         List<IdConversion> result = new ArrayList<IdConversion>();
-        while ((fields = reader.readNext()) != null)
-        {
+        while ((fields = reader.readNext()) != null) {
             result.add(new IdConversion(fields));
         }
 
@@ -95,15 +90,13 @@ public class KeggService
      * @throws IOException
      */
     @NotNull
-    public List<KeggPathway> getPathways(String organismId) throws IOException
-    {
+    public List<KeggPathway> getPathways(String organismId) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/list/pathway/" + organismId);
 
         String fields[];
         List<KeggPathway> result = new ArrayList<KeggPathway>();
-        while ((fields = reader.readNext()) != null)
-        {
+        while ((fields = reader.readNext()) != null) {
             result.add(new KeggPathway(fields));
         }
 
@@ -119,15 +112,13 @@ public class KeggService
      * @throws IOException
      */
     @NotNull
-    public List<String> getGenesByPathway(String pathwayId) throws IOException
-    {
+    public List<String> getGenesByPathway(String pathwayId) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/link/genes/" + pathwayId);
 
         String fields[];
         List<String> result = new ArrayList<String>();
-        while ((fields = reader.readNext()) != null)
-        {
+        while ((fields = reader.readNext()) != null) {
             result.add(fields[1]);
         }
 
@@ -143,8 +134,7 @@ public class KeggService
      * @throws IOException
      */
     @NotNull
-    private static CSVReader createReader(String url) throws IOException
-    {
+    private static CSVReader createReader(String url) throws IOException {
         URL restUrl = new URL(url);
         return new CSVReader(new BufferedReader(new InputStreamReader(restUrl.openStream())));
     }

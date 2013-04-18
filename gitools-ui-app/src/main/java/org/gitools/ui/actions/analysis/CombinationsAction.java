@@ -48,32 +48,27 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class CombinationsAction extends BaseAction
-{
+public class CombinationsAction extends BaseAction {
 
-    public CombinationsAction()
-    {
+    public CombinationsAction() {
         super("Combinations");
         setDesc("Combinations");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -87,8 +82,7 @@ public class CombinationsAction extends BaseAction
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -102,17 +96,13 @@ public class CombinationsAction extends BaseAction
         final CombinationCommand cmd = new CombinationCommand(analysis, null, null, columnSetsFormat, columnSetsPath, null, null);
         cmd.setStoreAnalysis(false);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -121,20 +111,15 @@ public class CombinationsAction extends BaseAction
                     String ext = PersistenceUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
-                    if (!analysisTitle.equals(""))
-                    {
+                    if (!analysisTitle.equals("")) {
                         editor.setName(analysis.getTitle() + "." + CombinationAnalysisFormat.EXTENSION);
-                    }
-                    else
-                    {
+                    } else {
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CombinationAnalysisFormat.EXTENSION));
                     }
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -143,8 +128,7 @@ public class CombinationsAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

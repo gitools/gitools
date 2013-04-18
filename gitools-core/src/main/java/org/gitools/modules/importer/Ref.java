@@ -21,8 +21,7 @@
  */
 package org.gitools.modules.importer;
 
-public interface Ref
-{
+public interface Ref {
 
     String getRef();
 

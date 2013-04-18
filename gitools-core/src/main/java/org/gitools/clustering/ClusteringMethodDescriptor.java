@@ -24,40 +24,34 @@ package org.gitools.clustering;
 /**
  * @noinspection ALL
  */
-public class ClusteringMethodDescriptor
-{
+public class ClusteringMethodDescriptor {
 
     private final String title;
     private final String description;
 
     private final Class<? extends ClusteringMethod> methodClass;
 
-    public ClusteringMethodDescriptor(String title, String description, Class<? extends ClusteringMethod> methodClass)
-    {
+    public ClusteringMethodDescriptor(String title, String description, Class<? extends ClusteringMethod> methodClass) {
 
         this.title = title;
         this.description = description;
         this.methodClass = methodClass;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public Class<? extends ClusteringMethod> getMethodClass()
-    {
+    public Class<? extends ClusteringMethod> getMethodClass() {
         return methodClass;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return title;
     }
 }

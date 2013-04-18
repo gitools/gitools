@@ -35,8 +35,7 @@ import java.util.Map;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ToolConfig
-{
+public class ToolConfig {
 
     public static final String ENRICHMENT = "enrichment";
     public static final String ONCODRIVE = "oncodrive";
@@ -46,42 +45,34 @@ public class ToolConfig
     @XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
     private Map<String, String> configuration = new HashMap<String, String>();
 
-    public ToolConfig(String name)
-    {
+    public ToolConfig(String name) {
         this.name = name;
     }
 
-    public ToolConfig()
-    {
+    public ToolConfig() {
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Map<String, String> getConfiguration()
-    {
+    public Map<String, String> getConfiguration() {
         return configuration;
     }
 
-    public void setConfiguration(Map<String, String> configuration)
-    {
+    public void setConfiguration(Map<String, String> configuration) {
         this.configuration = configuration;
     }
 
-    public void put(String name, String value)
-    {
+    public void put(String name, String value) {
         configuration.put(name, value);
     }
 
-    public String get(String name)
-    {
+    public String get(String name) {
         return configuration.get(name);
     }
 }

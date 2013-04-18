@@ -23,40 +23,33 @@ package org.gitools.idmapper;
 
 import org.jetbrains.annotations.Nullable;
 
-public class StringMappingNode implements MappingNode
-{
+public class StringMappingNode implements MappingNode {
 
     private final String id;
     private final String name;
 
-    private StringMappingNode(String id, String name)
-    {
+    private StringMappingNode(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public StringMappingNode(String id)
-    {
+    public StringMappingNode(String id) {
         this(id, id);
     }
 
     @Override
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public boolean equals(@Nullable Object obj)
-    {
-        if (obj == null || !(obj instanceof MappingNode))
-        {
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || !(obj instanceof MappingNode)) {
             return false;
         }
 
@@ -66,16 +59,14 @@ public class StringMappingNode implements MappingNode
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = 7;
         hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 }

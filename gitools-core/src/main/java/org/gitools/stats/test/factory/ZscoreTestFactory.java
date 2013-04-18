@@ -32,8 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 
-public final class ZscoreTestFactory extends TestFactory
-{
+public final class ZscoreTestFactory extends TestFactory {
 
     public static final String NUM_SAMPLES_PROPERTY = "samples";
     public static final String ESTIMATOR_PROPERTY = "estimator";
@@ -46,39 +45,30 @@ public final class ZscoreTestFactory extends TestFactory
     private int numSamples;
     private final Statistic statCalc;
 
-    public ZscoreTestFactory(@NotNull ToolConfig config)
-    {
+    public ZscoreTestFactory(@NotNull ToolConfig config) {
         super(config);
 
         Map<String, String> props = config.getConfiguration();
 
         final String estimatorName = props.get(ESTIMATOR_PROPERTY);
-        if (MEAN_ESTIMATOR.equalsIgnoreCase(estimatorName))
-        {
+        if (MEAN_ESTIMATOR.equalsIgnoreCase(estimatorName)) {
             this.statCalc = new MeanStatistic();
-        }
-        else if (MEDIAN_ESTIMATOR.equalsIgnoreCase(estimatorName))
-        {
+        } else if (MEDIAN_ESTIMATOR.equalsIgnoreCase(estimatorName)) {
             this.statCalc = new MedianStatistic();
-        }
-        else
-        {
+        } else {
             this.statCalc = new MeanStatistic();
         }
 
-        try
-        {
+        try {
             this.numSamples = Integer.parseInt(props.get(NUM_SAMPLES_PROPERTY));
-        } catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             this.numSamples = DEFAULT_NUM_SAMPLES;
         }
     }
 
     @NotNull
     @Override
-    public Test create()
-    {
+    public Test create() {
         return new ZscoreWithSamplingTest(numSamples, statCalc);
     }
 

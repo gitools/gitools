@@ -31,28 +31,22 @@ import org.gitools.stats.test.results.CommonResult;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class HtestProcessor implements AnalysisProcessor
-{
+public abstract class HtestProcessor implements AnalysisProcessor {
 
-    protected static final DoubleProcedure notNaNProc = new DoubleProcedure()
-    {
+    protected static final DoubleProcedure notNaNProc = new DoubleProcedure() {
         @Override
-        public boolean apply(double element)
-        {
+        public boolean apply(double element) {
             return !Double.isNaN(element);
         }
     };
 
-    protected void multipleTestCorrection(@NotNull ObjectMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor)
-    {
+    protected void multipleTestCorrection(@NotNull ObjectMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor) {
 
         monitor.begin(mtc.getName() + " correction...", 1);
 
         DoubleMatrix2D adjpvalues = DoubleFactory2D.dense.make(3, res.getRows().size());
-        for (int condIdx = 0; condIdx < res.getColumns().size(); condIdx++)
-        {
-            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
-            {
+        for (int condIdx = 0; condIdx < res.getColumns().size(); condIdx++) {
+            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
                 CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
                 adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
                 adjpvalues.setQuick(1, moduleIdx, r != null ? r.getRightPvalue() : Double.NaN);
@@ -63,11 +57,9 @@ public abstract class HtestProcessor implements AnalysisProcessor
             mtc.correct(adjpvalues.viewRow(1).viewSelection(notNaNProc));
             mtc.correct(adjpvalues.viewRow(2).viewSelection(notNaNProc));
 
-            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++)
-            {
+            for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
                 CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
-                if (r != null)
-                {
+                if (r != null) {
                     r.setCorrLeftPvalue(adjpvalues.getQuick(0, moduleIdx));
                     r.setCorrRightPvalue(adjpvalues.getQuick(1, moduleIdx));
                     r.setCorrTwoTailPvalue(adjpvalues.getQuick(2, moduleIdx));

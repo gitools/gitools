@@ -40,8 +40,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class WekaHCLMethod extends AbstractClusteringValueMethod
-{
+public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
     private SelectedTag linkType;
 
@@ -53,26 +52,22 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
 
     private NormalizableDistance distanceFunction;
 
-    public WekaHCLMethod()
-    {
+    public WekaHCLMethod() {
         classIndex = -1;
     }
 
     @Nullable
     @Override
-    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
-    {
+    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException {
 
-        try
-        {
+        try {
             Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
 
             MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
             List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
 
-            if (preprocess)
-            {
+            if (preprocess) {
                 ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
             }
 
@@ -84,8 +79,7 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
 
             ClusteringResults results = null;
 
-            if (!monitor.isCancelled())
-            {
+            if (!monitor.isCancelled()) {
 
                 monitor.end();
 
@@ -101,74 +95,59 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod
 
             return results;
 
-        } catch (Throwable ex)
-        {
-            if (ex instanceof OutOfMemoryError)
-            {
+        } catch (Throwable ex) {
+            if (ex instanceof OutOfMemoryError) {
                 throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
-            }
-            else
-            {
+            } else {
                 throw new ClusteringException(ex);
             }
         }
     }
 
-    public NormalizableDistance getDistanceFunction()
-    {
+    public NormalizableDistance getDistanceFunction() {
         return distanceFunction;
     }
 
-    public void setDistanceFunction(NormalizableDistance distanceFunction)
-    {
+    public void setDistanceFunction(NormalizableDistance distanceFunction) {
         this.distanceFunction = distanceFunction;
     }
 
-    public boolean isDistanceIsBranchLength()
-    {
+    public boolean isDistanceIsBranchLength() {
         return distanceIsBranchLength;
     }
 
-    public void setDistanceIsBranchLength(boolean distanceIsBranchLength)
-    {
+    public void setDistanceIsBranchLength(boolean distanceIsBranchLength) {
         this.distanceIsBranchLength = distanceIsBranchLength;
     }
 
-    public SelectedTag getLinkType()
-    {
+    public SelectedTag getLinkType() {
         return linkType;
     }
 
-    public void setLinkType(SelectedTag linkType)
-    {
+    public void setLinkType(SelectedTag linkType) {
         this.linkType = linkType;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public int getNumClusters()
-    {
+    public int getNumClusters() {
         return numClusters;
     }
 
-    public void setNumClusters(int numClusters)
-    {
+    public void setNumClusters(int numClusters) {
         this.numClusters = numClusters;
     }
 
-    public boolean isPrintNewick()
-    {
+    public boolean isPrintNewick() {
         return printNewick;
     }
 
-    public void setPrintNewick(boolean printNewick)
-    {
+    public void setPrintNewick(boolean printNewick) {
         this.printNewick = printNewick;
     }
 
-    private void configure(@NotNull WekaHierarchicalClusterer clusterer)
-    {
+    private void configure(@NotNull WekaHierarchicalClusterer clusterer) {
 
         clusterer.setDistanceFunction(distanceFunction);
 

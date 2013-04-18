@@ -32,25 +32,21 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class SpearmanCorrelationMethod extends AbstractMethod implements CorrelationMethod
-{
+public class SpearmanCorrelationMethod extends AbstractMethod implements CorrelationMethod {
 
     public static final String ID = "spearman";
 
-    public SpearmanCorrelationMethod()
-    {
+    public SpearmanCorrelationMethod() {
         this(new Properties());
     }
 
-    private SpearmanCorrelationMethod(Properties properties)
-    {
+    private SpearmanCorrelationMethod(Properties properties) {
         super(ID, "Spearman's rank correlation", "Spearman's rank correlation", CorrelationResult.class, properties);
     }
 
     @Nullable
     @Override
-    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException
-    {
+    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
         /*RealMatrix data = new Array2DRowRealMatrix(new double[][] {x, y});
 
 		CorrelationResult result = new CorrelationResult();

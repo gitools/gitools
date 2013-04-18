@@ -24,8 +24,7 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
-class FileActions
-{
+class FileActions {
 
     // New
     public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();

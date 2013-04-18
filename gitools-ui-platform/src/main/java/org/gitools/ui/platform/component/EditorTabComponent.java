@@ -38,8 +38,7 @@ import java.awt.event.*;
  * Contains a JLabel to show the text and
  * a JButton to close the tab it belongs to
  */
-public class EditorTabComponent extends JPanel
-{
+public class EditorTabComponent extends JPanel {
 
     private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
@@ -50,23 +49,19 @@ public class EditorTabComponent extends JPanel
     @NotNull
     private final JLabel label;
 
-    public EditorTabComponent(EditorsPanel editorPanel, @NotNull AbstractEditor editor)
-    {
+    public EditorTabComponent(EditorsPanel editorPanel, @NotNull AbstractEditor editor) {
 
         this.editorPanel = editorPanel;
         this.editor = editor;
 
-        editor.addEditorListener(new AbstractEditor.EditorListener()
-        {
+        editor.addEditorListener(new AbstractEditor.EditorListener() {
             @Override
-            public void dirtyChanged(IEditor editor)
-            {
+            public void dirtyChanged(IEditor editor) {
                 updateLabel();
             }
 
             @Override
-            public void nameChanged(IEditor editor)
-            {
+            public void nameChanged(IEditor editor) {
                 updateLabel();
             }
         });
@@ -76,11 +71,9 @@ public class EditorTabComponent extends JPanel
         label = new JLabel();
         label.setOpaque(false);
         label.setFocusable(false);
-        label.addMouseListener(new MouseAdapter()
-        {
+        label.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e)
-            {
+            public void mousePressed(MouseEvent e) {
                 EditorTabComponent.this.editorPanel.setSelectedEditor(EditorTabComponent.this.editor);
             }
         });
@@ -101,14 +94,10 @@ public class EditorTabComponent extends JPanel
         setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
 
-    private void updateLabel()
-    {
-        if (editor.isDirty())
-        {
+    private void updateLabel() {
+        if (editor.isDirty()) {
             label.setFont(label.getFont().deriveFont(Font.BOLD));
-        }
-        else
-        {
+        } else {
             label.setFont(label.getFont().deriveFont(Font.PLAIN));
         }
 
@@ -119,8 +108,7 @@ public class EditorTabComponent extends JPanel
         String newname;
 
         int i = name.lastIndexOf('.');
-        if (i > 0)
-        {
+        if (i > 0) {
             extension = "." + name.substring(i + 1);
             filename = name.substring(0, name.lastIndexOf('.'));
         }
@@ -137,24 +125,20 @@ public class EditorTabComponent extends JPanel
         //TODO: ADD ICON heatmap or analysis
 
         String toolTip = null;
-        if (editor.getFile() != null)
-        {
+        if (editor.getFile() != null) {
             toolTip = editor.getFile().getAbsolutePath();
         }
         label.setToolTipText(toolTip);
     }
 
     @NotNull
-    public AbstractEditor getEditor()
-    {
+    public AbstractEditor getEditor() {
         return editor;
     }
 
-    private class TabButton extends JButton implements ActionListener
-    {
+    private class TabButton extends JButton implements ActionListener {
 
-        public TabButton()
-        {
+        public TabButton() {
             int size = 18;
             setPreferredSize(new Dimension(size, size));
             setToolTipText("Close this editor");
@@ -175,32 +159,27 @@ public class EditorTabComponent extends JPanel
         }
 
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             editorPanel.removeEditor(editor);
         }
 
         //we don't want to update UI for this button
         @Override
-        public void updateUI()
-        {
+        public void updateUI() {
         }
 
         //paint the cross
         @Override
-        protected void paintComponent(@NotNull Graphics g)
-        {
+        protected void paintComponent(@NotNull Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
             //shift the image for pressed buttons
-            if (getModel().isPressed())
-            {
+            if (getModel().isPressed()) {
                 g2.translate(1, 1);
             }
             g2.setStroke(new BasicStroke(2));
             g2.setColor(Color.BLACK);
-            if (getModel().isRollover())
-            {
+            if (getModel().isRollover()) {
                 g2.setColor(Color.MAGENTA);
             }
             int delta = 6;
@@ -210,32 +189,26 @@ public class EditorTabComponent extends JPanel
         }
     }
 
-    private final static MouseListener buttonMouseListener = new MouseAdapter()
-    {
+    private final static MouseListener buttonMouseListener = new MouseAdapter() {
 
         @Override
-        public void mouseEntered(@NotNull MouseEvent e)
-        {
+        public void mouseEntered(@NotNull MouseEvent e) {
             Component component = e.getComponent();
-            if (component instanceof AbstractButton)
-            {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(true);
             }
         }
 
         @Override
-        public void mouseExited(@NotNull MouseEvent e)
-        {
+        public void mouseExited(@NotNull MouseEvent e) {
             Component component = e.getComponent();
-            if (component instanceof AbstractButton)
-            {
+            if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
                 button.setBorderPainted(false);
             }
         }
     };
-
 
 
 }

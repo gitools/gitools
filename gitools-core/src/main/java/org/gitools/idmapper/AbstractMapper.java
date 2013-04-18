@@ -27,56 +27,47 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractMapper implements Mapper
-{
+public abstract class AbstractMapper implements Mapper {
 
     private final String name;
     private final boolean bidirectional;
     private final boolean generator;
 
-    protected AbstractMapper(String name, boolean bidirectional, boolean generator)
-    {
+    protected AbstractMapper(String name, boolean bidirectional, boolean generator) {
         this.name = name;
         this.bidirectional = bidirectional;
         this.generator = generator;
     }
 
-    public AbstractMapper(String name)
-    {
+    public AbstractMapper(String name) {
         this(name, false, false);
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public boolean isBidirectional()
-    {
+    public boolean isBidirectional() {
         return bidirectional;
     }
 
     @Override
-    public boolean isGenerator()
-    {
+    public boolean isGenerator() {
         return generator;
     }
 
     @Override
-    public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException
-    {
+    public void initialize(MappingContext context, IProgressMonitor monitor) throws MappingException {
     }
 
     @Override
-    public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException
-    {
+    public void finalize(MappingContext context, IProgressMonitor monitor) throws MappingException {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 }

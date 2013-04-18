@@ -24,16 +24,13 @@ package org.gitools.intogen;
 /**
  * @noinspection ALL
  */
-public class IntogenServiceException extends Exception
-{
+public class IntogenServiceException extends Exception {
 
-    public IntogenServiceException(String message)
-    {
+    public IntogenServiceException(String message) {
         super(message);
     }
 
-    public IntogenServiceException(Throwable cause)
-    {
+    public IntogenServiceException(Throwable cause) {
         super(cause);
     }
 }

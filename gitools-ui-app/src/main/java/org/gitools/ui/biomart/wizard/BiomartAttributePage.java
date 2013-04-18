@@ -45,8 +45,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartAttributePage extends FilteredTreePage
-{
+public class BiomartAttributePage extends FilteredTreePage {
 
     @Nullable
     private MartLocation mart;
@@ -65,8 +64,7 @@ public class BiomartAttributePage extends FilteredTreePage
 
     private Boolean reloadData; //determine whether update panel data
 
-    public BiomartAttributePage()
-    {
+    public BiomartAttributePage() {
         super();
 
         this.mart = null;
@@ -76,17 +74,14 @@ public class BiomartAttributePage extends FilteredTreePage
     }
 
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         JComponent component = super.createControls();
         panel.tree.setRootVisible(false);
         panel.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        panel.tree.addTreeSelectionListener(new TreeSelectionListener()
-        {
+        panel.tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
-            public void valueChanged(TreeSelectionEvent e)
-            {
+            public void valueChanged(TreeSelectionEvent e) {
                 selectionChanged();
             }
         });
@@ -95,22 +90,17 @@ public class BiomartAttributePage extends FilteredTreePage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
 
         setComplete(false);
 
         panel.setModel(new AttributesTreeModel(new ArrayList<AttributePage>(0)));
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
-                    if (attrPages == null || reloadData)
-                    {
+            public void run() {
+                try {
+                    if (attrPages == null || reloadData) {
                         setStatus(MessageStatus.PROGRESS);
                         setMessage("Retrieving available attributes ...");
 
@@ -121,11 +111,9 @@ public class BiomartAttributePage extends FilteredTreePage
 
                     final AttributesTreeModel model = new AttributesTreeModel(attrPages);
 
-                    SwingUtilities.invokeAndWait(new Runnable()
-                    {
+                    SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             FilteredTreePanel p = getPanel();
                             p.setModel(model);
                             p.expandAll();
@@ -133,13 +121,10 @@ public class BiomartAttributePage extends FilteredTreePage
                         }
                     });
 
-                } catch (@NotNull final Throwable cause)
-                {
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                } catch (@NotNull final Throwable cause) {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             setStatus(MessageStatus.ERROR);
                             setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
                             ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), cause);
@@ -151,18 +136,15 @@ public class BiomartAttributePage extends FilteredTreePage
         }).start();
     }
 
-    private void selectionChanged()
-    {
+    private void selectionChanged() {
         final DefaultMutableTreeNode node = (DefaultMutableTreeNode) panel.tree.getLastSelectedPathComponent();
 
         boolean complete = false;
 
-        if (node != null && (node.getUserObject() instanceof AttributeWrapper))
-        {
+        if (node != null && (node.getUserObject() instanceof AttributeWrapper)) {
             AttributeWrapper aw = (AttributeWrapper) node.getUserObject();
             complete = aw.getType() == AttributeWrapper.NodeType.ATTRIBUTE;
-            if (complete)
-            {
+            if (complete) {
                 attribute = (AttributeDescription) aw.getObject();
             }
         }
@@ -170,15 +152,11 @@ public class BiomartAttributePage extends FilteredTreePage
         setComplete(complete);
     }
 
-    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo dataset)
-    {
+    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo dataset) {
 
-        if (this.dataset != null && this.dataset.getName().equals(dataset.getName()))
-        {
+        if (this.dataset != null && this.dataset.getName().equals(dataset.getName())) {
             reloadData = false;
-        }
-        else
-        {
+        } else {
             reloadData = true;
         }
 
@@ -187,32 +165,27 @@ public class BiomartAttributePage extends FilteredTreePage
         this.dataset = dataset;
     }
 
-    public synchronized void setAttributePages(List<AttributePage> attrPages)
-    {
+    public synchronized void setAttributePages(List<AttributePage> attrPages) {
         this.attrPages = attrPages;
         reloadData = false;
     }
 
     @Nullable
-    public synchronized List<AttributePage> getAttributePages()
-    {
+    public synchronized List<AttributePage> getAttributePages() {
         return attrPages;
     }
 
-    public AttributeDescription getAttribute()
-    {
+    public AttributeDescription getAttribute() {
         return attribute;
     }
 
     @Nullable
     @Override
-    protected TreeModel createModel(String filterText)
-    {
+    protected TreeModel createModel(String filterText) {
         return new AttributesTreeModel(attrPages, filterText);
     }
 
-    public DatasetConfig getBiomartConfig()
-    {
+    public DatasetConfig getBiomartConfig() {
         return biomartConfig;
     }
 }

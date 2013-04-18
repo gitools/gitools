@@ -23,13 +23,11 @@ package org.gitools.label;
 
 import org.gitools.matrix.model.IMatrix;
 
-abstract class MatrixLabelProvider implements LabelProvider
-{
+abstract class MatrixLabelProvider implements LabelProvider {
 
     final IMatrix matrix;
 
-    MatrixLabelProvider(IMatrix m)
-    {
+    MatrixLabelProvider(IMatrix m) {
         this.matrix = m;
     }
 }

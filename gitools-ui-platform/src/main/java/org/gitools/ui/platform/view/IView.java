@@ -28,8 +28,7 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public interface IView
-{
+public interface IView {
 
     String getName();
 

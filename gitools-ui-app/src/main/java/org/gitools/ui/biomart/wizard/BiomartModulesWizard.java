@@ -36,8 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
-public class BiomartModulesWizard extends AbstractWizard
-{
+public class BiomartModulesWizard extends AbstractWizard {
 
     private BiomartAttributePage modulesAttributePage;
 
@@ -63,8 +62,7 @@ public class BiomartModulesWizard extends AbstractWizard
     @NotNull
     private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), true, false), new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", true, false)};
 
-    public BiomartModulesWizard()
-    {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
+    public BiomartModulesWizard() {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
 
         setTitle("Import modules...");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
@@ -72,8 +70,7 @@ public class BiomartModulesWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
 
         // Source
         sourcePage = new BiomartSourcePage();
@@ -105,18 +102,15 @@ public class BiomartModulesWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         Settings.getDefault().setLastMapPath(saveFilePage.getFolder());
         Settings.getDefault().save();
     }
 
     @Override
-    public IWizardPage getNextPage(IWizardPage page)
-    {
+    public IWizardPage getNextPage(IWizardPage page) {
 
-        if (page == sourcePage)
-        {
+        if (page == sourcePage) {
 
             biomartService = sourcePage.getBiomartService();
             Database = sourcePage.getDataBase();
@@ -124,15 +118,10 @@ public class BiomartModulesWizard extends AbstractWizard
 
             modulesAttributePage.setSource(biomartService, Database, Dataset);
 
-        }
-        else if (page == modulesAttributePage)
-        {
+        } else if (page == modulesAttributePage) {
 
             dataAttributePage.setAttributePages(modulesAttributePage.getAttributePages());
-        }
-
-        else if (page == dataAttributePage)
-        {
+        } else if (page == dataAttributePage) {
             //filterListPage.setSource(biomartService, Dataset);
             biomartConfig = modulesAttributePage.getBiomartConfig();
             filterListPage.setSource(biomartService, biomartConfig);
@@ -141,14 +130,12 @@ public class BiomartModulesWizard extends AbstractWizard
         return super.getNextPage(page);
     }
 
-    public File getSelectedFile()
-    {
+    public File getSelectedFile() {
         return saveFilePage.getPathAsFile();
     }
 
     @NotNull
-    public Query getQuery()
-    {
+    public Query getQuery() {
         MartLocation mart = getDatabase();
 
         int header = 0;
@@ -195,23 +182,19 @@ public class BiomartModulesWizard extends AbstractWizard
         return query;
     }
 
-    public FileFormat getFormat()
-    {
+    public FileFormat getFormat() {
         return saveFilePage.getFormat();
     }
 
-    MartLocation getDatabase()
-    {
+    MartLocation getDatabase() {
         return Database;
     }
 
-    DatasetInfo getDataset()
-    {
+    DatasetInfo getDataset() {
         return Dataset;
     }
 
-    public BiomartService getService()
-    {
+    public BiomartService getService() {
         return biomartService;
     }
 }

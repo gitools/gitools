@@ -24,27 +24,22 @@ package org.gitools.datafilters;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class IntegerTranslator implements ValueTranslator<Integer>
-{
+public class IntegerTranslator implements ValueTranslator<Integer> {
 
     @Nullable
     @Override
-    public Integer stringToValue(String str)
-    {
+    public Integer stringToValue(String str) {
         Integer value = null;
-        try
-        {
+        try {
             value = Integer.parseInt(str);
-        } catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
         }
         return value;
     }
 
     @NotNull
     @Override
-    public String valueToString(@Nullable Integer value)
-    {
+    public String valueToString(@Nullable Integer value) {
         return value != null ? value.toString() : "";
     }
 

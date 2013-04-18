@@ -25,13 +25,14 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ColoredLabel
-{
+public class ColoredLabel {
 
+    @XmlElement(name = "displayed-label")
     private String displayedLabel;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
@@ -39,82 +40,68 @@ public class ColoredLabel
 
     private String value;
 
-    public ColoredLabel()
-    {
+    public ColoredLabel() {
         displayedLabel = "";
         color = Color.WHITE;
         value = "";
     }
 
-    public ColoredLabel(String value, Color color)
-    {
+    public ColoredLabel(String value, Color color) {
         this(value, value, color);
     }
 
-    private ColoredLabel(String value, String displayedLabel, Color color)
-    {
+    private ColoredLabel(String value, String displayedLabel, Color color) {
         this.displayedLabel = displayedLabel;
         this.value = value;
         this.color = color;
     }
 
-    public ColoredLabel(int value, String displayedLabel, Color color)
-    {
+    public ColoredLabel(int value, String displayedLabel, Color color) {
         this.displayedLabel = displayedLabel;
         setValue(value);
         this.color = color;
     }
 
-    public ColoredLabel(double value, String displayedLabel, Color color)
-    {
+    public ColoredLabel(double value, String displayedLabel, Color color) {
         this.displayedLabel = displayedLabel;
         setValue(value);
         this.color = color;
     }
 
-    public String getDisplayedLabel()
-    {
+    public String getDisplayedLabel() {
         return displayedLabel;
     }
 
-    public void setDisplayedLabel(String displayedLabel)
-    {
+    public void setDisplayedLabel(String displayedLabel) {
         this.displayedLabel = displayedLabel;
     }
 
-    public Color getColor()
-    {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    void setValue(double value)
-    {
+    void setValue(double value) {
         this.value = Double.toString(value);
     }
 
-    void setValue(int value)
-    {
+    void setValue(int value) {
         this.value = Integer.toString(value);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return displayedLabel;
     }
 }

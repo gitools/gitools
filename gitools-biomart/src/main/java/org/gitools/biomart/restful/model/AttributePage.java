@@ -33,8 +33,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AttributePage
-{
+public class AttributePage {
 
     @XmlAttribute
     private String outFormats;
@@ -60,83 +59,67 @@ public class AttributePage
     @XmlElement(name = "AttributeGroup")
     private List<AttributeGroup> attributeGroups = new ArrayList<AttributeGroup>();
 
-    public List<AttributeGroup> getAttributeGroups()
-    {
+    public List<AttributeGroup> getAttributeGroups() {
         return attributeGroups;
     }
 
-    public void setAttributeGroups(List<AttributeGroup> attributeGroups)
-    {
+    public void setAttributeGroups(List<AttributeGroup> attributeGroups) {
         this.attributeGroups = attributeGroups;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public int getMaxSelect()
-    {
+    public int getMaxSelect() {
         return maxSelect;
     }
 
-    public void setMaxSelect(int maxSelect)
-    {
+    public void setMaxSelect(int maxSelect) {
         this.maxSelect = maxSelect;
     }
 
-    public String getOutFormats()
-    {
+    public String getOutFormats() {
         return outFormats;
     }
 
-    public void setOutFormats(String outFormats)
-    {
+    public void setOutFormats(String outFormats) {
         this.outFormats = outFormats;
     }
 

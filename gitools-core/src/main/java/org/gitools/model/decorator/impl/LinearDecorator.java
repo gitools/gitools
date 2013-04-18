@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
-{
+public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
 
     public static final String PROPERTY_MIN_COLOR = "minColor";
     public static final String PROPERTY_MID_COLOR = "midColor";
@@ -51,61 +50,51 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
 
     private LinearTwoSidedColorScale scale;
 
-    public LinearDecorator()
-    {
+    public LinearDecorator() {
         this(new LinearTwoSidedColorScale());
     }
 
-    public LinearDecorator(LinearTwoSidedColorScale scale)
-    {
-       super();
+    public LinearDecorator(LinearTwoSidedColorScale scale) {
+        super();
         this.scale = scale;
     }
 
-    public LinearTwoSidedColorScale getScale()
-    {
+    public LinearTwoSidedColorScale getScale() {
         return scale;
     }
 
-    public void setScale(LinearTwoSidedColorScale scale)
-    {
+    public void setScale(LinearTwoSidedColorScale scale) {
         this.scale = scale;
     }
 
     @XmlElement(name = "min-value")
-    public final double getMinValue()
-    {
+    public final double getMinValue() {
         return getScale().getMin().getValue();
     }
 
-    public final void setMinValue(double minValue)
-    {
+    public final void setMinValue(double minValue) {
         double old = getScale().getMin().getValue();
         getScale().getMin().setValue(minValue);
         firePropertyChange(PROPERTY_MIN_VALUE, old, minValue);
     }
 
     @XmlElement(name = "mid-value")
-    public final double getMidValue()
-    {
+    public final double getMidValue() {
         return getScale().getMid().getValue();
     }
 
-    public final void setMidValue(double midValue)
-    {
+    public final void setMidValue(double midValue) {
         double old = getScale().getMid().getValue();
         getScale().getMid().setValue(midValue);
         firePropertyChange(PROPERTY_MID_VALUE, old, midValue);
     }
 
     @XmlElement(name = "max-value")
-    public final double getMaxValue()
-    {
+    public final double getMaxValue() {
         return getScale().getMax().getValue();
     }
 
-    public final void setMaxValue(double maxValue)
-    {
+    public final void setMaxValue(double maxValue) {
         double old = getScale().getMax().getValue();
         getScale().getMax().setValue(maxValue);
         firePropertyChange(PROPERTY_MAX_VALUE, old, maxValue);
@@ -113,13 +102,11 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
 
     @XmlElement(name = "min-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public final Color getMinColor()
-    {
+    public final Color getMinColor() {
         return getScale().getMin().getColor();
     }
 
-    public final void setMinColor(Color minColor)
-    {
+    public final void setMinColor(Color minColor) {
         Color old = getScale().getMin().getColor();
         getScale().getMin().setColor(minColor);
         firePropertyChange(PROPERTY_MIN_COLOR, old, minColor);
@@ -127,13 +114,11 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
 
     @XmlElement(name = "mid-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public final Color getMidColor()
-    {
+    public final Color getMidColor() {
         return getScale().getMid().getColor();
     }
 
-    public final void setMidColor(Color midColor)
-    {
+    public final void setMidColor(Color midColor) {
         Color old = getScale().getMid().getColor();
         getScale().getMid().setColor(midColor);
         firePropertyChange(PROPERTY_MID_COLOR, old, midColor);
@@ -141,13 +126,11 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
 
     @XmlElement(name = "max-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public final Color getMaxColor()
-    {
+    public final Color getMaxColor() {
         return getScale().getMax().getColor();
     }
 
-    public final void setMaxColor(Color maxColor)
-    {
+    public final void setMaxColor(Color maxColor) {
         Color old = getScale().getMax().getColor();
         getScale().getMax().setColor(maxColor);
         firePropertyChange(PROPERTY_MAX_COLOR, old, maxColor);
@@ -155,26 +138,22 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale>
 
     @XmlElement(name = "empty-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getEmptyColor()
-    {
+    public Color getEmptyColor() {
         return getScale().getEmptyColor();
     }
 
-    public void setEmptyColor(Color color)
-    {
+    public void setEmptyColor(Color color) {
         Color old = getScale().getEmptyColor();
         getScale().setEmptyColor(color);
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
-    public void decorate(@NotNull Decoration decoration,  IMatrix matrix, int row, int column, int layer)
-    {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
         decoration.reset();
 
         double v = toDouble(matrix, row, column, layer);
 
-        if (Double.isNaN(v))
-        {
+        if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;

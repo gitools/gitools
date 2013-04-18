@@ -25,32 +25,27 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public abstract class AbstractView extends JPanel implements IView
-{
+public abstract class AbstractView extends JPanel implements IView {
 
     private Icon icon;
 
     @Override
-    public Icon getIcon()
-    {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(Icon icon)
-    {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
     @NotNull
     @Override
-    public JPanel getPanel()
-    {
+    public JPanel getPanel() {
         return this;
     }
 
     @Override
-    public void refresh()
-    {
+    public void refresh() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

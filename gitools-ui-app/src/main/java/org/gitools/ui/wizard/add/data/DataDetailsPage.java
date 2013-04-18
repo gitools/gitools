@@ -29,15 +29,13 @@ import org.gitools.ui.utils.DocumentChangeListener;
 
 import javax.swing.event.DocumentEvent;
 
-public class DataDetailsPage extends AbstractWizardPage
-{
+public class DataDetailsPage extends AbstractWizardPage {
 
     private final Heatmap hm;
     private String dimensionName;
     private final String message;
 
-    public DataDetailsPage(Heatmap hm)
-    {
+    public DataDetailsPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
@@ -47,54 +45,44 @@ public class DataDetailsPage extends AbstractWizardPage
         this.message = "Choose a name for the new data value dimension";
         setMessage(message);
 
-        nameField.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        nameField.getDocument().addDocumentListener(new DocumentChangeListener() {
 
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 nameChanged();
             }
         });
     }
 
 
-    private void nameChanged()
-    {
-        if (nameField.getText().length() > 0)
-        {
+    private void nameChanged() {
+        if (nameField.getText().length() > 0) {
 
             boolean everythingIsOk = true;
             String existingName;
             String originalWantedName = nameField.getText();
             String wantedName = originalWantedName.toLowerCase().trim();
-            for (IMatrixLayer iElementAttribute : hm.getLayers())
-            {
+            for (IMatrixLayer iElementAttribute : hm.getLayers()) {
                 existingName = iElementAttribute.getName().toLowerCase();
-                if (existingName.equals(wantedName))
-                {
+                if (existingName.equals(wantedName)) {
                     setMessage(MessageStatus.ERROR, "Data dimension with name '" + originalWantedName + "' already exists");
                     everythingIsOk = false;
                     break;
                 }
             }
 
-            if (everythingIsOk)
-            {
+            if (everythingIsOk) {
                 setComplete(true);
                 setMessage(MessageStatus.INFO, message);
                 dimensionName = nameField.getText();
             }
-        }
-        else
-        {
+        } else {
             setComplete(false);
             dimensionName = "";
         }
     }
 
-    public String getDimensionName()
-    {
+    public String getDimensionName() {
         return dimensionName;
     }
 
@@ -106,8 +94,7 @@ public class DataDetailsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();

@@ -27,8 +27,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @noinspection ALL
  */
-public class ColumnGroup
-{
+public class ColumnGroup {
 
     private String name = "";
     private int[] columns = new int[0];
@@ -36,13 +35,11 @@ public class ColumnGroup
     private BinaryCutoff binaryCutoff = null;
     private int cutoffAttributeIndex = -1;
 
-    public ColumnGroup(String string)
-    {
+    public ColumnGroup(String string) {
         this.name = string;
     }
 
-    public ColumnGroup(String name, int[] columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex)
-    {
+    public ColumnGroup(String name, int[] columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
         this.name = name;
         this.columns = columns;
         this.binaryCutoff = binaryCutoff;
@@ -50,43 +47,35 @@ public class ColumnGroup
     }
 
     @Nullable
-    public BinaryCutoff getBinaryCutoff()
-    {
+    public BinaryCutoff getBinaryCutoff() {
         return binaryCutoff;
     }
 
-    public void setBinaryCutoff(BinaryCutoff binaryCutoff)
-    {
+    public void setBinaryCutoff(BinaryCutoff binaryCutoff) {
         this.binaryCutoff = binaryCutoff;
     }
 
-    public int getCutoffAttributeIndex()
-    {
+    public int getCutoffAttributeIndex() {
         return cutoffAttributeIndex;
     }
 
-    public void setCutoffAttributeIndex(int cutoffAttributeIndex)
-    {
+    public void setCutoffAttributeIndex(int cutoffAttributeIndex) {
         this.cutoffAttributeIndex = cutoffAttributeIndex;
     }
 
-    public int[] getColumns()
-    {
+    public int[] getColumns() {
         return columns;
     }
 
-    public void setColumns(int[] columns)
-    {
+    public void setColumns(int[] columns) {
         this.columns = columns;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 

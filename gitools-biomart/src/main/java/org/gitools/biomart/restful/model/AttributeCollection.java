@@ -34,8 +34,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public class AttributeCollection
-{
+public class AttributeCollection {
 
     @XmlAttribute
     private int maxSelect;
@@ -61,83 +60,67 @@ public class AttributeCollection
     @XmlElement(name = "AttributeDescription")
     private List<AttributeDescription> attributeDescriptions = new ArrayList<AttributeDescription>();
 
-    public List<AttributeDescription> getAttributeDescriptions()
-    {
+    public List<AttributeDescription> getAttributeDescriptions() {
         return attributeDescriptions;
     }
 
-    public void setAttributeDescriptions(List<AttributeDescription> attributeDescriptions)
-    {
+    public void setAttributeDescriptions(List<AttributeDescription> attributeDescriptions) {
         this.attributeDescriptions = attributeDescriptions;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getEnableSelectAll()
-    {
+    public String getEnableSelectAll() {
         return enableSelectAll;
     }
 
-    public void setEnableSelectAll(String enableSelectAll)
-    {
+    public void setEnableSelectAll(String enableSelectAll) {
         this.enableSelectAll = enableSelectAll;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public int getMaxSelect()
-    {
+    public int getMaxSelect() {
         return maxSelect;
     }
 
-    public void setMaxSelect(int maxSelect)
-    {
+    public void setMaxSelect(int maxSelect) {
         this.maxSelect = maxSelect;
     }
 }

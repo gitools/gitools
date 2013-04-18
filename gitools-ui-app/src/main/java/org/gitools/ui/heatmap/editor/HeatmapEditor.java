@@ -41,6 +41,7 @@ import org.gitools.persistence._DEPRECATED.FileFormat;
 import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.heatmap.panel.details.AbstractDetailsPanel;
@@ -55,7 +56,6 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
-import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,8 +65,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-public class HeatmapEditor extends AbstractEditor
-{
+public class HeatmapEditor extends AbstractEditor {
     private static final int DEFAULT_ACCORDION_WIDTH = 290;
     protected final Heatmap heatmap;
     private HeatmapPanel heatmapPanel;
@@ -76,8 +75,7 @@ public class HeatmapEditor extends AbstractEditor
     private int lastMouseRow = -1;
     private int lastMouseCol = -1;
 
-    public HeatmapEditor(@NotNull Heatmap heatmap)
-    {
+    public HeatmapEditor(@NotNull Heatmap heatmap) {
 
         // Initialize and create heatmap model
         heatmap.init();
@@ -93,8 +91,7 @@ public class HeatmapEditor extends AbstractEditor
     }
 
 
-    private void createComponents(@NotNull JComponent container)
-    {
+    private void createComponents(@NotNull JComponent container) {
 
         WebAccordion leftPanel = new WebAccordion(WebAccordionStyle.accordionStyle);
         leftPanel.setMultiplySelectionAllowed(false);
@@ -114,17 +111,14 @@ public class HeatmapEditor extends AbstractEditor
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
-        heatmapPanel.addHeatmapMouseListener(new HeatmapMouseListener()
-        {
+        heatmapPanel.addHeatmapMouseListener(new HeatmapMouseListener() {
             @Override
-            public void mouseMoved(int row, int col, MouseEvent e)
-            {
+            public void mouseMoved(int row, int col, MouseEvent e) {
                 HeatmapEditor.this.mouseMoved(row, col, e);
             }
 
             @Override
-            public void mouseClicked(int row, int col, MouseEvent e)
-            {
+            public void mouseClicked(int row, int col, MouseEvent e) {
                 HeatmapEditor.this.mouseClicked(row, col, e);
             }
         });
@@ -149,28 +143,23 @@ public class HeatmapEditor extends AbstractEditor
     }
 
     @Override
-    public IResource getModel()
-    {
+    public IResource getModel() {
         return heatmap;
     }
 
     @Override
-    public void refresh()
-    {
+    public void refresh() {
     }
 
     @Override
-    public void doVisible()
-    {
+    public void doVisible() {
         heatmapPanel.requestFocusInWindow();
     }
 
     @Override
-    public void doSave(@NotNull IProgressMonitor monitor)
-    {
+    public void doSave(@NotNull IProgressMonitor monitor) {
         File file = getFile();
-        if (file == null)
-        {
+        if (file == null) {
             SaveFileWizard wiz = SaveFileWizard.createSimple(
                     "Save heatmap",
                     getName(),
@@ -182,8 +171,7 @@ public class HeatmapEditor extends AbstractEditor
 
             WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
             dlg.setVisible(true);
-            if (dlg.isCancelled())
-            {
+            if (dlg.isCancelled()) {
                 return;
             }
 
@@ -193,11 +181,9 @@ public class HeatmapEditor extends AbstractEditor
             setFile(file);
         }
 
-        try
-        {
+        try {
             PersistenceManager.get().store(new UrlResourceLocator(file), getModel(), monitor);
-        } catch (PersistenceException ex)
-        {
+        } catch (PersistenceException ex) {
             monitor.exception(ex);
         }
 
@@ -205,25 +191,19 @@ public class HeatmapEditor extends AbstractEditor
     }
 
     @Override
-    public boolean doClose()
-    {
-        if (isDirty())
-        {
+    public boolean doClose() {
+        if (isDirty()) {
             int res = JOptionPane.showOptionDialog(AppFrame.get(), "File " + getName() + " is modified.\n" +
                     "Save changes ?", "Close", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Cancel", "Discard", "Save"}, "Save");
 
-            if (res == -1 || res == 0)
-            {
+            if (res == -1 || res == 0) {
                 return false;
-            }
-            else if (res == 2)
-            {
+            } else if (res == 2) {
                 SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
                 dlg.setVisible(true);
-                if (dlg.isCancelled())
-                {
+                if (dlg.isCancelled()) {
                     return false;
                 }
 
@@ -231,11 +211,9 @@ public class HeatmapEditor extends AbstractEditor
 
                 setFile(wiz.getPathAsFile());
 
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
+                    public void run(@NotNull IProgressMonitor monitor) {
                         doSave(monitor);
                     }
                 });
@@ -248,16 +226,13 @@ public class HeatmapEditor extends AbstractEditor
         return true;
     }
 
-    public void showSearch(boolean searchColumns)
-    {
+    public void showSearch(boolean searchColumns) {
         searchPanel.searchOnColumns(searchColumns);
         searchPanel.setVisible(true);
     }
 
-    void mouseMoved(int row, int col, MouseEvent e)
-    {
-        if (lastMouseRow == row && lastMouseCol == col)
-        {
+    void mouseMoved(int row, int col, MouseEvent e) {
+        if (lastMouseRow == row && lastMouseCol == col) {
             return;
         }
 
@@ -268,24 +243,18 @@ public class HeatmapEditor extends AbstractEditor
 
         StringBuilder sb = new StringBuilder();
 
-        if (row != -1 && col == -1)
-        { // Row
+        if (row != -1 && col == -1) { // Row
             String label = mv.getRows().getLabel(row);
             sb.append(label);
             HeatmapDimension rowDim = heatmap.getRows();
             IAnnotations am = rowDim.getAnnotations();
-            if (am != null)
-            {
-                if (am.hasIdentifier(label))
-                {
+            if (am != null) {
+                if (am.hasIdentifier(label)) {
                     boolean first = true;
-                    for (HeatmapHeader header : rowDim.getHeaders())
-                    {
-                        if (header instanceof HeatmapTextLabelsHeader)
-                        {
+                    for (HeatmapHeader header : rowDim.getHeaders()) {
+                        if (header instanceof HeatmapTextLabelsHeader) {
                             String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
-                            if (annLabel == null || annLabel.isEmpty())
-                            {
+                            if (annLabel == null || annLabel.isEmpty()) {
                                 continue;
                             }
                             sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
@@ -294,25 +263,18 @@ public class HeatmapEditor extends AbstractEditor
                     }
                 }
             }
-        }
-        else if (row == -1 && col != -1)
-        { // Column
+        } else if (row == -1 && col != -1) { // Column
             String label = mv.getColumns().getLabel(col);
             sb.append(label);
             HeatmapDimension colDim = heatmap.getColumns();
             IAnnotations am = colDim.getAnnotations();
-            if (am != null)
-            {
-                if (am.hasIdentifier(label))
-                {
+            if (am != null) {
+                if (am.hasIdentifier(label)) {
                     boolean first = true;
-                    for (HeatmapHeader header : colDim.getHeaders())
-                    {
-                        if (header instanceof HeatmapTextLabelsHeader)
-                        {
+                    for (HeatmapHeader header : colDim.getHeaders()) {
+                        if (header instanceof HeatmapTextLabelsHeader) {
                             String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
-                            if (annLabel == null || annLabel.isEmpty())
-                            {
+                            if (annLabel == null || annLabel.isEmpty()) {
                                 continue;
                             }
                             sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
@@ -321,35 +283,29 @@ public class HeatmapEditor extends AbstractEditor
                     }
                 }
             }
-        }
-        else if (row != -1 && col != -1)
-        { // Cell
+        } else if (row != -1 && col != -1) { // Cell
             String rowLabel = mv.getRows().getLabel(row);
             String colLabel = mv.getColumns().getLabel(col);
             sb.append(colLabel).append(", ").append(rowLabel);
             IMatrixLayers attrs = mv.getLayers();
-            if (attrs.size() > 0)
-            {
+            if (attrs.size() > 0) {
                 sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getCellValue(row, col, 0));
                 for (int i = 1; i < attrs.size(); i++)
                     sb.append(", ").append(attrs.get(i).getName()).append(" = ").append(mv.getCellValue(row, col, i));
             }
         }
 
-        if (sb.length() > 0)
-        {
+        if (sb.length() > 0) {
             AppFrame.get().setStatusText(sb.toString());
         }
     }
 
-    void mouseClicked(int row, int col, MouseEvent e)
-    {
+    void mouseClicked(int row, int col, MouseEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         this.heatmap.detach();
     }
 }

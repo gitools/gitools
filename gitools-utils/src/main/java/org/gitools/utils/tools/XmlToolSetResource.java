@@ -33,68 +33,54 @@ import java.util.ArrayList;
 /**
  * @noinspection ALL
  */
-public class XmlToolSetResource
-{
+public class XmlToolSetResource {
 
     private final File file;
 
-    public XmlToolSetResource(File file)
-    {
+    public XmlToolSetResource(File file) {
         this.file = file;
     }
 
     @Nullable
-    public ToolSet load() throws ToolException
-    {
-        try
-        {
+    public ToolSet load() throws ToolException {
+        try {
             return load(new FileReader(file));
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
     }
 
-    public void save(ToolSet toolSet) throws ToolException
-    {
-        try
-        {
+    public void save(ToolSet toolSet) throws ToolException {
+        try {
             save(toolSet, new FileWriter(file));
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
     }
 
     @Nullable
-    public static ToolSet load(Reader reader) throws ToolException
-    {
+    public static ToolSet load(Reader reader) throws ToolException {
         ToolSet toolSet = null;
-        try
-        {
+        try {
             JAXBContext context = JAXBContext.newInstance(ToolSet.class, ToolDescriptor.class, ArrayList.class);
 
             Unmarshaller u = context.createUnmarshaller();
             toolSet = (ToolSet) u.unmarshal(reader);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
         return toolSet;
     }
 
-    private static void save(ToolSet toolSet, Writer writer) throws ToolException
-    {
-        try
-        {
+    private static void save(ToolSet toolSet, Writer writer) throws ToolException {
+        try {
             JAXBContext context = JAXBContext.newInstance(ToolSet.class);
 
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
             m.marshal(toolSet, writer);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
     }

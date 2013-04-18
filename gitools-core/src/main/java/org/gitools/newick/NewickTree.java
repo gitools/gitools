@@ -23,39 +23,37 @@ package org.gitools.newick;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NewickTree<VT>
-{
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+public class NewickTree<VT> {
 
     private NewickNode<VT> root;
 
-    public NewickTree()
-    {
+    public NewickTree() {
     }
 
-    public NewickNode<VT> getRoot()
-    {
+    public NewickNode<VT> getRoot() {
         return root;
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return root == null;
     }
 
-    public void setRoot(NewickNode<VT> root)
-    {
+    public void setRoot(NewickNode<VT> root) {
         this.root = root;
     }
 
-    public int getDepth()
-    {
+    public int getDepth() {
         return root.getMaxDepth(0);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return root.toString() + ";";
     }
 }

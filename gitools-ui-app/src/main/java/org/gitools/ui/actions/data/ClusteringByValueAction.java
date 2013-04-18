@@ -46,68 +46,54 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-public class ClusteringByValueAction extends BaseAction
-{
+public class ClusteringByValueAction extends BaseAction {
 
-    public ClusteringByValueAction()
-    {
+    public ClusteringByValueAction() {
         super("Clustering");
         setDesc("Cluster by values");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final Heatmap heatmap = ActionUtils.getHeatmap();
 
-        if (heatmap == null)
-        {
+        if (heatmap == null) {
             return;
         }
 
         final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wiz);
         wdlg.setVisible(true);
-        if (wdlg.isCancelled())
-        {
+        if (wdlg.isCancelled()) {
             return;
         }
 
         final ClusteringMethod method = wiz.getMethod();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Clustering  ...", 1);
 
                     ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
-                    if (wiz.isSortDataSelected())
-                    {
-                        if (wiz.isApplyToRows())
-                        {
-                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap  );
+                    if (wiz.isSortDataSelected()) {
+                        if (wiz.isApplyToRows()) {
+                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap);
                             ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
-                        }
-                        else
-                        {
-                            ClusterUtils.updateVisibility(heatmap  , results.getDataIndicesByClusterTitle());
+                        } else {
+                            ClusterUtils.updateVisibility(heatmap, results.getDataIndicesByClusterTitle());
                         }
                     }
 
-                    if (wiz.isNewickExportSelected())
-                    {
+                    if (wiz.isNewickExportSelected()) {
                         File path = wiz.getSaveFilePage().getPathAsFile();
                         BufferedWriter out = new BufferedWriter(new FileWriter(path));
                         out.write(((HierarchicalClusteringResults) results).getTree().toString());
@@ -115,8 +101,7 @@ public class ClusteringByValueAction extends BaseAction
                         out.close();
                     }
 
-                    if (wiz.isHeaderSelected())
-                    {
+                    if (wiz.isHeaderSelected()) {
                         boolean hcl = results instanceof HierarchicalClusteringResults;
 
                         HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
@@ -125,8 +110,7 @@ public class ClusteringByValueAction extends BaseAction
 
                         header.setTitle("Clustering: " + wiz.getMethodName());
 
-                        if (hcl)
-                        {
+                        if (hcl) {
                             HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;
                             HierarchicalClusteringResults hclResults = (HierarchicalClusteringResults) results;
 
@@ -137,19 +121,15 @@ public class ClusteringByValueAction extends BaseAction
 
                         header.updateFromClusterResults(results);
 
-                        if (wiz.isApplyToRows())
-                        {
+                        if (wiz.isApplyToRows()) {
                             heatmap.getRows().addHeader(header);
-                        }
-                        else
-                        {
+                        } else {
                             heatmap.getColumns().addHeader(header);
                         }
                     }
 
                     monitor.end();
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

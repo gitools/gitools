@@ -26,11 +26,9 @@ import org.gitools.model.decorator.impl.LinearDecorator;
 
 import java.util.ArrayList;
 
-public class DecoratorPanels extends ArrayList<DecoratorPanel>
-{
+public class DecoratorPanels extends ArrayList<DecoratorPanel> {
 
-    public DecoratorPanels()
-    {
+    public DecoratorPanels() {
         add(new PValueDecoratorPanel());
         add(new ZScoreDecoratorPanel());
         add(new BinaryDecoratorPanel());

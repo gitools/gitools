@@ -38,8 +38,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class SelectColumnsPage extends AbstractWizardPage
-{
+public class SelectColumnsPage extends AbstractWizardPage {
 
     private JPanel mainPanel;
     private JComboBox rowsCellsCombo;
@@ -55,28 +54,23 @@ public class SelectColumnsPage extends AbstractWizardPage
     private CheckListItem[] values;
 
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return mainPanel;
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
 
-        try
-        {
+        try {
             reader.init();
 
             final List<ExcelHeader> allHeaders = new ArrayList<ExcelHeader>();
             final List<ExcelHeader> numericHeaders = new ArrayList<ExcelHeader>();
 
-            for (ExcelHeader header : reader.getHeaders())
-            {
+            for (ExcelHeader header : reader.getHeaders()) {
 
                 int type = header.getType();
-                switch (type)
-                {
+                switch (type) {
                     case Cell.CELL_TYPE_FORMULA:
                     case Cell.CELL_TYPE_BOOLEAN:
                     case Cell.CELL_TYPE_NUMERIC:
@@ -87,8 +81,7 @@ public class SelectColumnsPage extends AbstractWizardPage
                 allHeaders.add(header);
             }
 
-            if (allHeaders.size() < 2 || numericHeaders.size() < 1)
-            {
+            if (allHeaders.size() < 2 || numericHeaders.size() < 1) {
                 throw new RuntimeException("At least we need three columns (two string and one numeric column) to create a matrix");
             }
 
@@ -107,10 +100,8 @@ public class SelectColumnsPage extends AbstractWizardPage
             valueCellsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
             // Add a mouse listener to handle changing selection
-            valueCellsList.addMouseListener(new MouseAdapter()
-            {
-                public void mouseClicked(@NotNull MouseEvent event)
-                {
+            valueCellsList.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(@NotNull MouseEvent event) {
                     JList list = (JList) event.getSource();
 
                     int index = list.locationToIndex(event.getPoint());
@@ -124,52 +115,40 @@ public class SelectColumnsPage extends AbstractWizardPage
 
             hideNonNumericHeadersCheckBox.setEnabled(true);
             hideNonNumericHeadersCheckBox.setSelected(true);
-            hideNonNumericHeadersCheckBox.addItemListener(new ItemListener()
-            {
+            hideNonNumericHeadersCheckBox.addItemListener(new ItemListener() {
                 @Override
-                public void itemStateChanged(ItemEvent e)
-                {
-                    if (hideNonNumericHeadersCheckBox.isSelected())
-                    {
+                public void itemStateChanged(ItemEvent e) {
+                    if (hideNonNumericHeadersCheckBox.isSelected()) {
                         createCheckListItems(numericHeaders);
-                    }
-                    else
-                    {
+                    } else {
                         createCheckListItems(allHeaders);
                     }
                     valueCellsList.setListData(values);
                 }
             });
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private void createCheckListItems(@NotNull List<ExcelHeader> headers)
-    {
+    private void createCheckListItems(@NotNull List<ExcelHeader> headers) {
         values = new CheckListItem[headers.size()];
-        for (int i = 0; i < headers.size(); i++)
-        {
+        for (int i = 0; i < headers.size(); i++) {
             values[i] = new CheckListItem(headers.get(i));
         }
     }
 
     @Override
-    public boolean isComplete()
-    {
+    public boolean isComplete() {
 
-        if (values == null)
-        {
+        if (values == null) {
             return false;
         }
 
-        for (CheckListItem value : values)
-        {
-            if (value.isSelected())
-            {
+        for (CheckListItem value : values) {
+            if (value.isSelected()) {
                 return true;
             }
         }
@@ -177,38 +156,31 @@ public class SelectColumnsPage extends AbstractWizardPage
         return false;
     }
 
-    public ExcelReader getReader()
-    {
+    public ExcelReader getReader() {
         return reader;
     }
 
-    public void setReader(ExcelReader reader)
-    {
+    public void setReader(ExcelReader reader) {
         this.reader = reader;
     }
 
-    public int getSelectedColumn()
-    {
+    public int getSelectedColumn() {
         ExcelHeader column = (ExcelHeader) colsCells.getSelectedItem();
         return column.getPos();
     }
 
-    public int getSelectedRow()
-    {
+    public int getSelectedRow() {
         ExcelHeader row = (ExcelHeader) rowsCells.getSelectedItem();
         return row.getPos();
     }
 
     @NotNull
-    public List<Integer> getSelectedValues()
-    {
+    public List<Integer> getSelectedValues() {
 
         List<Integer> valuesPos = new ArrayList<Integer>(values.length);
 
-        for (CheckListItem v : values)
-        {
-            if (v.isSelected())
-            {
+        for (CheckListItem v : values) {
+            if (v.isSelected()) {
                 valuesPos.add(v.getHeader().getPos());
             }
         }
@@ -216,44 +188,36 @@ public class SelectColumnsPage extends AbstractWizardPage
         return valuesPos;
     }
 
-    private class CheckListItem
-    {
+    private class CheckListItem {
         private final ExcelHeader header;
         private boolean isSelected = false;
 
-        public CheckListItem(ExcelHeader header)
-        {
+        public CheckListItem(ExcelHeader header) {
             this.header = header;
         }
 
-        public ExcelHeader getHeader()
-        {
+        public ExcelHeader getHeader() {
             return header;
         }
 
-        public boolean isSelected()
-        {
+        public boolean isSelected() {
             return isSelected;
         }
 
-        public void setSelected(boolean isSelected)
-        {
+        public void setSelected(boolean isSelected) {
             this.isSelected = isSelected;
         }
 
-        public String toString()
-        {
+        public String toString() {
             return header.toString();
         }
     }
 
 
-    private class CheckListRenderer extends JCheckBox implements ListCellRenderer
-    {
+    private class CheckListRenderer extends JCheckBox implements ListCellRenderer {
 
         @NotNull
-        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value, int index, boolean isSelected, boolean hasFocus)
-        {
+        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value, int index, boolean isSelected, boolean hasFocus) {
 
             setEnabled(list.isEnabled());
             setSelected(((CheckListItem) value).isSelected());

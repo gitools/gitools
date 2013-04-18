@@ -30,18 +30,15 @@ import static cern.jet.stat.Descriptive.standardDeviation;
 /**
  * Sum of logarithms
  */
-public class StdDevAggregator extends AbstractAggregator
-{
+public class StdDevAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new StdDevAggregator();
 
-    private StdDevAggregator()
-    {
+    private StdDevAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         int size = data.length;
         double sum = aggregate(data, Functions.plus, 0);
         double sumOfSquares = aggregate(data, Functions.plus, Functions.square, 0);
@@ -51,8 +48,7 @@ public class StdDevAggregator extends AbstractAggregator
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Standard deviation";
     }
 }

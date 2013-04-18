@@ -26,35 +26,30 @@ import org.gitools.heatmap.header.HeatmapHeader;
 
 import java.awt.*;
 
-public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer
-{
+public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
     protected static final Color highlightingColor = Color.YELLOW;
 
     protected final HT header;
     protected final boolean horizontal;
 
-    protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal)
-    {
+    protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal) {
         super(heatmap);
 
         this.header = header;
         this.horizontal = horizontal;
     }
 
-    public HT getHeader()
-    {
+    public HT getHeader() {
         return header;
     }
 
 
-    public void drawHeaderLegend(Graphics2D g, Rectangle headerIntersection, HeatmapHeader heatmapHeader)
-    {
+    public void drawHeaderLegend(Graphics2D g, Rectangle headerIntersection, HeatmapHeader heatmapHeader) {
         return;
     }
 
-    public boolean isHorizontal()
-    {
+    public boolean isHorizontal() {
         return horizontal;
     }
 }

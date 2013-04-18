@@ -28,28 +28,24 @@ import cern.colt.matrix.ObjectMatrix2D;
 import org.gitools.matrix.model.matrix.element.*;
 import org.jetbrains.annotations.NotNull;
 
-public class ObjectMatrix extends BaseMatrix
-{
+public class ObjectMatrix extends BaseMatrix {
 
     private static final long serialVersionUID = 4077172838934816719L;
 
     ObjectMatrix2D cells;
 
-    public ObjectMatrix()
-    {
+    public ObjectMatrix() {
         super();
     }
 
-    public ObjectMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells, AbstractElementAdapter cellAdapter)
-    {
+    public ObjectMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells, AbstractElementAdapter cellAdapter) {
 
         super(title, rows, columns, cellAdapter);
 
         this.cells = cells;
     }
 
-    public ObjectMatrix(String title, @NotNull String[] rowNames, @NotNull String[] columnNames, AbstractElementAdapter cellAdapter)
-    {
+    public ObjectMatrix(String title, @NotNull String[] rowNames, @NotNull String[] columnNames, AbstractElementAdapter cellAdapter) {
 
 
         super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(columnNames), cellAdapter);
@@ -59,76 +55,60 @@ public class ObjectMatrix extends BaseMatrix
 
     // rows and columns
 
-    protected int internalColumnCount()
-    {
+    protected int internalColumnCount() {
         return cells.columns();
     }
 
-    protected int internalRowCount()
-    {
+    protected int internalRowCount() {
         return cells.rows();
     }
 
     // cells
 
-    public ObjectMatrix2D getCells()
-    {
+    public ObjectMatrix2D getCells() {
         return cells;
     }
 
-    public void setCells(ObjectMatrix2D cells)
-    {
+    public void setCells(ObjectMatrix2D cells) {
         this.cells = cells;
     }
 
-    public Object getObjectCell(int row, int column)
-    {
+    public Object getObjectCell(int row, int column) {
         return cells.get(row, column);
     }
 
-    public void setCell(int row, int column, Object cell)
-    {
+    public void setCell(int row, int column, Object cell) {
         cells.set(row, column, cell);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return cellAdapter.getValue(getObjectCell(row, column), layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         cellAdapter.setValue(getObjectCell(row, column), layer, value);
     }
 
-    public void makeCells()
-    {
+    public void makeCells() {
         makeCells(rows.size(), columns.size());
     }
 
     @Override
-    public void makeCells(int rows, int columns)
-    {
+    public void makeCells(int rows, int columns) {
         cells = ObjectFactory2D.dense.make(rows, columns);
-        if (cellAdapter != null)
-        {
+        if (cellAdapter != null) {
 
             IElementFactory elementFactory;
-            if (cellAdapter instanceof BeanElementAdapter)
-            {
+            if (cellAdapter instanceof BeanElementAdapter) {
                 elementFactory = new BeanElementFactory(cellAdapter.getElementClass());
-            }
-            else
-            {
+            } else {
                 elementFactory = new ArrayElementFactory(cellAdapter.getPropertyCount());
             }
 
-            for (int r = 0; r < rows; r++)
-            {
-                for (int c = 0; c < columns; c++)
-                {
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < columns; c++) {
                     setCell(r, c, elementFactory.create());
                 }
             }
@@ -136,8 +116,7 @@ public class ObjectMatrix extends BaseMatrix
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return getObjectCell(row, column) == null;
     }
 }

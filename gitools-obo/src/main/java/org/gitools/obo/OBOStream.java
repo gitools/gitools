@@ -34,8 +34,7 @@ import java.net.URL;
 /**
  * @noinspection ALL
  */
-class OBOStream
-{
+class OBOStream {
 
     private URL baseUrl;
 
@@ -44,26 +43,20 @@ class OBOStream
 
     private int linePos;
 
-    public OBOStream(BufferedReader reader)
-    {
+    public OBOStream(BufferedReader reader) {
         this.reader = reader;
         this.linePos = 0;
     }
 
-    public OBOStream(@NotNull URL baseUrl) throws IOException
-    {
+    public OBOStream(@NotNull URL baseUrl) throws IOException {
         this.baseUrl = baseUrl;
 
         // Workaround for FTP problem connecting ftp.geneontology.org with URL.openStream()
-        if (baseUrl.getProtocol().equalsIgnoreCase("ftp"))
-        {
+        if (baseUrl.getProtocol().equalsIgnoreCase("ftp")) {
             FTPClient ftp = new FTPClient();
-            if (baseUrl.getPort() != -1)
-            {
+            if (baseUrl.getPort() != -1) {
                 ftp.connect(baseUrl.getHost(), baseUrl.getPort());
-            }
-            else
-            {
+            } else {
                 ftp.connect(baseUrl.getHost());
             }
             ftp.login("anonymous", "");
@@ -71,9 +64,7 @@ class OBOStream
             ftp.setControlKeepAliveTimeout(60);
             InputStream is = ftp.retrieveFileStream(baseUrl.getPath());
             this.reader = new BufferedReader(new InputStreamReader(is));
-        }
-        else
-        {
+        } else {
             this.reader = new BufferedReader(new InputStreamReader(baseUrl.openStream()));
         }
 
@@ -83,19 +74,16 @@ class OBOStream
     /**
      * @noinspection UnusedDeclaration
      */
-    public URL getBaseUrl()
-    {
+    public URL getBaseUrl() {
         return baseUrl;
     }
 
     @Nullable
-    public BufferedReader getReader()
-    {
+    public BufferedReader getReader() {
         return reader;
     }
 
-    public int getLinePos()
-    {
+    public int getLinePos() {
         return linePos;
     }
 
@@ -103,8 +91,7 @@ class OBOStream
      * returns a non empty line or null if EOF
      */
     @Nullable
-    public String nextLine() throws IOException
-    {
+    public String nextLine() throws IOException {
         String line = readLine();
         while (line != null && isEmptyLine(line))
             line = readLine();
@@ -112,10 +99,8 @@ class OBOStream
         return line;
     }
 
-    public void close() throws IOException
-    {
-        if (reader != null)
-        {
+    public void close() throws IOException {
+        if (reader != null) {
             reader.close();
             reader = null;
         }
@@ -125,10 +110,8 @@ class OBOStream
      * returns the next line or null if EOF
      */
     @Nullable
-    private String readLine() throws IOException
-    {
-        if (reader == null)
-        {
+    private String readLine() throws IOException {
+        if (reader == null) {
             return null;
         }
 
@@ -137,40 +120,34 @@ class OBOStream
         String line = reader.readLine();
         linePos++;
 
-        if (line != null)
-        {
+        if (line != null) {
             line = line.trim();
         }
 
-        while (line != null && line.endsWith("\\"))
-        {
+        while (line != null && line.endsWith("\\")) {
             line = line.substring(0, line.length() - 1);
             completeLine.append(line);
             //escapeCharsAndRemoveComments(line, completeLine);
             line = reader.readLine();
             linePos++;
-            if (line != null)
-            {
+            if (line != null) {
                 line = line.trim();
             }
         }
 
-        if (line != null)
-        {
+        if (line != null) {
             completeLine.append(line);
         }
         //escapeCharsAndRemoveComments(line, completeLine);
 
-        if (line == null && completeLine.length() == 0)
-        {
+        if (line == null && completeLine.length() == 0) {
             return null;
         }
 
         return completeLine.toString();
     }
 
-    private boolean isEmptyLine(@NotNull String line)
-    {
+    private boolean isEmptyLine(@NotNull String line) {
         return line.replaceAll("\\s", "").isEmpty();
     }
 }

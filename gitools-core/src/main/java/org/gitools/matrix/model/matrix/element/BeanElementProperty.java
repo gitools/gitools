@@ -29,16 +29,14 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Method;
 
-public class BeanElementProperty extends SimpleMatrixLayer
-{
+public class BeanElementProperty extends SimpleMatrixLayer {
 
     private static final long serialVersionUID = 1735870808859461498L;
 
     private Method getterMethod;
     private Method setterMethod;
 
-    public BeanElementProperty(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod)
-    {
+    public BeanElementProperty(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod) {
 
         super(id, valueClass, name, description);
 
@@ -46,13 +44,11 @@ public class BeanElementProperty extends SimpleMatrixLayer
         this.setterMethod = setterMethod;
     }
 
-    private static class MethodAdapter extends XmlAdapter<String, Method>
-    {
+    private static class MethodAdapter extends XmlAdapter<String, Method> {
 
         @NotNull
         @Override
-        public String marshal(@NotNull Method v) throws Exception
-        {
+        public String marshal(@NotNull Method v) throws Exception {
             final String className = v.getDeclaringClass().getCanonicalName();
             Class<?> returnType = v.getReturnType();
             Class<?>[] paramTypes = v.getParameterTypes();
@@ -62,8 +58,7 @@ public class BeanElementProperty extends SimpleMatrixLayer
         }
 
         @Override
-        public Method unmarshal(@NotNull String v) throws Exception
-        {
+        public Method unmarshal(@NotNull String v) throws Exception {
             final String[] names = v.split(":");
             final String className = names[0];
             final String methodName = names[1];
@@ -78,15 +73,13 @@ public class BeanElementProperty extends SimpleMatrixLayer
 
     @XmlElement(name = "getter")
     @XmlJavaTypeAdapter(MethodAdapter.class)
-    public Method getGetterMethod()
-    {
+    public Method getGetterMethod() {
         return getterMethod;
     }
 
     @XmlElement(name = "setter")
     @XmlJavaTypeAdapter(MethodAdapter.class)
-    public Method getSetterMethod()
-    {
+    public Method getSetterMethod() {
         return setterMethod;
     }
 }

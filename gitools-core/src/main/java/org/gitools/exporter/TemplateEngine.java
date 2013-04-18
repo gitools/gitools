@@ -39,16 +39,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-class TemplateEngine
-{
+class TemplateEngine {
 
     private final VelocityEngine velocityEngine;
     private String templateName;
     private Template template;
     private VelocityContext context;
 
-    private TemplateEngine(@NotNull Properties props)
-    {
+    private TemplateEngine(@NotNull Properties props) {
         velocityEngine = new VelocityEngine();
 
         velocityEngine.setProperty(VelocityEngine.RESOURCE_LOADER, "file, class");
@@ -63,51 +61,41 @@ class TemplateEngine
         context = new VelocityContext();
     }
 
-    public TemplateEngine()
-    {
+    public TemplateEngine() {
         this(new Properties());
     }
 
-    public void setFileLoaderPath(@NotNull File file)
-    {
+    public void setFileLoaderPath(@NotNull File file) {
         velocityEngine.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, Arrays.asList(file.getAbsolutePath()));
     }
 
-    public void init()
-    {
-        try
-        {
+    public void init() {
+        try {
             velocityEngine.init();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    public void loadTemplate(String name) throws Exception
-    {
+    public void loadTemplate(String name) throws Exception {
 
-        if (template == null || !this.templateName.equals(name))
-        {
+        if (template == null || !this.templateName.equals(name)) {
             template = velocityEngine.getTemplate(name);
             this.templateName = name;
         }
     }
 
-    public void setContext(Map<?, ?> context)
-    {
+    public void setContext(Map<?, ?> context) {
         this.context = new VelocityContext(context);
     }
 
-    void render(Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
-    {
+    void render(Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 
         template.merge(context, writer);
     }
 
-    public void render(File file) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
-    {
+    public void render(File file) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 
         Writer writer = IOUtils.openWriter(file);
         render(writer);

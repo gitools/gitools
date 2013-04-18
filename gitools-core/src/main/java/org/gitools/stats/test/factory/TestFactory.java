@@ -32,8 +32,7 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public abstract class TestFactory
-{
+public abstract class TestFactory {
 
     public static final String TEST_NAME_PROPERTY = "test-name";
 
@@ -44,15 +43,13 @@ public abstract class TestFactory
     private static final String CHI_SQUARE_TEST = "chi-square";
     private static final String MANN_WHITNEY_WILCOXON = "mannWhitneyWilcoxon";
 
-    private static enum TestEnum
-    {
+    private static enum TestEnum {
         zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
     }
 
     private static final Map<String, TestEnum> testNameMap = new HashMap<String, TestEnum>();
 
-    static
-    {
+    static {
         testNameMap.put(ZSCORE_TEST, TestEnum.zscore);
         testNameMap.put(BINOMIAL_TEST, TestEnum.binomial);
         testNameMap.put(FISHER_EXACT_TEST, TestEnum.fisherExact);
@@ -61,8 +58,7 @@ public abstract class TestFactory
         testNameMap.put(MANN_WHITNEY_WILCOXON, TestEnum.mannWhitneyWilcoxon);
     }
 
-    private static enum TestConfigEnum
-    {
+    private static enum TestConfigEnum {
         zscoreMean, zscoreMedian,
         binomial, binomialExact, binomialNormal, binomialPoisson,
         hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
@@ -71,8 +67,7 @@ public abstract class TestFactory
     @NotNull
     private static final Map<String, TestConfigEnum> testAliases = new HashMap<String, TestConfigEnum>();
 
-    static
-    {
+    static {
         testAliases.put("zscore", TestConfigEnum.zscoreMean);
         testAliases.put("zscore-mean", TestConfigEnum.zscoreMean);
         testAliases.put("zscore-median", TestConfigEnum.zscoreMedian);
@@ -89,20 +84,17 @@ public abstract class TestFactory
     }
 
     @Nullable
-    public static TestFactory createFactory(@NotNull ToolConfig config)
-    {
+    public static TestFactory createFactory(@NotNull ToolConfig config) {
 
         final String testName = config.get(TEST_NAME_PROPERTY);
         TestEnum selectedTest = testNameMap.get(testName);
-        if (selectedTest == null)
-        {
+        if (selectedTest == null) {
             throw new IllegalArgumentException("Unknown test " + testName);
         }
 
         TestFactory testFactory = null;
 
-        switch (selectedTest)
-        {
+        switch (selectedTest) {
             case zscore:
                 testFactory = new ZscoreTestFactory(config);
                 break;
@@ -126,19 +118,16 @@ public abstract class TestFactory
     }
 
     @NotNull
-    public static ToolConfig createToolConfig(String toolName, String configName)
-    {
+    public static ToolConfig createToolConfig(String toolName, String configName) {
 
         TestConfigEnum selectedTest = testAliases.get(configName);
-        if (selectedTest == null)
-        {
+        if (selectedTest == null) {
             throw new IllegalArgumentException("Unknown test " + configName);
         }
 
         ToolConfig config = new ToolConfig(toolName);
 
-        switch (selectedTest)
-        {
+        switch (selectedTest) {
             case zscoreMean:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ZSCORE_TEST);
                 config.put(ZscoreTestFactory.NUM_SAMPLES_PROPERTY, String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));
@@ -181,13 +170,11 @@ public abstract class TestFactory
 
     private final ToolConfig toolConfig;
 
-    TestFactory(ToolConfig config)
-    {
+    TestFactory(ToolConfig config) {
         this.toolConfig = config;
     }
 
-    public ToolConfig getTestConfig()
-    {
+    public ToolConfig getTestConfig() {
         return toolConfig;
     }
 

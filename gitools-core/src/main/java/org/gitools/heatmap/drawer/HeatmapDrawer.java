@@ -29,8 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class HeatmapDrawer extends AbstractHeatmapDrawer
-{
+public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
     private final HeatmapBodyDrawer body;
     @NotNull
@@ -40,8 +39,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
     @NotNull
     private final HeatmapHeaderIntersectionDrawer headerIntersection;
 
-    public HeatmapDrawer(Heatmap heatmap)
-    {
+    public HeatmapDrawer(Heatmap heatmap) {
         super(heatmap);
 
         body = new HeatmapBodyDrawer(heatmap);
@@ -51,8 +49,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
     }
 
     @Override
-    public void draw(@NotNull Graphics2D g, Rectangle box, Rectangle clip)
-    {
+    public void draw(@NotNull Graphics2D g, Rectangle box, Rectangle clip) {
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
         Dimension columnsSize = colsHeader.getSize();
@@ -79,8 +76,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
 
     @NotNull
     @Override
-    public Dimension getSize()
-    {
+    public Dimension getSize() {
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
         Dimension columnsSize = colsHeader.getSize();
@@ -89,21 +85,18 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer
 
     @NotNull
     @Override
-    public HeatmapPosition getPosition(Point p)
-    {
+    public HeatmapPosition getPosition(Point p) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @NotNull
     @Override
-    public Point getPoint(HeatmapPosition p)
-    {
+    public Point getPoint(HeatmapPosition p) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void setPictureMode(boolean pictureMode)
-    {
+    public void setPictureMode(boolean pictureMode) {
         super.setPictureMode(pictureMode);
         body.setPictureMode(pictureMode);
         rowsHeader.setPictureMode(pictureMode);

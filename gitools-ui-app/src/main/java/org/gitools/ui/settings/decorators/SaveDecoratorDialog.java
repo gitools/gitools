@@ -28,8 +28,7 @@ import org.gitools.ui.utils.DocumentChangeListener;
 import javax.swing.event.DocumentEvent;
 import java.util.Set;
 
-public class SaveDecoratorDialog extends javax.swing.JDialog
-{
+public class SaveDecoratorDialog extends javax.swing.JDialog {
 
     private Set<String> existingScaleNames;
 
@@ -47,8 +46,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
     /**
      * Creates new form IntogenImportSaveDialog
      */
-    public SaveDecoratorDialog(java.awt.Window parent)
-    {
+    public SaveDecoratorDialog(java.awt.Window parent) {
         super(parent);
 
         setModal(true);
@@ -62,28 +60,20 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
 
         okButton.setEnabled(false);
 
-        DocumentChangeListener documentListener = new DocumentChangeListener()
-        {
+        DocumentChangeListener documentListener = new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 boolean exists = checkScaleNameExists();
-                if (exists)
-                {
+                if (exists) {
                     headerPanel.setMessageStatus(MessageStatus.WARN);
                     headerPanel.setMessage("Scale name already exists and will be overwriten");
-                }
-                else
-                {
+                } else {
                     headerPanel.setMessageStatus(MessageStatus.INFO);
                     headerPanel.setMessage(MESSAGE);
                 }
-                if (name.getText().isEmpty())
-                {
+                if (name.getText().isEmpty()) {
                     okButton.setEnabled(false);
-                }
-                else
-                {
+                } else {
                     okButton.setEnabled(true);
                 }
             }
@@ -93,18 +83,15 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
 
     }
 
-    public DialogHeaderPanel getHeaderPanel()
-    {
+    public DialogHeaderPanel getHeaderPanel() {
         return headerPanel;
     }
 
-    public void setExistingScaleNames(Set<String> existingScaleNames)
-    {
+    public void setExistingScaleNames(Set<String> existingScaleNames) {
         this.existingScaleNames = existingScaleNames;
     }
 
-    boolean checkScaleNameExists()
-    {
+    boolean checkScaleNameExists() {
         return existingScaleNames.contains(name.getText());
         //return false;
     }
@@ -112,13 +99,11 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return returnStatus == RET_CANCEL;
     }
 
@@ -130,8 +115,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -142,28 +126,22 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
 
         setTitle("Save Scale");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -183,26 +161,22 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -219,8 +193,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public String getScaleName()
-    {
+    public String getScaleName() {
         return name.getText();
     }
 }

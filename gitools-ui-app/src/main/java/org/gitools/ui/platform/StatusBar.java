@@ -35,8 +35,7 @@ import java.awt.event.ActionListener;
 /**
  * @noinspection ALL
  */
-public class StatusBar extends WebStatusBar
-{
+public class StatusBar extends WebStatusBar {
 
     private static final long serialVersionUID = -8072022883069269170L;
 
@@ -45,34 +44,27 @@ public class StatusBar extends WebStatusBar
 
     private boolean fullscreen = false;
 
-    public StatusBar()
-    {
+    public StatusBar() {
         createComponents();
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
 
         WebButton fullScreenBtn = WebButton.createIconWebButton(IconUtils.getImageIconResource(IconNames.fullscreen));
         fullScreenBtn.setUndecorated(true);
-        fullScreenBtn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        fullScreenBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 AppFrame app = AppFrame.get();
 
                 // Toggle state
                 fullscreen = !fullscreen;
 
                 // Update state
-                if (fullscreen)
-                {
+                if (fullscreen) {
                     app.getJMenuBar().setVisible(false);
                     app.getToolBar().setVisible(false);
                     updateFullscreen();
-                }
-                else
-                {
+                } else {
                     app.getJMenuBar().setVisible(true);
                     app.getToolBar().setVisible(true);
                     updateFullscreen();
@@ -92,16 +84,14 @@ public class StatusBar extends WebStatusBar
         addToEnd(memoryBar);
     }
 
-    public void setText(final String text)
-    {
+    public void setText(final String text) {
         statusLabel.setText(text);
     }
 
     @Nullable
     private DisplayMode dispModeOld = null;
 
-    private void updateFullscreen()
-    {
+    private void updateFullscreen() {
 
         AppFrame frame = AppFrame.get();
 
@@ -111,8 +101,7 @@ public class StatusBar extends WebStatusBar
         //save the old display mode before changing it.
         dispModeOld = device.getDisplayMode();
 
-        if (!fullscreen)
-        {
+        if (!fullscreen) {
             //change to windowed mode.
             //set the display mode back to the what it was when
             //the program was launched.
@@ -134,9 +123,7 @@ public class StatusBar extends WebStatusBar
             //we changed it.
             frame.setVisible(true);
 
-        }
-        else
-        { //change to fullscreen.
+        } else { //change to fullscreen.
             //hide everything
             frame.setVisible(false);
             //remove the frame from being displayable.

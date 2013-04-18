@@ -32,16 +32,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class CommandConvertAndLoadExcelFile extends CommandLoadFile
-{
+public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
 
     private final int columns;
     private final int rows;
     private final List<Integer> values;
     private final ExcelReader reader;
 
-    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, @NotNull ExcelReader reader)
-    {
+    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, @NotNull ExcelReader reader) {
         super(createTdmFile(reader).getAbsolutePath());
 
         this.columns = columns;
@@ -51,30 +49,25 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile
     }
 
     @NotNull
-    private static File createTdmFile(@NotNull ExcelReader reader)
-    {
+    private static File createTdmFile(@NotNull ExcelReader reader) {
         File excelFile = reader.getFile();
         return new File(excelFile.getParent(), FilenameUtils.getBaseName(excelFile.getName()) + ".tdm");
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException
-    {
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Converting excel file", reader.getLastRowNum());
 
         File tdmFile = createTdmFile(reader);
         RawCsvWriter out = null;
 
-        try
-        {
-            if (!tdmFile.exists())
-            {
+        try {
+            if (!tdmFile.exists()) {
                 tdmFile.createNewFile();
             }
             out = new RawCsvWriter(new FileWriter(tdmFile), '\t', '"');
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new CommandException("Error opening file '" + tdmFile.getName() + "'");
         }
 
@@ -82,22 +75,19 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile
         out.writeQuotedValue("column");
         out.writeSeparator();
         out.writeQuotedValue("row");
-        for (int v : values)
-        {
+        for (int v : values) {
             out.writeSeparator();
             out.writeQuotedValue(reader.getValue(0, v));
         }
         out.writeNewLine();
 
         // Write rows
-        for (int r = 1; r <= reader.getLastRowNum(); r++)
-        {
+        for (int r = 1; r <= reader.getLastRowNum(); r++) {
             out.writeQuotedValue(reader.getValue(r, columns));
             out.writeSeparator();
             out.writeQuotedValue(reader.getValue(r, rows));
 
-            for (int v : values)
-            {
+            for (int v : values) {
                 out.writeSeparator();
                 String value = reader.getValue(r, v);
                 out.writeValue((value != null ? value : "-"));
@@ -105,8 +95,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile
             out.writeNewLine();
             monitor.worked(r);
 
-            if (monitor.isCancelled())
-            {
+            if (monitor.isCancelled()) {
                 out.close();
                 tdmFile.delete();
                 return;

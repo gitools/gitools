@@ -29,34 +29,27 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public class FilteredListPage extends AbstractWizardPage
-{
+public class FilteredListPage extends AbstractWizardPage {
 
     private FilteredListPanel panel;
 
-    protected FilteredListPage()
-    {
+    protected FilteredListPage() {
     }
 
-    public FilteredListPage(@NotNull Object[] listData)
-    {
+    public FilteredListPage(@NotNull Object[] listData) {
         panel.setListData(listData);
     }
 
-    public FilteredListPage(@NotNull Object[] listData, int selectionMode)
-    {
+    public FilteredListPage(@NotNull Object[] listData, int selectionMode) {
         panel.setListData(listData);
         panel.setSelectionMode(selectionMode);
     }
 
     @Override
-    public JComponent createControls()
-    {
-        panel = new FilteredListPanel()
-        {
+    public JComponent createControls() {
+        panel = new FilteredListPanel() {
             @Override
-            protected void selectionChanged()
-            {
+            protected void selectionChanged() {
                 FilteredListPage.this.selectionChanged();
             }
         };
@@ -64,8 +57,7 @@ public class FilteredListPage extends AbstractWizardPage
         return panel;
     }
 
-    private void selectionChanged()
-    {
+    private void selectionChanged() {
         Object value = panel.getSelectedValue();
         setComplete(value != null);
     }
@@ -73,28 +65,23 @@ public class FilteredListPage extends AbstractWizardPage
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setSelectionMode(int mode)
-    {
+    public void setSelectionMode(int mode) {
         panel.setSelectionMode(mode);
     }
 
-    public String getFilterText()
-    {
+    public String getFilterText() {
         return panel.getFilterText();
     }
 
-    protected void setListData(@NotNull Object[] listData)
-    {
+    protected void setListData(@NotNull Object[] listData) {
         panel.setListData(listData);
     }
 
-    protected Object getSelectedValue()
-    {
+    protected Object getSelectedValue() {
         return panel.getSelectedValue();
     }
 
-    protected void setSelectedValue(Object o)
-    {
+    protected void setSelectedValue(Object o) {
         panel.setSElectedValue(o);
     }
 }

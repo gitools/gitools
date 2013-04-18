@@ -29,23 +29,20 @@ import java.io.Serializable;
 /**
  * @noinspection ALL
  */
-public class BinaryCutoff implements DoubleFunction, Serializable
-{
+public class BinaryCutoff implements DoubleFunction, Serializable {
 
     private static final long serialVersionUID = 5091376519840044515L;
 
     private final CutoffCmp cmp;
     private final double cutoff;
 
-    public BinaryCutoff(CutoffCmp cmp, double cutoff)
-    {
+    public BinaryCutoff(CutoffCmp cmp, double cutoff) {
         this.cmp = cmp;
         this.cutoff = cutoff;
     }
 
     @Override
-    public double apply(double value)
-    {
+    public double apply(double value) {
         return Double.isNaN(value) ? Double.NaN : cmp.compare(value, cutoff) ? 1 : 0;
     }
 }

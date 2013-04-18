@@ -21,8 +21,7 @@
  */
 package org.gitools.stats;
 
-public class HyperGeometric
-{
+public class HyperGeometric {
     private int sn11, sn1_, sn_1, sn;
     private double sprob;
 
@@ -45,53 +44,41 @@ public class HyperGeometric
         return (Math.log(x) - 5.58106146679532777 - z + (z - 0.5) * Math.log(z + 6.5));
     }
 
-    private double lnfact(int n)
-    {
-        if (n <= 1)
-        {
+    private double lnfact(int n) {
+        if (n <= 1) {
             return (0);
         }
         return (lngamm(n + 1));
     }
 
-    private double lnbico(int n, int k)
-    {
+    private double lnbico(int n, int k) {
         return (lnfact(n) - lnfact(k) - lnfact(n - k));
     }
 
-    private double hyper_323(int n11, int n1_, int n_1, int n)
-    {
+    private double hyper_323(int n11, int n1_, int n_1, int n) {
         return (Math.exp(lnbico(n1_, n11) + lnbico(n - n1_, n_1 - n11) - lnbico(n, n_1)));
     }
 
-    public double hyper(int n11)
-    {
+    public double hyper(int n11) {
         return (hyper0(n11, 0, 0, 0));
     }
 
-    public double hyper0(int n11i, int n1_i, int n_1i, int ni)
-    {
-        if (!(n1_i != 0 || n_1i != 0 || ni != 0))
-        {
-            if (!(n11i % 10 == 0))
-            {
-                if (n11i == sn11 + 1)
-                {
+    public double hyper0(int n11i, int n1_i, int n_1i, int ni) {
+        if (!(n1_i != 0 || n_1i != 0 || ni != 0)) {
+            if (!(n11i % 10 == 0)) {
+                if (n11i == sn11 + 1) {
                     sprob *= ((double) (sn1_ - sn11) / (double) n11i) * ((double) (sn_1 - sn11) / (double) (n11i + sn - sn1_ - sn_1));
                     sn11 = n11i;
                     return sprob;
                 }
-                if (n11i == sn11 - 1)
-                {
+                if (n11i == sn11 - 1) {
                     sprob *= ((double) sn11 / (double) (sn1_ - n11i)) * ((double) (sn11 + sn - sn1_ - sn_1) / (double) (sn_1 - n11i));
                     sn11 = n11i;
                     return sprob;
                 }
             }
             sn11 = n11i;
-        }
-        else
-        {
+        } else {
             sn11 = n11i;
             sn1_ = n1_i;
             sn_1 = n_1i;

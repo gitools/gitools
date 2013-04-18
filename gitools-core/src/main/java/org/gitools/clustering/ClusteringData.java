@@ -26,8 +26,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Generic data interface for clustering methods
  */
-public interface ClusteringData
-{
+public interface ClusteringData {
 
     /**
      * Return the number of elements in the data

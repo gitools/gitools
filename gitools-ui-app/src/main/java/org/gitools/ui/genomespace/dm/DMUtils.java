@@ -38,8 +38,7 @@ import java.util.List;
  * @date Aug 2, 2011
  * @noinspection ALL
  */
-public class DMUtils
-{
+public class DMUtils {
 
     private static Logger log = Logger.getLogger(DMUtils.class);
     private static final String UPLOAD_SERVICE = "uploadurl";
@@ -56,8 +55,7 @@ public class DMUtils
      * @throws JSONException
      */
     @NotNull
-    public static GSDirectoryListing getDirectoryListing(@NotNull URL directoryURL) throws IOException, JSONException
-    {
+    public static GSDirectoryListing getDirectoryListing(@NotNull URL directoryURL) throws IOException, JSONException {
 
         String str = HttpUtils.getInstance().getContentsAsJSON(directoryURL);
         JSONTokener tk = new JSONTokener(str);
@@ -67,20 +65,15 @@ public class DMUtils
         String dirUrlString = directory.get("url").toString();
 
         LinkedList<GSFileMetadata> elements = new LinkedList();
-        if (obj.has("contents"))
-        {
+        if (obj.has("contents")) {
             Object c = obj.get("contents");
             List<JSONObject> contents = new ArrayList();
-            if (c instanceof JSONObject)
-            {
+            if (c instanceof JSONObject) {
                 contents.add((JSONObject) c);
-            }
-            else
-            {
+            } else {
                 JSONArray tmp = (JSONArray) c;
                 int l = tmp.length();
-                for (int i = 0; i < l; i++)
-                {
+                for (int i = 0; i < l; i++) {
                     contents.add((JSONObject) tmp.get(i));
                 }
             }
@@ -88,16 +81,12 @@ public class DMUtils
             ArrayList<GSFileMetadata> dirElements = new ArrayList();
             ArrayList<GSFileMetadata> fileElements = new ArrayList();
             int contentsLength = contents.size();
-            for (int i = 0; i < contentsLength; i++)
-            {
+            for (int i = 0; i < contentsLength; i++) {
                 JSONObject o = contents.get(i);
                 GSFileMetadata metaData = new GSFileMetadata(o);
-                if (metaData.isDirectory())
-                {
+                if (metaData.isDirectory()) {
                     dirElements.add(metaData);
-                }
-                else
-                {
+                } else {
                     fileElements.add(metaData);
                 }
             }
@@ -111,16 +100,13 @@ public class DMUtils
     }
 
     @NotNull
-    public static GSFileMetadata createDirectory(String putURL) throws IOException, JSONException
-    {
+    public static GSFileMetadata createDirectory(String putURL) throws IOException, JSONException {
 
         JSONObject dirMeta = new JSONObject();
-        try
-        {
+        try {
             dirMeta.put("isDirectory", true);
             System.out.println(dirMeta.toString());
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 

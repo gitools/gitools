@@ -40,8 +40,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class TemplatePanel extends Html4Panel
-{
+public class TemplatePanel extends Html4Panel {
 
     private static final long serialVersionUID = 1939265225161205798L;
 
@@ -51,8 +50,7 @@ public class TemplatePanel extends Html4Panel
     private Template template;
     private VelocityContext context;
 
-    private TemplatePanel(@NotNull Properties props)
-    {
+    private TemplatePanel(@NotNull Properties props) {
         super();
 
         velocityEngine = new VelocityEngine();
@@ -70,42 +68,34 @@ public class TemplatePanel extends Html4Panel
         for (Entry<Object, Object> prop : props.entrySet())
             velocityEngine.setProperty((String) prop.getKey(), prop.getValue());
 
-        try
-        {
+        try {
             velocityEngine.init();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public TemplatePanel()
-    {
+    public TemplatePanel() {
         this(new Properties());
     }
 
     @Deprecated
-    public void setTemplateFromResource(@NotNull String resource) throws Exception
-    {
+    public void setTemplateFromResource(@NotNull String resource) throws Exception {
 
-        if (!resource.startsWith("/"))
-        {
+        if (!resource.startsWith("/")) {
             resource = "/" + resource;
         }
 
         setTemplateFromResource(resource, "http://localhost");
     }
 
-    void setTemplateFromResource(String resource, String baseUrl) throws Exception
-    {
+    void setTemplateFromResource(String resource, String baseUrl) throws Exception {
 
         setTemplateFromResource(resource, new URL(baseUrl));
     }
 
-    public void setTemplateFromResource(String resource, @NotNull URL baseUrl) throws Exception
-    {
-        if (template == null || !this.templateName.equals(resource))
-        {
+    public void setTemplateFromResource(String resource, @NotNull URL baseUrl) throws Exception {
+        if (template == null || !this.templateName.equals(resource)) {
             template = velocityEngine.getTemplate(resource);
             this.templateName = resource;
         }
@@ -113,26 +103,22 @@ public class TemplatePanel extends Html4Panel
         this.templateUrl = baseUrl.toString();
     }
 
-    public void setContext(VelocityContext context)
-    {
+    public void setContext(VelocityContext context) {
         this.context = context;
     }
 
-    public void render(VelocityContext context) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
-    {
+    public void render(VelocityContext context) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
         final StringWriter sw = new StringWriter();
         template.merge(context, sw);
 
         panel.setHtml(sw.toString(), templateUrl, rcontext);
     }
 
-    public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
-    {
+    public void render() throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
         render(context);
     }
 
-    public void merge(VelocityContext context, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException
-    {
+    public void merge(VelocityContext context, Writer writer) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
         template.merge(context, writer);
     }
 }

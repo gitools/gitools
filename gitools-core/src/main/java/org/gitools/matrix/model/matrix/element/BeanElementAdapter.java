@@ -34,39 +34,32 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlRootElement
-public class BeanElementAdapter extends AbstractElementAdapter
-{
+public class BeanElementAdapter extends AbstractElementAdapter {
 
     private static final long serialVersionUID = 2174377187447656241L;
 
-    protected BeanElementAdapter()
-    {
+    protected BeanElementAdapter() {
     }
 
-    public BeanElementAdapter(Class<?> elementClass)
-    {
+    public BeanElementAdapter(Class<?> elementClass) {
         super(elementClass);
 
         readProperties();
     }
 
     @Override
-    protected void setElementClass(Class<?> elementClass)
-    {
+    protected void setElementClass(Class<?> elementClass) {
         super.setElementClass(elementClass);
 
         readProperties();
     }
 
-    void readProperties()
-    {
+    void readProperties() {
         List<SimpleMatrixLayer> properties = new ArrayList<SimpleMatrixLayer>();
 
-        for (Method m : elementClass.getMethods())
-        {
+        for (Method m : elementClass.getMethods()) {
             boolean isGet = m.getName().startsWith("get");
-            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is")))
-            {
+            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is"))) {
 
                 final String getterName = isGet ? m.getName().substring(3) : m.getName().substring(2);
 
@@ -77,28 +70,22 @@ public class BeanElementAdapter extends AbstractElementAdapter
                 String description = "";
 
                 AttributeDef a = m.getAnnotation(AttributeDef.class);
-                if (a != null)
-                {
-                    if (a.id() != null)
-                    {
+                if (a != null) {
+                    if (a.id() != null) {
                         id = a.id();
                     }
-                    if (a.name() != null)
-                    {
+                    if (a.name() != null) {
                         name = a.name();
                     }
-                    if (a.description() != null)
-                    {
+                    if (a.description() != null) {
                         description = a.description();
                     }
                 }
 
                 Method setterMethod = null;
-                try
-                {
+                try {
                     setterMethod = elementClass.getMethod("set" + getterName, new Class<?>[]{propertyClass});
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
 
                 SimpleMatrixLayer prop = new BeanElementProperty(id, name, description, propertyClass, m, setterMethod);
@@ -112,30 +99,24 @@ public class BeanElementAdapter extends AbstractElementAdapter
 
     @Nullable
     @Override
-    public Object getValue(Object element, int index)
-    {
+    public Object getValue(Object element, int index) {
         BeanElementProperty prop = (BeanElementProperty) getProperty(index);
         Method m = prop.getGetterMethod();
         Object value = null;
-        try
-        {
+        try {
             value = m.invoke(element, (Object[]) null);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
         }
         return value;
     }
 
     @Override
-    public void setValue(Object element, int index, Object value)
-    {
+    public void setValue(Object element, int index, Object value) {
         BeanElementProperty prop = (BeanElementProperty) getProperty(index);
         Method m = prop.getSetterMethod();
-        try
-        {
+        try {
             value = m.invoke(element, value);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }

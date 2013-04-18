@@ -29,16 +29,14 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.jetbrains.annotations.NotNull;
 
-public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
-{
+public class CorrelationAnalysisFromEditorWizard extends AbstractWizard {
 
     private final String[] attributeNames;
 
     private CorrelationFromEditorPage corrPage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public CorrelationAnalysisFromEditorWizard(String[] attributeNames)
-    {
+    public CorrelationAnalysisFromEditorWizard(String[] attributeNames) {
         super();
 
         setTitle("Correlation analysis");
@@ -48,8 +46,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         // Correlation method
         corrPage = new CorrelationFromEditorPage(attributeNames);
         addPage(corrPage);
@@ -60,8 +57,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         boolean canFinish = super.canFinish();
 
         IWizardPage page = getCurrentPage();
@@ -72,8 +68,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard
     }
 
     @NotNull
-    public CorrelationAnalysis getAnalysis()
-    {
+    public CorrelationAnalysis getAnalysis() {
         CorrelationAnalysis a = new CorrelationAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());

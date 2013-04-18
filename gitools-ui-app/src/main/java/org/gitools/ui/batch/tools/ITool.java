@@ -23,8 +23,7 @@ package org.gitools.ui.batch.tools;
 
 import java.io.PrintWriter;
 
-public interface ITool
-{
+public interface ITool {
 
     String getName();
 

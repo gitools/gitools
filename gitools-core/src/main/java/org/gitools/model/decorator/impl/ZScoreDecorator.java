@@ -39,8 +39,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ZScoreDecorator extends Decorator<ZScoreColorScale>
-{
+public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     public static final String PROPERTY_SIGNIFICANCE = "significanceLevel";
     public static final String PROPERTY_CORRECTED_VALUE = "correctedValueIndex";
     public static final String PROPERTY_USE_CORRECTION = "useCorrection";
@@ -60,8 +59,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     private ZScoreColorScale scale;
 
-    public ZScoreDecorator()
-    {
+    public ZScoreDecorator() {
         super();
 
         scale = new ZScoreColorScale();
@@ -70,69 +68,58 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
         significanceLevel = 0.05;
     }
 
-    public ZScoreColorScale getScale()
-    {
+    public ZScoreColorScale getScale() {
         return scale;
     }
 
-    public void setScale(ZScoreColorScale scale)
-    {
+    public void setScale(ZScoreColorScale scale) {
         this.scale = scale;
     }
 
     @XmlElement(name = "filter-layer-index")
-    public int getCorrectedValueIndex()
-    {
+    public int getCorrectedValueIndex() {
         return correctedValueIndex;
     }
 
-    public void setCorrectedValueIndex(int correctionValueIndex)
-    {
+    public void setCorrectedValueIndex(int correctionValueIndex) {
         int old = this.correctedValueIndex;
         this.correctedValueIndex = correctionValueIndex;
         firePropertyChange(PROPERTY_CORRECTED_VALUE, old, correctionValueIndex);
     }
 
     @XmlElement(name = "use-filter")
-    public final boolean getUseCorrection()
-    {
+    public final boolean getUseCorrection() {
         return useCorrection;
     }
 
-    public final void setUseCorrection(boolean useCorrection)
-    {
+    public final void setUseCorrection(boolean useCorrection) {
         boolean old = this.useCorrection;
         this.useCorrection = useCorrection;
         firePropertyChange(PROPERTY_USE_CORRECTION, old, useCorrection);
     }
 
     @XmlElement(name = "significance")
-    public double getSignificanceLevel()
-    {
+    public double getSignificanceLevel() {
         return significanceLevel;
     }
 
-    public void setSignificanceLevel(double sigLevel)
-    {
+    public void setSignificanceLevel(double sigLevel) {
         double old = this.significanceLevel;
         this.significanceLevel = sigLevel;
         setSigHalfAmplitude(calculateSigHalfAmplitudeFromSigLevel(sigLevel));
         firePropertyChange(PROPERTY_SIGNIFICANCE, old, sigLevel);
     }
 
-    private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel)
-    {
+    private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel) {
         double v = Probability.normalInverse(sigLevel / 2);
         return Math.abs(v);
     }
 
-    public final double getSigHalfAmplitude()
-    {
+    public final double getSigHalfAmplitude() {
         return getScale().getSigHalfAmplitude();
     }
 
-    final void setSigHalfAmplitude(double sigHalfAmplitude)
-    {
+    final void setSigHalfAmplitude(double sigHalfAmplitude) {
         double old = getScale().getSigHalfAmplitude();
         getScale().setSigHalfAmplitude(sigHalfAmplitude);
         firePropertyChange(PROPERTY_SIG_HALF_AMPLITUD, old, sigHalfAmplitude);
@@ -140,13 +127,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "left-min-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getLeftMinColor()
-    {
+    public Color getLeftMinColor() {
         return getScale().getLeftMinColor();
     }
 
-    public void setLeftMinColor(Color color)
-    {
+    public void setLeftMinColor(Color color) {
         Color old = getScale().getLeftMinColor();
         getScale().setLeftMinColor(color);
         firePropertyChange(PROPERTY_LEFT_MIN_COLOR, old, color);
@@ -154,13 +139,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "left-max-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getLeftMaxColor()
-    {
+    public Color getLeftMaxColor() {
         return getScale().getLeftMaxColor();
     }
 
-    public void setLeftMaxColor(Color color)
-    {
+    public void setLeftMaxColor(Color color) {
         Color old = getScale().getLeftMaxColor();
         getScale().setLeftMaxColor(color);
         firePropertyChange(PROPERTY_LEFT_MAX_COLOR, old, color);
@@ -168,13 +151,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "right-min-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getRightMinColor()
-    {
+    public Color getRightMinColor() {
         return getScale().getRightMinColor();
     }
 
-    public void setRightMinColor(Color color)
-    {
+    public void setRightMinColor(Color color) {
         Color old = getScale().getRightMinColor();
         getScale().setRightMinColor(color);
         firePropertyChange(PROPERTY_RIGHT_MIN_COLOR, old, color);
@@ -182,13 +163,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "left-max-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getRightMaxColor()
-    {
+    public Color getRightMaxColor() {
         return getScale().getRightMaxColor();
     }
 
-    public void setRightMaxColor(Color color)
-    {
+    public void setRightMaxColor(Color color) {
         Color old = getScale().getRightMaxColor();
         getScale().setRightMaxColor(color);
         firePropertyChange(PROPERTY_RIGHT_MAX_COLOR, old, color);
@@ -196,13 +175,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "non-significant-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getNonSignificantColor()
-    {
+    public Color getNonSignificantColor() {
         return getScale().getNonSignificantColor();
     }
 
-    public void setNonSignificantColor(Color color)
-    {
+    public void setNonSignificantColor(Color color) {
         Color old = getScale().getNonSignificantColor();
         getScale().setNonSignificantColor(color);
         firePropertyChange(PROPERTY_NON_SIGNIFICANT_COLOR, old, color);
@@ -210,27 +187,23 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
     @XmlElement(name = "empty-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getEmptyColor()
-    {
+    public Color getEmptyColor() {
         return getScale().getEmptyColor();
     }
 
-    public void setEmptyColor(Color color)
-    {
+    public void setEmptyColor(Color color) {
         Color old = getScale().getEmptyColor();
         getScale().setEmptyColor(color);
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer)
-    {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
         decoration.reset();
 
         double v = toDouble(matrix, row, column, layer);
 
-        if (Double.isNaN(v))
-        {
+        if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;
@@ -238,8 +211,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale>
 
         boolean useScale = true;
 
-        if (useCorrection)
-        {
+        if (useCorrection) {
             Object corrValue = correctedValueIndex >= 0 ? matrix.getCellValue(row, column, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);

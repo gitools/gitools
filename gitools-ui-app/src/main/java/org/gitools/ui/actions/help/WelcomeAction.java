@@ -33,13 +33,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class WelcomeAction extends BaseAction
-{
+public class WelcomeAction extends BaseAction {
 
     private static final long serialVersionUID = 6622410876631791866L;
 
-    public WelcomeAction()
-    {
+    public WelcomeAction() {
         super("Welcome");
         setDesc("View the welcome");
         setMnemonic(KeyEvent.VK_W);
@@ -47,8 +45,7 @@ public class WelcomeAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         AbstractEditor view = new WelcomeEditor();
         AppFrame.get().getEditorsPanel().addEditor(view);
     }

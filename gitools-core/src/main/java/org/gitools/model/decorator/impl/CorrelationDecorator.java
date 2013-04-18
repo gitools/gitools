@@ -23,11 +23,9 @@ package org.gitools.model.decorator.impl;
 
 import org.gitools.utils.colorscale.impl.CorrelationColorScale;
 
-public class CorrelationDecorator extends LinearDecorator
-{
+public class CorrelationDecorator extends LinearDecorator {
 
-    public CorrelationDecorator()
-    {
+    public CorrelationDecorator() {
         super(new CorrelationColorScale());
     }
 }

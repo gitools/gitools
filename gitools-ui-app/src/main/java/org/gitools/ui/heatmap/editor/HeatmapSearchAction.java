@@ -30,13 +30,11 @@ import org.gitools.ui.platform.editor.IEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class HeatmapSearchAction extends BaseAction
-{
+public class HeatmapSearchAction extends BaseAction {
 
     private final boolean searchColumns;
 
-    public HeatmapSearchAction(boolean searchColumns)
-    {
+    public HeatmapSearchAction(boolean searchColumns) {
         super("Search");
 
         this.searchColumns = searchColumns;
@@ -48,14 +46,12 @@ public class HeatmapSearchAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         IEditor currentEditor = editorPanel.getSelectedEditor();
 
-        if (!(currentEditor instanceof HeatmapEditor))
-        {
+        if (!(currentEditor instanceof HeatmapEditor)) {
             return;
         }
 

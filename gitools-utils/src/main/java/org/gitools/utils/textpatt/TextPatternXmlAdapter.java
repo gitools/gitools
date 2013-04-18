@@ -28,19 +28,16 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * @noinspection ALL
  */
-public class TextPatternXmlAdapter extends XmlAdapter<String, TextPattern>
-{
+public class TextPatternXmlAdapter extends XmlAdapter<String, TextPattern> {
 
     @NotNull
     @Override
-    public TextPattern unmarshal(String v) throws Exception
-    {
+    public TextPattern unmarshal(String v) throws Exception {
         return new TextPattern(v);
     }
 
     @Override
-    public String marshal(@NotNull TextPattern v) throws Exception
-    {
+    public String marshal(@NotNull TextPattern v) throws Exception {
         return v.getText();
     }
 

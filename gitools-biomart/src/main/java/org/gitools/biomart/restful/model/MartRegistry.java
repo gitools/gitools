@@ -34,24 +34,20 @@ import java.util.List;
  */
 @XmlRootElement(name = "MartRegistry")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MartRegistry
-{
+public class MartRegistry {
 
     @XmlElement(name = "MartURLLocation")
     private List<MartLocation> locations;
 
-    public MartRegistry()
-    {
+    public MartRegistry() {
         this.locations = new ArrayList<MartLocation>();
     }
 
-    public MartRegistry(MartLocation[] locations)
-    {
+    public MartRegistry(MartLocation[] locations) {
         this.locations = new ArrayList<MartLocation>(Arrays.asList(locations));
     }
 
-    public MartRegistry(List<MartLocation> locations)
-    {
+    public MartRegistry(List<MartLocation> locations) {
         this.locations = locations;
     }
 
@@ -61,13 +57,11 @@ public class MartRegistry
 			locations.add(new MartLocation(mart));
 	}*/
 
-    public List<MartLocation> getLocations()
-    {
+    public List<MartLocation> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<MartLocation> locations)
-    {
+    public void setLocations(List<MartLocation> locations) {
         this.locations = locations;
     }
 }

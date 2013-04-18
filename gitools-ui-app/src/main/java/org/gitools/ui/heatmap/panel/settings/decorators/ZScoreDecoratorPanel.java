@@ -31,8 +31,7 @@ import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 
-public class ZScoreDecoratorPanel extends DecoratorPanel
-{
+public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
     private JTextField leftMinColor;
     private JTextField leftMaxColor;
@@ -44,14 +43,12 @@ public class ZScoreDecoratorPanel extends DecoratorPanel
     private JCheckBox filterByCheckBox;
     private JComboBox filterValue;
 
-    public ZScoreDecoratorPanel()
-    {
+    public ZScoreDecoratorPanel() {
         super("Z-Score scale", new ZScoreDecorator());
     }
 
     @Override
-    public void bind()
-    {
+    public void bind() {
 
         Bindings.bind(leftMinColor, "color", model(ZScoreDecorator.PROPERTY_LEFT_MIN_COLOR));
         Bindings.bind(leftMaxColor, "color", model(ZScoreDecorator.PROPERTY_LEFT_MAX_COLOR));
@@ -79,13 +76,11 @@ public class ZScoreDecoratorPanel extends DecoratorPanel
     }
 
     @Override
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         this.leftMinColor = new MyWebColorChooserField();
         this.leftMaxColor = new MyWebColorChooserField();
         this.rightMinColor = new MyWebColorChooserField();

@@ -26,23 +26,19 @@ import org.gitools.persistence.IResourceLocator;
 
 import java.util.ArrayList;
 
-public class GeneSet extends ArrayList<String> implements IResource
-{
+public class GeneSet extends ArrayList<String> implements IResource {
 
     private IResourceLocator locator;
 
-    public GeneSet()
-    {
+    public GeneSet() {
         super();
     }
 
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 }

@@ -41,105 +41,86 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class SaveFilePage extends AbstractWizardPage
-{
+public class SaveFilePage extends AbstractWizardPage {
 
     private FileFormat[] formats;
 
     /**
      * Creates new form SaveFilePage
      */
-    public SaveFilePage()
-    {
+    public SaveFilePage() {
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
 
         initComponents();
 
-        fileName.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        fileName.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 setComplete(!fileName.getText().isEmpty());
                 updateGeneratedFile();
             }
         });
 
-        folder.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        folder.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateGeneratedFile();
             }
         });
 
-        format.addActionListener(new ActionListener()
-        {
+        format.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 updateGeneratedFile();
             }
         });
     }
 
-    private void updateGeneratedFile()
-    {
+    private void updateGeneratedFile() {
         File file = getPathAsFile();
         String fn = file.getAbsolutePath();
         path.setText(fn);
-        if (isComplete() && file.exists())
-        {
+        if (isComplete() && file.exists()) {
             setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
-        }
-        else
-        {
+        } else {
             setMessage(MessageStatus.INFO, "");
         }
 
         FileFormat fmt = getFormat();
-        if (formats != null && formats.length > 1 && fmt != null && !fmt.checkExtension(fn))
-        {
+        if (formats != null && formats.length > 1 && fmt != null && !fmt.checkExtension(fn)) {
             setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
         }
     }
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
     /**
      * Return only the file name
      */
-    public String getFileNameWithoutExtension()
-    {
+    public String getFileNameWithoutExtension() {
         return fileName.getText();
     }
 
-    public void setFileNameWithoutExtension(String name)
-    {
+    public void setFileNameWithoutExtension(String name) {
         fileName.setText(name);
     }
 
     /**
      * Return only the folder
      */
-    public String getFolder()
-    {
+    public String getFolder() {
         return folder.getText();
     }
 
-    public void setFolder(String folderPath)
-    {
+    public void setFolder(String folderPath) {
         folder.setText(folderPath);
     }
 
-    public void setFormats(FileFormat[] formats)
-    {
+    public void setFormats(FileFormat[] formats) {
         /*boolean active = formats != null && formats.length > 0;
         formatLabel.setVisible(active);
 		format.setVisible(active);*/
@@ -149,32 +130,27 @@ public class SaveFilePage extends AbstractWizardPage
     }
 
     @Nullable
-    public FileFormat getFormat()
-    {
+    public FileFormat getFormat() {
         return (FileFormat) format.getSelectedItem();
     }
 
-    public void setFormatsVisible(boolean visible)
-    {
+    public void setFormatsVisible(boolean visible) {
         formatLabel.setVisible(visible);
         format.setVisible(visible);
     }
 
     /* Returns the file name with extension appended */
     @NotNull
-    public String getFileName()
-    {
+    public String getFileName() {
         StringBuilder sb = new StringBuilder();
         String name = getFileNameWithoutExtension();
         sb.append(name);
         File file = new File(name);
 
         String ext = FileChooserUtils.getExtension(file);
-        if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0)
-        {
+        if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0) {
             FileFormat fmt = (FileFormat) format.getSelectedItem();
-            if (!name.endsWith("."))
-            {
+            if (!name.endsWith(".")) {
                 sb.append('.');
             }
             sb.append(fmt.getExtension());
@@ -186,8 +162,7 @@ public class SaveFilePage extends AbstractWizardPage
     /**
      * Returns the full path: folder + file + ext
      */
-    public String getPath()
-    {
+    public String getPath() {
         return getPathAsFile().getAbsolutePath();
     }
 
@@ -195,11 +170,9 @@ public class SaveFilePage extends AbstractWizardPage
      * Returns the full path as a file
      */
     @NotNull
-    public File getPathAsFile()
-    {
+    public File getPathAsFile() {
         String folderName = folder.getText();
-        if (folderName.isEmpty())
-        {
+        if (folderName.isEmpty()) {
             folderName = System.getProperty("user.dir");
         }
 
@@ -214,8 +187,7 @@ public class SaveFilePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         fileName = new javax.swing.JTextField();
@@ -233,10 +205,8 @@ public class SaveFilePage extends AbstractWizardPage
         fileName.setFocusCycleRoot(true);
 
         browseFolderBtn.setText("Browse...");
-        browseFolderBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        browseFolderBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseFolderBtnActionPerformed(evt);
             }
         });
@@ -250,10 +220,8 @@ public class SaveFilePage extends AbstractWizardPage
         path.setEditable(false);
 
         browseFileBtn.setText("Browse...");
-        browseFileBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        browseFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseFileBtnActionPerformed(evt);
             }
         });
@@ -264,31 +232,24 @@ public class SaveFilePage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(fileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(browseFileBtn)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(folder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(browseFolderBtn)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(formatLabel).addComponent(format, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel4).addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap(241, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_browseFolderBtnActionPerformed
+    private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
         File selPath = FileChooserUtils.selectPath("Select folder", folder.getText());
 
-        if (selPath != null)
-        {
+        if (selPath != null) {
             folder.setText(selPath.getAbsolutePath());
         }
     }//GEN-LAST:event_browseFolderBtnActionPerformed
 
-    private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_browseFileBtnActionPerformed
-        FileFormatFilter ff = new FileFormatFilter("Known files")
-        {
+    private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFileBtnActionPerformed
+        FileFormatFilter ff = new FileFormatFilter("Known files") {
             @Override
-            public boolean accept(boolean directory, String fileName)
-            {
-                if (directory)
-                {
+            public boolean accept(boolean directory, String fileName) {
+                if (directory) {
                     return true;
                 }
 
                 for (FileFormat fmt : formats)
-                    if (fmt.checkExtension(fileName))
-                    {
+                    if (fmt.checkExtension(fileName)) {
                         return true;
                     }
 
@@ -297,12 +258,10 @@ public class SaveFilePage extends AbstractWizardPage
 
             @NotNull
             @Override
-            public String getDescription()
-            {
+            public String getDescription() {
                 StringBuilder sb = new StringBuilder();
                 sb.append("Supported formats");
-                if (formats != null && formats.length > 0)
-                {
+                if (formats != null && formats.length > 0) {
                     sb.append(" (*.").append(formats[0].getExtension());
                     for (int i = 1; i < formats.length; i++)
                         sb.append(", *.").append(formats[i].getExtension());
@@ -314,14 +273,12 @@ public class SaveFilePage extends AbstractWizardPage
 
         File selFile = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFormatFilter[]{ff});
 
-        if (selFile != null)
-        {
+        if (selFile != null) {
             String fn = selFile.getName();
             fileName.setText(fn);
             folder.setText(selFile.getParentFile().getAbsolutePath());
             for (FileFormat f : formats)
-                if (f.checkExtension(fn))
-                {
+                if (f.checkExtension(fn)) {
                     format.setSelectedItem(f);
                 }
         }

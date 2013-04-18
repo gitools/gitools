@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlValue;
 import java.io.Serializable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Property implements Serializable
-{
+public class Property implements Serializable {
 
     private static final long serialVersionUID = -391476933832883165L;
 
@@ -39,38 +38,31 @@ public class Property implements Serializable
     @XmlValue
     private String value;
 
-    public Property()
-    {
+    public Property() {
     }
 
-    public Property(String name, String value)
-    {
+    public Property(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public void setNameAndValue(String name, String value)
-    {
+    public void setNameAndValue(String name, String value) {
         setName(name);
         setValue(value);
     }

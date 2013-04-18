@@ -23,37 +23,29 @@ package org.gitools.model.decorator;
 
 import org.jetbrains.annotations.Nullable;
 
-public class DecoratorDescriptor
-{
+public class DecoratorDescriptor {
 
     private String name;
     private Class<? extends Decorator> decoratorClass;
 
-    public DecoratorDescriptor(String name, Class<? extends Decorator> decoratorClass)
-    {
+    public DecoratorDescriptor(String name, Class<? extends Decorator> decoratorClass) {
         this.name = name;
         this.decoratorClass = decoratorClass;
     }
 
-    public final String getName()
-    {
+    public final String getName() {
         return name;
     }
 
-    public final Class<? extends Decorator> getDecoratorClass()
-    {
+    public final Class<? extends Decorator> getDecoratorClass() {
         return decoratorClass;
     }
 
     @Override
-    public boolean equals(@Nullable Object obj)
-    {
-        if (obj == null)
-        {
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null) {
             return false;
-        }
-        else if (!(obj instanceof DecoratorDescriptor))
-        {
+        } else if (!(obj instanceof DecoratorDescriptor)) {
             return false;
         }
         DecoratorDescriptor other = (DecoratorDescriptor) obj;
@@ -61,14 +53,12 @@ public class DecoratorDescriptor
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return 17 * name.hashCode() + decoratorClass.hashCode();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 }

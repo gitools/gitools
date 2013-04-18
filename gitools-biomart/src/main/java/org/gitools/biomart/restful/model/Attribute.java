@@ -28,19 +28,16 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Attribute", propOrder = {"name"})
-public class Attribute
-{
+public class Attribute {
 
     @XmlAttribute(required = true)
     private String name;
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 

@@ -28,11 +28,9 @@ import org.gitools.stats.test.results.CommonResult;
 import org.gitools.stats.test.results.ZScoreResult;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ZscoreTest extends AbstractTest
-{
+public abstract class ZscoreTest extends AbstractTest {
 
-    class PopulationStatistics
-    {
+    class PopulationStatistics {
         public double mean;
         public double stdev;
     }
@@ -41,35 +39,30 @@ public abstract class ZscoreTest extends AbstractTest
 
     private DoubleMatrix1D population;
 
-    ZscoreTest(Statistic statCalc)
-    {
+    ZscoreTest(Statistic statCalc) {
         this.statCalc = statCalc;
     }
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "zscore-" + statCalc.getName();
     }
 
     @NotNull
     @Override
-    public Class<? extends CommonResult> getResultClass()
-    {
+    public Class<? extends CommonResult> getResultClass() {
         return ZScoreResult.class;
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population)
-    {
+    public void processPopulation(String name, DoubleMatrix1D population) {
         this.population = population;
     }
 
     @NotNull
     @Override
-    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
-    {
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
 
         double observed;
         double zscore;

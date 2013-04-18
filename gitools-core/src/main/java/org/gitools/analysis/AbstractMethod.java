@@ -26,8 +26,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class AbstractMethod implements Method
-{
+public class AbstractMethod implements Method {
 
     private final String id;
     private String name;
@@ -35,8 +34,7 @@ public class AbstractMethod implements Method
     private Class<?> resultClass;
     private Properties properties;
 
-    protected AbstractMethod(String id, String name, String desc, Class<?> resultClass, Properties properties)
-    {
+    protected AbstractMethod(String id, String name, String desc, Class<?> resultClass, Properties properties) {
 
         this.id = id;
         this.name = name;
@@ -46,53 +44,44 @@ public class AbstractMethod implements Method
     }
 
     @Override
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    protected void setName(String name)
-    {
+    protected void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return desc;
     }
 
-    protected void setDescription(String desc)
-    {
+    protected void setDescription(String desc) {
         this.desc = desc;
     }
 
     @Override
-    public Class<?> getResultClass()
-    {
+    public Class<?> getResultClass() {
         return resultClass;
     }
 
-    public void setResultClass(Class<?> resultClass)
-    {
+    public void setResultClass(Class<?> resultClass) {
         this.resultClass = resultClass;
     }
 
     @Override
-    public Properties getProperties()
-    {
+    public Properties getProperties() {
         return properties;
     }
 
     @Override
-    public void setProperties(Properties properties)
-    {
+    public void setProperties(Properties properties) {
         this.properties = properties;
     }
 

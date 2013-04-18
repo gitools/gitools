@@ -34,24 +34,20 @@ import javax.swing.event.*;
 /**
  * @noinspection ALL
  */
-public class ColoredLabelsSourcePage extends AbstractWizardPage
-{
+public class ColoredLabelsSourcePage extends AbstractWizardPage {
 
     private final HeatmapDimension hdim;
     private final AnnPatClusteringMethod method;
 
-    public ColoredLabelsSourcePage(@NotNull HeatmapDimension hdim, AnnPatClusteringMethod method)
-    {
+    public ColoredLabelsSourcePage(@NotNull HeatmapDimension hdim, AnnPatClusteringMethod method) {
         this.hdim = hdim;
         this.method = method;
 
         initComponents();
 
-        ChangeListener optListener = new ChangeListener()
-        {
+        ChangeListener optListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e)
-            {
+            public void stateChanged(ChangeEvent e) {
                 sourceChanged();
             }
         };
@@ -60,26 +56,21 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         patOpt.addChangeListener(optListener);
 
         IAnnotations am = hdim.getAnnotations();
-        if (am != null && !am.getLabels().isEmpty())
-        {
+        if (am != null && !am.getLabels().isEmpty()) {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
             for (String key : am.getLabels())
                 model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
-        }
-        else
-        {
+        } else {
             patOpt.setSelected(true);
             annOpt.setEnabled(false);
         }
 
-        annList.addListSelectionListener(new ListSelectionListener()
-        {
+        annList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 updateCompleted();
             }
         });
@@ -87,11 +78,9 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         annSepCb.setModel(new DefaultComboBoxModel(new String[]{", ", "-", " | ", " / ", " > ", "::"}));
         annSepCb.setSelectedIndex(0);
 
-        patText.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patText.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateCompleted();
             }
         });
@@ -100,15 +89,13 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         setComplete(true);
     }
 
-    private void updateCompleted()
-    {
+    private void updateCompleted() {
         boolean completed = annOpt.isSelected() && annList.getSelectedIndices().length > 0 || patOpt.isSelected() && patText.getDocument().getLength() > 0;
 
         setComplete(completed);
     }
 
-    private void sourceChanged()
-    {
+    private void sourceChanged() {
         boolean annSel = annOpt.isSelected();
         annList.setEnabled(annSel);
         annSepLabel.setEnabled(annSel);
@@ -117,17 +104,14 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
         method.setPattern(getPattern());
     }
 
-    String getPattern()
-    {
-        if (patOpt.isSelected())
-        {
+    String getPattern() {
+        if (patOpt.isSelected()) {
             return patText.getText();
         }
 
@@ -138,8 +122,7 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         sb.append("${");
         sb.append(selectedValues[0]);
         sb.append("}");
-        for (int i = 1; i < selectedValues.length; i++)
-        {
+        for (int i = 1; i < selectedValues.length; i++) {
             sb.append(annSepCb.getSelectedItem());
             sb.append("${");
             sb.append(selectedValues[i]);
@@ -149,10 +132,8 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
-    public String getClusterTitle()
-    {
-        if (patOpt.isSelected())
-        {
+    public String getClusterTitle() {
+        if (patOpt.isSelected()) {
             return patText.getText();
         }
 
@@ -161,8 +142,7 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
         Object[] indices = annList.getSelectedValues();
 
         sb.append(indices[0]);
-        for (int i = 1; i < indices.length; i++)
-        {
+        for (int i = 1; i < indices.length; i++) {
             sb.append(annSepCb.getSelectedItem());
             sb.append(indices[i]);
         }
@@ -178,8 +158,7 @@ public class ColoredLabelsSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         annOpt = new javax.swing.JRadioButton();

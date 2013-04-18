@@ -26,8 +26,7 @@ import org.gitools.matrix.model.matrix.element.AttributeDef;
 /**
  * @noinspection ALL
  */
-public class OverlappingResult
-{
+public class OverlappingResult {
 
     private int columnCount;
 
@@ -45,12 +44,10 @@ public class OverlappingResult
 
     private double maxIntersectionProp;
 
-    public OverlappingResult()
-    {
+    public OverlappingResult() {
     }
 
-    public OverlappingResult(int rowCount, int columnCount, int bothCount)
-    {
+    public OverlappingResult(int rowCount, int columnCount, int bothCount) {
         this.columnCount = columnCount;
         this.rowCount = rowCount;
         this.bothCount = bothCount;
@@ -58,109 +55,90 @@ public class OverlappingResult
     }
 
     @AttributeDef(id = "column-count", name = "Column count", description = "Number of positive events in column condintion")
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return columnCount;
     }
 
-    public void setColumnCount(int columnPositiveCount)
-    {
+    public void setColumnCount(int columnPositiveCount) {
         this.columnCount = columnPositiveCount;
     }
 
     @AttributeDef(id = "row-count", name = "Row count", description = "Number of positive events in row condintion")
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return rowCount;
     }
 
-    public void setRowCount(int rowPositiveCount)
-    {
+    public void setRowCount(int rowPositiveCount) {
         this.rowCount = rowPositiveCount;
     }
 
     @AttributeDef(id = "both-count", name = "Both count", description = "Number of positive events in both condintions")
-    public int getBothCount()
-    {
+    public int getBothCount() {
         return bothCount;
     }
 
-    public void setBothCount(int bothPositiveCount)
-    {
+    public void setBothCount(int bothPositiveCount) {
         this.bothCount = bothPositiveCount;
     }
 
     @AttributeDef(id = "column-only-prop", name = "Column only proportion", description = "Proportion of events only in column condition out of the union")
-    public double getColumnOnlyProp()
-    {
+    public double getColumnOnlyProp() {
         return columnOnlyProp;
     }
 
-    public void setColumnOnlyProp(double columnOnlyProp)
-    {
+    public void setColumnOnlyProp(double columnOnlyProp) {
         this.columnOnlyProp = columnOnlyProp;
     }
 
     @AttributeDef(id = "row-only-prop", name = "Row only proportion", description = "Proportion of events only in row condition out of the union")
-    public double getRowOnlyProp()
-    {
+    public double getRowOnlyProp() {
         return rowOnlyProp;
     }
 
-    public void setRowOnlyProp(double rowOnlyProp)
-    {
+    public void setRowOnlyProp(double rowOnlyProp) {
         this.rowOnlyProp = rowOnlyProp;
     }
 
     @AttributeDef(id = "column-intersection-prop", name = "Column intersection proportion", description = "Proportion of shared events in column condition")
-    public double getColumnIntersectionProp()
-    {
+    public double getColumnIntersectionProp() {
         return columnIntersectionProp;
     }
 
-    public void setColumnIntersectionProp(double columnIntersectionProp)
-    {
+    public void setColumnIntersectionProp(double columnIntersectionProp) {
         this.columnIntersectionProp = columnIntersectionProp;
     }
 
     @AttributeDef(id = "row-intersection-prop", name = "Row intersection proportion", description = "Proportion of shared events in row condition")
-    public double getRowIntersectionProp()
-    {
+    public double getRowIntersectionProp() {
         return rowIntersectionProp;
     }
 
-    public void setRowIntersectionProp(double rowIntersectionProp)
-    {
+    public void setRowIntersectionProp(double rowIntersectionProp) {
         this.rowIntersectionProp = rowIntersectionProp;
     }
 
     @AttributeDef(id = "max-intersection-prop", name = "Maximum intersection proportion", description = "Maximum proportion of shared events")
-    public double getMaxIntersectionProp()
-    {
+    public double getMaxIntersectionProp() {
         return maxIntersectionProp;
     }
 
-    public void setMaxIntersectionProp(double maxIntersectionProp)
-    {
+    public void setMaxIntersectionProp(double maxIntersectionProp) {
         this.maxIntersectionProp = maxIntersectionProp;
     }
 
     @AttributeDef(id = "jaccard-index", name = "Jaccard index", description = "Proportion of shared events in both conditions")
-    public double getJaccardIndex()
-    {
+    public double getJaccardIndex() {
         return jaccardIndex;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setJaccardIndex(double jaccardIndex)
-    {
+    public void setJaccardIndex(double jaccardIndex) {
         this.jaccardIndex = jaccardIndex;
     }
 
-    final void calculateProportions()
-    {
+    final void calculateProportions() {
         double union = columnCount + rowCount - bothCount;
 
         double minCount = (double) Math.min(columnCount, rowCount);

@@ -34,8 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class ModulesOrganismPage extends FilteredListPage
-{
+public class ModulesOrganismPage extends FilteredListPage {
 
     private final ModulesImporter importer;
 
@@ -43,8 +42,7 @@ public class ModulesOrganismPage extends FilteredListPage
     private Version version;
     private boolean loaded;
 
-    public ModulesOrganismPage(ModulesImporter importer)
-    {
+    public ModulesOrganismPage(ModulesImporter importer) {
         this.importer = importer;
         this.loaded = false;
 
@@ -52,34 +50,26 @@ public class ModulesOrganismPage extends FilteredListPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
-        if (!loaded || modCategory != importer.getModuleCategory() || version != importer.getVersion())
-        {
+        if (!loaded || modCategory != importer.getModuleCategory() || version != importer.getVersion()) {
 
-            JobThread.execute(AppFrame.get(), new JobRunnable()
-            {
+            JobThread.execute(AppFrame.get(), new JobRunnable() {
                 @Override
-                public void run(@NotNull IProgressMonitor monitor)
-                {
-                    try
-                    {
+                public void run(@NotNull IProgressMonitor monitor) {
+                    try {
                         monitor.begin("Getting available organisms ...", 1);
 
                         modCategory = importer.getModuleCategory();
                         version = importer.getVersion();
                         final Organism[] organisms = importer.getOrganisms();
-                        SwingUtilities.invokeLater(new Runnable()
-                        {
+                        SwingUtilities.invokeLater(new Runnable() {
                             @Override
-                            public void run()
-                            {
+                            public void run() {
                                 setListData(organisms);
                                 for (Organism o : organisms)
-                                    if (o.getName().equals("homo sapiens"))
-                                    {
+                                    if (o.getName().equals("homo sapiens")) {
                                         setSelectedValue(o);
                                     }
                                 loaded = true;
@@ -87,8 +77,7 @@ public class ModulesOrganismPage extends FilteredListPage
                         });
 
                         monitor.end();
-                    } catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         monitor.exception(ex);
                     }
                 }
@@ -97,14 +86,12 @@ public class ModulesOrganismPage extends FilteredListPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         importer.setOrganism(getOrganism());
     }
 
     @NotNull
-    private Organism getOrganism()
-    {
+    private Organism getOrganism() {
         return (Organism) getSelectedValue();
     }
 }

@@ -36,29 +36,24 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Help
-{
+public abstract class Help {
 
     private static Help instance;
 
-    public static class UrlMap
-    {
+    public static class UrlMap {
         private final Pattern pattern;
         private final String url;
 
-        public UrlMap(Pattern pattern, String url)
-        {
+        public UrlMap(Pattern pattern, String url) {
             this.pattern = pattern;
             this.url = url;
         }
 
-        public Pattern getPattern()
-        {
+        public Pattern getPattern() {
             return pattern;
         }
 
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
     }
@@ -66,51 +61,40 @@ public abstract class Help
     private final PropertiesExpansion properties;
     private final List<UrlMap> urlMap;
 
-    Help()
-    {
+    Help() {
         this(new Properties(), new ArrayList<UrlMap>());
     }
 
-    private Help(Properties properties, List<UrlMap> urlMap)
-    {
+    private Help(Properties properties, List<UrlMap> urlMap) {
         this.properties = new PropertiesExpansion(properties);
         this.urlMap = urlMap;
     }
 
-    public static Help getDefault()
-    {
-        if (instance == null)
-        {
+    public static Help getDefault() {
+        if (instance == null) {
             instance = new DesktopNavigatorHelp();
         }
 
         return instance;
     }
 
-    public void loadProperties(@NotNull InputStream in) throws IOException
-    {
+    public void loadProperties(@NotNull InputStream in) throws IOException {
         properties.load(in);
         in.close();
     }
 
-    public void loadUrlMap(InputStream in) throws Exception
-    {
+    public void loadUrlMap(InputStream in) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
         int lineNum = 1;
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             line = line.trim();
-            if (!line.isEmpty())
-            {
+            if (!line.isEmpty()) {
                 String[] fields = line.split("\t");
 
-                if (fields.length == 2)
-                {
+                if (fields.length == 2) {
                     urlMap.add(new UrlMap(Pattern.compile(fields[0]), fields[1]));
-                }
-                else
-                {
+                } else {
                     throw new Exception("Error reading help url mappings:" +
                             " Two columns expected at line " + lineNum);
                 }
@@ -121,15 +105,12 @@ public abstract class Help
     }
 
     @NotNull
-    URL getHelpUrl(@NotNull HelpContext context) throws MalformedURLException
-    {
+    URL getHelpUrl(@NotNull HelpContext context) throws MalformedURLException {
         String id = context.getId();
         String urlStr = null; // FIXME Use a default url
-        for (UrlMap map : urlMap)
-        {
+        for (UrlMap map : urlMap) {
             Matcher matcher = map.getPattern().matcher(id);
-            if (matcher.matches())
-            {
+            if (matcher.matches()) {
                 Properties p = new Properties(properties);
                 for (int i = 0; i < matcher.groupCount(); i++)
                     p.setProperty("" + i, matcher.group(i));
@@ -145,8 +126,7 @@ public abstract class Help
     public abstract void showHelp(HelpContext context) throws HelpException;
 
     @NotNull
-    private String expandPattern(@NotNull Properties properties, @NotNull String pattern)
-    {
+    private String expandPattern(@NotNull Properties properties, @NotNull String pattern) {
 
         final StringBuilder output = new StringBuilder();
         final StringBuilder var = new StringBuilder();
@@ -155,43 +135,32 @@ public abstract class Help
 
         int pos = 0;
 
-        while (pos < pattern.length())
-        {
+        while (pos < pattern.length()) {
 
             char ch = pattern.charAt(pos++);
 
-            switch (state)
-            {
+            switch (state) {
                 case 'C': // copying normal characters
-                    if (ch == '$')
-                    {
+                    if (ch == '$') {
                         state = '$';
-                    }
-                    else
-                    {
+                    } else {
                         output.append(ch);
                     }
                     break;
 
                 case '$': // start of variable
-                    if (ch == '{')
-                    {
+                    if (ch == '{') {
                         state = 'V';
-                    }
-                    else
-                    {
+                    } else {
                         output.append('$').append(ch);
                         state = 'C';
                     }
                     break;
 
                 case 'V': // reading name of variable
-                    if (ch == '}')
-                    {
+                    if (ch == '}') {
                         state = 'X';
-                    }
-                    else
-                    {
+                    } else {
                         var.append(ch);
                     }
                     break;
@@ -205,8 +174,7 @@ public abstract class Help
             }
         }
 
-        switch (state)
-        {
+        switch (state) {
             case '$':
                 output.append('$');
                 break;

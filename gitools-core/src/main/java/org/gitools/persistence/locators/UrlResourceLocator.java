@@ -23,6 +23,7 @@ package org.gitools.persistence.locators;
 
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.PersistenceException;
+import org.gitools.persistence.PersistenceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,10 +37,11 @@ public class UrlResourceLocator implements IResourceLocator {
 
     private static final Pattern ABSOLUTE_FILE_PATH = Pattern.compile("^(\\/.*|[a-zA-Z]\\:\\\\)");
     private static final Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+:\\/\\/.*");
-
     private URL url;
     @Nullable
     private File file;
+    private transient String baseName;
+    private transient String name;
 
     public UrlResourceLocator(@NotNull File file) throws PersistenceException {
         this.file = file;
@@ -79,20 +81,26 @@ public class UrlResourceLocator implements IResourceLocator {
 
     @Override
     public String getBaseName() {
-        String name = getName();
 
-        int lastDot = name.lastIndexOf('.');
-        if (lastDot != -1) {
-            name = name.substring(0, lastDot);
+        if (baseName == null) {
+            String name = getName();
+            String extension = PersistenceManager.get().getFormatExtension(name);
+            int startExtension = name.indexOf(extension);
+            baseName = name.substring(0, startExtension - 1);
         }
 
-        return name;
+        return baseName;
     }
 
     @Override
     public String getName() {
-        String name = url.toString();
-        return name.substring(name.lastIndexOf('/') + 1);
+
+        if (name == null) {
+            String url = this.url.toString();
+            name = url.substring(url.lastIndexOf('/') + 1);
+        }
+
+        return name;
     }
 
     @Override

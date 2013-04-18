@@ -24,8 +24,7 @@ package org.gitools.utils.tools.exception;
 /**
  * @noinspection ALL
  */
-public class ToolUsageException extends ToolException
-{
+public class ToolUsageException extends ToolException {
 
     private static final long serialVersionUID = -6245621629932060037L;
 

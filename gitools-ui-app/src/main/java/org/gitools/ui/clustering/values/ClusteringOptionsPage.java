@@ -30,46 +30,38 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-class ClusteringOptionsPage extends AbstractWizardPage
-{
+class ClusteringOptionsPage extends AbstractWizardPage {
 
     // model wrapper
-    private static class MatrixAttributeWrapper
-    {
+    private static class MatrixAttributeWrapper {
 
         private IMatrixLayer attribute;
 
-        public MatrixAttributeWrapper(IMatrixLayer a)
-        {
+        public MatrixAttributeWrapper(IMatrixLayer a) {
             this.attribute = a;
         }
 
-        public IMatrixLayer getMatrixAttribute()
-        {
+        public IMatrixLayer getMatrixAttribute() {
             return attribute;
         }
 
-        public void setMatrixAttribute(IMatrixLayer a)
-        {
+        public void setMatrixAttribute(IMatrixLayer a) {
             this.attribute = a;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return attribute.getName();
         }
     }
 
-    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> cellAttributes, int index)
-    {
+    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> cellAttributes, int index) {
 
         initComponents();
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         MatrixAttributeWrapper attrWrapper = null;
-        for (IMatrixLayer attr : cellAttributes)
-        {
+        for (IMatrixLayer attr : cellAttributes) {
             attrWrapper = new MatrixAttributeWrapper(attr);
             model.addElement(attrWrapper);
         }
@@ -83,48 +75,39 @@ class ClusteringOptionsPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    public int getDataAttribute()
-    {
+    public int getDataAttribute() {
         return attributeCb.getSelectedIndex();
     }
 
-    public boolean isApplyToRows()
-    {
+    public boolean isApplyToRows() {
         return rowsRadio.isSelected();
     }
 
-    public boolean isPreprocessing()
-    {
+    public boolean isPreprocessing() {
         return preprocessingChk.isSelected();
     }
 
-    public boolean isSort()
-    {
+    public boolean isSort() {
         return sortChk.isSelected();
     }
 
-    public boolean isHeaderSelected()
-    {
+    public boolean isHeaderSelected() {
         return headerChk.isSelected();
     }
 
-    public void setHeaderEnabled(boolean res)
-    {
+    public void setHeaderEnabled(boolean res) {
         headerChk.setEnabled(res);
     }
 
-    public boolean isNewickExportVisible()
-    {
+    public boolean isNewickExportVisible() {
         return newickChk.isVisible();
     }
 
-    public void setNewickExportVisible(boolean enabled)
-    {
+    public void setNewickExportVisible(boolean enabled) {
         newickChk.setVisible(enabled);
     }
 
-    public boolean isNewickExportSelected()
-    {
+    public boolean isNewickExportSelected() {
         return newickChk.isVisible() && newickChk.isSelected();
     }
 
@@ -136,8 +119,7 @@ class ClusteringOptionsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         jLabel5 = new javax.swing.JLabel();

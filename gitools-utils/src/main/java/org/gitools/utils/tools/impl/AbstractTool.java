@@ -39,53 +39,43 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractTool<Context> implements ToolLifeCycle<Context>
-{
+public abstract class AbstractTool<Context> implements ToolLifeCycle<Context> {
 
     private Context context;
 
-    public Context getContext()
-    {
+    public Context getContext() {
         return context;
     }
 
     @Override
-    public void initialize(Context context) throws ToolException
-    {
+    public void initialize(Context context) throws ToolException {
         this.context = context;
     }
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
-        if (!(argsObject instanceof BaseArguments))
-        {
+    public void validate(Object argsObject) throws ToolException {
+        if (!(argsObject instanceof BaseArguments)) {
             return;
         }
 
         BaseArguments args = (BaseArguments) argsObject;
-        if (args.loglevel != null)
-        {
+        if (args.loglevel != null) {
             Pattern pat = Pattern.compile("^(.*)=(.*)$");
 
-            for (String loglevel : args.loglevel)
-            {
+            for (String loglevel : args.loglevel) {
                 Matcher mat = pat.matcher(loglevel);
-                if (!mat.matches() || mat.groupCount() != 2)
-                {
+                if (!mat.matches() || mat.groupCount() != 2) {
                     throw new ToolValidationException("Invalid -loglevel argument: " + loglevel);
                 }
 
                 final String pkg = mat.group(1);
                 final String levelName = mat.group(2);
-                if (pkg == null || levelName == null)
-                {
+                if (pkg == null || levelName == null) {
                     throw new ToolValidationException("Invalid -loglevel package: " + loglevel);
                 }
 
                 final Level level = Level.toLevel(levelName);
-                if (level == null)
-                {
+                if (level == null) {
                     throw new ToolValidationException("Invalid -loglevel level name: " + loglevel);
                 }
 
@@ -93,15 +83,13 @@ public abstract class AbstractTool<Context> implements ToolLifeCycle<Context>
             }
         }
 
-        if (args.help)
-        {
+        if (args.help) {
             throw new ToolUsageException();
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
         /*if (!(argsObject instanceof BaseArguments))
             return;
 		
@@ -109,13 +97,11 @@ public abstract class AbstractTool<Context> implements ToolLifeCycle<Context>
     }
 
     @Override
-    public void uninitialize() throws ToolException
-    {
+    public void uninitialize() throws ToolException {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, @NotNull ToolDescriptor toolDesc, @NotNull CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, @NotNull ToolDescriptor toolDesc, @NotNull CmdLineParser parser) {
         outputStream.print(toolDesc.getName() + " usage:\n\t" +
                 appName + " " + toolDesc.getName());
 

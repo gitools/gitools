@@ -29,8 +29,7 @@ import java.io.PrintStream;
 /**
  * Interface implemented by each tool.
  */
-public interface ToolLifeCycle<Context>
-{
+public interface ToolLifeCycle<Context> {
 
     /**
      * Initialize tool.

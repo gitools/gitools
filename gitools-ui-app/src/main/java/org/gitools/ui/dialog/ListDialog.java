@@ -36,8 +36,7 @@ import javax.swing.event.ListSelectionListener;
 /**
  * @noinspection ALL
  */
-public class ListDialog<T> extends javax.swing.JDialog
-{
+public class ListDialog<T> extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -55,8 +54,7 @@ public class ListDialog<T> extends javax.swing.JDialog
     /**
      * Creates new form ListDialog
      */
-    public ListDialog(java.awt.Window parent, boolean modal, @NotNull T[] objects)
-    {
+    public ListDialog(java.awt.Window parent, boolean modal, @NotNull T[] objects) {
         super(parent);
         setModal(modal);
 
@@ -64,11 +62,9 @@ public class ListDialog<T> extends javax.swing.JDialog
 
         this.objects = objects;
 
-        list.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
+        list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 okButton.setEnabled(!list.getSelectionModel().isSelectionEmpty());
             }
         });
@@ -85,8 +81,7 @@ public class ListDialog<T> extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
@@ -98,8 +93,7 @@ public class ListDialog<T> extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -107,28 +101,22 @@ public class ListDialog<T> extends javax.swing.JDialog
         list = new javax.swing.JList();
 
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -146,26 +134,22 @@ public class ListDialog<T> extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -187,24 +171,20 @@ public class ListDialog<T> extends javax.swing.JDialog
      *
      * @noinspection UnusedDeclaration
      */
-    public void setSelectionMode(int selectionMode)
-    {
+    public void setSelectionMode(int selectionMode) {
         list.setSelectionMode(selectionMode);
     }
 
-    public int[] getSelectedIndices()
-    {
+    public int[] getSelectedIndices() {
         return list.getSelectedIndices();
     }
 
-    public Object[] getSelectedObjects()
-    {
+    public Object[] getSelectedObjects() {
         return list.getSelectedValues();
     }
 
     @NotNull
-    public T getSelectedObject()
-    {
+    public T getSelectedObject() {
         return (T) (list.getSelectedValues()[0]);
     }
 }

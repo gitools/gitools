@@ -24,8 +24,7 @@ package org.gitools.clustering;
 /**
  * @noinspection ALL
  */
-public interface ClusteringDataInstance
-{
+public interface ClusteringDataInstance {
 
     int getNumAttributes();
 

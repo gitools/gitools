@@ -24,21 +24,17 @@ package org.gitools.clustering;
 /**
  * @noinspection ALL
  */
-public class ClusteringException extends Exception
-{
+public class ClusteringException extends Exception {
 
-    public ClusteringException(String msg)
-    {
+    public ClusteringException(String msg) {
         super(msg);
     }
 
-    public ClusteringException(Throwable cause)
-    {
+    public ClusteringException(Throwable cause) {
         super(cause);
     }
 
-    public ClusteringException(String msg, Throwable cause)
-    {
+    public ClusteringException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

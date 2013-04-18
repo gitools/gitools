@@ -21,16 +21,13 @@
  */
 package org.gitools.modules.importer;
 
-public class ModulesImporterException extends Exception
-{
+public class ModulesImporterException extends Exception {
 
-    public ModulesImporterException(String msg)
-    {
+    public ModulesImporterException(String msg) {
         super(msg);
     }
 
-    public ModulesImporterException(Throwable cause)
-    {
+    public ModulesImporterException(Throwable cause) {
         super(cause);
     }
 

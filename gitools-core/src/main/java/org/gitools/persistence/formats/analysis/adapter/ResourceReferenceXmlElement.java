@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResourceReferenceXmlElement
-{
+public class ResourceReferenceXmlElement {
 
     @XmlAttribute
     private String format;
@@ -40,33 +39,27 @@ public class ResourceReferenceXmlElement
     @XmlAttribute
     private String path;
 
-    public ResourceReferenceXmlElement()
-    {
+    public ResourceReferenceXmlElement() {
     }
 
-    public ResourceReferenceXmlElement(String format, String path)
-    {
+    public ResourceReferenceXmlElement(String format, String path) {
         this.format = format;
         this.path = path;
     }
 
-    public String getFormat()
-    {
+    public String getFormat() {
         return format;
     }
 
-    public void setFormat(String format)
-    {
+    public void setFormat(String format) {
         this.format = format;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 

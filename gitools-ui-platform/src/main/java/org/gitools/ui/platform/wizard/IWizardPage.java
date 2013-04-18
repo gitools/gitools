@@ -30,8 +30,7 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public interface IWizardPage
-{
+public interface IWizardPage {
 
     @Nullable
     String getId();

@@ -33,26 +33,22 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.*;
 
-public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
-{
+public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
-    public GeneMatrixTransposedFormat()
-    {
+    public GeneMatrixTransposedFormat() {
         super(FileSuffixes.GENE_MATRIX_TRANSPOSED, DoubleBinaryMatrix.class);
     }
 
     @NotNull
     @Override
-    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Reading names ...", 1);
 
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
 
 
-        try
-        {
+        try {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -64,11 +60,9 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
 
             Map<String, Integer> rowIndices = new HashMap<String, Integer>();
 
-            while ((fields = parser.readNext()) != null)
-            {
+            while ((fields = parser.readNext()) != null) {
 
-                if (fields.length < 2)
-                {
+                if (fields.length < 2) {
                     throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
                 }
 
@@ -79,11 +73,9 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
                 int[] rows = new int[fields.length - 2];
                 colRowIndices.add(rows);
 
-                for (int i = 2; i < fields.length; i++)
-                {
+                for (int i = 2; i < fields.length; i++) {
                     Integer rowIndex = rowIndices.get(fields[i]);
-                    if (rowIndex == null)
-                    {
+                    if (rowIndex == null) {
                         rowIndex = rowIndices.size();
                         rowIndices.put(fields[i], rowIndex);
                     }
@@ -95,13 +87,10 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             // incorporate population labels
 
             String[] populationLabels = getPopulationLabels();
-            if (populationLabels != null)
-            {
-                for (String name : populationLabels)
-                {
+            if (populationLabels != null) {
+                for (String name : populationLabels) {
                     Integer index = rowIndices.get(name);
-                    if (index == null)
-                    {
+                    if (index == null) {
                         rowIndices.put(name, rowIndices.size());
                     }
                 }
@@ -130,8 +119,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             Iterator<String> colNameIt = colNames.iterator();
             Iterator<int[]> colRowsIt = colRowIndices.iterator();
 
-            while (colNameIt.hasNext())
-            {
+            while (colNameIt.hasNext()) {
                 matrix.setColumn(colIndex, colNameIt.next());
                 int[] rows = colRowsIt.next();
                 for (int row : rows)
@@ -144,8 +132,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             progressMonitor.info(matrix.getColumns().size() + " columns and " + matrix.getRows().size() + " rows");
 
             progressMonitor.end();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new PersistenceException(e);
         }
 
@@ -153,27 +140,22 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
 
-        try
-        {
+        try {
 
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             final int rowCount = matrix.getRows().size();
 
-            for (int ci = 0; ci < matrix.getColumns().size(); ci++)
-            {
+            for (int ci = 0; ci < matrix.getColumns().size(); ci++) {
                 pw.append(matrix.getLabel(ci));
                 pw.append('\t'); // description, but currently not used
-                for (int ri = 0; ri < rowCount; ri++)
-                {
+                for (int ri = 0; ri < rowCount; ri++) {
                     Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
-                    if (value == 1.0)
-                    {
+                    if (value == 1.0) {
                         pw.append('\t').append(matrix.internalRowLabel(ri));
                     }
                 }
@@ -181,8 +163,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             }
 
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 

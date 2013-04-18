@@ -24,8 +24,7 @@ package org.gitools.ui;
 /**
  * @noinspection ALL
  */
-public class IconNames
-{
+public class IconNames {
 
     public static final String info = "/img/info.png";
     public static final String fullscreen = "/img/fullscreen.png";

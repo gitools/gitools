@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.platform.wizard;
 
-public interface IWizardUpdateListener extends IWizardPageUpdateListener
-{
+public interface IWizardUpdateListener extends IWizardPageUpdateListener {
 
     void wizardUpdated(IWizard wizard);
 }

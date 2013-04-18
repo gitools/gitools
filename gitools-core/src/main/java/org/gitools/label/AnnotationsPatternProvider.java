@@ -24,29 +24,25 @@ package org.gitools.label;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 
-public class AnnotationsPatternProvider implements LabelProvider
-{
+public class AnnotationsPatternProvider implements LabelProvider {
 
     private final LabelProvider labelProvider;
     private final TextPattern pat;
     private final AnnotationsResolver resolver;
 
-    public AnnotationsPatternProvider(LabelProvider labelProvider, IAnnotations am, String pattern)
-    {
+    public AnnotationsPatternProvider(LabelProvider labelProvider, IAnnotations am, String pattern) {
         this.labelProvider = labelProvider;
         this.pat = new TextPattern(pattern);
         this.resolver = new AnnotationsResolver(labelProvider, am);
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return labelProvider.getCount();
     }
 
     @Override
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         resolver.setIndex(index);
         return pat.generate(resolver);
     }

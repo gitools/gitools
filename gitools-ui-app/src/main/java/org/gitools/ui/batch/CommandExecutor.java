@@ -33,27 +33,22 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class CommandExecutor
-{
+public class CommandExecutor {
 
     private final static Map<String, ITool> TOOLS = new HashMap<String, ITool>();
 
-    static
-    {
+    static {
         addTool(new LoadTool());
         addTool(new VersionTool());
     }
 
-    private static void addTool(@NotNull ITool tool)
-    {
+    private static void addTool(@NotNull ITool tool) {
         TOOLS.put(tool.getName().toLowerCase(), tool);
     }
 
-    public boolean checkArguments(@NotNull String[] args, @NotNull PrintWriter out)
-    {
+    public boolean checkArguments(@NotNull String[] args, @NotNull PrintWriter out) {
 
-        if (args.length == 0)
-        {
+        if (args.length == 0) {
             out.println(errorMsg());
             out.flush();
             return false;
@@ -65,8 +60,7 @@ public class CommandExecutor
 
         ITool tool = TOOLS.get(toolName);
 
-        if (tool == null)
-        {
+        if (tool == null) {
             out.println(errorMsg());
             out.flush();
             return false;
@@ -76,16 +70,13 @@ public class CommandExecutor
     }
 
     @NotNull
-    public String printUsage()
-    {
+    public String printUsage() {
         return errorMsg();
     }
 
-    public void execute(@NotNull String[] args, @NotNull PrintWriter out)
-    {
+    public void execute(@NotNull String[] args, @NotNull PrintWriter out) {
 
-        if (args.length == 0)
-        {
+        if (args.length == 0) {
             out.println(errorMsg());
             return;
         }
@@ -96,16 +87,14 @@ public class CommandExecutor
 
         ITool tool = TOOLS.get(toolName.toLowerCase());
 
-        if (tool == null)
-        {
+        if (tool == null) {
             out.println(errorMsg());
             out.flush();
             return;
         }
 
 
-        if (tool.run(toolArgs, out))
-        {
+        if (tool.run(toolArgs, out)) {
             out.println("OK");
             out.flush();
         }
@@ -113,12 +102,10 @@ public class CommandExecutor
     }
 
     @NotNull
-    private static String errorMsg()
-    {
+    private static String errorMsg() {
         StringBuilder msg = new StringBuilder();
         msg.append("ERROR | Unknown command. Valid commands: ");
-        for (String tool : TOOLS.keySet())
-        {
+        for (String tool : TOOLS.keySet()) {
             msg.append(" ").append(tool);
         }
         return msg.toString();

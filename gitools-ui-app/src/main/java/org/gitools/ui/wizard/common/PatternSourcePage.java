@@ -36,30 +36,25 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.io.File;
 
-public class PatternSourcePage extends AbstractWizardPage
-{
+public class PatternSourcePage extends AbstractWizardPage {
 
     private HeatmapDimension hdim;
 
     private boolean idOptVisible;
 
-    public PatternSourcePage(boolean idOptVisible)
-    {
+    public PatternSourcePage(boolean idOptVisible) {
         this(null, idOptVisible);
     }
 
-    public PatternSourcePage(HeatmapDimension hdim, boolean idOptVisible)
-    {
+    public PatternSourcePage(HeatmapDimension hdim, boolean idOptVisible) {
         this.hdim = hdim;
         this.idOptVisible = idOptVisible;
 
         initComponents();
 
-        ChangeListener optListener = new ChangeListener()
-        {
+        ChangeListener optListener = new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e)
-            {
+            public void stateChanged(ChangeEvent e) {
                 sourceChanged();
             }
         };
@@ -68,11 +63,9 @@ public class PatternSourcePage extends AbstractWizardPage
         annOpt.addChangeListener(optListener);
         patOpt.addChangeListener(optListener);
 
-        annList.addListSelectionListener(new ListSelectionListener()
-        {
+        annList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 annListChanged();
             }
         });
@@ -80,11 +73,9 @@ public class PatternSourcePage extends AbstractWizardPage
         annSepCb.setModel(new DefaultComboBoxModel(new String[]{", ", "-", " | ", " / ", " > ", "::"}));
         annSepCb.setSelectedIndex(0);
 
-        patText.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patText.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateComplete();
             }
         });
@@ -94,44 +85,34 @@ public class PatternSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
-        if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty())
-        {
+        if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty()) {
             annOpt.setSelected(true);
             DefaultListModel model = new DefaultListModel();
-            if (idOptVisible)
-            {
+            if (idOptVisible) {
                 model.addElement("id");
             }
             for (String key : hdim.getAnnotations().getLabels())
                 model.addElement(key);
             annList.setModel(model);
             annList.setSelectedIndex(0);
-        }
-        else
-        {
-            if (idOptVisible)
-            {
+        } else {
+            if (idOptVisible) {
                 idOpt.setSelected(true);
-            }
-            else
-            {
+            } else {
                 patOpt.setSelected(true);
             }
             annOpt.setEnabled(false);
         }
     }
 
-    private void updateComplete()
-    {
+    private void updateComplete() {
         setComplete(annOpt.isSelected() && annList.getSelectedIndices().length > 0 || patOpt.isSelected() && patText.getDocument().getLength() > 0);
     }
 
-    private void sourceChanged()
-    {
+    private void sourceChanged() {
         boolean annSel = annOpt.isSelected();
         annList.setEnabled(annSel);
         annSepLabel.setEnabled(annSel);
@@ -139,35 +120,28 @@ public class PatternSourcePage extends AbstractWizardPage
         patText.setEnabled(patOpt.isSelected());
     }
 
-    private void annListChanged()
-    {
+    private void annListChanged() {
         patText.setText(getPattern());
         updateComplete();
     }
 
-    public String getPattern()
-    {
-        if (idOpt.isSelected())
-        {
+    public String getPattern() {
+        if (idOpt.isSelected()) {
             return "${id}";
-        }
-        else if (patOpt.isSelected())
-        {
+        } else if (patOpt.isSelected()) {
             return patText.getText();
         }
 
         StringBuilder sb = new StringBuilder();
         Object[] values = annList.getSelectedValues();
-        if (values.length == 0)
-        {
+        if (values.length == 0) {
             return "";
         }
 
         sb.append("${");
         sb.append(values[0]);
         sb.append("}");
-        for (int i = 1; i < values.length; i++)
-        {
+        for (int i = 1; i < values.length; i++) {
             sb.append(annSepCb.getSelectedItem());
             sb.append("${");
             sb.append(values[i]);
@@ -177,14 +151,10 @@ public class PatternSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
-    public String getPatternTitle()
-    {
-        if (idOpt.isSelected())
-        {
+    public String getPatternTitle() {
+        if (idOpt.isSelected()) {
             return "id";
-        }
-        else if (patOpt.isSelected())
-        {
+        } else if (patOpt.isSelected()) {
             return patText.getText();
         }
 
@@ -192,8 +162,7 @@ public class PatternSourcePage extends AbstractWizardPage
         Object[] values = annList.getSelectedValues();
 
         sb.append(values[0]);
-        for (int i = 1; i < values.length; i++)
-        {
+        for (int i = 1; i < values.length; i++) {
             sb.append(annSepCb.getSelectedItem());
             sb.append(values[i]);
         }
@@ -201,19 +170,16 @@ public class PatternSourcePage extends AbstractWizardPage
         return sb.toString();
     }
 
-    public void setHeatmapDimension(HeatmapDimension heatmapDimension)
-    {
+    public void setHeatmapDimension(HeatmapDimension heatmapDimension) {
         this.hdim = heatmapDimension;
         updateControls();
     }
 
-    public boolean isIdOptVisible()
-    {
+    public boolean isIdOptVisible() {
         return idOptVisible;
     }
 
-    public void setIdOptVisible(boolean idOptVisible)
-    {
+    public void setIdOptVisible(boolean idOptVisible) {
         this.idOptVisible = idOptVisible;
         idOpt.setVisible(idOptVisible);
         invalidate();
@@ -262,10 +228,8 @@ public class PatternSourcePage extends AbstractWizardPage
         idOpt.setText("Identifiers");
 
         loadAnnotations.setText("Load file");
-        loadAnnotations.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadAnnotationsActionPerformed(evt);
             }
         });
@@ -273,61 +237,61 @@ public class PatternSourcePage extends AbstractWizardPage
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                    .addGap(24, 24, 24)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                    .addGap(24, 24, 24)
-                                    .addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(idOpt)
-                                            .addComponent(annOpt))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(loadAnnotations))
-                            .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                    .addGap(24, 24, 24)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jLabel1)
-                                                            .addGroup(layout.createSequentialGroup()
-                                                                    .addComponent(annSepLabel)
-                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                    .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                            .addGroup(layout.createSequentialGroup()
-                                                    .addContainerGap()
-                                                    .addComponent(patOpt)))
-                                    .addGap(0, 0, Short.MAX_VALUE)))
-                    .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(patText, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(idOpt)
+                                                        .addComponent(annOpt))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(loadAnnotations))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(24, 24, 24)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel1)
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addComponent(annSepLabel)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addComponent(patOpt)))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                    .addComponent(idOpt)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(annOpt))
-                            .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel1)
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(annSepLabel)
-                            .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGap(18, 18, 18)
-                    .addComponent(patOpt)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(idOpt)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(annOpt))
+                                        .addComponent(loadAnnotations, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(annSepLabel)
+                                        .addComponent(annSepCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(patOpt)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(patText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -340,8 +304,7 @@ public class PatternSourcePage extends AbstractWizardPage
                 updateControls();
                 //annFile.setText(file.getName());
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
         }
     }//GEN-LAST:event_loadAnnotationsActionPerformed

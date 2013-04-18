@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ColorScaleRange
-{
+public class ColorScaleRange {
 
     @NotNull
     public static final String CONSTANT_TYPE = "constant";
@@ -56,19 +55,16 @@ public class ColorScaleRange
 
     private boolean borderEnabled = true;
 
-    public ColorScaleRange()
-    {
+    public ColorScaleRange() {
         super();
         // JAXB requirement
     }
 
-    public ColorScaleRange(double minValue, double maxValue, double width)
-    {
+    public ColorScaleRange(double minValue, double maxValue, double width) {
         this(minValue, maxValue, width, null, null, null, LINEAR_TYPE);
     }
 
-    public ColorScaleRange(double minValue, double maxValue, double width, Object leftLabel, Object centerLabel, Object rightLabel, String type)
-    {
+    public ColorScaleRange(double minValue, double maxValue, double width, Object leftLabel, Object centerLabel, Object rightLabel, String type) {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.width = width;
@@ -79,86 +75,70 @@ public class ColorScaleRange
 
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
     @Nullable
-    public Object getLeftLabel()
-    {
+    public Object getLeftLabel() {
         return leftLabel;
     }
 
-    public void setLeftLabel(Object leftLabel)
-    {
+    public void setLeftLabel(Object leftLabel) {
         this.leftLabel = leftLabel;
     }
 
     @Nullable
-    public Object getCenterLabel()
-    {
+    public Object getCenterLabel() {
         return centerLabel;
     }
 
-    public void setCenterLabel(Object centerLabel)
-    {
+    public void setCenterLabel(Object centerLabel) {
         this.centerLabel = centerLabel;
     }
 
     @Nullable
-    public Object getRightLabel()
-    {
+    public Object getRightLabel() {
         return rightLabel;
     }
 
-    public void setRightLabel(Object rightLabel)
-    {
+    public void setRightLabel(Object rightLabel) {
         this.rightLabel = rightLabel;
     }
 
-    public double getWidth()
-    {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(double width)
-    {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public double getMinValue()
-    {
+    public double getMinValue() {
         return minValue;
     }
 
-    public void setMinValue(double minValue)
-    {
+    public void setMinValue(double minValue) {
         this.minValue = minValue;
     }
 
-    public double getMaxValue()
-    {
+    public double getMaxValue() {
         return maxValue;
     }
 
-    public void setMaxValue(double maxValue)
-    {
+    public void setMaxValue(double maxValue) {
         this.maxValue = maxValue;
     }
 
-    public boolean isBorderEnabled()
-    {
+    public boolean isBorderEnabled() {
         return borderEnabled;
     }
 
-    public void setBorderEnabled(boolean borderEnabled)
-    {
+    public void setBorderEnabled(boolean borderEnabled) {
         this.borderEnabled = borderEnabled;
     }
 }

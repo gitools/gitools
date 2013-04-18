@@ -30,8 +30,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class DialogButtonsPanel extends JPanel
-{
+public class DialogButtonsPanel extends JPanel {
 
     private static final long serialVersionUID = 738021254078143859L;
 
@@ -41,8 +40,7 @@ public class DialogButtonsPanel extends JPanel
     private List<JButton> buttons;
     private final JPanel buttonsPanel;
 
-    public DialogButtonsPanel(List<JButton> buttons)
-    {
+    public DialogButtonsPanel(List<JButton> buttons) {
         this.buttons = buttons;
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -55,24 +53,18 @@ public class DialogButtonsPanel extends JPanel
     }
 
     @Nullable
-    public List<JButton> getButtons()
-    {
+    public List<JButton> getButtons() {
         return buttons;
     }
 
-    void setButtons(@Nullable List<JButton> buttons)
-    {
+    void setButtons(@Nullable List<JButton> buttons) {
         this.buttons = buttons;
         buttonsPanel.removeAll();
-        if (buttons != null)
-        {
+        if (buttons != null) {
             for (JButton button : buttons)
-                if (button == SEPARATOR)
-                {
+                if (button == SEPARATOR) {
                     buttonsPanel.add(new JSeparator(SwingConstants.VERTICAL));
-                }
-                else
-                {
+                } else {
                     buttonsPanel.add(button);
                 }
         }

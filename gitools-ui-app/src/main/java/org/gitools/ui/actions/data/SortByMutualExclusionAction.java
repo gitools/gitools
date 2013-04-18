@@ -41,34 +41,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
-public class SortByMutualExclusionAction extends BaseAction
-{
+public class SortByMutualExclusionAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public SortByMutualExclusionAction()
-    {
+    public SortByMutualExclusionAction() {
         super("Sort by mutual exclusion ...");
 
         setDesc("Sort by mutual exclusion ...");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
 
         IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap))
-        {
+        if (model == null || !(model instanceof Heatmap)) {
             return;
         }
         final Heatmap hm = (Heatmap) model;
@@ -78,16 +73,14 @@ public class SortByMutualExclusionAction extends BaseAction
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
 
 
-        if (hm.getColumns().getSelected(  ).length > 0)
-        {
+        if (hm.getColumns().getSelected().length > 0) {
             page.setFilterDimension(FilterDimension.COLUMNS);
         }
 
 
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -96,25 +89,21 @@ public class SortByMutualExclusionAction extends BaseAction
         int aggrIndex = -1;
         IAggregator[] aggregators = AggregatorFactory.getAggregatorsArray();
         for (int i = 0; i < aggregators.length && aggrIndex == -1; i++)
-            if (aggregators[i].getClass().equals(MultAggregator.class))
-            {
+            if (aggregators[i].getClass().equals(MultAggregator.class)) {
                 aggrIndex = i;
             }
 
 
         final IMatrixView matrixView = hm;
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 IAnnotations am = null;
                 FilterDimension dim = page.getFilterDimension();
-                switch (dim)
-                {
+                switch (dim) {
                     case ROWS:
                         am = hm.getRows().getAnnotations();
                         break;

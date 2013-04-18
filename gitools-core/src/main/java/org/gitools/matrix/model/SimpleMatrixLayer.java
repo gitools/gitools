@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleMatrixLayer extends Model implements IMatrixLayer
-{
+public class SimpleMatrixLayer extends Model implements IMatrixLayer {
     private String id;
     private String name;
     private String description;
@@ -37,18 +36,15 @@ public class SimpleMatrixLayer extends Model implements IMatrixLayer
     @XmlElement(name = "value-type")
     private Class<?> valueClass;
 
-    public SimpleMatrixLayer()
-    {
+    public SimpleMatrixLayer() {
         // JAXB requirement
     }
 
-    public SimpleMatrixLayer(String id, Class<?> valueClass)
-    {
+    public SimpleMatrixLayer(String id, Class<?> valueClass) {
         this(id, valueClass, null, null);
     }
 
-    public SimpleMatrixLayer(String id, Class<?> valueClass, String name, String description)
-    {
+    public SimpleMatrixLayer(String id, Class<?> valueClass, String name, String description) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = name;
@@ -56,16 +52,13 @@ public class SimpleMatrixLayer extends Model implements IMatrixLayer
     }
 
     @Override
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public String getName()
-    {
-        if (name == null)
-        {
+    public String getName() {
+        if (name == null) {
             return id;
         }
 
@@ -73,10 +66,8 @@ public class SimpleMatrixLayer extends Model implements IMatrixLayer
     }
 
     @Override
-    public String getDescription()
-    {
-        if (description == null)
-        {
+    public String getDescription() {
+        if (description == null) {
             return "";
         }
 
@@ -84,8 +75,7 @@ public class SimpleMatrixLayer extends Model implements IMatrixLayer
     }
 
     @Override
-    public Class<?> getValueClass()
-    {
+    public Class<?> getValueClass() {
         return valueClass;
     }
 }

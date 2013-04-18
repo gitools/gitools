@@ -27,11 +27,9 @@ import org.slf4j.Logger;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class LogUtils
-{
+public class LogUtils {
 
-    public static void logException(@NotNull Exception e, @NotNull Logger logger)
-    {
+    public static void logException(@NotNull Exception e, @NotNull Logger logger) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);

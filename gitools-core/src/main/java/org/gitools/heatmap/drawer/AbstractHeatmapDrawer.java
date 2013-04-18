@@ -25,36 +25,30 @@ import org.gitools.heatmap.Heatmap;
 
 import java.awt.*;
 
-public abstract class AbstractHeatmapDrawer
-{
+public abstract class AbstractHeatmapDrawer {
 
     protected Heatmap heatmap;
 
     protected boolean pictureMode;
 
-    protected AbstractHeatmapDrawer(Heatmap heatmap)
-    {
+    protected AbstractHeatmapDrawer(Heatmap heatmap) {
         this.heatmap = heatmap;
         this.pictureMode = false;
     }
 
-    public Heatmap getHeatmap()
-    {
+    public Heatmap getHeatmap() {
         return heatmap;
     }
 
-    public void setHeatmap(Heatmap heatmap)
-    {
+    public void setHeatmap(Heatmap heatmap) {
         this.heatmap = heatmap;
     }
 
-    public boolean isPictureMode()
-    {
+    public boolean isPictureMode() {
         return pictureMode;
     }
 
-    public void setPictureMode(boolean pictureMode)
-    {
+    public void setPictureMode(boolean pictureMode) {
         this.pictureMode = pictureMode;
     }
 

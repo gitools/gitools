@@ -38,8 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BinaryColorScale extends NumericColorScale
-{
+public class BinaryColorScale extends NumericColorScale {
 
     private String comparator;
     private double cutoff;
@@ -53,8 +52,7 @@ public class BinaryColorScale extends NumericColorScale
     @NotNull
     private static final List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
 
-    static
-    {
+    static {
         equalCmp.add(CutoffCmp.EQ);
         equalCmp.add(CutoffCmp.ABS_EQ);
     }
@@ -79,8 +77,7 @@ public class BinaryColorScale extends NumericColorScale
         absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
-    private BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp)
-    {
+    private BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp) {
         super();
 
         this.comparator = cmp.getShortName();
@@ -88,33 +85,28 @@ public class BinaryColorScale extends NumericColorScale
 
     }
 
-    public BinaryColorScale()
-    {
+    public BinaryColorScale() {
         this(1.0, CutoffCmp.EQ);
     }
 
     @Override
-    protected Color colorOf(double value)
-    {
+    protected Color colorOf(double value) {
         boolean satisfies = CutoffCmp.getFromName(comparator).compare(value, cutoff);
         return satisfies ? getMaxColor() : getMinColor();
     }
 
     @NotNull
     @Override
-    public double[] getPoints()
-    {
+    public double[] getPoints() {
         double edge = Math.abs(cutoff) * 1.5;
-        if (edge < 0.5)
-        {
+        if (edge < 0.5) {
             edge = 0.5;
         }
         return new double[]{-edge, cutoff, edge};
     }
 
     @Override
-    protected void updateRangesList()
-    {
+    protected void updateRangesList() {
 
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
@@ -127,38 +119,27 @@ public class BinaryColorScale extends NumericColorScale
         double insideRange;
         double cutoffForRanges;
 
-        if (absoluteCmp.contains(positiveCmp))
-        {
+        if (absoluteCmp.contains(positiveCmp)) {
             cutoffForRanges = Math.abs(cutoff);
-        }
-        else
-        {
+        } else {
             cutoffForRanges = cutoff;
         }
 
-        if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY)
-        {
+        if (cutoffForRanges != Double.POSITIVE_INFINITY && cutoffForRanges != Double.NEGATIVE_INFINITY) {
             outsideRange = (cutoffForRanges == 0.0) ? Math.abs(cutoffForRanges) + 0.5 : cutoffForRanges * 2.5;
 
 
-            if (cutoffForRanges == 0.0)
-            {
+            if (cutoffForRanges == 0.0) {
                 insideRange = -0.8;
-            }
-            else
-            {
+            } else {
                 insideRange = cutoffForRanges - cutoffForRanges * 0.5;
             }
 
 
-        }
-        else if (cutoffForRanges == Double.POSITIVE_INFINITY)
-        {
+        } else if (cutoffForRanges == Double.POSITIVE_INFINITY) {
             outsideRange = 0.0;
             insideRange = Double.POSITIVE_INFINITY;
-        }
-        else
-        {
+        } else {
             outsideRange = 0.0;
             insideRange = Double.NEGATIVE_INFINITY;
         }
@@ -167,23 +148,17 @@ public class BinaryColorScale extends NumericColorScale
         double positiveValue;
         double negativeValue;
 
-        if (positiveCmp.compare(outsideRange, cutoffForRanges))
-        {
+        if (positiveCmp.compare(outsideRange, cutoffForRanges)) {
             negativeValue = insideRange;
             positiveValue = outsideRange;
-        }
-        else
-        {
+        } else {
             negativeValue = outsideRange;
             positiveValue = insideRange;
         }
 
-        if (!positiveCmp.compare(insideRange, cutoffForRanges) && equalCmp.contains(positiveCmp))
-        {
+        if (!positiveCmp.compare(insideRange, cutoffForRanges) && equalCmp.contains(positiveCmp)) {
             positiveValue = cutoffForRanges;
-        }
-        else if (positiveCmp.compare(negativeValue, cutoffForRanges) && notequalCmp.contains(positiveCmp))
-        {
+        } else if (positiveCmp.compare(negativeValue, cutoffForRanges) && notequalCmp.contains(positiveCmp)) {
             negativeValue = cutoffForRanges;
         }
 
@@ -207,52 +182,42 @@ public class BinaryColorScale extends NumericColorScale
 
     }
 
-    public Color getMinColor()
-    {
-        if (minColor == null)
-        {
+    public Color getMinColor() {
+        if (minColor == null) {
             return ColorConstants.binaryMinColor;
         }
         return minColor;
     }
 
-    public void setMinColor(Color minColor)
-    {
+    public void setMinColor(Color minColor) {
         this.minColor = minColor;
     }
 
-    public Color getMaxColor()
-    {
-        if (maxColor == null)
-        {
+    public Color getMaxColor() {
+        if (maxColor == null) {
             return ColorConstants.binaryMaxColor;
         }
         return maxColor;
     }
 
-    public void setMaxColor(Color maxColor)
-    {
+    public void setMaxColor(Color maxColor) {
         this.maxColor = maxColor;
     }
 
-    public String getComparator()
-    {
+    public String getComparator() {
         return comparator;
     }
 
-    public void setComparator(String comparator)
-    {
+    public void setComparator(String comparator) {
         this.comparator = comparator;
         updateRangesList();
     }
 
-    public double getCutoff()
-    {
+    public double getCutoff() {
         return cutoff;
     }
 
-    public void setCutoff(double cutoff)
-    {
+    public void setCutoff(double cutoff) {
         this.cutoff = cutoff;
         updateRangesList();
     }
@@ -260,8 +225,7 @@ public class BinaryColorScale extends NumericColorScale
 
     @NotNull
     @Override
-    public IAggregator defaultAggregator()
-    {
+    public IAggregator defaultAggregator() {
         return SumAggregator.INSTANCE;
     }
 }

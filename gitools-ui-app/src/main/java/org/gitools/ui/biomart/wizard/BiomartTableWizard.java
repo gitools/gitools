@@ -39,8 +39,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartTableWizard extends AbstractWizard
-{
+public class BiomartTableWizard extends AbstractWizard {
 
     private SaveFilePage saveFilePage;
 
@@ -69,8 +68,7 @@ public class BiomartTableWizard extends AbstractWizard
     @NotNull
     private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat("Tab Separated Fields", "tsv", true, false), new FileFormat("Tab Separated Fields compressed", "tsv.gz", true, false)};
 
-    public BiomartTableWizard()
-    { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
+    public BiomartTableWizard() { /*BiomartRestfulService biomartService /*IBiomartService biomartService*/
 
         setTitle("Import table ...");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_BIOMART_IMPORT, 96));
@@ -78,8 +76,7 @@ public class BiomartTableWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
 
         // Source
         sourcePage = new BiomartSourcePage();
@@ -108,20 +105,16 @@ public class BiomartTableWizard extends AbstractWizard
     }
 
     @Override
-    public IWizardPage getNextPage(IWizardPage page)
-    {
+    public IWizardPage getNextPage(IWizardPage page) {
         IWizardPage nextPage = super.getNextPage(page);
 
-        if (nextPage == attrListPage)
-        {
+        if (nextPage == attrListPage) {
             biomartService = sourcePage.getBiomartService();
             Database = sourcePage.getDataBase();
             Dataset = sourcePage.getDataset();
 
             attrListPage.setSource(biomartService, Database, Dataset);
-        }
-        else if (nextPage == filterListPage)
-        {
+        } else if (nextPage == filterListPage) {
             biomartConfig = attrListPage.getBiomartConfig();
             filterListPage.setSource(biomartService, biomartConfig);
         }
@@ -130,8 +123,7 @@ public class BiomartTableWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         boolean canFinish = super.canFinish();
 
         IWizardPage page = getCurrentPage();
@@ -142,34 +134,29 @@ public class BiomartTableWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         super.performFinish();
 
         Settings.getDefault().setLastDataPath(saveFilePage.getFolder());
         Settings.getDefault().save();
     }
 
-    public File getSelectedFile()
-    {
+    public File getSelectedFile() {
         return saveFilePage.getPathAsFile();
     }
 
-    public List<AttributeDescription> getAttributeList()
-    {
+    public List<AttributeDescription> getAttributeList() {
         return attrListPage.getAttributeList();
     }
 
     @NotNull
-    public Query getQuery()
-    {
+    public Query getQuery() {
 
         MartLocation mart = getDatabase();
         Dataset ds = new Dataset();
         ds.setName(getDataset().getName());
         List<Attribute> dsattrs = ds.getAttribute();
-        for (AttributeDescription attrInfo : attrListPage.getAttributeList())
-        {
+        for (AttributeDescription attrInfo : attrListPage.getAttributeList()) {
             Attribute attr = new Attribute();
             attr.setName(attrInfo.getInternalName());
             dsattrs.add(attr);
@@ -188,36 +175,30 @@ public class BiomartTableWizard extends AbstractWizard
         return query;
     }
 
-    public FileFormat getFormat()
-    {
+    public FileFormat getFormat() {
         return saveFilePage.getFormat();
     }
 
-    public boolean isSkipRowsWithEmptyValuesEnabled()
-    {
+    public boolean isSkipRowsWithEmptyValuesEnabled() {
         return filteringPage.isSkipRowsWithEmptyValuesEnabled();
     }
 
-    public String emptyValuesReplacement()
-    {
+    public String emptyValuesReplacement() {
         return filteringPage.emptyValuesReplacement();
     }
 
     @Nullable
-    MartLocation getDatabase()
-    {
+    MartLocation getDatabase() {
         return Database;
     }
 
     @Nullable
-    DatasetInfo getDataset()
-    {
+    DatasetInfo getDataset() {
         return Dataset;
     }
 
     @Nullable
-    public BiomartService getService()
-    {
+    public BiomartService getService() {
         return biomartService;
     }
 }

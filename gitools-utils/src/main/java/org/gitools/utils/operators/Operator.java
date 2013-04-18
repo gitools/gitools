@@ -29,34 +29,27 @@ import java.util.Map;
  * @noinspection ALL
  */
 @SuppressWarnings("serial")
-public abstract class Operator implements Serializable
-{
+public abstract class Operator implements Serializable {
 
     private static final long serialVersionUID = 6256197968707025432L;
 
-    public static final Operator AND = new Operator("and", "&", "and")
-    {
+    public static final Operator AND = new Operator("and", "&", "and") {
         @Override
-        public boolean evaluate(boolean bool1, boolean bool2)
-        {
+        public boolean evaluate(boolean bool1, boolean bool2) {
             return bool1 && bool2;
         }
     };
 
-    public static final Operator OR = new Operator("or", "|", "or")
-    {
+    public static final Operator OR = new Operator("or", "|", "or") {
         @Override
-        public boolean evaluate(boolean bool1, boolean bool2)
-        {
+        public boolean evaluate(boolean bool1, boolean bool2) {
             return bool1 || bool2;
         }
     };
 
-    public static final Operator EMPTY = new Operator("", "", "")
-    {
+    public static final Operator EMPTY = new Operator("", "", "") {
         @Override
-        public boolean evaluate(boolean bool1, boolean bool2)
-        {
+        public boolean evaluate(boolean bool1, boolean bool2) {
             return true;
         }
     };
@@ -68,10 +61,8 @@ public abstract class Operator implements Serializable
     private static final Map<String, Operator> longNameMap = new HashMap<String, Operator>();
     private static final Map<String, Operator> nameMap = new HashMap<String, Operator>();
 
-    static
-    {
-        for (Operator op : operators)
-        {
+    static {
+        for (Operator op : operators) {
             abbreviatedNameMap.put(op.getAbbreviation(), op);
             shortNameMap.put(op.getShortName(), op);
             longNameMap.put(op.getLongName(), op);
@@ -81,8 +72,7 @@ public abstract class Operator implements Serializable
         }
     }
 
-    public static Operator getFromName(String name)
-    {
+    public static Operator getFromName(String name) {
         return nameMap.get(name);
     }
 
@@ -90,33 +80,28 @@ public abstract class Operator implements Serializable
     private final String shortName;
     private final String longName;
 
-    public Operator(String abbreviation, String shortName, String longName)
-    {
+    public Operator(String abbreviation, String shortName, String longName) {
         this.abbreviation = abbreviation;
         this.shortName = shortName;
         this.longName = longName;
     }
 
-    public String getAbbreviation()
-    {
+    public String getAbbreviation() {
         return abbreviation;
     }
 
-    String getShortName()
-    {
+    String getShortName() {
         return shortName;
     }
 
-    public String getLongName()
-    {
+    public String getLongName() {
         return longName;
     }
 
     public abstract boolean evaluate(boolean bool1, boolean bool2);
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return shortName;
     }
 }

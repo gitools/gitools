@@ -33,8 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public abstract class BaseMatrix extends Resource implements IMatrix, Serializable
-{
+public abstract class BaseMatrix extends Resource implements IMatrix, Serializable {
 
     private static final long serialVersionUID = 4021765485781500318L;
 
@@ -43,13 +42,11 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     AbstractElementAdapter cellAdapter;
 
-    BaseMatrix()
-    {
+    BaseMatrix() {
         this("", ObjectFactory1D.dense.make(0), ObjectFactory1D.dense.make(0), null);
     }
 
-    BaseMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, AbstractElementAdapter cellAdapter)
-    {
+    BaseMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, AbstractElementAdapter cellAdapter) {
 
         this.title = title;
 
@@ -59,8 +56,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         this.cellAdapter = cellAdapter;
     }
 
-    public void make(int numRows, int numColumns)
-    {
+    public void make(int numRows, int numColumns) {
         rows = ObjectFactory1D.dense.make(numRows);
         columns = ObjectFactory1D.dense.make(numColumns);
         makeCells(numRows, numColumns);
@@ -70,124 +66,102 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     // rows
 
-    public ObjectMatrix1D getInternalRows()
-    {
+    public ObjectMatrix1D getInternalRows() {
         return rows;
     }
 
     @NotNull
     @Deprecated
-    public String[] getRowStrings()
-    {
+    public String[] getRowStrings() {
         String[] a = new String[rows.size()];
         rows.toArray(a);
         return a;
     }
 
-    public void setRows(ObjectMatrix1D rows)
-    {
+    public void setRows(ObjectMatrix1D rows) {
         this.rows = rows;
     }
 
-    public void setRows(String[] names)
-    {
+    public void setRows(String[] names) {
         this.rows = ObjectFactory1D.dense.make(names);
     }
 
-    public Object getRow(int index)
-    {
+    public Object getRow(int index) {
         return rows.get(index);
     }
 
     @NotNull
-    public String internalRowLabel(int index)
-    {
+    public String internalRowLabel(int index) {
         return (String) rows.get(index);
     }
 
-    public void setRow(int index, Object row)
-    {
+    public void setRow(int index, Object row) {
         rows.set(index, row);
     }
 
     // columns
 
-    public ObjectMatrix1D getInternalColumns()
-    {
+    public ObjectMatrix1D getInternalColumns() {
         return columns;
     }
 
     @NotNull
     @Deprecated
-    public String[] getColumnStrings()
-    {
+    public String[] getColumnStrings() {
         String[] a = new String[columns.size()];
         columns.toArray(a);
         return a;
     }
 
-    public void setColumns(ObjectMatrix1D columns)
-    {
+    public void setColumns(ObjectMatrix1D columns) {
         this.columns = columns;
     }
 
-    public void setColumns(String[] names)
-    {
+    public void setColumns(String[] names) {
         this.columns = ObjectFactory1D.dense.make(names);
     }
 
     @NotNull
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         return (String) columns.get(index);
     }
 
-    public void setColumn(int index, Object column)
-    {
+    public void setColumn(int index, Object column) {
         columns.set(index, column);
     }
 
     // adapters
 
-    public AbstractElementAdapter getObjectCellAdapter()
-    {
+    public AbstractElementAdapter getObjectCellAdapter() {
         return cellAdapter;
     }
 
-    public void setObjectCellAdapter(AbstractElementAdapter cellAdapter)
-    {
+    public void setObjectCellAdapter(AbstractElementAdapter cellAdapter) {
         this.cellAdapter = cellAdapter;
     }
 
     // attributes
     @Override
-    public IMatrixLayers<? extends IMatrixLayer> getLayers()
-    {
+    public IMatrixLayers<? extends IMatrixLayer> getLayers() {
         return cellAdapter.getProperties();
     }
 
-    public int internalRowIndex(String label)
-    {
+    public int internalRowIndex(String label) {
         Object[] rows = getInternalRows().toArray();
-        for (int i = 0; i < rows.length; i++)
-        {
+        for (int i = 0; i < rows.length; i++) {
             String s = (String) rows[i];
-            if (s.equals(label))
-            {
+            if (s.equals(label)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public int internalColumnIndex(String label)
-    {
+    public int internalColumnIndex(String label) {
         Object[] cols = getInternalColumns().toArray();
-        for (int i = 0; i < cols.length; i++)
-        {
+        for (int i = 0; i < cols.length; i++) {
             String s = (String) cols[i];
-            if (s.equals(label))
-            {
+            if (s.equals(label)) {
                 return i;
             }
         }
@@ -196,8 +170,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getColumns().size()).append(" columns, ");
         sb.append(getRows().size()).append(" rows");
@@ -205,56 +178,45 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         // Method to Override
     }
 
     @Override
-    public IMatrixDimension getRows()
-    {
-        return new IMatrixDimension()
-        {
+    public IMatrixDimension getRows() {
+        return new IMatrixDimension() {
             @Override
-            public int size()
-            {
+            public int size() {
                 return BaseMatrix.this.internalRowCount();
             }
 
             @Override
-            public String getLabel(int index)
-            {
+            public String getLabel(int index) {
                 return BaseMatrix.this.internalRowLabel(index);
             }
 
             @Override
-            public int getIndex(String label)
-            {
+            public int getIndex(String label) {
                 return BaseMatrix.this.internalRowIndex(label);
             }
         };
     }
 
     @Override
-    public IMatrixDimension getColumns()
-    {
-        return new IMatrixDimension()
-        {
+    public IMatrixDimension getColumns() {
+        return new IMatrixDimension() {
             @Override
-            public int size()
-            {
+            public int size() {
                 return BaseMatrix.this.internalColumnCount();
             }
 
             @Override
-            public String getLabel(int index)
-            {
+            public String getLabel(int index) {
                 return BaseMatrix.this.getLabel(index);
             }
 
             @Override
-            public int getIndex(String label)
-            {
+            public int getIndex(String label) {
                 return BaseMatrix.this.internalColumnIndex(label);
             }
         };

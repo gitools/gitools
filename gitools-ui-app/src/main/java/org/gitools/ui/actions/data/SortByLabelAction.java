@@ -37,29 +37,24 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 
 
-public class SortByLabelAction extends BaseAction
-{
+public class SortByLabelAction extends BaseAction {
 
-    public SortByLabelAction()
-    {
+    public SortByLabelAction() {
         super("Sort by label ...");
         setDesc("Sort by label");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap))
-        {
+        if (model == null || !(model instanceof Heatmap)) {
             return;
         }
 
@@ -69,18 +64,15 @@ public class SortByLabelAction extends BaseAction
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         final IMatrixView matrixView = hm;
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 MatrixViewSorter.sortByLabel(matrixView, page.isApplyToRowsSelected(), page.getRowsPattern(), hm.getRows().getAnnotations(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), hm.getColumns().getAnnotations(), page.getColumnsDirection(), page.getColumnsNumeric());

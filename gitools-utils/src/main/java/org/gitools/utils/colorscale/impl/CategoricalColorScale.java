@@ -40,38 +40,32 @@ import java.util.Arrays;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CategoricalColorScale extends NumericColorScale
-{
+public class CategoricalColorScale extends NumericColorScale {
 
     private ColorScalePoint[] points;
     private boolean cagetoricalSpans = true;
 
-    public CategoricalColorScale()
-    {
+    public CategoricalColorScale() {
         this(new double[]{1.0, 2.0});
     }
 
-    public CategoricalColorScale(ColorScalePoint[] points)
-    {
+    public CategoricalColorScale(ColorScalePoint[] points) {
         super();
         this.points = points;
     }
 
-    public CategoricalColorScale(@NotNull double pointValues[])
-    {
+    public CategoricalColorScale(@NotNull double pointValues[]) {
 
         setValues(pointValues);
     }
 
-    public void setValues(@NotNull double[] pointValues)
-    {
+    public void setValues(@NotNull double[] pointValues) {
         Arrays.sort(pointValues);
         this.points = new ColorScalePoint[pointValues.length];
 
 
         Color[] palette = generateColors(pointValues.length);
-        for (int i = 0; i < pointValues.length; i++)
-        {
+        for (int i = 0; i < pointValues.length; i++) {
             this.points[i] = new ColorScalePoint(pointValues[i], palette[i]);
         }
 
@@ -79,47 +73,35 @@ public class CategoricalColorScale extends NumericColorScale
     }
 
     @NotNull
-    Color[] generateColors(int n)
-    {
+    Color[] generateColors(int n) {
         Color[] cols = new Color[n];
 
-        if (n == 2)
-        {
+        if (n == 2) {
             cols[0] = ColorConstants.binaryMinColor;
             cols[1] = ColorConstants.binaryMaxColor;
             return cols;
-        }
-        else if (n == 3)
-        {
+        } else if (n == 3) {
             cols[0] = Color.BLUE;
             cols[1] = Color.green.darker();
             cols[2] = Color.RED;
             return cols;
         }
 
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             cols[i] = Color.getHSBColor((float) i / (float) n, 0.85f, 1.0f);
         }
         return cols;
     }
 
     @Nullable
-    public ColorScalePoint getColorScalePoint(double value)
-    {
-        for (ColorScalePoint p : points)
-        {
-            if (cagetoricalSpans)
-            {
-                if (p.getValue() >= value)
-                {
+    public ColorScalePoint getColorScalePoint(double value) {
+        for (ColorScalePoint p : points) {
+            if (cagetoricalSpans) {
+                if (p.getValue() >= value) {
                     return p;
                 }
-            }
-            else
-            {
-                if (p.getValue() == value)
-                {
+            } else {
+                if (p.getValue() == value) {
                     return p;
                 }
             }
@@ -128,24 +110,17 @@ public class CategoricalColorScale extends NumericColorScale
     }
 
     @Override
-    protected Color colorOf(double value)
-    {
+    protected Color colorOf(double value) {
 
         Color c = super.getEmptyColor();
         ColorScalePoint firstPoint = getMin();
-        for (ColorScalePoint p : points)
-        {
-            if (cagetoricalSpans)
-            {
-                if (p.getValue() >= value)
-                {
+        for (ColorScalePoint p : points) {
+            if (cagetoricalSpans) {
+                if (p.getValue() >= value) {
                     return p.getColor();
                 }
-            }
-            else
-            {
-                if (p.getValue() == value)
-                {
+            } else {
+                if (p.getValue() == value) {
                     return p.getColor();
                 }
             }
@@ -155,8 +130,7 @@ public class CategoricalColorScale extends NumericColorScale
 
     @NotNull
     @Override
-    public double[] getPoints()
-    {
+    public double[] getPoints() {
         double[] pointValues = new double[points.length];
         for (int i = 0; i < points.length; i++)
             pointValues[i] = points[i].getValue();
@@ -164,76 +138,62 @@ public class CategoricalColorScale extends NumericColorScale
         return pointValues;
     }
 
-    public ColorScalePoint getMin()
-    {
+    public ColorScalePoint getMin() {
         return points[0];
     }
 
     @Override
-    public double getMinValue()
-    {
+    public double getMinValue() {
         Double spectrum = points[points.length - 1].getValue() - points[0].getValue();
         Double step = spectrum / (points.length - 1);
         return points[0].getValue() - step;
     }
 
-    public ColorScalePoint getMax()
-    {
+    public ColorScalePoint getMax() {
         ColorScalePoint last = points[points.length - 1];
         return last;
     }
 
     @Override
-    public double getMaxValue()
-    {
+    public double getMaxValue() {
         return points[points.length - 1].getValue();
     }
 
-    public boolean isCagetoricalSpans()
-    {
+    public boolean isCagetoricalSpans() {
         return cagetoricalSpans;
     }
 
-    public void setCagetoricalSpans(boolean cagetoricalSpans)
-    {
+    public void setCagetoricalSpans(boolean cagetoricalSpans) {
         this.cagetoricalSpans = cagetoricalSpans;
     }
 
-    public ColorScalePoint[] getPointObjects()
-    {
+    public ColorScalePoint[] getPointObjects() {
         return this.points;
     }
 
-    public void setPointObjects(@NotNull ColorScalePoint[] points)
-    {
+    public void setPointObjects(@NotNull ColorScalePoint[] points) {
         Arrays.sort(points);
         this.points = points;
         updateRangesList();
     }
 
     @Override
-    protected void updateRangesList()
-    {
+    protected void updateRangesList() {
 
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
 
-        for (ColorScalePoint p : points)
-        {
+        for (ColorScalePoint p : points) {
             ColorScaleRange r = new ColorScaleRange(p.getValue(), p.getValue(), 10);
-            if (p.getName().equals(""))
-            {
+            if (p.getName().equals("")) {
                 r.setCenterLabel(p.getValue());
-            }
-            else
-            {
+            } else {
                 r.setCenterLabel(p.getName());
             }
             r.setType(ColorScaleRange.CONSTANT_TYPE);
             rangesList.add(r);
 
-            if (p != points[points.length - 1])
-            {
+            if (p != points[points.length - 1]) {
                 ColorScaleRange e = new ColorScaleRange(-1, -1, 1);
                 e.setType(ColorScaleRange.EMPTY_TYPE);
                 e.setBorderEnabled(false);
@@ -244,8 +204,7 @@ public class CategoricalColorScale extends NumericColorScale
 
     @NotNull
     @Override
-    public IAggregator defaultAggregator()
-    {
+    public IAggregator defaultAggregator() {
         return SumAggregator.INSTANCE;
     }
 }

@@ -32,8 +32,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterDescription extends AbstractDescription
-{
+public class FilterDescription extends AbstractDescription {
 
     @XmlAttribute
     private String displayType;
@@ -110,257 +109,206 @@ public class FilterDescription extends AbstractDescription
     @XmlElement(name = "Option")
     private List<Option> options = new ArrayList<Option>();
 
-    FilterDescription()
-    {
+    FilterDescription() {
     }
 
-    public String getAutoCompletion()
-    {
+    public String getAutoCompletion() {
         return autoCompletion;
     }
 
-    public void setAutoCompletion(String autoCompletion)
-    {
+    public void setAutoCompletion(String autoCompletion) {
         this.autoCompletion = autoCompletion;
     }
 
-    public String getButtonURL()
-    {
+    public String getButtonURL() {
         return buttonURL;
     }
 
-    public void setButtonURL(String buttonURL)
-    {
+    public void setButtonURL(String buttonURL) {
         this.buttonURL = buttonURL;
     }
 
-    public String getCheckForNulls()
-    {
+    public String getCheckForNulls() {
         return checkForNulls;
     }
 
-    public void setCheckForNulls(String checkForNulls)
-    {
+    public void setCheckForNulls(String checkForNulls) {
         this.checkForNulls = checkForNulls;
     }
 
-    public String getColForDisplay()
-    {
+    public String getColForDisplay() {
         return colForDisplay;
     }
 
-    public void setColForDisplay(String colForDisplay)
-    {
+    public void setColForDisplay(String colForDisplay) {
         this.colForDisplay = colForDisplay;
     }
 
-    public String getDefaultOn()
-    {
+    public String getDefaultOn() {
         return defaultOn;
     }
 
-    public void setDefaultOn(String defaultOn)
-    {
+    public void setDefaultOn(String defaultOn) {
         this.defaultOn = defaultOn;
     }
 
-    public String getDefaultValue()
-    {
+    public String getDefaultValue() {
         return defaultValue;
     }
 
-    public void setDefaultValue(String defaultValue)
-    {
+    public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 
-    public String getDependsOn()
-    {
+    public String getDependsOn() {
         return dependsOn;
     }
 
-    public void setDependsOn(String dependsOn)
-    {
+    public void setDependsOn(String dependsOn) {
         this.dependsOn = dependsOn;
     }
 
-    public String getDependsOnType()
-    {
+    public String getDependsOnType() {
         return dependsOnType;
     }
 
-    public void setDependsOnType(String dependsOnType)
-    {
+    public void setDependsOnType(String dependsOnType) {
         this.dependsOnType = dependsOnType;
     }
 
-    public String getDisplayType()
-    {
+    public String getDisplayType() {
         return displayType;
     }
 
-    public void setDisplayType(String displayType)
-    {
+    public void setDisplayType(String displayType) {
         this.displayType = displayType;
     }
 
-    public String getFilterList()
-    {
+    public String getFilterList() {
         return filterList;
     }
 
-    public void setFilterList(String filterList)
-    {
+    public void setFilterList(String filterList) {
         this.filterList = filterList;
     }
 
-    public String getGraph()
-    {
+    public String getGraph() {
         return graph;
     }
 
-    public void setGraph(String graph)
-    {
+    public void setGraph(String graph) {
         this.graph = graph;
     }
 
-    public String getLegal_qualifiers()
-    {
+    public String getLegal_qualifiers() {
         return legal_qualifiers;
     }
 
-    public void setLegal_qualifiers(String legal_qualifiers)
-    {
+    public void setLegal_qualifiers(String legal_qualifiers) {
         this.legal_qualifiers = legal_qualifiers;
     }
 
-    public int getMultipleValues()
-    {
+    public int getMultipleValues() {
         return multipleValues;
     }
 
-    public void setMultipleValues(int multipleValues)
-    {
+    public void setMultipleValues(int multipleValues) {
         this.multipleValues = multipleValues;
     }
 
-    public List<Option> getOptions()
-    {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(List<Option> options)
-    {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
-    public String getOtherFilters()
-    {
+    public String getOtherFilters() {
         return otherFilters;
     }
 
-    public void setOtherFilters(String otherFilters)
-    {
+    public void setOtherFilters(String otherFilters) {
         this.otherFilters = otherFilters;
     }
 
-    public String getPointerDataset()
-    {
+    public String getPointerDataset() {
         return pointerDataset;
     }
 
-    public void setPointerDataset(String pointerDataset)
-    {
+    public void setPointerDataset(String pointerDataset) {
         this.pointerDataset = pointerDataset;
     }
 
-    public String getPointerFilter()
-    {
+    public String getPointerFilter() {
         return pointerFilter;
     }
 
-    public void setPointerFilter(String pointerFilter)
-    {
+    public void setPointerFilter(String pointerFilter) {
         this.pointerFilter = pointerFilter;
     }
 
-    public String getPointerInterface()
-    {
+    public String getPointerInterface() {
         return pointerInterface;
     }
 
-    public void setPointerInterface(String pointerInterface)
-    {
+    public void setPointerInterface(String pointerInterface) {
         this.pointerInterface = pointerInterface;
     }
 
-    public String getQualifier()
-    {
+    public String getQualifier() {
         return qualifier;
     }
 
-    public void setQualifier(String qualifier)
-    {
+    public void setQualifier(String qualifier) {
         this.qualifier = qualifier;
     }
 
-    public String getRegexp()
-    {
+    public String getRegexp() {
         return regexp;
     }
 
-    public void setRegexp(String regexp)
-    {
+    public void setRegexp(String regexp) {
         this.regexp = regexp;
     }
 
-    public String getSetAttribute()
-    {
+    public String getSetAttribute() {
         return setAttribute;
     }
 
-    public void setSetAttribute(String setAttribute)
-    {
+    public void setSetAttribute(String setAttribute) {
         this.setAttribute = setAttribute;
     }
 
-    public String getSetAttributePage()
-    {
+    public String getSetAttributePage() {
         return setAttributePage;
     }
 
-    public void setSetAttributePage(String setAttributePage)
-    {
+    public void setSetAttributePage(String setAttributePage) {
         this.setAttributePage = setAttributePage;
     }
 
-    public String getStyle()
-    {
+    public String getStyle() {
         return style;
     }
 
-    public void setStyle(String style)
-    {
+    public void setStyle(String style) {
         this.style = style;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 }

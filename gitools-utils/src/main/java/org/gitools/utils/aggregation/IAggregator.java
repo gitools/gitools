@@ -21,8 +21,7 @@
  */
 package org.gitools.utils.aggregation;
 
-public interface IAggregator
-{
+public interface IAggregator {
 
     double aggregate(double[] data);
 }

@@ -27,8 +27,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public interface IResourceFilter
-{
+public interface IResourceFilter {
     String getSuffix();
 
     boolean isFiltered(String extension);

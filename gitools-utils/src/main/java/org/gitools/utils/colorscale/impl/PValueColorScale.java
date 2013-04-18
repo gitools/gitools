@@ -37,8 +37,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PValueColorScale extends NumericColorScale
-{
+public class PValueColorScale extends NumericColorScale {
 
     private static final double defaultLogFactor = 0.25;
 
@@ -53,8 +52,7 @@ public class PValueColorScale extends NumericColorScale
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color nonSignificantColor;
 
-    private PValueColorScale(double significanceLevel, Color minColor, Color maxColor, Color nonSignificantColor)
-    {
+    private PValueColorScale(double significanceLevel, Color minColor, Color maxColor, Color nonSignificantColor) {
 
         super();
 
@@ -64,18 +62,15 @@ public class PValueColorScale extends NumericColorScale
         this.nonSignificantColor = nonSignificantColor;
     }
 
-    public PValueColorScale()
-    {
+    public PValueColorScale() {
         this(0.05, ColorConstants.minColor, ColorConstants.maxColor, ColorConstants.nonSignificantColor);
         updateRangesList();
     }
 
     @Override
-    protected Color colorOf(double value)
-    {
+    protected Color colorOf(double value) {
 
-        if (value > significanceLevel || value < 0)
-        {
+        if (value > significanceLevel || value < 0) {
             return nonSignificantColor;
         }
 
@@ -87,65 +82,53 @@ public class PValueColorScale extends NumericColorScale
 
     @NotNull
     @Override
-    public double[] getPoints()
-    {
+    public double[] getPoints() {
         return new double[]{0, significanceLevel, 1};
     }
 
-    double getSignificanceLevel()
-    {
+    double getSignificanceLevel() {
         return significanceLevel;
     }
 
-    public void setSignificanceLevel(double significanceLevel)
-    {
+    public void setSignificanceLevel(double significanceLevel) {
         this.significanceLevel = significanceLevel;
 
-        if (significanceLevel > 1)
-        {
+        if (significanceLevel > 1) {
             this.significanceLevel = 1;
         }
 
-        if (significanceLevel < 0)
-        {
+        if (significanceLevel < 0) {
             this.significanceLevel = 0;
         }
         updateRangesList();
     }
 
-    public Color getMinColor()
-    {
+    public Color getMinColor() {
         return minColor;
     }
 
-    public void setMinColor(Color minColor)
-    {
+    public void setMinColor(Color minColor) {
         this.minColor = minColor;
     }
 
-    public Color getMaxColor()
-    {
+    public Color getMaxColor() {
         return maxColor;
     }
 
-    public void setMaxColor(Color maxColor)
-    {
+    public void setMaxColor(Color maxColor) {
         this.maxColor = maxColor;
     }
 
-    public Color getNonSignificantColor()
-    {
+    public Color getNonSignificantColor() {
         return nonSignificantColor;
     }
 
-    public void setNonSignificantColor(Color nonSignificantColor)
-    {
+    public void setNonSignificantColor(Color nonSignificantColor) {
         this.nonSignificantColor = nonSignificantColor;
     }
 
     @Override
-    protected void updateRangesList()
-    {
+    protected void updateRangesList() {
 
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
@@ -162,8 +145,7 @@ public class PValueColorScale extends NumericColorScale
 
     @NotNull
     @Override
-    public IAggregator defaultAggregator()
-    {
+    public IAggregator defaultAggregator() {
         return MultAggregator.INSTANCE;
     }
 }

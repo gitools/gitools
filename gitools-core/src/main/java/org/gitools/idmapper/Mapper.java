@@ -23,8 +23,7 @@ package org.gitools.idmapper;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public interface Mapper
-{
+public interface Mapper {
 
     String getName();
 

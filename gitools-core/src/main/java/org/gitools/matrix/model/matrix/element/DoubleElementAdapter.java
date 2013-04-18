@@ -23,20 +23,17 @@ package org.gitools.matrix.model.matrix.element;
 
 import org.gitools.matrix.model.SimpleMatrixLayers;
 
-public class DoubleElementAdapter extends AbstractElementAdapter
-{
+public class DoubleElementAdapter extends AbstractElementAdapter {
 
     private static final long serialVersionUID = 3053254525952874940L;
 
-    public DoubleElementAdapter()
-    {
+    public DoubleElementAdapter() {
         super(double.class);
         this.setProperties(new SimpleMatrixLayers(double.class, "value"));
     }
 
     @Override
-    public Object getValue(Object element, int index)
-    {
+    public Object getValue(Object element, int index) {
         return element;
     }
 

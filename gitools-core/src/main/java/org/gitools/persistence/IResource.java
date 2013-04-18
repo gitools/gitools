@@ -24,8 +24,7 @@ package org.gitools.persistence;
 /**
  * @noinspection ALL
  */
-public interface IResource
-{
+public interface IResource {
 
     IResourceLocator getLocator();
 

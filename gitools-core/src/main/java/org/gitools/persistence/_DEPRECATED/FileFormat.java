@@ -27,66 +27,56 @@ import org.gitools.persistence.PersistenceManager;
 import org.jetbrains.annotations.NotNull;
 
 @Deprecated
-public class FileFormat
-{
+public class FileFormat {
 
     private final String title;
     private final String extension;
     private final boolean titleWithExtension;
     private final boolean allowGzExtension;
 
-    public FileFormat(String title, String extension)
-    {
+    public FileFormat(String title, String extension) {
         this(title, extension, true, true);
     }
 
-    public FileFormat(String title, String extension, boolean titleWithExtension, boolean allowGzExtension)
-    {
+    public FileFormat(String title, String extension, boolean titleWithExtension, boolean allowGzExtension) {
         this.title = title;
         this.extension = extension;
         this.titleWithExtension = titleWithExtension;
         this.allowGzExtension = allowGzExtension;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
     @NotNull
-    public String getTitleWithExtension()
-    {
+    public String getTitleWithExtension() {
         StringBuilder sb = new StringBuilder();
         sb.append(title).append(" (").append(extension);
-        if (allowGzExtension)
-        {
+        if (allowGzExtension) {
             sb.append(", ").append(extension).append(".gz");
         }
         sb.append(")");
         return sb.toString();
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
-    public boolean checkExtension(String fileName)
-    {
+    public boolean checkExtension(String fileName) {
         fileName = fileName.toLowerCase();
         String ext = extension.toLowerCase();
         return fileName.endsWith(ext) || (allowGzExtension && fileName.endsWith(ext + ".gz"));
     }
 
-    public <R extends IResource> IResourceFormat<? extends R> getFormat(@NotNull Class<R> resourceClass)
-    {
+    public <R extends IResource> IResourceFormat<? extends R> getFormat(@NotNull Class<R> resourceClass) {
         return PersistenceManager.get().getFormat(getExtension(), resourceClass);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return titleWithExtension ? getTitleWithExtension() : getTitle();
     }
 }

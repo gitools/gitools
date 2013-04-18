@@ -48,8 +48,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SettingsPanel
-{
+public class SettingsPanel {
 
     // Components
     private JPanel rootPanel;
@@ -72,8 +71,7 @@ public class SettingsPanel
     private JLabel colorScaleOpen;
     private JComboBox layerselector;
 
-    public SettingsPanel(final Heatmap heatmap)
-    {
+    public SettingsPanel(final Heatmap heatmap) {
         PresentationModel<Heatmap> model = new PresentationModel<Heatmap>(heatmap);
 
         // Data models
@@ -97,62 +95,50 @@ public class SettingsPanel
         ));
 
         colorScaleSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        colorScaleSave.addMouseListener(new MouseAdapter()
-        {
+        colorScaleSave.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 actionSaveScale(heatmap.getLayers().getTopLayer());
             }
         });
 
         colorScaleOpen.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        colorScaleOpen.addMouseListener(new MouseAdapter()
-        {
+        colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 actionLoadScale(heatmap.getLayers().getTopLayer());
             }
         });
 
         // Bind headers controls
         newColumnsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        newColumnsHeader.addMouseListener(new MouseAdapter()
-        {
+        newColumnsHeader.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getColumns());
             }
         });
 
         editColumnsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        editColumnsHeader.addMouseListener(new MouseAdapter()
-        {
+        editColumnsHeader.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 actionEditHeaders(heatmap, heatmap.getColumns());
             }
         });
 
         newRowsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        newRowsHeader.addMouseListener(new MouseAdapter()
-        {
+        newRowsHeader.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 HeadersEditPanel.actionNewHeaders(heatmap, heatmap.getRows());
             }
         });
 
         editRowHeaders.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        editRowHeaders.addMouseListener(new MouseAdapter()
-        {
+        editRowHeaders.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 actionEditHeaders(heatmap, heatmap.getRows());
             }
         });
@@ -171,18 +157,16 @@ public class SettingsPanel
         AbstractValueModel cellSizeRowsModel = rows.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
         cellSizeRows.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeRowsModel, 1, 2, 300, 1));
         AbstractValueModel cellSizeColumnsModel = columns.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
-        cellSizeColumns.setModel( SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel , 1, 2, 300, 1) );
+        cellSizeColumns.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel, 1, 2, 300, 1));
         cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
 
 
     }
 
 
-
-    private void actionEditHeaders(Heatmap heatmap, HeatmapDimension dimension)
-    {
+    private void actionEditHeaders(Heatmap heatmap, HeatmapDimension dimension) {
         HeadersEditPanel dialog = new HeadersEditPanel(heatmap, dimension);
-        dialog.setSize(500,400);
+        dialog.setSize(500, 400);
         dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
@@ -228,14 +212,12 @@ public class SettingsPanel
 
     }
 
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         this.gridRowsColor = new MyWebColorChooserField();
         this.gridColumnsColor = new MyWebColorChooserField();
         this.decoratorPanels = new DecoratorPanelContainer();

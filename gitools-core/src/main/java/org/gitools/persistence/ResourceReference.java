@@ -34,8 +34,7 @@ import java.util.Properties;
  * @noinspection ALL
  */
 @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-public class ResourceReference<R extends IResource>
-{
+public class ResourceReference<R extends IResource> {
 
     private transient boolean loaded = false;
     @Nullable
@@ -51,31 +50,26 @@ public class ResourceReference<R extends IResource>
 
     private Properties properties = new Properties();
 
-    public ResourceReference(String baseName, @NotNull R resource)
-    {
+    public ResourceReference(String baseName, @NotNull R resource) {
         this(baseName, resource, (Class<? extends R>) resource.getClass());
     }
 
-    public ResourceReference(String baseName, Class<? extends R> resourceClass)
-    {
+    public ResourceReference(String baseName, Class<? extends R> resourceClass) {
         this(baseName, null, resourceClass);
     }
 
-    public ResourceReference(@NotNull IResourceLocator locator, @NotNull Class<? extends R> resourceClass)
-    {
+    public ResourceReference(@NotNull IResourceLocator locator, @NotNull Class<? extends R> resourceClass) {
         this(locator, PersistenceManager.get().getFormat(locator.getExtension(), resourceClass));
     }
 
-    public ResourceReference(IResourceLocator locator, IResourceFormat<? extends R> resourceFormat)
-    {
+    public ResourceReference(IResourceLocator locator, IResourceFormat<? extends R> resourceFormat) {
         this.loaded = false;
 
         this.locator = locator;
         this.resourceFormat = resourceFormat;
     }
 
-    private ResourceReference(String baseName, R resource, Class<? extends R> resourceClass)
-    {
+    private ResourceReference(String baseName, R resource, Class<? extends R> resourceClass) {
         this.loaded = true;
         this.baseName = baseName;
         this.resourceClass = resourceClass;
@@ -84,16 +78,12 @@ public class ResourceReference<R extends IResource>
 
 
     @Nullable
-    public final R get()
-    {
+    public final R get() {
 
-        if (!isLoaded())
-        {
-            try
-            {
+        if (!isLoaded()) {
+            try {
                 load(ProgressMonitor.get());
-            } catch (PersistenceException e)
-            {
+            } catch (PersistenceException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -101,58 +91,48 @@ public class ResourceReference<R extends IResource>
         return resource;
     }
 
-    public final String getBaseName()
-    {
+    public final String getBaseName() {
         return baseName;
     }
 
-    public final IResourceLocator getLocator()
-    {
+    public final IResourceLocator getLocator() {
         return locator;
     }
 
-    public final Class<? extends IResource> getResourceClass()
-    {
+    public final Class<? extends IResource> getResourceClass() {
         return this.resourceClass;
     }
 
-    public final void setLocator(@NotNull IResourceLocator locator)
-    {
+    public final void setLocator(@NotNull IResourceLocator locator) {
         this.locator = locator;
         this.baseName = locator.getBaseName();
     }
 
-    public final IResourceFormat getResourceFormat()
-    {
+    public final IResourceFormat getResourceFormat() {
         return this.resourceFormat;
     }
 
-    public final Properties getProperties()
-    {
+    public final Properties getProperties() {
         return properties;
     }
 
-    public void setProperties(Properties properties)
-    {
+    public void setProperties(Properties properties) {
         this.properties = properties;
     }
 
-    public final boolean isLoaded()
-    {
+    public final boolean isLoaded() {
         return loaded;
     }
 
 
-    public final void unload()
-    {
+    public final void unload() {
         resource = onBeforeUnload(resource);
         loaded = false;
         resource = null;
         resource = onAfterUnload();
     }
 
-    public final void load(IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public final void load(IProgressMonitor progressMonitor) throws PersistenceException {
 
         resource = onBeforeLoad(resource);
         IResource loadedResource = PersistenceManager.get().load(locator, resourceFormat, properties, progressMonitor);
@@ -161,25 +141,21 @@ public class ResourceReference<R extends IResource>
 
     }
 
-    R onBeforeLoad(R resource)
-    {
+    R onBeforeLoad(R resource) {
         return resource;
     }
 
     @NotNull
-    protected R onAfterLoad(@NotNull IResource resource)
-    {
+    protected R onAfterLoad(@NotNull IResource resource) {
         return (R) resource;
     }
 
-    R onBeforeUnload(R resource)
-    {
+    R onBeforeUnload(R resource) {
         return resource;
     }
 
     @Nullable
-    R onAfterUnload()
-    {
+    R onAfterUnload() {
         return null;
     }
 

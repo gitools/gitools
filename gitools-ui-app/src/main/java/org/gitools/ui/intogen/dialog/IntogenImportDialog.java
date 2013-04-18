@@ -53,11 +53,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class IntogenImportDialog extends JDialog
-{
+public class IntogenImportDialog extends JDialog {
 
-    public enum ImportType
-    {
+    public enum ImportType {
         ONCODATA, ONCOMODULES
     }
 
@@ -69,8 +67,7 @@ public class IntogenImportDialog extends JDialog
     @Nullable
     private SimpleHtmlRendererContext rcontext;
 
-    public IntogenImportDialog(Window parent, final ImportType type)
-    {
+    public IntogenImportDialog(Window parent, final ImportType type) {
         super(parent);
 
         this.type = type;
@@ -92,37 +89,30 @@ public class IntogenImportDialog extends JDialog
 
         SimpleUserAgentContext uagent = new SimpleUserAgentContext();
 
-        rcontext = new SimpleHtmlRendererContext(htmlPanel, uagent)
-        {
+        rcontext = new SimpleHtmlRendererContext(htmlPanel, uagent) {
             @Override
-            public void submitForm(@NotNull String method, @NotNull final URL action, String target, String enctype, @Nullable FormInput[] formInputs)
-            {
+            public void submitForm(@NotNull String method, @NotNull final URL action, String target, String enctype, @Nullable FormInput[] formInputs) {
 
                 boolean startDownload = false;
-                if (method.equalsIgnoreCase("post") && formInputs != null)
-                {
+                if (method.equalsIgnoreCase("post") && formInputs != null) {
 
                     // Look for a download=TRUE field.
-                    for (FormInput fi : formInputs)
-                    {
-                        if (fi.getName().equalsIgnoreCase("download") && fi.getTextValue().equalsIgnoreCase("true"))
-                        {
+                    for (FormInput fi : formInputs) {
+                        if (fi.getName().equalsIgnoreCase("download") && fi.getTextValue().equalsIgnoreCase("true")) {
                             startDownload = true;
                             break;
                         }
                     }
                 }
 
-                if (!startDownload)
-                {
+                if (!startDownload) {
                     super.submitForm(method, action, target, enctype, formInputs);
                     return;
                 }
 
                 IntogenImportDownloadDialog saveDlg = new IntogenImportDownloadDialog(IntogenImportDialog.this);
                 saveDlg.setVisible(true);
-                if (saveDlg.isCancelled())
-                {
+                if (saveDlg.isCancelled()) {
                     return;
                 }
 
@@ -133,25 +123,19 @@ public class IntogenImportDialog extends JDialog
                 for (FormInput fi : formInputs)
                     properties.add(new String[]{fi.getName(), fi.getTextValue()});
 
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
-                        try
-                        {
+                    public void run(@NotNull IProgressMonitor monitor) {
+                        try {
                             IntogenService.getDefault().queryFromPOST(folder, prefix, action, properties, monitor);
 
-                            SwingUtilities.invokeLater(new Runnable()
-                            {
+                            SwingUtilities.invokeLater(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     setVisible(false);
                                 }
                             });
-                        } catch (IntogenServiceException ex)
-                        {
+                        } catch (IntogenServiceException ex) {
                             monitor.exception(ex);
                         }
                     }
@@ -159,15 +143,12 @@ public class IntogenImportDialog extends JDialog
             }
 
             @Override
-            protected void submitFormSync(String method, URL action, String target, String enctype, FormInput[] formInputs) throws IOException, SAXException
-            {
+            protected void submitFormSync(String method, URL action, String target, String enctype, FormInput[] formInputs) throws IOException, SAXException {
                 super.submitFormSync(method, action, target, enctype, formInputs);
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         htmlPanel.repaint();
                         IntogenImportDialog.this.repaint();
                     }
@@ -175,39 +156,31 @@ public class IntogenImportDialog extends JDialog
             }
 
             @Override
-            public void setStatus(String message)
-            {
+            public void setStatus(String message) {
                 headerPanel.setMessageStatus(MessageStatus.INFO);
                 headerPanel.setMessage(message);
             }
 
             @Override
-            public void error(String message, Throwable throwable)
-            {
+            public void error(String message, Throwable throwable) {
                 int ret = JOptionPane.showConfirmDialog(AppFrame.get(), "There was an error trying to conect to " + getUrl() +
                         "\nPress OK to try again or Cancel to close this dialog and try later.", "Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 
-                if (ret == JOptionPane.OK_OPTION)
-                {
-                    try
-                    {
+                if (ret == JOptionPane.OK_OPTION) {
+                    try {
                         rcontext.navigate(new URL(getUrl()), "_this");
-                    } catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         setVisible(false);
                         ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
                         dlg.setVisible(true);
                     }
-                }
-                else
-                {
+                } else {
                     setVisible(false);
                 }
             }
 
             @Override
-            protected boolean isNavigationAsynchronous()
-            {
+            protected boolean isNavigationAsynchronous() {
                 return false;
             }
         };
@@ -218,16 +191,12 @@ public class IntogenImportDialog extends JDialog
 
         setPreferredSize(new Dimension(780, 520));
 
-        SwingUtilities.invokeLater(new Runnable()
-        {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     rcontext.navigate(getUrl());
-                } catch (MalformedURLException ex)
-                {
+                } catch (MalformedURLException ex) {
                     setVisible(false);
                     ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
                     dlg.setVisible(true);
@@ -239,10 +208,8 @@ public class IntogenImportDialog extends JDialog
     }
 
     @Nullable
-    private String getUrl()
-    {
-        switch (type)
-        {
+    private String getUrl() {
+        switch (type) {
             case ONCODATA:
                 return Settings.getDefault().getIntogenDataUrl();
             case ONCOMODULES:

@@ -30,8 +30,7 @@ import java.lang.annotation.RetentionPolicy;
  * @noinspection ALL
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AttributeDef
-{
+public @interface AttributeDef {
 
     @NotNull String id();
 

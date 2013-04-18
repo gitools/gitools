@@ -23,8 +23,7 @@ package org.gitools.ui.heatmap.panel;
 
 import java.awt.event.MouseEvent;
 
-public interface HeatmapMouseListener
-{
+public interface HeatmapMouseListener {
 
     void mouseMoved(int row, int col, MouseEvent e);
 

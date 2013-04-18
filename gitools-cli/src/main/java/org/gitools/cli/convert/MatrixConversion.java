@@ -30,29 +30,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class MatrixConversion implements ConversionDelegate
-{
+public class MatrixConversion implements ConversionDelegate {
 
     @Nullable
     @Override
-    public Object convert(String srcFormat, @NotNull Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception
-    {
+    public Object convert(String srcFormat, @NotNull Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception {
         BaseMatrix srcMatrix = (BaseMatrix) src;
 
         BaseMatrix dstMatrix = null;
 
         Class<? extends BaseMatrix> cls = null;
 
-        if (MimeTypes.DOUBLE_MATRIX.equals(dstFormat))
-        {
+        if (MimeTypes.DOUBLE_MATRIX.equals(dstFormat)) {
             cls = DoubleMatrix.class;
-        }
-        else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat))
-        {
+        } else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat)) {
             cls = DoubleBinaryMatrix.class;
-        }
-        else
-        {
+        } else {
             throw new Exception("Unsupported mime type for destination matrix: " + dstFormat);
         }
 
@@ -61,14 +54,11 @@ public class MatrixConversion implements ConversionDelegate
 
         progressMonitor.begin("Converting matrix ...", numRows);
 
-        if (!cls.equals(src.getClass()))
-        {
+        if (!cls.equals(src.getClass())) {
             dstMatrix = cls.newInstance();
             dstMatrix.makeCells(numRows, numCols);
-            for (int row = 0; row < numRows; row++)
-            {
-                for (int col = 0; col < numCols; col++)
-                {
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
                     Object value = srcMatrix.getCellValue(row, col, 0);
                     dstMatrix.setCellValue(row, col, 0, value);
                 }
@@ -78,9 +68,7 @@ public class MatrixConversion implements ConversionDelegate
 
             dstMatrix.setColumns(srcMatrix.getInternalColumns());
             dstMatrix.setRows(srcMatrix.getInternalRows());
-        }
-        else
-        {
+        } else {
             dstMatrix = srcMatrix;
         }
 

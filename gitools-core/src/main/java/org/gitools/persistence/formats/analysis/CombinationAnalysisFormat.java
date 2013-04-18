@@ -24,15 +24,13 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnalysis>
-{
+public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnalysis> {
 
     public static final String EXTENSION = "combination";
     private static final Class<CombinationAnalysis> RESOURCE_CLASS = CombinationAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Combination analysis", EXTENSION);
 
-    public CombinationAnalysisFormat()
-    {
+    public CombinationAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 

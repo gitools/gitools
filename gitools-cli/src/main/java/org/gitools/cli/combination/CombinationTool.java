@@ -48,11 +48,9 @@ import java.io.PrintStream;
 /**
  * @noinspection ALL
  */
-public class CombinationTool extends AnalysisTool
-{
+public class CombinationTool extends AnalysisTool {
 
-    public static class CombinationArguments extends AnalysisArguments
-    {
+    public static class CombinationArguments extends AnalysisArguments {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
                 usage = "Data file format (reference file extension).")
         public String dataFormat;
@@ -84,22 +82,19 @@ public class CombinationTool extends AnalysisTool
     }
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
         CombinationArguments args = (CombinationArguments) argsObject;
 
-        if (args.dataFile == null)
-        {
+        if (args.dataFile == null) {
             throw new ToolValidationException("Data file should be specified.");
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         CombinationArguments args = (CombinationArguments) argsObject;
 
@@ -118,21 +113,17 @@ public class CombinationTool extends AnalysisTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -145,8 +136,7 @@ public class CombinationTool extends AnalysisTool
     }
 
     @Override
-    protected void printDataFormats(@NotNull PrintStream out)
-    {
+    protected void printDataFormats(@NotNull PrintStream out) {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 

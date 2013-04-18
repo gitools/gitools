@@ -23,27 +23,22 @@ package org.gitools.utils.color.generator;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ColorGeneratorFactory
-{
+public class ColorGeneratorFactory {
 
     private static ColorGeneratorFactory instance;
 
-    private ColorGeneratorFactory()
-    {
+    private ColorGeneratorFactory() {
     }
 
-    public static ColorGeneratorFactory getDefault()
-    {
-        if (instance == null)
-        {
+    public static ColorGeneratorFactory getDefault() {
+        if (instance == null) {
             instance = new ColorGeneratorFactory();
         }
         return instance;
     }
 
     @NotNull
-    public ColorGenerator create()
-    {
+    public ColorGenerator create() {
         return new PaletteColorGenerator();
     }
 }

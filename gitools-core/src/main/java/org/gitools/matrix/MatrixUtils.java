@@ -22,8 +22,9 @@
 package org.gitools.matrix;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.matrix.model.*;
+import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixLayer;
+import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
 import org.gitools.model.ModuleMap;
@@ -38,38 +39,28 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrixUtils
-{
+public class MatrixUtils {
 
     private static final int MAX_UNIQUE = 30;
     public static final int MAXIMUM_ROWS_TO_SCAN = 2000;
 
-    public static interface DoubleCast
-    {
+    public static interface DoubleCast {
         @Nullable
         Double getDoubleValue(Object value);
     }
 
-    public static int intValue(@Nullable Object value)
-    {
+    public static int intValue(@Nullable Object value) {
         int v = 0;
-        if (value != null)
-        {
-            try
-            {
+        if (value != null) {
+            try {
                 v = ((Integer) value).intValue();
-            } catch (Exception e1)
-            {
-                try
-                {
+            } catch (Exception e1) {
+                try {
                     v = ((Double) value).intValue();
-                } catch (Exception e2)
-                {
-                    try
-                    {
+                } catch (Exception e2) {
+                    try {
                         v = Integer.parseInt((String) value);
-                    } catch (Exception e3)
-                    {
+                    } catch (Exception e3) {
                     }
                 }
             }
@@ -78,25 +69,19 @@ public class MatrixUtils
     }
 
     @Deprecated // Better use createDoubleCast() when accessing multiple values
-    public static double doubleValue(@Nullable Object value)
-    {
-        if (value == null)
-        {
+    public static double doubleValue(@Nullable Object value) {
+        if (value == null) {
             return Double.NaN; //TODO null;
         }
 
         double v = Double.NaN;
 
-        try
-        {
+        try {
             v = ((Double) value).doubleValue();
-        } catch (Exception e1)
-        {
-            try
-            {
+        } catch (Exception e1) {
+            try {
                 v = ((Integer) value).doubleValue();
-            } catch (Exception e2)
-            {
+            } catch (Exception e2) {
                 /*try { v = Double.parseDouble((String) value); }
                 catch (Exception e3) { }*/
             }
@@ -106,71 +91,52 @@ public class MatrixUtils
     }
 
     @Nullable
-    public static DoubleCast createDoubleCast(@NotNull Class cls)
-    {
-        if (cls.equals(Double.class) || cls.equals(double.class))
-        {
-            return new DoubleCast()
-            {
+    public static DoubleCast createDoubleCast(@NotNull Class cls) {
+        if (cls.equals(Double.class) || cls.equals(double.class)) {
+            return new DoubleCast() {
                 @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value)
-                {
+                public Double getDoubleValue(@Nullable Object value) {
                     return value != null ? ((Double) value).doubleValue() : null;
                 }
             };
-        }
-        else if (cls.equals(Float.class) || cls.equals(float.class))
-        {
-            return new DoubleCast()
-            {
+        } else if (cls.equals(Float.class) || cls.equals(float.class)) {
+            return new DoubleCast() {
                 @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value)
-                {
+                public Double getDoubleValue(@Nullable Object value) {
                     return value != null ? ((Float) value).doubleValue() : null;
                 }
             };
-        }
-        else if (cls.equals(Integer.class) || cls.equals(int.class))
-        {
-            return new DoubleCast()
-            {
+        } else if (cls.equals(Integer.class) || cls.equals(int.class)) {
+            return new DoubleCast() {
                 @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value)
-                {
+                public Double getDoubleValue(@Nullable Object value) {
                     return value != null ? ((Integer) value).doubleValue() : null;
                 }
             };
-        }
-        else if (cls.equals(Long.class) || cls.equals(long.class))
-        {
-            return new DoubleCast()
-            {
+        } else if (cls.equals(Long.class) || cls.equals(long.class)) {
+            return new DoubleCast() {
                 @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value)
-                {
+                public Double getDoubleValue(@Nullable Object value) {
                     return value != null ? ((Long) value).doubleValue() : null;
                 }
             };
         }
 
-        return new DoubleCast()
-        {
+        return new DoubleCast() {
             @Nullable
             @Override
-            public Double getDoubleValue(@Nullable Object value)
-            {
+            public Double getDoubleValue(@Nullable Object value) {
                 return value != null ? Double.NaN : null;
             }
         };
     }
 
     @Nullable
-    public static IColorScale inferScale(@NotNull IMatrix data, int valueIndex)
-    {
+    public static IColorScale inferScale(@NotNull IMatrix data, int valueIndex) {
 
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
@@ -181,46 +147,32 @@ public class MatrixUtils
         String zscoreRegex = ("(?i:z-score|zscore|zval|z-val)");
 
         double[] values = getUniquedValuesFromMatrix(data, valueIndex);
-        for (int i = 0; i < values.length; i++)
-        {
+        for (int i = 0; i < values.length; i++) {
             double v = values[i];
             min = v < min ? v : min;
             max = v > max ? v : max;
         }
 
 
-        if (values.length == 2)
-        {
+        if (values.length == 2) {
             BinaryColorScale bscale = new BinaryColorScale();
             bscale.setCutoff(max);
             bscale.setComparator(CutoffCmp.EQ.getShortName());
             scale = bscale;
-        }
-        else if (values.length > 2 && values.length < MAX_UNIQUE)
-        {
+        } else if (values.length > 2 && values.length < MAX_UNIQUE) {
             scale = new CategoricalColorScale(values);
-        }
-        else
-        {
-            if (min >= 0 && max <= 1 || dataDimName.matches(pvalRegex))
-            {
+        } else {
+            if (min >= 0 && max <= 1 || dataDimName.matches(pvalRegex)) {
                 scale = new PValueColorScale();
-            }
-            else if (dataDimName.matches(zscoreRegex))
-            {
+            } else if (dataDimName.matches(zscoreRegex)) {
                 scale = new ZScoreColorScale();
-            }
-            else
-            {
+            } else {
                 LinearTwoSidedColorScale lscale = new LinearTwoSidedColorScale();
                 lscale.getMin().setValue(min);
                 lscale.getMax().setValue(max);
-                if (lscale.getMax().getValue() > 0 && lscale.getMin().getValue() < 0)
-                {
+                if (lscale.getMax().getValue() > 0 && lscale.getMin().getValue() < 0) {
                     lscale.getMid().setValue(0.0);
-                }
-                else
-                {
+                } else {
                     lscale.getMid().setValue((lscale.getMax().getValue() + lscale.getMin().getValue()) / 2);
                 }
                 scale = lscale;
@@ -229,14 +181,12 @@ public class MatrixUtils
         return scale;
     }
 
-    public static int correctedValueIndex(IMatrixLayers layers,  IMatrixLayer layer)
-    {
+    public static int correctedValueIndex(IMatrixLayers layers, IMatrixLayer layer) {
 
         String id = "corrected-" + layer.getId();
 
         for (int i = 0; i < layers.size(); i++)
-            if (id.equals(layers.get(i).getId()))
-            {
+            if (id.equals(layers.get(i).getId())) {
                 return i;
             }
 
@@ -244,8 +194,7 @@ public class MatrixUtils
     }
 
     @NotNull
-    public static BaseMatrix moduleMapToMatrix(@NotNull ModuleMap mmap)
-    {
+    public static BaseMatrix moduleMapToMatrix(@NotNull ModuleMap mmap) {
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
         String[] columns = mmap.getModuleNames();
         String[] rows = mmap.getItemNames();
@@ -259,8 +208,7 @@ public class MatrixUtils
     }
 
     @NotNull
-    public static ModuleMap matrixToModuleMap(@NotNull IMatrix matrix)
-    {
+    public static ModuleMap matrixToModuleMap(@NotNull IMatrix matrix) {
         String[] itemNames = new String[matrix.getRows().size()];
         for (int i = 0; i < matrix.getRows().size(); i++)
             itemNames[i] = matrix.getRows().getLabel(i);
@@ -274,14 +222,11 @@ public class MatrixUtils
         map.setModuleNames(modNames);
 
         int[][] mapIndices = new int[matrix.getColumns().size()][];
-        for (int col = 0; col < matrix.getColumns().size(); col++)
-        {
+        for (int col = 0; col < matrix.getColumns().size(); col++) {
             List<Integer> indexList = new ArrayList<Integer>();
-            for (int row = 0; row < matrix.getRows().size(); row++)
-            {
+            for (int row = 0; row < matrix.getRows().size(); row++) {
                 double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
-                if (value == 1.0)
-                {
+                if (value == 1.0) {
                     indexList.add(row);
                 }
             }
@@ -296,19 +241,16 @@ public class MatrixUtils
         return map;
     }
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, IProgressMonitor monitor)
-    {
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, IProgressMonitor monitor) {
         return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
-    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension)
-    {
+    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension) {
         return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor)
-    {
+    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor) {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too many (50), it returns
         * an equally distributed array values from min to max*/
 
@@ -335,54 +277,42 @@ public class MatrixUtils
         colNb = (colNb > MAXIMUM_ROWS_TO_SCAN) ? MAXIMUM_ROWS_TO_SCAN : colNb;
 
         submonitor.begin("Reading some values in data matrix for " + valueDimensionName, rowNb);
-        for (int r = 0; r < rowNb; r++)
-        {
+        for (int r = 0; r < rowNb; r++) {
             monitor.worked(1);
-            for (int c = 0; c < colNb; c++)
-            {
+            for (int c = 0; c < colNb; c++) {
                 Object v = data.getCellValue(r, c, valueDimension);
-                if (v == null)
-                {
+                if (v == null) {
                     continue;
                 }
                 double d = cast.getDoubleValue(v);
-                if (!Double.isNaN(d))
-                {
-                    if (valueList.size() <= maxUnique && !valueList.contains(d))
-                    {
+                if (!Double.isNaN(d)) {
+                    if (valueList.size() <= maxUnique && !valueList.contains(d)) {
                         valueList.add(d);
                     }
                     min = d < min ? d : min;
                     max = d > max ? d : max;
                 }
             }
-            if (rr >= randomRows - 1)
-            {
+            if (rr >= randomRows - 1) {
                 break;
-            }
-            else if (valueList.size() >= maxUnique)
-            {
+            } else if (valueList.size() >= maxUnique) {
                 r = randomRowsIdx[rr];
                 rr++;
             }
 
         }
-        if (!valueList.contains(min))
-        {
+        if (!valueList.contains(min)) {
             valueList.add(min);
         }
-        if (!valueList.contains(max))
-        {
+        if (!valueList.contains(max)) {
             valueList.add(max);
         }
 
-        if (valueList.size() >= maxUnique)
-        {
+        if (valueList.size() >= maxUnique) {
             valueList.clear();
             double spectrum = max - min;
             double step = spectrum / maxUnique;
-            for (int i = 0; i < maxUnique; i++)
-            {
+            for (int i = 0; i < maxUnique; i++) {
                 valueList.add(i * step - (spectrum - max));
             }
         }

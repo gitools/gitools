@@ -23,47 +23,37 @@ package org.gitools.datafilters;
 
 import org.jetbrains.annotations.Nullable;
 
-public class DoubleTranslator implements ValueTranslator<Double>
-{
+public class DoubleTranslator implements ValueTranslator<Double> {
 
     @Nullable
     @Override
-    public Double stringToValue(String str)
-    {
+    public Double stringToValue(String str) {
         return stringToValue(str, true);
     }
 
     @Nullable
-    public Double stringToValue(@Nullable String str, boolean allowNull)
-    {
-        if (allowNull)
-        {
-            if (str == null || str.isEmpty())
-            {
+    public Double stringToValue(@Nullable String str, boolean allowNull) {
+        if (allowNull) {
+            if (str == null || str.isEmpty()) {
                 return null;
             }
         }
 
         double value = Double.NaN;
-        try
-        {
+        try {
             value = Double.parseDouble(str);
-        } catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
         }
         return value;
     }
 
     @Override
-    public String valueToString(@Nullable Double value)
-    {
-        if (value == null)
-        {
+    public String valueToString(@Nullable Double value) {
+        if (value == null) {
             return "";
         }
 
-        if (Double.isNaN(value))
-        {
+        if (Double.isNaN(value)) {
             return "-";
         }
 

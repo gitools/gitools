@@ -45,31 +45,26 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class SortByValueAction extends BaseAction
-{
+public class SortByValueAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public SortByValueAction()
-    {
+    public SortByValueAction() {
         super("Sort by value ...");
 
         setDesc("Sort by value ...");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -78,8 +73,7 @@ public class SortByValueAction extends BaseAction
         int aggrIndex = -1;
         IAggregator[] aggregators = AggregatorFactory.getAggregatorsArray();
         for (int i = 0; i < aggregators.length && aggrIndex == -1; i++)
-            if (aggregators[i].getClass().equals(MultAggregator.class))
-            {
+            if (aggregators[i].getClass().equals(MultAggregator.class)) {
                 aggrIndex = i;
             }
 
@@ -89,49 +83,41 @@ public class SortByValueAction extends BaseAction
 
         IMatrixLayers cellProps = matrixView.getLayers();
         String[] attributeNames = new String[cellProps.size()];
-        for (int i = 0; i < cellProps.size(); i++)
-        {
+        for (int i = 0; i < cellProps.size(); i++) {
             String name = cellProps.get(i).getName();
             attributeNames[i] = name;
-            if (attrIndex == -1 && name.contains("p-value"))
-            {
+            if (attrIndex == -1 && name.contains("p-value")) {
                 attrIndex = i;
             }
         }
 
-        if (attrIndex == -1)
-        {
+        if (attrIndex == -1) {
             attrIndex = 0;
         }
 
         // Default criteria
 
         List<ValueSortCriteria> initialCriteria = new ArrayList<ValueSortCriteria>(1);
-        if (attributeNames.length > 0)
-        {
+        if (attributeNames.length > 0) {
             initialCriteria.add(new ValueSortCriteria(attributeNames[attrIndex], attrIndex, aggregators[aggrIndex], ValueSortCriteria.SortDirection.ASCENDING));
         }
 
         final ValueSortDialog dlg = new ValueSortDialog(AppFrame.get(), attributeNames, aggregators, ValueSortCriteria.SortDirection.values(), initialCriteria);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         final List<ValueSortCriteria> criteriaList = dlg.getCriteriaList();
-        if (criteriaList.size() == 0)
-        {
+        if (criteriaList.size() == 0) {
             AppFrame.get().setStatusText("No criteria specified.");
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 ValueSortCriteria[] criteriaArray = new ValueSortCriteria[criteriaList.size()];

@@ -44,13 +44,11 @@ import java.io.IOException;
 /**
  * @noinspection ALL
  */
-public class ExportMatrixAction extends BaseAction
-{
+public class ExportMatrixAction extends BaseAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
-    public ExportMatrixAction()
-    {
+    public ExportMatrixAction() {
         super("Export matrix ...");
 
         setDesc("Export a matrix");
@@ -58,18 +56,15 @@ public class ExportMatrixAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -84,15 +79,13 @@ public class ExportMatrixAction extends BaseAction
 
         final String selected = (String) JOptionPane.showInputDialog(AppFrame.get(), "What do you want to export ?", "Export table data", JOptionPane.QUESTION_MESSAGE, null, propNames, propNames[selectedPropIndex]);
 
-        if (selected == null || selected.isEmpty())
-        {
+        if (selected == null || selected.isEmpty()) {
             return;
         }
 
         int index = 0;
         for (int j = 0; j < propNames.length; j++)
-            if (propNames[j].equals(selected))
-            {
+            if (propNames[j].equals(selected)) {
                 index = j;
             }
 
@@ -100,28 +93,23 @@ public class ExportMatrixAction extends BaseAction
 
         final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
 
-        if (file == null)
-        {
+        if (file == null) {
             return;
         }
 
         Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Exporting to image ...", 1);
                     monitor.info("File: " + file.getName());
 
                     TextMatrixViewExporter.exportMatrix(matrixView, propIndex, file);
 
                     monitor.end();
-                } catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     monitor.exception(ex);
                 }
             }

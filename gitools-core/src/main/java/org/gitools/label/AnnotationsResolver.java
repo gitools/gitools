@@ -25,42 +25,35 @@ import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
 
-public class AnnotationsResolver implements TextPattern.VariableValueResolver
-{
+public class AnnotationsResolver implements TextPattern.VariableValueResolver {
 
     private final LabelProvider labelProvider;
     private final IAnnotations am;
     private int index;
 
-    public AnnotationsResolver(LabelProvider labelProvider, IAnnotations am)
-    {
+    public AnnotationsResolver(LabelProvider labelProvider, IAnnotations am) {
         this.labelProvider = labelProvider;
         this.am = am;
     }
 
-    public void setIndex(int index)
-    {
+    public void setIndex(int index) {
         this.index = index;
     }
 
     @Override
-    public String resolveValue(@NotNull String variableName)
-    {
+    public String resolveValue(@NotNull String variableName) {
         String label = labelProvider.getLabel(index);
-        if (variableName.equalsIgnoreCase("id"))
-        {
+        if (variableName.equalsIgnoreCase("id")) {
             return label;
         }
 
         String annotation = null;
 
-        if (am != null)
-        {
+        if (am != null) {
             annotation = am.getAnnotation(label, variableName);
         }
 
-        if (annotation == null)
-        {
+        if (annotation == null) {
             return "${" + variableName + "}";
         }
 

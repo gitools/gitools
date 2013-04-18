@@ -39,8 +39,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class WekaCobWebMethod extends AbstractClusteringValueMethod
-{
+public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
     private float acuity;
 
@@ -48,17 +47,14 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
 
     private int seed;
 
-    public WekaCobWebMethod()
-    {
+    public WekaCobWebMethod() {
         classIndex = 0; // especial initialization value for weka's cobweb
     }
 
     @Nullable
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
-    {
-        try
-        {
+    public ClusteringResults cluster(ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException {
+        try {
 
             Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
 
@@ -66,8 +62,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
 
             MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
-            if (preprocess)
-            {
+            if (preprocess) {
                 ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
             }
 
@@ -83,18 +78,15 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
             Instance current = null;
             int j = 0;
 
-            while ((j < clusterWekaData.getMatrixView().getSize()) && !monitor.isCancelled())
-            {
-                if ((current = clusterWekaData.get(j)) != null)
-                {
+            while ((j < clusterWekaData.getMatrixView().getSize()) && !monitor.isCancelled()) {
+                if ((current = clusterWekaData.get(j)) != null) {
                     clusterer.updateClusterer(current);
                 }
                 monitor.worked(1);
                 j++;
             }
 
-            if (!monitor.isCancelled())
-            {
+            if (!monitor.isCancelled()) {
 
                 clusterer.updateFinished();
 
@@ -107,17 +99,14 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
 
                 HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
-                for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++)
-                {
-                    if ((current = clusterWekaData.get(i)) != null)
-                    {
+                for (int i = 0; i < clusterWekaData.getMatrixView().getSize() && !monitor.isCancelled(); i++) {
+                    if ((current = clusterWekaData.get(i)) != null) {
 
                         cluster = clusterer.clusterInstance(current);
 
                         List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
 
-                        if (instancesCluster == null)
-                        {
+                        if (instancesCluster == null) {
                             instancesCluster = new ArrayList<Integer>();
                         }
 
@@ -132,51 +121,40 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod
             }
             return results;
 
-        } catch (Throwable ex)
-        {
-            if (ex instanceof OutOfMemoryError)
-            {
+        } catch (Throwable ex) {
+            if (ex instanceof OutOfMemoryError) {
                 throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
-            }
-            else
-            {
+            } else {
                 throw new ClusteringException(ex);
             }
         }
     }
 
-    public float getAcuity()
-    {
+    public float getAcuity() {
         return acuity;
     }
 
-    public void setAcuity(float acuity)
-    {
+    public void setAcuity(float acuity) {
         this.acuity = acuity;
     }
 
-    public float getCutoff()
-    {
+    public float getCutoff() {
         return cutoff;
     }
 
-    public void setCutoff(float cutoff)
-    {
+    public void setCutoff(float cutoff) {
         this.cutoff = cutoff;
     }
 
-    public int getSeed()
-    {
+    public int getSeed() {
         return seed;
     }
 
-    public void setSeed(int seed)
-    {
+    public void setSeed(int seed) {
         this.seed = seed;
     }
 
-    private void configure(@NotNull Cobweb clusterer)
-    {
+    private void configure(@NotNull Cobweb clusterer) {
 
         clusterer.setAcuity(acuity);
 

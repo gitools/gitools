@@ -29,11 +29,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-class JobProgressDialog extends javax.swing.JDialog
-{
+class JobProgressDialog extends javax.swing.JDialog {
 
-    public interface CancelListener
-    {
+    public interface CancelListener {
         void cancelled();
     }
 
@@ -43,8 +41,7 @@ class JobProgressDialog extends javax.swing.JDialog
     /**
      * Creates new form ProgressDialog
      */
-    public JobProgressDialog(java.awt.Window parent, boolean modal)
-    {
+    public JobProgressDialog(java.awt.Window parent, boolean modal) {
         super(parent);
         setModal(modal);
 
@@ -57,8 +54,7 @@ class JobProgressDialog extends javax.swing.JDialog
         progressBar.setIndeterminate(true);
     }
 
-    public void addCancelListener(CancelListener listener)
-    {
+    public void addCancelListener(CancelListener listener) {
         listeners.add(listener);
     }
 
@@ -70,8 +66,7 @@ class JobProgressDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         msgLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
@@ -85,10 +80,8 @@ class JobProgressDialog extends javax.swing.JDialog
         msgLabel.setText("Working...");
 
         cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
@@ -103,8 +96,7 @@ class JobProgressDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelBtnActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         for (CancelListener listener : listeners)
             listener.cancelled();
     }//GEN-LAST:event_cancelBtnActionPerformed
@@ -116,36 +108,28 @@ class JobProgressDialog extends javax.swing.JDialog
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 
-    public void setMessage(String msg)
-    {
+    public void setMessage(String msg) {
         msgLabel.setText(msg);
         infoLabel.setText("");
     }
 
-    public void setMessage(String msg, String info)
-    {
+    public void setMessage(String msg, String info) {
         msgLabel.setText(msg);
         infoLabel.setText(info);
     }
 
-    public void setInfo(String info)
-    {
+    public void setInfo(String info) {
         infoLabel.setText(info);
     }
 
-    public void setWork(int work)
-    {
+    public void setWork(int work) {
         progressBar.setMaximum(work);
     }
 
-    public void setProgress(int progress)
-    {
-        if (progress == 0)
-        {
+    public void setProgress(int progress) {
+        if (progress == 0) {
             progressBar.setIndeterminate(true);
-        }
-        else
-        {
+        } else {
             progressBar.setIndeterminate(false);
             progressBar.setValue(progress);
         }

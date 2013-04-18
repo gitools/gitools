@@ -26,13 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 @Deprecated
-public class PersistenceUtils
-{
+public class PersistenceUtils {
     /**
      * Returns file name (including extension) without path
      */
-    public static String getBaseName(@NotNull String path)
-    {
+    public static String getBaseName(@NotNull String path) {
         int sep = path.lastIndexOf(File.separatorChar);
         return path.substring(sep + 1);
     }
@@ -41,11 +39,9 @@ public class PersistenceUtils
      * Returns the file name without extension.
      * It takes into account composed extension for .gz
      */
-    public static String getFileName(@NotNull String path)
-    {
+    public static String getFileName(@NotNull String path) {
         int dot = path.lastIndexOf('.');
-        if (dot > 0 && path.substring(dot).equalsIgnoreCase(".gz"))
-        {
+        if (dot > 0 && path.substring(dot).equalsIgnoreCase(".gz")) {
             dot = path.substring(0, dot - 1).lastIndexOf('.');
         }
 
@@ -58,15 +54,12 @@ public class PersistenceUtils
      * It takes into account composed extension for .gz
      */
     @NotNull
-    public static String getExtension(@NotNull String path)
-    {
+    public static String getExtension(@NotNull String path) {
         int dot = path.lastIndexOf('.');
         String ext = dot != -1 ? path.substring(dot + 1) : "";
-        if (ext.equalsIgnoreCase("gz"))
-        {
+        if (ext.equalsIgnoreCase("gz")) {
             String[] e = path.split("[.]");
-            if (e.length >= 2)
-            {
+            if (e.length >= 2) {
                 ext = e[e.length - 2] + "." + e[e.length - 1];
             }
         }

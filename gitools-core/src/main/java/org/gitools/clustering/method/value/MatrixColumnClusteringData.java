@@ -29,49 +29,40 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class MatrixColumnClusteringData implements ClusteringData
-{
+public class MatrixColumnClusteringData implements ClusteringData {
 
-    public class Instance implements ClusteringDataInstance
-    {
+    public class Instance implements ClusteringDataInstance {
 
         private final int index;
 
-        public Instance(int index)
-        {
+        public Instance(int index) {
             this.index = index;
         }
 
         @Override
-        public int getNumAttributes()
-        {
+        public int getNumAttributes() {
             return matrix.getRows().size();
         }
 
         @Override
-        public String getAttributeName(int attribute)
-        {
+        public String getAttributeName(int attribute) {
             return matrix.getRows().getLabel(attribute);
         }
 
         @Override
-        public Class<?> getValueClass(int attribute)
-        {
+        public Class<?> getValueClass(int attribute) {
             return attributeClass;
         }
 
         @Override
-        public Object getValue(int attribute)
-        {
+        public Object getValue(int attribute) {
             return matrix.getCellValue(attribute, index, matrixAttribute);
         }
 
         @NotNull
         @Override
-        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass)
-        {
-            if (!valueClass.equals(getValueClass(attribute)))
-            {
+        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass) {
+            if (!valueClass.equals(getValueClass(attribute))) {
                 throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
             }
 
@@ -83,57 +74,48 @@ public class MatrixColumnClusteringData implements ClusteringData
     private final int matrixAttribute;
     private Class<?> attributeClass;
 
-    public MatrixColumnClusteringData(@NotNull IMatrix matrix, int matrixAttribute)
-    {
+    public MatrixColumnClusteringData(@NotNull IMatrix matrix, int matrixAttribute) {
         this.matrix = matrix;
         this.matrixAttribute = matrixAttribute;
         this.attributeClass = matrix.getLayers().get(matrixAttribute).getValueClass();
     }
 
     @Override
-    public int getSize()
-    {
+    public int getSize() {
         return matrix.getColumns().size();
     }
 
     @Override
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         return matrix.getColumns().getLabel(index);
     }
 
     @NotNull
     @Override
-    public ClusteringDataInstance getInstance(int index)
-    {
+    public ClusteringDataInstance getInstance(int index) {
         return new Instance(index);
     }
 
-    public Class<?> getAttributeClass()
-    {
+    public Class<?> getAttributeClass() {
         return attributeClass;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setAttributeClass(Class<?> attributeClass)
-    {
+    public void setAttributeClass(Class<?> attributeClass) {
         this.attributeClass = attributeClass;
     }
 
-    public IMatrix getMatrix()
-    {
+    public IMatrix getMatrix() {
         return matrix;
     }
 
-    public void setMatrix(IMatrix matrix)
-    {
+    public void setMatrix(IMatrix matrix) {
         this.matrix = matrix;
     }
 
-    public int getNumAttributes()
-    {
+    public int getNumAttributes() {
         return matrix.getRows().size();
     }
 

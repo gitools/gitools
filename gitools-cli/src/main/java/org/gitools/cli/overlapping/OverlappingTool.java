@@ -45,11 +45,9 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public class OverlappingTool extends AnalysisTool
-{
+public class OverlappingTool extends AnalysisTool {
 
-    public static class OverlappingArguments extends AnalysisArguments
-    {
+    public static class OverlappingArguments extends AnalysisArguments {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
                 usage = "Data file format (Reference file extension).")
         public String dataFormat;
@@ -94,47 +92,39 @@ public class OverlappingTool extends AnalysisTool
     private double binaryCutoffValue;
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
         OverlappingArguments args = (OverlappingArguments) argsObject;
 
-        if (args.dataFile == null)
-        {
+        if (args.dataFile == null) {
             throw new ToolValidationException("Data file should be specified.");
         }
 
-        if (args.binCutoff != null)
-        {
+        if (args.binCutoff != null) {
             Pattern pat = Pattern.compile("^([a-zA-Z]+),(.+)$");
             args.binCutoff = args.binCutoff.toLowerCase();
             Matcher mat = pat.matcher(args.binCutoff);
-            if (!mat.matches())
-            {
+            if (!mat.matches()) {
                 throw new ToolValidationException("Invalid parameters for binary cutoff filter: " + args.binCutoff);
             }
 
-            try
-            {
+            try {
                 binaryCutoffEnabled = true;
                 binaryCutoffCmp = CutoffCmp.getFromName(mat.group(1));
-                if (binaryCutoffCmp == null)
-                {
+                if (binaryCutoffCmp == null) {
                     throw new ToolException("Invalid condition: " + mat.group(1));
                 }
                 binaryCutoffValue = Double.parseDouble(mat.group(2));
-            } catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 throw new ToolValidationException("Invalid cutoff: " + mat.group(2));
             }
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         OverlappingArguments args = (OverlappingArguments) argsObject;
 
@@ -142,8 +132,7 @@ public class OverlappingTool extends AnalysisTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
 
             IResourceFormat resourceFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
@@ -160,11 +149,9 @@ public class OverlappingTool extends AnalysisTool
 
 
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }

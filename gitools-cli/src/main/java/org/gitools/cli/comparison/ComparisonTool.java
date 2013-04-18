@@ -57,13 +57,11 @@ import java.util.zip.DataFormatException;
 /**
  * @noinspection ALL
  */
-public class ComparisonTool extends AnalysisTool
-{
+public class ComparisonTool extends AnalysisTool {
 
     private String groups;
 
-    public static class ComparisonArguments extends AnalysisArguments
-    {
+    public static class ComparisonArguments extends AnalysisArguments {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
                 usage = "Data file format (reference extension).")
         public String dataFormat;
@@ -120,64 +118,50 @@ public class ComparisonTool extends AnalysisTool
     protected Properties methodProperties = new Properties();
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
         ComparisonArguments args = (ComparisonArguments) argsObject;
 
-        if (args.dataFile == null)
-        {
+        if (args.dataFile == null) {
             throw new ToolValidationException("Data file should be specified.");
         }
 
-        if (args.grouping == null)
-        {
+        if (args.grouping == null) {
             throw new ToolValidationException("A grouping method should be defined. Options: [" + GroupComparisonCommand.GROUP_BY_VALUE + "," + GroupComparisonCommand.GROUP_BY_LABELS + "]");
-        }
-        else if (!(args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) || args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS)))
-        {
+        } else if (!(args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) || args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS))) {
             throw new ToolValidationException("Unknown grouping method: " + args.grouping + ". Choose from [" + GroupComparisonCommand.GROUP_BY_VALUE + "," + GroupComparisonCommand.GROUP_BY_LABELS + "]");
         }
 
-        if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS) && args.groupLabels == null)
-        {
+        if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_LABELS) && args.groupLabels == null) {
             throw new ToolValidationException("The <grouping> by labels requires the -gl option to be set");
-        }
-        else if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) && args.groupCutoffs == null)
-        {
+        } else if (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) && args.groupCutoffs == null) {
             throw new ToolValidationException("The <grouping> by value requires the -gc option to be set");
         }
 
         this.groups = (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
 
-        if (args.attrName != null)
-        {
+        if (args.attrName != null) {
             MultiValueMatrixFormat obp = new MultiValueMatrixFormat();
             String[] headers = new String[0];
-            try
-            {
+            try {
                 headers = readHeader(new File(args.dataFile));
-            } catch (PersistenceException e)
-            {
+            } catch (PersistenceException e) {
                 throw new ToolValidationException("Data file could not be opened");
             }
             args.attrIndex = Arrays.asList(headers).indexOf(args.attrName);
-            if (args.attrIndex < 0)
-            {
+            if (args.attrIndex < 0) {
                 throw new ToolValidationException("Specified attribute index not found: " + args.attrName);
             }
         }
     }
 
     @Nullable
-    private static String[] readHeader(File file) throws PersistenceException
-    {
+    private static String[] readHeader(File file) throws PersistenceException {
 
         String[] matrixHeaders = null;
-        try
-        {
+        try {
             Reader reader = IOUtils.openReader(file);
 
             CSVReader parser = new CSVReader(reader);
@@ -185,24 +169,21 @@ public class ComparisonTool extends AnalysisTool
             String[] line = parser.readNext();
 
             // read header
-            if (line.length < 3)
-            {
+            if (line.length < 3) {
                 throw new DataFormatException("At least 3 columns expected.");
             }
 
             int numAttributes = line.length - 2;
             matrixHeaders = new String[numAttributes];
             System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
         return matrixHeaders;
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         ComparisonArguments args = (ComparisonArguments) argsObject;
 
@@ -227,21 +208,17 @@ public class ComparisonTool extends AnalysisTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -253,8 +230,7 @@ public class ComparisonTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printMethods(@NotNull PrintStream o)
-    {
+    private void printMethods(@NotNull PrintStream o) {
         o.println("Available comparison methods:");
         o.println(String.format(LIST_S_FMT, "mann-whitney-wilcoxon", "Mann-Whitney-Wilcoxon"));
     }

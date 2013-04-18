@@ -33,8 +33,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractWizardPage extends JPanel implements IWizardPage
-{
+public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private static final long serialVersionUID = -4330234851091328953L;
 
@@ -58,13 +57,11 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
     @NotNull
     private final List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
 
-    protected AbstractWizardPage()
-    {
+    protected AbstractWizardPage() {
         this(null);
     }
 
-    protected AbstractWizardPage(@Nullable String id)
-    {
+    protected AbstractWizardPage(@Nullable String id) {
         this.id = id != null ? id : this.getClass().getCanonicalName();
         this.pageComplete = false;
         //this.helpContext = new HelpContext(this.getClass());
@@ -72,140 +69,117 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage
 
     @Nullable
     @Override
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Override
-    public IWizard getWizard()
-    {
+    public IWizard getWizard() {
         return wizard;
     }
 
     @Override
-    public void setWizard(IWizard wizard)
-    {
+    public void setWizard(IWizard wizard) {
         this.wizard = wizard;
     }
 
     @Override
-    public boolean isComplete()
-    {
+    public boolean isComplete() {
         return pageComplete;
     }
 
-    protected void setComplete(boolean complete)
-    {
+    protected void setComplete(boolean complete) {
         this.pageComplete = complete;
         fireUpdated();
     }
 
     @Nullable
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         // do nothing
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         // do nothing
     }
 
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
         fireUpdated();
     }
 
     @Override
-    public Icon getLogo()
-    {
+    public Icon getLogo() {
         return logo;
     }
 
-    protected void setLogo(Icon logo)
-    {
+    protected void setLogo(Icon logo) {
         this.logo = logo;
     }
 
     @Override
-    public MessageStatus getStatus()
-    {
+    public MessageStatus getStatus() {
         return this.status;
     }
 
-    protected void setStatus(MessageStatus status)
-    {
+    protected void setStatus(MessageStatus status) {
         this.status = status;
         fireUpdated();
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
-    protected void setMessage(String message)
-    {
+    protected void setMessage(String message) {
         this.message = message;
         fireUpdated();
     }
 
     @Override
-    public HelpContext getHelpContext()
-    {
+    public HelpContext getHelpContext() {
         return helpContext;
     }
 
     @Override
-    public void addPageUpdateListener(IWizardPageUpdateListener listener)
-    {
+    public void addPageUpdateListener(IWizardPageUpdateListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removePageUpdateListener(IWizardPageUpdateListener listener)
-    {
+    public void removePageUpdateListener(IWizardPageUpdateListener listener) {
         listeners.remove(listener);
     }
 
     @Override
-    public void setHelpContext(HelpContext helpContext)
-    {
+    public void setHelpContext(HelpContext helpContext) {
         this.helpContext = helpContext;
     }
 
-    public void setMessage(MessageStatus status, String message)
-    {
+    public void setMessage(MessageStatus status, String message) {
         this.status = status;
         this.message = message;
         fireUpdated();
     }
 
-    protected void fireUpdated()
-    {
+    protected void fireUpdated() {
         for (IWizardPageUpdateListener l : listeners)
             l.pageUpdated(this);
     }

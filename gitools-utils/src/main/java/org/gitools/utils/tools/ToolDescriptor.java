@@ -32,20 +32,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
-public class ToolDescriptor
-{
+public class ToolDescriptor {
 
     private String name;
     private String description;
     private Class<?> argsClass;
     private Class<? extends ToolLifeCycle> lifeCycleClass;
 
-    public ToolDescriptor()
-    {
+    public ToolDescriptor() {
     }
 
-    public ToolDescriptor(String name, String descr, Class<?> argsObject, Class<? extends ToolLifeCycle> toolClass)
-    {
+    public ToolDescriptor(String name, String descr, Class<?> argsObject, Class<? extends ToolLifeCycle> toolClass) {
 
         this.name = name;
         this.description = descr;
@@ -54,46 +51,38 @@ public class ToolDescriptor
     }
 
     @XmlElement
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    protected void setName(String name)
-    {
+    protected void setName(String name) {
         this.name = name;
     }
 
     @XmlElement
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    protected void setDescription(String description)
-    {
+    protected void setDescription(String description) {
         this.description = description;
     }
 
     @XmlElement
-    public Class<?> getArgumentsClass()
-    {
+    public Class<?> getArgumentsClass() {
         return argsClass;
     }
 
-    protected void setArgumentsClass(Class<?> argsClass)
-    {
+    protected void setArgumentsClass(Class<?> argsClass) {
         this.argsClass = argsClass;
     }
 
     @XmlElement
-    public Class<? extends ToolLifeCycle> getLifeCycleClass()
-    {
+    public Class<? extends ToolLifeCycle> getLifeCycleClass() {
         return lifeCycleClass;
     }
 
-    protected void setLifeCycleClass(Class<? extends ToolLifeCycle> lifeCycleClass)
-    {
+    protected void setLifeCycleClass(Class<? extends ToolLifeCycle> lifeCycleClass) {
         this.lifeCycleClass = lifeCycleClass;
     }
 }

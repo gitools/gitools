@@ -23,8 +23,7 @@ package org.gitools.utils.colorscale.util;
 
 import java.awt.*;
 
-public class ColorConstants
-{
+public class ColorConstants {
 
     public static final Color notANumberColor = Color.WHITE;
     public static final Color posInfinityColor = Color.GREEN;

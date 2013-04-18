@@ -37,8 +37,7 @@ import java.util.ArrayList;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
-{
+public abstract class NumericColorScale implements IColorScale, IColorScaleHtml {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color notANumberColor;
@@ -54,19 +53,16 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
 
     private ArrayList<ColorScaleRange> rangesList;
 
-    protected NumericColorScale()
-    {
+    protected NumericColorScale() {
         super();
         rangesList = new ArrayList<ColorScaleRange>();
     }
 
     @Nullable
     @Override
-    public Color valueColor(double value)
-    {
+    public Color valueColor(double value) {
         Color color = limitsColor(value);
-        if (color != null)
-        {
+        if (color != null) {
             return color;
         }
 
@@ -78,37 +74,31 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
     @NotNull
     protected abstract double[] getPoints();
 
-    public double getMinValue()
-    {
+    public double getMinValue() {
         return getPoints()[0];
     }
 
-    public double getMaxValue()
-    {
+    public double getMaxValue() {
         return getPoints()[getPoints().length - 1];
     }
 
     @NotNull
     @Override
-    public String valueRGBHtmlColor(double value)
-    {
+    public String valueRGBHtmlColor(double value) {
         Color color = valueColor(value);
         return ColorUtils.colorToRGBHtml(color);
     }
 
     @NotNull
     @Override
-    public String valueHexHtmlColor(double value)
-    {
+    public String valueHexHtmlColor(double value) {
         Color color = valueColor(value);
         return ColorUtils.colorToHexHtml(color);
     }
 
     @Nullable
-    Color limitsColor(double value)
-    {
-        if (Double.isNaN(value))
-        {
+    Color limitsColor(double value) {
+        if (Double.isNaN(value)) {
             return getNotANumberColor();
         }
         //        else if (value == Double.POSITIVE_INFINITY)
@@ -119,93 +109,75 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml
         return null;
     }
 
-    Color getNotANumberColor()
-    {
-        if (notANumberColor == null)
-        {
+    Color getNotANumberColor() {
+        if (notANumberColor == null) {
             return ColorConstants.notANumberColor;
         }
         return notANumberColor;
     }
 
-    public void setNotANumberColor(Color notANumberColor)
-    {
+    public void setNotANumberColor(Color notANumberColor) {
         this.notANumberColor = notANumberColor;
     }
 
-    public Color getPosInfinityColor()
-    {
-        if (posInfinityColor == null)
-        {
+    public Color getPosInfinityColor() {
+        if (posInfinityColor == null) {
             return ColorConstants.posInfinityColor;
         }
         return posInfinityColor;
     }
 
-    public void setPosInfinityColor(Color posInfinityColor)
-    {
+    public void setPosInfinityColor(Color posInfinityColor) {
         this.posInfinityColor = posInfinityColor;
     }
 
-    public Color getNegInfinityColor()
-    {
-        if (negInfinityColor == null)
-        {
+    public Color getNegInfinityColor() {
+        if (negInfinityColor == null) {
             return ColorConstants.negInfinityColor;
         }
         return negInfinityColor;
     }
 
-    public void setNegInfinityColor(Color negInfinityColor)
-    {
+    public void setNegInfinityColor(Color negInfinityColor) {
         this.negInfinityColor = negInfinityColor;
     }
 
-    public Color getEmptyColor()
-    {
-        if (emptyColor == null)
-        {
+    public Color getEmptyColor() {
+        if (emptyColor == null) {
             return ColorConstants.emptyColor;
         }
         return emptyColor;
     }
 
-    public void setEmptyColor(Color emptyColor)
-    {
+    public void setEmptyColor(Color emptyColor) {
         this.emptyColor = emptyColor;
     }
 
-    public final ArrayList<ColorScaleRange> getScaleRanges()
-    {
+    public final ArrayList<ColorScaleRange> getScaleRanges() {
 
         updateRangesList();
 
         return rangesList;
     }
 
-    protected ArrayList<ColorScaleRange> getInternalScaleRanges()
-    {
-        if (rangesList == null)
-        {
+    protected ArrayList<ColorScaleRange> getInternalScaleRanges() {
+        if (rangesList == null) {
             rangesList = new ArrayList<ColorScaleRange>();
         }
         return rangesList;
     }
 
-    protected void updateRangesList()
-    {
+    protected void updateRangesList() {
         rangesList.clear();
 
         double[] points = getPoints();
         double min = Double.NaN;
         double max = Double.NaN;
-        for (int i = 0; i < points.length; i++)
-        {
+        for (int i = 0; i < points.length; i++) {
             min = max;
             max = points[i];
 
-            if (Double.isNaN(min))
-            {
+            if (Double.isNaN(min)) {
                 continue;
             }
 

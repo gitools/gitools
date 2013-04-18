@@ -26,8 +26,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public interface Method
-{
+public interface Method {
 
     String getId();
 

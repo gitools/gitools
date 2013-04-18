@@ -36,8 +36,7 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public class OBOStreamReader implements OBOEventTypes
-{
+public class OBOStreamReader implements OBOEventTypes {
 
     private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[(.*)\\][ \\t]*(?:!(.*))?$");
     private static final Pattern LINE_COMMENT_PATTERN = Pattern.compile("^\\s*!(.*)$");
@@ -56,18 +55,15 @@ public class OBOStreamReader implements OBOEventTypes
     private String stanzaName;
     private String tagName;
 
-    public OBOStreamReader(Reader reader)
-    {
+    public OBOStreamReader(Reader reader) {
         this(new OBOStream(new BufferedReader(reader)));
     }
 
-    public OBOStreamReader(URL baseUrl) throws IOException
-    {
+    public OBOStreamReader(URL baseUrl) throws IOException {
         this(new OBOStream(baseUrl));
     }
 
-    private OBOStreamReader(OBOStream stream)
-    {
+    private OBOStreamReader(OBOStream stream) {
         this.stream = stream;
         streamStack = new Stack<OBOStream>();
 
@@ -81,28 +77,21 @@ public class OBOStreamReader implements OBOEventTypes
     }
 
     @Nullable
-    public OBOEvent nextEvent() throws IOException
-    {
-        if (tokens.size() > 0)
-        {
+    public OBOEvent nextEvent() throws IOException {
+        if (tokens.size() > 0) {
             return tokens.poll();
         }
 
-        while (tokens.size() == 0)
-        {
+        while (tokens.size() == 0) {
             String line = stream.nextLine();
             int pos = stream.getLinePos();
 
-            if (line == null)
-            {
-                if (!documentEnded)
-                {
+            if (line == null) {
+                if (!documentEnded) {
                     documentEnded = true;
                     tokens.offer(new OBOEvent(DOCUMENT_END, pos));
                     break;
-                }
-                else
-                {
+                } else {
                     return null;
                 }
             }
@@ -110,12 +99,9 @@ public class OBOStreamReader implements OBOEventTypes
             Matcher stanzaMatcher = STANZA_NAME_PATTERN.matcher(line);
             Matcher commentMatcher = LINE_COMMENT_PATTERN.matcher(line);
 
-            if (stanzaMatcher.matches())
-            {
-                if (stanzaName == null)
-                {
-                    if (!headerEnded)
-                    {
+            if (stanzaMatcher.matches()) {
+                if (stanzaName == null) {
+                    if (!headerEnded) {
                         tokens.offer(new OBOEvent(HEADER_END, pos));
                         headerEnded = true;
                     }
@@ -125,15 +111,10 @@ public class OBOStreamReader implements OBOEventTypes
                 //String stzName = line.substring(1, line.length() - 1);
                 tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
                 stanzaName = stzName;
-            }
-            else if (commentMatcher.matches())
-            {
+            } else if (commentMatcher.matches()) {
                 tokens.offer(new OBOEvent(COMMENT, pos));
-            }
-            else
-            {
-                if (stanzaName == null && !headerStarted)
-                {
+            } else {
+                if (stanzaName == null && !headerStarted) {
                     tokens.offer(new OBOEvent(HEADER_START, pos));
                     headerStarted = true;
                 }
@@ -145,17 +126,14 @@ public class OBOStreamReader implements OBOEventTypes
         return tokens.poll();
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         stream.close();
         // TODO streamStack
     }
 
-    private void nextTag(@NotNull String line, int linepos)
-    {
+    private void nextTag(@NotNull String line, int linepos) {
         int pos = line.indexOf(':');
-        if (pos < 0)
-        {
+        if (pos < 0) {
             tokens.offer(new OBOEvent(UNKNOWN, linepos));
             return;
         }
@@ -174,26 +152,18 @@ public class OBOStreamReader implements OBOEventTypes
     /**
      * replace escape characters and remove comments
      */
-    private void escapeCharsAndRemoveComments(@NotNull String line, @NotNull StringBuilder sb)
-    {
+    private void escapeCharsAndRemoveComments(@NotNull String line, @NotNull StringBuilder sb) {
         int len = line.length();
         int pos = 0;
-        while (pos < len)
-        {
+        while (pos < len) {
             char c = line.charAt(pos++);
-            if (c == '!')
-            {
+            if (c == '!') {
                 pos = len;
-            }
-            else if (c != '\\' || (c == '\\' && pos == len - 1))
-            {
+            } else if (c != '\\' || (c == '\\' && pos == len - 1)) {
                 sb.append(c);
-            }
-            else
-            {
+            } else {
                 c = line.charAt(pos++);
-                switch (c)
-                {
+                switch (c) {
                     case 'n':
                         sb.append('\n');
                         break;

@@ -48,13 +48,11 @@ import java.util.Set;
 /**
  * @noinspection ALL
  */
-public class ExportHeatmapLabelsAction extends BaseAction
-{
+public class ExportHeatmapLabelsAction extends BaseAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
-    public ExportHeatmapLabelsAction()
-    {
+    public ExportHeatmapLabelsAction() {
         super("Export labels ...");
 
         setDesc("Export row or column labels");
@@ -62,20 +60,17 @@ public class ExportHeatmapLabelsAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap))
-        {
+        if (model == null || !(model instanceof Heatmap)) {
             return;
         }
 
@@ -85,8 +80,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -94,13 +88,10 @@ public class ExportHeatmapLabelsAction extends BaseAction
 
         final File file = wiz.getSavePage().getPathAsFile();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Exporting labels ...", 1);
                     monitor.info("File: " + file.getName());
 
@@ -109,8 +100,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     LabelProvider labelProvider = null;
                     IAnnotations annMatrix = null;
 
-                    switch (wiz.getWhichLabels())
-                    {
+                    switch (wiz.getWhichLabels()) {
                         case VISIBLE_ROWS:
                             labelProvider = new MatrixRowsLabelProvider(matrixView);
                             annMatrix = hm.getRows().getAnnotations();
@@ -133,8 +123,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     }
 
                     String pattern = wiz.getPattern();
-                    if (!pattern.equalsIgnoreCase("${id}"))
-                    {
+                    if (!pattern.equalsIgnoreCase("${id}")) {
                         labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                     }
 
@@ -144,8 +133,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
                     pw.close();
 
                     monitor.end();
-                } catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     monitor.exception(ex);
                 }
             }
@@ -155,8 +143,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
     }
 
     @NotNull
-    private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView)
-    {
+    private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView) {
         int[] visibleIndices = matrixView.getRows().getVisible();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
@@ -168,8 +155,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         int count = contents.getRows().size();
         int[] hiddenIndices = new int[count - visibleIndices.length];
         for (int i = 0; i < count; i++)
-            if (!visibleSet.contains(i))
-            {
+            if (!visibleSet.contains(i)) {
                 hiddenIndices[j++] = i;
             }
 
@@ -179,8 +165,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
     }
 
     @NotNull
-    private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView)
-    {
+    private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView) {
         int[] visibleIndices = matrixView.getColumns().getVisible();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
@@ -192,8 +177,7 @@ public class ExportHeatmapLabelsAction extends BaseAction
         int count = contents.getColumns().size();
         int[] hiddenIndices = new int[count - visibleIndices.length];
         for (int i = 0; i < count; i++)
-            if (!visibleSet.contains(i))
-            {
+            if (!visibleSet.contains(i)) {
                 hiddenIndices[j++] = i;
             }
 

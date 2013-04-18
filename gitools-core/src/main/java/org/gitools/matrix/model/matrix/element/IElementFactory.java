@@ -23,8 +23,7 @@ package org.gitools.matrix.model.matrix.element;
 
 import org.jetbrains.annotations.Nullable;
 
-public interface IElementFactory
-{
+public interface IElementFactory {
 
     @Nullable
     Object create();

@@ -26,11 +26,9 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.IconUtils;
 
-public class KeggModulesImportWizard extends ModulesImportWizard
-{
+public class KeggModulesImportWizard extends ModulesImportWizard {
 
-    public KeggModulesImportWizard(ModulesImporter importer)
-    {
+    public KeggModulesImportWizard(ModulesImporter importer) {
         super(importer);
 
         setTitle("Import KEGG modules...");

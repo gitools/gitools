@@ -29,8 +29,7 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.jetbrains.annotations.NotNull;
 
-public class ExportHeatmapLabelsWizard extends AbstractWizard
-{
+public class ExportHeatmapLabelsWizard extends AbstractWizard {
 
     @NotNull
     private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.TEXT};
@@ -41,16 +40,14 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
     private PatternSourcePage patPage;
     private SaveFilePage savePage;
 
-    public ExportHeatmapLabelsWizard(Heatmap hm)
-    {
+    public ExportHeatmapLabelsWizard(Heatmap hm) {
         this.hm = hm;
 
         setTitle("Export labels ...");
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         sourcePage = new ExportHeatmapLabelsPage();
         addPage(sourcePage);
 
@@ -65,19 +62,15 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         Settings.getDefault().setLastExportPath(savePage.getFolder());
         Settings.getDefault().save();
     }
 
     @Override
-    public void pageLeft(IWizardPage page)
-    {
-        if (page == sourcePage)
-        {
-            switch (sourcePage.getWhichLabels())
-            {
+    public void pageLeft(IWizardPage page) {
+        if (page == sourcePage) {
+            switch (sourcePage.getWhichLabels()) {
                 case VISIBLE_ROWS:
                 case HIDDEN_ROWS:
                     patPage.setHeatmapDimension(hm.getRows());
@@ -92,18 +85,15 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard
     }
 
     @NotNull
-    public ExportHeatmapLabelsPage.WhichLabels getWhichLabels()
-    {
+    public ExportHeatmapLabelsPage.WhichLabels getWhichLabels() {
         return sourcePage.getWhichLabels();
     }
 
-    public String getPattern()
-    {
+    public String getPattern() {
         return patPage.getPattern();
     }
 
-    public SaveFilePage getSavePage()
-    {
+    public SaveFilePage getSavePage() {
         return savePage;
     }
 

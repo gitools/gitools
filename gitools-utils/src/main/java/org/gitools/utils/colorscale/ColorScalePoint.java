@@ -31,8 +31,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint>
-{
+public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint> {
 
     private double value;
 
@@ -41,65 +40,53 @@ public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint
 
     private String name;
 
-    public ColorScalePoint()
-    {
+    public ColorScalePoint() {
         super();
         // JAXB requirement
     }
 
-    public ColorScalePoint(double value, Color color, String name)
-    {
+    public ColorScalePoint(double value, Color color, String name) {
         this.value = value;
         this.color = color;
         this.name = name;
     }
 
-    public ColorScalePoint(double value, Color color)
-    {
+    public ColorScalePoint(double value, Color color) {
         this.value = value;
         this.color = color;
         this.name = "";
     }
 
-    public double getValue()
-    {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(double value)
-    {
+    public void setValue(double value) {
         this.value = value;
     }
 
-    public Color getColor()
-    {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         this.color = color;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public int compareTo(@NotNull ColorScalePoint o)
-    {
-        if (this.value < o.getValue())
-        {
+    public int compareTo(@NotNull ColorScalePoint o) {
+        if (this.value < o.getValue()) {
             return -1;
         }
-        if (value > o.getValue())
-        {
+        if (value > o.getValue()) {
             return 1;
         }
         return 0;

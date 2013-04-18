@@ -32,29 +32,23 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class BeanResolver implements TextPattern.VariableValueResolver
-{
+public class BeanResolver implements TextPattern.VariableValueResolver {
 
-    private static class BeanProperty
-    {
+    private static class BeanProperty {
         private final Method m;
 
         /**
          * @noinspection UnusedDeclaration
          */
-        public BeanProperty(Method m)
-        {
+        public BeanProperty(Method m) {
             this.m = m;
         }
 
         @Nullable
-        public Object get(Object beanInstance)
-        {
-            try
-            {
+        public Object get(Object beanInstance) {
+            try {
                 return m.invoke(beanInstance, (Object[]) null);
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 return null;
             }
         }
@@ -65,40 +59,33 @@ public class BeanResolver implements TextPattern.VariableValueResolver
 
     private final Map<String, BeanProperty> beanProperties;
 
-    public BeanResolver(@NotNull Class<?> beanClass)
-    {
+    public BeanResolver(@NotNull Class<?> beanClass) {
         this.beanClass = beanClass;
         this.beanProperties = readProperties(beanClass);
     }
 
-    public Class<?> getBeanClass()
-    {
+    public Class<?> getBeanClass() {
         return beanClass;
     }
 
-    public Object getBeanInstance()
-    {
+    public Object getBeanInstance() {
         return beanInstance;
     }
 
-    public void setBeanInstance(Object beanInstance)
-    {
+    public void setBeanInstance(Object beanInstance) {
         this.beanInstance = beanInstance;
     }
 
     @Nullable
     @Override
-    public String resolveValue(@NotNull String variableName)
-    {
+    public String resolveValue(@NotNull String variableName) {
         BeanProperty p = beanProperties.get(variableName.toLowerCase());
-        if (p == null)
-        {
+        if (p == null) {
             return null;
         }
 
         Object value = p.get(beanInstance);
-        if (value == null)
-        {
+        if (value == null) {
             return null;
         }
 
@@ -106,16 +93,13 @@ public class BeanResolver implements TextPattern.VariableValueResolver
     }
 
     @NotNull
-    private Map<String, BeanProperty> readProperties(@NotNull Class<?> beanClass)
-    {
+    private Map<String, BeanProperty> readProperties(@NotNull Class<?> beanClass) {
         Map<String, BeanProperty> map = new HashMap<String, BeanResolver.BeanProperty>();
 
-        for (Method m : beanClass.getMethods())
-        {
+        for (Method m : beanClass.getMethods()) {
             boolean isGet = m.getName().startsWith("get");
             boolean isIs = m.getName().startsWith("is");
-            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || isIs))
-            {
+            if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || isIs)) {
 
                 final String getterName = isGet ? m.getName().substring(3) : m.getName().substring(2);
 

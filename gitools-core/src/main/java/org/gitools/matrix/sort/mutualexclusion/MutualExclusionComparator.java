@@ -62,14 +62,11 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         Double value2 = aggregationCache.get(idx2);
 
         int res;
-        if (value1 == null)
-        {
+        if (value1 == null) {
             res = -1;
-        } else if (value2 == null)
-        {
+        } else if (value2 == null) {
             res = 1;
-        } else
-        {
+        } else {
             res = (int) Math.signum(value1 - value2);
         }
 

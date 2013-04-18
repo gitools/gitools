@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ModuleMap extends Resource
-{
+public class ModuleMap extends Resource {
 
     private static final long serialVersionUID = 6463084331984782264L;
 
@@ -53,8 +52,7 @@ public class ModuleMap extends Resource
     @NotNull
     private final Map<String, Integer> itemIndexMap = new HashMap<String, Integer>();
 
-    public ModuleMap()
-    {
+    public ModuleMap() {
         this.moduleNames = new String[0];
         this.moduleDescriptions = new String[0];
         this.itemNames = new String[0];
@@ -62,8 +60,7 @@ public class ModuleMap extends Resource
         this.moduleTreeIndices = new int[0][];
     }
 
-    public ModuleMap(@NotNull String[] moduleNames, @NotNull String[] itemNames, int[][] itemIndices)
-    {
+    public ModuleMap(@NotNull String[] moduleNames, @NotNull String[] itemNames, int[][] itemIndices) {
 
         setModuleNames(moduleNames);
         setItemNames(itemNames);
@@ -71,8 +68,7 @@ public class ModuleMap extends Resource
         this.itemIndices = itemIndices;
     }
 
-    public ModuleMap(String moduleName, @NotNull String[] itemNames)
-    {
+    public ModuleMap(String moduleName, @NotNull String[] itemNames) {
         setModuleNames(new String[]{moduleName});
         setItemNames(itemNames);
         int[] indices = new int[itemNames.length];
@@ -81,18 +77,15 @@ public class ModuleMap extends Resource
         setAllItemIndices(new int[][]{indices});
     }
 
-    public ModuleMap(@NotNull Map<String, Set<String>> map)
-    {
+    public ModuleMap(@NotNull Map<String, Set<String>> map) {
         this(map, new HashMap<String, String>());
     }
 
-    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc)
-    {
+    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc) {
         this(map, desc, new HashMap<String, Set<String>>());
     }
 
-    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc, @NotNull Map<String, Set<String>> tree)
-    {
+    public ModuleMap(@NotNull Map<String, Set<String>> map, @NotNull Map<String, String> desc, @NotNull Map<String, Set<String>> tree) {
 
         int modCount = map.keySet().size();
 
@@ -105,24 +98,20 @@ public class ModuleMap extends Resource
         Map<String, Integer> modMap = new HashMap<String, Integer>();
 
         int i = 0;
-        for (Map.Entry<String, Set<String>> entry : map.entrySet())
-        {
+        for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
             mname[i] = entry.getKey();
             modMap.put(mname[i], i);
 
             mdesc[i] = desc.get(mname[i]);
-            if (mdesc[i] == null)
-            {
+            if (mdesc[i] == null) {
                 mdesc[i] = "";
             }
 
             int[] ii = new int[entry.getValue().size()];
             int j = 0;
-            for (String iname : entry.getValue())
-            {
+            for (String iname : entry.getValue()) {
                 Integer idx = itemMap.get(iname);
-                if (idx == null)
-                {
+                if (idx == null) {
                     idx = itemMap.size();
                     itemMap.put(iname, itemMap.size());
                 }
@@ -134,28 +123,23 @@ public class ModuleMap extends Resource
 
         final Set<String> emptyChildren = new HashSet<String>(0);
 
-        for (int j = 0; j < modCount; j++)
-        {
+        for (int j = 0; j < modCount; j++) {
             Set<String> children = tree.get(mname[j]);
-            if (children == null)
-            {
+            if (children == null) {
                 children = emptyChildren;
             }
 
             int[] mi = new int[children.size()];
 
             int k = 0;
-            for (String child : children)
-            {
+            for (String child : children) {
                 Integer idx = modMap.get(child);
-                if (idx != null)
-                {
+                if (idx != null) {
                     mi[k++] = idx;
                 }
             }
 
-            if (k < mi.length)
-            {
+            if (k < mi.length) {
                 int[] tmp = new int[k];
                 System.arraycopy(mi, 0, tmp, 0, k);
                 mi = tmp;
@@ -175,43 +159,35 @@ public class ModuleMap extends Resource
         this.moduleTreeIndices = treeIndices;
     }
 
-    public String getOrganism()
-    {
+    public String getOrganism() {
         return organism;
     }
 
-    public void setOrganism(String organism)
-    {
+    public void setOrganism(String organism) {
         this.organism = organism;
     }
 
-    public String getModuleCategory()
-    {
+    public String getModuleCategory() {
         return moduleCategory;
     }
 
-    public void setModuleCategory(String moduleCategory)
-    {
+    public void setModuleCategory(String moduleCategory) {
         this.moduleCategory = moduleCategory;
     }
 
-    public String getItemCategory()
-    {
+    public String getItemCategory() {
         return itemCategory;
     }
 
-    public void setItemCategory(String itemCategory)
-    {
+    public void setItemCategory(String itemCategory) {
         this.itemCategory = itemCategory;
     }
 
-    public String[] getModuleNames()
-    {
+    public String[] getModuleNames() {
         return moduleNames;
     }
 
-    public final void setModuleNames(@NotNull String[] moduleNames)
-    {
+    public final void setModuleNames(@NotNull String[] moduleNames) {
         this.moduleNames = moduleNames;
 
         moduleIndexMap.clear();
@@ -224,28 +200,23 @@ public class ModuleMap extends Resource
     /**
      * @noinspection UnusedDeclaration
      */
-    public String[] getModuleDescriptions()
-    {
+    public String[] getModuleDescriptions() {
         return moduleDescriptions;
     }
 
-    final void setModuleDescriptions(String[] descriptions)
-    {
+    final void setModuleDescriptions(String[] descriptions) {
         this.moduleDescriptions = descriptions;
     }
 
-    public int getModuleCount()
-    {
+    public int getModuleCount() {
         return moduleNames.length;
     }
 
-    public String getModuleName(int index)
-    {
+    public String getModuleName(int index) {
         return moduleNames[index];
     }
 
-    public void setModuleName(int index, String name)
-    {
+    public void setModuleName(int index, String name) {
         moduleNames[index] = name;
 
         moduleIndexMap.clear();
@@ -253,38 +224,31 @@ public class ModuleMap extends Resource
             moduleIndexMap.put(moduleNames[i], i);
     }
 
-    public String getModuleDescription(int index)
-    {
+    public String getModuleDescription(int index) {
         return moduleDescriptions[index];
     }
 
-    void setModuleDescription(int index, String desc)
-    {
+    void setModuleDescription(int index, String desc) {
         moduleDescriptions[index] = desc;
     }
 
-    String getModuleDescription(String name)
-    {
+    String getModuleDescription(String name) {
         return getModuleDescription(getModuleIndex(name));
     }
 
-    public void setModuleDescription(String name, String description)
-    {
+    public void setModuleDescription(String name, String description) {
         setModuleDescription(getModuleIndex(name), description);
     }
 
-    int getModuleItemCount(int index)
-    {
+    int getModuleItemCount(int index) {
         return itemIndices[index].length;
     }
 
-    public String[] getItemNames()
-    {
+    public String[] getItemNames() {
         return itemNames;
     }
 
-    public final void setItemNames(@NotNull String[] itemNames)
-    {
+    public final void setItemNames(@NotNull String[] itemNames) {
         this.itemNames = itemNames;
 
         itemIndexMap.clear();
@@ -292,18 +256,15 @@ public class ModuleMap extends Resource
             itemIndexMap.put(itemNames[i], i);
     }
 
-    int getItemCount()
-    {
+    int getItemCount() {
         return itemNames.length;
     }
 
-    public String getItemName(int index)
-    {
+    public String getItemName(int index) {
         return itemNames[index];
     }
 
-    public void setItemName(int index, String name)
-    {
+    public void setItemName(int index, String name) {
         itemNames[index] = name;
 
         itemIndexMap.clear();
@@ -311,40 +272,33 @@ public class ModuleMap extends Resource
             itemIndexMap.put(itemNames[i], i);
     }
 
-    public int[] getItemIndices(int moduleIndex)
-    {
+    public int[] getItemIndices(int moduleIndex) {
         return itemIndices[moduleIndex];
     }
 
-    public void setItemIndices(int moduleIndex, int[] indices)
-    {
+    public void setItemIndices(int moduleIndex, int[] indices) {
         itemIndices[moduleIndex] = indices;
     }
 
-    public final int[][] getAllItemIndices()
-    {
+    public final int[][] getAllItemIndices() {
         return itemIndices;
     }
 
-    public final void setAllItemIndices(int[][] itemIndices)
-    {
+    public final void setAllItemIndices(int[][] itemIndices) {
         this.itemIndices = itemIndices;
     }
 
-    private void setModuleTreeIndices(int[][] moduleTreeIndices)
-    {
+    private void setModuleTreeIndices(int[][] moduleTreeIndices) {
         this.moduleTreeIndices = moduleTreeIndices;
     }
 
     @NotNull
-    public final ModuleMap remap(@NotNull String[] names)
-    {
+    public final ModuleMap remap(@NotNull String[] names) {
         return remap(names, 1, Integer.MAX_VALUE);
     }
 
     @NotNull
-    public final ModuleMap remap(@NotNull String[] names, int minSize, int maxSize)
-    {
+    public final ModuleMap remap(@NotNull String[] names, int minSize, int maxSize) {
 
         // prepare a item name to index map for input names
         Map<String, Integer> nameIndices = new HashMap<String, Integer>();
@@ -353,11 +307,9 @@ public class ModuleMap extends Resource
 
         // prepare new indices for item names
         int[] indexMap = new int[itemNames.length];
-        for (int i = 0; i < itemNames.length; i++)
-        {
+        for (int i = 0; i < itemNames.length; i++) {
             Integer index = nameIndices.get(itemNames[i]);
-            if (index == null)
-            {
+            if (index == null) {
                 index = -1;
             }
             indexMap[i] = index;
@@ -368,14 +320,12 @@ public class ModuleMap extends Resource
         List<int[]> modIndices = new ArrayList<int[]>();
 
         int[] remapedIndices = null;
-        for (int i = 0; i < itemIndices.length; i++)
-        {
+        for (int i = 0; i < itemIndices.length; i++) {
             int[] indices = itemIndices[i];
             remapedIndices = new int[indices.length];
 
             int numItems = 0;
-            for (int j = 0; j < indices.length; j++)
-            {
+            for (int j = 0; j < indices.length; j++) {
                 int newIndex = indexMap[indices[j]];
                 remapedIndices[j] = newIndex;
                 numItems += newIndex >= 0 ? 1 : 0;
@@ -383,20 +333,17 @@ public class ModuleMap extends Resource
 
             boolean inRange = numItems >= minSize && numItems <= maxSize;
 
-            if (numItems != remapedIndices.length && inRange)
-            {
+            if (numItems != remapedIndices.length && inRange) {
                 int[] newIndices = new int[numItems];
                 int k = 0;
                 for (int j = 0; j < remapedIndices.length; j++)
-                    if (remapedIndices[j] != -1)
-                    {
+                    if (remapedIndices[j] != -1) {
                         newIndices[k++] = remapedIndices[j];
                     }
                 remapedIndices = newIndices;
             }
 
-            if (inRange)
-            {
+            if (inRange) {
                 modNames.add(moduleNames[i]);
                 modIndices.add(remapedIndices);
             }
@@ -411,14 +358,12 @@ public class ModuleMap extends Resource
     }
 
     @NotNull
-    Map<String, Set<String>> getMap()
-    {
+    Map<String, Set<String>> getMap() {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         int modCount = getModuleCount();
 
-        for (int i = 0; i < modCount; i++)
-        {
+        for (int i = 0; i < modCount; i++) {
             int[] indices = itemIndices[i];
 
             Set<String> names = new HashSet<String>(indices.length);
@@ -432,14 +377,12 @@ public class ModuleMap extends Resource
     }
 
     @NotNull
-    Map<String, Set<String>> getTree()
-    {
+    Map<String, Set<String>> getTree() {
         Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
 
         int modCount = getModuleCount();
 
-        for (int i = 0; i < modCount; i++)
-        {
+        for (int i = 0; i < modCount; i++) {
             int[] indices = moduleTreeIndices[i];
 
             Set<String> names = new HashSet<String>(indices.length);
@@ -453,8 +396,7 @@ public class ModuleMap extends Resource
     }
 
     @NotNull
-    public ModuleMap plain()
-    {
+    public ModuleMap plain() {
         Map<String, Set<String>> map = getMap();
         Map<String, Set<String>> tree = getTree();
 
@@ -462,8 +404,7 @@ public class ModuleMap extends Resource
 
         Map<String, String> desc = new HashMap<String, String>();
 
-        for (String id : moduleNames)
-        {
+        for (String id : moduleNames) {
             Set<String> dstIds = new HashSet<String>(map.get(id));
 
             plainModule(id, new HashSet<String>(), dstIds, map, tree);
@@ -480,25 +421,20 @@ public class ModuleMap extends Resource
         return mmap;
     }
 
-    private void plainModule(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree)
-    {
+    private void plainModule(String id, @NotNull Set<String> path, @NotNull Set<String> dstIds, @NotNull Map<String, Set<String>> map, @NotNull Map<String, Set<String>> childrenTree) {
 
-        if (path.contains(id))
-        {
+        if (path.contains(id)) {
             throw new RuntimeException("Circular reference in path " + path + " for module " + id);
         }
 
         Set<String> childrenList = childrenTree.get(id);
-        if (childrenList == null)
-        {
+        if (childrenList == null) {
             return;
         }
 
-        for (String child : childrenList)
-        {
+        for (String child : childrenList) {
             Set<String> ids = map.get(child);
-            if (ids == null)
-            {
+            if (ids == null) {
                 continue;
             }
 
@@ -510,16 +446,14 @@ public class ModuleMap extends Resource
     }
 
     @NotNull
-    public BitMatrix createBitMatrix()
-    {
+    public BitMatrix createBitMatrix() {
         int mc = getModuleCount();
         int ic = getItemCount();
 
         BitMatrix map = new BitMatrix(mc, ic);
 
         map.xor(map);
-        for (int mi = 0; mi < mc; mi++)
-        {
+        for (int mi = 0; mi < mc; mi++) {
             int[] indices = itemIndices[mi];
             int c = indices.length;
             for (int ii = 0; ii < c; ii++)
@@ -529,25 +463,19 @@ public class ModuleMap extends Resource
         return map;
     }
 
-    int getModuleIndex(String modName)
-    {
+    int getModuleIndex(String modName) {
         Integer modIndex = moduleIndexMap.get(modName);
-        if (modIndex == null)
-        {
+        if (modIndex == null) {
             return -1;
-        }
-        else
-        {
+        } else {
             return modIndex;
         }
     }
 
     @Nullable
-    public int[] getItemIndices(String modName)
-    {
+    public int[] getItemIndices(String modName) {
         Integer modIndex = moduleIndexMap.get(modName);
-        if (modIndex == null)
-        {
+        if (modIndex == null) {
             return null;
         }
 
@@ -556,8 +484,7 @@ public class ModuleMap extends Resource
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         int numMods = moduleNames != null ? moduleNames.length : 0;
         sb.append(numMods).append(" modules, ");
@@ -566,10 +493,8 @@ public class ModuleMap extends Resource
         return sb.toString();
     }
 
-    public void printItemCount()
-    {
-        for (int i = 0; i < getModuleCount(); i++)
-        {
+    public void printItemCount() {
+        for (int i = 0; i < getModuleCount(); i++) {
             System.out.print(getModuleName(i) + "\t");
             System.out.println(getModuleItemCount(i));
         }

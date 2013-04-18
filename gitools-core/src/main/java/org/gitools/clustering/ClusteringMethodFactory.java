@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ClusteringMethodFactory
-{
+public class ClusteringMethodFactory {
 
     private static final ClusteringMethodDescriptor[] DEFAULT_DESCRIPTORS = new ClusteringMethodDescriptor[]{new ClusteringMethodDescriptor("Clustering from annotations", "Cluster data instances according to a set of selected annotations", AnnPatClusteringMethod.class), new ClusteringMethodDescriptor("Agglomerative hierarchical clustering", "Cluster data instances according to classic agglomerative hierarchical clustering method", WekaHCLMethod.class), new ClusteringMethodDescriptor("K-means clustering", "Cluster data instances according to k-means clustering method", WekaKmeansMethod.class), new ClusteringMethodDescriptor("Cobweb clustering", "Cluster data instances according to cobweb clustering method", WekaCobWebMethod.class)};
 
@@ -42,42 +41,34 @@ public class ClusteringMethodFactory
 
     private final List<ClusteringMethodDescriptor> descriptors;
 
-    private ClusteringMethodFactory()
-    {
+    private ClusteringMethodFactory() {
         descriptors = new ArrayList<ClusteringMethodDescriptor>();
         registerMethods(DEFAULT_DESCRIPTORS);
     }
 
-    public static ClusteringMethodFactory getDefault()
-    {
-        if (instance == null)
-        {
+    public static ClusteringMethodFactory getDefault() {
+        if (instance == null) {
             instance = new ClusteringMethodFactory();
         }
         return instance;
     }
 
-    public List<ClusteringMethodDescriptor> getDescriptors()
-    {
+    public List<ClusteringMethodDescriptor> getDescriptors() {
         return descriptors;
     }
 
-    final void registerMethods(ClusteringMethodDescriptor[] descriptors)
-    {
+    final void registerMethods(ClusteringMethodDescriptor[] descriptors) {
         this.descriptors.addAll(Arrays.asList(descriptors));
     }
 
     @Nullable
-    public ClusteringMethod create(@NotNull ClusteringMethodDescriptor descriptor)
-    {
+    public ClusteringMethod create(@NotNull ClusteringMethodDescriptor descriptor) {
         Class<? extends ClusteringMethod> methodClass = descriptor.getMethodClass();
 
-        try
-        {
+        try {
             Constructor<? extends ClusteringMethod> c = methodClass.getConstructor();
             return c.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
     }

@@ -31,8 +31,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PushAction
-{
+public class PushAction {
 
     @XmlAttribute
     private String internalName;
@@ -59,83 +58,67 @@ public class PushAction
     @XmlElement(name = "Option")
     private List<Option> options;
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getHidden()
-    {
+    public String getHidden() {
         return hidden;
     }
 
-    public void setHidden(String hidden)
-    {
+    public void setHidden(String hidden) {
         this.hidden = hidden;
     }
 
-    public String getHideDisplay()
-    {
+    public String getHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(String hideDisplay)
-    {
+    public void setHideDisplay(String hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public List<Option> getOptions()
-    {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(List<Option> options)
-    {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 
-    public String getOrderBy()
-    {
+    public String getOrderBy() {
         return orderBy;
     }
 
-    public void setOrderBy(String orderBy)
-    {
+    public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
 
-    public String getRef()
-    {
+    public String getRef() {
         return ref;
     }
 
-    public void setRef(String ref)
-    {
+    public void setRef(String ref) {
         this.ref = ref;
     }
 

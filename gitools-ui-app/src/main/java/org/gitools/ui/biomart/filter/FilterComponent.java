@@ -28,8 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.List;
 
-public abstract class FilterComponent extends JPanel implements IFilterComponent
-{
+public abstract class FilterComponent extends JPanel implements IFilterComponent {
 
     private FilterComponent childComponent;
 
@@ -45,15 +44,13 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
     Integer currentHeight;
 
 
-    FilterComponent(FilterDescription d, FilterDescriptionPanel parent)
-    {
+    FilterComponent(FilterDescription d, FilterDescriptionPanel parent) {
         filterDescription = d;
         parentPanel = parent;
         filterOptions = null;
     }
 
-    FilterComponent(Option option)
-    {
+    FilterComponent(Option option) {
         filterDescription = null;
         parentPanel = null;
         filterOptions = option;
@@ -63,39 +60,33 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
 
     @Nullable
     @Override
-    public Boolean hasChild()
-    {
+    public Boolean hasChild() {
         return (childComponent != null);
     }
 
     @Override
-    public FilterComponent getChildComponent()
-    {
+    public FilterComponent getChildComponent() {
         return childComponent;
     }
 
     @Override
-    public void addChildComponent(FilterComponent childComponent)
-    {
+    public void addChildComponent(FilterComponent childComponent) {
         this.childComponent = childComponent;
     }
 
     @Nullable
     @Override
-    public FilterDescriptionPanel getDescriptionPanel()
-    {
+    public FilterDescriptionPanel getDescriptionPanel() {
         return parentPanel;
     }
 
     @Override
-    public Integer getCurrentHeight()
-    {
+    public Integer getCurrentHeight() {
         return currentHeight;
     }
 
     @Nullable
-    FilterDescription getFilterDescription()
-    {
+    FilterDescription getFilterDescription() {
         return filterDescription;
     }
 

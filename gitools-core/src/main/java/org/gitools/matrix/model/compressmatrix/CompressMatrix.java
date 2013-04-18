@@ -29,12 +29,11 @@ import org.gitools.model.Resource;
 
 /**
  * The type Compress matrix.
- *
+ * <p/>
  * This format keep the rows compressed at memory, and has a dynamic cache that can expand or
  * contract depending on the user free memory.
  */
-public class CompressMatrix extends Resource implements IMatrix
-{
+public class CompressMatrix extends Resource implements IMatrix {
     private CompressDimension rows;
     private CompressDimension columns;
 
@@ -43,58 +42,49 @@ public class CompressMatrix extends Resource implements IMatrix
     /**
      * Instantiates a new Compress matrix.
      *
-     * @param rows the rows
-     * @param columns the columns
+     * @param rows           the rows
+     * @param columns        the columns
      * @param elementAdapter the element adapter
      */
-    public CompressMatrix(CompressDimension rows, CompressDimension columns, CompressElementAdapter elementAdapter)
-    {
+    public CompressMatrix(CompressDimension rows, CompressDimension columns, CompressElementAdapter elementAdapter) {
         this.rows = rows;
         this.columns = columns;
         this.elementAdapter = elementAdapter;
     }
 
     @Override
-    public IMatrixDimension getColumns()
-    {
+    public IMatrixDimension getColumns() {
         return columns;
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return elementAdapter.isEmpty(row, column);
     }
 
     @Override
-    public IMatrixDimension getRows()
-    {
+    public IMatrixDimension getRows() {
         return rows;
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return elementAdapter.getValue(new int[]{row, column}, layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         throw new UnsupportedOperationException("Read only matrix");
     }
 
     @Override
-    public IMatrixLayers getLayers()
-    {
+    public IMatrixLayers getLayers() {
         return elementAdapter.getProperties();
     }
 
     @Override
-    public void detach()
-    {
-        if (elementAdapter!=null)
-        {
+    public void detach() {
+        if (elementAdapter != null) {
             elementAdapter.detach();
         }
     }

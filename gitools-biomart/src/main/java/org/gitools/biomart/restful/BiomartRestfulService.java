@@ -49,8 +49,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartRestfulService implements BiomartService
-{
+public class BiomartRestfulService implements BiomartService {
 
     private static Logger log = LoggerFactory.getLogger(BiomartRestfulService.class.getName());
 
@@ -66,8 +65,7 @@ public class BiomartRestfulService implements BiomartService
     private final BiomartSource source;
     private final String restUrl;
 
-    public BiomartRestfulService(@NotNull BiomartSource source) throws BiomartServiceException
-    {
+    public BiomartRestfulService(@NotNull BiomartSource source) throws BiomartServiceException {
         this.source = source;
 
         restUrl = composeUrl(source.getHost(), source.getPort(), source.getRestPath());
@@ -78,25 +76,20 @@ public class BiomartRestfulService implements BiomartService
      * Method for building full url string from a host, port, and a destPath
      */
     @NotNull
-    private String composeUrl(@Nullable String host, @Nullable String port, @Nullable String destPath)
-    {
+    private String composeUrl(@Nullable String host, @Nullable String port, @Nullable String destPath) {
 
         StringBuilder sb = new StringBuilder();
 
-        if (host != null && !host.isEmpty())
-        {
+        if (host != null && !host.isEmpty()) {
             sb.append("http://").append(host);
         }
 
-        if (port != null && !port.isEmpty())
-        {
+        if (port != null && !port.isEmpty()) {
             sb.append(':').append(port);
         }
 
-        if (destPath != null && !destPath.isEmpty())
-        {
-            if (!destPath.startsWith("/"))
-            {
+        if (destPath != null && !destPath.isEmpty()) {
+            if (!destPath.startsWith("/")) {
                 sb.append('/');
             }
             sb.append(destPath);
@@ -106,8 +99,7 @@ public class BiomartRestfulService implements BiomartService
     }
 
     @NotNull
-    private <T> T xmlGET(String url, Class<T> responseClass) throws IOException, JAXBException
-    {
+    private <T> T xmlGET(String url, Class<T> responseClass) throws IOException, JAXBException {
 
         URL u = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) u.openConnection();
@@ -131,17 +123,14 @@ public class BiomartRestfulService implements BiomartService
      */
     @Nullable
     @Override
-    public DatasetConfig getConfiguration(@NotNull DatasetInfo d) throws BiomartServiceException
-    {
+    public DatasetConfig getConfiguration(@NotNull DatasetInfo d) throws BiomartServiceException {
 
         final String urlString = restUrl + "?type=configuration&dataset=" + d.getName() + "&virtualSchema=" + d.getInterface();
         DatasetConfig ds = null;
 
-        try
-        {
+        try {
             ds = xmlGET(urlString, DatasetConfig.class);
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new BiomartServiceException(cause);
         }
 
@@ -149,22 +138,18 @@ public class BiomartRestfulService implements BiomartService
     }
 
     @Override
-    public List<MartLocation> getRegistry() throws BiomartServiceException
-    {
+    public List<MartLocation> getRegistry() throws BiomartServiceException {
 
         MartRegistry reg = null;
         final String urlString = restUrl + "?type=registry";
 
-        try
-        {
+        try {
             reg = xmlGET(urlString, MartRegistry.class);
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new BiomartServiceException(cause);
         }
 
-        if (reg == null)
-        {
+        if (reg == null) {
             return new ArrayList<MartLocation>(0);
         }
 
@@ -173,15 +158,13 @@ public class BiomartRestfulService implements BiomartService
 
     @NotNull
     @Override
-    public List<DatasetInfo> getDatasets(@NotNull MartLocation mart) throws BiomartServiceException
-    {
+    public List<DatasetInfo> getDatasets(@NotNull MartLocation mart) throws BiomartServiceException {
 
         final String urlString = restUrl + "?type=datasets&mart=" + mart.getName();
 
         List<DatasetInfo> ds = new ArrayList<DatasetInfo>();
 
-        try
-        {
+        try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -191,10 +174,8 @@ public class BiomartRestfulService implements BiomartService
             BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String s = null;
             DatasetInfo d = null;
-            while ((s = reader.readLine()) != null)
-            {
-                if (!s.equals(" ") && !s.equals("\n"))
-                {
+            while ((s = reader.readLine()) != null) {
+                if (!s.equals(" ") && !s.equals("\n")) {
                     String f[] = s.split("\t");
                     d = new DatasetInfo();
                     d.setType(f[0]);
@@ -205,8 +186,7 @@ public class BiomartRestfulService implements BiomartService
                     ds.add(d);
                 }
             }
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new BiomartServiceException(cause);
         }
 
@@ -214,40 +194,33 @@ public class BiomartRestfulService implements BiomartService
     }
 
     @Override
-    public List<AttributePage> getAttributes(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException
-    {
+    public List<AttributePage> getAttributes(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException {
 
         DatasetConfig dc = getConfiguration(dataset);
         return dc.getAttributePages();
     }
 
     @Override
-    public List<FilterPage> getFilters(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException
-    {
+    public List<FilterPage> getFilters(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException {
 
         DatasetConfig dc = getConfiguration(dataset);
 
-        if (dc.getFilterPages() != null && dc.getFilterPages().size() > 0)
-        {
+        if (dc.getFilterPages() != null && dc.getFilterPages().size() > 0) {
             return dc.getFilterPages();
-        }
-        else
-        {
+        } else {
             return new ArrayList<FilterPage>();
         }
     }
 
     @NotNull
     @Override
-    public FileFormat[] getSupportedFormats()
-    {
+    public FileFormat[] getSupportedFormats() {
         return supportedFormats;
     }
 
     //FIXME Use JAXB !!!
     //FIXME review filter xml parsing
-    private String createQueryXml(@NotNull Query query, String format, boolean encoded)
-    {
+    private String createQueryXml(@NotNull Query query, String format, boolean encoded) {
         /*JAXBContext context = JAXBContext.newInstance(Query.class);
         Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
@@ -265,27 +238,21 @@ public class BiomartRestfulService implements BiomartService
         sw.append(" formatter=\"").append(format).append('"');
         sw.append(" datasetConfigVersion=\"0.7\">");
 
-        for (Dataset ds : query.getDatasets())
-        {
+        for (Dataset ds : query.getDatasets()) {
             sw.append("<Dataset");
             sw.append(" name=\"").append(ds.getName()).append('"');
             sw.append(" interface=\"default\">");
             for (Attribute attr : ds.getAttribute())
                 sw.append("<Attribute name=\"").append(attr.getName()).append("\" />");
 
-            for (Filter flt : ds.getFilter())
-            {
-                if (flt.getValue() != null && !flt.getValue().equals(""))
-                {
+            for (Filter flt : ds.getFilter()) {
+                if (flt.getValue() != null && !flt.getValue().equals("")) {
 
                     sw.append("<Filter name=\"").append(flt.getName()).append("\" ");
 
-                    if (flt.getRadio())
-                    {
+                    if (flt.getRadio()) {
                         sw.append("excluded=\"").append(flt.getValue()).append("\"");
-                    }
-                    else
-                    {
+                    } else {
                         sw.append("value=\"").append(flt.getValue()).append("\"");
                     }
                     sw.append(" />");
@@ -298,111 +265,90 @@ public class BiomartRestfulService implements BiomartService
 
         //System.out.println(sw.toString());
 
-        if (encoded)
-        {
-            try
-            {
+        if (encoded) {
+            try {
                 return URLEncoder.encode(sw.toString(), "UTF-8");
-            } catch (UnsupportedEncodingException ex)
-            {
+            } catch (UnsupportedEncodingException ex) {
                 return sw.toString();
             }
-        }
-        else
-        {
+        } else {
             return sw.toString();
         }
     }
 
     @Override
-    public InputStream queryAsStream(@NotNull Query query, String format) throws BiomartServiceException
-    {
+    public InputStream queryAsStream(@NotNull Query query, String format) throws BiomartServiceException {
         final String queryString = createQueryXml(query, format, true);
         final String urlString = restUrl + "?query=" + queryString;
 
         //System.out.println(">>> " + urlString);
         //System.out.println(createQueryXml(query, format, false));
 
-        try
-        {
+        try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
             return conn.getInputStream();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new BiomartServiceException("Error opening connection with Biomart service", ex);
         }
     }
 
     @Override
-    public void queryModule(@NotNull Query query, @NotNull File file, @NotNull String format, @NotNull IProgressMonitor monitor) throws BiomartServiceException
-    {
+    public void queryModule(@NotNull Query query, @NotNull File file, @NotNull String format, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
         BiomartQueryHandler tableWriter = null;
 
-        if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
-        {
+        if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
             tableWriter = new TsvFileQueryHandler(file, format.equals(FORMAT_TSV_GZ));
         }
 
-        if (tableWriter == null)
-        {
+        if (tableWriter == null) {
             throw new BiomartServiceException("Unrecognized format: " + format);
         }
 
         queryModule(query, tableWriter, monitor);
 
-        if (monitor.isCancelled())
-        {
+        if (monitor.isCancelled()) {
             file.delete();
         }
     }
 
     @Override
-    public void queryModule(@NotNull Query query, @NotNull BiomartQueryHandler writer, @NotNull IProgressMonitor monitor) throws BiomartServiceException
-    {
+    public void queryModule(@NotNull Query query, @NotNull BiomartQueryHandler writer, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
         InputStream in = queryAsStream(query, FORMAT_TSV);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-        try
-        {
+        try {
             writer.begin();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new BiomartServiceException(ex);
         }
 
         TimeCounter speedTimer = new TimeCounter();
         long speedBytes = 0;
 
-        try
-        {
+        try {
             String next = null;
-            while ((next = br.readLine()) != null && !monitor.isCancelled())
-            {
+            while ((next = br.readLine()) != null && !monitor.isCancelled()) {
                 String[] fields = next.split("\t");
-                if (fields.length == 2 && !fields[0].isEmpty() && !fields[1].isEmpty())
-                {
+                if (fields.length == 2 && !fields[0].isEmpty() && !fields[1].isEmpty()) {
                     writer.line(fields);
                 }
 
                 speedBytes += next.length();
                 double seconds = speedTimer.getElapsedSeconds();
-                if (seconds >= 1.0)
-                {
+                if (seconds >= 1.0) {
                     double speed = (speedBytes / 1024.0) / seconds;
                     monitor.info(String.format("%.1f Kb/s", speed));
                     speedBytes = 0;
                     speedTimer.reset();
                 }
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new BiomartServiceException("Error parsing Biomart query results.", ex);
-        } finally
-        {
+        } finally {
             writer.end();
         }
 
@@ -421,31 +367,26 @@ public class BiomartRestfulService implements BiomartService
      * @throws BiomartServiceException
      */
     @Override
-    public void queryTable(@NotNull Query query, @NotNull File file, @NotNull String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException
-    {
+    public void queryTable(@NotNull Query query, @NotNull File file, @NotNull String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
 
         BiomartQueryHandler tableWriter = null;
-        if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ))
-        {
+        if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
             tableWriter = new TsvFileQueryHandler(file, format.equals(FORMAT_TSV_GZ));
         }
 
-        if (tableWriter == null)
-        {
+        if (tableWriter == null) {
             throw new BiomartServiceException("Unrecognized format: " + format);
         }
 
         queryTable(query, tableWriter, skipRowsWithEmptyValues, emptyValuesReplacement, monitor);
 
-        if (monitor.isCancelled())
-        {
+        if (monitor.isCancelled()) {
             file.delete();
         }
     }
 
     @Override
-    public void queryTable(@NotNull Query query, @NotNull BiomartQueryHandler writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException
-    {
+    public void queryTable(@NotNull Query query, @NotNull BiomartQueryHandler writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
 
         TimeCounter time = new TimeCounter();
 
@@ -453,54 +394,44 @@ public class BiomartRestfulService implements BiomartService
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
-        try
-        {
+        try {
             writer.begin();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new BiomartServiceException(ex);
         }
 
         TimeCounter speedTimer = new TimeCounter();
         long speedBytes = 0;
 
-        try
-        {
+        try {
             String next = null;
-            while ((next = br.readLine()) != null && !monitor.isCancelled())
-            {
+            while ((next = br.readLine()) != null && !monitor.isCancelled()) {
                 String[] fields = next.split("\t");
 
                 boolean hasEmptyValues = false;
-                for (int i = 0; i < fields.length; i++)
-                {
+                for (int i = 0; i < fields.length; i++) {
                     hasEmptyValues |= fields[i].isEmpty();
-                    if (fields[i].isEmpty())
-                    {
+                    if (fields[i].isEmpty()) {
                         fields[i] = emptyValuesReplacement;
                     }
                 }
 
                 speedBytes += next.length();
                 double seconds = speedTimer.getElapsedSeconds();
-                if (seconds >= 1.0)
-                {
+                if (seconds >= 1.0) {
                     double speed = (speedBytes / 1024.0) / seconds;
                     monitor.info(String.format("%.1f Kb/s", speed));
                     speedBytes = 0;
                     speedTimer.reset();
                 }
 
-                if (!(skipRowsWithEmptyValues && hasEmptyValues))
-                {
+                if (!(skipRowsWithEmptyValues && hasEmptyValues)) {
                     writer.line(fields);
                 }
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new BiomartServiceException("Error parsing Biomart query results.", ex);
-        } finally
-        {
+        } finally {
             writer.end();
         }
     }

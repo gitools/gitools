@@ -24,40 +24,34 @@ package org.gitools.stats.mtc;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.jetbrains.annotations.NotNull;
 
-public class BenjaminiHochbergFdr implements MTC
-{
+public class BenjaminiHochbergFdr implements MTC {
 
     @NotNull
     public static final String SHORT_NAME = "bh";
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "Benjamini Hochberg FDR";
     }
 
     @NotNull
     @Override
-    public String getShortName()
-    {
+    public String getShortName() {
         return SHORT_NAME;
     }
 
     @Override
-    public void correct(@NotNull final DoubleMatrix1D values)
-    {
+    public void correct(@NotNull final DoubleMatrix1D values) {
 
         DoubleMatrix1D sortedValues = values.viewSorted();
 
         int m = sortedValues.size();
         double lastP = -1;
         int rank = 0;
-        for (int idx = 0; idx < m; idx++)
-        {
+        for (int idx = 0; idx < m; idx++) {
             double p = sortedValues.get(idx);
-            if (p != lastP)
-            {
+            if (p != lastP) {
                 rank = rank + 1;
             }
             sortedValues.set(idx, Math.min(1.0, p * m / rank));

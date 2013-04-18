@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "MartURLLocation")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MartLocation
-{
+public class MartLocation {
 
     @XmlAttribute
     private String database;
@@ -70,12 +69,10 @@ public class MartLocation
     @XmlAttribute
     private int visible;
 
-    public MartLocation()
-    {
+    public MartLocation() {
     }
 
-    public MartLocation(@NotNull Mart mart)
-    {
+    public MartLocation(@NotNull Mart mart) {
         this.database = mart.getDatabase();
         this.isdefault = mart.getDefault();
         this.displayName = mart.getDisplayName();
@@ -89,8 +86,7 @@ public class MartLocation
         this.visible = mart.getVisible();
     }
 
-    public MartLocation(String database, int isdefault, String displayName, String host, String includeDatasets, String martUser, String name, String path, String port, String serverVirtualSchema, int visible)
-    {
+    public MartLocation(String database, int isdefault, String displayName, String host, String includeDatasets, String martUser, String name, String path, String port, String serverVirtualSchema, int visible) {
 
         this.database = database;
         this.isdefault = isdefault;
@@ -105,113 +101,91 @@ public class MartLocation
         this.visible = visible;
     }
 
-    public String getDatabase()
-    {
+    public String getDatabase() {
         return database;
     }
 
-    public void setDatabase(String database)
-    {
+    public void setDatabase(String database) {
         this.database = database;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
-    public void setHost(String host)
-    {
+    public void setHost(String host) {
         this.host = host;
     }
 
-    public String getIncludeDatasets()
-    {
+    public String getIncludeDatasets() {
         return includeDatasets;
     }
 
-    public void setIncludeDatasets(String includeDatasets)
-    {
+    public void setIncludeDatasets(String includeDatasets) {
         this.includeDatasets = includeDatasets;
     }
 
-    public int getDefault()
-    {
+    public int getDefault() {
         return isdefault;
     }
 
-    public void setDefault(int isdefault)
-    {
+    public void setDefault(int isdefault) {
         this.isdefault = isdefault;
     }
 
-    public String getMartUser()
-    {
+    public String getMartUser() {
         return martUser;
     }
 
-    public void setMartUser(String martUser)
-    {
+    public void setMartUser(String martUser) {
         this.martUser = martUser;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path = path;
     }
 
-    public String getPort()
-    {
+    public String getPort() {
         return port;
     }
 
-    public void setPort(String port)
-    {
+    public void setPort(String port) {
         this.port = port;
     }
 
-    public String getServerVirtualSchema()
-    {
+    public String getServerVirtualSchema() {
         return serverVirtualSchema;
     }
 
-    public void setServerVirtualSchema(String serverVirtualSchema)
-    {
+    public void setServerVirtualSchema(String serverVirtualSchema) {
         this.serverVirtualSchema = serverVirtualSchema;
     }
 
-    public int getVisible()
-    {
+    public int getVisible() {
         return visible;
     }
 
-    public void setVisible(int visible)
-    {
+    public void setVisible(int visible) {
         this.visible = visible;
     }
 }

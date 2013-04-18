@@ -24,21 +24,17 @@ package org.gitools.ui.fileimport.wizard.excel;
 /**
  * @noinspection ALL
  */
-class RowSelection
-{
+class RowSelection {
     private String rowSelection;
 
-    public RowSelection()
-    {
+    public RowSelection() {
     }
 
-    public String getRowSelection()
-    {
+    public String getRowSelection() {
         return rowSelection;
     }
 
-    public void setRowSelection(final String rowSelection)
-    {
+    public void setRowSelection(final String rowSelection) {
         this.rowSelection = rowSelection;
     }
 }

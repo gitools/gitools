@@ -30,8 +30,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @noinspection ALL
  */
-public abstract class HtestCommand extends AnalysisCommand
-{
+public abstract class HtestCommand extends AnalysisCommand {
 
     protected static final char defaultSep = '\t';
     protected static final char defaultQuote = '"';
@@ -45,8 +44,7 @@ public abstract class HtestCommand extends AnalysisCommand
     protected String populationPath;
     protected final Double populationDefaultValue;
 
-    protected HtestCommand(HtestAnalysis analysis, IResourceFormat dataFormat, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, String workdir, String fileName)
-    {
+    protected HtestCommand(HtestAnalysis analysis, IResourceFormat dataFormat, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, String workdir, String fileName) {
 
         super(workdir, fileName);
 
@@ -58,59 +56,48 @@ public abstract class HtestCommand extends AnalysisCommand
         this.populationDefaultValue = populationDefaultValue;
     }
 
-    public HtestAnalysis getaAnalysis()
-    {
+    public HtestAnalysis getaAnalysis() {
         return analysis;
     }
 
-    public void setAnalysis(HtestAnalysis analysis)
-    {
+    public void setAnalysis(HtestAnalysis analysis) {
         this.analysis = analysis;
     }
 
-    public IResourceFormat getDataFormat()
-    {
+    public IResourceFormat getDataFormat() {
         return dataFormat;
     }
 
-    public void setDataFormat(IResourceFormat dataFormat)
-    {
+    public void setDataFormat(IResourceFormat dataFormat) {
         this.dataFormat = dataFormat;
     }
 
-    public String getDataPath()
-    {
+    public String getDataPath() {
         return dataPath;
     }
 
-    public void setDataPath(String dataPath)
-    {
+    public void setDataPath(String dataPath) {
         this.dataPath = dataPath;
     }
 
-    public int getValueIndex()
-    {
+    public int getValueIndex() {
         return valueIndex;
     }
 
-    public void setValueIndex(int valueIndex)
-    {
+    public void setValueIndex(int valueIndex) {
         this.valueIndex = valueIndex;
     }
 
-    public String getPopulationPath()
-    {
+    public String getPopulationPath() {
         return populationPath;
     }
 
-    public void setPopulationPath(String populationPath)
-    {
+    public void setPopulationPath(String populationPath) {
         this.populationPath = populationPath;
     }
 
     @Nullable
-    protected TestFactory createTestFactory(String toolName, String configName)
-    {
+    protected TestFactory createTestFactory(String toolName, String configName) {
         ToolConfig toolConfig = TestFactory.createToolConfig(toolName, configName);
 
         TestFactory testFactory = TestFactory.createFactory(toolConfig);

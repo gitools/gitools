@@ -27,8 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
-public class FileFormatFilter extends FileFilter
-{
+public class FileFormatFilter extends FileFilter {
 
     private final String description;
 
@@ -36,45 +35,35 @@ public class FileFormatFilter extends FileFilter
 
     private FileFormat[] formats;
 
-    public FileFormatFilter(String description)
-    {
+    public FileFormatFilter(String description) {
         this.description = description;
     }
 
-    public FileFormatFilter(String description, FileFormat... formats)
-    {
+    public FileFormatFilter(String description, FileFormat... formats) {
         this(description);
         this.formats = formats;
     }
 
-    public FileFormatFilter(@NotNull FileFormat format)
-    {
+    public FileFormatFilter(@NotNull FileFormat format) {
         this(format.getTitleWithExtension());
         this.format = format;
     }
 
     @Override
-    public final boolean accept(@NotNull File f)
-    {
+    public final boolean accept(@NotNull File f) {
         return accept(f.isDirectory(), f.getName());
     }
 
-    public boolean accept(boolean directory, String fileName)
-    {
-        if (directory)
-        {
+    public boolean accept(boolean directory, String fileName) {
+        if (directory) {
             return true;
         }
 
-        if (format != null)
-        {
+        if (format != null) {
             return format.checkExtension(fileName);
-        }
-        else if (formats != null)
-        {
+        } else if (formats != null) {
             for (FileFormat ff : formats)
-                if (ff.checkExtension(fileName))
-                {
+                if (ff.checkExtension(fileName)) {
                     return true;
                 }
             return false;
@@ -84,13 +73,11 @@ public class FileFormatFilter extends FileFilter
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public FileFormat getFormat()
-    {
+    public FileFormat getFormat() {
         return format;
     }
 }

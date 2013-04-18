@@ -32,14 +32,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditCategoricalScaleDialog extends AbstractDialog
-{
+public class EditCategoricalScaleDialog extends AbstractDialog {
 
 
     private final ColoredLabelsGroupsPage page;
 
-    public EditCategoricalScaleDialog(Window owner, ColoredLabel[] coloredLabels)
-    {
+    public EditCategoricalScaleDialog(Window owner, ColoredLabel[] coloredLabels) {
         super(owner, "Edit Categorical Scale", "Edit Categorical Scale", "Edit Categorical Scale", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -53,33 +51,27 @@ public class EditCategoricalScaleDialog extends AbstractDialog
     }
 
     @Override
-    protected JComponent createContainer()
-    {
+    protected JComponent createContainer() {
         return page;
     }
 
 
     @NotNull
     @Override
-    protected List<JButton> createButtons()
-    {
+    protected List<JButton> createButtons() {
         List<JButton> buttons = new ArrayList<JButton>();
 
         JButton okButton = new JButton("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doClose(RET_OK);
             }
         });
         buttons.add(okButton);
 
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doClose(RET_OK);
             }
         });
@@ -88,8 +80,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog
         return buttons;
     }
 
-    public ColoredLabelsGroupsPage getPage()
-    {
+    public ColoredLabelsGroupsPage getPage() {
         return page;
     }
 

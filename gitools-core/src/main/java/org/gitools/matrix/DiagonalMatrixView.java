@@ -36,8 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DiagonalMatrixView implements IMatrixView
-{
+public class DiagonalMatrixView implements IMatrixView {
 
     private IMatrixView mv;
 
@@ -48,13 +47,10 @@ public class DiagonalMatrixView implements IMatrixView
 
     private IResourceLocator locator;
 
-    public DiagonalMatrixView(@NotNull IMatrix m)
-    {
-        listener = new PropertyChangeListener()
-        {
+    public DiagonalMatrixView(@NotNull IMatrix m) {
+        listener = new PropertyChangeListener() {
             @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
+            public void propertyChange(@NotNull PropertyChangeEvent evt) {
                 DiagonalMatrixView.this.propertyChange(evt);
             }
         };
@@ -62,13 +58,10 @@ public class DiagonalMatrixView implements IMatrixView
         setMatrix(m);
     }
 
-    public DiagonalMatrixView(@NotNull IMatrixView mv)
-    {
-        listener = new PropertyChangeListener()
-        {
+    public DiagonalMatrixView(@NotNull IMatrixView mv) {
+        listener = new PropertyChangeListener() {
             @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
+            public void propertyChange(@NotNull PropertyChangeEvent evt) {
                 DiagonalMatrixView.this.propertyChange(evt);
             }
         };
@@ -76,32 +69,26 @@ public class DiagonalMatrixView implements IMatrixView
         setMatrixView(mv);
     }
 
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 
-    final void setMatrix(@NotNull IMatrix matrix)
-    {
+    final void setMatrix(@NotNull IMatrix matrix) {
         IMatrixView mview = matrix instanceof IMatrixView ? (IMatrixView) matrix : new Heatmap(matrix);
         setMatrixView(mview);
     }
 
-    private void setMatrixView(@NotNull IMatrixView mv)
-    {
-        if (this.mv != null)
-        {
+    private void setMatrixView(@NotNull IMatrixView mv) {
+        if (this.mv != null) {
             this.mv.removePropertyChangeListener(listener);
         }
 
         IMatrix m = mv.getContents();
-        if (!(m instanceof DiagonalMatrix))
-        {
+        if (!(m instanceof DiagonalMatrix)) {
             m = new DiagonalMatrix(m);
         }
 
@@ -111,27 +98,24 @@ public class DiagonalMatrixView implements IMatrixView
     }
 
     @Override
-    public IMatrix getContents()
-    {
+    public IMatrix getContents() {
         return mv.getContents();
     }
 
     //TODO
-    public void internalRowsSetVisible(int[] indices)
-    {
-        int[] selection = mv.getRows().getSelected(  );
+    public void internalRowsSetVisible(int[] indices) {
+        int[] selection = mv.getRows().getSelected();
         mv.getColumns().setVisible(indices);
-        mv.getRows().setSelected(  selection);
+        mv.getRows().setSelected(selection);
         indices = Arrays.copyOf(indices, indices.length);
         mv.getRows().setVisible(indices);
     }
 
     //TODO
-    public void internalColumnsSetVisible(int[] indices)
-    {
-        int[] selection = mv.getColumns().getSelected(  );
+    public void internalColumnsSetVisible(int[] indices) {
+        int[] selection = mv.getColumns().getSelected();
         mv.getRows().setVisible(indices);
-        mv.getColumns().setSelected(  selection);
+        mv.getColumns().setSelected(selection);
         indices = Arrays.copyOf(indices, indices.length);
         mv.getColumns().setVisible(indices);
     }
@@ -213,69 +197,57 @@ public class DiagonalMatrixView implements IMatrixView
     } */
 
     @Override
-    public IMatrixViewDimension getRows()
-    {
+    public IMatrixViewDimension getRows() {
         return mv.getRows();
     }
 
     @Override
-    public IMatrixViewDimension getColumns()
-    {
+    public IMatrixViewDimension getColumns() {
         return mv.getColumns();
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return mv.isEmpty(row, column);
     }
 
 
     @Nullable
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return column >= row ? mv.getCellValue(row, column, layer) : null;
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         mv.setCellValue(row, column, layer, value);
     }
 
     @Override
-    public IMatrixViewLayers getLayers()
-    {
+    public IMatrixViewLayers getLayers() {
         return mv.getLayers();
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         mv.detach();
     }
 
     @Override
-    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener)
-    {
-        if (listener != null)
-        {
+    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener) {
+        if (listener != null) {
             listeners.add(listener);
         }
     }
 
     @Override
-    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener)
-    {
-        if (listener != null)
-        {
+    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener) {
+        if (listener != null) {
             listeners.remove(listener);
         }
     }
 
-    private void propertyChange(@NotNull PropertyChangeEvent evt)
-    {
+    private void propertyChange(@NotNull PropertyChangeEvent evt) {
         PropertyChangeEvent evt2 = new PropertyChangeEvent(this, evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
 
         for (PropertyChangeListener l : listeners)

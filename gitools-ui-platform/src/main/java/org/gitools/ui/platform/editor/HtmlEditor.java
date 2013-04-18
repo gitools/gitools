@@ -39,36 +39,27 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HtmlEditor extends AbstractEditor
-{
+public class HtmlEditor extends AbstractEditor {
 
-    public static class LinkVetoException extends Exception
-    {
-        public LinkVetoException()
-        {
+    public static class LinkVetoException extends Exception {
+        public LinkVetoException() {
         }
     }
 
-    private class LocalHtmlRendererContext extends SimpleHtmlRendererContext
-    {
+    private class LocalHtmlRendererContext extends SimpleHtmlRendererContext {
 
-        public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext)
-        {
+        public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext) {
             super(panel, userAgentContext);
         }
 
         @Override
-        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event)
-        {
+        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
-            if ("a".equalsIgnoreCase(element.getTagName()))
-            {
+            if ("a".equalsIgnoreCase(element.getTagName())) {
                 cursor = new Cursor(Cursor.HAND_CURSOR);
-            }
-            else
-            {
+            } else {
                 cursor = new Cursor(Cursor.DEFAULT_CURSOR);
             }
 
@@ -76,34 +67,27 @@ public class HtmlEditor extends AbstractEditor
         }
 
         @Override
-        public void onMouseOut(HTMLElement element, MouseEvent event)
-        {
+        public void onMouseOut(HTMLElement element, MouseEvent event) {
             super.onMouseOut(element, event);
             Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
             setCursor(cursor);
         }
 
         @Override
-        public void linkClicked(@NotNull HTMLElement linkNode, URL url, String target)
-        {
-            try
-            {
+        public void linkClicked(@NotNull HTMLElement linkNode, URL url, String target) {
+            try {
                 HtmlEditor.this.linkClicked(linkNode, url, target);
                 super.linkClicked(linkNode, url, target);
-            } catch (LinkVetoException ex)
-            {
+            } catch (LinkVetoException ex) {
             }
         }
 
         @Override
-        public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs)
-        {
-            try
-            {
+        public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+            try {
                 HtmlEditor.this.submitForm(method, action, target, enctype, formInputs);
                 super.submitForm(method, action, target, enctype, formInputs);
-            } catch (LinkVetoException ex)
-            {
+            } catch (LinkVetoException ex) {
             }
         }
 
@@ -113,41 +97,35 @@ public class HtmlEditor extends AbstractEditor
     private HtmlPanel panel;
     private SimpleHtmlRendererContext rcontext;
 
-    protected HtmlEditor(String title)
-    {
+    protected HtmlEditor(String title) {
         this.title = title;
 
         createComponents();
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return title;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
     @Nullable
     @Override
-    public Object getModel()
-    {
+    public Object getModel() {
         return null;
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
         panel = new HtmlPanel();
         panel.setBackground(Color.WHITE);
         rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
@@ -156,28 +134,22 @@ public class HtmlEditor extends AbstractEditor
         add(panel, BorderLayout.CENTER);
     }
 
-    void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException
-    {
+    void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
-        if ("action".equalsIgnoreCase(rel))
-        {
+        if ("action".equalsIgnoreCase(rel)) {
             String name = href;
             Map<String, String> params = new HashMap<String, String>();
 
             int pos = href.indexOf('?');
-            if (pos >= 0)
-            {
+            if (pos >= 0) {
                 name = href.substring(0, pos);
                 String p1 = pos < href.length() ? href.substring(pos + 1) : "";
-                if (!p1.isEmpty())
-                {
+                if (!p1.isEmpty()) {
                     String[] p2 = p1.split("\\&");
-                    for (String p3 : p2)
-                    {
+                    for (String p3 : p2) {
                         pos = p3.indexOf('=');
-                        if (pos > 0)
-                        {
+                        if (pos > 0) {
                             String id = p3.substring(0, pos);
                             String value = pos < p3.length() ? p3.substring(pos + 1) : "";
                             params.put(id, value);
@@ -188,48 +160,37 @@ public class HtmlEditor extends AbstractEditor
 
             performUrlAction(name, params);
             throw new LinkVetoException();
-        }
-        else if (target != null && target.equalsIgnoreCase("_external"))
-        {
-            try
-            {
+        } else if (target != null && target.equalsIgnoreCase("_external")) {
+            try {
                 URI uri = new URI(href);
-                if (Desktop.isDesktopSupported())
-                {
+                if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().browse(uri);
-                }
-                else
-                {
+                } else {
                     JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             throw new LinkVetoException();
         }
     }
 
-    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
-    {
+    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
         /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
         if (formInputs != null)
 			for (FormInput fi : formInputs)
 				System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
     }
 
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
+    protected void performUrlAction(String name, Map<String, String> params) {
         // do nothing
     }
 
-    protected void navigate(URL url) throws Exception
-    {
+    protected void navigate(URL url) throws Exception {
         rcontext.navigate(url, "_this");
     }
 
-    public HtmlRendererContext getHtmlRenderContext()
-    {
+    public HtmlRendererContext getHtmlRenderContext() {
         return rcontext;
     }
 }

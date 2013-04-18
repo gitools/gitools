@@ -40,106 +40,89 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class AnalysisDetailsPage extends AbstractWizardPage
-{
+public class AnalysisDetailsPage extends AbstractWizardPage {
 
     private static final long serialVersionUID = -6310021084299136899L;
 
-    private static class AttributesModel implements TableModel
-    {
+    private static class AttributesModel implements TableModel {
 
         @Nullable
         private final List<Property> attrs;
         @NotNull
         private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-        public AttributesModel()
-        {
+        public AttributesModel() {
             attrs = new ArrayList<Property>();
         }
 
-        public AttributesModel(@Nullable List<Property> attrs)
-        {
+        public AttributesModel(@Nullable List<Property> attrs) {
             this.attrs = attrs != null ? attrs : new ArrayList<Property>();
         }
 
         @Override
-        public int getRowCount()
-        {
+        public int getRowCount() {
             return attrs.size();
         }
 
         @Override
-        public int getColumnCount()
-        {
+        public int getColumnCount() {
             return 2;
         }
 
         @NotNull
         @Override
-        public String getColumnName(int columnIndex)
-        {
+        public String getColumnName(int columnIndex) {
             return columnIndex == 0 ? "Name" : "Value";
         }
 
         @NotNull
         @Override
-        public Class<?> getColumnClass(int columnIndex)
-        {
+        public Class<?> getColumnClass(int columnIndex) {
             return String.class;
         }
 
         @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex)
-        {
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
             return false;
         }
 
         @Override
-        public Object getValueAt(int rowIndex, int columnIndex)
-        {
+        public Object getValueAt(int rowIndex, int columnIndex) {
             Property attr = attrs.get(rowIndex);
             return columnIndex == 0 ? attr.getName() : attr.getValue();
         }
 
         @Override
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-        {
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        public void addTableModelListener(TableModelListener l)
-        {
+        public void addTableModelListener(TableModelListener l) {
             listeners.add(l);
         }
 
         @Override
-        public void removeTableModelListener(TableModelListener l)
-        {
+        public void removeTableModelListener(TableModelListener l) {
             listeners.remove(l);
         }
 
         @Nullable
-        public List<Property> getAttributes()
-        {
+        public List<Property> getAttributes() {
             return attrs;
         }
 
-        public Property getAttribute(int index)
-        {
+        public Property getAttribute(int index) {
             return attrs.get(index);
         }
 
-        public void addAttribute(Property attr)
-        {
+        public void addAttribute(Property attr) {
             attrs.add(attr);
             for (TableModelListener l : listeners)
                 l.tableChanged(new TableModelEvent(this));
         }
 
-        private void modifyAttribute(int index, @NotNull Property attribute)
-        {
+        private void modifyAttribute(int index, @NotNull Property attribute) {
             Property attr = getAttribute(index);
             attr.setName(attribute.getName());
             attr.setValue(attribute.getValue());
@@ -147,8 +130,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
                 l.tableChanged(new TableModelEvent(this));
         }
 
-        public void removeAttribute(int index)
-        {
+        public void removeAttribute(int index) {
             attrs.remove(index);
             for (TableModelListener l : listeners)
                 l.tableChanged(new TableModelEvent(this));
@@ -160,8 +142,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
     /**
      * Creates new form AnalysisDetailsPanel
      */
-    public AnalysisDetailsPage()
-    {
+    public AnalysisDetailsPage() {
         setTitle("Analysis details");
 
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANALYSIS_DETAILS, 96));
@@ -172,11 +153,9 @@ public class AnalysisDetailsPage extends AbstractWizardPage
 
         attrTable.setModel(attrModel = new AttributesModel());
         attrTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        attrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
+        attrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 int row = attrTable.getSelectedRow();
                 attrEditBtn.setEnabled(row != -1);
                 attrRemoveBtn.setEnabled(row != -1);
@@ -186,39 +165,32 @@ public class AnalysisDetailsPage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    public String getAnalysisTitle()
-    {
+    public String getAnalysisTitle() {
         return titleField.getText();
     }
 
-    public void setAnalysisTitle(String title)
-    {
+    public void setAnalysisTitle(String title) {
         titleField.setText(title);
     }
 
-    public String getAnalysisNotes()
-    {
+    public String getAnalysisNotes() {
         return notesArea.getText();
     }
 
-    public void setAnalysisNotes(String notes)
-    {
+    public void setAnalysisNotes(String notes) {
         notesArea.setText(notes);
     }
 
     @Nullable
-    public List<Property> getAnalysisAttributes()
-    {
+    public List<Property> getAnalysisAttributes() {
         return attrModel.getAttributes();
     }
 
-    public void setAnalysisAttributes(List<Property> attrs)
-    {
+    public void setAnalysisAttributes(List<Property> attrs) {
         attrTable.setModel(attrModel = new AttributesModel(attrs));
     }
 
@@ -229,8 +201,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage
      * always regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         titleField = new javax.swing.JTextField();
@@ -260,43 +231,35 @@ public class AnalysisDetailsPage extends AbstractWizardPage
 
         attrTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-        }, new String[]{"Name", "Value"})
-        {
+        }, new String[]{"Name", "Value"}) {
             @NotNull
             final Class[] types = new Class[]{java.lang.String.class, java.lang.String.class};
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
         });
         jScrollPane2.setViewportView(attrTable);
 
         attrAddBtn.setText("Add");
-        attrAddBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        attrAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attrAddBtnActionPerformed(evt);
             }
         });
 
         attrRemoveBtn.setText("Remove");
         attrRemoveBtn.setEnabled(false);
-        attrRemoveBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        attrRemoveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attrRemoveBtnActionPerformed(evt);
             }
         });
 
         attrEditBtn.setText("Edit");
         attrEditBtn.setEnabled(false);
-        attrEditBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        attrEditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 attrEditBtnActionPerformed(evt);
             }
         });
@@ -307,42 +270,35 @@ public class AnalysisDetailsPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(attrAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(attrEditBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(attrRemoveBtn)).addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void attrAddBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_attrAddBtnActionPerformed
+    private void attrAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrAddBtnActionPerformed
         AttributeDialog dlg = new AttributeDialog(null);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         attrModel.addAttribute(dlg.getAttribute());
     }//GEN-LAST:event_attrAddBtnActionPerformed
 
-    private void attrEditBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_attrEditBtnActionPerformed
+    private void attrEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrEditBtnActionPerformed
         int row = attrTable.getSelectedRow();
-        if (row == -1)
-        {
+        if (row == -1) {
             return;
         }
 
         AttributeDialog dlg = new AttributeDialog(null);
         dlg.setAttribute(attrModel.getAttribute(row));
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         attrModel.modifyAttribute(row, dlg.getAttribute());
     }//GEN-LAST:event_attrEditBtnActionPerformed
 
-    private void attrRemoveBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_attrRemoveBtnActionPerformed
+    private void attrRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrRemoveBtnActionPerformed
         int row = attrTable.getSelectedRow();
-        if (row == -1)
-        {
+        if (row == -1) {
             return;
         }
 

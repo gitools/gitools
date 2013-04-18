@@ -26,8 +26,7 @@ import org.gitools.stats.mtc.Bonferroni;
 import org.gitools.ui.actions.analysis.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
-class AnalysisActions
-{
+class AnalysisActions {
 
     public static final BaseAction combinations = new CombinationsAction();
 

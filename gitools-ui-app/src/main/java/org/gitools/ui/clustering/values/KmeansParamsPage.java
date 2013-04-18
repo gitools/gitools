@@ -35,11 +35,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class KmeansParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage
-{
+public class KmeansParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
 
-    public KmeansParamsPage()
-    {
+    public KmeansParamsPage() {
 
         initComponents();
 
@@ -47,15 +45,13 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
         setComplete(true);
     }
 
-    private boolean validated()
-    {
+    private boolean validated() {
         return (isValidInteger(iterField.getText()) && isValidInteger(seedField.getText()) &&
                 isValidInteger(kField.getText()));
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
     }
@@ -68,8 +64,7 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         jLabel3 = new javax.swing.JLabel();
@@ -123,25 +118,19 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
     /**
      * @noinspection UnusedDeclaration
      */
-    private boolean isValidNumber(String text)
-    {
-        try
-        {
+    private boolean isValidNumber(String text) {
+        try {
             Double.parseDouble(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
     }
 
-    private boolean isValidInteger(String text)
-    {
-        try
-        {
+    private boolean isValidInteger(String text) {
+        try {
             Integer.parseInt(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
@@ -149,13 +138,11 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
 
     @Nullable
     @Override
-    public AbstractClusteringValueMethod getMethod()
-    {
+    public AbstractClusteringValueMethod getMethod() {
 
         WekaKmeansMethod method = null;
 
-        if (validated())
-        {
+        if (validated()) {
 
             method = (WekaKmeansMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
 
@@ -163,12 +150,9 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
             method.setNumClusters(Integer.valueOf(kField.getText()));
             method.setSeed(Integer.valueOf(seedField.getText()));
 
-            if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean"))
-            {
+            if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
                 method.setDistanceFunction(new EuclideanDistance());
-            }
-            else
-            {
+            } else {
                 method.setDistanceFunction(new ManhattanDistance());
             }
         }
@@ -178,13 +162,11 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
 
 
     @Nullable
-    public ClusteringMethodDescriptor getMethodDescriptor()
-    {
+    public ClusteringMethodDescriptor getMethodDescriptor() {
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
 
         for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaKmeansMethod.class))
-            {
+            if (desc.getMethodClass().equals(WekaKmeansMethod.class)) {
                 return desc;
             }
 

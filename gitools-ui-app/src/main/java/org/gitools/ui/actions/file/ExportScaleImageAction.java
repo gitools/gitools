@@ -49,37 +49,31 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class ExportScaleImageAction extends BaseAction
-{
+public class ExportScaleImageAction extends BaseAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
-    public ExportScaleImageAction()
-    {
+    public ExportScaleImageAction() {
         super("Export scale as an image ...");
 
         setDesc("Export the scale as an image file");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         AbstractEditor editor = ActionUtils.getSelectedEditor();
-        if (editor == null)
-        {
+        if (editor == null) {
             return;
         }
 
         final Object model = editor.getModel();
-        if (!(model instanceof Heatmap))
-        {
+        if (!(model instanceof Heatmap)) {
             return;
         }
 
@@ -96,8 +90,7 @@ public class ExportScaleImageAction extends BaseAction
         Decorator cd = hm.getLayers().getTopLayer().getDecorator();
         final IColorScale scale = cd != null ? cd.getScale() : null;
 
-        if (scale == null)
-        {
+        if (scale == null) {
             return;
         }
 
@@ -110,34 +103,28 @@ public class ExportScaleImageAction extends BaseAction
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wz);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         Settings.getDefault().setLastExportPath(wz.getSavePage().getFolder());
 
         final File file = wz.getSavePage().getPathAsFile();
-        if (!file.getParentFile().exists())
-        {
+        if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
 
         final String formatExtension = wz.getSavePage().getFormat().getExtension();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Exporting scale to image ...", 1);
                     monitor.info("File: " + file.getName());
 
                     ColorScaleDrawer drawer = new ColorScaleDrawer(scale);
-                    if (wz.isPartialRange())
-                    {
+                    if (wz.isPartialRange()) {
                         drawer.setZoomRangeMin(wz.getRangeMin());
                         drawer.setZoomRangeMax(wz.getRangeMax());
                     }
@@ -157,8 +144,7 @@ public class ExportScaleImageAction extends BaseAction
                     ImageIO.write(bi, formatExtension, file);
 
                     monitor.end();
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     monitor.exception(ex);
                 }
             }

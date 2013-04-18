@@ -29,8 +29,7 @@ import java.net.URL;
 /**
  * A ResourceLocator contains all the information needed to locate a Gitools resource.
  */
-public interface IResourceLocator
-{
+public interface IResourceLocator {
 
     URL getURL();
 

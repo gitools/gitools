@@ -25,12 +25,10 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 
-public class ModulesConversion implements ConversionDelegate
-{
+public class ModulesConversion implements ConversionDelegate {
 
     @Override
-    public Object convert(String srcFormat, Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception
-    {
+    public Object convert(String srcFormat, Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception {
         progressMonitor.begin("Converting modules ...", 1);
         progressMonitor.end();
 

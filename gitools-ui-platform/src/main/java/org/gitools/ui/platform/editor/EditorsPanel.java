@@ -37,40 +37,32 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class EditorsPanel extends WebTabbedPane
-{
+public class EditorsPanel extends WebTabbedPane {
 
     private static final String DEFAULT_NAME_PREFIX = "unnamed";
 
     @NotNull
     private final Map<String, Integer> nameCounts = new HashMap<String, Integer>();
 
-    public EditorsPanel()
-    {
+    public EditorsPanel() {
         createComponents();
 
         setTabbedPaneStyle(TabbedPaneStyle.attached);
 
-        addChangeListener(new ChangeListener()
-        {
+        addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent evt)
-            {
+            public void stateChanged(ChangeEvent evt) {
 
                 AbstractEditor selectedEditor = getSelectedEditor();
-                if (selectedEditor != null)
-                {
+                if (selectedEditor != null) {
                     selectedEditor.doVisible();
 
-                    for (int i=0; i < getTabCount(); i++)
-                    {
+                    for (int i = 0; i < getTabCount(); i++) {
                         Component component = getTabComponentAt(i);
-                        if (component instanceof EditorTabComponent)
-                        {
-                            AbstractEditor editor = ((EditorTabComponent)component).getEditor();
+                        if (component instanceof EditorTabComponent) {
+                            AbstractEditor editor = ((EditorTabComponent) component).getEditor();
 
-                            if (editor != selectedEditor)
-                            {
+                            if (editor != selectedEditor) {
                                 editor.detach();
                             }
                         }
@@ -82,15 +74,12 @@ public class EditorsPanel extends WebTabbedPane
         });
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
 
     }
 
-    public void addEditor(@Nullable AbstractEditor editor)
-    {
-        if (editor == null)
-        {
+    public void addEditor(@Nullable AbstractEditor editor) {
+        if (editor == null) {
             return;
         }
 
@@ -98,12 +87,9 @@ public class EditorsPanel extends WebTabbedPane
 
         final Icon icon = editor.getIcon();
 
-        if (icon == null)
-        {
+        if (icon == null) {
             addTab(name, editor);
-        }
-        else
-        {
+        } else {
             addTab(name, icon, editor);
         }
 
@@ -114,18 +100,14 @@ public class EditorsPanel extends WebTabbedPane
         setSelectedComponent(editor);
     }
 
-    public void removeEditor(@Nullable AbstractEditor editor)
-    {
-        if (editor == null)
-        {
+    public void removeEditor(@Nullable AbstractEditor editor) {
+        if (editor == null) {
             return;
         }
 
-        if (editor.doClose())
-        {
+        if (editor.doClose()) {
             int i = indexOfComponent(editor);
-            if (i != -1)
-            {
+            if (i != -1) {
                 remove(i);
             }
 
@@ -134,38 +116,32 @@ public class EditorsPanel extends WebTabbedPane
     }
 
     @NotNull
-    public AbstractEditor getSelectedEditor()
-    {
+    public AbstractEditor getSelectedEditor() {
         return (AbstractEditor) getSelectedComponent();
     }
 
-    void refreshActions()
-    {
+    void refreshActions() {
         AbstractEditor editor = getSelectedEditor();
         ActionManager.getDefault().updateEnabledByEditor(editor);
     }
 
     @NotNull
-    String createName()
-    {
+    String createName() {
         return createName(DEFAULT_NAME_PREFIX, "");
     }
 
     @NotNull
-    String createName(String prefix, String suffix)
-    {
+    String createName(String prefix, String suffix) {
         Set<String> names = new HashSet<String>();
         int numTabs = getTabCount();
-        for (int i = 0; i < numTabs; i++)
-        {
+        for (int i = 0; i < numTabs; i++) {
             IEditor editor = (IEditor) getComponentAt(i);
             names.add(editor.getName());
         }
 
         prefix = prefix.replace(" ", "_");
         Integer c = nameCounts.get(prefix);
-        if (c == null)
-        {
+        if (c == null) {
             c = 1;
         }
 
@@ -179,10 +155,8 @@ public class EditorsPanel extends WebTabbedPane
     }
 
     @NotNull
-    public String deriveName(@NotNull String name, @NotNull String removeExtension, @NotNull String prefixAdd, @NotNull String newExtension)
-    {
-        if (!removeExtension.isEmpty() && name.endsWith(removeExtension))
-        {
+    public String deriveName(@NotNull String name, @NotNull String removeExtension, @NotNull String prefixAdd, @NotNull String newExtension) {
+        if (!removeExtension.isEmpty() && name.endsWith(removeExtension)) {
             int endIndex = name.length() - removeExtension.length() - 1;
             name = endIndex >= 0 ? name.substring(0, endIndex) : "";
         }
@@ -190,28 +164,24 @@ public class EditorsPanel extends WebTabbedPane
         int i = name.length() - 1;
         while (i >= 0 && Character.isDigit(name.charAt(i)))
             i--;
-        if (name.charAt(i) != '-')
-        {
+        if (name.charAt(i) != '-') {
             i++;
         }
 
         name = name.substring(0, i);
 
-        if (!name.endsWith(prefixAdd))
-        {
+        if (!name.endsWith(prefixAdd)) {
             name += prefixAdd;
         }
 
-        if (!newExtension.equals(""))
-        {
+        if (!newExtension.equals("")) {
             newExtension = "." + newExtension;
         }
 
         return createName(name, newExtension);
     }
 
-    public void setSelectedEditor(AbstractEditor editor)
-    {
+    public void setSelectedEditor(AbstractEditor editor) {
         setSelectedComponent(editor);
     }
 }

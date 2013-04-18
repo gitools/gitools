@@ -26,31 +26,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 
-public class VersionTool implements ITool
-{
+public class VersionTool implements ITool {
 
-    public VersionTool()
-    {
+    public VersionTool() {
         super();
     }
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "version";
     }
 
     @Override
-    public boolean run(String[] args, @NotNull PrintWriter out)
-    {
+    public boolean run(String[] args, @NotNull PrintWriter out) {
         out.println("Gitools " + Main.class.getPackage().getImplementationVersion());
         return true;
     }
 
     @Override
-    public boolean check(String[] args, PrintWriter out)
-    {
+    public boolean check(String[] args, PrintWriter out) {
         return true;
     }
 

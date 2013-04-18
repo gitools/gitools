@@ -29,8 +29,7 @@ import java.io.Serializable;
 /**
  * The type Property item.
  */
-public class PropertyItem implements Serializable
-{
+public class PropertyItem implements Serializable {
     private final String name;
     private final String description;
     private final String value;
@@ -47,8 +46,7 @@ public class PropertyItem implements Serializable
      * @param name  the name
      * @param value the value
      */
-    public PropertyItem(@NotNull String name, @NotNull String value)
-    {
+    public PropertyItem(@NotNull String name, @NotNull String value) {
         this(name, null, value);
     }
 
@@ -59,8 +57,7 @@ public class PropertyItem implements Serializable
      * @param description the description
      * @param value       the value
      */
-    public PropertyItem(@NotNull String name, String description, @NotNull String value)
-    {
+    public PropertyItem(@NotNull String name, String description, @NotNull String value) {
         this(name, description, value, null);
     }
 
@@ -72,8 +69,7 @@ public class PropertyItem implements Serializable
      * @param value       the value
      * @param valueLink   the value link
      */
-    public PropertyItem(@NotNull String name, String description, @NotNull String value, String valueLink)
-    {
+    public PropertyItem(@NotNull String name, String description, @NotNull String value, String valueLink) {
         this.name = name;
         this.description = description;
         this.value = value;
@@ -85,8 +81,7 @@ public class PropertyItem implements Serializable
      *
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
@@ -95,8 +90,7 @@ public class PropertyItem implements Serializable
      *
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -105,8 +99,7 @@ public class PropertyItem implements Serializable
      *
      * @return the value
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
@@ -115,8 +108,7 @@ public class PropertyItem implements Serializable
      *
      * @return the link
      */
-    public String getLink()
-    {
+    public String getLink() {
         return link;
     }
 
@@ -125,14 +117,12 @@ public class PropertyItem implements Serializable
      *
      * @return the color
      */
-    public Color getColor()
-    {
+    public Color getColor() {
         return color;
     }
 
     @NotNull
-    public PropertyItem setColor(Color color)
-    {
+    public PropertyItem setColor(Color color) {
         this.color = color;
 
         return this;
@@ -143,33 +133,27 @@ public class PropertyItem implements Serializable
      *
      * @return the boolean
      */
-    public boolean isSelected()
-    {
+    public boolean isSelected() {
         return selected;
     }
 
-    public void setSelected(boolean selected)
-    {
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
-    public boolean isSelectable()
-    {
+    public boolean isSelectable() {
         return selectable;
     }
 
-    public void setSelectable(boolean selectable)
-    {
+    public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
     }
 
-    public void setIndex(int index)
-    {
+    public void setIndex(int index) {
         this.index = index;
     }
 }

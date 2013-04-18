@@ -30,24 +30,19 @@ import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.PrintWriter;
 
-public abstract class AbstractTool implements ITool
-{
+public abstract class AbstractTool implements ITool {
 
     @Override
-    public boolean check(String[] args, @NotNull PrintWriter out)
-    {
+    public boolean check(String[] args, @NotNull PrintWriter out) {
 
         CmdLineParser parser = new CmdLineParser(this);
-        try
-        {
+        try {
             parser.parseArgument(args);
-        } catch (CmdLineException e)
-        {
+        } catch (CmdLineException e) {
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
             return false;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             out.println("ERROR " + e.getMessage());
             return false;
         }
@@ -56,21 +51,17 @@ public abstract class AbstractTool implements ITool
     }
 
     @Override
-    public boolean run(String[] args, @NotNull PrintWriter out)
-    {
+    public boolean run(String[] args, @NotNull PrintWriter out) {
 
         CmdLineParser parser = new CmdLineParser(this);
-        try
-        {
+        try {
             parser.parseArgument(args);
             execute();
-        } catch (CmdLineException e)
-        {
+        } catch (CmdLineException e) {
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
             return false;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             out.println("ERROR | " + e.getMessage());
             return false;
         }
@@ -78,12 +69,10 @@ public abstract class AbstractTool implements ITool
         return true;
     }
 
-    void execute()
-    {
+    void execute() {
         JobRunnable job = newJob();
 
-        if (job != null)
-        {
+        if (job != null) {
 
             AppFrame mainFrame = AppFrame.get();
 

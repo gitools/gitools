@@ -21,6 +21,5 @@
  */
 package org.gitools.modules.importer;
 
-public interface ModuleCategory extends Ref
-{
+public interface ModuleCategory extends Ref {
 }

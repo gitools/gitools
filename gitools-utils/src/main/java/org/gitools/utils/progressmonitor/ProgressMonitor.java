@@ -23,27 +23,22 @@ package org.gitools.utils.progressmonitor;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ProgressMonitor
-{
+public class ProgressMonitor {
 
     @NotNull
-    private static final ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>()
-    {
+    private static final ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>() {
         @NotNull
         @Override
-        protected IProgressMonitor initialValue()
-        {
+        protected IProgressMonitor initialValue() {
             return new NullProgressMonitor();
         }
     };
 
-    public static IProgressMonitor get()
-    {
+    public static IProgressMonitor get() {
         return progressMonitorThreadLocal.get();
     }
 
-    public static void set(IProgressMonitor progressMonitor)
-    {
+    public static void set(IProgressMonitor progressMonitor) {
         progressMonitorThreadLocal.set(progressMonitor);
     }
 

@@ -34,13 +34,11 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class SaveAction extends BaseAction
-{
+public class SaveAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public SaveAction()
-    {
+    public SaveAction() {
         super("Save");
 
         setDesc("Save changes");
@@ -50,11 +48,9 @@ public class SaveAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByEditor(@Nullable IEditor editor)
-    {
+    public boolean isEnabledByEditor(@Nullable IEditor editor) {
 
-        if (editor == null)
-        {
+        if (editor == null) {
             return false;
         }
 
@@ -65,17 +61,14 @@ public class SaveAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(IProgressMonitor monitor)
-            {
+            public void run(IProgressMonitor monitor) {
                 currentEditor.doSave(monitor);
             }
         });

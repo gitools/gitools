@@ -22,53 +22,53 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.clustering.HierarchicalClusteringResults;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabelsHeader
-{
+public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabelsHeader {
 
     private static final String CLUSTERING_RESULTS_CHANGED = "clusteringResults";
     private static final String TREE_LEVEL_CHANGED = "treeLevel";
 
-    private transient HierarchicalClusteringResults clusteringResults;
+    @XmlElement(name = "results")
+    private HierarchicalClusteringResults clusteringResults;
 
-    public HeatmapHierarchicalColoredLabelsHeader()
-    {
+    public HeatmapHierarchicalColoredLabelsHeader() {
         super();
     }
 
-    public HeatmapHierarchicalColoredLabelsHeader(HeatmapDimension hdim)
-    {
+    public HeatmapHierarchicalColoredLabelsHeader(HeatmapDimension hdim) {
         super(hdim);
     }
 
-    public HierarchicalClusteringResults getClusteringResults()
-    {
+    public HierarchicalClusteringResults getClusteringResults() {
         return clusteringResults;
     }
 
-    public void setClusteringResults(HierarchicalClusteringResults results)
-    {
+    public void setClusteringResults(HierarchicalClusteringResults results) {
         HierarchicalClusteringResults old = this.clusteringResults;
         this.clusteringResults = results;
         firePropertyChange(CLUSTERING_RESULTS_CHANGED, old, results);
     }
 
-    public int getTreeLevel()
-    {
+    public int getTreeLevel() {
         return clusteringResults.getLevel();
     }
 
-    public void setTreeLevel(int level)
-    {
+    public void setTreeLevel(int level) {
         int old = clusteringResults.getLevel();
         clusteringResults.setLevel(level);
         updateFromClusterResults(clusteringResults);
         firePropertyChange(TREE_LEVEL_CHANGED, old, level);
     }
 
+    @Override
+    public void init(Heatmap heatmap) {
+        clusteringResults.init();
+    }
 }

@@ -28,8 +28,7 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public interface ClusteringResults
-{
+public interface ClusteringResults {
 
     /**
      * Returns the number of clusters

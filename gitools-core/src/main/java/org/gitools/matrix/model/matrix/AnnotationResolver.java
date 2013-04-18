@@ -25,8 +25,7 @@ import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AnnotationResolver implements VariableValueResolver
-{
+public class AnnotationResolver implements VariableValueResolver {
 
     private static final String DEFAULT_NA = "";
 
@@ -37,48 +36,39 @@ public class AnnotationResolver implements VariableValueResolver
     private final String na;
 
 
-    public AnnotationResolver(IAnnotations am, String label)
-    {
+    public AnnotationResolver(IAnnotations am, String label) {
         this(am, label, DEFAULT_NA);
     }
 
-    public AnnotationResolver(IAnnotations am, @Nullable String label, String na)
-    {
+    public AnnotationResolver(IAnnotations am, @Nullable String label, String na) {
         this.am = am;
-        if (label != null)
-        {
+        if (label != null) {
             setLabel(label);
         }
         this.na = na;
     }
 
-    final void setLabel(String label)
-    {
+    final void setLabel(String label) {
         this.label = label;
     }
 
     @Override
-    public String resolveValue(@NotNull String variableName)
-    {
-        if (variableName.equalsIgnoreCase("id"))
-        {
+    public String resolveValue(@NotNull String variableName) {
+        if (variableName.equalsIgnoreCase("id")) {
             return label;
         }
 
-        if (label == null)
-        {
+        if (label == null) {
             return na;
         }
 
         String annotation = null;
 
-        if (am != null)
-        {
+        if (am != null) {
             annotation = am.getAnnotation(label, variableName);
         }
 
-        if (annotation == null)
-        {
+        if (annotation == null) {
             return "${" + variableName + "}";
         }
 

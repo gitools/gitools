@@ -30,88 +30,74 @@ import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
 
-public class HeatmapAnnotatedMatrixView implements IMatrixView
-{
+public class HeatmapAnnotatedMatrixView implements IMatrixView {
 
     @NotNull
     private final Heatmap hm;
 
     private IResourceLocator locator;
 
-    public HeatmapAnnotatedMatrixView(@NotNull Heatmap hm)
-    {
+    public HeatmapAnnotatedMatrixView(@NotNull Heatmap hm) {
         this.hm = hm;
     }
 
     @Override
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
     @Override
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 
     @Override
-    public IMatrix getContents()
-    {
+    public IMatrix getContents() {
         return hm.getContents();
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         hm.addPropertyChangeListener(listener);
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         hm.removePropertyChangeListener(listener);
     }
 
     @Override
-    public IMatrixViewDimension getRows()
-    {
+    public IMatrixViewDimension getRows() {
         return hm.getRows();
     }
 
     @Override
-    public IMatrixViewDimension getColumns()
-    {
+    public IMatrixViewDimension getColumns() {
         return hm.getColumns();
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return hm.isEmpty(row, column);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return hm.getCellValue(row, column, layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         hm.setCellValue(row, column, layer, value);
     }
 
     @Override
-    public IMatrixViewLayers getLayers()
-    {
+    public IMatrixViewLayers getLayers() {
         return hm.getLayers();
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         hm.detach();
     }
 }

@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.platform.wizard;
 
-public interface IWizardPageUpdateListener
-{
+public interface IWizardPageUpdateListener {
 
     void pageUpdated(IWizardPage page);
 }

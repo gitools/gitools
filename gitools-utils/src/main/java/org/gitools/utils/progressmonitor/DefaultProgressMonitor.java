@@ -26,8 +26,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class DefaultProgressMonitor implements IProgressMonitor
-{
+public class DefaultProgressMonitor implements IProgressMonitor {
 
     String title;
     protected int totalWork;
@@ -39,21 +38,18 @@ public class DefaultProgressMonitor implements IProgressMonitor
 
     private IProgressMonitor parent;
 
-    public DefaultProgressMonitor()
-    {
+    public DefaultProgressMonitor() {
         title = "";
         totalWork = worked = level = 0;
         cancelled = false;
     }
 
-    DefaultProgressMonitor(IProgressMonitor parent)
-    {
+    DefaultProgressMonitor(IProgressMonitor parent) {
         this.parent = parent;
     }
 
     @Override
-    public void begin(String title, int totalWork)
-    {
+    public void begin(String title, int totalWork) {
         this.title = title;
         this.totalWork = totalWork;
         this.worked = 0;
@@ -61,88 +57,73 @@ public class DefaultProgressMonitor implements IProgressMonitor
     }
 
     @Override
-    public void title(String title)
-    {
+    public void title(String title) {
         this.title = title;
     }
 
     @Override
-    public void worked(int workInc)
-    {
+    public void worked(int workInc) {
         worked += workInc;
-        if (worked > totalWork)
-        {
+        if (worked > totalWork) {
             worked = totalWork;
         }
     }
 
     @Override
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
         this.cancelled = true;
     }
 
     @Override
-    public void end()
-    {
+    public void end() {
         worked = totalWork;
     }
 
     @Override
-    public int getLevel()
-    {
+    public int getLevel() {
         return level;
     }
 
     @Override
-    public void setLevel(int level)
-    {
+    public void setLevel(int level) {
         this.level = level;
     }
 
     //@Override
-    protected int getWorked()
-    {
+    protected int getWorked() {
         return worked;
     }
 
-    protected int getTotalWork()
-    {
+    protected int getTotalWork() {
         return totalWork;
     }
 
     @NotNull
     @Override
-    public IProgressMonitor subtask()
-    {
+    public IProgressMonitor subtask() {
         return new DefaultProgressMonitor(this);
     }
 
     @Override
-    public void debug(String msg)
-    {
+    public void debug(String msg) {
     }
 
     @Override
-    public void info(String msg)
-    {
+    public void info(String msg) {
     }
 
     @Override
-    public void exception(Throwable cause)
-    {
+    public void exception(Throwable cause) {
         this.cause = cause;
         this.cancelled = true;
     }
 
-    public Throwable getCause()
-    {
+    public Throwable getCause() {
         return cause;
     }
 }

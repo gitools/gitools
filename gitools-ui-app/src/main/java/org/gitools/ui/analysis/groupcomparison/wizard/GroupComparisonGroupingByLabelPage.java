@@ -48,45 +48,37 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
-{
+public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String colsPatt;
 
-    public GroupComparisonGroupingByLabelPage(Heatmap hm)
-    {
+    public GroupComparisonGroupingByLabelPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
         setComplete(false);
 
 
-        colsPattBtn.addActionListener(new ActionListener()
-        {
+        colsPattBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectColsPattern();
             }
         });
 
-        patterns1.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patterns1.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 saveBtn1.setEnabled(patterns1.getDocument().getLength() > 0);
                 setComplete(patterns1.getDocument().getLength() > 0 && patterns2.getDocument().getLength() > 0);
             }
         });
 
-        patterns2.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patterns2.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 saveBtn2.setEnabled(patterns2.getDocument().getLength() > 0);
                 setComplete(patterns1.getDocument().getLength() > 0 && patterns2.getDocument().getLength() > 0);
             }
@@ -104,17 +96,14 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
 
     @NotNull
-    String readNamesFromFile(File file) throws IOException
-    {
+    String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
         String line;
 
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             line = line.trim();
-            if (!line.isEmpty())
-            {
+            if (!line.isEmpty()) {
                 sb.append(line).append('\n');
             }
         }
@@ -123,13 +112,11 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
-    private void selectColsPattern()
-    {
+    private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -142,52 +129,42 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
      * @noinspection UnusedDeclaration
      */
     @NotNull
-    public FilterDimension getFilterDimension()
-    {
+    public FilterDimension getFilterDimension() {
         return FilterDimension.COLUMNS;
     }
 
-    private void setFilterDimension(FilterDimension fd)
-    {
+    private void setFilterDimension(FilterDimension fd) {
         colsRb.setSelected(true);
     }
 
-    String getPattern()
-    {
+    String getPattern() {
         return colsPatt;
     }
 
     @NotNull
-    public int[] getGroup1()
-    {
+    public int[] getGroup1() {
         return getGroupIndices(patterns1);
     }
 
     @NotNull
-    public int[] getGroup2()
-    {
+    public int[] getGroup2() {
         return getGroupIndices(patterns2);
     }
 
     @NotNull
-    private int[] getGroupIndices(@NotNull JTextArea patterns)
-    {
+    private int[] getGroupIndices(@NotNull JTextArea patterns) {
         List<String> values = new ArrayList<String>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;
-        try
-        {
-            while ((line = br.readLine()) != null)
-            {
+        try {
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (!line.isEmpty())
-                {
+                if (!line.isEmpty()) {
                     values.add(line);
                 }
             }
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
             dlg.setVisible(true);
         }
@@ -199,8 +176,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         int[] visibleCols = hm.getColumns().getVisible();
         int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
-        for (int i = 0; i < groupCols.length; i++)
-        {
+        for (int i = 0; i < groupCols.length; i++) {
             groupColIndices[i] = ArrayUtils.indexOf(visibleCols, groupCols[i]);
         }
 
@@ -208,16 +184,14 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
     @NotNull
-    private ArrayList<String> getSelectedColumns()
-    {
+    private ArrayList<String> getSelectedColumns() {
         ArrayList<String> selected = new ArrayList<String>();
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
-        if (!getPattern().equalsIgnoreCase("${id}"))
-        {
+        if (!getPattern().equalsIgnoreCase("${id}")) {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
-        int[] selectedIndices = hm.getColumns().getSelected(  );
+        int[] selectedIndices = hm.getColumns().getSelected();
         for (int i = 0; i < selectedIndices.length; i++)
             selected.add(labelProvider.getLabel(selectedIndices[i]));
 
@@ -225,34 +199,28 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
     }
 
 
-    void setValues(@NotNull List<String> values, @NotNull JTextArea patterns)
-    {
+    void setValues(@NotNull List<String> values, @NotNull JTextArea patterns) {
         Iterator<String> it = values.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             patterns.append(it.next() + "\n");
         }
 
     }
 
     @NotNull
-    private ArrayList<String> getUnselectedColumns()
-    {
+    private ArrayList<String> getUnselectedColumns() {
         ArrayList<String> unselected = new ArrayList<String>();
         LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
-        if (!getPattern().equalsIgnoreCase("${id}"))
-        {
+        if (!getPattern().equalsIgnoreCase("${id}")) {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
 
-        int[] selectedIndices = hm.getColumns().getSelected(  );
+        int[] selectedIndices = hm.getColumns().getSelected();
         int visibleColumnsCount = hm.getColumns().size();
         int[] unselectedIndices = new int[visibleColumnsCount - selectedIndices.length];
         int count = 0;
-        for (int i = 0; i < visibleColumnsCount; i++)
-        {
-            if (!(ArrayUtils.contains(selectedIndices, i)))
-            {
+        for (int i = 0; i < visibleColumnsCount; i++) {
+            if (!(ArrayUtils.contains(selectedIndices, i))) {
                 unselectedIndices[count] = i;
                 count++;
             }
@@ -264,8 +232,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
 
     }
 
-    boolean isUseRegexChecked()
-    {
+    boolean isUseRegexChecked() {
         return useRegexCheck.isSelected();
     }
 
@@ -277,8 +244,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -313,20 +279,16 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         jLabel3.setText("One label or regular expression per line");
 
         loadBtn1.setText("Load...");
-        loadBtn1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtn1ActionPerformed(evt);
             }
         });
 
         saveBtn1.setText("Save...");
         saveBtn1.setEnabled(false);
-        saveBtn1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtn1ActionPerformed(evt);
             }
         });
@@ -339,28 +301,22 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         colsRb.setText("Columns");
 
         pasteSelected1.setText("paste Selected");
-        pasteSelected1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteSelected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteSelected1ActionPerformed(evt);
             }
         });
 
         pasteUnselected1.setText("paste Unselected");
-        pasteUnselected1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteUnselected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteUnselected1ActionPerformed(evt);
             }
         });
 
         loadBtn2.setText("Load...");
-        loadBtn2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtn2ActionPerformed(evt);
             }
         });
@@ -370,10 +326,8 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         jScrollPane2.setViewportView(patterns2);
 
         pasteUnselected2.setText("paste Unselected");
-        pasteUnselected2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteUnselected2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteUnselected2ActionPerformed(evt);
             }
         });
@@ -381,20 +335,16 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         jLabel2.setText("Column labels for group 2:");
 
         pasteSelected2.setText("paste Selected");
-        pasteSelected2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteSelected2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteSelected2ActionPerformed(evt);
             }
         });
 
         saveBtn2.setText("Save...");
         saveBtn2.setEnabled(false);
-        saveBtn2.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveBtn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtn2ActionPerformed(evt);
             }
         });
@@ -405,37 +355,30 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(colsPattBtn).addComponent(colsRb).addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteSelected1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteUnselected1)).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteSelected2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteUnselected2)).addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel3).addGap(18, 18, 18).addComponent(useRegexCheck).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadBtn1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_loadBtn1ActionPerformed
+    private void loadBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtn1ActionPerformed
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
             Settings.getDefault().setLastFilterPath(file.getParent());
 
             patterns1.setText(readNamesFromFile(file));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtn1ActionPerformed
 
 
-    private void saveBtn1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_saveBtn1ActionPerformed
-        try
-        {
+    private void saveBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtn1ActionPerformed
+        try {
             File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
@@ -444,61 +387,51 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.append(patterns1.getText()).append('\n');
             bw.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtn1ActionPerformed
 
-    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteSelected1ActionPerformed
+    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteSelected1ActionPerformed
         ArrayList<String> selectedColsLabels = getSelectedColumns();
         setValues(selectedColsLabels, patterns1);
     }//GEN-LAST:event_pasteSelected1ActionPerformed
 
-    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteUnselected1ActionPerformed
+    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteUnselected1ActionPerformed
         ArrayList<String> unselectedColsLabels = getUnselectedColumns();
         setValues(unselectedColsLabels, patterns1);
     }//GEN-LAST:event_pasteUnselected1ActionPerformed
 
-    private void loadBtn2ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_loadBtn2ActionPerformed
+    private void loadBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtn2ActionPerformed
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
             Settings.getDefault().setLastFilterPath(file.getParent());
 
             patterns2.setText(readNamesFromFile(file));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtn2ActionPerformed
 
-    private void pasteUnselected2ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteUnselected2ActionPerformed
+    private void pasteUnselected2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteUnselected2ActionPerformed
         ArrayList<String> unselectedColsLabels = getUnselectedColumns();
         setValues(unselectedColsLabels, patterns2);
     }//GEN-LAST:event_pasteUnselected2ActionPerformed
 
-    private void pasteSelected2ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteSelected2ActionPerformed
+    private void pasteSelected2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteSelected2ActionPerformed
         ArrayList<String> selectedColsLabels = getSelectedColumns();
         setValues(selectedColsLabels, patterns2);
     }//GEN-LAST:event_pasteSelected2ActionPerformed
 
-    private void saveBtn2ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_saveBtn2ActionPerformed
+    private void saveBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtn2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_saveBtn2ActionPerformed
 

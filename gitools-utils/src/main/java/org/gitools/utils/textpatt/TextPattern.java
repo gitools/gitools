@@ -31,58 +31,47 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class TextPattern
-{
+public class TextPattern {
 
-    public static interface VariableValueResolver
-    {
+    public static interface VariableValueResolver {
         String resolveValue(String variableName);
     }
 
-    private static interface Token
-    {
+    private static interface Token {
         void generate(VariableValueResolver resolver, StringBuilder sb);
     }
 
-    private static class TextToken implements Token
-    {
+    private static class TextToken implements Token {
         private final String text;
 
-        public TextToken(String text)
-        {
+        public TextToken(String text) {
             this.text = text;
         }
 
         @Override
-        public void generate(VariableValueResolver resolver, @NotNull StringBuilder sb)
-        {
+        public void generate(VariableValueResolver resolver, @NotNull StringBuilder sb) {
             sb.append(text);
         }
     }
 
-    private static class VariableToken implements Token
-    {
+    private static class VariableToken implements Token {
         private final String variableName;
 
-        public VariableToken(String variableName)
-        {
+        public VariableToken(String variableName) {
             this.variableName = variableName;
         }
 
         @Override
-        public void generate(@NotNull VariableValueResolver resolver, @NotNull StringBuilder sb)
-        {
+        public void generate(@NotNull VariableValueResolver resolver, @NotNull StringBuilder sb) {
             sb.append(resolver.resolveValue(variableName));
         }
     }
 
     @NotNull
-    private static List<Token> internalCompile(@Nullable String pattern)
-    {
+    private static List<Token> internalCompile(@Nullable String pattern) {
         List<Token> tokens = new ArrayList<Token>();
 
-        if (pattern == null)
-        {
+        if (pattern == null) {
             return tokens;
         }
 
@@ -93,45 +82,34 @@ public class TextPattern
 
         int pos = 0;
 
-        while (pos < pattern.length())
-        {
+        while (pos < pattern.length()) {
 
             char ch = pattern.charAt(pos++);
 
-            switch (state)
-            {
+            switch (state) {
                 case 'C': // copying normal characters
-                    if (ch == '$')
-                    {
+                    if (ch == '$') {
                         state = '$';
-                    }
-                    else
-                    {
+                    } else {
                         buff.append(ch);
                     }
                     break;
 
                 case '$': // start of variable
-                    if (ch == '{')
-                    {
+                    if (ch == '{') {
                         state = 'V';
                         tokens.add(new TextToken(buff.toString()));
                         buff.setLength(0);
-                    }
-                    else
-                    {
+                    } else {
                         buff.append('$').append(ch);
                         state = 'C';
                     }
                     break;
 
                 case 'V': // reading name of variable
-                    if (ch == '}')
-                    {
+                    if (ch == '}') {
                         state = 'X';
-                    }
-                    else
-                    {
+                    } else {
                         varBuff.append(ch);
                     }
                     break;
@@ -145,8 +123,7 @@ public class TextPattern
             }
         }
 
-        switch (state)
-        {
+        switch (state) {
             case '$':
                 buff.append('$');
                 break;
@@ -159,8 +136,7 @@ public class TextPattern
                 break;
         }
 
-        if (buff.length() > 0)
-        {
+        if (buff.length() > 0) {
             tokens.add(new TextToken(buff.toString()));
         }
 
@@ -168,27 +144,23 @@ public class TextPattern
     }
 
     @NotNull
-    public static TextPattern compile(String pattern)
-    {
+    public static TextPattern compile(String pattern) {
         return new TextPattern(pattern);
     }
 
     private String text;
     private final List<Token> tokens;
 
-    public TextPattern(String pattern)
-    {
+    public TextPattern(String pattern) {
         this.tokens = internalCompile(pattern);
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
     @NotNull
-    public String generate(VariableValueResolver resolver)
-    {
+    public String generate(VariableValueResolver resolver) {
         StringBuilder sb = new StringBuilder();
         for (Token token : tokens)
             token.generate(resolver, sb);

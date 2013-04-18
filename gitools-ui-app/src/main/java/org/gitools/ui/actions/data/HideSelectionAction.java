@@ -35,25 +35,21 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class HideSelectionAction extends BaseAction
-{
+public class HideSelectionAction extends BaseAction {
 
     private static final long serialVersionUID = 1453040322414160605L;
 
-    public enum ElementType
-    {
+    public enum ElementType {
         ROWS, COLUMNS
     }
 
     private final ElementType type;
 
-    public HideSelectionAction(@NotNull ElementType type)
-    {
+    public HideSelectionAction(@NotNull ElementType type) {
         super(null);
 
         this.type = type;
-        switch (type)
-        {
+        switch (type) {
             case ROWS:
                 setName("Hide selected rows");
                 setDesc("Hide selected rows");
@@ -72,35 +68,31 @@ public class HideSelectionAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
         String msg = "";
 
-        switch (type)
-        {
+        switch (type) {
             case ROWS:
                 msg = "Selected rows hidden.";
-                matrixView.getRows().hide(  matrixView.getRows().getSelected(  ));
+                matrixView.getRows().hide(matrixView.getRows().getSelected());
             /*matrixView.setVisibleRows(arrayRemove(
                     matrixView.getVisibleRows(),
 					matrixView.getSelectedRows()));*/
                 break;
             case COLUMNS:
                 msg = "Selected columns hidden.";
-                matrixView.getColumns().hide(  matrixView.getColumns().getSelected(  ));
+                matrixView.getColumns().hide(matrixView.getColumns().getSelected());
             /*matrixView.setVisibleColumns(arrayRemove(
                     matrixView.getVisibleColumns(),
 					matrixView.getSelectedColumns()));*/
@@ -109,7 +101,7 @@ public class HideSelectionAction extends BaseAction
 
         AppFrame.get().setStatusText(msg);
     }
-	
+
 	/*private int[] arrayRemove(int[] array, int[] indices) {
 		int j = 0;
 		int lastIndex = 0;

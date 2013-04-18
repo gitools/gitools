@@ -25,13 +25,9 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class IdType
-{
+public class IdType {
 
     @XmlAttribute
     private String key;
@@ -42,50 +38,41 @@ public class IdType
     @XmlElement(name = "link")
     private List<UrlLink> links = new ArrayList<UrlLink>(0);
 
-    public IdType()
-    {
+    public IdType() {
         this(null, null);
     }
 
-    public IdType(String key, String title)
-    {
+    public IdType(String key, String title) {
         this.key = key;
         this.title = title;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public List<UrlLink> getLinks()
-    {
+    public List<UrlLink> getLinks() {
         return links;
     }
 
-    public void setLinks(List<UrlLink> links)
-    {
+    public void setLinks(List<UrlLink> links) {
         this.links = links;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return title;
     }
 }

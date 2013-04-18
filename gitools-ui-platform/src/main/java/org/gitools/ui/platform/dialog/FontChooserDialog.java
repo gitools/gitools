@@ -27,8 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-public class FontChooserDialog extends javax.swing.JDialog
-{
+public class FontChooserDialog extends javax.swing.JDialog {
 
     private static final int[] STYLES = new int[]{Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC};
 
@@ -39,16 +38,14 @@ public class FontChooserDialog extends javax.swing.JDialog
     /**
      * @noinspection UnusedDeclaration
      */
-    public FontChooserDialog(@NotNull Font font)
-    {
+    public FontChooserDialog(@NotNull Font font) {
         this(null, font);
     }
 
     /**
      * Creates new form FontChooserDialog
      */
-    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font)
-    {
+    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font) {
         super(parent, true);
 
         initComponents();
@@ -62,41 +59,34 @@ public class FontChooserDialog extends javax.swing.JDialog
 
         fontStyle.setModel(new DefaultComboBoxModel(STYLE_NAMES));
         for (int i = 0; i < STYLES.length; i++)
-            if (STYLES[i] == font.getStyle())
-            {
+            if (STYLES[i] == font.getStyle()) {
                 fontStyle.setSelectedIndex(i);
             }
 
         fontSize.setValue(font.getSize());
     }
 
-    private void updatePreview()
-    {
+    private void updatePreview() {
         Font font = getFont();
-        if (font != null)
-        {
+        if (font != null) {
             preview.setFont(font);
         }
     }
 
     @Nullable
-    public Font getFont()
-    {
-        try
-        {
+    public Font getFont() {
+        try {
             String name = (String) fontFamily.getSelectedValue();
             int style = STYLES[fontStyle.getSelectedIndex()];
             int size = (Integer) fontSize.getValue();
 
             return new Font(name, style, size);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
@@ -108,8 +98,7 @@ public class FontChooserDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -132,10 +121,8 @@ public class FontChooserDialog extends javax.swing.JDialog
         jLabel1.setText("Name");
 
         fontFamily.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        fontFamily.addListSelectionListener(new javax.swing.event.ListSelectionListener()
-        {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt)
-            {
+        fontFamily.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 fontFamilyValueChanged(evt);
             }
         });
@@ -143,10 +130,8 @@ public class FontChooserDialog extends javax.swing.JDialog
 
         jLabel2.setText("Style");
 
-        fontStyle.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fontStyle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fontStyleActionPerformed(evt);
             }
         });
@@ -154,10 +139,8 @@ public class FontChooserDialog extends javax.swing.JDialog
         jLabel3.setText("Size");
 
         fontSize.setModel(new javax.swing.SpinnerNumberModel());
-        fontSize.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        fontSize.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 fontSizeStateChanged(evt);
             }
         });
@@ -170,19 +153,15 @@ public class FontChooserDialog extends javax.swing.JDialog
         preview.setOpaque(true);
 
         cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
 
         acceptBtn.setText("Accept");
-        acceptBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        acceptBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptBtnActionPerformed(evt);
             }
         });
@@ -197,29 +176,24 @@ public class FontChooserDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fontFamilyValueChanged(javax.swing.event.ListSelectionEvent evt)
-    {//GEN-FIRST:event_fontFamilyValueChanged
+    private void fontFamilyValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_fontFamilyValueChanged
         updatePreview();
     }//GEN-LAST:event_fontFamilyValueChanged
 
-    private void fontStyleActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_fontStyleActionPerformed
+    private void fontStyleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontStyleActionPerformed
         updatePreview();
     }//GEN-LAST:event_fontStyleActionPerformed
 
-    private void fontSizeStateChanged(javax.swing.event.ChangeEvent evt)
-    {//GEN-FIRST:event_fontSizeStateChanged
+    private void fontSizeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_fontSizeStateChanged
         updatePreview();
     }//GEN-LAST:event_fontSizeStateChanged
 
-    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_acceptBtnActionPerformed
+    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
         cancelled = false;
         setVisible(false);
     }//GEN-LAST:event_acceptBtnActionPerformed
 
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelBtnActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         cancelled = true;
         setVisible(false);
     }//GEN-LAST:event_cancelBtnActionPerformed

@@ -31,45 +31,37 @@ import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
 
-public class TransposedMatrixView implements IMatrixView
-{
+public class TransposedMatrixView implements IMatrixView {
 
     private IMatrixView mv;
 
     private IResourceLocator locator;
 
-    public TransposedMatrixView()
-    {
+    public TransposedMatrixView() {
     }
 
-    public TransposedMatrixView(IMatrixView mv)
-    {
+    public TransposedMatrixView(IMatrixView mv) {
         this.mv = mv;
     }
 
-    public TransposedMatrixView(@NotNull IMatrix mv)
-    {
+    public TransposedMatrixView(@NotNull IMatrix mv) {
         setMatrix(mv);
     }
 
-    public final void setMatrix(@NotNull IMatrix matrix)
-    {
+    public final void setMatrix(@NotNull IMatrix matrix) {
         this.mv = matrix instanceof IMatrixView ? (IMatrixView) matrix : new Heatmap(matrix);
     }
 
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 
     @Override
-    public IMatrix getContents()
-    {
+    public IMatrix getContents() {
         return mv.getContents(); //FIXME return TransposedMatrix(mv.getContents)
     }
 
@@ -171,56 +163,47 @@ public class TransposedMatrixView implements IMatrixView
     } */
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         mv.addPropertyChangeListener(listener);
     }
 
     @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener)
-    {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         mv.removePropertyChangeListener(listener);
     }
 
     @Override
-    public IMatrixViewDimension getRows()
-    {
+    public IMatrixViewDimension getRows() {
         return mv.getRows();
     }
 
     @Override
-    public IMatrixViewDimension getColumns()
-    {
+    public IMatrixViewDimension getColumns() {
         return mv.getColumns();
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return mv.isEmpty(row, column);
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return mv.getCellValue(column, row, layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         mv.setCellValue(column, row, layer, value);
     }
 
     @Override
-    public IMatrixViewLayers getLayers()
-    {
+    public IMatrixViewLayers getLayers() {
         return mv.getLayers();
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         mv.detach();
     }
 

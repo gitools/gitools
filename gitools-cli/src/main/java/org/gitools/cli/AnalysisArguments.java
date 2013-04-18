@@ -30,8 +30,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class AnalysisArguments extends GitoolsArguments
-{
+public class AnalysisArguments extends GitoolsArguments {
 
     @NotNull
     @Option(name = "-N", aliases = "-name", metaVar = "<name>",

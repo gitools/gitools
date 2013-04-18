@@ -47,18 +47,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class OncodriveProcessor extends HtestProcessor
-{
+public class OncodriveProcessor extends HtestProcessor {
 
-    private class RunSlot extends ThreadSlot
-    {
+    private class RunSlot extends ThreadSlot {
         @Nullable
         public DoubleMatrix1D population;
         @Nullable
         public Test test;
 
-        public RunSlot(ThreadQueue threadQueue)
-        {
+        public RunSlot(ThreadQueue threadQueue) {
             super(threadQueue);
             population = null;
             test = null;
@@ -67,15 +64,13 @@ public class OncodriveProcessor extends HtestProcessor
 
     private final OncodriveAnalysis analysis;
 
-    public OncodriveProcessor(OncodriveAnalysis analysis)
-    {
+    public OncodriveProcessor(OncodriveAnalysis analysis) {
 
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
@@ -88,12 +83,9 @@ public class OncodriveProcessor extends HtestProcessor
             labels[i] = dataMatrix.getColumns().getLabel(i);
 
         ModuleMap csmap = analysis.getModuleMap().get();
-        if (csmap != null)
-        {
+        if (csmap != null) {
             csmap = csmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
-        }
-        else
-        {
+        } else {
             csmap = new ModuleMap("All data columns", labels);
         }
 
@@ -127,11 +119,9 @@ public class OncodriveProcessor extends HtestProcessor
         ThreadQueue threadQueue = new ThreadQueue(numProcs);
 
         for (int i = 0; i < numProcs; i++)
-            try
-            {
+            try {
                 threadQueue.put(new RunSlot(threadQueue));
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
             }
 
@@ -140,8 +130,7 @@ public class OncodriveProcessor extends HtestProcessor
 
 		/* Test analysis */
 
-        for (int csetIndex = 0; csetIndex < numCsets; csetIndex++)
-        {
+        for (int csetIndex = 0; csetIndex < numCsets; csetIndex++) {
 
             final int csetIdx = csetIndex;
 
@@ -153,8 +142,7 @@ public class OncodriveProcessor extends HtestProcessor
 
             final int numColumns = columnIndices.length;
 
-            if (numColumns >= minCsetSize && numColumns <= maxCsetSize)
-            {
+            if (numColumns >= minCsetSize && numColumns <= maxCsetSize) {
 
                 condMonitor.begin("Column set " + csetName + "...", numRows);
 
@@ -172,8 +160,7 @@ public class OncodriveProcessor extends HtestProcessor
                 for (int i = 0; i < numColumns; i++)
                     cindices[i] = i;
 
-                for (int itemIndex = 0; itemIndex < numRows; itemIndex++)
-                {
+                for (int itemIndex = 0; itemIndex < numRows; itemIndex++) {
 
                     final int itemIdx = itemIndex;
 
@@ -185,40 +172,31 @@ public class OncodriveProcessor extends HtestProcessor
                         itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getCellValue(itemIdx, columnIndices[j], 0)));
 
                     final RunSlot slot;
-                    try
-                    {
+                    try {
                         slot = (RunSlot) threadQueue.take();
-                    } catch (InterruptedException ex)
-                    {
+                    } catch (InterruptedException ex) {
                         throw new AnalysisException(ex);
                     }
 
-                    if (slot.population != population)
-                    {
+                    if (slot.population != population) {
                         slot.population = population;
                         slot.test = testFactory.create();
                         slot.test.processPopulation(csetName, population);
                     }
 
-                    slot.execute(new Runnable()
-                    {
+                    slot.execute(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             CommonResult result = null;
-                            try
-                            {
+                            try {
                                 result = slot.test.processTest(csetName, itemValues, itemName, cindices);
-                            } catch (Throwable cause)
-                            {
+                            } catch (Throwable cause) {
                                 cause.printStackTrace();
                             }
 
-                            try
-                            {
+                            try {
                                 resultsMatrix.setCell(itemIdx, csetIdx, result);
-                            } catch (Throwable cause)
-                            {
+                            } catch (Throwable cause) {
                                 cause.printStackTrace();
                             }
                         }
@@ -226,9 +204,7 @@ public class OncodriveProcessor extends HtestProcessor
 
                     condMonitor.worked(1);
                 }
-            }
-            else
-            {
+            } else {
                 condMonitor.begin("Column set " + csetName + " discarded.", 1);
             }
 

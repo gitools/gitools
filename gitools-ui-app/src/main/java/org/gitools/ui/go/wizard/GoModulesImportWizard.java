@@ -26,11 +26,9 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.IconUtils;
 
-public class GoModulesImportWizard extends ModulesImportWizard
-{
+public class GoModulesImportWizard extends ModulesImportWizard {
 
-    public GoModulesImportWizard(ModulesImporter importer)
-    {
+    public GoModulesImportWizard(ModulesImporter importer) {
         super(importer);
 
         setTitle("Import Gene Ontology modules...");

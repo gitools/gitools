@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement
-public class CombinationAnalysis extends Analysis
-{
+public class CombinationAnalysis extends Analysis {
 
     private String sizeAttrName;
 
@@ -53,68 +52,55 @@ public class CombinationAnalysis extends Analysis
      */
     private ResourceReference<IMatrix> results;
 
-    public CombinationAnalysis()
-    {
+    public CombinationAnalysis() {
         this.transposeData = false;
     }
 
-    public String getSizeAttrName()
-    {
+    public String getSizeAttrName() {
         return sizeAttrName;
     }
 
-    public void setSizeAttrName(String sizeAttrName)
-    {
+    public void setSizeAttrName(String sizeAttrName) {
         this.sizeAttrName = sizeAttrName;
     }
 
-    public String getPvalueAttrName()
-    {
+    public String getPvalueAttrName() {
         return pvalueAttrName;
     }
 
-    public void setPvalueAttrName(String pvalueAttrName)
-    {
+    public void setPvalueAttrName(String pvalueAttrName) {
         this.pvalueAttrName = pvalueAttrName;
     }
 
-    public boolean isTransposeData()
-    {
+    public boolean isTransposeData() {
         return transposeData;
     }
 
-    public void setTransposeData(boolean transposeData)
-    {
+    public void setTransposeData(boolean transposeData) {
         this.transposeData = transposeData;
     }
 
-    public ResourceReference<ModuleMap> getGroupsMap()
-    {
+    public ResourceReference<ModuleMap> getGroupsMap() {
         return groupsMap;
     }
 
-    public void setGroupsMap(ResourceReference<ModuleMap> groupsMap)
-    {
+    public void setGroupsMap(ResourceReference<ModuleMap> groupsMap) {
         this.groupsMap = groupsMap;
     }
 
-    public ResourceReference<IMatrix> getData()
-    {
+    public ResourceReference<IMatrix> getData() {
         return data;
     }
 
-    public void setData(ResourceReference<IMatrix> data)
-    {
+    public void setData(ResourceReference<IMatrix> data) {
         this.data = data;
     }
 
-    public ResourceReference<IMatrix> getResults()
-    {
+    public ResourceReference<IMatrix> getResults() {
         return results;
     }
 
-    public void setResults(ResourceReference<IMatrix> results)
-    {
+    public void setResults(ResourceReference<IMatrix> results) {
         this.results = results;
     }
 }

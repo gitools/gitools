@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.welcome;
 
-class IntogenTypeDialog extends javax.swing.JDialog
-{
+class IntogenTypeDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -38,8 +37,7 @@ class IntogenTypeDialog extends javax.swing.JDialog
     /**
      * Creates new form BiomartTypeDialog
      */
-    public IntogenTypeDialog(java.awt.Frame parent)
-    {
+    public IntogenTypeDialog(java.awt.Frame parent) {
         super(parent);
         setModal(true);
 
@@ -51,8 +49,7 @@ class IntogenTypeDialog extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return returnStatus == RET_CANCEL;
     }
 
@@ -64,8 +61,7 @@ class IntogenTypeDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         typeGroup = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
@@ -79,29 +75,23 @@ class IntogenTypeDialog extends javax.swing.JDialog
 
         setTitle("Import IntOGen data");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("Next >");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
         cancelButton.setDefaultCapable(false);
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -132,26 +122,22 @@ class IntogenTypeDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -171,14 +157,10 @@ class IntogenTypeDialog extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public int getSelection()
-    {
-        if (tableCb.isSelected())
-        {
+    public int getSelection() {
+        if (tableCb.isSelected()) {
             return MATRIX;
-        }
-        else if (modulesCb.isSelected())
-        {
+        } else if (modulesCb.isSelected()) {
             return ONCOMODULES;
         }
         return 0;

@@ -21,25 +21,21 @@
  */
 package org.gitools.kegg.service.domain;
 
-public class KeggPathway
-{
+public class KeggPathway {
 
     private final String id;
     private final String description;
 
-    public KeggPathway(String[] fields)
-    {
+    public KeggPathway(String[] fields) {
         this.id = fields[0];
         this.description = fields[1];
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 

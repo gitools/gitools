@@ -33,16 +33,14 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CorrelationFromEditorPage extends AbstractWizardPage
-{
+public class CorrelationFromEditorPage extends AbstractWizardPage {
 
     private final String[] attributeNames;
 
     /**
      * Creates new form CorrelationPage
      */
-    public CorrelationFromEditorPage(String[] attributeNames)
-    {
+    public CorrelationFromEditorPage(String[] attributeNames) {
         super();
 
         initComponents();
@@ -57,31 +55,24 @@ public class CorrelationFromEditorPage extends AbstractWizardPage
 
         attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
 
-        replaceEmptyValuesCheck.addActionListener(new ActionListener()
-        {
+        replaceEmptyValuesCheck.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
             }
         });
 
-        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 boolean valid = isValidNumber(replaceValueField.getText());
                 boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
                 setComplete(completed);
 
-                if (!valid)
-                {
+                if (!valid) {
                     setStatus(MessageStatus.ERROR);
                     setMessage("Invalid replacement for empty values, it should be a real number");
-                }
-                else
-                {
+                } else {
                     setMessage(MessageStatus.INFO, "");
                 }
             }
@@ -96,8 +87,7 @@ public class CorrelationFromEditorPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -132,18 +122,14 @@ public class CorrelationFromEditorPage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    private boolean isValidNumber(String text)
-    {
-        try
-        {
+    private boolean isValidNumber(String text) {
+        try {
             Double.parseDouble(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
@@ -161,23 +147,19 @@ public class CorrelationFromEditorPage extends AbstractWizardPage
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeCb.getSelectedIndex();
     }
 
-    public boolean isReplaceNanValuesEnabled()
-    {
+    public boolean isReplaceNanValuesEnabled() {
         return replaceEmptyValuesCheck.isSelected();
     }
 
-    public double getReplaceNanValue()
-    {
+    public double getReplaceNanValue() {
         return Double.parseDouble(replaceValueField.getText());
     }
 
-    public boolean isTransposeEnabled()
-    {
+    public boolean isTransposeEnabled() {
         return applyToRowsRb.isSelected();
     }
 }

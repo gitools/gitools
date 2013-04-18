@@ -40,11 +40,9 @@ import org.kohsuke.args4j.Option;
 /**
  * @noinspection ALL
  */
-public class EnrichmentTool extends HtestTool
-{
+public class EnrichmentTool extends HtestTool {
 
-    public static class EnrichmentArguments extends HtestArguments
-    {
+    public static class EnrichmentArguments extends HtestArguments {
         @Option(name = "-mf", aliases = "-modules-format", metaVar = "<format>",
                 usage = "Modules file format (reference file extension).")
         public String modulesFormat;
@@ -70,8 +68,7 @@ public class EnrichmentTool extends HtestTool
     }
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
@@ -79,29 +76,24 @@ public class EnrichmentTool extends HtestTool
 
         testConfig = TestFactory.createToolConfig(ToolConfig.ENRICHMENT, args.testName);
 
-        if (testConfig == null)
-        {
+        if (testConfig == null) {
             throw new ToolValidationException("Unknown test: " + args.testName);
         }
 
-        if (args.modulesFile == null)
-        {
+        if (args.modulesFile == null) {
             throw new ToolValidationException("Groups file has to be specified.");
         }
 
-        if (args.minModuleSize < 1)
-        {
+        if (args.minModuleSize < 1) {
             args.minModuleSize = 1;
         }
-        if (args.maxModuleSize < args.minModuleSize)
-        {
+        if (args.maxModuleSize < args.minModuleSize) {
             args.maxModuleSize = args.minModuleSize;
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         EnrichmentArguments args = (EnrichmentArguments) argsObject;
 
@@ -123,14 +115,11 @@ public class EnrichmentTool extends HtestTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }

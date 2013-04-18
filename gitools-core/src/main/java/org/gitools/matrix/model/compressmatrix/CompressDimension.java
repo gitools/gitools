@@ -29,8 +29,7 @@ import java.util.Map;
 /**
  * Represents one dimension (rows or columns) of a {@link CompressMatrix}.
  */
-public class CompressDimension implements IMatrixDimension
-{
+public class CompressDimension implements IMatrixDimension {
 
     private String[] labels;
     private Map<String, Integer> labelsToIndex;
@@ -40,13 +39,11 @@ public class CompressDimension implements IMatrixDimension
      *
      * @param labels the identifier labels of this dimension
      */
-    public CompressDimension(String[] labels)
-    {
+    public CompressDimension(String[] labels) {
         this.labels = labels;
         this.labelsToIndex = new HashMap<String, Integer>(labels.length);
 
-        for (int i=0; i < labels.length; i++)
-        {
+        for (int i = 0; i < labels.length; i++) {
             this.labelsToIndex.put(labels[i], i);
         }
 
@@ -58,8 +55,7 @@ public class CompressDimension implements IMatrixDimension
      * @return the int
      */
     @Override
-    public int size()
-    {
+    public int size() {
         return labels.length;
     }
 
@@ -70,9 +66,8 @@ public class CompressDimension implements IMatrixDimension
      * @return the label
      */
     @Override
-    public String getLabel(int index)
-    {
-         return labels[index];
+    public String getLabel(int index) {
+        return labels[index];
     }
 
     /**
@@ -82,8 +77,7 @@ public class CompressDimension implements IMatrixDimension
      * @return the index
      */
     @Override
-    public int getIndex(String label)
-    {
+    public int getIndex(String label) {
         return labelsToIndex.get(label);
     }
 
@@ -92,8 +86,7 @@ public class CompressDimension implements IMatrixDimension
      *
      * @return the string array
      */
-    public String[] getLabels()
-    {
+    public String[] getLabels() {
         return labels;
     }
 

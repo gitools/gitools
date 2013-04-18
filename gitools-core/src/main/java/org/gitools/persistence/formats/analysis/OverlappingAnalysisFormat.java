@@ -24,14 +24,12 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnalysis>
-{
+public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnalysis> {
     public static final String EXTENSION = "overlapping";
     private static final Class<OverlappingAnalysis> RESOURCE_CLASS = OverlappingAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
-    public OverlappingAnalysisFormat()
-    {
+    public OverlappingAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 

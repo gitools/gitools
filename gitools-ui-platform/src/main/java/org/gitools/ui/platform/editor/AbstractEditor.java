@@ -30,27 +30,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEditor extends AbstractView implements IEditor
-{
+public abstract class AbstractEditor extends AbstractView implements IEditor {
 
     private static final long serialVersionUID = -2379950551933668781L;
 
-    public static abstract class EditorListener
-    {
-        public void nameChanged(IEditor editor)
-        {
+    public static abstract class EditorListener {
+        public void nameChanged(IEditor editor) {
         }
 
-        public void fileChanged(IEditor editor)
-        {
+        public void fileChanged(IEditor editor) {
         }
 
-        public void dirtyChanged(IEditor editor)
-        {
+        public void dirtyChanged(IEditor editor) {
         }
 
-        public void saved(IEditor editor)
-        {
+        public void saved(IEditor editor) {
         }
 
     }
@@ -64,26 +58,21 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
     private final List<EditorListener> listeners = new ArrayList<EditorListener>();
 
     @Override
-    public void setName(String name)
-    {
+    public void setName(String name) {
         String oldName = getName();
-        if (oldName == null || !oldName.equals(name))
-        {
+        if (oldName == null || !oldName.equals(name)) {
             super.setName(name);
             for (EditorListener l : listeners)
                 l.nameChanged(this);
         }
     }
 
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
 
-    protected void setFile(@NotNull File file)
-    {
-        if (this.file != file || !this.file.equals(file))
-        {
+    protected void setFile(@NotNull File file) {
+        if (this.file != file || !this.file.equals(file)) {
             this.file = file;
             for (EditorListener l : listeners)
                 l.fileChanged(this);
@@ -92,15 +81,12 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
     }
 
     @Override
-    public boolean isDirty()
-    {
+    public boolean isDirty() {
         return dirty;
     }
 
-    protected void setDirty(boolean dirty)
-    {
-        if (this.dirty != dirty)
-        {
+    protected void setDirty(boolean dirty) {
+        if (this.dirty != dirty) {
             this.dirty = dirty;
             for (EditorListener l : listeners)
                 l.dirtyChanged(this);
@@ -109,65 +95,54 @@ public abstract class AbstractEditor extends AbstractView implements IEditor
     }
 
     @Override
-    public boolean isSaveAsAllowed()
-    {
+    public boolean isSaveAsAllowed() {
         return saveAsAllowed;
     }
 
-    protected void setSaveAsAllowed(boolean saveAsAllowed)
-    {
+    protected void setSaveAsAllowed(boolean saveAsAllowed) {
         this.saveAsAllowed = saveAsAllowed;
     }
 
     @Override
-    public boolean isSaveAllowed()
-    {
+    public boolean isSaveAllowed() {
         return saveAllowed;
     }
 
-    protected void setSaveAllowed(boolean saveAllowed)
-    {
+    protected void setSaveAllowed(boolean saveAllowed) {
         this.saveAllowed = saveAllowed;
     }
 
     @Override
-    public void doSave(IProgressMonitor monitor)
-    {
+    public void doSave(IProgressMonitor monitor) {
         for (EditorListener l : listeners)
             l.saved(this);
     }
 
     @Override
-    public void doSaveAs(IProgressMonitor monitor)
-    {
+    public void doSaveAs(IProgressMonitor monitor) {
         for (EditorListener l : listeners)
             l.saved(this);
     }
 
     @Override
-    public void doVisible()
-    {
+    public void doVisible() {
     }
 
     @Override
-    public boolean doClose()
-    {
+    public boolean doClose() {
         return true;
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         // Override if needed
     }
 
-    public void addEditorListener(EditorListener listener)
-    {
+    public void addEditorListener(EditorListener listener) {
         listeners.add(listener);
     }
 
-    public void removeEditorListener(EditorListener listener)
-    {
+    public void removeEditorListener(EditorListener listener) {
         listeners.add(listener);
     }
 }

@@ -36,15 +36,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterTextComponent extends FilterComponent
-{
+public class FilterTextComponent extends FilterComponent {
 
     private String component;
     private final Integer FIELD_HEIGHT = 45;
     private final Integer TEXTAREA_HEIGHT = 130;
 
-    FilterTextComponent(FilterDescription d, FilterDescriptionPanel parent)
-    {
+    FilterTextComponent(FilterDescription d, FilterDescriptionPanel parent) {
 
         super(d, parent);
         initComponents();
@@ -54,8 +52,7 @@ public class FilterTextComponent extends FilterComponent
 
     }
 
-    FilterTextComponent(Option o)
-    {
+    FilterTextComponent(Option o) {
 
         super(o);
 
@@ -73,8 +70,7 @@ public class FilterTextComponent extends FilterComponent
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         txtField = new javax.swing.JTextField();
@@ -96,10 +92,8 @@ public class FilterTextComponent extends FilterComponent
         folder.setEnabled(false);
 
         browse.setLabel("Browse...");
-        browse.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        browse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectFileAction(evt);
             }
         });
@@ -115,23 +109,19 @@ public class FilterTextComponent extends FilterComponent
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(6, 6, 6).addComponent(nameDescription).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(txtField, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(browsePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectFileAction(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_selectFileAction
+    private void selectFileAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileAction
 
         File selPath = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN);
 
-        if (selPath != null)
-        {
+        if (selPath != null) {
 
             folder.setText(selPath.getAbsolutePath());
 
-            try
-            {
+            try {
 
                 txtArea.setText(readFileAsString(folder.getText()));
 
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
                 dlg.setVisible(true);
             }
@@ -156,56 +146,39 @@ public class FilterTextComponent extends FilterComponent
     //FIXME :	Test the way how to initialise components (default value or empty string).
     //			Not clear from Biomart
 
-    private void buildComponent()
-    {
+    private void buildComponent() {
 
         String txt = null;
 
-        if (parentPanel != null && parentPanel.getRenderLabel())
-        {
+        if (parentPanel != null && parentPanel.getRenderLabel()) {
             nameDescription.setVisible(true);
-        }
-        else
-        {
+        } else {
             nameDescription.setVisible(false);
         }
 
-        if (filterDescription != null)
-        {
+        if (filterDescription != null) {
             txt = filterDescription.getDefaultValue() != null ? filterDescription.getDefaultValue() : "";
 
-            if (filterDescription.getMultipleValues() == 0)
-            {
+            if (filterDescription.getMultipleValues() == 0) {
                 component = "Field";
-            }
-            else
-            {
+            } else {
                 component = "TextArea";
             }
-        }
-        else
-        {
-            if (filterOptions != null)
-            {
+        } else {
+            if (filterOptions != null) {
                 txt = filterOptions.getDefaultValue() != null ? filterOptions.getDefaultValue() : "";
 
-                if (filterOptions.getMultipleValues() == 0)
-                {
+                if (filterOptions.getMultipleValues() == 0) {
                     component = "Field";
-                }
-                else
-                {
+                } else {
                     component = "TextArea";
                 }
-            }
-            else
-            {
+            } else {
                 return;
             }
         }
 
-        if (component.equals("Field"))
-        {
+        if (component.equals("Field")) {
             txtField.setAlignmentY(TOP_ALIGNMENT);
 
             txtField.setText(txt);
@@ -219,9 +192,7 @@ public class FilterTextComponent extends FilterComponent
             browsePanel.setVisible(false);
 
             currentHeight = FIELD_HEIGHT;
-        }
-        else
-        {
+        } else {
             component = "TextArea";
 
             jScrollPane1.setAlignmentY(TOP_ALIGNMENT);
@@ -253,8 +224,7 @@ public class FilterTextComponent extends FilterComponent
 
     @NotNull
     @Override
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();
 
@@ -262,18 +232,13 @@ public class FilterTextComponent extends FilterComponent
 
         // When filterDescription is null,
         // means this component is a child (it belongs to a container component)
-        if (filterDescription != null && filterDescription.getInternalName() != null)
-        {
+        if (filterDescription != null && filterDescription.getInternalName() != null) {
             f.setName(filterDescription.getInternalName());
         }
 
-        if (component.equals("Field"))
-        {
+        if (component.equals("Field")) {
             f.setValue(txtField.getText());
-        }
-
-        else
-        {
+        } else {
             f.setValue(txtArea.getText().replace("\n", ","));
         }
 
@@ -293,15 +258,11 @@ public class FilterTextComponent extends FilterComponent
 
     @Override
     //FIXME : Check initial component value (default value or empty string). Not clear from Biomart
-    public Boolean hasChanged()
-    {
+    public Boolean hasChanged() {
 
-        if (component.equals("Field"))
-        {
+        if (component.equals("Field")) {
             return (txtField.getText().equals((filterDescription.getDefaultValue() != null) ? filterDescription.getDefaultValue() : ""));
-        }
-        else
-        {
+        } else {
             return (txtArea.getText().equals(filterDescription.getValue()));
         }
 
@@ -316,8 +277,7 @@ public class FilterTextComponent extends FilterComponent
      * @throws java.io.IOException
      */
     @NotNull
-    private static String readFileAsString(String filePath) throws java.io.IOException
-    {
+    private static String readFileAsString(String filePath) throws java.io.IOException {
         byte[] buffer = new byte[(int) new File(filePath).length()];
         BufferedInputStream f = new BufferedInputStream(new FileInputStream(filePath));
         f.read(buffer);
@@ -325,8 +285,7 @@ public class FilterTextComponent extends FilterComponent
     }
 
     @Override
-    public void setListOptions(List<Option> optionList)
-    {
+    public void setListOptions(List<Option> optionList) {
         return;
     }
 }

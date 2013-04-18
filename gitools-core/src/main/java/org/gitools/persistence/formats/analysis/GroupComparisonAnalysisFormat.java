@@ -24,16 +24,14 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupComparisonAnalysis>
-{
+public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupComparisonAnalysis> {
 
     public static final String EXTENSION = "comparison";
     private static final Class<GroupComparisonAnalysis> RESOURCE_CLASS = GroupComparisonAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION);
 
 
-    public GroupComparisonAnalysisFormat()
-    {
+    public GroupComparisonAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 

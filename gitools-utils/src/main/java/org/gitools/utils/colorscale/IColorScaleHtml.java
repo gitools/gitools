@@ -24,8 +24,7 @@ package org.gitools.utils.colorscale;
 /**
  * @noinspection ALL
  */
-public interface IColorScaleHtml
-{
+public interface IColorScaleHtml {
 
     /**
      * @param value

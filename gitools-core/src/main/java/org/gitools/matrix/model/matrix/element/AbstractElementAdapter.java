@@ -28,8 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 
-public abstract class AbstractElementAdapter implements Serializable
-{
+public abstract class AbstractElementAdapter implements Serializable {
 
     private static final long serialVersionUID = -4797939915206004479L;
 
@@ -38,50 +37,40 @@ public abstract class AbstractElementAdapter implements Serializable
     @NotNull
     private IMatrixLayers properties;
 
-    AbstractElementAdapter()
-    {
+    AbstractElementAdapter() {
     }
 
-    AbstractElementAdapter(Class<?> elementClass)
-    {
+    AbstractElementAdapter(Class<?> elementClass) {
         this.elementClass = elementClass;
     }
 
-    public Class<?> getElementClass()
-    {
+    public Class<?> getElementClass() {
         return elementClass;
     }
 
-    void setElementClass(Class<?> elementClass)
-    {
+    void setElementClass(Class<?> elementClass) {
         this.elementClass = elementClass;
     }
 
-    public final int getPropertyCount()
-    {
+    public final int getPropertyCount() {
         return properties.size();
     }
 
-    public final IMatrixLayer getProperty(int index)
-    {
+    public final IMatrixLayer getProperty(int index) {
         return properties.get(index);
     }
 
-    public final IMatrixLayers getProperties()
-    {
+    public final IMatrixLayers getProperties() {
         return properties;
     }
 
-    final void setProperties(IMatrixLayers properties)
-    {
+    final void setProperties(IMatrixLayers properties) {
         this.properties = properties;
     }
 
-    public int getPropertyIndex(String id)
-    {
+    public int getPropertyIndex(String id) {
         Integer index = properties.findId(id);
-        if (index == null)
-        {
+        if (index == null) {
             return -1;
         }
         //throw new RuntimeException("There isn't any property with id: " + id);
@@ -92,8 +81,7 @@ public abstract class AbstractElementAdapter implements Serializable
     @Nullable
     public abstract Object getValue(Object element, int index);
 
-    public void setValue(Object element, int index, Object value)
-    {
+    public void setValue(Object element, int index, Object value) {
         throw new UnsupportedOperationException(getClass().getSimpleName() + " doesn't support change string value.");
     }
 }

@@ -34,8 +34,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-class AttributesSelectionModel<T> implements ListModel
-{
+class AttributesSelectionModel<T> implements ListModel {
 
     private final T[] attributes;
     private final List<Integer> selectedAttributes;
@@ -43,8 +42,7 @@ class AttributesSelectionModel<T> implements ListModel
 
     private final List<ListDataListener> listeners;
 
-    public AttributesSelectionModel(@NotNull T[] attributes)
-    {
+    public AttributesSelectionModel(@NotNull T[] attributes) {
         this.attributes = attributes;
         this.selectedAttributes = new ArrayList<Integer>();
         this.unselectedAttributes = new ArrayList<Integer>();
@@ -55,54 +53,45 @@ class AttributesSelectionModel<T> implements ListModel
     }
 
     @Override
-    public int getSize()
-    {
+    public int getSize() {
         return selectedAttributes.size();
     }
 
     @Override
-    public Object getElementAt(int index)
-    {
+    public Object getElementAt(int index) {
         return attributes[selectedAttributes.get(index)];
     }
 
     @Override
-    public void addListDataListener(ListDataListener l)
-    {
+    public void addListDataListener(ListDataListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removeListDataListener(ListDataListener l)
-    {
+    public void removeListDataListener(ListDataListener l) {
         listeners.remove(l);
     }
 
-    public T[] getAttributes()
-    {
+    public T[] getAttributes() {
         return attributes;
     }
 
-    public List<Integer> getSelectedIndices()
-    {
+    public List<Integer> getSelectedIndices() {
         return Collections.unmodifiableList(selectedAttributes);
     }
 
-    public void setSelectedIndices(@NotNull List<Integer> indices)
-    {
+    public void setSelectedIndices(@NotNull List<Integer> indices) {
         List<Integer> unselectAttributes = new ArrayList<Integer>(selectedAttributes);
         unselect(unselectAttributes);
         select(indices);
     }
 
-    public List<Integer> getUnselectedIndices()
-    {
+    public List<Integer> getUnselectedIndices() {
         return Collections.unmodifiableList(unselectedAttributes);
     }
 
     @NotNull
-    public List<T> getSelectedAttributes()
-    {
+    public List<T> getSelectedAttributes() {
         List<T> attr = new ArrayList<T>(selectedAttributes.size());
         for (int i = 0; i < selectedAttributes.size(); i++)
             attr.add(attributes[selectedAttributes.get(i)]);
@@ -111,8 +100,7 @@ class AttributesSelectionModel<T> implements ListModel
     }
 
     @NotNull
-    public List<T> getUnselectedAttributes()
-    {
+    public List<T> getUnselectedAttributes() {
         List<T> attr = new ArrayList<T>(unselectedAttributes.size());
         for (int i = 0; i < unselectedAttributes.size(); i++)
             attr.add(attributes[unselectedAttributes.get(i)]);
@@ -120,12 +108,9 @@ class AttributesSelectionModel<T> implements ListModel
         return attr;
     }
 
-    public void select(@NotNull List<Integer> indices)
-    {
-        for (Integer i : indices)
-        {
-            if (unselectedAttributes.contains(i))
-            {
+    public void select(@NotNull List<Integer> indices) {
+        for (Integer i : indices) {
+            if (unselectedAttributes.contains(i)) {
                 unselectedAttributes.remove(i);
                 selectedAttributes.add(i);
             }
@@ -133,12 +118,9 @@ class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void unselect(@NotNull List<Integer> indices)
-    {
-        for (Integer i : indices)
-        {
-            if (selectedAttributes.contains(i))
-            {
+    public void unselect(@NotNull List<Integer> indices) {
+        for (Integer i : indices) {
+            if (selectedAttributes.contains(i)) {
                 selectedAttributes.remove(i);
                 unselectedAttributes.add(i);
             }
@@ -146,15 +128,12 @@ class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void moveUp(@NotNull List<Integer> indices)
-    {
+    public void moveUp(@NotNull List<Integer> indices) {
 
-        for (Integer index : indices)
-        {
+        for (Integer index : indices) {
             int i = selectedAttributes.indexOf(index);
 
-            if (i >= 0)
-            {
+            if (i >= 0) {
                 Integer tmp = selectedAttributes.get(i);
                 selectedAttributes.set(i, selectedAttributes.get(i - 1));
                 selectedAttributes.set(i - 1, tmp);
@@ -164,15 +143,12 @@ class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    public void moveDown(@NotNull List<Integer> indices)
-    {
+    public void moveDown(@NotNull List<Integer> indices) {
 
-        for (Integer index : indices)
-        {
+        for (Integer index : indices) {
             int i = selectedAttributes.indexOf(index);
 
-            if (i >= 0)
-            {
+            if (i >= 0) {
                 Integer tmp = selectedAttributes.get(i);
                 selectedAttributes.set(i, selectedAttributes.get(i + 1));
                 selectedAttributes.set(i + 1, tmp);
@@ -182,8 +158,7 @@ class AttributesSelectionModel<T> implements ListModel
         fireChange();
     }
 
-    private void fireChange()
-    {
+    private void fireChange() {
         int size = selectedAttributes.size();
 
         ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, size > 0 ? size - 1 : 0);

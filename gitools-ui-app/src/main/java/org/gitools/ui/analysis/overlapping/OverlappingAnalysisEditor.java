@@ -50,17 +50,14 @@ import java.awt.*;
 import java.util.Map;
 
 
-public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<OverlappingAnalysis>
-{
+public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<OverlappingAnalysis> {
 
-    public OverlappingAnalysisEditor(OverlappingAnalysis analysis)
-    {
+    public OverlappingAnalysisEditor(OverlappingAnalysis analysis) {
         super(analysis, "/vm/analysis/overlapping/analysis_details.vm", null);
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context)
-    {
+    protected void prepareContext(@NotNull VelocityContext context) {
 
 
         ResourceReference<IMatrix> resourceRef = analysis.getFilteredData();
@@ -78,12 +75,10 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
         IResourceLocator analysisLocator = analysis.getLocator();
 
-        if (analysisLocator != null)
-        {
+        if (analysisLocator != null) {
             context.put("analysisLocation", analysisLocator.getURL());
 
-            if (analysisLocator.isWritable())
-            {
+            if (analysisLocator.isWritable()) {
                 setSaveAllowed(true);
             }
         }
@@ -91,8 +86,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor)
-    {
+    public void doSave(IProgressMonitor progressMonitor) {
 
         xmlPersistance = new OverlappingAnalysisFormat();
         fileformat = OverlappingAnalysisFormat.FILE_FORMAT;
@@ -100,47 +94,37 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
-        if ("NewDataHeatmap".equals(name))
-        {
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
-        }
-        else if ("NewResultsHeatmap".equals(name))
-        {
+        } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
         }
     }
 
-    private void newDataHeatmap()
-    {
-        if (analysis.getSourceData() == null)
-        {
+    private void newDataHeatmap() {
+        if (analysis.getSourceData() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                Heatmap heatmap =  new Heatmap(analysis.getSourceData().get());
+                Heatmap heatmap = new Heatmap(analysis.getSourceData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-data", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("New heatmap created.");
                     }
@@ -149,21 +133,17 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         });
     }
 
-    private void newResultsHeatmap()
-    {
-        if (analysis.getCellResults() == null)
-        {
+    private void newResultsHeatmap() {
+        if (analysis.getCellResults() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getCellResults().get());
@@ -174,11 +154,9 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
                 editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-results", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("Heatmap for results created.");
                     }
@@ -190,13 +168,11 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Nullable
-    private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis)
-    {
+    private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis) {
         IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
-        for (HeatmapLayer layer : heatmap.getLayers())
-        {
+        for (HeatmapLayer layer : heatmap.getLayers()) {
             LinearDecorator dec = new LinearDecorator();
             Color minColor = new Color(0x63, 0xdc, 0xfe);
             Color maxColor = new Color(0xff, 0x00, 0x5f);

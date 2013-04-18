@@ -59,8 +59,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "mart", propOrder = {"name", "displayName", "database", "host", "path", "port", "visible", "_default", "serverVirtualSchema", "includeDatasets", "martUser", "redirect"})
-class Mart
-{
+class Mart {
 
     @XmlElement(required = true)
     private String name;
@@ -91,8 +90,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -102,8 +100,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
@@ -113,8 +110,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
@@ -124,8 +120,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setDisplayName(String value)
-    {
+    public void setDisplayName(String value) {
         this.displayName = value;
     }
 
@@ -135,8 +130,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getDatabase()
-    {
+    public String getDatabase() {
         return database;
     }
 
@@ -146,8 +140,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setDatabase(String value)
-    {
+    public void setDatabase(String value) {
         this.database = value;
     }
 
@@ -157,8 +150,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
@@ -168,8 +160,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setHost(String value)
-    {
+    public void setHost(String value) {
         this.host = value;
     }
 
@@ -179,8 +170,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getPath()
-    {
+    public String getPath() {
         return path;
     }
 
@@ -190,8 +180,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setPath(String value)
-    {
+    public void setPath(String value) {
         this.path = value;
     }
 
@@ -201,8 +190,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getPort()
-    {
+    public String getPort() {
         return port;
     }
 
@@ -212,40 +200,35 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setPort(String value)
-    {
+    public void setPort(String value) {
         this.port = value;
     }
 
     /**
      * Gets the value of the visible property.
      */
-    public int getVisible()
-    {
+    public int getVisible() {
         return visible;
     }
 
     /**
      * Sets the value of the visible property.
      */
-    public void setVisible(int value)
-    {
+    public void setVisible(int value) {
         this.visible = value;
     }
 
     /**
      * Gets the value of the default property.
      */
-    public int getDefault()
-    {
+    public int getDefault() {
         return _default;
     }
 
     /**
      * Sets the value of the default property.
      */
-    public void setDefault(int value)
-    {
+    public void setDefault(int value) {
         this._default = value;
     }
 
@@ -255,8 +238,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getServerVirtualSchema()
-    {
+    public String getServerVirtualSchema() {
         return serverVirtualSchema;
     }
 
@@ -266,8 +248,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setServerVirtualSchema(String value)
-    {
+    public void setServerVirtualSchema(String value) {
         this.serverVirtualSchema = value;
     }
 
@@ -277,8 +258,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getIncludeDatasets()
-    {
+    public String getIncludeDatasets() {
         return includeDatasets;
     }
 
@@ -288,8 +268,7 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setIncludeDatasets(String value)
-    {
+    public void setIncludeDatasets(String value) {
         this.includeDatasets = value;
     }
 
@@ -299,8 +278,7 @@ class Mart
      * @return possible object is
      *         {@link String }
      */
-    public String getMartUser()
-    {
+    public String getMartUser() {
         return martUser;
     }
 
@@ -310,24 +288,21 @@ class Mart
      * @param value allowed object is
      *              {@link String }
      */
-    public void setMartUser(String value)
-    {
+    public void setMartUser(String value) {
         this.martUser = value;
     }
 
     /**
      * Gets the value of the redirect property.
      */
-    public int getRedirect()
-    {
+    public int getRedirect() {
         return redirect;
     }
 
     /**
      * Sets the value of the redirect property.
      */
-    public void setRedirect(int value)
-    {
+    public void setRedirect(int value) {
         this.redirect = value;
     }
 

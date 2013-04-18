@@ -27,8 +27,7 @@ import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
 /**
  * @noinspection ALL
  */
-public interface ClusteringValueMethodPage
-{
+public interface ClusteringValueMethodPage {
 
     public AbstractClusteringValueMethod getMethod();
 

@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClusterUtils
-{
+public class ClusterUtils {
 
     private static final Integer MAX_ATTR = 200;
     private static final Integer MIN_ATTR = 10;
@@ -69,11 +68,9 @@ public class ClusterUtils
      * from one side to the other and recording the order that attributes
      * are selected.
      */
-    public static void dataReductionProcess(@NotNull MatrixViewWeka data, @NotNull IProgressMonitor monitor) throws Exception
-    {
+    public static void dataReductionProcess(@NotNull MatrixViewWeka data, @NotNull IProgressMonitor monitor) throws Exception {
 
-        if (data.numAttributes() > MAX_ATTR || data.numAttributes() < MIN_ATTR)
-        {
+        if (data.numAttributes() > MAX_ATTR || data.numAttributes() < MIN_ATTR) {
             return;
         }
 
@@ -104,8 +101,7 @@ public class ClusterUtils
      * @return
      */
     @NotNull
-    private static FastVector addAttributes(Integer numAttributes)
-    {
+    private static FastVector addAttributes(Integer numAttributes) {
 
         FastVector attr = new FastVector();
 
@@ -121,8 +117,7 @@ public class ClusterUtils
      * @param matrixView
      * @param clusterResults
      */
-    public static void updateVisibility(@NotNull IMatrixView matrixView, @NotNull Map<String, int[]> clusterResults)
-    {
+    public static void updateVisibility(@NotNull IMatrixView matrixView, @NotNull Map<String, int[]> clusterResults) {
 
         int[] visibleData = matrixView.getColumns().getVisible();
 
@@ -152,17 +147,13 @@ public class ClusterUtils
      */
     @NotNull
     @Deprecated // It is not necessary to check for transposed !!!
-    public static Instances buildInstanceStructure(@NotNull ClusteringData clusterData, boolean transposed)
-    {
+    public static Instances buildInstanceStructure(@NotNull ClusteringData clusterData, boolean transposed) {
 
         FastVector attr = null;
 
-        if (transposed)
-        {
+        if (transposed) {
             attr = addAttributes(((MatrixRowClusteringData) clusterData).getNumAttributes());
-        }
-        else
-        {
+        } else {
             attr = addAttributes(((MatrixColumnClusteringData) clusterData).getNumAttributes());
         }
 
@@ -171,18 +162,14 @@ public class ClusterUtils
 
     @NotNull
     @Deprecated // It is not necessary to check for transposed !!!
-    public static List<String> getLabels(@NotNull ClusteringData clusterData, boolean transpose)
-    {
+    public static List<String> getLabels(@NotNull ClusteringData clusterData, boolean transpose) {
 
         List<String> labels = new ArrayList<String>();
 
-        if (transpose)
-        {
+        if (transpose) {
             for (int i = 0; i < ((MatrixRowClusteringData) clusterData).getSize(); i++)
                 labels.add(((MatrixRowClusteringData) clusterData).getLabel(i));
-        }
-        else
-        {
+        } else {
             for (int i = 0; i < ((MatrixColumnClusteringData) clusterData).getSize(); i++)
                 labels.add(((MatrixColumnClusteringData) clusterData).getLabel(i));
         }
@@ -193,8 +180,7 @@ public class ClusterUtils
      (i.e: 3, 2, 10  -> 02, 03, 10)
      */
     @Deprecated // Use a Java Formatter and or StringBuilder !!!
-    public static String valueToString(@NotNull Integer value, Integer maxLength)
-    {
+    public static String valueToString(@NotNull Integer value, Integer maxLength) {
         String num = value.toString();
         int numLenght = num.length();
         for (int i = numLenght; i < maxLength; i++)

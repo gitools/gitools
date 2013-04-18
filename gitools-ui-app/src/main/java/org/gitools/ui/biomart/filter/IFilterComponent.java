@@ -28,8 +28,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-interface IFilterComponent
-{
+interface IFilterComponent {
 
     public List<Filter> getFilters();
 

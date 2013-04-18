@@ -29,18 +29,15 @@ import static cern.jet.stat.Descriptive.sampleVariance;
 /**
  * Sum of logarithms
  */
-public class VarianceAggregator extends AbstractAggregator
-{
+public class VarianceAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new VarianceAggregator();
 
-    private VarianceAggregator()
-    {
+    private VarianceAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         int size = data.length;
         double sum = aggregate(data, Functions.plus, 0);
         double sumOfSquares = aggregate(data, Functions.plus, Functions.square, 0);
@@ -49,8 +46,7 @@ public class VarianceAggregator extends AbstractAggregator
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Variance";
     }
 }

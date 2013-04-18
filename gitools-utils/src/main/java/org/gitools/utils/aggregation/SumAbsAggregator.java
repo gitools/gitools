@@ -27,38 +27,30 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Absolute Sum
  */
-public class SumAbsAggregator extends AbstractAggregator
-{
+public class SumAbsAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new SumAbsAggregator();
 
-    private SumAbsAggregator()
-    {
+    private SumAbsAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         int nanValue = 0;
-        if (data.length == 1)
-        {
+        if (data.length == 1) {
             return checkNaN(data[0], nanValue);
-        }
-        else
-        {
+        } else {
             return aggregate(data, Functions.plusAbs, nanValue);
         }
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Absolute Sum";
     }
 
-    private double checkNaN(double d, int nanValue)
-    {
+    private double checkNaN(double d, int nanValue) {
         return Double.isNaN(d) ? nanValue : Math.abs(d);
     }
 }

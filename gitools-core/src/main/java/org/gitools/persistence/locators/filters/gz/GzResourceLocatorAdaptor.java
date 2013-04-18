@@ -32,25 +32,21 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class GzResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
-{
+public class GzResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
 
-    public GzResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator)
-    {
+    public GzResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator) {
         super(filter, resourceLocator);
     }
 
     @NotNull
     @Override
-    public InputStream openInputStream() throws IOException
-    {
+    public InputStream openInputStream() throws IOException {
         return new GZIPInputStream(getResourceLocator().openInputStream());
     }
 
     @NotNull
     @Override
-    public OutputStream openOutputStream() throws IOException
-    {
+    public OutputStream openOutputStream() throws IOException {
         return new GZIPOutputStream(getResourceLocator().openOutputStream());
     }
 

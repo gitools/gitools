@@ -32,14 +32,12 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class, PValueDecorator.class, ZScoreDecorator.class, CorrelationDecorator.class, CategoricalDecorator.class})
-public abstract class Decorator<C extends IColorScale> extends Model
-{
+public abstract class Decorator<C extends IColorScale> extends Model {
     @XmlAttribute
     private String name;
 
 
-    public Decorator()
-    {
+    public Decorator() {
         super();
     }
 
@@ -47,22 +45,18 @@ public abstract class Decorator<C extends IColorScale> extends Model
 
     public abstract C getScale();
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    protected static double toDouble(IMatrix matrix, int row, int column, int layer)
-    {
+    protected static double toDouble(IMatrix matrix, int row, int column, int layer) {
         boolean empty = matrix.isEmpty(row, column);
 
-        if (empty)
-        {
+        if (empty) {
             return Double.NaN;
         }
 

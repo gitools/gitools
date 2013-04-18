@@ -35,15 +35,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class DecoratorPanelContainer extends JPanel implements PropertyChangeListener
-{
+public class DecoratorPanelContainer extends JPanel implements PropertyChangeListener {
     private Heatmap heatmap;
 
     private ValueModel currentPanelModel;
     private List<DecoratorPanel> panels;
 
-    public DecoratorPanelContainer()
-    {
+    public DecoratorPanelContainer() {
         super();
 
         setLayout(new CardLayout());
@@ -52,8 +50,7 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         this.currentPanelModel.addValueChangeListener(this);
     }
 
-    public void init(List<DecoratorPanel> panels, Heatmap heatmap)
-    {
+    public void init(List<DecoratorPanel> panels, Heatmap heatmap) {
         this.heatmap = heatmap;
         this.panels = panels;
         this.heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, this);
@@ -64,9 +61,8 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
 
             add(panel.getRootPanel(), panel.getName());
 
-            if (panel.isValid(getCurrentDecorator()))
-            {
-                getCurrentPanelModel().setValue( panel );
+            if (panel.isValid(getCurrentDecorator())) {
+                getCurrentPanelModel().setValue(panel);
                 panel.setValue(getCurrentDecorator());
             }
 
@@ -79,67 +75,54 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         showCurrentPanel();
     }
 
-    private Decorator getCurrentDecorator()
-    {
+    private Decorator getCurrentDecorator() {
         return heatmap.getLayers().getTopLayer().getDecorator();
     }
 
-    private void setCurrentDecorator(Decorator decorator)
-    {
+    private void setCurrentDecorator(Decorator decorator) {
         heatmap.getLayers().getTopLayer().setDecorator(decorator);
     }
 
-    private void showCurrentPanel()
-    {
+    private void showCurrentPanel() {
         getCardLayout().show(this, getCurrentPanel().getName());
     }
 
-    private DecoratorPanel getCurrentPanel()
-    {
+    private DecoratorPanel getCurrentPanel() {
         return (DecoratorPanel) getCurrentPanelModel().getValue();
     }
 
-    public ValueModel getCurrentPanelModel()
-    {
+    public ValueModel getCurrentPanelModel() {
         return this.currentPanelModel;
     }
 
-    private CardLayout getCardLayout()
-    {
+    private CardLayout getCardLayout() {
         return (CardLayout) DecoratorPanelContainer.this.getLayout();
     }
 
-    private void updateFromHeatmap()
-    {
+    private void updateFromHeatmap() {
         Decorator decorator = getCurrentDecorator();
 
-        for (DecoratorPanel panel : panels)
-        {
-            if (panel.isValid(decorator))
-            {
-                getCurrentPanelModel().setValue( panel );
+        for (DecoratorPanel panel : panels) {
+            if (panel.isValid(decorator)) {
+                getCurrentPanelModel().setValue(panel);
                 panel.setValue(decorator);
             }
         }
     }
 
-    private void updateFromPanel()
-    {
+    private void updateFromPanel() {
         Class<? extends Decorator> decoratorClass = getCurrentPanel().getDecoratorClass();
         Decorator currentDecorator = getCurrentDecorator();
 
-        if (!decoratorClass.isAssignableFrom(currentDecorator.getClass()))
-        {
-            setCurrentDecorator( getCurrentPanel().newDecorator());
+        if (!decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
+            setCurrentDecorator(getCurrentPanel().newDecorator());
         }
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+    public void propertyChange(PropertyChangeEvent evt) {
         if (EventUtils.isAny(evt, HeatmapLayers.class, HeatmapLayers.PROPERTY_TOP_LAYER) ||
-            EventUtils.isAny(evt, HeatmapLayer.class, HeatmapLayer.PROPERTY_DECORATOR))
-        {
+                EventUtils.isAny(evt, HeatmapLayer.class, HeatmapLayer.PROPERTY_DECORATOR)) {
             updateFromHeatmap();
         } else {
             updateFromPanel();

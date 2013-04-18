@@ -23,20 +23,17 @@ package org.gitools.matrix.model.matrix.element;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ArrayElementFactory implements IElementFactory
-{
+public class ArrayElementFactory implements IElementFactory {
 
     private final int length;
 
-    public ArrayElementFactory(int length)
-    {
+    public ArrayElementFactory(int length) {
         this.length = length;
     }
 
     @NotNull
     @Override
-    public Object create()
-    {
+    public Object create() {
         return new double[length];
     }
 }

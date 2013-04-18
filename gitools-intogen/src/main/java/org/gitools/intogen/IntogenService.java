@@ -38,30 +38,24 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class IntogenService
-{
+public class IntogenService {
 
     private static IntogenService service;
 
-    private IntogenService()
-    {
+    private IntogenService() {
     }
 
-    public static IntogenService getDefault()
-    {
-        if (service == null)
-        {
+    public static IntogenService getDefault() {
+        if (service == null) {
             service = new IntogenService();
         }
 
         return service;
     }
 
-    public void queryFromPOST(File folder, String prefix, @NotNull URL action, @NotNull List<String[]> properties, @NotNull IProgressMonitor monitor) throws IntogenServiceException
-    {
+    public void queryFromPOST(File folder, String prefix, @NotNull URL action, @NotNull List<String[]> properties, @NotNull IProgressMonitor monitor) throws IntogenServiceException {
 
-        try
-        {
+        try {
             monitor.begin("Querying for data ...", 1);
 
             // URL connection channel.
@@ -77,10 +71,8 @@ public class IntogenService
 
             StringBuilder content = new StringBuilder();
             boolean first = true;
-            for (String[] entry : properties)
-            {
-                if (!first)
-                {
+            for (String[] entry : properties) {
+                if (!first) {
                     content.append('&');
                 }
                 first = false;
@@ -114,23 +106,20 @@ public class IntogenService
             ZipInputStream zin = new ZipInputStream(urlConn.getInputStream());
 
             ZipEntry ze;
-            while ((ze = zin.getNextEntry()) != null)
-            {
+            while ((ze = zin.getNextEntry()) != null) {
                 IProgressMonitor mon = monitor.subtask();
 
                 long totalKb = ze.getSize() / 1024;
 
                 String name = nameMap.get(ze.getName());
-                if (name == null)
-                {
+                if (name == null) {
                     name = prefix + "." + ze.getName();
                 }
 
                 mon.begin("Extracting " + name + " ...", (int) ze.getSize());
 
                 File outFile = new File(folder, name);
-                if (!outFile.getParentFile().exists())
-                {
+                if (!outFile.getParentFile().exists()) {
                     outFile.getParentFile().mkdirs();
                 }
 
@@ -140,8 +129,7 @@ public class IntogenService
                 byte[] data = new byte[BUFFER_SIZE];
                 int partial = 0;
                 int count;
-                while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1)
-                {
+                while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
                     fout.write(data, 0, count);
                     partial += count;
                     mon.info((partial / 1024) + " Kb read");
@@ -156,8 +144,7 @@ public class IntogenService
             zin.close();
 
             monitor.end();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new IntogenServiceException(ex);
         }
     }

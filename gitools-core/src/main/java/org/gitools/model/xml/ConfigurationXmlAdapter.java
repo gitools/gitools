@@ -29,13 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement, Map<String, String>>
-{
+public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement, Map<String, String>> {
 
     @NotNull
     @Override
-    public Map<String, String> unmarshal(@NotNull ConfigurationXmlElement v) throws Exception
-    {
+    public Map<String, String> unmarshal(@NotNull ConfigurationXmlElement v) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         for (ConfigurationXmlElement.ConfigurationXmlEntry entry : v.getConfiguration())
             map.put(entry.getName(), entry.getValue());
@@ -44,8 +42,7 @@ public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement,
 
     @NotNull
     @Override
-    public ConfigurationXmlElement marshal(@NotNull Map<String, String> v) throws Exception
-    {
+    public ConfigurationXmlElement marshal(@NotNull Map<String, String> v) throws Exception {
         ConfigurationXmlElement e = new ConfigurationXmlElement();
         List<ConfigurationXmlEntry> conf = e.getConfiguration();
         for (Map.Entry<String, String> entry : v.entrySet())

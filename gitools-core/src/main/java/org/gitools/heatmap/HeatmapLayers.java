@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLayer>
-{
+public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLayer> {
     public static final String PROPERTY_TOP_LAYER_INDEX = "topLayerIndex";
     public static final String PROPERTY_TOP_LAYER = "topLayer";
 
@@ -48,60 +47,50 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     private List<HeatmapLayer> layers;
     private transient Map<String, Integer> layersIdToIndex;
 
-    public HeatmapLayers()
-    {
+    public HeatmapLayers() {
         this.topLayer = 0;
     }
 
-    public HeatmapLayers(IMatrix matrix)
-    {
+    public HeatmapLayers(IMatrix matrix) {
         this();
         createLayers(matrix);
         init(matrix);
     }
 
-    private void createLayers(IMatrix matrix)
-    {
+    private void createLayers(IMatrix matrix) {
         IMatrixLayers<? extends IMatrixLayer> matrixLayers = matrix.getLayers();
         this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
 
-        for (int i=0; i < matrixLayers.size(); i++)
-        {
+        for (int i = 0; i < matrixLayers.size(); i++) {
             IMatrixLayer layer = matrixLayers.get(i);
             Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
             this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
         }
     }
 
-    public void init(IMatrix matrix)
-    {
+    public void init(IMatrix matrix) {
         IMatrixLayers matrixLayers = matrix.getLayers();
         this.layersIdToIndex = new HashMap<String, Integer>(matrixLayers.size());
-        for(int i=0; i < layers.size(); i++)
-        {
+        for (int i = 0; i < layers.size(); i++) {
             this.layersIdToIndex.put(layers.get(i).getId(), i);
         }
     }
 
-    public HeatmapLayer getTopLayer()
-    {
+    public HeatmapLayer getTopLayer() {
         return layers.get(topLayer);
     }
 
-    public void setTopLayer(HeatmapLayer topLayer)
-    {
+    public void setTopLayer(HeatmapLayer topLayer) {
         setTopLayerIndex(layers.indexOf(topLayer));
     }
 
     @Override
-    public int getTopLayerIndex()
-    {
+    public int getTopLayerIndex() {
         return topLayer;
     }
 
     @Override
-    public void setTopLayerIndex(int layerIndex)
-    {
+    public void setTopLayerIndex(int layerIndex) {
         int old = this.topLayer;
         this.topLayer = layerIndex;
 
@@ -116,31 +105,26 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     @Override
-    public HeatmapLayer get(int layerIndex)
-    {
+    public HeatmapLayer get(int layerIndex) {
         return layers.get(layerIndex);
     }
 
     @Override
-    public int findId(String id)
-    {
+    public int findId(String id) {
         return layersIdToIndex.get(id);
     }
 
     @Override
-    public int size()
-    {
+    public int size() {
         return layers.size();
     }
 
     @Override
-    public Iterator<HeatmapLayer> iterator()
-    {
+    public Iterator<HeatmapLayer> iterator() {
         return layers.iterator();
     }
 
-    public List<HeatmapLayer> toList()
-    {
+    public List<HeatmapLayer> toList() {
         return layers;
     }
 }

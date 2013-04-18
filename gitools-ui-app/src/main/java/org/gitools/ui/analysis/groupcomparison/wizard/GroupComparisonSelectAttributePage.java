@@ -40,84 +40,69 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public class GroupComparisonSelectAttributePage extends AbstractWizardPage
-{
+public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 
 
-    private static class TestElement
-    {
+    private static class TestElement {
         public final Test test;
 
-        public TestElement(Test test)
-        {
+        public TestElement(Test test) {
             this.test = test;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return this.test.getName();
         }
 
-        public Test getTest()
-        {
+        public Test getTest() {
             return this.test;
         }
     }
 
-    private static class MTCElement
-    {
+    private static class MTCElement {
         public final MTC mtc;
 
-        public MTCElement(MTC mtc)
-        {
+        public MTCElement(MTC mtc) {
             this.mtc = mtc;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return this.mtc.getName();
         }
 
-        public MTC getMTC()
-        {
+        public MTC getMTC() {
             return this.mtc;
         }
     }
 
-    public class AttrOption
-    {
+    public class AttrOption {
         private String name;
         private IMatrixLayer attr;
 
         /**
          * @noinspection UnusedDeclaration
          */
-        public AttrOption(String name)
-        {
+        public AttrOption(String name) {
             this.name = name;
         }
 
-        public AttrOption(IMatrixLayer attr)
-        {
+        public AttrOption(IMatrixLayer attr) {
             this.attr = attr;
         }
 
-        public IMatrixLayer getAttr()
-        {
+        public IMatrixLayer getAttr() {
             return attr;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return attr != null ? attr.getName() : name;
         }
     }
 
-    public GroupComparisonSelectAttributePage()
-    {
+    public GroupComparisonSelectAttributePage() {
         super();
 
         initComponents();
@@ -135,21 +120,18 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
         columnGroupingCb.setModel(new DefaultComboBoxModel(GroupComparisonAnalysis.getColumnGroupingMethods()));
     }
 
-    public Test getTest()
-    {
+    public Test getTest() {
         TestElement testElement = (TestElement) testCbox.getModel().getSelectedItem();
         return testElement.getTest();
     }
 
-    public MTC getMtc()
-    {
+    public MTC getMtc() {
         MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
         return mtcElement.getMTC();
     }
 
     @NotNull
-    public String getColumnGrouping()
-    {
+    public String getColumnGrouping() {
         return (String) columnGroupingCb.getSelectedItem();
     }
 
@@ -161,8 +143,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         attributeLabel = new javax.swing.JLabel();
@@ -180,10 +161,8 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
         attributeLabel.setText("Take values to compare from:");
 
         testCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Mann-Whitney-Wilcoxon"}));
-        testCbox.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        testCbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 testCboxActionPerformed(evt);
             }
         });
@@ -207,24 +186,20 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(attributeLabel3).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(attributeLabel).addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(attributeLabel2).addComponent(columnGroupingCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(attributeLabel4).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(testCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(attributeLabel1)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(mtcCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void testCboxActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_testCboxActionPerformed
+    private void testCboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testCboxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_testCboxActionPerformed
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
 
-    public void setAttributes(@Nullable IMatrixLayers attrs)
-    {
+    public void setAttributes(@Nullable IMatrixLayers attrs) {
 
-        if (attrs != null)
-        {
+        if (attrs != null) {
             AttrOption[] attrOptions = new AttrOption[attrs.size()];
 
             for (int i = 0; i < attrs.size(); i++)
@@ -235,15 +210,12 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
             attributeCb.setEnabled(true);
             attributeCb.setVisible(true);
             attributeLabel.setVisible(true);
-        }
-        else
-        {
+        } else {
             dissableAttrCb();
         }
     }
 
-    private void dissableAttrCb()
-    {
+    private void dissableAttrCb() {
         attributeCb.setModel(new DefaultComboBoxModel());
         attributeCb.setEnabled(false);
         attributeCb.setVisible(false);
@@ -265,8 +237,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage
     private javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeCb.getSelectedIndex();
     }
 

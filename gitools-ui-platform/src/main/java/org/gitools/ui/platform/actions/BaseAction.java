@@ -32,8 +32,7 @@ import java.net.URL;
 /**
  * @noinspection ALL
  */
-public abstract class BaseAction extends AbstractAction
-{
+public abstract class BaseAction extends AbstractAction {
 
     private static final long serialVersionUID = 8312774908067146251L;
 
@@ -44,100 +43,81 @@ public abstract class BaseAction extends AbstractAction
     private boolean defaultEnabled;
 
 
-    public BaseAction(String name, ImageIcon icon, @Nullable String desc, @Nullable Integer mnemonic, boolean checkMode, boolean selected, String actionGroup)
-    {
+    public BaseAction(String name, ImageIcon icon, @Nullable String desc, @Nullable Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
         super(name, icon);
 
         this.defaultEnabled = false;
 
-        if (desc != null)
-        {
+        if (desc != null) {
             putValue(SHORT_DESCRIPTION, desc);
         }
 
-        if (mnemonic != null)
-        {
+        if (mnemonic != null) {
             putValue(MNEMONIC_KEY, mnemonic);
         }
     }
 
-    public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic)
-    {
+    public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
         this(name, icon, desc, mnemonic, false, false, null);
     }
 
-    public BaseAction(String name, ImageIcon icon, boolean checkMode, boolean checked, String actionGroup)
-    {
+    public BaseAction(String name, ImageIcon icon, boolean checkMode, boolean checked, String actionGroup) {
         this(name, icon, null, null, checkMode, checked, actionGroup);
     }
 
-    public BaseAction(String name, boolean checkMode, boolean checked, String actionGroup)
-    {
+    public BaseAction(String name, boolean checkMode, boolean checked, String actionGroup) {
         this(name, null, null, null, checkMode, checked, actionGroup);
     }
 
-    public BaseAction(String name, ImageIcon icon, String desc)
-    {
+    public BaseAction(String name, ImageIcon icon, String desc) {
         this(name, icon, desc, null);
     }
 
-    public BaseAction(String name, ImageIcon icon)
-    {
+    public BaseAction(String name, ImageIcon icon) {
         this(name, icon, null, null);
     }
 
-    public BaseAction(String name)
-    {
+    public BaseAction(String name) {
         this(name, null, null, null);
     }
 
-    String getName()
-    {
+    String getName() {
         return getValue(NAME).toString();
     }
 
-    protected void setName(String name)
-    {
+    protected void setName(String name) {
         putValue(NAME, name);
     }
 
-    protected void setDesc(String desc)
-    {
+    protected void setDesc(String desc) {
         putValue(SHORT_DESCRIPTION, desc);
     }
 
-    protected void setAccelerator(KeyStroke ks)
-    {
+    protected void setAccelerator(KeyStroke ks) {
         putValue(ACCELERATOR_KEY, ks);
     }
 
-    protected void setMnemonic(int vk)
-    {
+    protected void setMnemonic(int vk) {
         putValue(MNEMONIC_KEY, vk);
     }
 
     @Nullable
-    ImageIcon getSmallIcon()
-    {
+    ImageIcon getSmallIcon() {
         return (ImageIcon) getValue(SMALL_ICON);
     }
 
-    void setSmallIcon(ImageIcon icon)
-    {
+    void setSmallIcon(ImageIcon icon) {
         putValue(SMALL_ICON, icon);
     }
 
-    protected void setSmallIconFromResource(String name)
-    {
+    protected void setSmallIconFromResource(String name) {
         setSmallIcon(getIconResource(name));
     }
 
-    String getDesc()
-    {
+    String getDesc() {
         Object desc = getValue(SHORT_DESCRIPTION);
 
-        if (desc == null)
-        {
+        if (desc == null) {
             return getName();
         }
 
@@ -145,58 +125,47 @@ public abstract class BaseAction extends AbstractAction
     }
 
     @NotNull
-    protected ImageIcon getLargeIcon()
-    {
+    protected ImageIcon getLargeIcon() {
         return (ImageIcon) getValue(LARGE_ICON_KEY);
     }
 
-    void setLargeIcon(ImageIcon icon)
-    {
+    void setLargeIcon(ImageIcon icon) {
         putValue(LARGE_ICON_KEY, icon);
     }
 
-    protected void setLargeIconFromResource(String name)
-    {
+    protected void setLargeIconFromResource(String name) {
         setLargeIcon(getIconResource(name));
     }
 
     @NotNull
-    private ImageIcon getIconResource(String name)
-    {
+    private ImageIcon getIconResource(String name) {
         URL url = getClass().getResource(name);
-        if (url == null)
-        {
+        if (url == null) {
             url = getClass().getResource(IconUtils.nullResourceImage);
         }
 
         return new ImageIcon(url);
     }
 
-    protected void setDefaultEnabled(boolean defaultEnabled)
-    {
+    protected void setDefaultEnabled(boolean defaultEnabled) {
         this.defaultEnabled = defaultEnabled;
         setEnabled(defaultEnabled);
     }
 
-    void setTreeEnabled(boolean enabled)
-    {
+    void setTreeEnabled(boolean enabled) {
         setEnabled(enabled);
     }
 
-    public boolean updateEnabledByEditor(IEditor editor)
-    {
+    public boolean updateEnabledByEditor(IEditor editor) {
         boolean en = isEnabledByEditor(editor);
         setEnabled(en);
         return en;
     }
 
-    protected boolean isEnabledByEditor(@Nullable IEditor editor)
-    {
-        if (editor != null)
-        {
+    protected boolean isEnabledByEditor(@Nullable IEditor editor) {
+        if (editor != null) {
             Object model = editor.getModel();
-            if (model != null)
-            {
+            if (model != null) {
                 return isEnabledByModel(model);
             }
         }
@@ -204,15 +173,13 @@ public abstract class BaseAction extends AbstractAction
         return defaultEnabled;
     }
 
-    public boolean updateEnabledByModel(Object model)
-    {
+    public boolean updateEnabledByModel(Object model) {
         boolean en = isEnabledByModel(model);
         setEnabled(en);
         return en;
     }
 
-    protected boolean isEnabledByModel(Object model)
-    {
+    protected boolean isEnabledByModel(Object model) {
         return defaultEnabled;
     }
 }

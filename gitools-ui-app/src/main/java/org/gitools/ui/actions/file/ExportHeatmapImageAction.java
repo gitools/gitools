@@ -48,13 +48,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class ExportHeatmapImageAction extends BaseAction
-{
+public class ExportHeatmapImageAction extends BaseAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
-    public ExportHeatmapImageAction()
-    {
+    public ExportHeatmapImageAction() {
         super("Export heatmap as an image ...");
 
         setDesc("Export the heatmap as an image file");
@@ -62,24 +60,20 @@ public class ExportHeatmapImageAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         AbstractEditor editor = ActionUtils.getSelectedEditor();
-        if (editor == null)
-        {
+        if (editor == null) {
             return;
         }
 
         final Object model = editor.getModel();
-        if (!(model instanceof Heatmap))
-        {
+        if (!(model instanceof Heatmap)) {
             return;
         }
 
@@ -87,8 +81,7 @@ public class ExportHeatmapImageAction extends BaseAction
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -98,13 +91,10 @@ public class ExportHeatmapImageAction extends BaseAction
 
         final String formatExtension = saveWiz.getFormat().getExtension();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Exporting heatmap to image ...", 1);
                     monitor.info("File: " + file.getName());
 
@@ -129,8 +119,7 @@ public class ExportHeatmapImageAction extends BaseAction
                     ImageIO.write(bi, formatExtension, file);
 
                     monitor.end();
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     monitor.exception(ex);
                 }
             }

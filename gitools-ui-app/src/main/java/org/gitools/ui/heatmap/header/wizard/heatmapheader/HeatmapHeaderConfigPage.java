@@ -32,39 +32,33 @@ import java.awt.*;
 /**
  * @noinspection ALL
  */
-public class HeatmapHeaderConfigPage extends AbstractWizardPage
-{
+public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
     private HeatmapDataHeatmapHeader header;
 
-    public HeatmapHeaderConfigPage()
-    {
+    public HeatmapHeaderConfigPage() {
         this(new HeatmapDataHeatmapHeader(null));
     }
 
     /**
      * Creates new form ColoredClustersConfigPage
      */
-    public HeatmapHeaderConfigPage(@NotNull HeatmapDataHeatmapHeader header)
-    {
+    public HeatmapHeaderConfigPage(@NotNull HeatmapDataHeatmapHeader header) {
         super();
 
         this.header = header;
 
         initComponents();
 
-        labelVisibleChk.addChangeListener(new ChangeListener()
-        {
+        labelVisibleChk.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e)
-            {
+            public void stateChanged(ChangeEvent e) {
                 labelVisibleChanged();
             }
         });
 
 
-        switch (header.getLabelPosition())
-        {
+        switch (header.getLabelPosition()) {
             case rightOf:
                 rightOf.setSelected(true);
                 break;
@@ -83,8 +77,7 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
         titleField.setText(header.getTitle());
@@ -96,23 +89,16 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
 
     }
 
-    private void labelVisibleChanged()
-    {
+    private void labelVisibleChanged() {
         boolean e = labelVisibleChk.isSelected() && inside.isSelected();
         forceLabelColor.setEnabled(e);
 
-        if (labelVisibleChk.isSelected())
-        {
-            if (leftOf.isSelected())
-            {
+        if (labelVisibleChk.isSelected()) {
+            if (leftOf.isSelected()) {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.leftOf);
-            }
-            else if (rightOf.isSelected())
-            {
+            } else if (rightOf.isSelected()) {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.rightOf);
-            }
-            else if (inside.isSelected())
-            {
+            } else if (inside.isSelected()) {
                 header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.inside);
             }
             setForceLabelColor();
@@ -122,8 +108,7 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
 
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
         header.setTitle(titleField.getText());
@@ -139,8 +124,7 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         labelPositionBtnGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -157,10 +141,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         jLabel1.setText("Title");
 
         labelVisibleChk.setText("Show value labels");
-        labelVisibleChk.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        labelVisibleChk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 labelVisibleChkActionPerformed(evt);
             }
         });
@@ -170,10 +152,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         forceLabelColor.setText("Show same color for all labels in colored area");
-        forceLabelColor.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        forceLabelColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forceLabelColorActionPerformed(evt);
             }
         });
@@ -181,10 +161,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         labelPositionBtnGroup.add(leftOf);
         leftOf.setText("left of");
         leftOf.setEnabled(false);
-        leftOf.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        leftOf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftOfActionPerformed(evt);
             }
         });
@@ -192,10 +170,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         labelPositionBtnGroup.add(rightOf);
         rightOf.setText("right of");
         rightOf.setEnabled(false);
-        rightOf.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rightOf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightOfActionPerformed(evt);
             }
         });
@@ -203,10 +179,8 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         labelPositionBtnGroup.add(inside);
         inside.setText("inside");
         inside.setEnabled(false);
-        inside.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        inside.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insideActionPerformed(evt);
             }
         });
@@ -220,28 +194,23 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel3).addComponent(marginSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(labelVisibleChk).addComponent(leftOf).addComponent(rightOf).addComponent(inside).addComponent(coloredArea)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(forceLabelColor).addContainerGap(153, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void leftOfActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_leftOfActionPerformed
+    private void leftOfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftOfActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_leftOfActionPerformed
 
-    private void rightOfActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_rightOfActionPerformed
+    private void rightOfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightOfActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_rightOfActionPerformed
 
-    private void insideActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_insideActionPerformed
+    private void insideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insideActionPerformed
         labelVisibleChanged();
     }//GEN-LAST:event_insideActionPerformed
 
-    private void labelVisibleChkActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_labelVisibleChkActionPerformed
+    private void labelVisibleChkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelVisibleChkActionPerformed
         switchLabelPositionUI();
     }//GEN-LAST:event_labelVisibleChkActionPerformed
 
-    private void forceLabelColorActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_forceLabelColorActionPerformed
+    private void forceLabelColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forceLabelColorActionPerformed
         setForceLabelColor();
     }//GEN-LAST:event_forceLabelColorActionPerformed
 
@@ -261,18 +230,15 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
     // End of variables declaration//GEN-END:variables
 
 
-    public HeatmapDataHeatmapHeader getHeader()
-    {
+    public HeatmapDataHeatmapHeader getHeader() {
         return header;
     }
 
-    public void setHeader(HeatmapDataHeatmapHeader header)
-    {
+    public void setHeader(HeatmapDataHeatmapHeader header) {
         this.header = header;
     }
 
-    private void switchLabelPositionUI()
-    {
+    private void switchLabelPositionUI() {
         boolean enabled = labelVisibleChk.isSelected() ? true : false;
         header.setLabelVisible(enabled);
         leftOf.setEnabled(enabled);
@@ -281,8 +247,7 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage
         coloredArea.setEnabled(enabled);
     }
 
-    private void setForceLabelColor()
-    {
+    private void setForceLabelColor() {
         header.setForceLabelColor(forceLabelColor.isEnabled() && forceLabelColor.isSelected());
     }
 }

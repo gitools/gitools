@@ -47,25 +47,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MutualExclusionSortPage extends AbstractWizardPage
-{
+public class MutualExclusionSortPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String rowsPatt;
     private String colsPatt;
 
-    public MutualExclusionSortPage(Heatmap hm)
-    {
+    public MutualExclusionSortPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
 
-        ActionListener dimChangedListener = new ActionListener()
-        {
+        ActionListener dimChangedListener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 dimChanged();
             }
         };
@@ -73,29 +69,23 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         rowsRb.addActionListener(dimChangedListener);
         colsRb.addActionListener(dimChangedListener);
 
-        rowsPattBtn.addActionListener(new ActionListener()
-        {
+        rowsPattBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectRowsPattern();
             }
         });
 
-        colsPattBtn.addActionListener(new ActionListener()
-        {
+        colsPattBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectColsPattern();
             }
         });
 
-        patterns.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patterns.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
             }
         });
@@ -113,8 +103,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    private void dimChanged()
-    {
+    private void dimChanged() {
         boolean rs = rowsRb.isSelected();
         rowsPattFld.setEnabled(rs);
         rowsPattBtn.setEnabled(rs);
@@ -124,17 +113,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage
     }
 
     @NotNull
-    String readNamesFromFile(File file) throws IOException
-    {
+    String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
         String line;
 
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             line = line.trim();
-            if (!line.isEmpty())
-            {
+            if (!line.isEmpty()) {
                 sb.append(line).append('\n');
             }
         }
@@ -142,13 +128,11 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         return sb.toString();
     }
 
-    private void selectRowsPattern()
-    {
+    private void selectRowsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -156,13 +140,11 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         rowsPattFld.setText(page.getPatternTitle());
     }
 
-    private void selectColsPattern()
-    {
+    private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -171,58 +153,44 @@ public class MutualExclusionSortPage extends AbstractWizardPage
     }
 
     @NotNull
-    public FilterDimension getFilterDimension()
-    {
-        if (rowsRb.isSelected())
-        {
+    public FilterDimension getFilterDimension() {
+        if (rowsRb.isSelected()) {
             return FilterDimension.ROWS;
-        }
-        else
-        {
+        } else {
             return FilterDimension.COLUMNS;
         }
     }
 
-    public void setFilterDimension(@NotNull FilterDimension fd)
-    {
-        if (fd.equals(FilterDimension.COLUMNS))
-        {
+    public void setFilterDimension(@NotNull FilterDimension fd) {
+        if (fd.equals(FilterDimension.COLUMNS)) {
             colsRb.setSelected(true);
             rowsRb.setSelected(false);
-        }
-        else if (fd.equals(FilterDimension.ROWS))
-        {
+        } else if (fd.equals(FilterDimension.ROWS)) {
             colsRb.setSelected(false);
             rowsRb.setSelected(true);
         }
         dimChanged();
     }
 
-    public String getPattern()
-    {
-        if (rowsRb.isSelected())
-        {
+    public String getPattern() {
+        if (rowsRb.isSelected()) {
             return rowsPatt;
-        }
-        else
-        {
+        } else {
             return colsPatt;
         }
     }
 
     @NotNull
-    private ArrayList<String> getSelected()
-    {
+    private ArrayList<String> getSelected() {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> selected = new ArrayList<String>();
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
-        if (!getPattern().equalsIgnoreCase("${id}"))
-        {
+        if (!getPattern().equalsIgnoreCase("${id}")) {
             IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected(  ) : hm.getColumns().getSelected(  );
+        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected() : hm.getColumns().getSelected();
         for (int i = 0; i < selectedIndices.length; i++)
             selected.add(labelProvider.getLabel(selectedIndices[i]));
 
@@ -230,27 +198,23 @@ public class MutualExclusionSortPage extends AbstractWizardPage
     }
 
     @NotNull
-    private ArrayList<String> getUnselected()
-    {
+    private ArrayList<String> getUnselected() {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> unselected = new ArrayList<String>();
         LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
-        if (!getPattern().equalsIgnoreCase("${id}"))
-        {
+        if (!getPattern().equalsIgnoreCase("${id}")) {
             IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         }
 
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected(  ) : hm.getColumns().getSelected(  );
+        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected() : hm.getColumns().getSelected();
         int visibleCount = dim == FilterDimension.ROWS ? hm.getRows().size() : hm.getColumns().size();
 
 
         int[] unselectedIndices = new int[visibleCount - selectedIndices.length];
         int count = 0;
-        for (int i = 0; i < visibleCount; i++)
-        {
-            if (!(ArrayUtils.contains(selectedIndices, i)))
-            {
+        for (int i = 0; i < visibleCount; i++) {
+            if (!(ArrayUtils.contains(selectedIndices, i))) {
                 unselectedIndices[count] = i;
                 count++;
             }
@@ -261,35 +225,28 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         return unselected;
     }
 
-    void setValues(@NotNull List<String> values)
-    {
+    void setValues(@NotNull List<String> values) {
         Iterator<String> it = values.iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             patterns.append(it.next() + "\n");
         }
 
     }
 
     @NotNull
-    public List<String> getValues()
-    {
+    public List<String> getValues() {
         List<String> values = new ArrayList<String>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;
-        try
-        {
-            while ((line = br.readLine()) != null)
-            {
+        try {
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (!line.isEmpty())
-                {
+                if (!line.isEmpty()) {
                     values.add(line);
                 }
             }
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
             dlg.setVisible(true);
         }
@@ -297,8 +254,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         return values;
     }
 
-    public boolean isUseRegexChecked()
-    {
+    public boolean isUseRegexChecked() {
         return useRegexCheck.isSelected();
     }
 
@@ -310,8 +266,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -342,10 +297,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         jLabel3.setText("One label or regular expression per line");
 
         loadBtn.setText("Load...");
-        loadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtnActionPerformed(evt);
             }
         });
@@ -354,10 +307,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage
 
         saveBtn.setText("Save...");
         saveBtn.setEnabled(false);
-        saveBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtnActionPerformed(evt);
             }
         });
@@ -376,19 +327,15 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         colsRb.setText("Columns");
 
         pasteSelected1.setText("paste Selected");
-        pasteSelected1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteSelected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteSelected1ActionPerformed(evt);
             }
         });
 
         pasteUnselected1.setText("paste Unselected");
-        pasteUnselected1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        pasteUnselected1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pasteUnselected1ActionPerformed(evt);
             }
         });
@@ -399,36 +346,29 @@ public class MutualExclusionSortPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(rowsPattBtn).addComponent(rowsRb).addComponent(rowsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(colsPattBtn).addComponent(colsRb).addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteSelected1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(pasteUnselected1)).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addGap(18, 18, 18).addComponent(useRegexCheck).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_loadBtnActionPerformed
+    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
             Settings.getDefault().setLastFilterPath(file.getParent());
 
             patterns.setText(readNamesFromFile(file));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtnActionPerformed
 
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_saveBtnActionPerformed
-        try
-        {
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        try {
             File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
@@ -437,21 +377,18 @@ public class MutualExclusionSortPage extends AbstractWizardPage
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.append(patterns.getText()).append('\n');
             bw.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtnActionPerformed
 
-    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteSelected1ActionPerformed
+    private void pasteSelected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteSelected1ActionPerformed
         ArrayList<String> selectedColsLabels = getSelected();
         setValues(selectedColsLabels);
     }//GEN-LAST:event_pasteSelected1ActionPerformed
 
-    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_pasteUnselected1ActionPerformed
+    private void pasteUnselected1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteUnselected1ActionPerformed
         ArrayList<String> unselectedColsLabels = getUnselected();
         setValues(unselectedColsLabels);
     }//GEN-LAST:event_pasteUnselected1ActionPerformed

@@ -43,11 +43,9 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public abstract class HtestTool extends AnalysisTool
-{
+public abstract class HtestTool extends AnalysisTool {
 
-    public static class HtestArguments extends AnalysisArguments
-    {
+    public static class HtestArguments extends AnalysisArguments {
 
         /**
          * @noinspection UnusedDeclaration
@@ -113,77 +111,60 @@ public abstract class HtestTool extends AnalysisTool
     private final List<String[]> testConfigParams = new ArrayList<String[]>(0);
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
         HtestArguments args = (HtestArguments) argsObject;
 
-        if (args.testName == null)
-        {
+        if (args.testName == null) {
             throw new ToolValidationException("Test name has to be specified.");
         }
 
         //FIXME use testConfigParams = parseConfiguration(args.testConf);
-        for (String conf : args.testConf)
-        {
+        for (String conf : args.testConf) {
             final String[] c = conf.split("=", 2);
-            if (c.length != 2)
-            {
+            if (c.length != 2) {
                 throw new ToolValidationException("Malformed test configuration parameter: " + conf);
             }
             testConfigParams.add(c);
         }
 
-        if (args.dataFile == null)
-        {
+        if (args.dataFile == null) {
             throw new ToolValidationException("Data file has to be specified.");
         }
 
-        if (args.binCutoff != null)
-        {
+        if (args.binCutoff != null) {
             Pattern pat = Pattern.compile("^(lt|le|eq|gt|ge|alt|ale|aeq|agt|age)\\,(.+)$");
             args.binCutoff = args.binCutoff.toLowerCase();
             Matcher mat = pat.matcher(args.binCutoff);
-            if (!mat.matches())
-            {
+            if (!mat.matches()) {
                 throw new ToolValidationException("Invalid parameters for binary cutoff filter: " + args.binCutoff);
             }
 
-            try
-            {
+            try {
                 binaryCutoffEnabled = true;
                 binaryCutoffCmp = CutoffCmp.getFromName(mat.group(1));
                 binaryCutoffValue = Double.parseDouble(mat.group(2));
-            } catch (NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 throw new ToolValidationException("Invalid cutoff: " + mat.group(2));
             }
         }
 
-        if (args.populationDefaultValue.equalsIgnoreCase("empty"))
-        {
+        if (args.populationDefaultValue.equalsIgnoreCase("empty")) {
             populationDefaultValue = null;
-        }
-        else if (args.populationDefaultValue.equalsIgnoreCase("nan"))
-        {
+        } else if (args.populationDefaultValue.equalsIgnoreCase("nan")) {
             populationDefaultValue = Double.NaN;
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 populationDefaultValue = Double.parseDouble(args.populationDefaultValue);
-            } catch (NumberFormatException ex)
-            {
+            } catch (NumberFormatException ex) {
                 throw new ToolValidationException("Population default value should be a number, 'empty' or 'nan");
             }
         }
     }
 
-    void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args)
-    {
+    void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args) {
         prepareGeneralAnalysisAttributes(analysis, args);
 
         analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
@@ -199,8 +180,7 @@ public abstract class HtestTool extends AnalysisTool
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -215,8 +195,7 @@ public abstract class HtestTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printTests(@NotNull PrintStream o)
-    {
+    private void printTests(@NotNull PrintStream o) {
         o.println("Available tests:");
         o.println(String.format(LIST_S_FMT, "zscore", "Z-score test"));
         o.println(String.format(LIST_S_FMT, "binomial", "Binomial test"));

@@ -35,14 +35,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.List;
 
-public class ImportExcelWizard extends AbstractWizard
-{
+public class ImportExcelWizard extends AbstractWizard {
 
     private FileChooserPage fileSelectionPage;
     private SelectColumnsPage selectColumnsPage;
 
-    public ImportExcelWizard()
-    {
+    public ImportExcelWizard() {
         setTitle("Import an Excel matrix");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
         setHelpContext("import_excel");
@@ -50,8 +48,7 @@ public class ImportExcelWizard extends AbstractWizard
 
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
 
         fileSelectionPage = new FileChooserPage();
         fileSelectionPage.setTitle("Select Excel file");
@@ -66,11 +63,9 @@ public class ImportExcelWizard extends AbstractWizard
     }
 
     @Override
-    public IWizardPage getNextPage(IWizardPage page)
-    {
+    public IWizardPage getNextPage(IWizardPage page) {
 
-        if (page == fileSelectionPage)
-        {
+        if (page == fileSelectionPage) {
             selectColumnsPage.setReader(new ExcelReader(fileSelectionPage.getSelectedFile()));
         }
 
@@ -78,8 +73,7 @@ public class ImportExcelWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
 
         File excelFile = fileSelectionPage.getSelectedFile();
 

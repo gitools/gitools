@@ -34,11 +34,9 @@ import org.gitools.utils.SerialClone;
 
 import java.awt.event.ActionEvent;
 
-public class CloneHeatmapAction extends BaseAction
-{
+public class CloneHeatmapAction extends BaseAction {
 
-    public CloneHeatmapAction()
-    {
+    public CloneHeatmapAction() {
         super("Clone heatmap");
 
         setDesc("Clone heatmap");
@@ -46,21 +44,18 @@ public class CloneHeatmapAction extends BaseAction
     }
 
     @Override
-    public boolean updateEnabledByEditor(IEditor editor)
-    {
+    public boolean updateEnabledByEditor(IEditor editor) {
         setEnabled(editor instanceof HeatmapEditor);
         return isEnabled();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         IEditor currEd = editorPanel.getSelectedEditor();
 
-        if (!(currEd instanceof HeatmapEditor))
-        {
+        if (!(currEd instanceof HeatmapEditor)) {
             return;
         }
 
@@ -69,8 +64,7 @@ public class CloneHeatmapAction extends BaseAction
         Heatmap hm = (Heatmap) currentEditor.getModel();
 
         IMatrixView mv = hm;
-        if (mv instanceof DiagonalMatrixView)
-        {
+        if (mv instanceof DiagonalMatrixView) {
             mv = new DiagonalMatrixView(mv);
         }
         Heatmap clone = new Heatmap(mv);

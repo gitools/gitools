@@ -24,14 +24,12 @@ package org.gitools.kegg.service.domain;
 /**
  * A database identifier conversion
  */
-public class IdConversion
-{
+public class IdConversion {
 
     private final String sourceId;
     private final String targetId;
 
-    public IdConversion(String[] fields)
-    {
+    public IdConversion(String[] fields) {
 
         this.sourceId = fields[0];
         this.targetId = fields[1];
@@ -41,16 +39,14 @@ public class IdConversion
     /**
      * @return The identifier of the source database entity
      */
-    public String getSourceId()
-    {
+    public String getSourceId() {
         return sourceId;
     }
 
     /**
      * @return The identifier of the target database entity
      */
-    public String getTargetId()
-    {
+    public String getTargetId() {
         return targetId;
     }
 }

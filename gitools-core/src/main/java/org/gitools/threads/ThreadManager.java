@@ -29,23 +29,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class ThreadManager
-{
+public class ThreadManager {
 
     @NotNull
     private static ExecutorService executor = createExecutor();
 
     private static int nThreads = getAvailableProcessors();
 
-    public static void shutdown(@NotNull IProgressMonitor monitor)
-    {
+    public static void shutdown(@NotNull IProgressMonitor monitor) {
         executor.shutdown();
-        try
-        {
+        try {
             while (!executor.isTerminated())
                 executor.awaitTermination(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             monitor.debug("ThreadManager.shutdown() interrupted by exception: " + e.getMessage());
         }
 
@@ -53,22 +49,18 @@ public class ThreadManager
     }
 
     @NotNull
-    private static ExecutorService createExecutor()
-    {
+    private static ExecutorService createExecutor() {
         return Executors.newCachedThreadPool();
         //new BlockingThreadPoolExecutor(nThreads);
     }
 
     @NotNull
-    public static ExecutorService getExecutor()
-    {
+    public static ExecutorService getExecutor() {
         return executor;
     }
 
-    public static void setNumThreads(int nThreads)
-    {
-        if (ThreadManager.nThreads != nThreads)
-        {
+    public static void setNumThreads(int nThreads) {
+        if (ThreadManager.nThreads != nThreads) {
             shutdown(new NullProgressMonitor());
 
             ThreadManager.nThreads = nThreads;
@@ -76,13 +68,11 @@ public class ThreadManager
         }
     }
 
-    public static int getNumThreads()
-    {
+    public static int getNumThreads() {
         return nThreads;
     }
 
-    public static int getAvailableProcessors()
-    {
+    public static int getAvailableProcessors() {
         return Runtime.getRuntime().availableProcessors();
     }
 }

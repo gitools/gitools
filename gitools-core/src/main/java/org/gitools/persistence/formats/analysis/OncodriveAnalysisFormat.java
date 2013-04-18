@@ -24,14 +24,12 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class OncodriveAnalysisFormat extends AbstractXmlFormat<OncodriveAnalysis>
-{
+public class OncodriveAnalysisFormat extends AbstractXmlFormat<OncodriveAnalysis> {
     public static final String EXTENSION = "oncodrive";
     private static final Class<OncodriveAnalysis> RESOURCE_CLASS = OncodriveAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Oncodrive analysis", EXTENSION);
 
-    public OncodriveAnalysisFormat()
-    {
+    public OncodriveAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 }

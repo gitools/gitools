@@ -30,8 +30,7 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import javax.swing.*;
 
-public class BinaryDecoratorPanel extends DecoratorPanel
-{
+public class BinaryDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
     private JTextField trueColor;
     private JComboBox comparator;
@@ -39,15 +38,13 @@ public class BinaryDecoratorPanel extends DecoratorPanel
     private JTextField falseColor;
     private JTextField emptyColor;
 
-    public BinaryDecoratorPanel()
-    {
+    public BinaryDecoratorPanel() {
         super("Binary scale", new BinaryDecorator());
     }
 
 
     @Override
-    public void bind()
-    {
+    public void bind() {
         Bindings.bind(comparator, new SelectionInList<CutoffCmp>(CutoffCmp.comparators, model(BinaryDecorator.PROPERTY_COMPARATOR)));
         Bindings.bind(value, model(BinaryDecorator.PROPERTY_CUTOFF));
         Bindings.bind(trueColor, "color", model(BinaryDecorator.PROPERTY_COLOR));
@@ -56,13 +53,11 @@ public class BinaryDecoratorPanel extends DecoratorPanel
     }
 
     @Override
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         trueColor = new MyWebColorChooserField();
         falseColor = new MyWebColorChooserField();
         emptyColor = new MyWebColorChooserField();

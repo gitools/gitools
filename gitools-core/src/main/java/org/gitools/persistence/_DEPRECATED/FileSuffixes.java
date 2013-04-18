@@ -22,8 +22,7 @@
 package org.gitools.persistence._DEPRECATED;
 
 @Deprecated
-public class FileSuffixes
-{
+public class FileSuffixes {
     public static final String GENE_SET = "grp";
     public static final String GENE_MATRIX = "gmx";
     public static final String GENE_MATRIX_TRANSPOSED = "gmt";

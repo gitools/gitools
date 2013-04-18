@@ -31,8 +31,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.List;
 
-public class BiomartSourceManager
-{
+public class BiomartSourceManager {
 
     private static final Logger logger = LoggerFactory.getLogger(BiomartSourceManager.class);
 
@@ -45,27 +44,21 @@ public class BiomartSourceManager
     @NotNull
     private static final BiomartSources biomartSources = new BiomartSources();
 
-    public static BiomartSourceManager getDefault()
-    {
-        if (instance == null)
-        {
+    public static BiomartSourceManager getDefault() {
+        if (instance == null) {
 
             Reader reader;
-            try
-            {
+            try {
                 File file = new File(configFile);
 
                 reader = file.exists() ? new FileReader(configFile) : new InputStreamReader(BiomartSourceManager.class.getResourceAsStream("/biomart-sources.xml"));
 
                 instance = load(reader);
                 reader.close();
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 logger.error("Error in biomart user configuration file");
-            } finally
-            {
-                if (instance == null || instance.getSources().size() == 0)
-                {
+            } finally {
+                if (instance == null || instance.getSources().size() == 0) {
                     logger.error("Instance not initialised. Loading default configuration");
                     BiomartSource src = new BiomartSource();
                     src.setName("Biomart Central Portal");
@@ -85,44 +78,36 @@ public class BiomartSourceManager
     }
 
     @NotNull
-    private static BiomartSourceManager load(@NotNull Reader reader)
-    {
+    private static BiomartSourceManager load(@NotNull Reader reader) {
         BiomartSourceManager settings = new BiomartSourceManager();
-        try
-        {
+        try {
             JAXBContext context = JAXBContext.newInstance(BiomartSources.class);
             Unmarshaller u = context.createUnmarshaller();
             settings.addSources((BiomartSources) u.unmarshal(reader));
             reader.close();
 
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("Biomart settings file doesn't exist: " + configFile);
             System.err.println("Created one with defaults.");
             settings = new BiomartSourceManager();
             settings.save();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace(); //TODO Deberia lanzar una excepción?
             settings = new BiomartSourceManager();
         }
         return settings;
     }
 
-    private BiomartSourceManager()
-    {
+    private BiomartSourceManager() {
     }
 
-    void save()
-    {
+    void save() {
         File path = new File(configPath);
-        if (!path.exists())
-        {
+        if (!path.exists()) {
             path.mkdirs();
         }
 
-        try
-        {
+        try {
             FileWriter writer = new FileWriter(configFile);
 
             JAXBContext context = JAXBContext.newInstance(BiomartSources.class);
@@ -131,32 +116,27 @@ public class BiomartSourceManager
             m.marshal(this, writer);
 
             writer.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public List<BiomartSource> getSources()
-    {
+    public List<BiomartSource> getSources() {
         return biomartSources.getSources();
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setSources(List<BiomartSource> sources)
-    {
+    public void setSources(List<BiomartSource> sources) {
         biomartSources.setSources(sources);
     }
 
-    private void addSource(BiomartSource source)
-    {
+    private void addSource(BiomartSource source) {
         biomartSources.getSources().add(source);
     }
 
-    private void addSources(@NotNull BiomartSources sources)
-    {
+    private void addSources(@NotNull BiomartSources sources) {
         biomartSources.getSources().addAll(sources.getSources());
     }
 

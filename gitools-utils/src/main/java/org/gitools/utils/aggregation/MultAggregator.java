@@ -27,25 +27,21 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Multiplication
  */
-public class MultAggregator extends AbstractAggregator
-{
+public class MultAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MultAggregator();
 
-    private MultAggregator()
-    {
+    private MultAggregator() {
     }
 
     @Override
-    public double aggregate(double[] data)
-    {
+    public double aggregate(double[] data) {
         return aggregate(data, Functions.mult, 1);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Multiplication";
     }
 }

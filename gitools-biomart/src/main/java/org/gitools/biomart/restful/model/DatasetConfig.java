@@ -37,8 +37,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "DatasetConfig")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class DatasetConfig
-{
+public class DatasetConfig {
 
     @XmlAttribute
     private String dataset;
@@ -125,305 +124,245 @@ public class DatasetConfig
     private List<AttributePage> attributePages = new ArrayList<AttributePage>();
 
     @Nullable
-    public static DatasetConfig load(Reader reader)
-    {
+    public static DatasetConfig load(Reader reader) {
         DatasetConfig config = null;
-        try
-        {
+        try {
             JAXBContext context = JAXBContext.newInstance(DatasetConfig.class);
             Unmarshaller u = context.createUnmarshaller();
             config = (DatasetConfig) u.unmarshal(reader);
-        } catch (JAXBException ex)
-        {
+        } catch (JAXBException ex) {
             LoggerFactory.getLogger(DatasetConfig.class).error("Error loading DatasetConfig", ex);
         }
         return config;
     }
 
-    public DatasetConfig()
-    {
+    public DatasetConfig() {
     }
 
-    public List<AttributePage> getAttributePages()
-    {
+    public List<AttributePage> getAttributePages() {
         return attributePages;
     }
 
-    public void setAttributePages(List<AttributePage> AttributePages)
-    {
+    public void setAttributePages(List<AttributePage> AttributePages) {
         this.attributePages = AttributePages;
     }
 
-    public List<Exportable> getExportables()
-    {
+    public List<Exportable> getExportables() {
         return exportables;
     }
 
-    public void setExportables(List<Exportable> Exportables)
-    {
+    public void setExportables(List<Exportable> Exportables) {
         this.exportables = Exportables;
     }
 
-    public List<FilterPage> getFilterPages()
-    {
+    public List<FilterPage> getFilterPages() {
         return filterPages;
     }
 
-    public void setFilterPages(List<FilterPage> FilterPages)
-    {
+    public void setFilterPages(List<FilterPage> FilterPages) {
         this.filterPages = FilterPages;
     }
 
-    public List<Importable> getImportables()
-    {
+    public List<Importable> getImportables() {
         return importables;
     }
 
-    public void setImportables(List<Importable> Importables)
-    {
+    public void setImportables(List<Importable> Importables) {
         this.importables = Importables;
     }
 
-    public List<String> getKey()
-    {
+    public List<String> getKey() {
         return keys;
     }
 
-    public void setKey(List<String> Key)
-    {
+    public void setKey(List<String> Key) {
         this.keys = Key;
     }
 
-    public List<String> getMainTable()
-    {
+    public List<String> getMainTable() {
         return mainTables;
     }
 
-    public void setMainTable(List<String> MainTable)
-    {
+    public void setMainTable(List<String> MainTable) {
         this.mainTables = MainTable;
     }
 
-    public String getDataset()
-    {
+    public String getDataset() {
         return dataset;
     }
 
-    public void setDataset(String dataset)
-    {
+    public void setDataset(String dataset) {
         this.dataset = dataset;
     }
 
-    public String getDatasetID()
-    {
+    public String getDatasetID() {
         return datasetID;
     }
 
-    public void setDatasetID(String datasetID)
-    {
+    public void setDatasetID(String datasetID) {
         this.datasetID = datasetID;
     }
 
-    public String getDefaultDataset()
-    {
+    public String getDefaultDataset() {
         return defaultDataset;
     }
 
-    public void setDefaultDataset(String defaultDataset)
-    {
+    public void setDefaultDataset(String defaultDataset) {
         this.defaultDataset = defaultDataset;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getEntryLabel()
-    {
+    public String getEntryLabel() {
         return entryLabel;
     }
 
-    public void setEntryLabel(String entryLabel)
-    {
+    public void setEntryLabel(String entryLabel) {
         this.entryLabel = entryLabel;
     }
 
-    public String getHidden()
-    {
+    public String getHidden() {
         return hidden;
     }
 
-    public void setHidden(String hidden)
-    {
+    public void setHidden(String hidden) {
         this.hidden = hidden;
     }
 
-    public String getHideDisplay()
-    {
+    public String getHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(String hideDisplay)
-    {
+    public void setHideDisplay(String hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInterfaces()
-    {
+    public String getInterfaces() {
         return interfaces;
     }
 
-    public void setInterfaces(String interfaces)
-    {
+    public void setInterfaces(String interfaces) {
         this.interfaces = interfaces;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public String getMartUsers()
-    {
+    public String getMartUsers() {
         return martUsers;
     }
 
-    public void setMartUsers(String martUsers)
-    {
+    public void setMartUsers(String martUsers) {
         this.martUsers = martUsers;
     }
 
-    public String getModified()
-    {
+    public String getModified() {
         return modified;
     }
 
-    public void setModified(String modified)
-    {
+    public void setModified(String modified) {
         this.modified = modified;
     }
 
-    public String getNoCount()
-    {
+    public String getNoCount() {
         return noCount;
     }
 
-    public void setNoCount(String noCount)
-    {
+    public void setNoCount(String noCount) {
         this.noCount = noCount;
     }
 
-    public String getOptional_parameters()
-    {
+    public String getOptional_parameters() {
         return optional_parameters;
     }
 
-    public void setOptional_parameters(String optional_parameters)
-    {
+    public void setOptional_parameters(String optional_parameters) {
         this.optional_parameters = optional_parameters;
     }
 
-    public String getPrimaryKeyRestriction()
-    {
+    public String getPrimaryKeyRestriction() {
         return primaryKeyRestriction;
     }
 
-    public void setPrimaryKeyRestriction(String primaryKeyRestriction)
-    {
+    public void setPrimaryKeyRestriction(String primaryKeyRestriction) {
         this.primaryKeyRestriction = primaryKeyRestriction;
     }
 
-    public String getSoftwareVersion()
-    {
+    public String getSoftwareVersion() {
         return softwareVersion;
     }
 
-    public void setSoftwareVersion(String softwareVersion)
-    {
+    public void setSoftwareVersion(String softwareVersion) {
         this.softwareVersion = softwareVersion;
     }
 
-    public String getSplitNameUsing()
-    {
+    public String getSplitNameUsing() {
         return splitNameUsing;
     }
 
-    public void setSplitNameUsing(String splitNameUsing)
-    {
+    public void setSplitNameUsing(String splitNameUsing) {
         this.splitNameUsing = splitNameUsing;
     }
 
-    public String getTemplate()
-    {
+    public String getTemplate() {
         return template;
     }
 
-    public void setTemplate(String template)
-    {
+    public void setTemplate(String template) {
         this.template = template;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public int getVisible()
-    {
+    public int getVisible() {
         return visible;
     }
 
-    public void setVisible(int visible)
-    {
+    public void setVisible(int visible) {
         this.visible = visible;
     }
 
-    public String getVisibleFilterPage()
-    {
+    public String getVisibleFilterPage() {
         return visibleFilterPage;
     }
 
-    public void setVisibleFilterPage(String visibleFilterPage)
-    {
+    public void setVisibleFilterPage(String visibleFilterPage) {
         this.visibleFilterPage = visibleFilterPage;
     }
 }

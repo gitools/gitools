@@ -34,8 +34,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.File;
 
 
-public class CombinationCommand extends AnalysisCommand
-{
+public class CombinationCommand extends AnalysisCommand {
 
     private final CombinationAnalysis analysis;
 
@@ -45,8 +44,7 @@ public class CombinationCommand extends AnalysisCommand
     private final IResourceFormat columnsFormat;
     private final String columnsPath;
 
-    public CombinationCommand(CombinationAnalysis analysis, IResourceFormat dataFormat, String dataPath, IResourceFormat columnsFormat, String columnsPath, String workdir, String fileName)
-    {
+    public CombinationCommand(CombinationAnalysis analysis, IResourceFormat dataFormat, String dataPath, IResourceFormat columnsFormat, String columnsPath, String workdir, String fileName) {
 
         super(workdir, fileName);
 
@@ -60,19 +58,15 @@ public class CombinationCommand extends AnalysisCommand
     }
 
     @Override
-    public void run(IProgressMonitor progressMonitor) throws AnalysisException
-    {
-        try
-        {
-            if (analysis.getData() == null)
-            {
+    public void run(IProgressMonitor progressMonitor) throws AnalysisException {
+        try {
+            if (analysis.getData() == null) {
                 ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)), dataFormat);
                 analysis.setData(data);
                 data.load(progressMonitor);
             }
 
-            if (columnsPath != null)
-            {
+            if (columnsPath != null) {
                 ResourceReference<ModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
                 analysis.setGroupsMap(columnsMap);
                 columnsMap.load(progressMonitor);
@@ -82,19 +76,16 @@ public class CombinationCommand extends AnalysisCommand
 
             proc.run(progressMonitor);
 
-            if (storeAnalysis)
-            {
+            if (storeAnalysis) {
                 File workdirFile = new File(workdir);
-                if (!workdirFile.exists())
-                {
+                if (!workdirFile.exists()) {
                     workdirFile.mkdirs();
                 }
 
                 UrlResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
                 PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
             }
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new AnalysisException(cause);
         }
     }

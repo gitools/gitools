@@ -28,16 +28,13 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import java.awt.*;
 import java.net.URL;
 
-public class ExamplePage extends AbstractWizardPage
-{
+public class ExamplePage extends AbstractWizardPage {
 
-    public ExamplePage(String title)
-    {
+    public ExamplePage(String title) {
         initComponents();
 
         URL url = getClass().getResource("/vm/new_analysis_intro.vm");
-        try
-        {
+        try {
             VelocityContext context = new VelocityContext();
             context.put("analysis_title", title);
             TemplatePanel panel = new TemplatePanel();
@@ -47,20 +44,17 @@ public class ExamplePage extends AbstractWizardPage
             textPanel.setLayout(new BorderLayout());
             textPanel.add(panel, BorderLayout.CENTER);
 
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
         }
 
         setComplete(true);
     }
 
-    public boolean isExampleEnabled()
-    {
+    public boolean isExampleEnabled() {
         return exampleCheck.isSelected();
     }
 
-    public boolean isShowAgain()
-    {
+    public boolean isShowAgain() {
         return !dontShowAgainCheck.isSelected();
     }
 
@@ -72,8 +66,7 @@ public class ExamplePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         textPanel = new javax.swing.JPanel();
         exampleCheck = new javax.swing.JCheckBox();

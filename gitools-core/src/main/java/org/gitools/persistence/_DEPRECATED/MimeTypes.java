@@ -22,8 +22,7 @@
 package org.gitools.persistence._DEPRECATED;
 
 @Deprecated
-public class MimeTypes
-{
+public class MimeTypes {
 
     public static final String DOUBLE_MATRIX = "application/gitools-matrix-double";
     public static final String DOUBLE_BINARY_MATRIX = "application/gitools-matrix-binary";

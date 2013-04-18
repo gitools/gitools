@@ -26,8 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public interface IColorScale
-{
+public interface IColorScale {
 
     Color valueColor(double value);
 

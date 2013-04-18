@@ -23,8 +23,7 @@ package org.gitools.clustering;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public interface ClusteringMethod
-{
+public interface ClusteringMethod {
 
     public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 

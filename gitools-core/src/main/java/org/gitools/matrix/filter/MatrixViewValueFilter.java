@@ -30,32 +30,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrixViewValueFilter
-{
+public class MatrixViewValueFilter {
 
     public static void filter(@NotNull IMatrixView matrixView, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
                               boolean allElements,        // All cells in a row/column should match
-                              boolean invertCriteria, boolean applyToRows, boolean applyToColumns)
-    {
+                              boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
 
-        if (applyToRows)
-        {
-            filterRows(matrixView, matrixView.getColumns().getSelected(  ), criteriaList, allCriteria, allElements, invertCriteria);
+        if (applyToRows) {
+            filterRows(matrixView, matrixView.getColumns().getSelected(), criteriaList, allCriteria, allElements, invertCriteria);
         }
 
-        if (applyToColumns)
-        {
-            filterColumns(matrixView, matrixView.getRows().getSelected(  ), criteriaList, allCriteria, allElements, invertCriteria);
+        if (applyToColumns) {
+            filterColumns(matrixView, matrixView.getRows().getSelected(), criteriaList, allCriteria, allElements, invertCriteria);
         }
     }
 
     private static void filterRows(@NotNull IMatrixView matrixView, @Nullable int[] selection, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
                                    boolean allElements,        // All cells in a row/column should match
-                                   boolean invertCriteria)
-    {
+                                   boolean invertCriteria) {
 
-        if (selection == null || selection.length == 0)
-        {
+        if (selection == null || selection.length == 0) {
             int numColumns = matrixView.getColumns().size();
             int[] sel = new int[numColumns];
             for (int i = 0; i < sel.length; i++)
@@ -65,16 +59,13 @@ public class MatrixViewValueFilter
 
         List<Integer> filterin = new ArrayList<Integer>();
 
-        for (int row = 0; row < matrixView.getRows().size(); row++)
-        {
+        for (int row = 0; row < matrixView.getRows().size(); row++) {
             boolean cellsAnd = true;
             boolean cellsOr = false;
-            for (int col = 0; col < selection.length; col++)
-            {
+            for (int col = 0; col < selection.length; col++) {
                 boolean critAnd = true;
                 boolean critOr = false;
-                for (int critIndex = 0; critIndex < criteriaList.size(); critIndex++)
-                {
+                for (int critIndex = 0; critIndex < criteriaList.size(); critIndex++) {
                     ValueFilterCriteria criteria = criteriaList.get(critIndex);
                     double value = MatrixUtils.doubleValue(matrixView.getCellValue(row, selection[col], criteria.getAttributeIndex()));
                     boolean critRes = criteria.getComparator().compare(value, criteria.getValue());
@@ -86,13 +77,11 @@ public class MatrixViewValueFilter
                 cellsOr |= critFilterIn;
             }
             boolean cellsFilterIn = allElements ? cellsAnd : cellsOr;
-            if (invertCriteria)
-            {
+            if (invertCriteria) {
                 cellsFilterIn = !cellsFilterIn;
             }
 
-            if (cellsFilterIn)
-            {
+            if (cellsFilterIn) {
                 filterin.add(row);
             }
         }
@@ -107,8 +96,7 @@ public class MatrixViewValueFilter
 
     private static void filterColumns(IMatrixView matrixView, int[] selection, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
                                       boolean allElements,        // All cells in a row/column should match
-                                      boolean invertCriteria)
-    {
+                                      boolean invertCriteria) {
 
         final IMatrixView mv = new TransposedMatrixView(matrixView);
         filterRows(mv, selection, criteriaList, allCriteria, allElements, invertCriteria);

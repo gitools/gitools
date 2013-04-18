@@ -30,41 +30,33 @@ import java.util.concurrent.ExecutorService;
 /**
  * @noinspection ALL
  */
-public class ThreadQueue
-{
+public class ThreadQueue {
 
     private final ArrayBlockingQueue<ThreadSlot> queue;
 
     private final ExecutorService executor = ThreadManager.getExecutor();
 
-    public ThreadQueue(int numSlots)
-    {
+    public ThreadQueue(int numSlots) {
         queue = new ArrayBlockingQueue<ThreadSlot>(numSlots);
     }
 
-    public void put(ThreadSlot threadSlot) throws InterruptedException
-    {
+    public void put(ThreadSlot threadSlot) throws InterruptedException {
         queue.put(threadSlot);
     }
 
-    public ThreadSlot take() throws InterruptedException
-    {
+    public ThreadSlot take() throws InterruptedException {
         return queue.take();
     }
 
-    public void offer(ThreadSlot threadSlot)
-    {
+    public void offer(ThreadSlot threadSlot) {
         queue.offer(threadSlot);
     }
 
-    public void execute(final ThreadSlot threadSlot, @NotNull final Runnable runnable)
-    {
+    public void execute(final ThreadSlot threadSlot, @NotNull final Runnable runnable) {
 
-        executor.execute(new Runnable()
-        {
+        executor.execute(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 runnable.run();
                 queue.offer(threadSlot);
             }

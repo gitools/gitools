@@ -38,18 +38,15 @@ import java.io.Reader;
 import java.util.zip.DataFormatException;
 
 
-public class DataFilePage extends SelectFilePage
-{
+public class DataFilePage extends SelectFilePage {
 
     private static final FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
-    public DataFilePage()
-    {
+    public DataFilePage() {
         this(formats);
     }
 
-    public DataFilePage(FileFormat[] formats)
-    {
+    public DataFilePage(FileFormat[] formats) {
         super(formats);
 
         setTitle("Select data source");
@@ -58,42 +55,34 @@ public class DataFilePage extends SelectFilePage
     }
 
     @Override
-    protected void updateState()
-    {
+    protected void updateState() {
 
         FileFormat ff = getFileFormat();
         super.updateState();
 
-        if (isComplete() == true & ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))
-        {
+        if (isComplete() == true & ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension())) {
             activateValueSelection();
 
             MultiValueMatrixFormat obp = new MultiValueMatrixFormat();
             String[] headers = new String[0];
-            try
-            {
+            try {
                 headers = readHeader(getFile());
-            } catch (PersistenceException e)
-            {
+            } catch (PersistenceException e) {
                 setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
                 setComplete(false);
                 deactivateValueSelection();
             }
             setValues(headers);
-        }
-        else
-        {
+        } else {
             deactivateValueSelection();
         }
     }
 
     @Nullable
-    private static String[] readHeader(File file) throws PersistenceException
-    {
+    private static String[] readHeader(File file) throws PersistenceException {
 
         String[] matrixHeaders = null;
-        try
-        {
+        try {
             Reader reader = IOUtils.openReader(file);
 
             CSVReader parser = new CSVReader(reader);
@@ -101,30 +90,26 @@ public class DataFilePage extends SelectFilePage
             String[] line = parser.readNext();
 
             // read header
-            if (line.length < 3)
-            {
+            if (line.length < 3) {
                 throw new DataFormatException("At least 3 columns expected.");
             }
 
             int numAttributes = line.length - 2;
             matrixHeaders = new String[numAttributes];
             System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
         return matrixHeaders;
     }
 
     @Override
-    protected String getLastPath()
-    {
+    protected String getLastPath() {
         return Settings.getDefault().getLastDataPath();
     }
 
     @Override
-    protected void setLastPath(String path)
-    {
+    protected void setLastPath(String path) {
         Settings.getDefault().setLastDataPath(path);
     }
 }

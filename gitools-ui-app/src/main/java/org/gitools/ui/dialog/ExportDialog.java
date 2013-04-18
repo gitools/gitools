@@ -35,15 +35,13 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ExportDialog extends AbstractDialog
-{
+public class ExportDialog extends AbstractDialog {
 
     private static final long serialVersionUID = -829366063374164258L;
 
     private JTree tree;
 
-    public ExportDialog(Window owner)
-    {
+    public ExportDialog(Window owner) {
         super(owner, "Export", "Select", "Choose export destination", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -52,8 +50,7 @@ public class ExportDialog extends AbstractDialog
 
     @NotNull
     @Override
-    protected JComponent createContainer()
-    {
+    protected JComponent createContainer() {
         DefaultMutableTreeNode model = new DefaultMutableTreeNode();
 
         DefaultMutableTreeNode table = new DefaultMutableTreeNode("Table");
@@ -79,8 +76,7 @@ public class ExportDialog extends AbstractDialog
 
     @NotNull
     @Override
-    protected List<JButton> createButtons()
-    {
+    protected List<JButton> createButtons() {
         List<JButton> buttons = new ArrayList<JButton>();
         buttons.add(new JButton("Accept"));
         buttons.add(new JButton("Cancel"));

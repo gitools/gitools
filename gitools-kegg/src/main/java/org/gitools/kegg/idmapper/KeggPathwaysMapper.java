@@ -33,54 +33,43 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds
-{
+public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 
-    public KeggPathwaysMapper(KeggService service, String organismId)
-    {
+    public KeggPathwaysMapper(KeggService service, String organismId) {
         super("KeggPathways", false, true, service, organismId);
     }
 
     @Nullable
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException
-    {
-        if (!KEGG_PATHWAYS.equals(src.getId()))
-        {
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
+        if (!KEGG_PATHWAYS.equals(src.getId())) {
             throw new MappingException("Unsupported mapping from " + src + " to " + dst);
         }
 
-        if (data.isEmpty())
-        {
+        if (data.isEmpty()) {
             monitor.begin("Getting KEGG pathways ...", 1);
-            try
-            {
+            try {
                 List<KeggPathway> pathwaysDefs = service.getPathways(organismId);
                 for (KeggPathway d : pathwaysDefs)
                     data.put(d.getId(), d.getId());
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new MappingException(ex);
             }
             monitor.end();
         }
 
-        if (monitor.isCancelled())
-        {
+        if (monitor.isCancelled()) {
             return null;
         }
 
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
         Set<String> dstIds = data.getDstIds();
         monitor.begin("Getting KEGG genes ...", dstIds.size());
-        try
-        {
+        try {
             //int count = 0;
-            for (String dstId : dstIds)
-            {
+            for (String dstId : dstIds) {
                 monitor.info(dstId);
-                if (monitor.isCancelled())
-                {
+                if (monitor.isCancelled()) {
                     return null;
                 }
 
@@ -91,8 +80,7 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds
                 map.put(dstId, new HashSet<String>(genes));
                 monitor.worked(1);
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new MappingException(ex);
         }
         monitor.end();

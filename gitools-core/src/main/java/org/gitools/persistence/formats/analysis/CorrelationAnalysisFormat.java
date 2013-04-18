@@ -24,15 +24,13 @@ package org.gitools.persistence.formats.analysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.persistence._DEPRECATED.FileFormat;
 
-public class CorrelationAnalysisFormat extends AbstractXmlFormat<CorrelationAnalysis>
-{
+public class CorrelationAnalysisFormat extends AbstractXmlFormat<CorrelationAnalysis> {
     public static final String EXTENSION = "correlations";
     private static final Class<CorrelationAnalysis> RESOURCE_CLASS = CorrelationAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Correlations analysis", EXTENSION);
 
 
-    public CorrelationAnalysisFormat()
-    {
+    public CorrelationAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
     }
 

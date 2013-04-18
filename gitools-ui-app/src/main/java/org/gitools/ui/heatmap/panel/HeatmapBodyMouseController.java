@@ -35,11 +35,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener
-{
+public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private enum Mode
-    {
+    private enum Mode {
         none, selecting, moving
     }
 
@@ -59,8 +57,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
-    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel)
-    {
+    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel) {
         this.heatmap = panel.getHeatmap();
         this.viewPort = panel.getBodyViewPort();
         this.bodyPanel = panel.getBodyPanel();
@@ -74,19 +71,16 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         this.mode = Mode.none;
     }
 
-    public void addHeatmapMouseListener(HeatmapMouseListener listener)
-    {
+    public void addHeatmapMouseListener(HeatmapMouseListener listener) {
         listeners.add(listener);
     }
 
-    public void removeHeatmapMouseListener(HeatmapMouseListener listener)
-    {
+    public void removeHeatmapMouseListener(HeatmapMouseListener listener) {
         listeners.remove(listener);
     }
 
     @Override
-    public void mouseClicked(@NotNull MouseEvent e)
-    {
+    public void mouseClicked(@NotNull MouseEvent e) {
         panel.requestFocusInWindow();
 
         point = e.getPoint();
@@ -99,15 +93,13 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mousePressed(@NotNull MouseEvent e)
-    {
+    public void mousePressed(@NotNull MouseEvent e) {
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
         mode = shiftDown || ctrlDown ? Mode.moving : Mode.selecting;
-        switch (mode)
-        {
+        switch (mode) {
             case selecting:
                 updateSelection(e);
                 break;
@@ -120,30 +112,25 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseReleased(@NotNull MouseEvent e)
-    {
+    public void mouseReleased(@NotNull MouseEvent e) {
         panel.mouseReleased(e);
         mode = Mode.none;
     }
 
     @Override
-    public void mouseEntered(MouseEvent e)
-    {
+    public void mouseEntered(MouseEvent e) {
         //System.out.println("entered");
     }
 
     @Override
-    public void mouseExited(MouseEvent e)
-    {
+    public void mouseExited(MouseEvent e) {
         //System.out.println("exited");
     }
 
     @Override
-    public void mouseDragged(@NotNull MouseEvent e)
-    {
+    public void mouseDragged(@NotNull MouseEvent e) {
         //System.out.println("dragged");
-        switch (mode)
-        {
+        switch (mode) {
             case selecting:
                 updateSelection(e);
                 break;
@@ -154,8 +141,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseMoved(@NotNull MouseEvent e)
-    {
+    public void mouseMoved(@NotNull MouseEvent e) {
         //System.out.println("moved");
 
         point = e.getPoint();
@@ -168,30 +154,24 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseWheelMoved(@NotNull MouseWheelEvent e)
-    {
+    public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
         int rotation = e.getWheelRotation();
 
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
-        if (!shiftDown && !ctrlDown)
-        {
+        if (!shiftDown && !ctrlDown) {
             HeatmapPosition pos = panel.getScrollPosition();
             panel.setScrollRowPosition(pos.row + rotation);
-        }
-        else
-        {
+        } else {
             int width = heatmap.getColumns().getCellSize() + rotation * -1;
-            if (width < 1)
-            {
+            if (width < 1) {
                 width = 1;
             }
 
             int height = heatmap.getRows().getCellSize() + rotation * -1;
-            if (height < 1)
-            {
+            if (height < 1) {
                 height = 1;
             }
 
@@ -200,33 +180,28 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         }
     }
 
-    private void updateSelection(@NotNull MouseEvent e)
-    {
+    private void updateSelection(@NotNull MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
         coord = bodyPanel.getDrawer().getPosition(point);
 
-        IMatrixView mv = heatmap  ;
+        IMatrixView mv = heatmap;
         mv.getRows().setSelectionLead(coord.row);
         mv.getColumns().setSelectionLead(coord.column);
-        mv.getRows().setSelected(  new int[0]);
-        mv.getColumns().setSelected(  new int[0]);
+        mv.getRows().setSelected(new int[0]);
+        mv.getColumns().setSelected(new int[0]);
 
         //System.out.println(mode + " " + point + " -> " + coord);
     }
 
-    private void updateScroll(@NotNull MouseEvent e, boolean dragging)
-    {
+    private void updateScroll(@NotNull MouseEvent e, boolean dragging) {
         point = e.getPoint();
 
-        if (!dragging)
-        {
+        if (!dragging) {
             startPoint = point;
             startScrollValue = panel.getScrollValue();
-        }
-        else
-        {
+        } else {
             int widthOffset = point.x - startPoint.x;
             int heightOffset = point.y - startPoint.y;
 

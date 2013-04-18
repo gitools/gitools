@@ -34,24 +34,20 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.*;
 
-public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
-{
+public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
-    public GeneMatrixFormat()
-    {
+    public GeneMatrixFormat() {
         super(FileSuffixes.GENE_MATRIX, DoubleBinaryMatrix.class);
     }
 
     @NotNull
     @Override
-    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
         DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
 
-        try
-        {
+        try {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -70,22 +66,17 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
             for (int i = 0; i < columnNames.length; i++)
                 indices.add(new HashSet<Integer>());
 
-            while ((fields = parser.readNext()) != null)
-            {
+            while ((fields = parser.readNext()) != null) {
 
-                if (fields.length > columnNames.length)
-                {
+                if (fields.length > columnNames.length) {
                     throw new PersistenceException("Row with more columns than expected at line " + parser.getLineNumber());
                 }
 
-                for (int i = 0; i < fields.length; i++)
-                {
+                for (int i = 0; i < fields.length; i++) {
                     String name = fields[i];
-                    if (!name.isEmpty())
-                    {
+                    if (!name.isEmpty()) {
                         Integer rowIndex = rowIndices.get(name);
-                        if (rowIndex == null)
-                        {
+                        if (rowIndex == null) {
                             rowIndex = rowIndices.size();
                             rowIndices.put(name, rowIndex);
                         }
@@ -97,13 +88,10 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
             // incorporate population labels
 
             String[] populationLabels = getPopulationLabels();
-            if (populationLabels != null)
-            {
-                for (String name : populationLabels)
-                {
+            if (populationLabels != null) {
+                for (String name : populationLabels) {
                     Integer index = rowIndices.get(name);
-                    if (index == null)
-                    {
+                    if (index == null) {
                         rowIndices.put(name, rowIndices.size());
                     }
                 }
@@ -132,8 +120,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
             // set cell values
 
-            for (int col = 0; col < columnNames.length; col++)
-            {
+            for (int col = 0; col < columnNames.length; col++) {
                 Set<Integer> colIndices = indices.get(col);
                 for (Integer index : colIndices)
                     matrix.setCellValue(index, col, 0, 1.0);
@@ -144,8 +131,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
             progressMonitor.info(matrix.getColumns().size() + " columns and " + matrix.getRows().size() + " rows");
 
             progressMonitor.end();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new PersistenceException(e);
         }
 
@@ -154,12 +140,10 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
 
-        try
-        {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
@@ -182,39 +166,32 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
 
             int finishedColumns = 0;
             int[] positions = new int[numColumns];
-            while (finishedColumns < numColumns)
-            {
+            while (finishedColumns < numColumns) {
                 boolean validLine = false;
-                for (int col = 0; col < numColumns; col++)
-                {
-                    if (col != 0)
-                    {
+                for (int col = 0; col < numColumns; col++) {
+                    if (col != 0) {
                         line.append('\t');
                     }
 
                     int row = positions[col];
-                    if (row < numRows)
-                    {
+                    if (row < numRows) {
                         double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
                         while (value != 1.0 && (row < numRows - 1))
                             value = MatrixUtils.doubleValue(matrix.getCellValue(++row, col, 0));
 
-                        if (value == 1.0)
-                        {
+                        if (value == 1.0) {
                             line.append(matrix.internalRowLabel(row));
                             validLine = true;
                         }
 
                         positions[col] = row + 1;
-                        if (positions[col] >= numRows)
-                        {
+                        if (positions[col] >= numRows) {
                             finishedColumns++;
                         }
                     }
                 }
 
-                if (validLine)
-                {
+                if (validLine) {
                     pw.append(line).append('\n');
                 }
 
@@ -222,8 +199,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix>
             }
 
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 

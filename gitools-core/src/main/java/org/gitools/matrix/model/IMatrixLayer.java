@@ -21,8 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-public interface IMatrixLayer
-{
+public interface IMatrixLayer {
 
     String getId();
 

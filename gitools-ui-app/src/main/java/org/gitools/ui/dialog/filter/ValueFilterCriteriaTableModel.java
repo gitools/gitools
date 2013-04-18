@@ -34,8 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ValueFilterCriteriaTableModel implements TableModel
-{
+class ValueFilterCriteriaTableModel implements TableModel {
 
     private static final String[] columnName = new String[]{"Attribute", "Condition", "Value"};
 
@@ -49,54 +48,45 @@ class ValueFilterCriteriaTableModel implements TableModel
     @NotNull
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, @NotNull String[] attributeNames)
-    {
+    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, @NotNull String[] attributeNames) {
         this.criteriaList = criteriaList;
         for (int i = 0; i < attributeNames.length; i++)
             attrIndexMap.put(attributeNames[i], i);
     }
 
-    public ValueFilterCriteriaTableModel(@NotNull String[] attributeNames)
-    {
+    public ValueFilterCriteriaTableModel(@NotNull String[] attributeNames) {
         this(new ArrayList<ValueFilterCriteria>(), attributeNames);
     }
 
     @Override
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return criteriaList.size();
     }
 
     @Override
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return 3;
     }
 
     @Override
-    public String getColumnName(int columnIndex)
-    {
+    public String getColumnName(int columnIndex) {
         return columnName[columnIndex];
     }
 
     @Override
-    public Class<?> getColumnClass(int columnIndex)
-    {
+    public Class<?> getColumnClass(int columnIndex) {
         return columnClass[columnIndex];
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex)
-    {
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
         return true;
     }
 
     @Nullable
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex)
-    {
-        switch (columnIndex)
-        {
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
             case 0:
                 return criteriaList.get(rowIndex).getAttributeName();
             case 1:
@@ -108,10 +98,8 @@ class ValueFilterCriteriaTableModel implements TableModel
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-    {
-        switch (columnIndex)
-        {
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        switch (columnIndex) {
             case 0:
                 String attrName = (String) aValue;
                 criteriaList.get(rowIndex).setAttributeName(attrName);
@@ -129,26 +117,22 @@ class ValueFilterCriteriaTableModel implements TableModel
         }
     }
 
-    public List<ValueFilterCriteria> getList()
-    {
+    public List<ValueFilterCriteria> getList() {
         return criteriaList;
     }
 
-    public void addCriteria(final ValueFilterCriteria criteria)
-    {
+    public void addCriteria(final ValueFilterCriteria criteria) {
         criteriaList.add(criteria);
         fireCriteriaChanged();
     }
 
-    void addAllCriteria(@NotNull List<ValueFilterCriteria> list)
-    {
+    void addAllCriteria(@NotNull List<ValueFilterCriteria> list) {
         int initialRow = criteriaList.size();
         criteriaList.addAll(list);
         fireCriteriaChanged();
     }
 
-    void removeCriteria(@NotNull int[] selectedRows)
-    {
+    void removeCriteria(@NotNull int[] selectedRows) {
         List<Object> objects = new ArrayList<Object>(selectedRows.length);
         for (int index : selectedRows)
             objects.add(criteriaList.get(index));
@@ -157,22 +141,19 @@ class ValueFilterCriteriaTableModel implements TableModel
         fireCriteriaChanged();
     }
 
-    private void fireCriteriaChanged()
-    {
+    private void fireCriteriaChanged() {
         TableModelEvent e = new TableModelEvent(this);
         for (TableModelListener l : listeners)
             l.tableChanged(e);
     }
 
     @Override
-    public void addTableModelListener(TableModelListener l)
-    {
+    public void addTableModelListener(TableModelListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removeTableModelListener(TableModelListener l)
-    {
+    public void removeTableModelListener(TableModelListener l) {
         listeners.remove(l);
     }
 }

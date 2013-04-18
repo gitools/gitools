@@ -25,8 +25,7 @@ import org.gitools.analysis.Method;
 import org.gitools.analysis.MethodException;
 import org.jetbrains.annotations.Nullable;
 
-public interface CorrelationMethod extends Method
-{
+public interface CorrelationMethod extends Method {
 
     /**
      * Calculate the correlation between the two vectors

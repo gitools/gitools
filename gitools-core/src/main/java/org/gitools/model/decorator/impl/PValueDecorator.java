@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class PValueDecorator extends Decorator<PValueColorScale>
-{
+public class PValueDecorator extends Decorator<PValueColorScale> {
     public static final String PROPERTY_SIGNIFICANCE = "significanceLevel";
     public static final String PROPERTY_USE_CORRECTION = "useCorrection";
     public static final String PROPERTY_CORRECTED_VALUE = "correctedValueIndex";
@@ -54,8 +53,7 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
     private PValueColorScale scale;
 
-    public PValueDecorator()
-    {
+    public PValueDecorator() {
         super();
 
         scale = new PValueColorScale();
@@ -64,50 +62,42 @@ public class PValueDecorator extends Decorator<PValueColorScale>
         significanceLevel = 0.05;
     }
 
-    public PValueColorScale getScale()
-    {
+    public PValueColorScale getScale() {
         return scale;
     }
 
-    public void setScale(PValueColorScale scale)
-    {
+    public void setScale(PValueColorScale scale) {
         this.scale = scale;
     }
 
     @XmlElement(name = "filter-layer-index")
-    public final int getCorrectedValueIndex()
-    {
+    public final int getCorrectedValueIndex() {
         return correctedValueIndex;
     }
 
-    public final void setCorrectedValueIndex(int correctedValueIndex)
-    {
+    public final void setCorrectedValueIndex(int correctedValueIndex) {
         int old = this.correctedValueIndex;
         this.correctedValueIndex = correctedValueIndex;
         firePropertyChange(PROPERTY_CORRECTED_VALUE, old, correctedValueIndex);
     }
 
     @XmlElement(name = "use-filter")
-    public final boolean isUseCorrection()
-    {
+    public final boolean isUseCorrection() {
         return useCorrection;
     }
 
-    public final void setUseCorrection(boolean useCorrection)
-    {
+    public final void setUseCorrection(boolean useCorrection) {
         boolean old = this.useCorrection;
         this.useCorrection = useCorrection;
         firePropertyChange(PROPERTY_USE_CORRECTION, old, useCorrection);
     }
 
     @XmlElement(name = "significance")
-    public final double getSignificanceLevel()
-    {
+    public final double getSignificanceLevel() {
         return significanceLevel;
     }
 
-    public final void setSignificanceLevel(double significanceLevel)
-    {
+    public final void setSignificanceLevel(double significanceLevel) {
         double old = this.significanceLevel;
         this.significanceLevel = significanceLevel;
         getScale().setSignificanceLevel(significanceLevel);
@@ -116,13 +106,11 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
     @XmlElement(name = "min-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getMinColor()
-    {
+    public Color getMinColor() {
         return getScale().getMinColor();
     }
 
-    public void setMinColor(Color color)
-    {
+    public void setMinColor(Color color) {
         Color old = getScale().getMinColor();
         getScale().setMinColor(color);
         firePropertyChange(PROPERTY_MIN_COLOR, old, color);
@@ -130,13 +118,11 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
     @XmlElement(name = "max-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getMaxColor()
-    {
+    public Color getMaxColor() {
         return getScale().getMaxColor();
     }
 
-    public void setMaxColor(Color color)
-    {
+    public void setMaxColor(Color color) {
         Color old = getScale().getMaxColor();
         getScale().setMaxColor(color);
         firePropertyChange(PROPERTY_MAX_COLOR, old, color);
@@ -144,13 +130,11 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
     @XmlElement(name = "non-significant-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getNonSignificantColor()
-    {
+    public Color getNonSignificantColor() {
         return getScale().getNonSignificantColor();
     }
 
-    public void setNonSignificantColor(Color color)
-    {
+    public void setNonSignificantColor(Color color) {
         Color old = getScale().getNonSignificantColor();
         getScale().setNonSignificantColor(color);
         firePropertyChange(PROPERTY_NON_SIGNIFICANT_COLOR, old, color);
@@ -158,28 +142,24 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
     @XmlElement(name = "empty-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getEmptyColor()
-    {
+    public Color getEmptyColor() {
         return getScale().getEmptyColor();
     }
 
-    public void setEmptyColor(Color color)
-    {
+    public void setEmptyColor(Color color) {
         Color old = getScale().getEmptyColor();
         getScale().setEmptyColor(color);
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer)
-    {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
 
         decoration.reset();
 
         double v = toDouble(matrix, row, column, layer);
 
-        if (Double.isNaN(v))
-        {
+        if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;
@@ -187,8 +167,7 @@ public class PValueDecorator extends Decorator<PValueColorScale>
 
         boolean isSig = v <= significanceLevel;
 
-        if (useCorrection && correctedValueIndex != -1)
-        {
+        if (useCorrection && correctedValueIndex != -1) {
             double cv = toDouble(matrix, row, column, correctedValueIndex);
 
             isSig = cv <= significanceLevel;

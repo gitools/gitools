@@ -25,8 +25,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Properties;
 
-public interface IResourceFormat<R extends IResource>
-{
+public interface IResourceFormat<R extends IResource> {
     String getExtension();
 
     Class<R> getResourceClass();

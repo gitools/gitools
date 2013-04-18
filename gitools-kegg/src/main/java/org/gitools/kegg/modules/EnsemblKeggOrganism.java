@@ -27,60 +27,49 @@ import org.gitools.modules.importer.Organism;
 import org.gitools.modules.importer.RefImpl;
 import org.jetbrains.annotations.NotNull;
 
-public class EnsemblKeggOrganism extends RefImpl implements Organism
-{
+public class EnsemblKeggOrganism extends RefImpl implements Organism {
 
     private DatasetInfo ensemblDataset;
     private KeggOrganism keggDef;
 
-    public EnsemblKeggOrganism(String id, String name, DatasetInfo dataset)
-    {
+    public EnsemblKeggOrganism(String id, String name, DatasetInfo dataset) {
         super(id, name);
         this.ensemblDataset = dataset;
     }
 
-    public EnsemblKeggOrganism(String id, String name, KeggOrganism def)
-    {
+    public EnsemblKeggOrganism(String id, String name, KeggOrganism def) {
         super(id, name);
         this.keggDef = def;
     }
 
-    public DatasetInfo getEnsemblDataset()
-    {
+    public DatasetInfo getEnsemblDataset() {
         return ensemblDataset;
     }
 
-    public void setEnsemblDataset(DatasetInfo ensemblDataset)
-    {
+    public void setEnsemblDataset(DatasetInfo ensemblDataset) {
         this.ensemblDataset = ensemblDataset;
     }
 
-    public KeggOrganism getKeggOrganism()
-    {
+    public KeggOrganism getKeggOrganism() {
         return keggDef;
     }
 
-    public void setKeggDef(KeggOrganism keggDef)
-    {
+    public void setKeggDef(KeggOrganism keggDef) {
         this.keggDef = keggDef;
     }
 
     @NotNull
     @Override
-    public String getRef()
-    {
+    public String getRef() {
         StringBuilder sb = new StringBuilder();
         sb.append(super.getRef()).append("[");
-        if (ensemblDataset != null)
-        {
+        if (ensemblDataset != null) {
             sb.append("ENSEMBL");
         }
-        if (ensemblDataset != null && keggDef != null)
-        {
+        if (ensemblDataset != null && keggDef != null) {
             sb.append(", ");
         }
-        if (keggDef != null)
-        {
+        if (keggDef != null) {
             sb.append("KEGG");
         }
         sb.append("]");

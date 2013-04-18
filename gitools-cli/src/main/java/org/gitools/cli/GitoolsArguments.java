@@ -25,8 +25,7 @@ import org.gitools.threads.ThreadManager;
 import org.gitools.utils.tools.args.BaseArguments;
 import org.kohsuke.args4j.Option;
 
-public class GitoolsArguments extends BaseArguments
-{
+public class GitoolsArguments extends BaseArguments {
 
     @Option(name = "-version", usage = "Print the version information and exit.")
     public final boolean version = false;

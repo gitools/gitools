@@ -27,8 +27,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 /**
  * @noinspection ALL
  */
-public interface IEditor extends IView
-{
+public interface IEditor extends IView {
 
     Object getModel();
 
@@ -60,7 +59,7 @@ public interface IEditor extends IView
 
     /**
      * This method is called when the editor lose the focus.
-     *
+     * <p/>
      * It's a good practice to free all the memory that is not
      * needed.
      */

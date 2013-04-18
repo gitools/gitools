@@ -23,18 +23,16 @@ package org.gitools.newick;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class NewickNode<VT>
-{
+@XmlAccessorType(XmlAccessType.FIELD)
+public class NewickNode<VT> {
 
-    public enum Order
-    {
+    public enum Order {
         PRE_ORDER, POST_ORDER
     }
 
@@ -43,82 +41,66 @@ public class NewickNode<VT>
 
     private final List<NewickNode> children;
 
-    public NewickNode()
-    {
+    public NewickNode() {
         this(null, null);
     }
 
-    private NewickNode(String name, VT value)
-    {
+    private NewickNode(String name, VT value) {
         this.name = name;
         this.value = value;
         this.children = new ArrayList<NewickNode>(2);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public VT getValue()
-    {
+    public VT getValue() {
         return value;
     }
 
-    public void setValue(VT value)
-    {
+    public void setValue(VT value) {
         this.value = value;
     }
 
-    public NewickNode getChild(int index)
-    {
+    public NewickNode getChild(int index) {
         return children.get(index);
     }
 
-    public void setChild(int index, NewickNode node)
-    {
+    public void setChild(int index, NewickNode node) {
         children.set(index, node);
     }
 
-    public List<NewickNode> getChildren()
-    {
+    public List<NewickNode> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
-    public void addChild(NewickNode node)
-    {
+    public void addChild(NewickNode node) {
         children.add(node);
     }
 
-    boolean isLeaf()
-    {
+    boolean isLeaf() {
         return children.isEmpty();
     }
 
-    public int getMaxDepth()
-    {
+    public int getMaxDepth() {
         return getMaxDepth(0);
     }
 
-    int getMaxDepth(int depth)
-    {
+    int getMaxDepth(int depth) {
         int res = 0;
 
-        if (isLeaf())
-        {
+        if (isLeaf()) {
             return depth + 1;
         }
 
-        for (NewickNode child : children)
-        {
+        for (NewickNode child : children) {
             int childDepth = child.getMaxDepth(depth + 1);
-            if (childDepth > res)
-            {
+            if (childDepth > res) {
                 res = childDepth;
             }
         }
@@ -126,17 +108,12 @@ public class NewickNode<VT>
         return res;
     }
 
-    void leaves(@NotNull List<NewickNode> leaves, int maxLevel, @NotNull Order order)
-    {
-        if (children.isEmpty() || maxLevel == 0)
-        {
+    void leaves(@NotNull List<NewickNode> leaves, int maxLevel, @NotNull Order order) {
+        if (children.isEmpty() || maxLevel == 0) {
             leaves.add(this);
-        }
-        else if (maxLevel > 0)
-        {
+        } else if (maxLevel > 0) {
             Iterable<NewickNode> iterable = null;
-            switch (order)
-            {
+            switch (order) {
                 case PRE_ORDER:
                     iterable = children;
                     break;
@@ -150,43 +127,36 @@ public class NewickNode<VT>
     }
 
     @NotNull
-    List<NewickNode> getLeaves(int maxLevel, @NotNull Order order)
-    {
+    List<NewickNode> getLeaves(int maxLevel, @NotNull Order order) {
         List<NewickNode> leaves = new ArrayList<NewickNode>();
         leaves(leaves, maxLevel, order);
         return leaves;
     }
 
     @NotNull
-    public List<NewickNode> getLeaves(int maxLevel)
-    {
+    public List<NewickNode> getLeaves(int maxLevel) {
         return getLeaves(maxLevel, Order.PRE_ORDER);
     }
 
     @NotNull
-    public List<NewickNode> getLeaves()
-    {
+    public List<NewickNode> getLeaves() {
         return getLeaves(Integer.MAX_VALUE);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (!children.isEmpty())
-        {
+        if (!children.isEmpty()) {
             sb.append('(').append(children.get(0));
             for (int i = 1; i < children.size(); i++)
                 sb.append(',').append(children.get(i));
             sb.append(')');
         }
-        if (name != null)
-        {
+        if (name != null) {
             sb.append(name);
         }
-        if (value != null)
-        {
+        if (value != null) {
             sb.append(":").append(value);
         }
         return sb.toString();

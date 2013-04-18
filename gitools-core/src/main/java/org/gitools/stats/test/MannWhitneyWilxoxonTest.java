@@ -28,52 +28,42 @@ import org.gitools.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.stats.test.results.CommonResult;
 import org.jetbrains.annotations.NotNull;
 
-public class MannWhitneyWilxoxonTest extends AbstractTest
-{
+public class MannWhitneyWilxoxonTest extends AbstractTest {
 
-    public MannWhitneyWilxoxonTest()
-    {
+    public MannWhitneyWilxoxonTest() {
     }
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "mannWhitneyWilcoxon";
     }
 
 
     @NotNull
     @Override
-    public Class<? extends GroupComparisonResult> getResultClass()
-    {
+    public Class<? extends GroupComparisonResult> getResultClass() {
         return GroupComparisonResult.class;
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population)
-    {
+    public void processPopulation(String name, DoubleMatrix1D population) {
     }
 
 
     @NotNull
-    public GroupComparisonResult processTest(@NotNull double[] group1, @NotNull double[] group2)
-    {
+    public GroupComparisonResult processTest(@NotNull double[] group1, @NotNull double[] group2) {
 
         int g1Nans = 0;
         int g2Nans = 0;
 
-        for (int i = 0; i < group1.length; i++)
-        {
-            if (Double.isNaN(group1[i]))
-            {
+        for (int i = 0; i < group1.length; i++) {
+            if (Double.isNaN(group1[i])) {
                 g1Nans++;
             }
         }
-        for (int i = 0; i < group2.length; i++)
-        {
-            if (Double.isNaN(group2[i]))
-            {
+        for (int i = 0; i < group2.length; i++) {
+            if (Double.isNaN(group2[i])) {
                 g2Nans++;
             }
         }
@@ -82,41 +72,30 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
         double[] group2NoNan = new double[group2.length - g2Nans];
 
         int offset = 0;
-        for (int i = 0; i < group1.length; i++)
-        {
-            if (!Double.isNaN(group1[i]))
-            {
+        for (int i = 0; i < group1.length; i++) {
+            if (!Double.isNaN(group1[i])) {
                 group1NoNan[i - offset] = group1[i];
-            }
-            else
-            {
+            } else {
                 offset++;
             }
         }
         offset = 0;
-        for (int i = 0; i < group2.length; i++)
-        {
-            if (!Double.isNaN(group2[i]))
-            {
+        for (int i = 0; i < group2.length; i++) {
+            if (!Double.isNaN(group2[i])) {
                 group2NoNan[i - offset] = group2[i];
-            }
-            else
-            {
+            } else {
                 offset++;
             }
         }
 
-        if (group1NoNan.length > 1 && group2NoNan.length > 1)
-        {
+        if (group1NoNan.length > 1 && group2NoNan.length > 1) {
             MannWhitneyTest mwwLeft = new MannWhitneyTest(group1NoNan, group2NoNan, H1.LESS_THAN);
             MannWhitneyTest mwwRight = new MannWhitneyTest(group1NoNan, group2NoNan, H1.GREATER_THAN);
             MannWhitneyTest mwwTwoTail = new MannWhitneyTest(group1NoNan, group2NoNan, H1.NOT_EQUAL);
 
 
             return new GroupComparisonResult(mwwLeft.getN(), group1NoNan.length, group2NoNan.length, mwwLeft.getSP(), mwwRight.getSP(), mwwTwoTail.getSP());
-        }
-        else
-        {
+        } else {
             return new GroupComparisonResult(group1NoNan.length + group2NoNan.length, group1NoNan.length, group2NoNan.length, Double.NaN, Double.NaN, Double.NaN);
         }
 
@@ -124,8 +103,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest
 
     @NotNull
     @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
-    {
+    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
         throw new UnsupportedOperationException("Not supported at all.");
     }
 

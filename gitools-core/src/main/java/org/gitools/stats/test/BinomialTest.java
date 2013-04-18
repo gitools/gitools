@@ -32,18 +32,15 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class BinomialTest extends AbstractTest
-{
+public class BinomialTest extends AbstractTest {
 
     private static final int exactSizeLimit = 100000;
 
-    public enum AproximationMode
-    {
+    public enum AproximationMode {
         onlyExact, onlyNormal, onlyPoisson, automatic
     }
 
-    private abstract class BinomialAproximation
-    {
+    private abstract class BinomialAproximation {
         @NotNull
         public abstract CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar);
     }
@@ -56,71 +53,54 @@ public class BinomialTest extends AbstractTest
 
     private BinomialAproximation aprox;
 
-    public BinomialTest(@NotNull AproximationMode aproxMode)
-    {
+    public BinomialTest(@NotNull AproximationMode aproxMode) {
         this.statCalc = new OnesCountStatistic();
         this.aproxMode = aproxMode;
 
-        switch (aproxMode)
-        {
+        switch (aproxMode) {
             case onlyExact:
-                this.aprox = new BinomialAproximation()
-                {
+                this.aprox = new BinomialAproximation() {
                     @NotNull
                     @Override
-                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
-                    {
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar) {
 
                         return resultWithExact(observed, n, p, expectedMean, expectedStdev);
                     }
                 };
                 break;
             case onlyNormal:
-                this.aprox = new BinomialAproximation()
-                {
+                this.aprox = new BinomialAproximation() {
                     @NotNull
                     @Override
-                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
-                    {
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar) {
 
                         return resultWithNormal(observed, n, p, expectedMean, expectedStdev);
                     }
                 };
                 break;
             case onlyPoisson:
-                this.aprox = new BinomialAproximation()
-                {
+                this.aprox = new BinomialAproximation() {
                     @NotNull
                     @Override
-                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
-                    {
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar) {
 
                         return resultWithPoisson(observed, n, p, expectedMean, expectedStdev);
                     }
                 };
                 break;
             case automatic:
-                this.aprox = new BinomialAproximation()
-                {
+                this.aprox = new BinomialAproximation() {
                     @NotNull
                     @Override
-                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar)
-                    {
+                    public CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar) {
 
-                        if (n <= exactSizeLimit)
-                        {
+                        if (n <= exactSizeLimit) {
                             return resultWithExact(observed, n, p, expectedMean, expectedStdev);
-                        }
-                        else if (n >= 150 && expectedVar >= 0.9 * expectedMean)
-                        {
+                        } else if (n >= 150 && expectedVar >= 0.9 * expectedMean) {
                             return resultWithPoisson(observed, n, p, expectedMean, expectedStdev);
-                        }
-                        else if ((n * p >= 5) && (n * (1 - p) >= 5))
-                        {
+                        } else if ((n * p >= 5) && (n * (1 - p) >= 5)) {
                             return resultWithNormal(observed, n, p, expectedMean, expectedStdev);
-                        }
-                        else
-                        {
+                        } else {
                             return resultWithExact(observed, n, p, expectedMean, expectedStdev);
                         }
                     }
@@ -131,12 +111,10 @@ public class BinomialTest extends AbstractTest
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         StringBuilder sb = new StringBuilder();
         sb.append("binomial");
-        switch (aproxMode)
-        {
+        switch (aproxMode) {
             case automatic:
                 break;
             case onlyExact:
@@ -159,21 +137,18 @@ public class BinomialTest extends AbstractTest
 
     @NotNull
     @Override
-    public Class<? extends CommonResult> getResultClass()
-    {
+    public Class<? extends CommonResult> getResultClass() {
         return BinomialResult.class;
     }
 
     @Override
-    public void processPopulation(String name, @NotNull DoubleMatrix1D population)
-    {
+    public void processPopulation(String name, @NotNull DoubleMatrix1D population) {
         p = statCalc.calc(population) / population.size();
     }
 
     @NotNull
     @Override
-    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices)
-    {
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
 
         // Create a view with group values (excluding NaN's)
 
@@ -195,20 +170,16 @@ public class BinomialTest extends AbstractTest
     }
 
     @NotNull
-    final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev)
-    {
+    final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;
         double twoTailPvalue;
 
         //FIXME: May be it's better to return null ???
-        if (n == 0)
-        {
+        if (n == 0) {
             leftPvalue = rightPvalue = twoTailPvalue = 1.0;
-        }
-        else
-        {
+        } else {
             leftPvalue = Probability.binomial(observed, n, p);
             rightPvalue = observed > 0 ? Probability.binomialComplemented(observed - 1, n, p) : 1.0;
 
@@ -220,8 +191,7 @@ public class BinomialTest extends AbstractTest
     }
 
     @NotNull
-    final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev)
-    {
+    final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double zscore;
         double leftPvalue;
@@ -241,8 +211,7 @@ public class BinomialTest extends AbstractTest
     }
 
     @NotNull
-    final CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev)
-    {
+    final CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;
@@ -250,15 +219,13 @@ public class BinomialTest extends AbstractTest
 
         // Calculate pvalues
 
-        try
-        {
+        try {
             leftPvalue = Probability.poisson(observed, expectedMean);
             rightPvalue = observed > 0 ? Probability.poissonComplemented(observed - 1, expectedMean) : 1.0;
 
             twoTailPvalue = (observed <= expectedMean ? leftPvalue : rightPvalue) * 2; //FIXME: Review
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
-        } catch (ArithmeticException e)
-        {
+        } catch (ArithmeticException e) {
             leftPvalue = rightPvalue = twoTailPvalue = Double.NaN;
         }
 

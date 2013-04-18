@@ -24,13 +24,11 @@ package org.gitools.model.decorator;
 import java.awt.*;
 import java.io.Serializable;
 
-public class Decoration implements Serializable
-{
+public class Decoration implements Serializable {
 
     private static final long serialVersionUID = 5204451046972665249L;
 
-    public enum TextAlignment
-    {
+    public enum TextAlignment {
         left, right, center
     }
 
@@ -40,13 +38,11 @@ public class Decoration implements Serializable
     private Color fgColor;
     private Color bgColor;
 
-    public Decoration()
-    {
+    public Decoration() {
         reset();
     }
 
-    public void reset()
-    {
+    public void reset() {
         this.text = "";
         this.textAlign = TextAlignment.left;
         this.toolTip = "";
@@ -54,53 +50,43 @@ public class Decoration implements Serializable
         this.bgColor = Color.WHITE;
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) {
         this.text = text;
     }
 
-    public TextAlignment getTextAlign()
-    {
+    public TextAlignment getTextAlign() {
         return textAlign;
     }
 
-    public void setTextAlign(TextAlignment textAlign)
-    {
+    public void setTextAlign(TextAlignment textAlign) {
         this.textAlign = textAlign;
     }
 
-    public String getToolTip()
-    {
+    public String getToolTip() {
         return toolTip;
     }
 
-    public void setToolTip(String toolTip)
-    {
+    public void setToolTip(String toolTip) {
         this.toolTip = toolTip;
     }
 
-    public Color getFgColor()
-    {
+    public Color getFgColor() {
         return fgColor;
     }
 
-    public void setFgColor(Color fgColor)
-    {
+    public void setFgColor(Color fgColor) {
         this.fgColor = fgColor;
     }
 
-    public Color getBgColor()
-    {
+    public Color getBgColor() {
         return bgColor;
     }
 
-    public void setBgColor(Color bgColor)
-    {
+    public void setBgColor(Color bgColor) {
         this.bgColor = bgColor;
     }
 }

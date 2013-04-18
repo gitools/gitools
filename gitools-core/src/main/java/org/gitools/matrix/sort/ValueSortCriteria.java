@@ -27,31 +27,26 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public final class ValueSortCriteria
-{
+public final class ValueSortCriteria {
 
-    public enum SortDirection
-    {
+    public enum SortDirection {
         ASCENDING("Ascending", 1),
         DESCENDING("Descending", -1);
 
         private final String title;
         private final int factor;
 
-        private SortDirection(String title, int factor)
-        {
+        private SortDirection(String title, int factor) {
             this.title = title;
             this.factor = factor;
         }
 
-        public int getFactor()
-        {
+        public int getFactor() {
             return factor;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return title;
         }
     }
@@ -61,14 +56,12 @@ public final class ValueSortCriteria
     private IAggregator aggregator;
     private SortDirection direction;
 
-    public ValueSortCriteria(int attributeIndex, IAggregator aggregator, SortDirection direction)
-    {
+    public ValueSortCriteria(int attributeIndex, IAggregator aggregator, SortDirection direction) {
 
         this(null, attributeIndex, aggregator, direction);
     }
 
-    public ValueSortCriteria(String attributeName, int attributeIndex, IAggregator aggregator, SortDirection direction)
-    {
+    public ValueSortCriteria(String attributeName, int attributeIndex, IAggregator aggregator, SortDirection direction) {
 
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
@@ -76,50 +69,41 @@ public final class ValueSortCriteria
         this.aggregator = aggregator;
     }
 
-    public String getAttributeName()
-    {
+    public String getAttributeName() {
         return attributeName;
     }
 
-    public void setAttributeName(String attributeName)
-    {
+    public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
     }
 
-    public final int getAttributeIndex()
-    {
+    public final int getAttributeIndex() {
         return attributeIndex;
     }
 
-    public final void setAttributeIndex(int propIndex)
-    {
+    public final void setAttributeIndex(int propIndex) {
         this.attributeIndex = propIndex;
     }
 
-    public final SortDirection getDirection()
-    {
+    public final SortDirection getDirection() {
         return direction;
     }
 
-    public final void setDirection(SortDirection direction)
-    {
+    public final void setDirection(SortDirection direction) {
         this.direction = direction;
     }
 
-    public final IAggregator getAggregator()
-    {
+    public final IAggregator getAggregator() {
         return aggregator;
     }
 
-    public final void setAggregator(IAggregator aggregator)
-    {
+    public final void setAggregator(IAggregator aggregator) {
         this.aggregator = aggregator;
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return attributeName + ", " + aggregator.toString() + ", " + direction.toString();
     }
 }

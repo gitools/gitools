@@ -31,8 +31,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AttributeGroup
-{
+public class AttributeGroup {
 
     @XmlAttribute
     private String internalName;
@@ -55,73 +54,59 @@ public class AttributeGroup
     @XmlElement(name = "AttributeCollection")
     private List<AttributeCollection> attributeCollections;
 
-    public List<AttributeCollection> getAttributeCollections()
-    {
+    public List<AttributeCollection> getAttributeCollections() {
         return attributeCollections;
     }
 
-    public void setAttributeCollections(List<AttributeCollection> attributeCollections)
-    {
+    public void setAttributeCollections(List<AttributeCollection> attributeCollections) {
         this.attributeCollections = attributeCollections;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public int getMaxSelect()
-    {
+    public int getMaxSelect() {
         return maxSelect;
     }
 
-    public void setMaxSelect(int maxSelect)
-    {
+    public void setMaxSelect(int maxSelect) {
         this.maxSelect = maxSelect;
     }
 }

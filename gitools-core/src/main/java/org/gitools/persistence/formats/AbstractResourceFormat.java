@@ -29,40 +29,34 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Properties;
 
-public abstract class AbstractResourceFormat<R extends IResource> implements IResourceFormat<R>
-{
+public abstract class AbstractResourceFormat<R extends IResource> implements IResourceFormat<R> {
 
     private final String extension;
     private final Class<R> resourceClass;
 
-    protected AbstractResourceFormat(String extension, Class<R> resourceClass)
-    {
+    protected AbstractResourceFormat(String extension, Class<R> resourceClass) {
         this.extension = extension;
         this.resourceClass = resourceClass;
     }
 
     @Override
-    public Class<R> getResourceClass()
-    {
+    public Class<R> getResourceClass() {
         return resourceClass;
     }
 
     @Override
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
 
     @Override
-    public boolean isConfigurable()
-    {
+    public boolean isConfigurable() {
         return false;
     }
 
     @Override
-    public final void configure(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public final void configure(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
         configureResource(resourceLocator, properties, progressMonitor);
     }
 
@@ -78,14 +72,12 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
         // Nothing
     }
 
     @Override
-    public final R read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public final R read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         return readResource(resourceLocator, progressMonitor);
     }
 
@@ -97,19 +89,16 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
      * @return the resource
      * @throws PersistenceException the persistence exception
      */
-    protected R readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected R readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         throw new UnsupportedOperationException("This format don't support reading");
     }
 
     @Override
-    public final void write(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public final void write(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
         writeResource(resourceLocator, resource, progressMonitor);
     }
 
-    protected void writeResource(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(IResourceLocator resourceLocator, R resource, IProgressMonitor progressMonitor) throws PersistenceException {
         throw new UnsupportedOperationException("This format don't support writing");
     }
 

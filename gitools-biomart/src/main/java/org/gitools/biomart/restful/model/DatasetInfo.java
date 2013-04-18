@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "datasetInfo", propOrder = {"name", "displayName", "type", "visible", "_interface"})
-public class DatasetInfo
-{
+public class DatasetInfo {
 
     @XmlElement(required = true)
     private String name;
@@ -55,8 +54,7 @@ public class DatasetInfo
      * @return possible object is
      *         {@link String }
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -66,8 +64,7 @@ public class DatasetInfo
      * @param value allowed object is
      *              {@link String }
      */
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
@@ -77,8 +74,7 @@ public class DatasetInfo
      * @return possible object is
      *         {@link String }
      */
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
@@ -88,8 +84,7 @@ public class DatasetInfo
      * @param value allowed object is
      *              {@link String }
      */
-    public void setDisplayName(String value)
-    {
+    public void setDisplayName(String value) {
         this.displayName = value;
     }
 
@@ -99,8 +94,7 @@ public class DatasetInfo
      * @return possible object is
      *         {@link String }
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
@@ -110,24 +104,21 @@ public class DatasetInfo
      * @param value allowed object is
      *              {@link String }
      */
-    public void setType(String value)
-    {
+    public void setType(String value) {
         this.type = value;
     }
 
     /**
      * Gets the value of the visible property.
      */
-    public int getVisible()
-    {
+    public int getVisible() {
         return visible;
     }
 
     /**
      * Sets the value of the visible property.
      */
-    public void setVisible(int value)
-    {
+    public void setVisible(int value) {
         this.visible = value;
     }
 
@@ -137,8 +128,7 @@ public class DatasetInfo
      * @return possible object is
      *         {@link String }
      */
-    public String getInterface()
-    {
+    public String getInterface() {
         return _interface;
     }
 
@@ -148,8 +138,7 @@ public class DatasetInfo
      * @param value allowed object is
      *              {@link String }
      */
-    public void setInterface(String value)
-    {
+    public void setInterface(String value) {
         this._interface = value;
     }
 

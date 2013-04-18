@@ -25,36 +25,30 @@ package org.gitools.kegg.modules;
 import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.modules.importer.Version;
 
-public class EnsemblKeggVersion implements Version
-{
+public class EnsemblKeggVersion implements Version {
 
     private final BiomartSource source;
 
-    public EnsemblKeggVersion(BiomartSource source)
-    {
+    public EnsemblKeggVersion(BiomartSource source) {
         this.source = source;
     }
 
-    public BiomartSource getSource()
-    {
+    public BiomartSource getSource() {
         return source;
     }
 
     @Override
-    public String getRef()
-    {
+    public String getRef() {
         return source.getName();
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return source.getDescription();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return source.getDescription();
     }
 }

@@ -36,8 +36,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @noinspection ALL
  */
-public class FisherExactTest
-{
+public class FisherExactTest {
 
     private int a;
     private int b;
@@ -57,8 +56,7 @@ public class FisherExactTest
      * @param ctable ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      * @see FisherExactTest(int a, int b, int c, int d)
      */
-    public FisherExactTest(int[] ctable)
-    {
+    public FisherExactTest(int[] ctable) {
         this.a = ctable[0];
         this.b = ctable[1];
         this.c = ctable[2];
@@ -80,8 +78,7 @@ public class FisherExactTest
      * @param c frequency of x ^ !y
      * @param d frequency of !x ^ !y
      */
-    public FisherExactTest(int a, int b, int c, int d)
-    {
+    public FisherExactTest(int a, int b, int c, int d) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -104,8 +101,7 @@ public class FisherExactTest
      * @param d frequency of !x ^ !y
      * @return probability = C(a+b, a) * C(c+d, c) / C(n, a+c)
      */
-    public double testContingencyTable(int a, int b, int c, int d)
-    {
+    public double testContingencyTable(int a, int b, int c, int d) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -119,8 +115,7 @@ public class FisherExactTest
      *
      * @return probability = C(a+b, a) * C(c+d, c) / C(n, a+c)
      */
-    public double testContingencyTable()
-    {
+    public double testContingencyTable() {
         int n11 = a;
         int n1_ = a + b;
         int n_1 = a + c;
@@ -129,38 +124,31 @@ public class FisherExactTest
         return internalTest(n11, n1_, n_1, n);
     }
 
-    public int getA()
-    {
+    public int getA() {
         return a;
     }
 
-    public int getB()
-    {
+    public int getB() {
         return b;
     }
 
-    public int getC()
-    {
+    public int getC() {
         return c;
     }
 
-    public int getD()
-    {
+    public int getD() {
         return d;
     }
 
-    public double getLeftPValue()
-    {
+    public double getLeftPValue() {
         return leftPValue;
     }
 
-    public double getRightPValue()
-    {
+    public double getRightPValue() {
         return rightPValue;
     }
 
-    public double getTwoTailPValue()
-    {
+    public double getTwoTailPValue() {
         return twoTailPValue;
     }
 
@@ -174,26 +162,22 @@ public class FisherExactTest
      * @param n   = a + b + c + d
      * @return probability = C(a+b, a) * C(c+d, c) / C(n, a+c)
      */
-    private double internalTest(int n11, int n1_, int n_1, int n)
-    {
+    private double internalTest(int n11, int n1_, int n_1, int n) {
         double sleft, sright, sless, slarg;
         double p, prob;
         int i, j;
 
         int max = n1_;
-        if (n_1 < max)
-        {
+        if (n_1 < max) {
             max = n_1;
         }
 
         int min = n1_ + n_1 - n;
-        if (min < 0)
-        {
+        if (min < 0) {
             min = 0;
         }
 
-        if (min == max)
-        {
+        if (min == max) {
             calcPValues(1.0, 1.0, 1.0, 1.0);
             return 1.0;
         }
@@ -202,45 +186,34 @@ public class FisherExactTest
 
         sleft = 0.0;
         p = hyper.hyper(min);
-        for (i = min + 1; p < 0.99999999 * prob; i++)
-        {
+        for (i = min + 1; p < 0.99999999 * prob; i++) {
             sleft += p;
             p = hyper.hyper(i);
         }
         i--;
-        if (p < 1.00000001 * prob)
-        {
+        if (p < 1.00000001 * prob) {
             sleft += p;
-        }
-        else
-        {
+        } else {
             i--;
         }
 
         sright = 0.0;
         p = hyper.hyper(max);
-        for (j = max - 1; p < 0.99999999 * prob; j--)
-        {
+        for (j = max - 1; p < 0.99999999 * prob; j--) {
             sright += p;
             p = hyper.hyper(j);
         }
         j++;
-        if (p < 1.00000001 * prob)
-        {
+        if (p < 1.00000001 * prob) {
             sright += p;
-        }
-        else
-        {
+        } else {
             j++;
         }
 
-        if (Math.abs(i - n11) < Math.abs(j - n11))
-        {
+        if (Math.abs(i - n11) < Math.abs(j - n11)) {
             sless = sleft;
             slarg = 1 - sleft + prob;
-        }
-        else
-        {
+        } else {
             sless = 1 - sright + prob;
             slarg = sright;
         }
@@ -250,14 +223,12 @@ public class FisherExactTest
         return prob;
     }
 
-    private void calcPValues(double sleft, double sright, double sless, double slarg)
-    {
+    private void calcPValues(double sleft, double sright, double sless, double slarg) {
 
         leftPValue = sless < 1.0 ? sless : 1.0;
         rightPValue = slarg < 1.0 ? slarg : 1.0;
         twoTailPValue = sleft + sright;
-        if (twoTailPValue > 1.0)
-        {
+        if (twoTailPValue > 1.0) {
             twoTailPValue = 1.0;
         }
     }

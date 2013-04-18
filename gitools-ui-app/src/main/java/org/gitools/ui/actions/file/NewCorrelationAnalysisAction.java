@@ -42,13 +42,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class NewCorrelationAnalysisAction extends BaseAction
-{
+public class NewCorrelationAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8917512377366424724L;
 
-    public NewCorrelationAnalysisAction()
-    {
+    public NewCorrelationAnalysisAction() {
         super("Correlation analysis ...");
 
         setDesc("Run a correlation analysis");
@@ -58,16 +56,14 @@ public class NewCorrelationAnalysisAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final CorrelationAnalysisFromFileWizard wizard = new CorrelationAnalysisFromFileWizard();
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -75,17 +71,13 @@ public class NewCorrelationAnalysisAction extends BaseAction
 
         final CorrelationCommand cmd = new CorrelationCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -93,11 +85,9 @@ public class NewCorrelationAnalysisAction extends BaseAction
 
                     editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -106,8 +96,7 @@ public class NewCorrelationAnalysisAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

@@ -34,8 +34,7 @@ import java.util.Properties;
  * @noinspection ALL
  */
 @XmlRootElement
-public class CorrelationAnalysis extends Analysis
-{
+public class CorrelationAnalysis extends Analysis {
 
     private String method;
 
@@ -55,8 +54,7 @@ public class CorrelationAnalysis extends Analysis
     /**
      *
      */
-    public CorrelationAnalysis()
-    {
+    public CorrelationAnalysis() {
         this.method = PearsonCorrelationMethod.ID;
         this.methodProperties = new Properties();
         this.replaceNanValue = null;
@@ -67,79 +65,64 @@ public class CorrelationAnalysis extends Analysis
     /**
      * @return
      */
-    public String getMethod()
-    {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(String method)
-    {
+    public void setMethod(String method) {
         this.method = method;
     }
 
-    public Properties getMethodProperties()
-    {
+    public Properties getMethodProperties() {
         return methodProperties;
     }
 
-    public void setMethodProperties(Properties methodProperties)
-    {
+    public void setMethodProperties(Properties methodProperties) {
         this.methodProperties = methodProperties;
     }
 
-    public boolean isReplaceNanValues()
-    {
+    public boolean isReplaceNanValues() {
         return replaceNanValue != null && !Double.isNaN(replaceNanValue);
     }
 
     @Nullable
-    public Double getReplaceNanValue()
-    {
+    public Double getReplaceNanValue() {
         return replaceNanValue;
     }
 
-    public void setReplaceNanValue(Double value)
-    {
+    public void setReplaceNanValue(Double value) {
         this.replaceNanValue = value;
     }
 
-    public boolean isTransposeData()
-    {
+    public boolean isTransposeData() {
         return transposeData;
     }
 
-    public void setTransposeData(boolean transposeData)
-    {
+    public void setTransposeData(boolean transposeData) {
         this.transposeData = transposeData;
     }
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeIndex;
     }
 
-    public void setAttributeIndex(int attributeIndex)
-    {
+    public void setAttributeIndex(int attributeIndex) {
         this.attributeIndex = attributeIndex;
     }
 
-    public ResourceReference<IMatrix> getData()
-    {
+    public ResourceReference<IMatrix> getData() {
         return data;
     }
 
-    public void setData(ResourceReference<IMatrix> data)
-    {
+    public void setData(ResourceReference<IMatrix> data) {
         this.data = data;
     }
 
-    public ResourceReference<IMatrix> getResults()
-    {
+    public ResourceReference<IMatrix> getResults() {
         return results;
     }
 
-    public void setResults(ResourceReference<IMatrix> results)
-    {
+    public void setResults(ResourceReference<IMatrix> results) {
         this.results = results;
     }
 }

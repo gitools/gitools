@@ -36,8 +36,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartAttributeListPage extends AbstractWizardPage
-{
+public class BiomartAttributeListPage extends AbstractWizardPage {
 
     private MartLocation mart;
 
@@ -53,19 +52,15 @@ public class BiomartAttributeListPage extends AbstractWizardPage
 
     private Boolean reloadData; //determine whether update panel data
 
-    public BiomartAttributeListPage()
-    {
+    public BiomartAttributeListPage() {
     }
 
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         panel = new BiomartAttributeListPanel();
-        panel.addAttributeListChangeListener(new BiomartAttributeListPanel.AttributeListChangeListener()
-        {
+        panel.addAttributeListChangeListener(new BiomartAttributeListPanel.AttributeListChangeListener() {
             @Override
-            public void listChanged()
-            {
+            public void listChanged() {
                 setComplete(panel.getAttributeListSize() > 0);
             }
         });
@@ -74,24 +69,19 @@ public class BiomartAttributeListPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         //panel.setAddBtnEnabled(false);
 
-        if (panel != null && reloadData)
-        {
+        if (panel != null && reloadData) {
             panel.removeAllListAttributes();
         }
 
         panel.setAttributePages(null);
 
-        if (panel.getAttributePages() == null)
-        {
-            new Thread(new Runnable()
-            {
+        if (panel.getAttributePages() == null) {
+            new Thread(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
 
                     updateControlsThread();
                     reloadData = false; //To avoid reload data when back button
@@ -103,23 +93,18 @@ public class BiomartAttributeListPage extends AbstractWizardPage
 
     }
 
-    private void updateControlsThread()
-    {
-        try
-        {
-            if (attrPages == null || reloadData)
-            {
+    private void updateControlsThread() {
+        try {
+            if (attrPages == null || reloadData) {
                 setStatus(MessageStatus.PROGRESS);
                 setMessage("Retrieving available attributes ...");
                 biomartConfig = biomartService.getConfiguration(dataset);
                 attrPages = biomartConfig.getAttributePages();
             }
 
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
+            SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     //panel.setAddBtnEnabled(true);
                     panel.setAttributePages(attrPages);
 
@@ -127,13 +112,10 @@ public class BiomartAttributeListPage extends AbstractWizardPage
                     setMessage("Press [Add...] button to select attributes");
                 }
             });
-        } catch (@NotNull final Throwable cause)
-        {
-            SwingUtilities.invokeLater(new Runnable()
-            {
+        } catch (@NotNull final Throwable cause) {
+            SwingUtilities.invokeLater(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     setStatus(MessageStatus.ERROR);
                     setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
                     ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), cause);
@@ -147,15 +129,11 @@ public class BiomartAttributeListPage extends AbstractWizardPage
         panel.setAttributePages(attrPages);
 	}*/
 
-    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo ds)
-    {
+    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo ds) {
 
-        if (this.dataset != null && this.dataset.getName().equals(ds.getName()))
-        {
+        if (this.dataset != null && this.dataset.getName().equals(ds.getName())) {
             reloadData = false;
-        }
-        else
-        {
+        } else {
             reloadData = true;
         }
 
@@ -164,13 +142,11 @@ public class BiomartAttributeListPage extends AbstractWizardPage
         this.dataset = ds;
     }
 
-    public List<AttributeDescription> getAttributeList()
-    {
+    public List<AttributeDescription> getAttributeList() {
         return panel.getAttributeList();
     }
 
-    public DatasetConfig getBiomartConfig()
-    {
+    public DatasetConfig getBiomartConfig() {
         return biomartConfig;
     }
 }

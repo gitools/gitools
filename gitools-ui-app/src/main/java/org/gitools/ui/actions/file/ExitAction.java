@@ -31,13 +31,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class ExitAction extends BaseAction
-{
+public class ExitAction extends BaseAction {
 
     private static final long serialVersionUID = -2861462318817904958L;
 
-    public ExitAction()
-    {
+    public ExitAction() {
         super("Exit");
 
         setDesc("Close aplication");
@@ -46,8 +44,7 @@ public class ExitAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         //TODO: Ask confirmation !
 

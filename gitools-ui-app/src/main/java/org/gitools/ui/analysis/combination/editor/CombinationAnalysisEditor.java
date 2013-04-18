@@ -41,20 +41,16 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.Map;
 
-public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis>
-{
+public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
 
-    public CombinationAnalysisEditor(CombinationAnalysis analysis)
-    {
+    public CombinationAnalysisEditor(CombinationAnalysis analysis) {
         super(analysis, "/vm/analysis/combination/analysis_details.vm", null);
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context)
-    {
+    protected void prepareContext(@NotNull VelocityContext context) {
         String combOf = "columns";
-        if (analysis.isTransposeData())
-        {
+        if (analysis.isTransposeData()) {
             combOf = "rows";
         }
         context.put("combinationOf", combOf);
@@ -67,18 +63,15 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         context.put("groupsFile", groupsFile);
 
         String sizeAttr = analysis.getSizeAttrName();
-        if (sizeAttr == null || sizeAttr.isEmpty())
-        {
+        if (sizeAttr == null || sizeAttr.isEmpty()) {
             sizeAttr = "Constant value of 1";
         }
         context.put("sizeAttr", sizeAttr);
 
         String pvalueAttr = analysis.getPvalueAttrName();
-        if (pvalueAttr == null || pvalueAttr.isEmpty())
-        {
+        if (pvalueAttr == null || pvalueAttr.isEmpty()) {
             IMatrixLayers attrs = analysis.getData().get().getLayers();
-            if (attrs.size() > 0)
-            {
+            if (attrs.size() > 0) {
                 pvalueAttr = attrs.get(0).getName();
             }
         }
@@ -88,54 +81,41 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         context.put("resultsFile", resourceLocator != null ? resourceLocator.getName() : "Not defined");
 
         resourceLocator = analysis.getLocator();
-        if (resourceLocator != null)
-        {
+        if (resourceLocator != null) {
             context.put("analysisLocation", resourceLocator.getURL());
-        }
-        else
-        {
+        } else {
             setSaveAllowed(true);
         }
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor)
-    {
+    public void doSave(IProgressMonitor progressMonitor) {
         xmlPersistance = new CombinationAnalysisFormat();
         fileformat = CombinationAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
-        if ("NewDataHeatmap".equals(name))
-        {
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
-        }
-        else if ("NewResultsHeatmap".equals(name))
-        {
+        } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
         }
     }
 
-    private void newDataHeatmap()
-    {
-        if (analysis.getData() == null)
-        {
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     monitor.begin("Creating new heatmap from data ...", 1);
 
                     Heatmap heatmap = new Heatmap(analysis.getData().get());
@@ -145,44 +125,36 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                     editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-data", ""));
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             editorPanel.addEditor(editor);
                             AppFrame.get().setStatusText("New heatmap created.");
                         }
                     });
 
                     monitor.end();
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     monitor.exception(e);
                 }
             }
         });
     }
 
-    private void newResultsHeatmap()
-    {
-        if (analysis.getResults() == null)
-        {
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                try
-                {
+                try {
                     Heatmap heatmap = new Heatmap(analysis.getResults().get());
                     heatmap.setTitle(analysis.getTitle() + " (results)");
 
@@ -191,17 +163,14 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                     editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-results", ""));
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             editorPanel.addEditor(editor);
                             AppFrame.get().setStatusText("Heatmap for combination results created.");
                         }
                     });
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     monitor.exception(e);
                 }
             }
@@ -209,8 +178,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     @NotNull
-    private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis)
-    {
+    private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;

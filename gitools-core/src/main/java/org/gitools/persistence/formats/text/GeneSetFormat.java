@@ -34,25 +34,21 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
-{
+public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
 
-    public GeneSetFormat()
-    {
+    public GeneSetFormat() {
         super(FileSuffixes.GENE_SET, GeneSet.class);
     }
 
     @NotNull
     @Override
-    protected GeneSet readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected GeneSet readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
         final Map<String, Integer> labelMap = new HashMap<String, Integer>();
 
 
-        try
-        {
+        try {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -60,17 +56,14 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
             String[] fields;
 
             // read file
-            while ((fields = parser.readNext()) != null)
-            {
+            while ((fields = parser.readNext()) != null) {
 
-                if (fields.length > 1)
-                {
+                if (fields.length > 1) {
                     throw new PersistenceException("Only one column is allowed at line " + parser.getLineNumber());
                 }
 
                 Integer index = labelMap.get(fields[0]);
-                if (index == null)
-                {
+                if (index == null) {
                     labelMap.put(fields[0], labelMap.size());
                 }
             }
@@ -80,8 +73,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
             progressMonitor.info(labelMap.size() + " rows");
 
             progressMonitor.end();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new PersistenceException(e);
         }
 
@@ -94,12 +86,10 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull GeneSet resource, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull GeneSet resource, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving matrix...", resource.size());
 
-        try
-        {
+        try {
 
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
@@ -108,8 +98,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet>
                 pw.println(label);
 
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 

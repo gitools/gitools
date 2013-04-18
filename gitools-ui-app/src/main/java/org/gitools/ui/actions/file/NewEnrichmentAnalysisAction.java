@@ -42,13 +42,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class NewEnrichmentAnalysisAction extends BaseAction
-{
+public class NewEnrichmentAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8592231961109105958L;
 
-    public NewEnrichmentAnalysisAction()
-    {
+    public NewEnrichmentAnalysisAction() {
         super("Enrichment analysis ...");
 
         setDesc("Run an enrichment analysis");
@@ -57,8 +55,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
 
@@ -66,8 +63,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -77,17 +73,13 @@ public class NewEnrichmentAnalysisAction extends BaseAction
 
         final EnrichmentCommand cmd = new EnrichmentCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), wizard.getModulesFile().getAbsolutePath(), wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -95,11 +87,9 @@ public class NewEnrichmentAnalysisAction extends BaseAction
 
                     editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -108,8 +98,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Ok.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

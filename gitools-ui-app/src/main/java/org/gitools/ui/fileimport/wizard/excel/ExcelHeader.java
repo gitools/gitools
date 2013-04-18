@@ -28,56 +28,46 @@ import java.io.Serializable;
 /**
  * @noinspection ALL
  */
-public class ExcelHeader implements Serializable
-{
+public class ExcelHeader implements Serializable {
 
     private final int pos;
     private final int type;
     private final String label;
 
-    public ExcelHeader(String label, int pos, int type)
-    {
+    public ExcelHeader(String label, int pos, int type) {
         this.label = label;
         this.pos = pos;
         this.type = type;
     }
 
-    public String getLabel()
-    {
+    public String getLabel() {
         return label;
     }
 
-    public int getPos()
-    {
+    public int getPos() {
         return pos;
     }
 
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return label;
     }
 
     @Override
-    public boolean equals(@Nullable Object o)
-    {
-        if (this == o)
-        {
+    public boolean equals(@Nullable Object o) {
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass())
-        {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         ExcelHeader that = (ExcelHeader) o;
 
-        if (pos != that.pos)
-        {
+        if (pos != that.pos) {
             return false;
         }
 
@@ -85,8 +75,7 @@ public class ExcelHeader implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return pos;
     }
 }

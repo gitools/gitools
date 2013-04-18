@@ -38,8 +38,7 @@ import java.io.IOException;
  *
  * @noinspection ALL
  */
-class MatrixViewWeka extends Instances
-{
+class MatrixViewWeka extends Instances {
 
     private final ClusteringData matrixView;
 
@@ -52,8 +51,7 @@ class MatrixViewWeka extends Instances
 
     private final int initClassIndex;
 
-    public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex)
-    {
+    public MatrixViewWeka(Instances ds, ClusteringData matrix, int classIndex) {
         super(ds);
 
         initClassIndex = m_ClassIndex = classIndex;
@@ -67,8 +65,7 @@ class MatrixViewWeka extends Instances
 
     //Adding attributes (rows name)
     @NotNull
-    FastVector addAttributes(int numAttributes)
-    {
+    FastVector addAttributes(int numAttributes) {
 
         FastVector attr = new FastVector();
 
@@ -78,33 +75,27 @@ class MatrixViewWeka extends Instances
         return attr;
     }
 
-    public Instances getStructure() throws IOException
-    {
+    public Instances getStructure() throws IOException {
 
         return structure;
     }
 
-    public void setDataSet(Instances mergeInstances)
-    {
+    public void setDataSet(Instances mergeInstances) {
     }
 
     @NotNull
-    public Instances getDataSet() throws IOException
-    {
+    public Instances getDataSet() throws IOException {
 
         Instance current = null;
 
         Instances dataSet = new Instances("matrixToCluster", m_Attributes, 0);
 
-        try
-        {
-            for (int i = 0; i < matrixView.getSize(); i++)
-            {
+        try {
+            for (int i = 0; i < matrixView.getSize(); i++) {
                 current = get(i);
                 dataSet.add(current);
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new IOException("Error retrieving Weka dataset");
         }
         return dataSet;
@@ -114,11 +105,9 @@ class MatrixViewWeka extends Instances
      * Given an index (col,row) from the matrix we retrieve the instance
      */
     @Nullable
-    public Instance get(int index) throws Exception
-    {
+    public Instance get(int index) throws Exception {
 
-        if (index > matrixView.getSize() - 1)
-        {
+        if (index > matrixView.getSize() - 1) {
             return null;
         }
 
@@ -128,35 +117,26 @@ class MatrixViewWeka extends Instances
 
         final MatrixUtils.DoubleCast valueCast = MatrixUtils.createDoubleCast(matrixView.getInstance(index).getValueClass(0));
 
-        if (indexes == null)
-        {
+        if (indexes == null) {
 
             values = new double[matrixView.getInstance(index).getNumAttributes()];
 
-            for (row = 0; row < matrixView.getInstance(index).getNumAttributes(); row++)
-            {
-                try
-                {
+            for (row = 0; row < matrixView.getInstance(index).getNumAttributes(); row++) {
+                try {
                     values[row] = valueCast.getDoubleValue(matrixView.getInstance(index).getValue(row));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     values[row] = Double.NaN;
                 }
             }
-        }
-        else
-        {
+        } else {
 
             values = new double[indexes.length];
 
-            for (int i = 0; i < indexes.length; i++)
-            {
-                try
-                {
+            for (int i = 0; i < indexes.length; i++) {
+                try {
                     row = indexes[i];
                     values[i] = valueCast.getDoubleValue(matrixView.getInstance(index).getValue(row));
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     values[i] = Double.NaN;
                 }
             }
@@ -177,8 +157,7 @@ class MatrixViewWeka extends Instances
         return current;
     }
 
-    void setFilteredAttributes(@NotNull int[] selectedAttributes)
-    {
+    void setFilteredAttributes(@NotNull int[] selectedAttributes) {
 
         indexes = selectedAttributes;
 
@@ -189,8 +168,7 @@ class MatrixViewWeka extends Instances
         m_ClassIndex = initClassIndex;
     }
 
-    void resetFilteredAttributes()
-    {
+    void resetFilteredAttributes() {
 
         indexes = null;
 
@@ -200,65 +178,52 @@ class MatrixViewWeka extends Instances
     }
 
     @Override
-    public int numInstances()
-    {
+    public int numInstances() {
         return matrixView.getSize();
     }
 
     @Nullable
     @Override
-    public Instance instance(int i)
-    {
-        try
-        {
+    public Instance instance(int i) {
+        try {
             return get(i);
 
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
 
     @Override
-    public int numAttributes()
-    {
+    public int numAttributes() {
 
-        if (matrixView.getInstance(0) == null)
-        {
+        if (matrixView.getInstance(0) == null) {
             return 0;
         }
 
-        if (indexes == null)
-        {
+        if (indexes == null) {
             return matrixView.getInstance(0).getNumAttributes();
-        }
-        else
-        {
+        } else {
             return indexes.length;
         }
 
     }
 
     @NotNull
-    public Attribute attribute(Integer index)
-    {
+    public Attribute attribute(Integer index) {
 
         return (Attribute) m_Attributes.elements(index);
     }
 
     @Override
-    public int classIndex()
-    {
+    public int classIndex() {
         return m_ClassIndex;
     }
 
-    public ClusteringData getMatrixView()
-    {
+    public ClusteringData getMatrixView() {
         return matrixView;
     }
 
-    public void setClassIndex(int index)
-    {
+    public void setClassIndex(int index) {
         m_ClassIndex = index;
     }
 }

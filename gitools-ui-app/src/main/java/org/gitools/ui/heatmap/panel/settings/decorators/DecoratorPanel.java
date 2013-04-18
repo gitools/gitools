@@ -30,61 +30,50 @@ import org.gitools.model.decorator.Decorator;
 import javax.swing.*;
 import java.util.List;
 
-public abstract class DecoratorPanel
-{
+public abstract class DecoratorPanel {
     private String name;
     private Class<? extends Decorator> decoratorClass;
 
     private PresentationModel<Decorator> panelModel;
     private Heatmap heatmap;
 
-    public DecoratorPanel(String name, Decorator defaultDecorator)
-    {
+    public DecoratorPanel(String name, Decorator defaultDecorator) {
         this.name = name;
         this.decoratorClass = defaultDecorator.getClass();
         this.panelModel = new PresentationModel<Decorator>(defaultDecorator);
     }
 
-    public boolean isValid(Object decorator)
-    {
-        if (decorator == null)
-        {
+    public boolean isValid(Object decorator) {
+        if (decorator == null) {
             return false;
         }
 
-        if (decoratorClass.equals(decorator.getClass()))
-        {
+        if (decoratorClass.equals(decorator.getClass())) {
             return true;
         }
 
         return false;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setValue(Object decorator)
-    {
-         if (isValid(decorator))
-         {
-             getPanelModel().setBean((Decorator) decorator);
-         }
+    public void setValue(Object decorator) {
+        if (isValid(decorator)) {
+            getPanelModel().setBean((Decorator) decorator);
+        }
     }
 
-    protected PresentationModel<Decorator> getPanelModel()
-    {
+    protected PresentationModel<Decorator> getPanelModel() {
         return panelModel;
     }
 
-    protected AbstractValueModel model(String propertyName)
-    {
+    protected AbstractValueModel model(String propertyName) {
         return getPanelModel().getModel(propertyName);
     }
 
-    protected List<HeatmapLayer> getLayers()
-    {
+    protected List<HeatmapLayer> getLayers() {
         return heatmap.getLayers().toList();
     }
 
@@ -92,33 +81,26 @@ public abstract class DecoratorPanel
 
     public abstract JPanel getRootPanel();
 
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 
-    public void setHeatmap(Heatmap heatmap)
-    {
+    public void setHeatmap(Heatmap heatmap) {
         this.heatmap = heatmap;
     }
 
-    public Heatmap getHeatmap()
-    {
+    public Heatmap getHeatmap() {
         return heatmap;
     }
 
-    public Class<? extends Decorator> getDecoratorClass()
-    {
+    public Class<? extends Decorator> getDecoratorClass() {
         return decoratorClass;
     }
 
-    public Decorator newDecorator()
-    {
-        try
-        {
+    public Decorator newDecorator() {
+        try {
             return decoratorClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

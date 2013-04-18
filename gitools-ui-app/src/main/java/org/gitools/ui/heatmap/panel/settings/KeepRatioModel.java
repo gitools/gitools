@@ -29,8 +29,7 @@ import javax.swing.event.ChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements ChangeListener
-{
+public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements ChangeListener {
 
     private int firstBase;
     private int secondBase;
@@ -38,8 +37,7 @@ public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements C
     private AbstractValueModel first;
     private AbstractValueModel second;
 
-    public KeepRatioModel(AbstractValueModel first, AbstractValueModel second)
-    {
+    public KeepRatioModel(AbstractValueModel first, AbstractValueModel second) {
         super();
         setSelected(true);
 
@@ -48,20 +46,16 @@ public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements C
 
         updateBase();
 
-        first.addValueChangeListener(new PropertyChangeListener()
-        {
+        first.addValueChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
+            public void propertyChange(PropertyChangeEvent evt) {
                 updateSecond();
             }
         });
 
-        second.addValueChangeListener(new PropertyChangeListener()
-        {
+        second.addValueChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
+            public void propertyChange(PropertyChangeEvent evt) {
                 updateFirst();
             }
         });
@@ -69,40 +63,32 @@ public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements C
         addChangeListener(this);
     }
 
-    private void updateFirst()
-    {
-        if (isSelected())
-        {
+    private void updateFirst() {
+        if (isSelected()) {
             int newValue = firstBase + (second.intValue() - secondBase);
-            if (newValue > 0)
-            {
+            if (newValue > 0) {
                 first.setValue(newValue);
             }
 
         }
     }
 
-    private void updateSecond()
-    {
-        if (isSelected())
-        {
+    private void updateSecond() {
+        if (isSelected()) {
             int newValue = secondBase + (first.intValue() - firstBase);
-            if (newValue > 0)
-            {
+            if (newValue > 0) {
                 second.setValue(newValue);
             }
         }
     }
 
-    private void updateBase()
-    {
+    private void updateBase() {
         firstBase = first.intValue();
         secondBase = second.intValue();
     }
 
     @Override
-    public void stateChanged(ChangeEvent e)
-    {
+    public void stateChanged(ChangeEvent e) {
         if (isSelected()) {
             updateBase();
         }

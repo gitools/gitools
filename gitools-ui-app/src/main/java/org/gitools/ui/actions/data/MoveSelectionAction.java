@@ -22,7 +22,6 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.Direction;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
@@ -35,26 +34,22 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class MoveSelectionAction extends BaseAction
-{
+public class MoveSelectionAction extends BaseAction {
 
     private static final long serialVersionUID = 2499014276737037571L;
 
-    public enum MoveDirection
-    {
+    public enum MoveDirection {
         ROW_UP, ROW_DOWN, COL_LEFT, COL_RIGHT
     }
 
     private final MoveDirection dir;
 
-    public MoveSelectionAction(@NotNull MoveDirection dir)
-    {
+    public MoveSelectionAction(@NotNull MoveDirection dir) {
         super(null);
 
         this.dir = dir;
 
-        switch (dir)
-        {
+        switch (dir) {
             case ROW_UP:
                 setName("Move row up");
                 setDesc("Move row up");
@@ -87,34 +82,30 @@ public class MoveSelectionAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
-        switch (dir)
-        {
+        switch (dir) {
             case ROW_UP:
-                matrixView.getRows().move(org.gitools.matrix.model.Direction.UP , matrixView.getRows().getSelected(  ));
+                matrixView.getRows().move(org.gitools.matrix.model.Direction.UP, matrixView.getRows().getSelected());
                 break;
             case ROW_DOWN:
-                matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN,  matrixView.getRows().getSelected(  ));
+                matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
                 break;
             case COL_LEFT:
-                matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  matrixView.getColumns().getSelected(  ));
+                matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
                 break;
             case COL_RIGHT:
-                matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  matrixView.getColumns().getSelected(  ));
+                matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
                 break;
         }
     }

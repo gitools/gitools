@@ -21,8 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-public interface IMatrixLayers<L extends IMatrixLayer> extends Iterable<L>
-{
+public interface IMatrixLayers<L extends IMatrixLayer> extends Iterable<L> {
 
     public L get(int layerIndex);
 

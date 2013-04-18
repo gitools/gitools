@@ -24,16 +24,13 @@ package org.gitools.analysis;
 /**
  * @noinspection ALL
  */
-public class MethodException extends Exception
-{
+public class MethodException extends Exception {
 
-    public MethodException(String msg)
-    {
+    public MethodException(String msg) {
         super(msg);
     }
 
-    public MethodException(Throwable cause)
-    {
+    public MethodException(Throwable cause) {
         super(cause);
     }
 }

@@ -32,8 +32,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ActionSet extends BaseAction
-{
+public class ActionSet extends BaseAction {
 
     /**
      * @noinspection UnusedDeclaration
@@ -42,57 +41,47 @@ public class ActionSet extends BaseAction
 
     private final List<BaseAction> actions;
 
-    public ActionSet(BaseAction[] actions)
-    {
+    public ActionSet(BaseAction[] actions) {
         this("", null, actions);
     }
 
-    public ActionSet(String name, BaseAction[] actions)
-    {
+    public ActionSet(String name, BaseAction[] actions) {
         this(name, null, actions);
     }
 
-    private ActionSet(String name, ImageIcon icon, BaseAction[] actions)
-    {
+    private ActionSet(String name, ImageIcon icon, BaseAction[] actions) {
         super(name, icon);
         this.actions = Arrays.asList(actions);
         setEnabled(true);
     }
 
-    public ActionSet(@NotNull List<BaseAction> actions)
-    {
+    public ActionSet(@NotNull List<BaseAction> actions) {
         this(actions.toArray(new BaseAction[actions.size()]));
     }
 
-    public List<BaseAction> getActions()
-    {
+    public List<BaseAction> getActions() {
         return actions;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if (actions != null)
-        {
+    public void actionPerformed(ActionEvent e) {
+        if (actions != null) {
             for (BaseAction action : actions)
                 action.actionPerformed(e);
         }
     }
 
     @Override
-    public void setTreeEnabled(boolean enabled)
-    {
+    public void setTreeEnabled(boolean enabled) {
         setEnabled(enabled);
-        if (actions != null)
-        {
+        if (actions != null) {
             for (BaseAction action : actions)
                 action.setTreeEnabled(enabled);
         }
     }
 
     @Override
-    public boolean updateEnabledByEditor(IEditor editor)
-    {
+    public boolean updateEnabledByEditor(IEditor editor) {
         boolean someEnabled = false;
 
         for (BaseAction action : actions)

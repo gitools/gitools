@@ -34,15 +34,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class CorrelationCommand extends AnalysisCommand
-{
+public class CorrelationCommand extends AnalysisCommand {
 
     private final CorrelationAnalysis analysis;
     private final IResourceFormat dataFormat;
     private final String dataPath;
 
-    public CorrelationCommand(CorrelationAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName)
-    {
+    public CorrelationCommand(CorrelationAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName) {
 
         super(workdir, fileName);
 
@@ -52,11 +50,9 @@ public class CorrelationCommand extends AnalysisCommand
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor progressMonitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor progressMonitor) throws AnalysisException {
 
-        try
-        {
+        try {
 
             ResourceReference<IMatrix> dataReference = new ResourceReference<IMatrix>(new UrlResourceLocator(new File(dataPath)), dataFormat);
 
@@ -67,15 +63,13 @@ public class CorrelationCommand extends AnalysisCommand
             proc.run(progressMonitor);
 
             File workdirFile = new File(workdir);
-            if (!workdirFile.exists())
-            {
+            if (!workdirFile.exists()) {
                 workdirFile.mkdirs();
             }
 
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
             PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new AnalysisException(cause);
         }
     }

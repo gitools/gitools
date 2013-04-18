@@ -36,11 +36,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
-public class ColoredLabelsGroupsPage extends AbstractWizardPage
-{
+public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
-    class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor
-    {
+    class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
         @NotNull
         private final JButton delegate = new JButton();
@@ -48,34 +46,28 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         @Nullable
         Color savedColor;
 
-        public ColorChooserEditor()
-        {
+        public ColorChooserEditor() {
             delegate.setFocusPainted(false);
             delegate.setContentAreaFilled(false);
             delegate.setFocusable(false);
             delegate.setOpaque(true);
 
 
-            table.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-            {
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
-                public void valueChanged(ListSelectionEvent e)
-                {
+                public void valueChanged(ListSelectionEvent e) {
                     updateButtons();
                 }
             });
 
-            MouseInputListener mouseInputListener = new MouseInputListener()
-            {
+            MouseInputListener mouseInputListener = new MouseInputListener() {
                 @Override
-                public void mouseClicked(MouseEvent e)
-                {
+                public void mouseClicked(MouseEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mousePressed(@NotNull MouseEvent e)
-                {
+                public void mousePressed(@NotNull MouseEvent e) {
                     Component c = e.getComponent();
                     Point p = new Point(c.getX(), c.getY());
                     int clickedRowIndex = table.rowAtPoint(p);
@@ -85,54 +77,44 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
                 }
 
                 @Override
-                public void mouseReleased(MouseEvent e)
-                {
+                public void mouseReleased(MouseEvent e) {
 
                 }
 
                 @Override
-                public void mouseEntered(MouseEvent e)
-                {
+                public void mouseEntered(MouseEvent e) {
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e)
-                {
+                public void mouseExited(MouseEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mouseDragged(MouseEvent e)
-                {
+                public void mouseDragged(MouseEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void mouseMoved(MouseEvent e)
-                {
+                public void mouseMoved(MouseEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
             };
 
-            KeyListener keyListener = new KeyListener()
-            {
+            KeyListener keyListener = new KeyListener() {
                 @Override
-                public void keyTyped(KeyEvent e)
-                {
+                public void keyTyped(KeyEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void keyPressed(KeyEvent e)
-                {
+                public void keyPressed(KeyEvent e) {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public void keyReleased(@NotNull KeyEvent e)
-                {
-                    if (e.getKeyCode() == KeyEvent.VK_SPACE)
-                    {
+                public void keyReleased(@NotNull KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                         int row = table.getSelectedRow();
                         int col = table.getSelectedColumn();
                         Color color = JColorChooser.showDialog(delegate, "Color Chooser", savedColor);
@@ -145,15 +127,12 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         }
 
         @Nullable
-        public Object getCellEditorValue()
-        {
+        public Object getCellEditorValue() {
             return savedColor;
         }
 
-        private void changeColor(@Nullable Color color, int row, int col)
-        {
-            if (color != null)
-            {
+        private void changeColor(@Nullable Color color, int row, int col) {
+            if (color != null) {
                 savedColor = color;
                 delegate.setBackground(color);
                 table.getModel().setValueAt(color, row, col);
@@ -162,23 +141,19 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         }
 
         @NotNull
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
-        {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             changeColor((Color) value, row, column);
             return delegate;
         }
     }
 
-    private static class ColorCellRenderer extends DefaultTableCellRenderer
-    {
-        public ColorCellRenderer()
-        {
+    private static class ColorCellRenderer extends DefaultTableCellRenderer {
+        public ColorCellRenderer() {
             super();
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-        {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Color c = (Color) value;
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             component.setBackground(c);
@@ -190,8 +165,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
 
     private ColoredLabel[] coloredLabels;
 
-    public ColoredLabelsGroupsPage(@NotNull ColoredLabel[] coloredLabels)
-    {
+    public ColoredLabelsGroupsPage(@NotNull ColoredLabel[] coloredLabels) {
 
         this.coloredLabels = coloredLabels;
 
@@ -200,11 +174,9 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         ColoredLabelsTableModel tm = new ColoredLabelsTableModel(coloredLabels);
         table.setModel(tm);
 
-        tm.addTableModelListener(new TableModelListener()
-        {
+        tm.addTableModelListener(new TableModelListener() {
             @Override
-            public void tableChanged(TableModelEvent e)
-            {
+            public void tableChanged(TableModelEvent e) {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
@@ -219,54 +191,46 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         updateButtons();
     }
 
-    public void setColoredLabels(@NotNull ColoredLabel[] coloredLabels)
-    {
+    public void setColoredLabels(@NotNull ColoredLabel[] coloredLabels) {
         this.coloredLabels = coloredLabels;
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.addAllLabels(coloredLabels);
     }
 
     @NotNull
-    public ColoredLabel[] getColoredLabels()
-    {
+    public ColoredLabel[] getColoredLabels() {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         ColoredLabel[] coloredLabels = new ColoredLabel[model.getList().size()];
         model.getList().toArray(coloredLabels);
         return coloredLabels;
     }
 
-    public void setValueEditable(boolean editable)
-    {
+    public void setValueEditable(boolean editable) {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.setValueEditable(editable);
     }
 
-    public boolean isValueEditable()
-    {
+    public boolean isValueEditable() {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         return model.isValueEditable();
     }
 
-    public boolean isValueMustBeNumeric()
-    {
+    public boolean isValueMustBeNumeric() {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         return model.isValueMustBeNumeric();
     }
 
-    public void setValueMustBeNumeric(boolean valueMustBeNumeric)
-    {
+    public void setValueMustBeNumeric(boolean valueMustBeNumeric) {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.setValueMustBeNumeric(valueMustBeNumeric);
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         int rowNb = table.getRowCount();
         removeBtn.setEnabled(rowNb > 0 && table.getSelectedRow() >= 0);
         setComplete(rowNb > 0);
@@ -281,8 +245,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel5 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -299,20 +262,16 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         jScrollPane2.setViewportView(table);
 
         tableAddBtn.setText("Add");
-        tableAddBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tableAddBtnActionPerformed(evt);
             }
         });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
-        removeBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeBtnActionPerformed(evt);
             }
         });
@@ -323,16 +282,14 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel5).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(removeBtn).addContainerGap()).addGroup(layout.createSequentialGroup().addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE).addGap(58, 58, 58)))));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.addLabel(new ColoredLabel("0.0", Color.GRAY));
 
         updateButtons();
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
-    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_removeBtnActionPerformed
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.removeLabel(table.getSelectedRows());
         updateButtons();

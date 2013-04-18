@@ -24,16 +24,13 @@ package org.gitools.ui.examples;
 /**
  * @noinspection ALL
  */
-class ExamplesManagerException extends Exception
-{
+class ExamplesManagerException extends Exception {
 
-    public ExamplesManagerException(String msg)
-    {
+    public ExamplesManagerException(String msg) {
         super(msg);
     }
 
-    public ExamplesManagerException(Throwable cause)
-    {
+    public ExamplesManagerException(Throwable cause) {
         super(cause);
     }
 }

@@ -50,8 +50,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GroupComparisonCommand extends AnalysisCommand
-{
+public class GroupComparisonCommand extends AnalysisCommand {
 
     public static final String GROUP_BY_VALUE = "value";
     public static final String GROUP_BY_LABELS = "labels";
@@ -62,8 +61,7 @@ public class GroupComparisonCommand extends AnalysisCommand
     private final String groups;
     private final String[] groupDescriptions;
 
-    public GroupComparisonCommand(GroupComparisonAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName, String groupingMethod, String groups, String[] groupDescriptions)
-    {
+    public GroupComparisonCommand(GroupComparisonAnalysis analysis, IResourceFormat dataFormat, String dataPath, String workdir, String fileName, String groupingMethod, String groups, String[] groupDescriptions) {
 
         super(workdir, fileName);
 
@@ -78,31 +76,25 @@ public class GroupComparisonCommand extends AnalysisCommand
 
 
     @NotNull
-    private ColumnGroup[] getGrouping(@NotNull String groupingMethod, @NotNull String groups, @NotNull IMatrix data) throws IOException
-    {
+    private ColumnGroup[] getGrouping(@NotNull String groupingMethod, @NotNull String groups, @NotNull IMatrix data) throws IOException {
 
         ColumnGroup[] columnGroups = new ColumnGroup[0];
         String[] groupDefs = groups.split(",");
         columnGroups = new ColumnGroup[groupDefs.length];
 
-        if (groupingMethod.equals(GroupComparisonCommand.GROUP_BY_LABELS))
-        {
+        if (groupingMethod.equals(GroupComparisonCommand.GROUP_BY_LABELS)) {
 
-            if (groupDefs.length == 2)
-            {
+            if (groupDefs.length == 2) {
 
                 int counter = 0;
-                for (String filename : groupDefs)
-                {
+                for (String filename : groupDefs) {
                     FileReader fileReader = new FileReader(filename);
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     HashSet<Integer> colIndices = new HashSet<Integer>();
                     String line = null;
-                    while ((line = bufferedReader.readLine()) != null)
-                    {
+                    while ((line = bufferedReader.readLine()) != null) {
                         int i = data.getColumns().getIndex(line);
-                        if (i != -1)
-                        {
+                        if (i != -1) {
                             colIndices.add(i);
                         }
                     }
@@ -117,17 +109,14 @@ public class GroupComparisonCommand extends AnalysisCommand
 
                 }
             }
-        }
-        else if (groupingMethod.equals(GroupComparisonCommand.GROUP_BY_VALUE))
-        {
+        } else if (groupingMethod.equals(GroupComparisonCommand.GROUP_BY_VALUE)) {
 
 
             Pattern dataDimPatternAbs = Pattern.compile("\\|'(.+)'\\|", Pattern.CASE_INSENSITIVE);
             Pattern dataDimPattern = Pattern.compile("'(.+)'", Pattern.CASE_INSENSITIVE);
             boolean abs = false;
 
-            for (int i = 0; i < groupDefs.length; i++)
-            {
+            for (int i = 0; i < groupDefs.length; i++) {
                 String groupString = groupDefs[i];
 
                 String dataDim = "";
@@ -137,13 +126,10 @@ public class GroupComparisonCommand extends AnalysisCommand
                 Matcher matcherAbs = dataDimPatternAbs.matcher(groupString);
                 Matcher matcher = dataDimPattern.matcher(groupString);
 
-                if (matcherAbs.find())
-                {
+                if (matcherAbs.find()) {
                     dataDim = matcherAbs.group(1);
                     abs = true;
-                }
-                else if (matcher.find())
-                {
+                } else if (matcher.find()) {
                     dataDim = matcher.group(1);
                 }
                 dataDimIndex = data.getLayers().findId(dataDim);
@@ -157,12 +143,9 @@ public class GroupComparisonCommand extends AnalysisCommand
                 bc = new BinaryCutoff(cmp, value);
 
                 String groupName;
-                if (groupingMethod.equals(GROUP_BY_VALUE))
-                {
+                if (groupingMethod.equals(GROUP_BY_VALUE)) {
                     groupName = dataDim + " " + cmp.getLongName() + " " + String.valueOf(value);
-                }
-                else
-                {
+                } else {
                     groupName = "user defined Group";
                 }
 
@@ -173,20 +156,14 @@ public class GroupComparisonCommand extends AnalysisCommand
     }
 
     @NotNull
-    private List<Property> getGroupAttributes(@NotNull ColumnGroup[] groups)
-    {
+    private List<Property> getGroupAttributes(@NotNull ColumnGroup[] groups) {
         List<Property> analysisAttributes = new ArrayList<Property>();
-        if (groupDescriptions.length > 1)
-        {
-            for (int i = 0; i < groupDescriptions.length; i++)
-            {
+        if (groupDescriptions.length > 1) {
+            for (int i = 0; i < groupDescriptions.length; i++) {
                 analysisAttributes.add(new Property("Group " + Integer.toString(i + 1), groupDescriptions[i]));
             }
-        }
-        else
-        {
-            for (int i = 0; i < groups.length; i++)
-            {
+        } else {
+            for (int i = 0; i < groups.length; i++) {
                 analysisAttributes.add(new Property("Group " + Integer.toString(i + 1), groups[i].getName()));
             }
         }
@@ -194,25 +171,21 @@ public class GroupComparisonCommand extends AnalysisCommand
     }
 
     @Override
-    public void run(IProgressMonitor progressMonitor) throws AnalysisException
-    {
+    public void run(IProgressMonitor progressMonitor) throws AnalysisException {
 
-        try
-        {
+        try {
             ResourceReference<IMatrix> data = new ConvertModuleMapToMatrixResourceReference(new UrlResourceLocator(new File(dataPath)), dataFormat);
             analysis.setData(data);
             data.load(progressMonitor);
 
-            try
-            {
+            try {
                 ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data.get());
                 List<Property> attributes = getGroupAttributes(columnGroups);
                 analysis.setGroup1(columnGroups[0]);
                 analysis.setGroup2(columnGroups[1]);
                 analysis.setProperties(attributes);
 
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
@@ -221,15 +194,13 @@ public class GroupComparisonCommand extends AnalysisCommand
             proc.run(progressMonitor);
 
             File workdirFile = new File(workdir);
-            if (!workdirFile.exists())
-            {
+            if (!workdirFile.exists()) {
                 workdirFile.mkdirs();
             }
 
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(workdirFile, fileName));
             PersistenceManager.get().store(resourceLocator, analysis, progressMonitor);
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new AnalysisException(cause);
         }
     }

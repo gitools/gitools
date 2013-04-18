@@ -27,8 +27,7 @@ import org.gitools.matrix.model.matrix.element.AttributeDef;
 /**
  * @noinspection ALL
  */
-public class CombinationResult
-{
+public class CombinationResult {
 
     private int n;
 
@@ -37,35 +36,29 @@ public class CombinationResult
     private double pvalue;
 
     @AttributeDef(id = "N", name = "N", description = "Number of pvalues combined")
-    public int getN()
-    {
+    public int getN() {
         return n;
     }
 
-    public void setN(int n)
-    {
+    public void setN(int n) {
         this.n = n;
     }
 
     @AttributeDef(id = "z-score", name = "Z-Score", description = "Z-Score of the combination")
-    public double getZscore()
-    {
+    public double getZscore() {
         return zscore;
     }
 
-    public void setZscore(double zscore)
-    {
+    public void setZscore(double zscore) {
         this.zscore = zscore;
     }
 
     @AttributeDef(id = "p-value", name = "P-Value", description = "Combined P-Value")
-    public double getPvalue()
-    {
+    public double getPvalue() {
         return pvalue;
     }
 
-    public void setPvalue(double pvalue)
-    {
+    public void setPvalue(double pvalue) {
         this.pvalue = pvalue;
     }
 }

@@ -38,35 +38,27 @@ import java.util.Map.Entry;
  * first column for item and second for module.
  */
 
-public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
-{
+public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
 
 
-    public TwoColumnModuleMapFormat()
-    {
+    public TwoColumnModuleMapFormat() {
         super(FileSuffixes.MODULES_2C_MAP, ModuleMap.class);
     }
 
     @NotNull
     @Override
-    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         // map between the item names and its index
 
         Map<String, Integer> itemNameToRowMapping = new TreeMap<String, Integer>();
 
-        if (isItemNamesFilterEnabled())
-        {
+        if (isItemNamesFilterEnabled()) {
             String[] itemNames = getItemNames();
-            for (int i = 0; i < itemNames.length; i++)
-            {
-                if (itemNameToRowMapping.containsKey(itemNames[i]))
-                {
+            for (int i = 0; i < itemNames.length; i++) {
+                if (itemNameToRowMapping.containsKey(itemNames[i])) {
                     throw new PersistenceException("Modules not mappable to heatmap due to duplicated row: " + itemNames[i]);
-                }
-                else
-                {
+                } else {
                     itemNameToRowMapping.put(itemNames[i], i);
                 }
             }
@@ -78,8 +70,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         // read mappings
 
-        try
-        {
+        try {
             progressMonitor.begin("Reading modules ...", 1);
 
             InputStream in = resourceLocator.openInputStream();
@@ -89,8 +80,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
             in.close();
             progressMonitor.end();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new PersistenceException(ex);
         }
 
@@ -101,8 +91,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         // create array of item names
         String[] itemNames = new String[itemNameToRowMapping.size()];
-        for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet())
-        {
+        for (Map.Entry<String, Integer> entry : itemNameToRowMapping.entrySet()) {
             //monitor.debug(entry.getKey() + " --> " + entry.getValue());
             itemNames[entry.getValue()] = entry.getKey();
         }
@@ -120,20 +109,16 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         Iterator<Entry<String, Set<Integer>>> it = moduleItemsMap.entrySet().iterator();
 
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Entry<String, Set<Integer>> entry = it.next();
             Set<Integer> indices = entry.getValue();
-            if (indices.size() >= minSize && indices.size() <= maxSize)
-            {
+            if (indices.size() >= minSize && indices.size() <= maxSize) {
                 moduleNames.add(entry.getKey());
                 int[] remappedIndices = new int[indices.size()];
                 Iterator<Integer> iit = indices.iterator();
-                for (int i = 0; i < indices.size(); i++)
-                {
+                for (int i = 0; i < indices.size(); i++) {
                     int index = iit.next();
-                    if (!used.get(index))
-                    {
+                    if (!used.get(index)) {
                         used.set(index);
                         indexMap[index] = lastIndex++;
                     }
@@ -141,9 +126,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
                     remappedIndices[i] = indexMap[index];
                 }
                 modulesItemIndices.add(remappedIndices);
-            }
-            else
-            {
+            } else {
                 it.remove();
             }
         }
@@ -151,8 +134,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         // reorder item names according with remapped indices
         String[] finalItemNames = new String[lastIndex];
         for (int i = 0; i < itemNames.length; i++)
-            if (used.get(i))
-            {
+            if (used.get(i)) {
                 finalItemNames[indexMap[i]] = itemNames[i];
             }
 
@@ -165,17 +147,13 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         return mmap;
     }
 
-    void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException
-    {
+    void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException {
 
-        try
-        {
+        try {
             String[] fields;
 
-            while ((fields = parser.readNext()) != null)
-            {
-                if (fields.length < 2)
-                {
+            while ((fields = parser.readNext()) != null) {
+                if (fields.length < 2) {
                     throw new PersistenceException("At least 2 columns expected at " + parser.getLineNumber() + "(item name and group name).");
                 }
 
@@ -183,32 +161,27 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
                 String groupName = fields[1];
 
                 Integer itemIndex = itemNameToRowMapping.get(itemName);
-                if (itemIndex == null && !filterRows)
-                {
+                if (itemIndex == null && !filterRows) {
                     itemIndex = itemNameToRowMapping.size();
                     itemNameToRowMapping.put(itemName, itemIndex);
                 }
 
-                if (itemIndex != null)
-                {
+                if (itemIndex != null) {
                     Set<Integer> itemIndices = moduleItemsMap.get(groupName);
-                    if (itemIndices == null)
-                    {
+                    if (itemIndices == null) {
                         itemIndices = new TreeSet<Integer>();
                         moduleItemsMap.put(groupName, itemIndices);
                     }
                     itemIndices.add(itemIndex);
                 }
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         final String[] moduleNames = moduleMap.getModuleNames();
 
@@ -216,8 +189,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         progressMonitor.begin("Saving modules...", numModules);
 
-        try
-        {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             final PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
@@ -225,10 +197,8 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
             final int[][] indices = moduleMap.getAllItemIndices();
 
-            for (int i = 0; i < numModules; i++)
-            {
-                for (int index : indices[i])
-                {
+            for (int i = 0; i < numModules; i++) {
+                for (int index : indices[i]) {
                     pw.print(itemNames[index]);
                     pw.print('\t');
                     pw.print(moduleNames[i]);
@@ -242,8 +212,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
             out.close();
 
             progressMonitor.end();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
     }

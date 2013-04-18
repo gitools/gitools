@@ -33,30 +33,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @noinspection ALL
  */
 @XmlRootElement
-public class ArrayElementAdapter extends AbstractElementAdapter
-{
+public class ArrayElementAdapter extends AbstractElementAdapter {
 
     private static final long serialVersionUID = 5864596809781257355L;
 
-    private static class ArrayElementProperty extends SimpleMatrixLayer
-    {
+    private static class ArrayElementProperty extends SimpleMatrixLayer {
 
         private static final long serialVersionUID = 7803752573190009823L;
 
-        public ArrayElementProperty(String id, String name, String description)
-        {
+        public ArrayElementProperty(String id, String name, String description) {
             super(id, double.class, name, description);
         }
     }
 
     private String[] ids;
 
-    protected ArrayElementAdapter()
-    {
+    protected ArrayElementAdapter() {
     }
 
-    public ArrayElementAdapter(@NotNull String[] ids)
-    {
+    public ArrayElementAdapter(@NotNull String[] ids) {
         super(double[].class);
 
         setProperties(new SimpleMatrixLayers(double.class, ids));
@@ -64,16 +59,13 @@ public class ArrayElementAdapter extends AbstractElementAdapter
 
     @Nullable
     @Override
-    public Object getValue(@Nullable Object element, int index)
-    {
+    public Object getValue(@Nullable Object element, int index) {
         return element != null ? ((double[]) element)[index] : null;
     }
 
     @Override
-    public void setValue(@Nullable Object element, int index, Object value)
-    {
-        if (element != null)
-        {
+    public void setValue(@Nullable Object element, int index, Object value) {
+        if (element != null) {
             ((double[]) element)[index] = (Double) value;
         }
     }

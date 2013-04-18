@@ -30,29 +30,22 @@ import java.util.Queue;
 
 /**
  * Code obtained from http://weblogs.java.net/blog/emcmanus/archive/2007/04/cloning_java_ob.html
- *
  */
-public class SerialClone
-{
+public class SerialClone {
 
     @NotNull
-    public static <T> T clone(T x)
-    {
-        try
-        {
+    public static <T> T clone(T x) {
+        try {
             return cloneX(x);
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new IllegalArgumentException(e);
-        } catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
     @NotNull
-    private static <T> T cloneX(T x) throws IOException, ClassNotFoundException
-    {
+    private static <T> T cloneX(T x) throws IOException, ClassNotFoundException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         CloneOutput cout = new CloneOutput(bout);
         cout.writeObject(x);
@@ -65,63 +58,53 @@ public class SerialClone
         return clone;
     }
 
-    private static class CloneOutput extends ObjectOutputStream
-    {
+    private static class CloneOutput extends ObjectOutputStream {
 
         @NotNull
         final Queue<Class<?>> classQueue = new LinkedList<Class<?>>();
 
-        CloneOutput(OutputStream out) throws IOException
-        {
+        CloneOutput(OutputStream out) throws IOException {
             super(out);
         }
 
         @Override
-        protected void annotateClass(Class<?> c)
-        {
+        protected void annotateClass(Class<?> c) {
             classQueue.add(c);
         }
 
         @Override
-        protected void annotateProxyClass(Class<?> c)
-        {
+        protected void annotateProxyClass(Class<?> c) {
             classQueue.add(c);
         }
     }
 
-    private static class CloneInput extends ObjectInputStream
-    {
+    private static class CloneInput extends ObjectInputStream {
 
         private final CloneOutput output;
 
-        CloneInput(InputStream in, CloneOutput output) throws IOException
-        {
+        CloneInput(InputStream in, CloneOutput output) throws IOException {
             super(in);
             this.output = output;
         }
 
         @Override
-        protected Class<?> resolveClass(@NotNull ObjectStreamClass osc) throws IOException, ClassNotFoundException
-        {
+        protected Class<?> resolveClass(@NotNull ObjectStreamClass osc) throws IOException, ClassNotFoundException {
             Class<?> c = output.classQueue.poll();
             String expected = osc.getName();
             String found = (c == null) ? null : c.getName();
-            if (!expected.equals(found))
-            {
+            if (!expected.equals(found)) {
                 throw new InvalidClassException("Classes desynchronized: " + "found " + found + " when expecting " + expected);
             }
             return c;
         }
 
         @Override
-        protected Class<?> resolveProxyClass(String[] interfaceNames) throws IOException, ClassNotFoundException
-        {
+        protected Class<?> resolveProxyClass(String[] interfaceNames) throws IOException, ClassNotFoundException {
             return output.classQueue.poll();
         }
     }
 
-    public static <T> T xclone(T x)
-    {
+    public static <T> T xclone(T x) {
         XStream xstream = new XStream();
         String xml = xstream.toXML(x);
         return (T) xstream.fromXML(xml);

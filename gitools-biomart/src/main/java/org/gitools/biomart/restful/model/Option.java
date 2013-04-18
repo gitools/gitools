@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Option extends FilterDescription
-{
+public class Option extends FilterDescription {
 
     @XmlAttribute
     private String ref;
@@ -43,37 +42,30 @@ public class Option extends FilterDescription
     /**
      * @noinspection UnusedDeclaration
      */
-    public Option()
-    {
+    public Option() {
     }
 
-    public String getIsSelectable()
-    {
+    public String getIsSelectable() {
         return isSelectable;
     }
 
-    public void setIsSelectable(String isSelectable)
-    {
+    public void setIsSelectable(String isSelectable) {
         this.isSelectable = isSelectable;
     }
 
-    public List<PushAction> getPushactions()
-    {
+    public List<PushAction> getPushactions() {
         return pushactions;
     }
 
-    public void setPushactions(List<PushAction> pushactions)
-    {
+    public void setPushactions(List<PushAction> pushactions) {
         this.pushactions = pushactions;
     }
 
-    public String getRef()
-    {
+    public String getRef() {
         return ref;
     }
 
-    public void setRef(String ref)
-    {
+    public void setRef(String ref) {
         this.ref = ref;
     }
 }

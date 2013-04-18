@@ -60,39 +60,33 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class CommandLoadFile extends AbstractCommand
-{
+public class CommandLoadFile extends AbstractCommand {
 
     private final String file;
     private final String rowsAnnotations;
     private final String columnsAnnotations;
 
-    public CommandLoadFile(String file)
-    {
+    public CommandLoadFile(String file) {
         this(file, null, null);
     }
 
-    public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations)
-    {
+    public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations) {
         this.file = file;
         this.rowsAnnotations = rowsAnnotations;
         this.columnsAnnotations = columnsAnnotations;
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException
-    {
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Loading ...", 1);
 
         IResourceLocator resourceLocator;
         final IResource resource;
-        try
-        {
+        try {
             resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
             resource = PersistenceManager.get().load(resourceLocator, IResource.class, monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
             return;
         }
@@ -100,11 +94,9 @@ public class CommandLoadFile extends AbstractCommand
         final AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(resourceLocator.getBaseName());
 
-        SwingUtilities.invokeLater(new Runnable()
-        {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 AppFrame.get().getEditorsPanel().addEditor(editor);
                 AppFrame.get().refresh();
             }
@@ -118,35 +110,21 @@ public class CommandLoadFile extends AbstractCommand
     }
 
     @NotNull
-    private AbstractEditor createEditor(IResource resource, @NotNull IProgressMonitor progressMonitor) throws CommandException
-    {
+    private AbstractEditor createEditor(IResource resource, @NotNull IProgressMonitor progressMonitor) throws CommandException {
 
-        if (resource instanceof EnrichmentAnalysis)
-        {
+        if (resource instanceof EnrichmentAnalysis) {
             return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
-        }
-        else if (resource instanceof OncodriveAnalysis)
-        {
+        } else if (resource instanceof OncodriveAnalysis) {
             return new OncodriveAnalysisEditor((OncodriveAnalysis) resource);
-        }
-        else if (resource instanceof CorrelationAnalysis)
-        {
+        } else if (resource instanceof CorrelationAnalysis) {
             return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
-        }
-        else if (resource instanceof CombinationAnalysis)
-        {
+        } else if (resource instanceof CombinationAnalysis) {
             return new CombinationAnalysisEditor((CombinationAnalysis) resource);
-        }
-        else if (resource instanceof OverlappingAnalysis)
-        {
+        } else if (resource instanceof OverlappingAnalysis) {
             return new OverlappingAnalysisEditor((OverlappingAnalysis) resource);
-        }
-        else if (resource instanceof GroupComparisonAnalysis)
-        {
+        } else if (resource instanceof GroupComparisonAnalysis) {
             return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
-        }
-        else if (resource instanceof Heatmap)
-        {
+        } else if (resource instanceof Heatmap) {
             ((Heatmap) resource).init();
             return new HeatmapEditor((Heatmap) resource);
         }
@@ -155,32 +133,27 @@ public class CommandLoadFile extends AbstractCommand
     }
 
     @NotNull
-    private AbstractEditor createHeatmapEditor(@NotNull IMatrix resource, @NotNull IProgressMonitor progressMonitor) throws CommandException
-    {
+    private AbstractEditor createHeatmapEditor(@NotNull IMatrix resource, @NotNull IProgressMonitor progressMonitor) throws CommandException {
 
         MatrixConversion conversion = new MatrixConversion();
 
         IMatrix matrix;
-        try
-        {
+        try {
             //TODO matrix = conversion.convert(resource, progressMonitor);
             matrix = resource;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             matrix = resource;
         }
 
-        Heatmap heatmap = new Heatmap( matrix );
+        Heatmap heatmap = new Heatmap(matrix);
 
-        if (rowsAnnotations != null)
-        {
+        if (rowsAnnotations != null) {
             File rowsFile = download(rowsAnnotations, progressMonitor);
             loadAnnotations(rowsFile, heatmap.getRows());
         }
 
-        if (columnsAnnotations != null)
-        {
+        if (columnsAnnotations != null) {
             File colsFile = download(columnsAnnotations, progressMonitor);
             loadAnnotations(colsFile, heatmap.getColumns());
 
@@ -189,48 +162,36 @@ public class CommandLoadFile extends AbstractCommand
         return new HeatmapEditor(heatmap);
     }
 
-    private static File download(String file, @NotNull IProgressMonitor monitor) throws CommandException
-    {
+    private static File download(String file, @NotNull IProgressMonitor monitor) throws CommandException {
 
         URL url = null;
-        try
-        {
+        try {
             url = new URL(file);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // Try to load as a file
-            try
-            {
+            try {
                 url = (new File(file)).getAbsoluteFile().toURI().toURL();
-            } catch (MalformedURLException e1)
-            {
+            } catch (MalformedURLException e1) {
                 throw new CommandException(e1);
             }
         }
         File resultFile;
         String fileName = FilenameUtils.getName(url.getFile());
-        if (url.getProtocol().equals("file"))
-        {
+        if (url.getProtocol().equals("file")) {
             monitor.info("File: " + fileName);
-            try
-            {
+            try {
                 resultFile = new File(url.toURI());
-            } catch (URISyntaxException e)
-            {
+            } catch (URISyntaxException e) {
                 throw new CommandException(e);
             }
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 resultFile = File.createTempFile("gitools", fileName);
                 monitor.info("Downloading " + url.toString());
 
                 HttpUtils.getInstance().downloadFile(url.toString(), resultFile);
 
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 throw new CommandException(e);
             }
         }
@@ -238,8 +199,7 @@ public class CommandLoadFile extends AbstractCommand
         return resultFile;
     }
 
-    private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDimension hdim)
-    {
+    private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDimension hdim) {
         hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
     }
 }

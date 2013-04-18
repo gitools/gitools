@@ -31,8 +31,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterGroup
-{
+public class FilterGroup {
 
     @XmlAttribute
     private String internalName;
@@ -52,63 +51,51 @@ public class FilterGroup
     @XmlElement(name = "FilterCollection")
     private List<FilterCollection> filterCollections;
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public List<FilterCollection> getFilterCollections()
-    {
+    public List<FilterCollection> getFilterCollections() {
         return filterCollections;
     }
 
-    public void setFilterCollections(List<FilterCollection> filterCollections)
-    {
+    public void setFilterCollections(List<FilterCollection> filterCollections) {
         this.filterCollections = filterCollections;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 

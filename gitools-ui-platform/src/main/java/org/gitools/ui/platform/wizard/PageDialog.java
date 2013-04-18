@@ -37,8 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class PageDialog extends AbstractDialog
-{
+public class PageDialog extends AbstractDialog {
 
     private final IWizardPage page;
 
@@ -50,8 +49,7 @@ public class PageDialog extends AbstractDialog
 
     private JPanel pagePanel;
 
-    public PageDialog(Window owner, @NotNull IWizardPage page)
-    {
+    public PageDialog(Window owner, @NotNull IWizardPage page) {
         super(owner, page.getTitle(), page.getLogo());
 
         setMinimumSize(new Dimension(800, 600));
@@ -62,11 +60,9 @@ public class PageDialog extends AbstractDialog
 
         cancelled = true;
 
-        page.addPageUpdateListener(new IWizardPageUpdateListener()
-        {
+        page.addPageUpdateListener(new IWizardPageUpdateListener() {
             @Override
-            public void pageUpdated(IWizardPage page)
-            {
+            public void pageUpdated(IWizardPage page) {
                 updateState();
             }
         });
@@ -81,42 +77,34 @@ public class PageDialog extends AbstractDialog
     }
 
     @Override
-    protected JComponent createContainer()
-    {
+    protected JComponent createContainer() {
         pagePanel = new JPanel(new BorderLayout());
         return pagePanel;
     }
 
     @NotNull
     @Override
-    protected List<JButton> createButtons()
-    {
+    protected List<JButton> createButtons() {
         helpButton = new JButton("Help");
-        helpButton.addActionListener(new ActionListener()
-        {
+        helpButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 helpActionPerformed();
             }
         });
 
         cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener()
-        {
+        cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 cancelActionPerformed();
             }
         });
 
         finishButton = new JButton("Ok");
-        finishButton.addActionListener(new ActionListener()
-        {
+        finishButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 finishActionPerformed();
             }
         });
@@ -126,31 +114,25 @@ public class PageDialog extends AbstractDialog
         return Arrays.asList(cancelButton, finishButton, helpButton);
     }
 
-    private void helpActionPerformed()
-    {
+    private void helpActionPerformed() {
         HelpContext context = page.getHelpContext();
-        if (context != null)
-        {
-            try
-            {
+        if (context != null) {
+            try {
                 Help.getDefault().showHelp(context);
-            } catch (HelpException ex)
-            {
+            } catch (HelpException ex) {
                 ExceptionDialog dlg = new ExceptionDialog(this, ex);
                 dlg.setVisible(true);
             }
         }
     }
 
-    private void cancelActionPerformed()
-    {
+    private void cancelActionPerformed() {
         cancelled = true;
 
         setVisible(false);
     }
 
-    private void finishActionPerformed()
-    {
+    private void finishActionPerformed() {
         page.updateModel();
 
         cancelled = false;
@@ -158,13 +140,11 @@ public class PageDialog extends AbstractDialog
         setVisible(false);
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    private void updateState()
-    {
+    private void updateState() {
         DialogHeaderPanel header = getHeaderPanel();
         header.setTitle(page.getTitle());
         header.setLeftLogo(page.getLogo());
@@ -174,8 +154,7 @@ public class PageDialog extends AbstractDialog
         updateButtons();
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         finishButton.setEnabled(page.isComplete());
         cancelButton.setEnabled(true);
     }

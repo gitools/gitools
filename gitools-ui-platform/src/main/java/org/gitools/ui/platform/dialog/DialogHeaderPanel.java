@@ -28,8 +28,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class DialogHeaderPanel extends javax.swing.JPanel
-{
+public class DialogHeaderPanel extends javax.swing.JPanel {
 
     private static final Color INFO_COLOR = Color.WHITE;
     private static final Color WARN_COLOR = new Color(250, 250, 160);
@@ -42,8 +41,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
     @Nullable
     private String rightLogoLink;
 
-    public DialogHeaderPanel()
-    {
+    public DialogHeaderPanel() {
         initComponents();
 
         title.setFont(title.getFont().deriveFont(Font.BOLD, 16));
@@ -55,8 +53,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         rightLogo.setText("");
     }
 
-    public DialogHeaderPanel(String header, String message, @NotNull MessageStatus status, Icon logo)
-    {
+    public DialogHeaderPanel(String header, String message, @NotNull MessageStatus status, Icon logo) {
         this();
 
         setTitle(header);
@@ -73,8 +70,7 @@ public class DialogHeaderPanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         title = new javax.swing.JLabel();
         message = new javax.swing.JLabel();
@@ -102,10 +98,8 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         rightLogo.setFocusable(false);
         rightLogo.setRequestFocusEnabled(false);
         rightLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        rightLogo.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        rightLogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rightLogoMouseClicked(evt);
             }
         });
@@ -116,10 +110,8 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         leftLogo.setFocusable(false);
         leftLogo.setRequestFocusEnabled(false);
         leftLogo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-        leftLogo.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        leftLogo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 leftLogoMouseClicked(evt);
             }
         });
@@ -130,29 +122,21 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(title).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(message).addContainerGap(28, Short.MAX_VALUE)).addComponent(leftLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE).addComponent(rightLogo, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void rightLogoMouseClicked(java.awt.event.MouseEvent evt)
-    {//GEN-FIRST:event_rightLogoMouseClicked
-        if (rightLogoLink != null)
-        {
-            try
-            {
+    private void rightLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rightLogoMouseClicked
+        if (rightLogoLink != null) {
+            try {
                 Desktop.getDesktop().browse(new URL(rightLogoLink).toURI());
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_rightLogoMouseClicked
 
-    private void leftLogoMouseClicked(java.awt.event.MouseEvent evt)
-    {//GEN-FIRST:event_leftLogoMouseClicked
-        if (leftLogoLink != null)
-        {
-            try
-            {
+    private void leftLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_leftLogoMouseClicked
+        if (leftLogoLink != null) {
+            try {
                 Desktop.getDesktop().browse(new URL(leftLogoLink).toURI());
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -166,57 +150,46 @@ public class DialogHeaderPanel extends javax.swing.JPanel
     private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title.getText();
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title.setText(title);
     }
 
-    public Font getTitleFont()
-    {
+    public Font getTitleFont() {
         return title.getFont();
     }
 
-    public void setTitleFont(Font font)
-    {
+    public void setTitleFont(Font font) {
         title.setFont(font);
     }
 
-    public Color getTitleColor()
-    {
+    public Color getTitleColor() {
         return title.getForeground();
     }
 
-    public void setTitleColor(Color color)
-    {
+    public void setTitleColor(Color color) {
         title.setForeground(color);
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return message.getText();
     }
 
-    public void setMessage(String message)
-    {
+    public void setMessage(String message) {
         this.message.setText(message);
     }
 
-    public MessageStatus getMessageStatus()
-    {
+    public MessageStatus getMessageStatus() {
         return messageStatus;
     }
 
-    public void setMessageStatus(@NotNull MessageStatus status)
-    {
+    public void setMessageStatus(@NotNull MessageStatus status) {
         this.messageStatus = status;
         //TODO status icon
-        switch (status)
-        {
+        switch (status) {
             case INFO:
                 message.setBackground(INFO_COLOR);
                 break;
@@ -232,68 +205,53 @@ public class DialogHeaderPanel extends javax.swing.JPanel
         }
     }
 
-    public Icon getRightLogo()
-    {
+    public Icon getRightLogo() {
         return rightLogo.getIcon();
     }
 
-    public void setRightLogo(Icon logo)
-    {
+    public void setRightLogo(Icon logo) {
         this.rightLogo.setIcon(logo);
     }
 
     @Nullable
-    public String getRightLogoLink()
-    {
+    public String getRightLogoLink() {
         return rightLogoLink;
     }
 
-    public void setRightLogoLink(@Nullable String logoLink)
-    {
+    public void setRightLogoLink(@Nullable String logoLink) {
         this.rightLogoLink = logoLink;
-        if (logoLink == null)
-        {
+        if (logoLink == null) {
             rightLogo.setCursor(Cursor.getDefaultCursor());
-        }
-        else
-        {
+        } else {
             rightLogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
     }
 
-    public Icon getLeftLogo()
-    {
+    public Icon getLeftLogo() {
         return leftLogo.getIcon();
     }
 
-    public void setLeftLogo(@Nullable Icon logo)
-    {
+    public void setLeftLogo(@Nullable Icon logo) {
         leftLogo.setIcon(logo);
         leftLogo.setVisible(logo != null);
 
     }
 
     @Nullable
-    public String getLeftLogoLink()
-    {
+    public String getLeftLogoLink() {
         return leftLogoLink;
     }
 
-    public void setLeftLogoLink(@Nullable String logoLink)
-    {
+    public void setLeftLogoLink(@Nullable String logoLink) {
         this.leftLogoLink = logoLink;
-        if (logoLink == null)
-        {
+        if (logoLink == null) {
             leftLogo.setCursor(Cursor.getDefaultCursor());
-        }
-        else
-        {
+        } else {
             leftLogo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
     }
 
-    public boolean isLeftLogoVisible()
-    {
+    public boolean isLeftLogoVisible() {
         return leftLogo.isVisible();
     }
 }

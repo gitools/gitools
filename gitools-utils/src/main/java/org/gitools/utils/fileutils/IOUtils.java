@@ -36,97 +36,73 @@ import java.util.zip.GZIPOutputStream;
 /**
  * @noinspection ALL
  */
-public class IOUtils
-{
+public class IOUtils {
 
     @Nullable
-    public static Reader openReader(@Nullable File path) throws IOException
-    {
-        if (path == null)
-        {
+    public static Reader openReader(@Nullable File path) throws IOException {
+        if (path == null) {
             return null;
         }
 
-        if (path.getName().endsWith(".gz"))
-        {
+        if (path.getName().endsWith(".gz")) {
             return new InputStreamReader(new GZIPInputStream(new FileInputStream(path)));
-        }
-        else
-        {
+        } else {
             return new BufferedReader(new FileReader(path));
         }
     }
 
     @Nullable
-    public static Writer openWriter(File path) throws IOException
-    {
+    public static Writer openWriter(File path) throws IOException {
         return openWriter(path, false);
     }
 
     @Nullable
-    private static Writer openWriter(@Nullable File path, boolean append) throws IOException
-    {
-        if (path == null)
-        {
+    private static Writer openWriter(@Nullable File path, boolean append) throws IOException {
+        if (path == null) {
             return null;
         }
 
-        if (path.getName().endsWith(".gz"))
-        {
+        if (path.getName().endsWith(".gz")) {
             return new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path, append)));
-        }
-        else
-        {
+        } else {
             return new BufferedWriter(new FileWriter(path, append));
         }
     }
 
     @Nullable
-    public static OutputStream openOutputStream(File path) throws IOException
-    {
+    public static OutputStream openOutputStream(File path) throws IOException {
         return openOutputStream(path, false);
     }
 
     @Nullable
-    private static OutputStream openOutputStream(@Nullable File path, boolean append) throws IOException
-    {
-        if (path == null)
-        {
+    private static OutputStream openOutputStream(@Nullable File path, boolean append) throws IOException {
+        if (path == null) {
             return null;
         }
 
-        if (path.getName().endsWith(".gz"))
-        {
+        if (path.getName().endsWith(".gz")) {
             return new GZIPOutputStream(new FileOutputStream(path, append));
-        }
-        else
-        {
+        } else {
             return new BufferedOutputStream(new FileOutputStream(path, append));
         }
     }
 
-    public static void copyFile(File sourceFile, @NotNull File destFile) throws IOException
-    {
-        if (!destFile.exists())
-        {
+    public static void copyFile(File sourceFile, @NotNull File destFile) throws IOException {
+        if (!destFile.exists()) {
             destFile.createNewFile();
         }
 
         FileChannel source = null;
         FileChannel destination = null;
-        try
-        {
+        try {
             source = new FileInputStream(sourceFile).getChannel();
             destination = new FileOutputStream(destFile).getChannel();
             destination.transferFrom(source, 0, source.size());
-        } finally
-        {
-            if (source != null)
-            {
+        } finally {
+            if (source != null) {
                 source.close();
             }
-            if (destination != null)
-            {
+            if (destination != null) {
                 destination.close();
             }
         }
@@ -135,33 +111,26 @@ public class IOUtils
     /**
      * @noinspection UnusedDeclaration
      */
-    public static void copyStream(InputStream src, OutputStream dst) throws IOException
-    {
+    public static void copyStream(InputStream src, OutputStream dst) throws IOException {
         ReadableByteChannel source = null;
         WritableByteChannel destination = null;
-        try
-        {
+        try {
             source = Channels.newChannel(src);
             destination = Channels.newChannel(dst);
             copyChannel(source, destination);
-        } finally
-        {
-            if (source != null)
-            {
+        } finally {
+            if (source != null) {
                 source.close();
             }
-            if (destination != null)
-            {
+            if (destination != null) {
                 destination.close();
             }
         }
     }
 
-    private static void copyChannel(@NotNull ReadableByteChannel src, @NotNull WritableByteChannel dest) throws IOException
-    {
+    private static void copyChannel(@NotNull ReadableByteChannel src, @NotNull WritableByteChannel dest) throws IOException {
         final ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
-        while (src.read(buffer) != -1)
-        {
+        while (src.read(buffer) != -1) {
             buffer.flip(); // prepare the buffer to be drained
             dest.write(buffer); // write to the channel, may block
             // If partial transfer, shift remainder down

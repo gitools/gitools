@@ -39,13 +39,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class ImportBiomartModulesAction extends BaseAction
-{
+public class ImportBiomartModulesAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public ImportBiomartModulesAction()
-    {
+    public ImportBiomartModulesAction() {
         super("Biomart Modules (advanced users) ...");
         setLargeIconFromResource(IconNames.biomart24);
         setSmallIconFromResource(IconNames.biomart16);
@@ -53,33 +51,27 @@ public class ImportBiomartModulesAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final BiomartModulesWizard wizard = new BiomartModulesWizard();
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);
         wdlg.open();
-        if (wdlg.isCancelled())
-        {
+        if (wdlg.isCancelled()) {
             return;
         }
 
         final File file = wizard.getSelectedFile();
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Downloading data...", 1);
                 Query query = wizard.getQuery();
                 String format = (String) wizard.getFormat().getExtension();
                 format = (format.endsWith("gz") ? BiomartModulesWizard.FORMAT_COMPRESSED_GZ : BiomartModulesWizard.FORMAT_PLAIN);
                 BiomartService service = wizard.getService();
-                try
-                {
+                try {
                     service.queryModule(query, file, format, monitor);
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     monitor.exception(ex);
                 }
                 monitor.end();

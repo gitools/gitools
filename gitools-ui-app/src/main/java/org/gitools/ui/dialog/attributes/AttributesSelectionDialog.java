@@ -36,8 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AttributesSelectionDialog<T> extends javax.swing.JDialog
-{
+public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -52,49 +51,41 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
     /**
      * Creates new form AttributesSelectionDialog
      */
-    public AttributesSelectionDialog(java.awt.Frame parent, final T[] attributes)
-    {
+    public AttributesSelectionDialog(java.awt.Frame parent, final T[] attributes) {
         super(parent, true);
 
         initComponents();
 
         listModel = new AttributesSelectionModel<T>(attributes);
 
-        listModel.addListDataListener(new ListDataListener()
-        {
+        listModel.addListDataListener(new ListDataListener() {
             @Override
-            public void intervalAdded(ListDataEvent e)
-            {
+            public void intervalAdded(ListDataEvent e) {
                 contentsChanged(e);
             }
 
             @Override
-            public void intervalRemoved(ListDataEvent e)
-            {
+            public void intervalRemoved(ListDataEvent e) {
                 contentsChanged(e);
             }
 
             @Override
-            public void contentsChanged(ListDataEvent e)
-            {
+            public void contentsChanged(ListDataEvent e) {
                 updateButtons();
             }
         });
 
         list.setModel(listModel);
 
-        list.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
+        list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 updateButtons();
             }
         });
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         boolean thereIsElements = listModel.getSize() > 0;
         boolean thereIsSelection = !list.getSelectionModel().isSelectionEmpty();
         int totalSize = listModel.getAttributes().length;
@@ -103,8 +94,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         int lastSelectionIndex = selIndices.size() - 1;
         boolean firstSelected = false;
         boolean lastSelected = false;
-        for (int i : list.getSelectedIndices())
-        {
+        for (int i : list.getSelectedIndices()) {
             firstSelected |= (i == 0);
             lastSelected |= (i == lastSelectionIndex);
         }
@@ -121,8 +111,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
@@ -134,8 +123,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -151,28 +139,22 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
 
         setTitle("Select attributes to export...");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -181,58 +163,46 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
 
         addBtn.setText("Add...");
         addBtn.setEnabled(false);
-        addBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBtnActionPerformed(evt);
             }
         });
 
         removeBtn.setText("Remove");
         removeBtn.setEnabled(false);
-        removeBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeBtnActionPerformed(evt);
             }
         });
 
         upBtn.setText("Move up");
         upBtn.setEnabled(false);
-        upBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        upBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 upBtnActionPerformed(evt);
             }
         });
 
         downBtn.setText("Move down");
         downBtn.setEnabled(false);
-        downBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        downBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downBtnActionPerformed(evt);
             }
         });
 
         loadBtn.setText("Load...");
-        loadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtnActionPerformed(evt);
             }
         });
 
         saveBtn.setText("Save...");
-        saveBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtnActionPerformed(evt);
             }
         });
@@ -248,42 +218,36 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void addBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_addBtnActionPerformed
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         ListDialog dlg = new ListDialog(getOwner(), true, listModel.getUnselectedAttributes().toArray());
         dlg.setTitle("Attributes to add");
         dlg.setVisible(true);
 
         List<Integer> unselIndices = listModel.getUnselectedIndices();
         List<Integer> selIndices = new ArrayList<Integer>();
-        if (dlg.getReturnStatus() == ListDialog.RET_OK)
-        {
+        if (dlg.getReturnStatus() == ListDialog.RET_OK) {
             for (int i : dlg.getSelectedIndices())
                 selIndices.add(unselIndices.get(i));
             listModel.select(selIndices);
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
-    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_removeBtnActionPerformed
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
         List<Integer> removedIndices = new ArrayList<Integer>(listIndices.length);
@@ -295,8 +259,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         list.getSelectionModel().clearSelection();
     }//GEN-LAST:event_removeBtnActionPerformed
 
-    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_loadBtnActionPerformed
+    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
         Map<String, Integer> indexMap = new HashMap<String, Integer>();
         Object[] attributes = listModel.getAttributes();
         for (int i = 0; i < attributes.length; i++)
@@ -304,12 +267,10 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
 
         List<Integer> indices = new ArrayList<Integer>();
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select file ...", Settings.getDefault().getLastPath(), FileChooserUtils.MODE_OPEN);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
@@ -318,20 +279,16 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
 
-            while ((line = br.readLine()) != null)
-            {
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (!line.isEmpty())
-                {
+                if (!line.isEmpty()) {
                     Integer index = indexMap.get(line);
-                    if (index != null)
-                    {
+                    if (index != null) {
                         indices.add(index);
                     }
                 }
             }
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
             edlg.setVisible(true);
         }
@@ -340,16 +297,13 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         list.getSelectionModel().clearSelection();
     }//GEN-LAST:event_loadBtnActionPerformed
 
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_saveBtnActionPerformed
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         Object[] attributes = listModel.getAttributes();
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
@@ -360,15 +314,13 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
             for (Integer i : selIndices)
                 bw.append(attributes[i].toString()).append('\n');
             bw.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtnActionPerformed
 
-    private void upBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_upBtnActionPerformed
+    private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
         List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
@@ -384,8 +336,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         list.setSelectedIndices(listIndices);
     }//GEN-LAST:event_upBtnActionPerformed
 
-    private void downBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_downBtnActionPerformed
+    private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
         List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
@@ -401,8 +352,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
         list.setSelectedIndices(listIndices);
     }//GEN-LAST:event_downBtnActionPerformed
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -424,8 +374,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public List<Integer> getSelectedIndices()
-    {
+    public List<Integer> getSelectedIndices() {
         return listModel.getSelectedIndices();
     }
 }

@@ -24,16 +24,13 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 
-public class HeatmapHeaderPanel extends AbstractHeatmapPanel
-{
+public class HeatmapHeaderPanel extends AbstractHeatmapPanel {
 
-    public HeatmapHeaderPanel(Heatmap heatmap, boolean horizontal)
-    {
+    public HeatmapHeaderPanel(Heatmap heatmap, boolean horizontal) {
         super(heatmap, new HeatmapHeaderDrawer(heatmap, horizontal));
     }
 
-    public HeatmapHeaderDrawer getHeaderDrawer()
-    {
+    public HeatmapHeaderDrawer getHeaderDrawer() {
         return (HeatmapHeaderDrawer) getDrawer();
     }
 }

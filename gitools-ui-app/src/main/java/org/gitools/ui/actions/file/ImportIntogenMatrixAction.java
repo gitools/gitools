@@ -31,13 +31,11 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class ImportIntogenMatrixAction extends BaseAction
-{
+public class ImportIntogenMatrixAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public ImportIntogenMatrixAction()
-    {
+    public ImportIntogenMatrixAction() {
         super("IntOGen Matrix ...");
         setLargeIconFromResource(IconNames.intogen24);
         setSmallIconFromResource(IconNames.intogen16);
@@ -45,8 +43,7 @@ public class ImportIntogenMatrixAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         /*WizardDialog wizDlg = new WizardDialog(
                 AppFrame.instance(),
 				new IntogenDataWizard());

@@ -31,11 +31,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class TestMain
-{
+public class TestMain {
 
-    public static void main(String[] unusedArgs) throws ToolException
-    {
+    public static void main(String[] unusedArgs) throws ToolException {
         String home = System.getProperty("user.home");
         String stuff = home + "/temp/gitools-stuff";
         String temp = home + "/temp/gitools";
@@ -85,7 +83,7 @@ public class TestMain
 				" -verbose -debug -err-log -";*/
 
 		/*String cmd = "convert" +
-				" -i data.tsv" +
+                " -i data.tsv" +
 				" -im application/gitools-matrix-double" +
 				" -o pru.txt" +
 				" -om application/gitools-element-lists" +
@@ -117,17 +115,14 @@ public class TestMain
 
     @NotNull
     @SuppressWarnings("empty-statement")
-    private static String[] cmdLineSplit(@NotNull String cmd)
-    {
+    private static String[] cmdLineSplit(@NotNull String cmd) {
         List<String> args = new ArrayList<String>();
 
         int lastPos = 0;
         int pos = 0;
-        while (pos < cmd.length())
-        {
+        while (pos < cmd.length()) {
             char ch = cmd.charAt(pos);
-            switch (ch)
-            {
+            switch (ch) {
                 case ' ':
                     args.add(cmd.substring(lastPos, pos));
                     while (pos < cmd.length() && cmd.charAt(pos++) != ch)
@@ -151,8 +146,7 @@ public class TestMain
             }
         }
 
-        if (lastPos < cmd.length())
-        {
+        if (lastPos < cmd.length()) {
             args.add(cmd.substring(lastPos, pos));
         }
 

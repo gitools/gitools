@@ -37,26 +37,22 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Date;
 
-public class CombinationProcessor implements AnalysisProcessor
-{
+public class CombinationProcessor implements AnalysisProcessor {
 
     private final CombinationAnalysis analysis;
 
-    public CombinationProcessor(CombinationAnalysis analysis)
-    {
+    public CombinationProcessor(CombinationAnalysis analysis) {
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
         // Prepare data
         IMatrix data = analysis.getData().get();
-        if (analysis.isTransposeData())
-        {
+        if (analysis.isTransposeData()) {
             data = new TransposedMatrixView(data);
         }
 
@@ -71,12 +67,9 @@ public class CombinationProcessor implements AnalysisProcessor
 
         // Prepare columns map
         ModuleMap cmap = analysis.getGroupsMap().get();
-        if (cmap != null)
-        {
+        if (cmap != null) {
             cmap = cmap.remap(labels);
-        }
-        else
-        {
+        } else {
             cmap = new ModuleMap("All data " + combOf, labels);
         }
         analysis.setGroupsMap(new ResourceReference<ModuleMap>("modules", cmap));
@@ -103,8 +96,7 @@ public class CombinationProcessor implements AnalysisProcessor
         String sizeAttrName = analysis.getSizeAttrName();
         /*if (sizeAttrName == null || sizeAttrName.isEmpty())
             sizeIndex = analysis.getSizeAttrIndex();*/
-        if (sizeAttrName != null && !sizeAttrName.isEmpty())
-        {
+        if (sizeAttrName != null && !sizeAttrName.isEmpty()) {
             sizeIndex = data.getLayers().findId(sizeAttrName);
         }
 
@@ -112,15 +104,13 @@ public class CombinationProcessor implements AnalysisProcessor
         String pvalueAttrName = analysis.getPvalueAttrName();
         /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
             pvalueIndex = analysis.getPvalueAttrIndex();*/
-        if (pvalueAttrName != null && !pvalueAttrName.isEmpty())
-        {
+        if (pvalueAttrName != null && !pvalueAttrName.isEmpty()) {
             pvalueIndex = data.getLayers().findId(pvalueAttrName);
         }
 
         MatrixUtils.DoubleCast sizeCast = null;
 
-        if (sizeIndex >= 0)
-        {
+        if (sizeIndex >= 0) {
             sizeCast = MatrixUtils.createDoubleCast(data.getLayers().get(sizeIndex).getValueClass());
         }
 
@@ -130,29 +120,24 @@ public class CombinationProcessor implements AnalysisProcessor
 
         monitor.begin("Running combination analysis ...", numCC * numRows);
 
-        for (int cmi = 0; cmi < numCC; cmi++)
-        {
+        for (int cmi = 0; cmi < numCC; cmi++) {
             int[] cindices = cmap.getItemIndices(cmi);
-            for (int ri = 0; ri < numRows; ri++)
-            {
+            for (int ri = 0; ri < numRows; ri++) {
                 int n = 0;
                 double sumSizeZ = 0;
                 double sumSizeSqr = 0;
 
-                for (int ci = 0; ci < cindices.length; ci++)
-                {
+                for (int ci = 0; ci < cindices.length; ci++) {
                     int mci = cindices[ci];
 
-                    if (!data.isEmpty(ri, mci))
-                    {
+                    if (!data.isEmpty(ri, mci)) {
                         double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(ri, mci, sizeIndex));
 
                         double pvalue = pvalueCast.getDoubleValue(data.getCellValue(ri, mci, pvalueIndex));
 
                         double zscore = pvalueToZscore(pvalue);
 
-                        if (!Double.isNaN(size + pvalue + zscore))
-                        {
+                        if (!Double.isNaN(size + pvalue + zscore)) {
                             n++;
                             sumSizeZ += size * zscore;
                             sumSizeSqr += size * size;
@@ -180,10 +165,8 @@ public class CombinationProcessor implements AnalysisProcessor
         monitor.end();
     }
 
-    private double pvalueToZscore(double pvalue)
-    {
-        if (Double.isNaN(pvalue))
-        {
+    private double pvalueToZscore(double pvalue) {
+        if (Double.isNaN(pvalue)) {
             return pvalue;
         }
 
@@ -195,10 +178,8 @@ public class CombinationProcessor implements AnalysisProcessor
         return zscore;
     }
 
-    private double zscoreToPvalue(double zscore)
-    {
-        if (Double.isNaN(zscore))
-        {
+    private double zscoreToPvalue(double zscore) {
+        if (Double.isNaN(zscore)) {
             return zscore;
         }
 

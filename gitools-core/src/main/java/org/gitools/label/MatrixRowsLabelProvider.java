@@ -23,23 +23,19 @@ package org.gitools.label;
 
 import org.gitools.matrix.model.IMatrix;
 
-public class MatrixRowsLabelProvider extends MatrixLabelProvider
-{
+public class MatrixRowsLabelProvider extends MatrixLabelProvider {
 
-    public MatrixRowsLabelProvider(IMatrix m)
-    {
+    public MatrixRowsLabelProvider(IMatrix m) {
         super(m);
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return matrix.getRows().size();
     }
 
     @Override
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         return matrix.getRows().getLabel(index);
     }
 }

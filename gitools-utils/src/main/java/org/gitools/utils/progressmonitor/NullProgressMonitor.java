@@ -23,70 +23,57 @@ package org.gitools.utils.progressmonitor;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NullProgressMonitor implements IProgressMonitor
-{
+public class NullProgressMonitor implements IProgressMonitor {
 
     @Override
-    public void begin(String title, int totalWork)
-    {
+    public void begin(String title, int totalWork) {
     }
 
     @Override
-    public void end()
-    {
+    public void end() {
     }
 
     @Override
-    public int getLevel()
-    {
+    public int getLevel() {
         return 0;
     }
 
     @Override
-    public void cancel()
-    {
+    public void cancel() {
     }
 
     @Override
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return false;
     }
 
     @Override
-    public void setLevel(int level)
-    {
+    public void setLevel(int level) {
     }
 
     @NotNull
     @Override
-    public IProgressMonitor subtask()
-    {
+    public IProgressMonitor subtask() {
         return new NullProgressMonitor();
     }
 
     @Override
-    public void title(String title)
-    {
+    public void title(String title) {
     }
 
     @Override
-    public void worked(int workInc)
-    {
+    public void worked(int workInc) {
     }
 
     @Override
-    public void debug(String msg)
-    {
+    public void debug(String msg) {
     }
 
     @Override
-    public void info(String msg)
-    {
+    public void info(String msg) {
     }
 
     @Override
-    public void exception(Throwable cause)
-    {
+    public void exception(Throwable cause) {
     }
 }

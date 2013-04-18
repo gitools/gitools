@@ -29,83 +29,70 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-public abstract class AbstractResourceLocatorAdaptor implements IResourceLocator
-{
+public abstract class AbstractResourceLocatorAdaptor implements IResourceLocator {
 
     private final String name;
     private String baseName;
     private final String extension;
     private final IResourceLocator resourceLocator;
 
-    protected AbstractResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator)
-    {
+    protected AbstractResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator) {
         this(filter.removeExtension(resourceLocator.getName()), filter.removeExtension(resourceLocator.getExtension()), resourceLocator);
     }
 
-    protected AbstractResourceLocatorAdaptor(String name, String extension, IResourceLocator resourceLocator)
-    {
+    protected AbstractResourceLocatorAdaptor(String name, String extension, IResourceLocator resourceLocator) {
         this.name = name;
         this.extension = extension;
         this.resourceLocator = resourceLocator;
         this.baseName = name;
 
         int firstDot = name.indexOf('.');
-        if (firstDot != -1)
-        {
+        if (firstDot != -1) {
             this.baseName = name.substring(0, firstDot);
         }
     }
 
     @Override
-    public URL getURL()
-    {
+    public URL getURL() {
         return resourceLocator.getURL();
     }
 
     @Override
-    public String getBaseName()
-    {
+    public String getBaseName() {
         return baseName;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public String getExtension()
-    {
+    public String getExtension() {
         return extension;
     }
 
     @Override
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return resourceLocator.isWritable();
     }
 
     @Override
-    public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException
-    {
+    public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return getResourceLocator().getReferenceLocator(referenceName);
     }
 
     @Override
-    public InputStream openInputStream() throws IOException
-    {
+    public InputStream openInputStream() throws IOException {
         return getResourceLocator().openInputStream();
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException
-    {
+    public OutputStream openOutputStream() throws IOException {
         return getResourceLocator().openOutputStream();
     }
 
-    protected IResourceLocator getResourceLocator()
-    {
+    protected IResourceLocator getResourceLocator() {
         return resourceLocator;
     }
 

@@ -36,8 +36,7 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ClusteringValueWizard extends AbstractWizard
-{
+public class ClusteringValueWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
 
@@ -50,8 +49,7 @@ public class ClusteringValueWizard extends AbstractWizard
     private ClusteringOptionsPage optionsPage;
     private SaveFilePage newickPage;
 
-    public ClusteringValueWizard(Heatmap heatmap)
-    {
+    public ClusteringValueWizard(Heatmap heatmap) {
         super();
 
         this.heatmap = heatmap;
@@ -62,12 +60,11 @@ public class ClusteringValueWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         methodPage = new ClusteringMethodsPage();
         addPage(methodPage);
 
-        IMatrixView mv = heatmap  ;
+        IMatrixView mv = heatmap;
         optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayerIndex());
         addPage(optionsPage);
 
@@ -88,48 +85,36 @@ public class ClusteringValueWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         Settings.getDefault().setLastExportPath(newickPage.getFolder());
         Settings.getDefault().save();
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
     }
 
     @Override
-    public boolean isLastPage(IWizardPage page)
-    {
+    public boolean isLastPage(IWizardPage page) {
         return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
     }
 
     @Nullable
     @Override
-    public IWizardPage getNextPage(IWizardPage currentPage)
-    {
+    public IWizardPage getNextPage(IWizardPage currentPage) {
 
         IWizardPage nextPage = null;
 
-        if (currentPage == optionsPage)
-        {
-            if (optionsPage.isNewickExportSelected())
-            {
+        if (currentPage == optionsPage) {
+            if (optionsPage.isNewickExportSelected()) {
                 nextPage = newickPage;
-            }
-            else
-            {
+            } else {
                 nextPage = getMethodConfigPage();
             }
-        }
-        else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage)
-        {
+        } else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage) {
             nextPage = null;
-        }
-        else
-        {
+        } else {
             nextPage = super.getNextPage(currentPage);
         }
 
@@ -137,16 +122,12 @@ public class ClusteringValueWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(@NotNull IWizardPage currentPage)
-    {
-        if (currentPage == methodPage)
-        {
+    public void pageLeft(@NotNull IWizardPage currentPage) {
+        if (currentPage == methodPage) {
             ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
             Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
             optionsPage.setNewickExportVisible(WekaHCLMethod.class.equals(methodClass));
-        }
-        else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage)
-        {
+        } else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage) {
             method = ((ClusteringValueMethodPage) currentPage).getMethod();
             method.setPreprocess(optionsPage.isPreprocessing());
             method.setTranspose(optionsPage.isApplyToRows());
@@ -154,66 +135,52 @@ public class ClusteringValueWizard extends AbstractWizard
     }
 
     @Nullable
-    private IWizardPage getMethodConfigPage()
-    {
+    private IWizardPage getMethodConfigPage() {
         ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
         Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
 
-        if (WekaCobWebMethod.class.equals(methodClass))
-        {
+        if (WekaCobWebMethod.class.equals(methodClass)) {
             return cobwebPage;
-        }
-        else if (WekaHCLMethod.class.equals(methodClass))
-        {
+        } else if (WekaHCLMethod.class.equals(methodClass)) {
             return hclPage;
-        }
-        else if (WekaKmeansMethod.class.equals(methodClass))
-        {
+        } else if (WekaKmeansMethod.class.equals(methodClass)) {
             return kmeansPage;
         }
         return null;
     }
 
     @NotNull
-    public ClusteringData getClusterData()
-    {
+    public ClusteringData getClusterData() {
         int attr = optionsPage.getDataAttribute();
-        IMatrixView mv = heatmap  ;
+        IMatrixView mv = heatmap;
         return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, attr) : new MatrixColumnClusteringData(mv, attr);
     }
 
-    public boolean isHeaderSelected()
-    {
+    public boolean isHeaderSelected() {
         return optionsPage.isHeaderSelected();
     }
 
-    public boolean isSortDataSelected()
-    {
+    public boolean isSortDataSelected() {
         return optionsPage.isSort();
     }
 
-    public boolean isNewickExportSelected()
-    {
+    public boolean isNewickExportSelected() {
         return optionsPage.isNewickExportSelected();
     }
 
-    public boolean isApplyToRows()
-    {
+    public boolean isApplyToRows() {
         return optionsPage.isApplyToRows();
     }
 
-    public SaveFilePage getSaveFilePage()
-    {
+    public SaveFilePage getSaveFilePage() {
         return newickPage;
     }
 
-    public String getMethodName()
-    {
+    public String getMethodName() {
         return methodPage.getMethodDescriptor().getTitle();
     }
 
-    public AbstractClusteringValueMethod getMethod()
-    {
+    public AbstractClusteringValueMethod getMethod() {
         return method;
     }
 }

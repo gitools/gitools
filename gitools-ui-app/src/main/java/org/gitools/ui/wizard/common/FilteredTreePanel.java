@@ -37,51 +37,41 @@ import java.util.Enumeration;
 /**
  * @noinspection ALL
  */
-public abstract class FilteredTreePanel extends javax.swing.JPanel
-{
+public abstract class FilteredTreePanel extends javax.swing.JPanel {
 
     private String lastFilterText = "";
 
     /**
      * Creates new form FilteredTreePanel
      */
-    public FilteredTreePanel()
-    {
+    public FilteredTreePanel() {
         initComponents();
 
-        filterField.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        filterField.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateFilter();
             }
         });
 
-        clearBtn.addActionListener(new ActionListener()
-        {
+        clearBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 filterField.setText("");
                 filterField.requestFocusInWindow();
             }
         });
 
-        expandBtn.addActionListener(new ActionListener()
-        {
+        expandBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 expandAll();
             }
         });
 
-        collapseBtn.addActionListener(new ActionListener()
-        {
+        collapseBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 collapseAll();
             }
         });
@@ -89,14 +79,12 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
         updateFilter();
     }
 
-    private void updateFilter()
-    {
+    private void updateFilter() {
         final String filterText = getFilterText();
 
         clearBtn.setEnabled(!filterText.isEmpty());
 
-        if (!filterText.equalsIgnoreCase(lastFilterText))
-        {
+        if (!filterText.equalsIgnoreCase(lastFilterText)) {
             lastFilterText = filterText;
             tree.setModel(updateModel(getFilterText()));
             expandAll();
@@ -106,30 +94,25 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
     @Nullable
     protected abstract TreeModel updateModel(String filterText);
 
-    private String getFilterText()
-    {
+    private String getFilterText() {
         return filterField.getText();
     }
 
-    public TreeModel getModel()
-    {
+    public TreeModel getModel() {
         return tree.getModel();
     }
 
-    public void setModel(TreeModel model)
-    {
+    public void setModel(TreeModel model) {
         tree.setModel(model);
 
         updateExpandCollapseButtons();
     }
 
-    private void updateExpandCollapseButtons()
-    {
+    private void updateExpandCollapseButtons() {
         boolean enabled = false;
 
         TreeModel model = tree.getModel();
-        if (model != null)
-        {
+        if (model != null) {
             enabled = model.getRoot() != null;
         }
 
@@ -139,11 +122,9 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
 
     // If expand is true, expands all nodes in the tree.
     // Otherwise, collapses all nodes in the tree.
-    void expandCollapse(@NotNull JTree tree, boolean expand)
-    {
+    void expandCollapse(@NotNull JTree tree, boolean expand) {
         TreeModel model = tree.getModel();
-        if (model == null)
-        {
+        if (model == null) {
             return;
         }
 
@@ -153,20 +134,16 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
         expandCollapse(tree, new TreePath(root), expand);
 
         // Do not collapse first level nodes
-        if (!tree.isRootVisible() && !expand)
-        {
+        if (!tree.isRootVisible() && !expand) {
             tree.expandPath(new TreePath(root));
         }
     }
 
-    private void expandCollapse(@NotNull JTree tree, @NotNull TreePath parent, boolean expand)
-    {
+    private void expandCollapse(@NotNull JTree tree, @NotNull TreePath parent, boolean expand) {
         // Traverse children
         TreeNode node = (TreeNode) parent.getLastPathComponent();
-        if (node.getChildCount() >= 0)
-        {
-            for (Enumeration<?> e = node.children(); e.hasMoreElements(); )
-            {
+        if (node.getChildCount() >= 0) {
+            for (Enumeration<?> e = node.children(); e.hasMoreElements(); ) {
                 TreeNode n = (TreeNode) e.nextElement();
                 TreePath path = parent.pathByAddingChild(n);
                 expandCollapse(tree, path, expand);
@@ -174,24 +151,19 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
         }
 
         // Expansion or collapse must be done bottom-up
-        if (expand)
-        {
+        if (expand) {
             tree.expandPath(parent);
-        }
-        else
-        {
+        } else {
             tree.collapsePath(parent);
         }
     }
 
-    public void expandAll()
-    {
+    public void expandAll() {
         expandCollapse(tree, true);
         filterField.requestFocusInWindow();
     }
 
-    void collapseAll()
-    {
+    void collapseAll() {
         expandCollapse(tree, false);
         filterField.requestFocusInWindow();
     }
@@ -204,8 +176,7 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         filterField = new javax.swing.JTextField();
         clearBtn = new javax.swing.JButton();

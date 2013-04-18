@@ -27,25 +27,21 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Sum
  */
-public class SumAggregator extends AbstractAggregator
-{
+public class SumAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new SumAggregator();
 
-    private SumAggregator()
-    {
+    private SumAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         return aggregate(data, Functions.plus, 0);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Sum";
     }
 }

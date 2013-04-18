@@ -29,41 +29,33 @@ import org.apache.commons.vfs2.FileType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VFSFileFilterAdaptor extends AbstractVFSFileFilter
-{
+public class VFSFileFilterAdaptor extends AbstractVFSFileFilter {
     private FileFormatFilter filter;
 
-    public VFSFileFilterAdaptor(FileFormatFilter filter)
-    {
+    public VFSFileFilterAdaptor(FileFormatFilter filter) {
         this.filter = filter;
     }
 
     @Override
-    public boolean accept(FileObject f)
-    {
+    public boolean accept(FileObject f) {
         boolean directory;
-        try
-        {
+        try {
             directory = (f.getType() == FileType.FOLDER);
-        } catch (FileSystemException e)
-        {
+        } catch (FileSystemException e) {
             throw new RuntimeException(e);
         }
         return filter.accept(directory, f.getName().toString());
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return filter.getDescription();
     }
 
-    public static List<VFSFileFilterAdaptor> adapt(FileFormatFilter[] filters)
-    {
+    public static List<VFSFileFilterAdaptor> adapt(FileFormatFilter[] filters) {
         List<VFSFileFilterAdaptor> result = new ArrayList<VFSFileFilterAdaptor>(filters.length);
 
-        for (FileFormatFilter filter : filters)
-        {
+        for (FileFormatFilter filter : filters) {
             result.add(new VFSFileFilterAdaptor(filter));
         }
 

@@ -36,19 +36,15 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class LoadDecoratorDialog<T> extends javax.swing.JDialog
-{
+public class LoadDecoratorDialog<T> extends javax.swing.JDialog {
 
-    private static class DecoratorListCellRenderer extends DefaultListCellRenderer
-    {
+    private static class DecoratorListCellRenderer extends DefaultListCellRenderer {
 
-        public DecoratorListCellRenderer()
-        {
+        public DecoratorListCellRenderer() {
         }
 
         @Override
-        public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1)
-        {
+        public Component getListCellRendererComponent(JList jlist, Object o, int i, boolean bln, boolean bln1) {
 
             Decorator d = (Decorator) o;
 
@@ -77,13 +73,11 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
     private final DefaultListModel model;
 
-    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects)
-    {
+    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects) {
         this(parent, objects, null);
     }
 
-    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects, @Nullable Class<? extends Decorator> decoratorClass)
-    {
+    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects, @Nullable Class<? extends Decorator> decoratorClass) {
 
 
         super(parent);
@@ -94,11 +88,9 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         initComponents();
 
 
-        list.getSelectionModel().addListSelectionListener(new ListSelectionListener()
-        {
+        list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 okButton.setEnabled(!list.getSelectionModel().isSelectionEmpty());
             }
         });
@@ -108,26 +100,19 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         list.setCellRenderer(new DecoratorListCellRenderer());
         list.setModel(model);
 
-        if (decoratorClass != null)
-        {
-            for (T o : objects)
-            {
-                if (o.getClass().equals(decoratorClass))
-                {
+        if (decoratorClass != null) {
+            for (T o : objects) {
+                if (o.getClass().equals(decoratorClass)) {
                     listObjects.add(o);
                 }
             }
-        }
-        else
-        {
+        } else {
             listObjects.addAll(Arrays.asList(objects));
         }
 
-        Collections.sort(listObjects, new Comparator<T>()
-        {
+        Collections.sort(listObjects, new Comparator<T>() {
             @Override
-            public int compare(T o1, T o2)
-            {
+            public int compare(T o1, T o2) {
                 Decorator d1 = (Decorator) o1;
                 Decorator d2 = (Decorator) o2;
                 return d1.getName().compareToIgnoreCase(d2.getName());
@@ -145,19 +130,14 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
         okButton.setEnabled(false);
 
-        DocumentChangeListener documentListener = new DocumentChangeListener()
-        {
+        DocumentChangeListener documentListener = new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 int elementCount = resetList(filter.getText());
-                if (elementCount == 0)
-                {
+                if (elementCount == 0) {
                     headerPanel.setMessageStatus(MessageStatus.WARN);
                     headerPanel.setMessage("No scale matches your filter");
-                }
-                else
-                {
+                } else {
                     headerPanel.setMessageStatus(MessageStatus.INFO);
                     headerPanel.setMessage(MESSAGE);
                 }
@@ -174,34 +154,26 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
     }
 
-    public DialogHeaderPanel getHeaderPanel()
-    {
+    public DialogHeaderPanel getHeaderPanel() {
         return headerPanel;
     }
 
     @NotNull
-    public Decorator getSelectedDecorator()
-    {
+    public Decorator getSelectedDecorator() {
         Decorator d = (Decorator) list.getSelectedValue();
         return d;
     }
 
-    private int resetList(@NotNull String filter)
-    {
+    private int resetList(@NotNull String filter) {
         model.clear();
-        for (T o : listObjects)
-        {
-            if (filter.isEmpty())
-            {
+        for (T o : listObjects) {
+            if (filter.isEmpty()) {
                 model.addElement(o);
-            }
-            else
-            {
+            } else {
                 Decorator d = (Decorator) o;
                 String regexFilter = "(?i).*" + filter + ".*";
                 boolean b = d.getName().matches(regexFilter);
-                if (b)
-                {
+                if (b) {
                     model.addElement(o);
                 }
             }
@@ -213,13 +185,11 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return returnStatus == RET_CANCEL;
     }
 
@@ -231,8 +201,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -245,28 +214,22 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
         setTitle("Load Scale");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -291,26 +254,22 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -329,8 +288,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    private String getFilter()
-    {
+    private String getFilter() {
         return filter.getText();
     }
 }

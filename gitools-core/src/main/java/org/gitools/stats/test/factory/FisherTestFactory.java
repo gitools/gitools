@@ -26,18 +26,15 @@ import org.gitools.stats.test.FisherTest;
 import org.gitools.stats.test.Test;
 import org.jetbrains.annotations.NotNull;
 
-public final class FisherTestFactory extends TestFactory
-{
+public final class FisherTestFactory extends TestFactory {
 
-    public FisherTestFactory(ToolConfig config)
-    {
+    public FisherTestFactory(ToolConfig config) {
         super(config);
     }
 
     @NotNull
     @Override
-    public Test create()
-    {
+    public Test create() {
         return new FisherTest();
     }
 

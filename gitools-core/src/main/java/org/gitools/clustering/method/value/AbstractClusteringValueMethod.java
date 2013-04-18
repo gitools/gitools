@@ -31,8 +31,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractClusteringValueMethod implements ClusteringMethod
-{
+public abstract class AbstractClusteringValueMethod implements ClusteringMethod {
 
     boolean preprocess;
 
@@ -42,23 +41,19 @@ public abstract class AbstractClusteringValueMethod implements ClusteringMethod
 
     public abstract ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 
-    public boolean isPreprocess()
-    {
+    public boolean isPreprocess() {
         return preprocess;
     }
 
-    public void setPreprocess(boolean preprocess)
-    {
+    public void setPreprocess(boolean preprocess) {
         this.preprocess = preprocess;
     }
 
-    public boolean isTranspose()
-    {
+    public boolean isTranspose() {
         return transpose;
     }
 
-    public void setTranspose(boolean transposed)
-    {
+    public void setTranspose(boolean transposed) {
         this.transpose = transposed;
     }
 }

@@ -32,8 +32,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterCollection
-{
+public class FilterCollection {
 
     @XmlAttribute
     private String internalName;
@@ -56,73 +55,59 @@ public class FilterCollection
     @XmlElement(name = "FilterDescription")
     private List<FilterDescription> filterDescriptions = new ArrayList<FilterDescription>();
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getEnableSelectAll()
-    {
+    public String getEnableSelectAll() {
         return enableSelectAll;
     }
 
-    public void setEnableSelectAll(String enableSelectAll)
-    {
+    public void setEnableSelectAll(String enableSelectAll) {
         this.enableSelectAll = enableSelectAll;
     }
 
-    public List<FilterDescription> getFilterDescriptions()
-    {
+    public List<FilterDescription> getFilterDescriptions() {
         return filterDescriptions;
     }
 
-    public void setFilterDescriptions(List<FilterDescription> filterDescriptions)
-    {
+    public void setFilterDescriptions(List<FilterDescription> filterDescriptions) {
         this.filterDescriptions = filterDescriptions;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 

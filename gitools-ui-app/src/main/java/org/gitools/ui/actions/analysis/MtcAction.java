@@ -44,15 +44,13 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class MtcAction extends BaseAction
-{
+public class MtcAction extends BaseAction {
 
     private static final long serialVersionUID = 991170566166881702L;
 
     private final MTC mtc;
 
-    public MtcAction(@NotNull MTC mtc)
-    {
+    public MtcAction(@NotNull MTC mtc) {
         super(mtc.getName());
 
         setDesc("Calculate " + mtc.getName() + " multiple test correction");
@@ -61,19 +59,16 @@ public class MtcAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -82,17 +77,14 @@ public class MtcAction extends BaseAction
         final int propIndex = matrixView.getLayers().getTopLayerIndex();
         final int corrPropIndex = MatrixUtils.correctedValueIndex(matrixView.getLayers(), matrixView.getLayers().get(propIndex));
 
-        if (corrPropIndex < 0)
-        {
+        if (corrPropIndex < 0) {
             JOptionPane.showMessageDialog(AppFrame.get(), "The property selected doesn't allow multiple test correction.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
 
                 IMatrix contents = matrixView.getContents();
 
@@ -103,21 +95,17 @@ public class MtcAction extends BaseAction
 
                 DoubleMatrix2D values = DoubleFactory2D.dense.make(rowCount, columnCount);
 
-                for (int col = 0; col < columnCount; col++)
-                {
+                for (int col = 0; col < columnCount; col++) {
                     for (int row = 0; row < rowCount; row++)
                         values.setQuick(row, col, MatrixUtils.doubleValue(contents.getCellValue(row, col, propIndex)));
 
                     monitor.worked(1);
                 }
 
-                for (int col = 0; col < columnCount; col++)
-                {
-                    DoubleMatrix1D columnValues = values.viewColumn(col).viewSelection(new DoubleProcedure()
-                    {
+                for (int col = 0; col < columnCount; col++) {
+                    DoubleMatrix1D columnValues = values.viewColumn(col).viewSelection(new DoubleProcedure() {
                         @Override
-                        public boolean apply(double v)
-                        {
+                        public boolean apply(double v) {
                             return !Double.isNaN(v);
                         }
                     });
@@ -126,8 +114,7 @@ public class MtcAction extends BaseAction
                     monitor.worked(1);
                 }
 
-                for (int col = 0; col < columnCount; col++)
-                {
+                for (int col = 0; col < columnCount; col++) {
                     for (int row = 0; row < rowCount; row++)
                         contents.setCellValue(row, col, corrPropIndex, values.getQuick(row, col));
 

@@ -35,15 +35,13 @@ import java.io.PrintStream;
 /**
  * @noinspection ALL
  */
-public class Main
-{
+public class Main {
 
     private static final String appName = Main.class.getPackage().getImplementationTitle();
 
     private static final String versionString = Main.class.getPackage().getImplementationVersion();
 
-    public static void main(String[] args) throws ToolException
-    {
+    public static void main(String[] args) throws ToolException {
 
         // Initialize file formats
         PersistenceInitialization.registerFormats();
@@ -55,14 +53,12 @@ public class Main
         System.exit(code);
     }
 
-    public static void printVersion()
-    {
+    public static void printVersion() {
         System.out.println(appName + " version " + versionString);
         System.exit(0);
     }
 
-    private static void printUsage(PrintStream out, @NotNull CmdLineParser parser, String toolName)
-    {
+    private static void printUsage(PrintStream out, @NotNull CmdLineParser parser, String toolName) {
         System.err.println("Usage: " + toolName + " [options]");
         parser.printUsage(System.err);
         System.err.println();

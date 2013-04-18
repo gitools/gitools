@@ -26,8 +26,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Analysis extends Resource
-{
+public class Analysis extends Resource {
 
     private static final long serialVersionUID = 44219853082656184L;
 
@@ -41,27 +40,22 @@ public class Analysis extends Resource
      */
     private long elapsedTime;
 
-    protected Analysis()
-    {
+    protected Analysis() {
     }
 
-    public Date getStartTime()
-    {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime)
-    {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public long getElapsedTime()
-    {
+    public long getElapsedTime() {
         return elapsedTime;
     }
 
-    public void setElapsedTime(long elapsedTime)
-    {
+    public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 }

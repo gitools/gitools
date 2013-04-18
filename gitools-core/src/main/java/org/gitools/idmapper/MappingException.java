@@ -21,16 +21,13 @@
  */
 package org.gitools.idmapper;
 
-public class MappingException extends Exception
-{
+public class MappingException extends Exception {
 
-    public MappingException(String msg)
-    {
+    public MappingException(String msg) {
         super(msg);
     }
 
-    public MappingException(Throwable cause)
-    {
+    public MappingException(Throwable cause) {
         super(cause);
     }
 }

@@ -34,40 +34,33 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
-{
+public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
     private final String entryName;
 
-    public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator)
-    {
+    public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator) {
         super(filter, resourceLocator);
         this.entryName = entryName;
     }
 
-    private ZipResourceLocatorAdaptor(String entryName, String name, String extension, IResourceLocator resourceLocator)
-    {
+    private ZipResourceLocatorAdaptor(String entryName, String name, String extension, IResourceLocator resourceLocator) {
         super(name, extension, resourceLocator);
         this.entryName = entryName;
     }
 
     @Override
-    public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException
-    {
+    public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         int firstDot = referenceName.indexOf('.');
         String extension = referenceName.substring(firstDot + 1);
 
-        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extension, getResourceLocator())
-        {
+        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extension, getResourceLocator()) {
             @Override
-            protected ZipOutputStream getZipOutputStream() throws IOException
-            {
+            protected ZipOutputStream getZipOutputStream() throws IOException {
                 return ZipResourceLocatorAdaptor.this.getZipOutputStream();
             }
 
             @NotNull
             @Override
-            public OutputStream openOutputStream() throws IOException
-            {
+            public OutputStream openOutputStream() throws IOException {
                 return new NonClosableOutputStream(super.openOutputStream());
             }
         };
@@ -75,15 +68,12 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
 
     @NotNull
     @Override
-    public InputStream openInputStream() throws IOException
-    {
+    public InputStream openInputStream() throws IOException {
         ZipInputStream in = new ZipInputStream(getResourceLocator().openInputStream());
 
         ZipEntry entry;
-        while ((entry = in.getNextEntry()) != null)
-        {
-            if (entryName.equals(entry.getName()))
-            {
+        while ((entry = in.getNextEntry()) != null) {
+            if (entryName.equals(entry.getName())) {
                 return in;
             }
         }
@@ -93,8 +83,7 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
 
     @NotNull
     @Override
-    public OutputStream openOutputStream() throws IOException
-    {
+    public OutputStream openOutputStream() throws IOException {
         ZipOutputStream out = getZipOutputStream();
         out.putNextEntry(new ZipEntry(entryName));
         return out;
@@ -102,54 +91,45 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor
 
     private ZipOutputStream out;
 
-    protected ZipOutputStream getZipOutputStream() throws IOException
-    {
+    protected ZipOutputStream getZipOutputStream() throws IOException {
 
-        if (this.out == null)
-        {
+        if (this.out == null) {
             this.out = new ZipOutputStream(getResourceLocator().openOutputStream());
         }
 
         return out;
     }
 
-    private class NonClosableOutputStream extends OutputStream
-    {
+    private class NonClosableOutputStream extends OutputStream {
 
         private final OutputStream out;
 
-        private NonClosableOutputStream(OutputStream out)
-        {
+        private NonClosableOutputStream(OutputStream out) {
             this.out = out;
         }
 
         @Override
-        public void write(int b) throws IOException
-        {
+        public void write(int b) throws IOException {
             this.out.write(b);
         }
 
         @Override
-        public void flush() throws IOException
-        {
+        public void flush() throws IOException {
             this.out.flush();
         }
 
         @Override
-        public void write(byte[] b) throws IOException
-        {
+        public void write(byte[] b) throws IOException {
             this.out.write(b);
         }
 
         @Override
-        public void write(byte[] b, int off, int len) throws IOException
-        {
+        public void write(byte[] b, int off, int len) throws IOException {
             this.out.write(b, off, len);
         }
 
         @Override
-        public void close() throws IOException
-        {
+        public void close() throws IOException {
             // Ignore close
         }
     }

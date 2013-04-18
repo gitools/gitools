@@ -45,18 +45,15 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupComparisonAnalysis>
-{
+public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupComparisonAnalysis> {
 
-    public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis)
-    {
+    public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
         super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", null);
     }
 
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context)
-    {
+    protected void prepareContext(@NotNull VelocityContext context) {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -70,63 +67,51 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
         fileRef = analysis.getLocator();
         context.put("analysisLocation", fileRef != null ? fileRef.getURL() : "Not defined");
 
-        if (fileRef == null || fileRef.isWritable())
-        {
+        if (fileRef == null || fileRef.isWritable()) {
             setSaveAllowed(true);
         }
 
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor)
-    {
+    public void doSave(IProgressMonitor progressMonitor) {
         xmlPersistance = new GroupComparisonAnalysisFormat();
         fileformat = GroupComparisonAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
-        if ("NewDataHeatmap".equals(name))
-        {
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
-        }
-        else if ("NewResultsHeatmap".equals(name))
-        {
+        } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
         }
     }
 
-    private void newDataHeatmap()
-    {
-        if (analysis.getData() == null)
-        {
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
-                if (analysis.getRowAnnotations() != null)
-                {
+                if (analysis.getRowAnnotations() != null) {
                     heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
                 }
                 if (analysis.getRowHeaders() != null)
                     copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
 
-                if (analysis.getColumnAnnotations() != null)
-                {
+                if (analysis.getColumnAnnotations() != null) {
                     heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
                 }
                 if (analysis.getColumnHeaders() != null)
@@ -137,11 +122,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-data", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("New heatmap created.");
                     }
@@ -151,43 +134,35 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
 
-    private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers)
-    {
-        for (HeatmapHeader hh : headers)      {
+    private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers) {
+        for (HeatmapHeader hh : headers) {
             dim.addHeader(SerialClone.xclone(hh));
         }
     }
 
-    private void newResultsHeatmap()
-    {
-        if (analysis.getResults() == null)
-        {
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
-                Heatmap heatmap =  new Heatmap(analysis.getResults().get());
+                Heatmap heatmap = new Heatmap(analysis.getResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                if (analysis.getRowHeaders() != null)
-                {
-                    if (analysis.getRowAnnotations() != null)
-                    {
+                if (analysis.getRowHeaders() != null) {
+                    if (analysis.getRowAnnotations() != null) {
                         heatmap.getRows().addAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
                     }
 
                     heatmap.getRows().getHeaders().remove(0);
-                    for (HeatmapHeader hh : analysis.getRowHeaders())
-                    {
+                    for (HeatmapHeader hh : analysis.getRowHeaders()) {
                         heatmap.getRows().addHeader(SerialClone.xclone(hh));
                     }
                 }
@@ -197,11 +172,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("Heatmap for group comparison results created.");
                     }

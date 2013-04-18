@@ -24,31 +24,26 @@ package org.gitools.utils.tools.exception;
 /**
  * @noinspection ALL
  */
-public class ToolException extends Exception
-{
+public class ToolException extends Exception {
 
     private static final long serialVersionUID = 2458110805961757125L;
 
-    ToolException()
-    {
+    ToolException() {
         super();
     }
 
-    public ToolException(String msg)
-    {
+    public ToolException(String msg) {
         super(msg);
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public ToolException(String msg, Throwable cause)
-    {
+    public ToolException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
-    public ToolException(Throwable cause)
-    {
+    public ToolException(Throwable cause) {
         super(cause);
     }
 }

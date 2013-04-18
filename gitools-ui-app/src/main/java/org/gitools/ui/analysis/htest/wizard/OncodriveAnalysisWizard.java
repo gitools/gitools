@@ -46,8 +46,7 @@ import javax.swing.*;
 import java.io.File;
 import java.util.Properties;
 
-public class OncodriveAnalysisWizard extends AbstractWizard
-{
+public class OncodriveAnalysisWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OncodriveAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "TCGA_gbm_filtered_annot.cdm.gz";
@@ -61,8 +60,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public OncodriveAnalysisWizard()
-    {
+    public OncodriveAnalysisWizard() {
         super();
 
         setTitle("Oncodrive analysis");
@@ -71,11 +69,9 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         // Example
-        if (Settings.getDefault().isShowCombinationExamplePage())
-        {
+        if (Settings.getDefault().isShowCombinationExamplePage()) {
             examplePage = new ExamplePage("an Oncodriver analysis");
             examplePage.setTitle("Oncodriver analysis");
             addPage(examplePage);
@@ -115,40 +111,31 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
-        if (currentPage == examplePage)
-        {
+    public void pageLeft(IWizardPage currentPage) {
+        if (currentPage == examplePage) {
             Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
-            if (examplePage.isExampleEnabled())
-            {
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+            if (examplePage.isExampleEnabled()) {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
+                    public void run(@NotNull IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("oncodrive", monitor);
 
-                        if (basePath == null)
-                        {
+                        if (basePath == null) {
                             throw new RuntimeException("Unexpected error: There are no examples available");
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        try
-                        {
+                        try {
                             monitor.begin("Loading example parameters ...", 1);
 
                             final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, props, monitor);
 
-                            SwingUtilities.invokeLater(new Runnable()
-                            {
+                            SwingUtilities.invokeLater(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     setAnalysis(a);
 
                                     dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
@@ -158,8 +145,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
                             });
 
                             monitor.end();
-                        } catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             monitor.exception(ex);
                         }
                     }
@@ -169,8 +155,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         IWizardPage page = getCurrentPage();
 
         boolean canFinish = super.canFinish();
@@ -180,65 +165,53 @@ public class OncodriveAnalysisWizard extends AbstractWizard
     }
 
     @Override
-    public void performCancel()
-    {
+    public void performCancel() {
         super.performCancel();
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         Settings.getDefault().setLastWorkPath(saveFilePage.getFolder());
     }
 
-    public String getWorkdir()
-    {
+    public String getWorkdir() {
         return saveFilePage.getFolder();
     }
 
-    public String getFileName()
-    {
+    public String getFileName() {
         return saveFilePage.getFileName();
     }
 
-    public IResourceFormat getDataFileFormat()
-    {
+    public IResourceFormat getDataFileFormat() {
         return dataPage.getFileFormat().getFormat(IMatrix.class);
     }
 
-    public File getDataFile()
-    {
+    public File getDataFile() {
         return dataPage.getFile();
     }
 
-    public int getSelectedValueIndex()
-    {
+    public int getSelectedValueIndex() {
         return dataPage.getSelectedValueIndex();
     }
 
-    public File getPopulationFile()
-    {
+    public File getPopulationFile() {
         return dataFilterPage.getRowsFilterFile();
     }
 
-    public Double getPopulationDefaultValue()
-    {
+    public Double getPopulationDefaultValue() {
         return dataFilterPage.getPopulationDefaultValue();
     }
 
-    public IResourceFormat getModulesFileFormat()
-    {
+    public IResourceFormat getModulesFileFormat() {
         return modulesPage.getFileResourceFormat();
     }
 
-    public File getModulesFile()
-    {
+    public File getModulesFile() {
         return modulesPage.getSelectedFile();
     }
 
     @NotNull
-    public OncodriveAnalysis getAnalysis()
-    {
+    public OncodriveAnalysis getAnalysis() {
         OncodriveAnalysis analysis = new OncodriveAnalysis();
 
         analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
@@ -256,8 +229,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard
         return analysis;
     }
 
-    private void setAnalysis(@NotNull OncodriveAnalysis a)
-    {
+    private void setAnalysis(@NotNull OncodriveAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());

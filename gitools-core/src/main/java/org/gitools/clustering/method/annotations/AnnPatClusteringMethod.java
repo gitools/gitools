@@ -37,22 +37,18 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class AnnPatClusteringMethod implements ClusteringMethod
-{
+public class AnnPatClusteringMethod implements ClusteringMethod {
 
     private String pattern;
 
-    public AnnPatClusteringMethod()
-    {
+    public AnnPatClusteringMethod() {
     }
 
-    public String getPattern()
-    {
+    public String getPattern() {
         return pattern;
     }
 
-    public void setPattern(String pattern)
-    {
+    public void setPattern(String pattern) {
         this.pattern = pattern;
     }
 
@@ -61,20 +57,17 @@ public class AnnPatClusteringMethod implements ClusteringMethod
      */
     @Nullable
     @Override
-    public ClusteringResults cluster(@NotNull ClusteringData data, @NotNull IProgressMonitor monitor)
-    {
+    public ClusteringResults cluster(@NotNull ClusteringData data, @NotNull IProgressMonitor monitor) {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
 
         String[] dataLabels = new String[data.getSize()];
         Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
-        for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++)
-        {
+        for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
             String label = data.getLabel(i);
             dataLabels[i] = label;
             String clusterName = data.getInstance(i).getTypedValue(0, String.class);
             List<Integer> indices = clusters.get(clusterName);
-            if (indices == null)
-            {
+            if (indices == null) {
                 indices = new ArrayList<Integer>();
                 clusters.put(clusterName, indices);
             }
@@ -83,8 +76,7 @@ public class AnnPatClusteringMethod implements ClusteringMethod
             monitor.worked(1);
         }
 
-        if (monitor.isCancelled())
-        {
+        if (monitor.isCancelled()) {
             return null;
         }
 

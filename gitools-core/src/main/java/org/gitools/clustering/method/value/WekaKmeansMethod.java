@@ -40,8 +40,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class WekaKmeansMethod extends AbstractClusteringValueMethod
-{
+public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
     private int iterations;
 
@@ -51,20 +50,16 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
 
     private NormalizableDistance distanceFunction;
 
-    public WekaKmeansMethod()
-    {
+    public WekaKmeansMethod() {
         classIndex = -1;
     }
 
     @Nullable
     @Override
-    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException
-    {
-        try
-        {
+    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException {
+        try {
 
-            if (iterations < 2)
-            {
+            if (iterations < 2) {
                 return null;
             }
 
@@ -74,8 +69,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
 
             MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 
-            if (preprocess)
-            {
+            if (preprocess) {
                 ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
             }
 
@@ -89,8 +83,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
 
             ClusteringResults results = null;
 
-            if (!monitor.isCancelled())
-            {
+            if (!monitor.isCancelled()) {
 
                 monitor.end();
 
@@ -103,15 +96,12 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
 
                 HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
 
-                for (int i = 0; i < clusterWekaData.numInstances() && !monitor.isCancelled(); i++)
-                {
-                    if ((current = clusterWekaData.get(i)) != null)
-                    {
+                for (int i = 0; i < clusterWekaData.numInstances() && !monitor.isCancelled(); i++) {
+                    if ((current = clusterWekaData.get(i)) != null) {
                         cluster = clusterer.clusterInstance(current);
 
                         List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
-                        if (instancesCluster == null)
-                        {
+                        if (instancesCluster == null) {
                             instancesCluster = new ArrayList<Integer>();
                         }
                         instancesCluster.add(i);
@@ -124,61 +114,48 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod
             }
             return results;
 
-        } catch (Throwable ex)
-        {
-            if (ex instanceof OutOfMemoryError)
-            {
+        } catch (Throwable ex) {
+            if (ex instanceof OutOfMemoryError) {
                 throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
-            }
-            else
-            {
+            } else {
                 throw new ClusteringException(ex);
             }
         }
     }
 
-    public int getIterations()
-    {
+    public int getIterations() {
         return iterations;
     }
 
-    public void setIterations(int iterations)
-    {
+    public void setIterations(int iterations) {
         this.iterations = iterations;
     }
 
-    public int getSeed()
-    {
+    public int getSeed() {
         return seed;
     }
 
-    public void setSeed(int seedKmeans)
-    {
+    public void setSeed(int seedKmeans) {
         this.seed = seedKmeans;
     }
 
-    public NormalizableDistance getDistanceFunction()
-    {
+    public NormalizableDistance getDistanceFunction() {
         return distanceFunction;
     }
 
-    public void setDistanceFunction(NormalizableDistance distance)
-    {
+    public void setDistanceFunction(NormalizableDistance distance) {
         this.distanceFunction = distance;
     }
 
-    public int getNumClusters()
-    {
+    public int getNumClusters() {
         return numClusters;
     }
 
-    public void setNumClusters(int numClusters)
-    {
+    public void setNumClusters(int numClusters) {
         this.numClusters = numClusters;
     }
 
-    private void configure(@NotNull SimpleKMeans clusterer) throws Exception
-    {
+    private void configure(@NotNull SimpleKMeans clusterer) throws Exception {
 
         clusterer.setMaxIterations(iterations);
 

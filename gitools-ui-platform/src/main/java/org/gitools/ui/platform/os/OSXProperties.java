@@ -27,7 +27,7 @@ import java.awt.*;
 
 public class OSXProperties implements OSProperties {
 
-    public OSXProperties(Image dockLogo)   {
+    public OSXProperties(Image dockLogo) {
 
         Application osxApp = Application.getApplication();
         osxApp.setDockIconImage(dockLogo);

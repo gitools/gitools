@@ -32,8 +32,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public abstract class AnalysisCommand
-{
+public abstract class AnalysisCommand {
 
     protected String workdir;
 
@@ -41,8 +40,7 @@ public abstract class AnalysisCommand
 
     protected boolean storeAnalysis;
 
-    protected AnalysisCommand(String workdir, String fileName)
-    {
+    protected AnalysisCommand(String workdir, String fileName) {
         this.workdir = workdir;
         this.fileName = fileName;
         this.storeAnalysis = true;
@@ -51,41 +49,34 @@ public abstract class AnalysisCommand
     /**
      * @noinspection UnusedDeclaration
      */
-    public String getWorkdir()
-    {
+    public String getWorkdir() {
         return workdir;
     }
 
-    public void setWorkdir(String workdir)
-    {
+    public void setWorkdir(String workdir) {
         this.workdir = workdir;
     }
 
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
-    public boolean isStoreAnalysis()
-    {
+    public boolean isStoreAnalysis() {
         return storeAnalysis;
     }
 
-    public void setStoreAnalysis(boolean storeAnalysis)
-    {
+    public void setStoreAnalysis(boolean storeAnalysis) {
         this.storeAnalysis = storeAnalysis;
     }
 
     public abstract void run(IProgressMonitor monitor) throws AnalysisException;
 
     @NotNull
-    protected ValueTranslator createValueTranslator(boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue)
-    {
+    protected ValueTranslator createValueTranslator(boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue) {
 
         return binaryCutoffEnabled ? new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) : new DoubleTranslator();
     }

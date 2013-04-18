@@ -26,16 +26,13 @@ import com.alee.extended.colorchooser.WebColorChooserField;
 
 import java.awt.*;
 
-public class MyWebColorChooserField extends WebColorChooserField
-{
-    public MyWebColorChooserField()
-    {
+public class MyWebColorChooserField extends WebColorChooserField {
+    public MyWebColorChooserField() {
         setFieldType(ColorChooserFieldType.hex);
     }
 
     @Override
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         Color oldValue = super.getColor();
         super.setColor(color);
         firePropertyChange("color", oldValue, color);

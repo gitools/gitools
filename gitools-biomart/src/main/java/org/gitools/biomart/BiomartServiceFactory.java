@@ -28,23 +28,19 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class BiomartServiceFactory
-{
+public class BiomartServiceFactory {
 
     private BiomartServiceFactory instance;
 
-    public BiomartServiceFactory getInstance()
-    {
-        if (instance == null)
-        {
+    public BiomartServiceFactory getInstance() {
+        if (instance == null) {
             instance = new BiomartServiceFactory();
         }
 
         return instance;
     }
 
-    private BiomartServiceFactory()
-    {
+    private BiomartServiceFactory() {
     }
 
     /**
@@ -54,8 +50,7 @@ public class BiomartServiceFactory
      * @return biomart service
      */
     @NotNull
-    public static BiomartService createService(BiomartSource source) throws BiomartServiceException
-    {
+    public static BiomartService createService(BiomartSource source) throws BiomartServiceException {
         BiomartService bs = new BiomartRestfulService(source);
         return bs;
     }

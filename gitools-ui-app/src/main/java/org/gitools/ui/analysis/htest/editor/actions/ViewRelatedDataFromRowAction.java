@@ -41,15 +41,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ViewRelatedDataFromRowAction extends BaseAction
-{
+public class ViewRelatedDataFromRowAction extends BaseAction {
 
     private final String title;
     private final IMatrix matrix;
     private final ModuleMap map;
 
-    public ViewRelatedDataFromRowAction(String title, IMatrix matrix, ModuleMap map)
-    {
+    public ViewRelatedDataFromRowAction(String title, IMatrix matrix, ModuleMap map) {
         super("View annotated elements");
 
         setDesc("View annotated elements in a new heatmap");
@@ -62,8 +60,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         IEditor currentEditor = editorPanel.getSelectedEditor();
@@ -72,14 +69,11 @@ public class ViewRelatedDataFromRowAction extends BaseAction
         Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
         IMatrixView srcMatrixView = srcHeatmap;
         IMatrix srcMatrix = srcMatrixView.getContents();
-        int[] selRows = srcMatrixView.getRows().getSelected(  );
-        int leadRow = srcMatrixView.getRows().getSelectionLead(  );
-        if ((selRows == null || selRows.length == 0) && leadRow != -1)
-        {
+        int[] selRows = srcMatrixView.getRows().getSelected();
+        int leadRow = srcMatrixView.getRows().getSelectionLead();
+        if ((selRows == null || selRows.length == 0) && leadRow != -1) {
             selRows = new int[]{leadRow};
-        }
-        else if (leadRow == -1)
-        {
+        } else if (leadRow == -1) {
             JOptionPane.showMessageDialog(AppFrame.get(), "You must select some rows before.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -95,24 +89,19 @@ public class ViewRelatedDataFromRowAction extends BaseAction
 
         StringBuilder moduleNames = new StringBuilder();
 
-        for (int i = 0; i < selRows.length; i++)
-        {
+        for (int i = 0; i < selRows.length; i++) {
             String modName = srcMatrix.getRows().getLabel(view[selRows[i]]);
-            if (i != 0)
-            {
+            if (i != 0) {
                 moduleNames.append(", ");
             }
             moduleNames.append(modName);
 
             int[] indices = map.getItemIndices(modName);
-            if (indices != null)
-            {
-                for (int index : indices)
-                {
+            if (indices != null) {
+                for (int index : indices) {
                     String itemName = map.getItemName(index);
                     Integer dstIndex = itemNameMap.get(itemName);
-                    if (dstIndex != null)
-                    {
+                    if (dstIndex != null) {
                         elements.add(dstIndex);
                     }
                 }

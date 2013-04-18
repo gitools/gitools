@@ -24,8 +24,8 @@ package org.gitools.analysis.htest.oncozet;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.*;
@@ -44,14 +44,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class OncodriveCommand extends HtestCommand
-{
+public class OncodriveCommand extends HtestCommand {
 
     private final IResourceFormat modulesFormat;
     private final String modulesPath;
 
-    public OncodriveCommand(OncodriveAnalysis analysis, IResourceFormat dataMime, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName)
-    {
+    public OncodriveCommand(OncodriveAnalysis analysis, IResourceFormat dataMime, String dataPath, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName) {
 
         super(analysis, dataMime, dataPath, valueIndex, populationPath, populationDefaultValue, workdir, fileName);
 
@@ -60,11 +58,9 @@ public class OncodriveCommand extends HtestCommand
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
-        try
-        {
+        try {
             final OncodriveAnalysis oncozAnalysis = (OncodriveAnalysis) analysis;
 
             // Load data and modules
@@ -84,21 +80,18 @@ public class OncodriveCommand extends HtestCommand
             // Save analysis
 
             save(oncozAnalysis, monitor);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new AnalysisException(ex);
         }
     }
 
-    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, @Nullable String modulesFileName, @NotNull OncodriveAnalysis analysis, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, @Nullable String modulesFileName, @NotNull OncodriveAnalysis analysis, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Load background population
 
         String[] populationLabels = null;
 
-        if (populationFileName != null)
-        {
+        if (populationFileName != null) {
             IResourceLocator bgLocator = new UrlResourceLocator(new File(populationFileName));
 
             IResourceFormat<GeneSet> bgFormat = PersistenceManager.get().getFormat(populationFileName, GeneSet.class);
@@ -116,8 +109,7 @@ public class OncodriveCommand extends HtestCommand
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
         dataProps.put(AbstractMatrixFormat.VALUE_TRANSLATORS, valueTranslators);
         dataProps.put(MultiValueMatrixFormat.VALUE_INDICES, new int[]{valueIndex});
-        if (populationLabels != null)
-        {
+        if (populationLabels != null) {
             dataProps.put(AbstractTextMatrixFormat.POPULATION_LABELS, populationLabels);
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
@@ -129,8 +121,7 @@ public class OncodriveCommand extends HtestCommand
 
         // Load modules
 
-        if (modulesFileName != null)
-        {
+        if (modulesFileName != null) {
             IResourceLocator modulesLocator = new UrlResourceLocator(new File(modulesFileName));
 
             Properties modProps = new Properties();
@@ -147,12 +138,10 @@ public class OncodriveCommand extends HtestCommand
         }
     }
 
-    private void save(final OncodriveAnalysis analysis, IProgressMonitor monitor) throws PersistenceException
-    {
+    private void save(final OncodriveAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
 
         File workdirFile = new File(workdir);
-        if (!workdirFile.exists())
-        {
+        if (!workdirFile.exists()) {
             workdirFile.mkdirs();
         }
 

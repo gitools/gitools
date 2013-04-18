@@ -37,51 +37,40 @@ import java.util.logging.Logger;
 /**
  * @noinspection ALL
  */
-public class NewickParser<VT>
-{
+public class NewickParser<VT> {
 
-    private static enum TokenType
-    {
+    private static enum TokenType {
         SPACE, NAME, NUMBER, PAR_OPEN, PAR_CLOSE, COMMA, TWO_COLON, COLON_COMMA, UNKNOWN, END_OF_STREAM
     }
 
-    private static class Token
-    {
+    private static class Token {
         private final TokenType type;
         private final String text;
 
-        public Token(TokenType type, String text)
-        {
+        public Token(TokenType type, String text) {
             this.type = type;
             this.text = text;
         }
 
-        public TokenType getType()
-        {
+        public TokenType getType() {
             return type;
         }
 
-        public String getText()
-        {
+        public String getText() {
             return text;
         }
 
         @Override
-        public String toString()
-        {
-            if (text != null)
-            {
+        public String toString() {
+            if (text != null) {
                 return type.toString() + " " + text;
-            }
-            else
-            {
+            } else {
                 return type.toString();
             }
         }
     }
 
-    private enum ParserState
-    {
+    private enum ParserState {
         TREE_START, BRANCH_START, BRANCH_ADD, BRANCH_CLOSE, BRANCH_LEAF, LEAF, TREE_END, EOF
     }
 
@@ -91,13 +80,11 @@ public class NewickParser<VT>
     private int bufferedChar;
     private int lastRow, lastCol, row, col;
 
-    public NewickParser(String string)
-    {
+    public NewickParser(String string) {
         this(new StringReader(string));
     }
 
-    private NewickParser(Reader reader)
-    {
+    private NewickParser(Reader reader) {
         this.reader = reader;
         sb = new StringBuilder();
         bufferedChar = -1;
@@ -107,10 +94,8 @@ public class NewickParser<VT>
     /**
      * @noinspection UnusedDeclaration
      */
-    public static void main(String[] args)
-    {
-        try
-        {
+    public static void main(String[] args) {
+        try {
             NewickParser p = new NewickParser(" ( ( ), (1,2, )B:0.2 ,(:0.4,E):3)A:0.01;");
             NewickTree t = p.parse();
             System.out.println(t);
@@ -118,27 +103,22 @@ public class NewickParser<VT>
             for (NewickNode n : (List<NewickNode>) t.getRoot().getLeaves())
                 System.out.println(n);
 
-        } catch (NewickParserException ex)
-        {
+        } catch (NewickParserException ex) {
             Logger.getLogger(NewickParser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    public void close() throws NewickParserException
-    {
-        try
-        {
+    public void close() throws NewickParserException {
+        try {
             reader.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new NewickParserException(e);
         }
     }
 
     @Nullable
-    public NewickTree<VT> parse() throws NewickParserException
-    {
+    public NewickTree<VT> parse() throws NewickParserException {
         Token token = null;
         ParserState state = ParserState.TREE_START;
 
@@ -150,10 +130,8 @@ public class NewickParser<VT>
         int level = 0;
         Stack<NewickNode> nodeStack = new Stack<NewickNode>();
 
-        while (state != ParserState.EOF)
-        {
-            switch (state)
-            {
+        while (state != ParserState.EOF) {
+            switch (state) {
                 case TREE_START:
                     tree = new NewickTree();
                     root = null;
@@ -161,8 +139,7 @@ public class NewickParser<VT>
                     level = 0;
                     nodeStack.clear();
                     token = nextTokenNoSpace();
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case PAR_OPEN:
                             state = ParserState.BRANCH_START;
                             break;
@@ -175,8 +152,7 @@ public class NewickParser<VT>
                     break;
 
                 case BRANCH_START:
-                    if (root != null)
-                    {
+                    if (root != null) {
                         nodeStack.push(root);
                     }
 
@@ -187,8 +163,7 @@ public class NewickParser<VT>
 
                     token = nextTokenNoSpace();
 
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case PAR_OPEN:
                             state = ParserState.BRANCH_START;
                             break;
@@ -215,8 +190,7 @@ public class NewickParser<VT>
 
                     token = nextTokenNoSpace();
 
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case PAR_OPEN:
                             state = ParserState.BRANCH_START;
                             break;
@@ -240,8 +214,7 @@ public class NewickParser<VT>
                 case BRANCH_LEAF:
                     token = parseNodeName(node, token, names);
 
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case COMMA:
                             state = ParserState.BRANCH_ADD;
                             break;
@@ -256,27 +229,23 @@ public class NewickParser<VT>
 
                 case BRANCH_CLOSE:
                     level--;
-                    if (level < 0)
-                    {
+                    if (level < 0) {
                         exception("Unexpected branch closing");
                     }
 
                     token = nextToken();
 
-                    if (token.getType() == TokenType.NAME || token.getType() == TokenType.TWO_COLON)
-                    {
+                    if (token.getType() == TokenType.NAME || token.getType() == TokenType.TWO_COLON) {
                         token = parseNodeName(root, token, names);
                     }
 
-                    if (!nodeStack.isEmpty())
-                    {
+                    if (!nodeStack.isEmpty()) {
                         node = root;
                         root = nodeStack.pop();
                         root.setChild(root.getChildren().size() - 1, node);
                     }
 
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case COMMA:
                             state = ParserState.BRANCH_ADD;
                             break;
@@ -293,16 +262,14 @@ public class NewickParser<VT>
                     break;
 
                 case TREE_END:
-                    if (level != 0)
-                    {
+                    if (level != 0) {
                         exception("Unexpected end");
                     }
 
                     tree.setRoot(root);
 
                     token = nextTokenNoSpace();
-                    switch (token.getType())
-                    {
+                    switch (token.getType()) {
                         case END_OF_STREAM:
                             state = ParserState.EOF;
                             break;
@@ -318,12 +285,9 @@ public class NewickParser<VT>
     }
 
     @NotNull
-    private Token parseNodeName(@NotNull NewickNode node, @NotNull Token token, @NotNull Set<String> names) throws NewickParserException
-    {
-        if (token.getType() == TokenType.NAME || token.getType() == TokenType.NUMBER)
-        {
-            if (names.contains(token.getText()))
-            {
+    private Token parseNodeName(@NotNull NewickNode node, @NotNull Token token, @NotNull Set<String> names) throws NewickParserException {
+        if (token.getType() == TokenType.NAME || token.getType() == TokenType.NUMBER) {
+            if (names.contains(token.getText())) {
                 exception("Node name already defined");
             }
 
@@ -332,11 +296,9 @@ public class NewickParser<VT>
             token = nextToken();
         }
 
-        if (token.getType() == TokenType.TWO_COLON)
-        {
+        if (token.getType() == TokenType.TWO_COLON) {
             token = nextToken();
-            if (token.getType() != TokenType.NUMBER)
-            {
+            if (token.getType() != TokenType.NUMBER) {
                 exception("Number expected but found " + token);
             }
             node.setValue(Double.parseDouble(token.getText()));
@@ -346,14 +308,12 @@ public class NewickParser<VT>
         return token;
     }
 
-    private void exception(String msg) throws NewickParserException
-    {
+    private void exception(String msg) throws NewickParserException {
         throw new NewickParserException("Line " + lastRow + " column " + lastCol + " -> " + msg);
     }
 
     @Nullable
-    private Token nextTokenNoSpace() throws NewickParserException
-    {
+    private Token nextTokenNoSpace() throws NewickParserException {
         Token token = nextToken();
         while (token.getType() == TokenType.SPACE)
             token = nextToken();
@@ -361,49 +321,33 @@ public class NewickParser<VT>
     }
 
     @Nullable
-    private Token nextToken() throws NewickParserException
-    {
+    private Token nextToken() throws NewickParserException {
         sb.setLength(0);
 
         int ch;
         char state = 'S';
         boolean done = false;
 
-        try
-        {
-            while (!done)
-            {
-                switch (state)
-                {
+        try {
+            while (!done) {
+                switch (state) {
                     case 'S':    // Start
                         ch = nextChar();
-                        if (ch == -1)
-                        {
+                        if (ch == -1) {
                             return new Token(TokenType.END_OF_STREAM, null);
-                        }
-                        else if (isWhitespace((char) ch))
-                        {
+                        } else if (isWhitespace((char) ch)) {
                             return new Token(TokenType.SPACE, "" + (char) ch);
-                        }
-                        else if (ch == '-')
-                        {
+                        } else if (ch == '-') {
                             sb.append((char) ch);
                             state = 'Z';
-                        }
-                        else if (Character.isDigit((char) ch))
-                        {
+                        } else if (Character.isDigit((char) ch)) {
                             sb.append((char) ch);
                             state = 'I';
-                        }
-                        else if (isNameChar(ch))
-                        {
+                        } else if (isNameChar(ch)) {
                             sb.append((char) ch);
                             state = 'N';
-                        }
-                        else
-                        {
-                            switch (ch)
-                            {
+                        } else {
+                            switch (ch) {
                                 case '(':
                                     return new Token(TokenType.PAR_OPEN, "" + (char) ch);
                                 case ')':
@@ -423,18 +367,13 @@ public class NewickParser<VT>
                     case 'Z':    // sign character
                         ch = nextChar();
 
-                        if (Character.isDigit((char) ch))
-                        {
+                        if (Character.isDigit((char) ch)) {
                             sb.append((char) ch);
                             state = 'I';
-                        }
-                        else if (isNameChar(ch))
-                        {
+                        } else if (isNameChar(ch)) {
                             sb.append((char) ch);
                             state = 'N';
-                        }
-                        else
-                        {
+                        } else {
                             bufferedChar = ch;
                             return new Token(TokenType.NAME, sb.toString());
                         }
@@ -442,24 +381,18 @@ public class NewickParser<VT>
 
                     case 'I':    // Integer number
                         ch = nextChar();
-                        while (ch != -1 && Character.isDigit((char) ch))
-                        {
+                        while (ch != -1 && Character.isDigit((char) ch)) {
                             sb.append((char) ch);
                             ch = nextChar();
                         }
 
-                        if (ch == '.')
-                        {
+                        if (ch == '.') {
                             sb.append((char) ch);
                             state = 'F';
-                        }
-                        else if (isNameChar(ch))
-                        {
+                        } else if (isNameChar(ch)) {
                             sb.append((char) ch);
                             state = 'N';
-                        }
-                        else
-                        {
+                        } else {
                             bufferedChar = ch;
                             return new Token(TokenType.NUMBER, sb.toString());
                         }
@@ -467,19 +400,15 @@ public class NewickParser<VT>
 
                     case 'F':    // Floating number
                         ch = nextChar();
-                        while (ch != -1 && Character.isDigit((char) ch))
-                        {
+                        while (ch != -1 && Character.isDigit((char) ch)) {
                             sb.append((char) ch);
                             ch = nextChar();
                         }
 
-                        if (isNameChar(ch))
-                        {
+                        if (isNameChar(ch)) {
                             sb.append((char) ch);
                             state = 'N';
-                        }
-                        else
-                        {
+                        } else {
                             bufferedChar = ch;
                             return new Token(TokenType.NUMBER, sb.toString());
                         }
@@ -487,8 +416,7 @@ public class NewickParser<VT>
 
                     case 'N':    // Name
                         ch = nextChar();
-                        while (ch != -1 && isNameChar((char) ch))
-                        {
+                        while (ch != -1 && isNameChar((char) ch)) {
                             sb.append((char) ch);
                             ch = nextChar();
                         }
@@ -499,51 +427,42 @@ public class NewickParser<VT>
                         throw new NewickParserException("Internal error: Unknown tokenizer state: " + state);
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new NewickParserException(e);
         }
 
         throw new NewickParserException("Unexpected tokenizer end");
     }
 
-    private int nextChar() throws IOException
-    {
+    private int nextChar() throws IOException {
         lastRow = row;
         lastCol = col;
 
-        if (bufferedChar != -1)
-        {
+        if (bufferedChar != -1) {
             int bufChar = bufferedChar;
             bufferedChar = -1;
             return bufChar;
         }
 
         int ch = reader.read();
-        if (ch == '\n')
-        {
+        if (ch == '\n') {
             row++;
             col = 0;
-        }
-        else
-        {
+        } else {
             col++;
         }
         return ch;
     }
 
-    private boolean isWhitespace(char ch)
-    {
+    private boolean isWhitespace(char ch) {
         return Character.isWhitespace(ch);
     }
 
-    private boolean isSpecialChar(int ch)
-    {
+    private boolean isSpecialChar(int ch) {
         return ch == '(' || ch == ')' || ch == ',' || ch == ':' || ch == ';';
     }
 
-    private boolean isNameChar(int ch)
-    {
+    private boolean isNameChar(int ch) {
         return ch != -1 && !isSpecialChar(ch) && !isWhitespace((char) ch);
     }
 }

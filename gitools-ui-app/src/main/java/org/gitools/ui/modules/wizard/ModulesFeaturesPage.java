@@ -34,46 +34,36 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class ModulesFeaturesPage extends FilteredListPage
-{
+public class ModulesFeaturesPage extends FilteredListPage {
 
     private final ModulesImporter importer;
 
     private Organism organism;
     private boolean loaded;
 
-    public ModulesFeaturesPage(ModulesImporter importer)
-    {
+    public ModulesFeaturesPage(ModulesImporter importer) {
         this.importer = importer;
 
         setTitle("Select Identifiers");
     }
 
     @Override
-    public void updateControls()
-    {
-        if (!loaded || organism != importer.getOrganism())
-        {
-            JobThread.execute(AppFrame.get(), new JobRunnable()
-            {
+    public void updateControls() {
+        if (!loaded || organism != importer.getOrganism()) {
+            JobThread.execute(AppFrame.get(), new JobRunnable() {
                 @Override
-                public void run(@NotNull IProgressMonitor monitor)
-                {
-                    try
-                    {
+                public void run(@NotNull IProgressMonitor monitor) {
+                    try {
                         monitor.begin("Getting available identifiers ...", 1);
 
                         organism = importer.getOrganism();
                         final FeatureCategory[] features = importer.getFeatureCategories();
-                        SwingUtilities.invokeLater(new Runnable()
-                        {
+                        SwingUtilities.invokeLater(new Runnable() {
                             @Override
-                            public void run()
-                            {
+                            public void run() {
                                 setListData(features);
                                 for (FeatureCategory f : features)
-                                    if (f.getRef().equals(EnsemblIds.ENSEMBL_GENES))
-                                    {
+                                    if (f.getRef().equals(EnsemblIds.ENSEMBL_GENES)) {
                                         setSelectedValue(f);
                                     }
                                 loaded = true;
@@ -81,8 +71,7 @@ public class ModulesFeaturesPage extends FilteredListPage
                         });
 
                         monitor.end();
-                    } catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         monitor.exception(ex);
                     }
                 }
@@ -91,14 +80,12 @@ public class ModulesFeaturesPage extends FilteredListPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         importer.setFeatCategory(getFeatureCategory());
     }
 
     @NotNull
-    private FeatureCategory getFeatureCategory()
-    {
+    private FeatureCategory getFeatureCategory() {
         return (FeatureCategory) getSelectedValue();
     }
 }

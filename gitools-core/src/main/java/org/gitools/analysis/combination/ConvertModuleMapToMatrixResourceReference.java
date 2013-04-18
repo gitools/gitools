@@ -31,21 +31,17 @@ import org.gitools.persistence.ResourceReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConvertModuleMapToMatrixResourceReference extends ResourceReference<IMatrix>
-{
+public class ConvertModuleMapToMatrixResourceReference extends ResourceReference<IMatrix> {
 
-    public ConvertModuleMapToMatrixResourceReference(IResourceLocator locator, IResourceFormat resourceFormat)
-    {
+    public ConvertModuleMapToMatrixResourceReference(IResourceLocator locator, IResourceFormat resourceFormat) {
         super(locator, resourceFormat);
     }
 
     @NotNull
     @Override
-    protected IMatrix onAfterLoad(@Nullable IResource resource)
-    {
+    protected IMatrix onAfterLoad(@Nullable IResource resource) {
 
-        if (resource != null && resource instanceof ModuleMap)
-        {
+        if (resource != null && resource instanceof ModuleMap) {
             return MatrixUtils.moduleMapToMatrix((ModuleMap) resource);
         }
 

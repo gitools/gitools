@@ -30,39 +30,32 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.File;
 
 
-public class OverlappingCommand extends AnalysisCommand
-{
+public class OverlappingCommand extends AnalysisCommand {
 
     private final OverlappingAnalysis analysis;
 
-    public OverlappingCommand(OverlappingAnalysis analysis, String workdir, String fileName)
-    {
+    public OverlappingCommand(OverlappingAnalysis analysis, String workdir, String fileName) {
         super(workdir, fileName);
 
         this.analysis = analysis;
     }
 
     @Override
-    public void run(IProgressMonitor progressMonitor) throws AnalysisException
-    {
-        try
-        {
+    public void run(IProgressMonitor progressMonitor) throws AnalysisException {
+        try {
             OverlappingProcessor proc = new OverlappingProcessor(analysis);
 
             proc.run(progressMonitor);
 
-            if (storeAnalysis)
-            {
+            if (storeAnalysis) {
                 File workdirFile = new File(workdir);
-                if (!workdirFile.exists())
-                {
+                if (!workdirFile.exists()) {
                     workdirFile.mkdirs();
                 }
 
                 PersistenceManager.get().store(new UrlResourceLocator(new File(workdirFile, fileName)), analysis, progressMonitor);
             }
-        } catch (Throwable cause)
-        {
+        } catch (Throwable cause) {
             throw new AnalysisException(cause);
         }
     }

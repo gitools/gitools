@@ -37,8 +37,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ValueFilterDialog extends javax.swing.JDialog
-{
+public class ValueFilterDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -48,26 +47,20 @@ public class ValueFilterDialog extends javax.swing.JDialog
      */
     public static final int RET_OK = 1;
 
-    private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer
-    {
+    private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer {
 
-        public ComboBoxCellRenderer(Object[] values)
-        {
+        public ComboBoxCellRenderer(Object[] values) {
             super(values);
         }
 
         @NotNull
         @Override
-        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-        {
+        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-            if (isSelected)
-            {
+            if (isSelected) {
                 setForeground(table.getSelectionForeground());
                 super.setBackground(table.getSelectionBackground());
-            }
-            else
-            {
+            } else {
                 setForeground(table.getForeground());
                 setBackground(table.getBackground());
             }
@@ -78,10 +71,8 @@ public class ValueFilterDialog extends javax.swing.JDialog
         }
     }
 
-    private static class ComboBoxCellEditor extends DefaultCellEditor
-    {
-        public ComboBoxCellEditor(Object[] values)
-        {
+    private static class ComboBoxCellEditor extends DefaultCellEditor {
+        public ComboBoxCellEditor(Object[] values) {
             super(new JComboBox(values));
         }
     }
@@ -94,8 +85,7 @@ public class ValueFilterDialog extends javax.swing.JDialog
     /**
      * Creates new form FilterDialog
      */
-    public ValueFilterDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, @Nullable List<ValueFilterCriteria> initialCriteriaList)
-    {
+    public ValueFilterDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, @Nullable List<ValueFilterCriteria> initialCriteriaList) {
 
         super(parent, true);
 
@@ -108,17 +98,14 @@ public class ValueFilterDialog extends javax.swing.JDialog
 
         table.setModel(criteriaModel);
 
-        criteriaModel.addTableModelListener(new TableModelListener()
-        {
+        criteriaModel.addTableModelListener(new TableModelListener() {
             @Override
-            public void tableChanged(TableModelEvent e)
-            {
+            public void tableChanged(TableModelEvent e) {
                 tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
             }
         });
 
-        if (initialCriteriaList != null)
-        {
+        if (initialCriteriaList != null) {
             criteriaModel.addAllCriteria(initialCriteriaList);
         }
 
@@ -131,8 +118,7 @@ public class ValueFilterDialog extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
@@ -144,8 +130,7 @@ public class ValueFilterDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyToGroup = new javax.swing.ButtonGroup();
         okButton = new javax.swing.JButton();
@@ -167,41 +152,33 @@ public class ValueFilterDialog extends javax.swing.JDialog
 
         setTitle("Filter criteria");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-        }, new String[]{"Attribute", "Condition", "Value"})
-        {
+        }, new String[]{"Attribute", "Condition", "Value"}) {
             @NotNull
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
-            public Class getColumnClass(int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
             }
         });
@@ -210,20 +187,16 @@ public class ValueFilterDialog extends javax.swing.JDialog
         table.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         tableAddBtn.setText("Add");
-        tableAddBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tableAddBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tableAddBtnActionPerformed(evt);
             }
         });
 
         tableRemoveBtn.setText("Remove");
         tableRemoveBtn.setEnabled(false);
-        tableRemoveBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tableRemoveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tableRemoveBtnActionPerformed(evt);
             }
         });
@@ -263,36 +236,30 @@ public class ValueFilterDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
         criteriaModel.addCriteria(new ValueFilterCriteria(attributeNames[0], 0, comparators[0], 0.0));
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
-    private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_tableRemoveBtnActionPerformed
+    private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
         criteriaModel.removeCriteria(table.getSelectedRows());
     }//GEN-LAST:event_tableRemoveBtnActionPerformed
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -320,33 +287,27 @@ public class ValueFilterDialog extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public boolean isApplyToRowsChecked()
-    {
+    public boolean isApplyToRowsChecked() {
         return applyToRowsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
     }
 
-    public boolean isApplyToColumnsChecked()
-    {
+    public boolean isApplyToColumnsChecked() {
         return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
     }
 
-    public boolean isAllCriteriaChecked()
-    {
+    public boolean isAllCriteriaChecked() {
         return allCriteriaCheck.isSelected();
     }
 
-    public boolean isAllElementsChecked()
-    {
+    public boolean isAllElementsChecked() {
         return allElementsCheck.isSelected();
     }
 
-    public boolean isInvertCriteriaChecked()
-    {
+    public boolean isInvertCriteriaChecked() {
         return invertCriteriaCheck.isSelected();
     }
 
-    public List<ValueFilterCriteria> getCriteriaList()
-    {
+    public List<ValueFilterCriteria> getCriteriaList() {
         return criteriaModel.getList();
     }
 }

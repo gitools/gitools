@@ -24,66 +24,55 @@ package org.gitools.matrix.filter;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.jetbrains.annotations.NotNull;
 
-public class ValueFilterCriteria
-{
+public class ValueFilterCriteria {
 
     private String attributeName;
     private int attributeIndex;
     private CutoffCmp comparator;
     private double value;
 
-    public ValueFilterCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double value)
-    {
+    public ValueFilterCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double value) {
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
         this.comparator = comparator;
         this.value = value;
     }
 
-    public String getAttributeName()
-    {
+    public String getAttributeName() {
         return attributeName;
     }
 
-    public void setAttributeName(String attributeName)
-    {
+    public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
     }
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeIndex;
     }
 
-    public void setAttributeIndex(int attributeIndex)
-    {
+    public void setAttributeIndex(int attributeIndex) {
         this.attributeIndex = attributeIndex;
     }
 
-    public CutoffCmp getComparator()
-    {
+    public CutoffCmp getComparator() {
         return comparator;
     }
 
-    public void setComparator(CutoffCmp comparator)
-    {
+    public void setComparator(CutoffCmp comparator) {
         this.comparator = comparator;
     }
 
-    public double getValue()
-    {
+    public double getValue() {
         return this.value;
     }
 
-    public void setValue(double value)
-    {
+    public void setValue(double value) {
         this.value = value;
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return attributeName.toString() + " " + comparator.toString() + " " + value;
     }
 }

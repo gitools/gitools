@@ -29,15 +29,12 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * @noinspection ALL
  */
-public class IntegerXmlAdapter extends XmlAdapter<String, Integer>
-{
+public class IntegerXmlAdapter extends XmlAdapter<String, Integer> {
 
     @Nullable
     @Override
-    public Integer unmarshal(@Nullable String v) throws Exception
-    {
-        if (v == null || v.isEmpty())
-        {
+    public Integer unmarshal(@Nullable String v) throws Exception {
+        if (v == null || v.isEmpty()) {
             return null;
         }
 
@@ -45,8 +42,7 @@ public class IntegerXmlAdapter extends XmlAdapter<String, Integer>
     }
 
     @Override
-    public String marshal(Integer v) throws Exception
-    {
+    public String marshal(Integer v) throws Exception {
         return Integer.toString(v);
     }
 

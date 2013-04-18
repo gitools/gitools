@@ -31,27 +31,23 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 /**
  * @noinspection ALL
  */
-public class ExportChooserPage extends AbstractWizardPage
-{
+public class ExportChooserPage extends AbstractWizardPage {
 
     private static final long serialVersionUID = 873494691491409555L;
 
     private JTree tree;
 
-    private ExportChooserPage(String id)
-    {
+    private ExportChooserPage(String id) {
         super(id);
     }
 
-    public ExportChooserPage()
-    {
+    public ExportChooserPage() {
         super(ExportChooserPage.class.getSimpleName());
     }
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         DefaultMutableTreeNode model = new DefaultMutableTreeNode();
 
         DefaultMutableTreeNode table = new DefaultMutableTreeNode("Table");

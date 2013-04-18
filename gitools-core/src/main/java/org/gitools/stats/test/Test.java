@@ -24,8 +24,7 @@ package org.gitools.stats.test;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.stats.test.results.CommonResult;
 
-public interface Test
-{
+public interface Test {
 
     String getName();
 

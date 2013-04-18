@@ -30,16 +30,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 
 
-public class ModulesSourcePage extends AbstractWizardPage
-{
+public class ModulesSourcePage extends AbstractWizardPage {
 
     private final ModulesImporter importer;
 
     /**
      * Creates new form ModulesSourcePage
      */
-    public ModulesSourcePage(@NotNull ModulesImporter importer)
-    {
+    public ModulesSourcePage(@NotNull ModulesImporter importer) {
         this.importer = importer;
 
         setTitle("Select category and version");
@@ -54,22 +52,18 @@ public class ModulesSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
-        if (importer.getModuleCategory() != null)
-        {
+    public void updateControls() {
+        if (importer.getModuleCategory() != null) {
             modCategoryCb.setSelectedItem(importer.getModuleCategory());
         }
 
-        if (importer.getVersion() != null)
-        {
+        if (importer.getVersion() != null) {
             versionCb.setSelectedItem(importer.getVersion());
         }
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         importer.setModuleCategory((ModuleCategory) modCategoryCb.getSelectedItem());
         importer.setVersion((Version) versionCb.getSelectedItem());
     }
@@ -82,8 +76,7 @@ public class ModulesSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         modCategoryCb = new javax.swing.JComboBox();

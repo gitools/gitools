@@ -24,8 +24,7 @@ package org.gitools.obo;
 /**
  * @noinspection ALL
  */
-public interface OBOEventTypes
-{
+public interface OBOEventTypes {
 
     static final int UNKNOWN = -1;
     static final int COMMENT = 1;

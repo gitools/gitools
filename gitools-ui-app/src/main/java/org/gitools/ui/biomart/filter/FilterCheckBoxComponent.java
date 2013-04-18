@@ -33,13 +33,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterCheckBoxComponent extends FilterComponent
-{
+public class FilterCheckBoxComponent extends FilterComponent {
 
     private final Integer CHECK_HEIGHT = 45;
 
-    public FilterCheckBoxComponent(FilterDescription d, FilterDescriptionPanel descriptionParent)
-    {
+    public FilterCheckBoxComponent(FilterDescription d, FilterDescriptionPanel descriptionParent) {
 
         super(d, descriptionParent);
         initComponents();
@@ -47,8 +45,7 @@ public class FilterCheckBoxComponent extends FilterComponent
         buildComponent();
     }
 
-    public FilterCheckBoxComponent(Option o)
-    {
+    public FilterCheckBoxComponent(Option o) {
 
         super(o);
         initComponents();
@@ -64,8 +61,7 @@ public class FilterCheckBoxComponent extends FilterComponent
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -78,19 +74,16 @@ public class FilterCheckBoxComponent extends FilterComponent
     // End of variables declaration//GEN-END:variables
 
     //FIXME : Test initialisation String list of options
-    private void buildComponent()
-    {
+    private void buildComponent() {
 
         //Retrieve list of text from options
         String[] options = getListTextOptions();
 
-        if (options != null)
-        {
+        if (options != null) {
             JCheckBox check = null;
             this.setLayout(new GridLayout(options.length, 1));
 
-            for (int i = 0; i < options.length; i++)
-            {
+            for (int i = 0; i < options.length; i++) {
                 check = new JCheckBox(options[i]);
                 this.add(check);
             }
@@ -102,22 +95,19 @@ public class FilterCheckBoxComponent extends FilterComponent
     @NotNull
     @Override
     // FIXME : Check if get filter from check value/s is correct
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();
 
         Filter f = new Filter();
 
         // Could happen filterDescription null, if this component is a child (belongs to a container component)
-        if (filterDescription != null && filterDescription.getInternalName() != null)
-        {
+        if (filterDescription != null && filterDescription.getInternalName() != null) {
             f.setName(filterDescription.getInternalName());
         }
 
         for (JCheckBox checkBox : (JCheckBox[]) this.getComponents())
-            if (checkBox.isSelected())
-            {
+            if (checkBox.isSelected()) {
                 f.setValue(checkBox.getText());
             }
 
@@ -131,8 +121,7 @@ public class FilterCheckBoxComponent extends FilterComponent
     @NotNull
     @Override
     //Always render filter from select component filter
-    public Boolean hasChanged()
-    {
+    public Boolean hasChanged() {
         return true;
 
     }
@@ -145,29 +134,22 @@ public class FilterCheckBoxComponent extends FilterComponent
      * @return
      */
     @Nullable
-    private String[] getListTextOptions()
-    {
+    private String[] getListTextOptions() {
         String res[] = null;
-        if (filterOptions != null)
-        {
+        if (filterOptions != null) {
             res = new String[filterOptions.getOptions().size()];
-            for (int i = 0; i < filterOptions.getOptions().size(); i++)
-            {
+            for (int i = 0; i < filterOptions.getOptions().size(); i++) {
                 res[i] = filterOptions.getOptions().get(i).getValue();
             }
 
-        }
-        else
-        {
-            if (filterDescription == null)
-            {
+        } else {
+            if (filterDescription == null) {
                 return res;
             }
 
             res = new String[filterDescription.getOptions().size()];
 
-            for (int i = 0; i < filterDescription.getOptions().size(); i++)
-            {
+            for (int i = 0; i < filterDescription.getOptions().size(); i++) {
                 res[i] = filterDescription.getOptions().get(i).getValue();
             }
         }
@@ -175,8 +157,7 @@ public class FilterCheckBoxComponent extends FilterComponent
     }
 
     @Override
-    public void setListOptions(List<Option> optionList)
-    {
+    public void setListOptions(List<Option> optionList) {
         return;
     }
 

@@ -25,25 +25,21 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
-{
+public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]> {
 
     private static final String elemSeparator = ",";
 
     @NotNull
     @Override
-    public String marshal(@NotNull int[] v) throws Exception
-    {
+    public String marshal(@NotNull int[] v) throws Exception {
 
         String output = "";
 
-        if (v.length > 0)
-        {
+        if (v.length > 0) {
 
             int i = 0;
 
-            while (i < v.length - 1)
-            {
+            while (i < v.length - 1) {
                 output = output + Integer.toString(v[i]) + elemSeparator;
                 i++;
             }
@@ -54,8 +50,7 @@ public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]>
 
     @NotNull
     @Override
-    public int[] unmarshal(@NotNull String v) throws Exception
-    {
+    public int[] unmarshal(@NotNull String v) throws Exception {
 
         String[] elems = v.split(elemSeparator);
 

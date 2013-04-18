@@ -31,75 +31,58 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class AbstractModel implements IModel, Serializable, Cloneable
-{
+public abstract class AbstractModel implements IModel, Serializable, Cloneable {
     public static final String PROPERTY_CHANGED = "propertyChanged";
 
     private transient ArrayList<PropertyChangeListener> listeners;
 
     private transient boolean quiet = false;
 
-    protected AbstractModel()
-    {
+    protected AbstractModel() {
     }
 
-    ArrayList<PropertyChangeListener> getListeners()
-    {
-        if (listeners == null)
-        {
+    ArrayList<PropertyChangeListener> getListeners() {
+        if (listeners == null) {
             listeners = new ArrayList<PropertyChangeListener>(0);
         }
         return listeners;
     }
 
     @Override
-    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener)
-    {
-        if (listener != null)
-        {
+    public void addPropertyChangeListener(@Nullable PropertyChangeListener listener) {
+        if (listener != null) {
             getListeners().add(listener);
         }
     }
 
     @Override
-    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener)
-    {
-        if (listener != null)
-        {
+    public void removePropertyChangeListener(@Nullable PropertyChangeListener listener) {
+        if (listener != null) {
             getListeners().remove(listener);
         }
     }
 
-    protected void firePropertyChange(PropertyChangeEvent evt)
-    {
-        if (!quiet)
-        {
+    protected void firePropertyChange(PropertyChangeEvent evt) {
+        if (!quiet) {
             for (PropertyChangeListener l : getListeners())
                 l.propertyChange(evt);
         }
     }
 
-    protected void firePropertyChange(String propName)
-    {
-        if (!quiet)
-        {
-            for (PropertyChangeListener l : getListeners())
-            {
+    protected void firePropertyChange(String propName) {
+        if (!quiet) {
+            for (PropertyChangeListener l : getListeners()) {
                 PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, null, null);
                 l.propertyChange(evt);
             }
         }
     }
 
-    protected void firePropertyChange(String propName, @Nullable Object oldValue, @Nullable Object newValue)
-    {
-        if (!quiet)
-        {
-            if ((oldValue != null && !oldValue.equals(newValue)) || (oldValue == null && newValue != null))
-            {
+    protected void firePropertyChange(String propName, @Nullable Object oldValue, @Nullable Object newValue) {
+        if (!quiet) {
+            if ((oldValue != null && !oldValue.equals(newValue)) || (oldValue == null && newValue != null)) {
 
-                for (PropertyChangeListener l : getListeners())
-                {
+                for (PropertyChangeListener l : getListeners()) {
                     PropertyChangeEvent evt = new PropertyChangeEvent(this, propName, oldValue, newValue);
                     l.propertyChange(evt);
                 }
@@ -107,13 +90,11 @@ public abstract class AbstractModel implements IModel, Serializable, Cloneable
         }
     }
 
-    public boolean isQuiet()
-    {
+    public boolean isQuiet() {
         return quiet;
     }
 
-    public void setQuiet(boolean quiet)
-    {
+    public void setQuiet(boolean quiet) {
         this.quiet = quiet;
     }
 

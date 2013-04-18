@@ -31,69 +31,57 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class SaveFileWizard extends AbstractWizard
-{
+public class SaveFileWizard extends AbstractWizard {
 
     private SaveFilePage page;
 
-    private SaveFileWizard()
-    {
+    private SaveFileWizard() {
         setTitle("Select destination file");
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         addPage(getSaveFilePage());
     }
 
-    SaveFilePage getSaveFilePage()
-    {
-        if (page == null)
-        {
+    SaveFilePage getSaveFilePage() {
+        if (page == null) {
             page = new SaveFilePage();
         }
         return page;
     }
 
-    public String getFileNameWithoutExt()
-    {
+    public String getFileNameWithoutExt() {
         return getSaveFilePage().getFileNameWithoutExtension();
     }
 
     @NotNull
-    public String getFileName()
-    {
+    public String getFileName() {
         return getSaveFilePage().getFileName();
     }
 
     @NotNull
-    public File getPathAsFile()
-    {
+    public File getPathAsFile() {
         return getSaveFilePage().getPathAsFile();
     }
 
-    public String getFolder()
-    {
+    public String getFolder() {
         return getSaveFilePage().getFolder();
     }
 
     @NotNull
-    public FileFormat getFormat()
-    {
+    public FileFormat getFormat() {
         return getSaveFilePage().getFormat();
     }
 
     @NotNull
-    public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat)
-    {
+    public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat) {
         return createSimple(title, fileName, folder, new FileFormat[]{fileFormat});
     }
 
 
     @NotNull
-    public static SaveFileWizard createSimple(String title, String fileName, String folder, @NotNull FileFormat[] fileFormats)
-    {
+    public static SaveFileWizard createSimple(String title, String fileName, String folder, @NotNull FileFormat[] fileFormats) {
 
         SaveFileWizard wiz = new SaveFileWizard();
         wiz.setTitle(title);

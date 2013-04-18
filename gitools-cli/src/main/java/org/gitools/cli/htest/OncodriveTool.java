@@ -40,11 +40,9 @@ import org.kohsuke.args4j.Option;
 /**
  * @noinspection ALL
  */
-public class OncodriveTool extends HtestTool
-{
+public class OncodriveTool extends HtestTool {
 
-    public static class OncodriveArguments extends HtestArguments
-    {
+    public static class OncodriveArguments extends HtestArguments {
         @Option(name = "-sf", aliases = "-sets-format", metaVar = "<format>",
                 usage = "Column sets file format (reference file extension).")
         public String setsFormat;
@@ -63,8 +61,7 @@ public class OncodriveTool extends HtestTool
     }
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
@@ -72,24 +69,20 @@ public class OncodriveTool extends HtestTool
 
         testConfig = TestFactory.createToolConfig(ToolConfig.ONCODRIVE, args.testName);
 
-        if (testConfig == null)
-        {
+        if (testConfig == null) {
             throw new ToolValidationException("Unknown test: " + args.testName);
         }
 
-        if (args.minSetSize < 1)
-        {
+        if (args.minSetSize < 1) {
             args.minSetSize = 1;
         }
-        if (args.maxSetSize < args.minSetSize)
-        {
+        if (args.maxSetSize < args.minSetSize) {
             args.maxSetSize = args.minSetSize;
         }
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         OncodriveArguments args = (OncodriveArguments) argsObject;
 
@@ -109,14 +102,11 @@ public class OncodriveTool extends HtestTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }

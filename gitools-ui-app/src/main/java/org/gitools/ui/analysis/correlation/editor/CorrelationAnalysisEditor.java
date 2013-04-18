@@ -45,17 +45,14 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.Map;
 
-public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis>
-{
+public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis> {
 
-    public CorrelationAnalysisEditor(CorrelationAnalysis analysis)
-    {
+    public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {
         super(analysis, "/vm/analysis/correlation/analysis_details.vm", null);
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context)
-    {
+    protected void prepareContext(@NotNull VelocityContext context) {
 
         IResourceLocator dataLocator = analysis.getData().getLocator();
         context.put("dataFile", dataLocator != null ? dataLocator.getName() : "Not defined");
@@ -63,8 +60,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
         context.put("appliedTo", appliedTo);
 
-        if (analysis.getMethod().equals("pearson"))
-        {
+        if (analysis.getMethod().equals("pearson")) {
             context.put("method", "Pearson's correlation");
         }
 
@@ -73,67 +69,54 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
         IResourceLocator analysisLocator = analysis.getLocator();
 
-        if (analysisLocator != null)
-        {
+        if (analysisLocator != null) {
             context.put("analysisLocation", analysisLocator.getURL());
 
-            if (analysisLocator.isWritable())
-            {
+            if (analysisLocator.isWritable()) {
                 setSaveAllowed(true);
             }
         }
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor)
-    {
+    public void doSave(IProgressMonitor progressMonitor) {
         xmlPersistance = new CorrelationAnalysisFormat();
         fileformat = CorrelationAnalysisFormat.FILE_FORMAT;
         super.doSave(progressMonitor);
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
-        if ("NewDataHeatmap".equals(name))
-        {
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
-        }
-        else if ("NewResultsHeatmap".equals(name))
-        {
+        } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
         }
     }
 
-    private void newDataHeatmap()
-    {
-        if (analysis.getData() == null)
-        {
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                Heatmap heatmap =  new Heatmap(analysis.getData().get());
+                Heatmap heatmap = new Heatmap(analysis.getData().get());
                 heatmap.setTitle(analysis.getTitle() + " (data)");
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
                 editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-data", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("New heatmap created.");
                     }
@@ -142,21 +125,17 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         });
     }
 
-    private void newResultsHeatmap()
-    {
-        if (analysis.getResults() == null)
-        {
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
@@ -167,11 +146,9 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
                 editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-results", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("Heatmap for correlation results created.");
                     }
@@ -181,15 +158,13 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     @Nullable
-    private static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis)
-    {
+    private static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis) {
         IMatrixView results = new DiagonalMatrixView(analysis.getResults().get());
         Heatmap heatmap = new Heatmap(results);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         int propertiesNb = results.getLayers().size();
         CorrelationDecorator[] dec = new CorrelationDecorator[propertiesNb];
-        for (HeatmapLayer layer : heatmap.getLayers())
-        {
+        for (HeatmapLayer layer : heatmap.getLayers()) {
             layer.setDecorator(new CorrelationDecorator());
         }
 

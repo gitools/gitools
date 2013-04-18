@@ -38,27 +38,22 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartDatasetPage extends AbstractWizardPage
-{
+public class BiomartDatasetPage extends AbstractWizardPage {
 
-    private static class DatasetListWrapper
-    {
+    private static class DatasetListWrapper {
 
         private final DatasetInfo dataset;
 
-        public DatasetListWrapper(DatasetInfo dataset)
-        {
+        public DatasetListWrapper(DatasetInfo dataset) {
             this.dataset = dataset;
         }
 
-        public DatasetInfo getDataset()
-        {
+        public DatasetInfo getDataset() {
             return dataset;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return dataset.getDisplayName();
         }
     }
@@ -75,8 +70,7 @@ public class BiomartDatasetPage extends AbstractWizardPage
     /**
      * @noinspection UnusedDeclaration
      */
-    public BiomartDatasetPage(BiomartService biomartService /*IBiomartService biomartService*/)
-    {
+    public BiomartDatasetPage(BiomartService biomartService /*IBiomartService biomartService*/) {
         super();
 
         this.biomartService = biomartService;
@@ -88,16 +82,13 @@ public class BiomartDatasetPage extends AbstractWizardPage
     }
 
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         panelDataset = new FilteredListPanel();
 
-        panelDataset.list.addListSelectionListener(new ListSelectionListener()
-        {
+        panelDataset.list.addListSelectionListener(new ListSelectionListener() {
 
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 selectionChangeActionPerformed();
             }
         });
@@ -106,16 +97,13 @@ public class BiomartDatasetPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
 
-        if (mart == null)
-        {
+        if (mart == null) {
             return;
         }
 
-        if (updated)
-        {
+        if (updated) {
             return;
         }
 
@@ -124,30 +112,23 @@ public class BiomartDatasetPage extends AbstractWizardPage
 
         panelDataset.setListData(new Object[]{});
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
 
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     List<DatasetInfo> dataSets = biomartService.getDatasets(mart);
                     final List<DatasetListWrapper> visibleDataSets = new ArrayList<DatasetListWrapper>();
-                    for (DatasetInfo ds : dataSets)
-                    {
-                        if (ds.getVisible() != 0)
-                        {
+                    for (DatasetInfo ds : dataSets) {
+                        if (ds.getVisible() != 0) {
                             visibleDataSets.add(new DatasetListWrapper(ds));
                         }
                     }
 
-                    SwingUtilities.invokeAndWait(new Runnable()
-                    {
+                    SwingUtilities.invokeAndWait(new Runnable() {
 
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             panelDataset.setListData(visibleDataSets.toArray(new DatasetListWrapper[visibleDataSets.size()]));
 
                             setMessage(MessageStatus.INFO, "");
@@ -155,8 +136,7 @@ public class BiomartDatasetPage extends AbstractWizardPage
                     });
 
                     updated = true;
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     setStatus(MessageStatus.ERROR);
                     setMessage(e.getMessage());
                     e.printStackTrace();
@@ -165,24 +145,20 @@ public class BiomartDatasetPage extends AbstractWizardPage
         }).start();
     }
 
-    public void setMart(MartLocation mart)
-    {
-        if (this.mart != mart)
-        {
+    public void setMart(MartLocation mart) {
+        if (this.mart != mart) {
             updated = false;
         }
 
         this.mart = mart;
     }
 
-    public DatasetInfo getDataset()
-    {
+    public DatasetInfo getDataset() {
         DatasetListWrapper wrapper = (DatasetListWrapper) panelDataset.getSelectedValue();
         return wrapper.getDataset();
     }
 
-    private void selectionChangeActionPerformed()
-    {
+    private void selectionChangeActionPerformed() {
         Object value = panelDataset.list.getSelectedValue();
         setComplete(value != null);
     }

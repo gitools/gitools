@@ -28,8 +28,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class DataIntegrationCriteria
-{
+public class DataIntegrationCriteria {
 
     private String attributeName;
     private int attributeIndex;
@@ -37,8 +36,7 @@ public class DataIntegrationCriteria
     private double cutoffValue;
     private Operator operator;
 
-    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, Operator operator)
-    {
+    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, Operator operator) {
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
         this.comparator = comparator;
@@ -46,8 +44,7 @@ public class DataIntegrationCriteria
         this.operator = operator;
     }
 
-    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, String operator)
-    {
+    public DataIntegrationCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double cutoffValue, String operator) {
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
         this.comparator = comparator;
@@ -55,60 +52,49 @@ public class DataIntegrationCriteria
         this.operator = Operator.getFromName(operator);
     }
 
-    public String getAttributeName()
-    {
+    public String getAttributeName() {
         return attributeName;
     }
 
-    public void setAttributeName(String attributeName)
-    {
+    public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
     }
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeIndex;
     }
 
-    public void setAttributeIndex(int attributeIndex)
-    {
+    public void setAttributeIndex(int attributeIndex) {
         this.attributeIndex = attributeIndex;
     }
 
-    public CutoffCmp getComparator()
-    {
+    public CutoffCmp getComparator() {
         return comparator;
     }
 
-    public void setComparator(CutoffCmp comparator)
-    {
+    public void setComparator(CutoffCmp comparator) {
         this.comparator = comparator;
     }
 
-    public double getCutoffValue()
-    {
+    public double getCutoffValue() {
         return this.cutoffValue;
     }
 
-    public void setCutoffValue(double cutoffValue)
-    {
+    public void setCutoffValue(double cutoffValue) {
         this.cutoffValue = cutoffValue;
     }
 
-    public Operator getOperator()
-    {
+    public Operator getOperator() {
         return operator;
     }
 
-    public void setOperator(Operator operator)
-    {
+    public void setOperator(Operator operator) {
         this.operator = operator;
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return attributeName.toString() + " " + comparator.toString() + " " + cutoffValue + " " + operator.getLongName();
     }
 }

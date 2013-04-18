@@ -29,30 +29,25 @@ import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-public class DoubleBinaryMatrixFormat extends AbstractTextMatrixFormat<DoubleBinaryMatrix>
-{
+public class DoubleBinaryMatrixFormat extends AbstractTextMatrixFormat<DoubleBinaryMatrix> {
 
-    public DoubleBinaryMatrixFormat()
-    {
+    public DoubleBinaryMatrixFormat() {
         super(FileSuffixes.DOUBLE_BINARY_MATRIX, DoubleBinaryMatrix.class);
     }
 
     @NotNull
     @Override
-    protected DoubleBinaryMatrix createEntity()
-    {
+    protected DoubleBinaryMatrix createEntity() {
         return new DoubleBinaryMatrix();
     }
 
     @Override
-    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected DoubleBinaryMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         return read(resourceLocator, new DoubleTranslator(), progressMonitor);
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(IResourceLocator resourceLocator, DoubleBinaryMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
         write(resourceLocator, resource, new DoubleTranslator(), progressMonitor);
     }
 

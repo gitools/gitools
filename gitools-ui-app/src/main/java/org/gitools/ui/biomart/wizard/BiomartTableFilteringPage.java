@@ -26,14 +26,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class BiomartTableFilteringPage extends AbstractWizardPage
-{
+public class BiomartTableFilteringPage extends AbstractWizardPage {
 
     /**
      * Creates new form BiomartTableFilteringPage
      */
-    public BiomartTableFilteringPage()
-    {
+    public BiomartTableFilteringPage() {
         initComponents();
 
         setTitle("Rows filtering");
@@ -48,8 +46,7 @@ public class BiomartTableFilteringPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         emptyValuesButtonGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -86,18 +83,15 @@ public class BiomartTableFilteringPage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    public boolean isSkipRowsWithEmptyValuesEnabled()
-    {
+    public boolean isSkipRowsWithEmptyValuesEnabled() {
         return emptyValuesSkipRb.isSelected();
     }
 
-    public String emptyValuesReplacement()
-    {
+    public String emptyValuesReplacement() {
         return emptyValuesReplaceText.getText();
     }
 

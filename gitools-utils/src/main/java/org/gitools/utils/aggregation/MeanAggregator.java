@@ -27,26 +27,22 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Mean
  */
-public class MeanAggregator extends AbstractAggregator
-{
+public class MeanAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MeanAggregator();
 
-    private MeanAggregator()
-    {
+    private MeanAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         double sum = aggregate(data, Functions.plus, 0);
         return sum / data.length; //FIXME should have into account NaN values ???
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Mean";
     }
 }

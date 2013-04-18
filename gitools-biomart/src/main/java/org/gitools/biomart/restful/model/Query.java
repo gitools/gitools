@@ -34,8 +34,7 @@ import java.util.List;
 @XmlRootElement(name = "Query")
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public class Query
-{
+public class Query {
 
     @XmlAttribute(required = true)
     private String virtualSchemaName;
@@ -72,8 +71,7 @@ public class Query
      * @return possible object is
      *         {@link String }
      */
-    public String getVirtualSchemaName()
-    {
+    public String getVirtualSchemaName() {
         return virtualSchemaName;
     }
 
@@ -83,105 +81,90 @@ public class Query
      * @param value allowed object is
      *              {@link String }
      */
-    public void setVirtualSchemaName(String value)
-    {
+    public void setVirtualSchemaName(String value) {
         this.virtualSchemaName = value;
     }
 
     /**
      * Gets the value of the header property.
      */
-    public int getHeader()
-    {
+    public int getHeader() {
         return header;
     }
 
     /**
      * Sets the value of the header property.
      */
-    public void setHeader(int value)
-    {
+    public void setHeader(int value) {
         this.header = value;
     }
 
     /**
      * Gets the value of the count property.
      */
-    public int getCount()
-    {
+    public int getCount() {
         return count;
     }
 
     /**
      * Sets the value of the count property.
      */
-    public void setCount(int value)
-    {
+    public void setCount(int value) {
         this.count = value;
     }
 
     /**
      * Gets the value of the uniqueRows property.
      */
-    public int getUniqueRows()
-    {
+    public int getUniqueRows() {
         return uniqueRows;
     }
 
     /**
      * Sets the value of the uniqueRows property.
      */
-    public void setUniqueRows(int value)
-    {
+    public void setUniqueRows(int value) {
         this.uniqueRows = value;
     }
 
     /**
      * Get the formatter (TSV, ...)
      */
-    public String getFormatter()
-    {
+    public String getFormatter() {
         return formatter;
     }
 
     /**
      * Set the formatter (TSV, ...)
      */
-    public void setFormatter(String formatter)
-    {
+    public void setFormatter(String formatter) {
         this.formatter = formatter;
     }
 
-    public Integer getLimitStart()
-    {
+    public Integer getLimitStart() {
         return limitStart;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setLimitStart(Integer limitStart)
-    {
+    public void setLimitStart(Integer limitStart) {
         this.limitStart = limitStart;
     }
 
-    public Integer getLimitSize()
-    {
+    public Integer getLimitSize() {
         return limitSize;
     }
 
-    public void setLimitSize(Integer limitSize)
-    {
+    public void setLimitSize(Integer limitSize) {
         this.limitSize = limitSize;
     }
 
-    public String getRequestId()
-    {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId)
-    {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 
@@ -205,10 +188,8 @@ public class Query
      * Objects of the following type(s) are allowed in the list
      * {@link Dataset }
      */
-    public List<Dataset> getDatasets()
-    {
-        if (datasets == null)
-        {
+    public List<Dataset> getDatasets() {
+        if (datasets == null) {
             datasets = new ArrayList<Dataset>();
         }
         return this.datasets;

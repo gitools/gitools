@@ -35,16 +35,14 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LabelSortPage extends AbstractWizardPage
-{
+public class LabelSortPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String rowsPat;
     private String colsPat;
 
-    public LabelSortPage(Heatmap hm)
-    {
+    public LabelSortPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
@@ -55,11 +53,9 @@ public class LabelSortPage extends AbstractWizardPage
         colsLabelFld.setText("id");
         colsPat = "${id}";
 
-        ActionListener dimListener = new ActionListener()
-        {
+        ActionListener dimListener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 dimChanged();
             }
         };
@@ -67,40 +63,32 @@ public class LabelSortPage extends AbstractWizardPage
         rowsChk.addActionListener(dimListener);
         colsChk.addActionListener(dimListener);
 
-        rowsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        rowsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateComplete();
             }
         });
 
-        rowsLabelBtn.addActionListener(new ActionListener()
-        {
+        rowsLabelBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectRowsPattern();
             }
         });
 
         rowsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-        colsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        colsLabelFld.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateComplete();
             }
         });
 
-        colsLabelBtn.addActionListener(new ActionListener()
-        {
+        colsLabelBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectColsPattern();
             }
         });
@@ -112,18 +100,15 @@ public class LabelSortPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         dimChanged();
     }
 
-    private void updateComplete()
-    {
+    private void updateComplete() {
         setComplete((rowsChk.isSelected() || colsChk.isSelected()) && !((rowsChk.isSelected() && rowsLabelFld.getText().isEmpty()) || (colsChk.isSelected() && colsLabelFld.getText().isEmpty())));
     }
 
-    private void dimChanged()
-    {
+    private void dimChanged() {
         boolean rs = rowsChk.isSelected();
         rowsLabelFld.setEnabled(rs);
         rowsLabelBtn.setEnabled(rs);
@@ -139,13 +124,11 @@ public class LabelSortPage extends AbstractWizardPage
         updateComplete();
     }
 
-    private void selectRowsPattern()
-    {
+    private void selectRowsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -153,13 +136,11 @@ public class LabelSortPage extends AbstractWizardPage
         rowsLabelFld.setText(page.getPatternTitle());
     }
 
-    private void selectColsPattern()
-    {
+    private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -167,45 +148,37 @@ public class LabelSortPage extends AbstractWizardPage
         colsLabelFld.setText(page.getPatternTitle());
     }
 
-    public boolean isApplyToRowsSelected()
-    {
+    public boolean isApplyToRowsSelected() {
         return rowsChk.isSelected();
     }
 
-    public String getRowsPattern()
-    {
+    public String getRowsPattern() {
         return rowsPat;
     }
 
     @NotNull
-    public SortDirection getRowsDirection()
-    {
+    public SortDirection getRowsDirection() {
         return (SortDirection) rowsDirCb.getSelectedItem();
     }
 
-    public boolean getRowsNumeric()
-    {
+    public boolean getRowsNumeric() {
         return numericRowsCb.isSelected() && rowsChk.isSelected();
     }
 
-    public boolean isApplyToColumnsSelected()
-    {
+    public boolean isApplyToColumnsSelected() {
         return colsChk.isSelected();
     }
 
-    public String getColumnsPattern()
-    {
+    public String getColumnsPattern() {
         return colsPat;
     }
 
     @NotNull
-    public SortDirection getColumnsDirection()
-    {
+    public SortDirection getColumnsDirection() {
         return (SortDirection) colsDirCb.getSelectedItem();
     }
 
-    public boolean getColumnsNumeric()
-    {
+    public boolean getColumnsNumeric() {
         return numericColumnsCb.isSelected() && colsChk.isSelected();
     }
 
@@ -217,8 +190,7 @@ public class LabelSortPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         rowsDirCb = new javax.swing.JComboBox();
@@ -258,19 +230,15 @@ public class LabelSortPage extends AbstractWizardPage
 
         jLabel4.setText("Direction");
 
-        numericColumnsCb.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        numericColumnsCb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numericColumnsCbActionPerformed(evt);
             }
         });
 
         numericRowsCb.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        numericRowsCb.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        numericRowsCb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numericRowsCbActionPerformed(evt);
             }
         });
@@ -285,13 +253,11 @@ public class LabelSortPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(rowsChk).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(rowsLabelFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(rowsLabelBtn)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(rowsDirCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addComponent(jLabel6).addGap(34, 34, 34).addComponent(colsChk).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)).addGroup(layout.createSequentialGroup().addComponent(numericRowsCb, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(63, 63, 63))).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel3).addComponent(colsLabelFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(colsLabelBtn)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel4).addComponent(colsDirCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addComponent(jLabel5).addGap(34, 34, 34)).addGroup(layout.createSequentialGroup().addComponent(numericColumnsCb, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(29, 29, 29)))));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void numericRowsCbActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_numericRowsCbActionPerformed
+    private void numericRowsCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numericRowsCbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numericRowsCbActionPerformed
 
-    private void numericColumnsCbActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_numericColumnsCbActionPerformed
+    private void numericColumnsCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numericColumnsCbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numericColumnsCbActionPerformed
 

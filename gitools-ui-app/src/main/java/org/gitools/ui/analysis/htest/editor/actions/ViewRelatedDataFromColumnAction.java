@@ -41,15 +41,13 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class ViewRelatedDataFromColumnAction extends BaseAction
-{
+public class ViewRelatedDataFromColumnAction extends BaseAction {
 
     private final String title;
     private final IMatrix matrix;
     private final ModuleMap map;
 
-    public ViewRelatedDataFromColumnAction(String title, IMatrix matrix, ModuleMap map)
-    {
+    public ViewRelatedDataFromColumnAction(String title, IMatrix matrix, ModuleMap map) {
         super("View annotated elements");
 
         setDesc("View annotated elements in a new heatmap");
@@ -62,8 +60,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         IEditor currentEditor = editorPanel.getSelectedEditor();
@@ -72,14 +69,11 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         Heatmap srcHeatmap = (Heatmap) currentEditor.getModel();
         IMatrixView srcMatrixView = srcHeatmap;
         IMatrix srcMatrix = srcMatrixView.getContents();
-        int[] selColumns = srcMatrixView.getColumns().getSelected(  );
-        int leadColumn = srcMatrixView.getColumns().getSelectionLead(  );
-        if ((selColumns == null || selColumns.length == 0) && leadColumn != -1)
-        {
+        int[] selColumns = srcMatrixView.getColumns().getSelected();
+        int leadColumn = srcMatrixView.getColumns().getSelectionLead();
+        if ((selColumns == null || selColumns.length == 0) && leadColumn != -1) {
             selColumns = new int[]{leadColumn};
-        }
-        else if (leadColumn == -1)
-        {
+        } else if (leadColumn == -1) {
             JOptionPane.showMessageDialog(AppFrame.get(), "You must select some columns before.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -95,24 +89,19 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
 
         StringBuilder moduleNames = new StringBuilder();
 
-        for (int i = 0; i < selColumns.length; i++)
-        {
+        for (int i = 0; i < selColumns.length; i++) {
             String modName = srcMatrix.getColumns().getLabel(view[selColumns[i]]);
-            if (i != 0)
-            {
+            if (i != 0) {
                 moduleNames.append(", ");
             }
             moduleNames.append(modName);
 
             int[] indices = map.getItemIndices(modName);
-            if (indices != null)
-            {
-                for (int index : indices)
-                {
+            if (indices != null) {
+                for (int index : indices) {
                     String itemName = map.getItemName(index);
                     Integer dstIndex = itemNameMap.get(itemName);
-                    if (dstIndex != null)
-                    {
+                    if (dstIndex != null) {
                         elements.add(dstIndex);
                     }
                 }
@@ -124,7 +113,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction
         for (Integer index : elements)
             newView[i++] = index;
 
-        Heatmap heatmap =  new Heatmap(matrix);
+        Heatmap heatmap = new Heatmap(matrix);
         heatmap.getColumns().setVisible(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());

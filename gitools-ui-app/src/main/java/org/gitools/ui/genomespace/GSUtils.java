@@ -25,8 +25,7 @@ import java.util.List;
  * @date Jun 9, 2011
  * @noinspection ALL
  */
-public class GSUtils
-{
+public class GSUtils {
     private static final Logger log = Logger.getLogger(GSUtils.class);
 
 
@@ -48,47 +47,39 @@ public class GSUtils
     public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identity.genomespace.org/identityServer/basic";
 
     @NotNull
-    private static File getTokenSaveDir()
-    {
+    private static File getTokenSaveDir() {
         String userDir = System.getProperty("user.home");
         File gsDir = new File(userDir, tokenSaveDir);
-        if (!gsDir.exists())
-        {
+        if (!gsDir.exists()) {
             gsDir.mkdir();
         }
         return gsDir;
     }
 
     @Nullable
-    private static File getTokenFile()
-    {
+    private static File getTokenFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, tokenSaveFileName) : null;
     }
 
     @Nullable
-    private static File getUsernameFile()
-    {
+    private static File getUsernameFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, usernameSaveFileName) : null;
     }
 
-    public static void setGSToken(String newToken)
-    {
-        if (gsToken == null || !gsToken.equals(newToken))
-        {
+    public static void setGSToken(String newToken) {
+        if (gsToken == null || !gsToken.equals(newToken)) {
             gsToken = newToken;
             BufferedWriter bw = null;
 
             File gsDir = getTokenSaveDir();
-            if (!gsDir.isDirectory())
-            {
+            if (!gsDir.isDirectory()) {
                 log.error("Could not store token for SSO.  File " + gsDir.getAbsolutePath() + "exists and is not a directory.");
                 return; // someone made a file with this name...
             }
             File tokenFile = getTokenFile();
-            if (tokenFile.exists())
-            {
+            if (tokenFile.exists()) {
                 tokenFile.delete();
             }
             writeToFile(gsToken, tokenFile);
@@ -96,30 +87,21 @@ public class GSUtils
     }
 
     @Nullable
-    public static String getGSToken()
-    {
-        if (gsToken == null)
-        {
+    public static String getGSToken() {
+        if (gsToken == null) {
             File file = GSUtils.getTokenFile();
-            if (file.exists())
-            {
+            if (file.exists()) {
                 BufferedReader br = null;
-                try
-                {
+                try {
                     br = new BufferedReader(new FileReader(file));
                     gsToken = br.readLine();
-                } catch (IOException e)
-                {
+                } catch (IOException e) {
                     log.error("Error reading GS cookie", e);
-                } finally
-                {
-                    if (br != null)
-                    {
-                        try
-                        {
+                } finally {
+                    if (br != null) {
+                        try {
                             br.close();
-                        } catch (IOException e)
-                        {
+                        } catch (IOException e) {
                             // Ignore
                         }
                     }
@@ -130,21 +112,17 @@ public class GSUtils
     }
 
 
-    public static void setGSUser(String newUser)
-    {
-        if (gsUser == null || !gsUser.equals(newUser))
-        {
+    public static void setGSUser(String newUser) {
+        if (gsUser == null || !gsUser.equals(newUser)) {
             gsUser = newUser;
 
             File gsDir = getTokenSaveDir();
-            if (!gsDir.isDirectory())
-            {
+            if (!gsDir.isDirectory()) {
                 log.error("Could not store token for SSO.  File " + gsDir.getAbsolutePath() + "exists and is not a directory.");
                 return; // someone made a file with this name...
             }
             File userFile = getUsernameFile();
-            if (userFile.exists())
-            {
+            if (userFile.exists()) {
                 userFile.delete();
             }
             writeToFile(gsUser, userFile);
@@ -153,29 +131,21 @@ public class GSUtils
 
 
     @Nullable
-    public static String getGSUser() throws IOException
-    {
-        if (gsUser == null)
-        {
+    public static String getGSUser() throws IOException {
+        if (gsUser == null) {
             BufferedReader br = null;
-            try
-            {
+            try {
                 File tokenFile = getUsernameFile();
-                if (tokenFile.exists())
-                {
+                if (tokenFile.exists()) {
                     br = new BufferedReader(new FileReader(tokenFile));
                     gsUser = br.readLine().trim();
                 }
-            } finally
-            {
-                try
-                {
-                    if (br != null)
-                    {
+            } finally {
+                try {
+                    if (br != null) {
                         br.close();
                     }
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
             }
             return gsUser;
@@ -184,82 +154,65 @@ public class GSUtils
     }
 
 
-    public static void logout()
-    {
+    public static void logout() {
 
         gsToken = null;
         gsUser = null;
         gsToken = null;
         File userfile = getUsernameFile();
-        if (userfile.exists())
-        {
+        if (userfile.exists()) {
             userfile.delete();
         }
         File tokenFile = getTokenFile();
-        if (tokenFile.exists())
-        {
+        if (tokenFile.exists()) {
             tokenFile.delete();
         }
 
 
-        try
-        {
+        try {
             URI gsURI = new URI(DEFAULT_GS_DM_SERVER);
             CookieManager manager = (CookieManager) CookieManager.getDefault();
-            if (manager == null)
-            {
+            if (manager == null) {
                 return;
             }
             final CookieStore cookieStore = manager.getCookieStore();
             List<HttpCookie> cookies = new ArrayList<HttpCookie>(cookieStore.get(gsURI));
-            if (cookies != null)
-            {
-                for (HttpCookie cookie : cookies)
-                {
+            if (cookies != null) {
+                for (HttpCookie cookie : cookies) {
                     final String name = cookie.getName();
-                    if (name.equals("gs-token") || name.equals("gs-username"))
-                    {
+                    if (name.equals("gs-token") || name.equals("gs-username")) {
                         cookieStore.remove(gsURI, cookie);
                     }
                 }
             }
-        } catch (URISyntaxException e)
-        {
+        } catch (URISyntaxException e) {
             log.error("Error creating GS URI", e);
         }
 
 
     }
 
-    private static void writeToFile(String line, File aFile)
-    {
+    private static void writeToFile(String line, File aFile) {
         BufferedWriter bw = null;
-        try
-        {
+        try {
             bw = new BufferedWriter(new FileWriter(aFile));
             bw.write(line);
 
             bw.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("Failed to save the token for later Single Sign on", e);
-        } finally
-        {
-            try
-            {
-                if (bw != null)
-                {
+        } finally {
+            try {
+                if (bw != null) {
                     bw.close();
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
             }
         }
     }
 
 
-    public static boolean isGenomeSpace(@NotNull URL url)
-    {
+    public static boolean isGenomeSpace(@NotNull URL url) {
         return url.getHost().contains("genomespace");
     }
 

@@ -43,8 +43,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class AnalysisTool extends AbstractTool
-{
+public class AnalysisTool extends AbstractTool {
 
     protected static final String LIST_S_FMT = "\t* %-16s%s";
     protected static final String LIST_L_FMT = "\t* %-48s%s";
@@ -53,38 +52,31 @@ public class AnalysisTool extends AbstractTool
     private final List<Property> analysisAttributes = new ArrayList<Property>(0);
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
         super.validate(argsObject);
 
         AnalysisArguments args = (AnalysisArguments) argsObject;
 
-        if (args.version)
-        {
+        if (args.version) {
             Main.printVersion();
         }
 
-        if (args.analysisTitle == null)
-        {
+        if (args.analysisTitle == null) {
             args.analysisTitle = args.analysisName;
         }
 
-        for (String attr : args.analysisAttributes)
-        {
+        for (String attr : args.analysisAttributes) {
             final String[] a = attr.split("=", 2);
-            if (a.length != 2)
-            {
+            if (a.length != 2) {
                 throw new ToolValidationException("Malformed analysis attribute: " + attr);
             }
             analysisAttributes.add(new Property(a[0], a[1]));
         }
     }
 
-    protected IResourceFormat getResourceFormat(String extension, String fileName, Class<? extends IResource> resourceClass)
-    {
+    protected IResourceFormat getResourceFormat(String extension, String fileName, Class<? extends IResource> resourceClass) {
 
-        if (StringUtils.isEmpty(extension))
-        {
+        if (StringUtils.isEmpty(extension)) {
             // Use the fileName if the user has not specify any format
             extension = fileName;
         }
@@ -93,14 +85,11 @@ public class AnalysisTool extends AbstractTool
     }
 
     @NotNull
-    protected List<KeyValue> parseConfiguration(@NotNull List<String> config) throws ToolValidationException
-    {
+    protected List<KeyValue> parseConfiguration(@NotNull List<String> config) throws ToolValidationException {
         List<KeyValue> kv = new ArrayList<KeyValue>(config.size());
-        for (String conf : config)
-        {
+        for (String conf : config) {
             final String[] c = conf.split("=", 2);
-            if (c.length != 2)
-            {
+            if (c.length != 2) {
                 throw new ToolValidationException("Malformed configuration parameter: " + conf);
             }
             kv.add(new KeyValue(c[0], c[1]));
@@ -109,14 +98,11 @@ public class AnalysisTool extends AbstractTool
     }
 
     @NotNull
-    protected Properties parseProperties(@NotNull List<String> config) throws ToolValidationException
-    {
+    protected Properties parseProperties(@NotNull List<String> config) throws ToolValidationException {
         Properties properties = new Properties();
-        for (String conf : config)
-        {
+        for (String conf : config) {
             final String[] c = conf.split("=", 2);
-            if (c.length != 2)
-            {
+            if (c.length != 2) {
                 throw new ToolValidationException("Malformed configuration parameter: " + conf);
             }
             properties.setProperty(c[0], c[1]);
@@ -124,15 +110,13 @@ public class AnalysisTool extends AbstractTool
         return properties;
     }
 
-    protected void prepareGeneralAnalysisAttributes(@NotNull Analysis analysis, @NotNull AnalysisArguments args)
-    {
+    protected void prepareGeneralAnalysisAttributes(@NotNull Analysis analysis, @NotNull AnalysisArguments args) {
         analysis.setTitle(args.analysisTitle);
         analysis.setDescription(args.analysisNotes);
         analysis.setProperties(analysisAttributes);
     }
 
-    protected void printDataFormats(@NotNull PrintStream out)
-    {
+    protected void printDataFormats(@NotNull PrintStream out) {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 
@@ -140,8 +124,7 @@ public class AnalysisTool extends AbstractTool
             out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 
-    protected void printModulesFormats(@NotNull PrintStream out)
-    {
+    protected void printModulesFormats(@NotNull PrintStream out) {
         out.println("Supported modules formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP, FileFormats.DOUBLE_BINARY_MATRIX};
 

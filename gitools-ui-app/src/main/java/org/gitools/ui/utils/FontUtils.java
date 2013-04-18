@@ -25,12 +25,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-public class FontUtils
-{
+public class FontUtils {
 
     @NotNull
-    public static String fontText(@NotNull Font font)
-    {
+    public static String fontText(@NotNull Font font) {
         StringBuilder sb = new StringBuilder();
         sb.append(font.getFontName());
         sb.append(", ").append(font.getSize());

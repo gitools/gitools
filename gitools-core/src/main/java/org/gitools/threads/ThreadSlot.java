@@ -21,24 +21,20 @@
  */
 package org.gitools.threads;
 
-public class ThreadSlot implements Runnable
-{
+public class ThreadSlot implements Runnable {
 
     private final ThreadQueue threadQueue;
 
-    public ThreadSlot(ThreadQueue threadQueue)
-    {
+    public ThreadSlot(ThreadQueue threadQueue) {
 
         this.threadQueue = threadQueue;
     }
 
-    public void execute(Runnable runnable)
-    {
+    public void execute(Runnable runnable) {
         threadQueue.execute(this, runnable);
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
     }
 }

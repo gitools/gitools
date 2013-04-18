@@ -31,8 +31,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"title", "description", "properties"})
-public class Resource extends AbstractModel implements IResource
-{
+public class Resource extends AbstractModel implements IResource {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_PROPERTIES = "properties";
@@ -60,12 +59,10 @@ public class Resource extends AbstractModel implements IResource
     private IResourceLocator locator;
 
 
-    protected Resource()
-    {
+    protected Resource() {
     }
 
-    public Resource(@NotNull Resource artifact)
-    {
+    public Resource(@NotNull Resource artifact) {
         this.title = artifact.getTitle();
         this.description = artifact.getDescription();
         this.properties = (List<Property>) ((ArrayList<Property>) artifact.getProperties()).clone();
@@ -73,49 +70,41 @@ public class Resource extends AbstractModel implements IResource
 
 	/* getters and setters */
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         String oldValue = this.title;
         this.title = title;
         firePropertyChange(PROPERTY_TITLE, oldValue, title);
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         String oldValue = this.description;
         this.description = description;
         firePropertyChange(PROPERTY_DESCRIPTION, oldValue, description);
     }
 
-    public List<Property> getProperties()
-    {
+    public List<Property> getProperties() {
         return properties;
     }
 
-    public void setProperties(List<Property> properties)
-    {
+    public void setProperties(List<Property> properties) {
         List<Property> oldValue = this.properties;
         this.properties = properties;
         firePropertyChange(PROPERTY_PROPERTIES, oldValue, properties);
     }
 
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 }

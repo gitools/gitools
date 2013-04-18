@@ -42,8 +42,7 @@ import java.util.Collection;
 /**
  * Create a property table panel
  */
-public class PropertiesBox extends WebPanel
-{
+public class PropertiesBox extends WebPanel {
     private static final int DEFAULT_MARGIN = 20;
     private static final int MINIMUM_VALUE_LENGTH = 6;
 
@@ -55,8 +54,7 @@ public class PropertiesBox extends WebPanel
      * @param maxWidth   Maximum width of the panel
      * @param properties Properties to draw
      */
-    public PropertiesBox(int maxWidth, @NotNull Collection<PropertyItem> properties)
-    {
+    public PropertiesBox(int maxWidth, @NotNull Collection<PropertyItem> properties) {
         this(maxWidth, properties.toArray(new PropertyItem[properties.size()]));
     }
 
@@ -64,8 +62,7 @@ public class PropertiesBox extends WebPanel
      * @param maxWidth   Maximum width of the panel
      * @param properties Properties to draw
      */
-    private PropertiesBox(int maxWidth, PropertyItem... properties)
-    {
+    private PropertiesBox(int maxWidth, PropertyItem... properties) {
         this(maxWidth, null, properties);
     }
 
@@ -74,8 +71,7 @@ public class PropertiesBox extends WebPanel
      * @param title      Optional title of the properties table
      * @param properties Properties to draw
      */
-    private PropertiesBox(int maxWidth, @Nullable String title, @NotNull PropertyItem... properties)
-    {
+    private PropertiesBox(int maxWidth, @Nullable String title, @NotNull PropertyItem... properties) {
         maxValueLength = convertToCharacters(maxWidth) - maxValueLength(properties);
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
         this.totalProperties = properties.length;
@@ -85,8 +81,7 @@ public class PropertiesBox extends WebPanel
         double rows[] = new double[3 + totalProperties * 2];
         rows[0] = (title == null) ? 2 : DEFAULT_MARGIN;
         rows[1] = 2;
-        for (int i = 2; i < rows.length - 1; i += 2)
-        {
+        for (int i = 2; i < rows.length - 1; i += 2) {
             rows[i] = TableLayout.PREFERRED;
             rows[i + 1] = 2;
         }
@@ -97,15 +92,13 @@ public class PropertiesBox extends WebPanel
         boxLayout.setVGap(4);
         setLayout(boxLayout);
 
-        if (title != null)
-        {
+        if (title != null) {
             add(createNameLabel(new PropertyItem(title, null, null)), "0,0,3,0,C,B");
         }
 
         add(createVerticalSeparator(), "2,1,2," + (rows.length - 2));
 
-        for (PropertyItem property : properties)
-        {
+        for (PropertyItem property : properties) {
             addProperty(property);
         }
 
@@ -116,56 +109,48 @@ public class PropertiesBox extends WebPanel
      *
      * @param property The property to add
      */
-    final void addProperty(@NotNull PropertyItem property)
-    {
+    final void addProperty(@NotNull PropertyItem property) {
         int nextRow = nextProperty * 2;
         add(createHorizontalSeparator(), "0," + (nextRow - 1) + ",4," + (nextRow - 1));
         add(createNameLabel(property), "1," + nextRow);
         add(createValueLabel(property, maxValueLength), "3," + nextRow);
         nextProperty++;
 
-        if (nextProperty > totalProperties)
-        {
+        if (nextProperty > totalProperties) {
             add(createHorizontalSeparator(), "0," + (nextRow + 1) + ",4," + (nextRow + 1));
         }
     }
 
     @NotNull
-    private static WebSeparator createHorizontalSeparator()
-    {
+    private static WebSeparator createHorizontalSeparator() {
         WebSeparator separator = new WebSeparator(WebSeparator.HORIZONTAL);
         separator.setDrawSideLines(false);
         return separator;
     }
 
     @NotNull
-    private static WebSeparator createVerticalSeparator()
-    {
+    private static WebSeparator createVerticalSeparator() {
         WebSeparator separator = new WebSeparator(WebSeparator.VERTICAL);
         separator.setDrawSideLines(false);
         return separator;
     }
 
     @NotNull
-    private WebLabel createNameLabel(@NotNull PropertyItem property)
-    {
+    private WebLabel createNameLabel(@NotNull PropertyItem property) {
         WebLabel label = new WebLabel(StringUtils.capitalize(property.getName()), JLabel.TRAILING);
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
 
 
-        if (StringUtils.isNotEmpty(property.getDescription()))
-        {
+        if (StringUtils.isNotEmpty(property.getDescription())) {
             TooltipManager.setTooltip(label, property.getDescription(), TooltipWay.down, 0);
         }
 
-        if (property.isSelected())
-        {
+        if (property.isSelected()) {
             SwingUtils.setBoldFont(label);
         }
 
-        if (property.isSelectable())
-        {
+        if (property.isSelectable()) {
             label.setCursor(new Cursor(Cursor.HAND_CURSOR));
             label.addMouseListener(new PropertyMouseListener(property));
         }
@@ -173,30 +158,23 @@ public class PropertiesBox extends WebPanel
         return label;
     }
 
-    private WebLabel createValueLabel(@NotNull PropertyItem property, int maxLength)
-    {
+    private WebLabel createValueLabel(@NotNull PropertyItem property, int maxLength) {
 
         String value = property.getValue();
 
         boolean abbreviate = (value.length() > maxLength);
 
         String abbreviatedValue;
-        if (abbreviate)
-        {
+        if (abbreviate) {
             abbreviatedValue = StringUtils.abbreviate(value, maxLength);
-        }
-        else
-        {
+        } else {
             abbreviatedValue = value;
         }
 
         WebLabel label;
-        if (StringUtils.isEmpty(property.getLink()))
-        {
+        if (StringUtils.isEmpty(property.getLink())) {
             label = new WebLabel(abbreviatedValue);
-        }
-        else
-        {
+        } else {
             WebLinkLabel webLabel = new WebLinkLabel(abbreviatedValue);
             webLabel.setIcon(WebLinkLabel.LINK_ICON);
             webLabel.setLink(property.getLink(), false);
@@ -205,19 +183,16 @@ public class PropertiesBox extends WebPanel
 
         SwingUtils.changeFontSize(label, -1);
 
-        if (abbreviate)
-        {
+        if (abbreviate) {
             TooltipManager.setTooltip(label, value, TooltipWay.down, 0);
         }
 
-        if (property.getColor() != null)
-        {
+        if (property.getColor() != null) {
             label.setDrawShade(true);
             label.setShadeColor(property.getColor());
         }
 
-        if (property.isSelectable())
-        {
+        if (property.isSelectable()) {
             label.setCursor(new Cursor(Cursor.HAND_CURSOR));
             label.addMouseListener(new PropertyMouseListener(property));
         }
@@ -225,21 +200,17 @@ public class PropertiesBox extends WebPanel
         return label;
     }
 
-    private static int convertToCharacters(int pixels)
-    {
+    private static int convertToCharacters(int pixels) {
         return Math.round(pixels / 7);
     }
 
-    private static int maxValueLength(@NotNull PropertyItem... properties)
-    {
+    private static int maxValueLength(@NotNull PropertyItem... properties) {
         int max = MINIMUM_VALUE_LENGTH;
 
-        for (PropertyItem property : properties)
-        {
+        for (PropertyItem property : properties) {
             int length = property.getName().length();
 
-            if (length > max)
-            {
+            if (length > max) {
                 max = length;
             }
         }
@@ -247,24 +218,20 @@ public class PropertiesBox extends WebPanel
         return max;
     }
 
-    private class PropertyMouseListener extends MouseAdapter
-    {
+    private class PropertyMouseListener extends MouseAdapter {
         private PropertyItem item;
 
-        private PropertyMouseListener(PropertyItem item)
-        {
+        private PropertyMouseListener(PropertyItem item) {
             this.item = item;
         }
 
         @Override
-        public void mouseClicked(MouseEvent e)
-        {
+        public void mouseClicked(MouseEvent e) {
             onMouseClick(item);
         }
     }
 
-    protected void onMouseClick(PropertyItem propertyItem)
-    {
+    protected void onMouseClick(PropertyItem propertyItem) {
         // Override
     }
 

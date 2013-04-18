@@ -45,32 +45,27 @@ import static org.junit.Assert.*;
 /**
  * @noinspection ALL
  */
-public class BiomartServiceTest
-{
+public class BiomartServiceTest {
 
     @Nullable
     private BiomartService bs;
     private static final Logger log = LoggerFactory.getLogger(BiomartServiceTest.class.getName());
 
     @Test
-    public void dummyTest()
-    {
+    public void dummyTest() {
     }
 
     //@Before
-    public void before()
-    {
+    public void before() {
 
         bs = defaultConnexionTest();
 
     }
 
     @Nullable
-    private BiomartService defaultConnexionTest()
-    {
+    private BiomartService defaultConnexionTest() {
         BiomartService srv = null;
-        try
-        {
+        try {
 
             List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
 
@@ -81,8 +76,7 @@ public class BiomartServiceTest
             assertNotNull(srv);
 
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
 
@@ -92,28 +86,23 @@ public class BiomartServiceTest
     /**
      * @noinspection UnusedDeclaration
      */ //@Test
-    public void getRegistry()
-    {
-        try
-        {
+    public void getRegistry() {
+        try {
 
             List<MartLocation> lMart = bs.getRegistry();
 
             assertNotNull(lMart);
             assertTrue(lMart.size() > 0);
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
     }
 
 
     //@Test
-    public void getDatasets()
-    {
-        try
-        {
+    public void getDatasets() {
+        try {
 
 
             List<MartLocation> lMart = bs.getRegistry();
@@ -128,18 +117,15 @@ public class BiomartServiceTest
 
             log.info("num DS: " + ds.size());
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
     }
 
 
     //@Test
-    public void getAttributes()
-    {
-        try
-        {
+    public void getAttributes() {
+        try {
             List<MartLocation> lMart = bs.getRegistry();
             assertNotNull(lMart);
             assertTrue(lMart.size() > 0);
@@ -165,17 +151,14 @@ public class BiomartServiceTest
 
             log.info("Num Att Pages: " + latt.size());
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
     }
 
     //@Test
-    public void getFilters()
-    {
-        try
-        {
+    public void getFilters() {
+        try {
 
             List<MartLocation> lMart = bs.getRegistry();
             assertNotNull(lMart);
@@ -204,17 +187,14 @@ public class BiomartServiceTest
             log.info("Num Filter Groups: " + lf.get(0).getFilterGroups().size());
 
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
     }
 
     //@Test
-    public void QueryAsStream() throws JAXBException
-    {
-        try
-        {
+    public void QueryAsStream() throws JAXBException {
+        try {
             InputStream in = null;
             BufferedReader br = null;
 
@@ -249,26 +229,22 @@ public class BiomartServiceTest
 
             String res = null;
             Integer rows = 0;
-            while ((res = br.readLine()) != null)
-            {
+            while ((res = br.readLine()) != null) {
                 rows++;
             }
             log.info("NumRows: " + rows);
             assertTrue(rows > 0);
 
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             log.error(ex.getMessage());
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
 
     }
 
     @NotNull
-    private Query createSimpleQuery(@NotNull List<FilterPage> lf, @NotNull List<AttributePage> dsattrs, @NotNull MartLocation mart, @NotNull DatasetInfo d) throws BiomartServiceException
-    {
+    private Query createSimpleQuery(@NotNull List<FilterPage> lf, @NotNull List<AttributePage> dsattrs, @NotNull MartLocation mart, @NotNull DatasetInfo d) throws BiomartServiceException {
 
         Attribute a = new Attribute();
         a.setName(dsattrs.get(0).getAttributeGroups().get(0).getAttributeCollections().get(0).getAttributeDescriptions().get(0).getInternalName());
@@ -300,11 +276,9 @@ public class BiomartServiceTest
     }
 
     //@Test
-    public void queryModule()
-    {
+    public void queryModule() {
 
-        try
-        {
+        try {
 
             final File file = new File(System.getProperty("user.home", ".") + File.separator + "testQuery.test");
             String format = "TSV";
@@ -331,18 +305,15 @@ public class BiomartServiceTest
             assertTrue(file.length() > 0);
             file.delete();
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
 
     }
 
     //@Test
-    public void queryTable()
-    {
-        try
-        {
+    public void queryTable() {
+        try {
             final File file = new File(System.getProperty("user.home", ".") + File.separator + "testQuery.test");
             String format = "TSV";
             IProgressMonitor monitor = new DefaultProgressMonitor();
@@ -366,18 +337,15 @@ public class BiomartServiceTest
             file.delete();
 
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
     }
 
     //@Test
-    public void getDatasetConfig() throws IOException, JAXBException
-    {
+    public void getDatasetConfig() throws IOException, JAXBException {
 
-        try
-        {
+        try {
 
             List<MartLocation> lMart = bs.getRegistry();
             assertNotNull(lMart);
@@ -393,8 +361,7 @@ public class BiomartServiceTest
             assertTrue(conf.getAttributePages().get(0).getAttributeGroups().size() > 0);
             assertTrue(conf.getAttributePages().get(0).getAttributeGroups().get(0).getAttributeCollections().size() > 0);
 
-        } catch (BiomartServiceException ex)
-        {
+        } catch (BiomartServiceException ex) {
             log.error(ex.getMessage());
         }
 

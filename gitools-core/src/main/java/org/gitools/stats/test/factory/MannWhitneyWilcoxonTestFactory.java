@@ -26,18 +26,15 @@ import org.gitools.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.stats.test.Test;
 import org.jetbrains.annotations.NotNull;
 
-public final class MannWhitneyWilcoxonTestFactory extends TestFactory
-{
+public final class MannWhitneyWilcoxonTestFactory extends TestFactory {
 
-    public MannWhitneyWilcoxonTestFactory(ToolConfig config)
-    {
+    public MannWhitneyWilcoxonTestFactory(ToolConfig config) {
         super(config);
     }
 
     @NotNull
     @Override
-    public Test create()
-    {
+    public Test create() {
         return new MannWhitneyWilxoxonTest();
     }
 

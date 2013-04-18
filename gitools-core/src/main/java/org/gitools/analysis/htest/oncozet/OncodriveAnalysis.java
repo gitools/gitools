@@ -30,10 +30,8 @@ import java.io.Serializable;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
-public class OncodriveAnalysis extends HtestAnalysis implements Serializable
-{
+public class OncodriveAnalysis extends HtestAnalysis implements Serializable {
 
-    public OncodriveAnalysis()
-    {
+    public OncodriveAnalysis() {
     }
 }

@@ -32,33 +32,27 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlRootElement(name = "tools")
-public class ToolSet
-{
+public class ToolSet {
 
     private List<ToolDescriptor> toolDescriptors = new ArrayList<ToolDescriptor>();
 
-    public ToolSet()
-    {
+    public ToolSet() {
     }
 
     @XmlElement(name = "tool")
-    public List<ToolDescriptor> getToolDescriptors()
-    {
+    public List<ToolDescriptor> getToolDescriptors() {
         return toolDescriptors;
     }
 
-    public void setToolDescriptors(List<ToolDescriptor> toolDescriptors)
-    {
+    public void setToolDescriptors(List<ToolDescriptor> toolDescriptors) {
         this.toolDescriptors = toolDescriptors;
     }
 
-    public void add(@NotNull ToolSet toolSet)
-    {
+    public void add(@NotNull ToolSet toolSet) {
         toolDescriptors.addAll(toolSet.getToolDescriptors());
     }
 
-    public void add(ToolDescriptor desc)
-    {
+    public void add(ToolDescriptor desc) {
         toolDescriptors.add(desc);
     }
 }

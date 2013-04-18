@@ -21,8 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-public interface IMatrixDimension
-{
+public interface IMatrixDimension {
     /**
      * Total number of items in this dimension
      *

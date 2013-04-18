@@ -39,8 +39,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeatmapPanel extends JPanel implements PropertyChangeListener
-{
+public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     // Bean
     private Heatmap heatmap;
@@ -65,8 +64,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
     @NotNull
     private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
-    public HeatmapPanel(Heatmap heatmap)
-    {
+    public HeatmapPanel(Heatmap heatmap) {
         this.heatmap = heatmap;
 
         createComponents();
@@ -82,13 +80,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         setBackground(Color.WHITE);
     }
 
-    public Heatmap getHeatmap()
-    {
+    public Heatmap getHeatmap() {
         return heatmap;
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
         bodyPanel = new HeatmapBodyPanel(heatmap);
         columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
         rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
@@ -97,18 +93,15 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         bodyVP = new JViewport();
         bodyVP.setView(bodyPanel);
 
-        HeatmapMouseListener mouseListenerProxy = new HeatmapMouseListener()
-        {
+        HeatmapMouseListener mouseListenerProxy = new HeatmapMouseListener() {
             @Override
-            public void mouseMoved(int row, int col, MouseEvent e)
-            {
+            public void mouseMoved(int row, int col, MouseEvent e) {
                 for (HeatmapMouseListener l : mouseListeners)
                     l.mouseMoved(row, col, e);
             }
 
             @Override
-            public void mouseClicked(int row, int col, MouseEvent e)
-            {
+            public void mouseClicked(int row, int col, MouseEvent e) {
                 for (HeatmapMouseListener l : mouseListeners)
                     l.mouseClicked(row, col, e);
             }
@@ -133,20 +126,16 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
         colSB = new JScrollBar(JScrollBar.HORIZONTAL);
-        colSB.addAdjustmentListener(new AdjustmentListener()
-        {
+        colSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
-            public void adjustmentValueChanged(AdjustmentEvent e)
-            {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
                 updateViewPorts();
             }
         });
         rowSB = new JScrollBar(JScrollBar.VERTICAL);
-        rowSB.addAdjustmentListener(new AdjustmentListener()
-        {
+        rowSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
-            public void adjustmentValueChanged(AdjustmentEvent e)
-            {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
                 updateViewPorts();
             }
         });
@@ -159,22 +148,18 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         add(rowSB);
         add(intersectVP);
 
-        addComponentListener(new ComponentAdapter()
-        {
+        addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e)
-            {
+            public void componentResized(ComponentEvent e) {
                 updateScrolls();
             }
         });
 
         new HeatmapKeyboardController(this);
 
-        addMouseListener(new MouseAdapter()
-        {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e)
-            {
+            public void mousePressed(MouseEvent e) {
                 heatmap.getRows().setSelectionLead(-1);
                 heatmap.getColumns().setSelectionLead(-1);
                 heatmap.getColumns().clearSelection();
@@ -186,17 +171,16 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         popupMenuColumns = ActionSetUtils.createPopupMenu(HeatmapPopupmenus.COLUMNS);
     }
 
-    private void updateScrolls()
-    {
+    private void updateScrolls() {
         Dimension totalSize = bodyVP.getViewSize();
         Dimension visibleSize = bodyVP.getSize();
 
         int scrollWidth = totalSize.width - visibleSize.width;
         int scrollHeight = totalSize.height - visibleSize.height;
 
-        IMatrixView mv = heatmap  ;
-        int row = mv.getRows().getSelectionLead(  );
-        int col = mv.getColumns().getSelectionLead(  );
+        IMatrixView mv = heatmap;
+        int row = mv.getRows().getSelectionLead();
+        int col = mv.getColumns().getSelectionLead();
 
         Point leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
 
@@ -210,17 +194,13 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         colSB.setMinimum(0);
         colSB.setMaximum(totalSize.width - 1);
 
-        if (colSB.getValue() > scrollWidth)
-        {
+        if (colSB.getValue() > scrollWidth) {
             colSB.setValue(scrollWidth);
         }
 
-        if (leadPoint.x < colSB.getValue())
-        {
+        if (leadPoint.x < colSB.getValue()) {
             colSB.setValue(leadPoint.x);
-        }
-        else if (leadPointXEnd > colSB.getValue() + visibleSize.width)
-        {
+        } else if (leadPointXEnd > colSB.getValue() + visibleSize.width) {
             colSB.setValue(leadPointXEnd - visibleSize.width);
         }
 
@@ -231,17 +211,13 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         rowSB.setMinimum(0);
         rowSB.setMaximum(totalSize.height - 1);
 
-        if (rowSB.getValue() > scrollHeight)
-        {
+        if (rowSB.getValue() > scrollHeight) {
             rowSB.setValue(scrollHeight);
         }
 
-        if (leadPoint.y < rowSB.getValue())
-        {
+        if (leadPoint.y < rowSB.getValue()) {
             rowSB.setValue(leadPoint.y);
-        }
-        else if (leadPointYEnd > rowSB.getValue() + visibleSize.height)
-        {
+        } else if (leadPointYEnd > rowSB.getValue() + visibleSize.height) {
             rowSB.setValue(leadPointYEnd - visibleSize.height);
         }
 
@@ -250,15 +226,13 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
     }
 
     private long lastUpdateViewPorts = -1;
-    private void updateViewPorts()
-    {
+
+    private void updateViewPorts() {
         // Maximum of 20 updates per second
-        if (lastUpdateViewPorts != -1)
-        {
+        if (lastUpdateViewPorts != -1) {
             long interval = System.currentTimeMillis() - lastUpdateViewPorts;
 
-            if (interval < 50)
-            {
+            if (interval < 50) {
                 return;
             }
         }
@@ -269,14 +243,12 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         Dimension visibleSize = bodyVP.getSize();
 
         int colValue = colSB.getValue();
-        if (colValue + visibleSize.width > totalSize.width)
-        {
+        if (colValue + visibleSize.width > totalSize.width) {
             colValue = totalSize.width - visibleSize.width;
         }
 
         int rowValue = rowSB.getValue();
-        if (rowValue + visibleSize.height > totalSize.height)
-        {
+        if (rowValue + visibleSize.height > totalSize.height) {
             rowValue = totalSize.height - visibleSize.height;
         }
 
@@ -288,76 +260,63 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         lastUpdateViewPorts = System.currentTimeMillis();
     }
 
-    public JViewport getBodyViewPort()
-    {
+    public JViewport getBodyViewPort() {
         return bodyVP;
     }
 
-    public JViewport getColumnViewPort()
-    {
+    public JViewport getColumnViewPort() {
         return colVP;
     }
 
-    public JViewport getRowViewPort()
-    {
+    public JViewport getRowViewPort() {
         return rowVP;
     }
 
-    public HeatmapBodyPanel getBodyPanel()
-    {
+    public HeatmapBodyPanel getBodyPanel() {
         return bodyPanel;
     }
 
-    public HeatmapHeaderPanel getColumnPanel()
-    {
+    public HeatmapHeaderPanel getColumnPanel() {
         return columnHeaderPanel;
     }
 
-    public HeatmapHeaderPanel getRowPanel()
-    {
+    public HeatmapHeaderPanel getRowPanel() {
         return rowHeaderPanel;
     }
 
-    public HeatmapPosition getScrollPosition()
-    {
+    public HeatmapPosition getScrollPosition() {
         Point pos = new Point(colSB.getValue(), rowSB.getValue());
 
         return bodyPanel.getDrawer().getPosition(pos);
     }
 
     @NotNull
-    public Point getScrollValue()
-    {
+    public Point getScrollValue() {
         return new Point(colSB.getValue(), rowSB.getValue());
     }
 
-    public void setScrollColumnPosition(int index)
-    {
+    public void setScrollColumnPosition(int index) {
         Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(0, index));
 
         colSB.setValue(pos.x);
     }
 
-    public void setScrollColumnValue(int value)
-    {
+    public void setScrollColumnValue(int value) {
         colSB.setValue(value);
     }
 
-    public void setScrollRowPosition(int index)
-    {
+    public void setScrollRowPosition(int index) {
         Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(index, 0));
 
         rowSB.setValue(pos.y);
     }
 
-    public void setScrollRowValue(int value)
-    {
+    public void setScrollRowValue(int value) {
         rowSB.setValue(value);
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g)
-    {
+    protected void paintComponent(@NotNull Graphics g) {
         super.paintComponent(g);
         Dimension sz = getSize();
         Rectangle r = new Rectangle(new Point(0, 0), sz);
@@ -365,36 +324,29 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
         g.fillRect(r.x, r.y, r.width, r.height);
     }
 
-    public void addHeatmapMouseListener(HeatmapMouseListener listener)
-    {
+    public void addHeatmapMouseListener(HeatmapMouseListener listener) {
         mouseListeners.add(listener);
     }
 
-    public void mouseReleased(@NotNull MouseEvent e)
-    {
-        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
-        {
+    public void mouseReleased(@NotNull MouseEvent e) {
+        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             showPopup(e);
         }
     }
 
-    private void showPopup(@NotNull MouseEvent e)
-    {
-        if (e.getComponent() == this.rowVP)
-        {
+    private void showPopup(@NotNull MouseEvent e) {
+        if (e.getComponent() == this.rowVP) {
             popupMenuRows.show(e.getComponent(), e.getX(), e.getY());
         }
 
-        if (e.getComponent() == this.colVP)
-        {
+        if (e.getComponent() == this.colVP) {
             popupMenuColumns.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+    public void propertyChange(PropertyChangeEvent evt) {
         boolean updateAll =
                 EventUtils.isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_CELL_SIZE,
@@ -403,12 +355,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener
                         HeatmapDimension.PROPERTY_GRID_SIZE,
                         HeatmapDimension.PROPERTY_GRID_COLOR
                 ) ||
-                EventUtils.isAny(evt, HeatmapLayer.class,
-                        HeatmapLayer.PROPERTY_DECORATOR
-                );
+                        EventUtils.isAny(evt, HeatmapLayer.class,
+                                HeatmapLayer.PROPERTY_DECORATOR
+                        );
 
-        if (updateAll)
-        {
+        if (updateAll) {
             bodyPanel.updateSize();
             rowHeaderPanel.updateSize();
             columnHeaderPanel.updateSize();

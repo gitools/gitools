@@ -31,13 +31,11 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class ImportIntogenOncomodulesAction extends BaseAction
-{
+public class ImportIntogenOncomodulesAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public ImportIntogenOncomodulesAction()
-    {
+    public ImportIntogenOncomodulesAction() {
         super("IntOGen Oncomodules ...");
         setLargeIconFromResource(IconNames.intogen24);
         setSmallIconFromResource(IconNames.intogen16);
@@ -45,8 +43,7 @@ public class ImportIntogenOncomodulesAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(), IntogenImportDialog.ImportType.ONCOMODULES);
 
         dlg.setVisible(true);

@@ -27,25 +27,21 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Multiplication
  */
-public class MaxAggregator extends AbstractAggregator
-{
+public class MaxAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MaxAggregator();
 
-    private MaxAggregator()
-    {
+    private MaxAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         return aggregate(data, Functions.max, Double.MIN_VALUE);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Max";
     }
 }

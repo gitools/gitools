@@ -25,11 +25,9 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 
-public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel
-{
+public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel {
 
-    public HeatmapHeaderIntersectionPanel(Heatmap heatmap, HeatmapHeaderDrawer columnHeaderDrawer, HeatmapHeaderDrawer rowHeaderDrawer)
-    {
+    public HeatmapHeaderIntersectionPanel(Heatmap heatmap, HeatmapHeaderDrawer columnHeaderDrawer, HeatmapHeaderDrawer rowHeaderDrawer) {
         super(heatmap, new HeatmapHeaderIntersectionDrawer(heatmap, columnHeaderDrawer, rowHeaderDrawer));
     }
 }

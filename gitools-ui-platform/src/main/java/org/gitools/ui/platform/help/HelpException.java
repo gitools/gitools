@@ -24,16 +24,13 @@ package org.gitools.ui.platform.help;
 /**
  * @noinspection ALL
  */
-public class HelpException extends Exception
-{
+public class HelpException extends Exception {
 
-    public HelpException(String msg)
-    {
+    public HelpException(String msg) {
         super(msg);
     }
 
-    public HelpException(Throwable cause)
-    {
+    public HelpException(Throwable cause) {
         super(cause);
     }
 

@@ -25,25 +25,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-class HeatmapLayout implements LayoutManager
-{
+class HeatmapLayout implements LayoutManager {
 
     @Override
-    public void addLayoutComponent(String name, Component comp)
-    {
+    public void addLayoutComponent(String name, Component comp) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void removeLayoutComponent(Component comp)
-    {
+    public void removeLayoutComponent(Component comp) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @NotNull
     @Override
-    public Dimension preferredLayoutSize(@NotNull Container parent)
-    {
+    public Dimension preferredLayoutSize(@NotNull Container parent) {
         Dimension colPsz = parent.getComponent(0).getPreferredSize();
         Dimension rowPsz = parent.getComponent(1).getPreferredSize();
         Dimension bdyPsz = parent.getComponent(2).getPreferredSize();
@@ -54,14 +50,12 @@ class HeatmapLayout implements LayoutManager
 
     @NotNull
     @Override
-    public Dimension minimumLayoutSize(Container parent)
-    {
+    public Dimension minimumLayoutSize(Container parent) {
         return new Dimension(0, 0);
     }
 
     @Override
-    public void layoutContainer(@NotNull Container parent)
-    {
+    public void layoutContainer(@NotNull Container parent) {
         Insets insets = parent.getInsets();
         Dimension size = parent.getSize();
 
@@ -84,8 +78,7 @@ class HeatmapLayout implements LayoutManager
         int XRightEnd = size.width - insets.right;
         int XRowHeader = XRightEnd - rowHeaderSize.width;
 
-        if (XRowHeader < XBody)
-        {
+        if (XRowHeader < XBody) {
             XRowHeader = XBody;
         }
 
@@ -93,15 +86,11 @@ class HeatmapLayout implements LayoutManager
         int widthBody = XRowHeader - XBody;
         int widthRowHeader = XRightEnd - XRowHeader;
 
-        if (widthBody > colHeaderSize.width)
-        {
+        if (widthBody > colHeaderSize.width) {
             widthBody = colHeaderSize.width > 0 ? colHeaderSize.width : bodySize.width;
-            if (XBody + widthBody > XRowHeader)
-            {
+            if (XBody + widthBody > XRowHeader) {
                 widthBody -= XBody + widthBody - XRowHeader;
-            }
-            else
-            {
+            } else {
                 XRowHeader = XBody + widthBody;
             }
             widthRowHeader = XRightEnd - XRowHeader;
@@ -112,8 +101,7 @@ class HeatmapLayout implements LayoutManager
         int YBottom = size.height - insets.bottom;
         int YColScroll = YBottom - colScrollSize.height;
 
-        if (YColScroll < YBody)
-        {
+        if (YColScroll < YBody) {
             YColScroll = YBody;
         }
 

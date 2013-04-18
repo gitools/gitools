@@ -41,36 +41,27 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class Html4Panel extends JPanel
-{
+public class Html4Panel extends JPanel {
 
-    public static class LinkVetoException extends Exception
-    {
-        public LinkVetoException()
-        {
+    public static class LinkVetoException extends Exception {
+        public LinkVetoException() {
         }
     }
 
-    private class LocalHtmlRendererContext extends SimpleHtmlRendererContext
-    {
+    private class LocalHtmlRendererContext extends SimpleHtmlRendererContext {
 
-        public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext)
-        {
+        public LocalHtmlRendererContext(HtmlPanel panel, UserAgentContext userAgentContext) {
             super(panel, userAgentContext);
         }
 
         @Override
-        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event)
-        {
+        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
-            if ("a".equalsIgnoreCase(element.getTagName()))
-            {
+            if ("a".equalsIgnoreCase(element.getTagName())) {
                 cursor = new Cursor(Cursor.HAND_CURSOR);
-            }
-            else
-            {
+            } else {
                 cursor = new Cursor(Cursor.DEFAULT_CURSOR);
             }
 
@@ -78,25 +69,20 @@ public class Html4Panel extends JPanel
         }
 
         @Override
-        public void onMouseOut(HTMLElement element, MouseEvent event)
-        {
+        public void onMouseOut(HTMLElement element, MouseEvent event) {
             super.onMouseOut(element, event);
             Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
             setCursor(cursor);
         }
 
         @Override
-        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event)
-        {
+        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event) {
 
-            if ("a".equalsIgnoreCase(element.getTagName()))
-            {
-                try
-                {
+            if ("a".equalsIgnoreCase(element.getTagName())) {
+                try {
                     Html4Panel.this.linkClicked(element);
                     return false;
-                } catch (LinkVetoException ex)
-                {
+                } catch (LinkVetoException ex) {
                     return false;
                 }
             }
@@ -105,15 +91,12 @@ public class Html4Panel extends JPanel
         }
 
         @Override
-        public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs)
-        {
-            try
-            {
+        public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+            try {
                 //System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
                 Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
                 super.submitForm(method, action, target, enctype, formInputs);
-            } catch (LinkVetoException ex)
-            {
+            } catch (LinkVetoException ex) {
             }
         }
 
@@ -122,13 +105,11 @@ public class Html4Panel extends JPanel
     HtmlPanel panel;
     SimpleHtmlRendererContext rcontext;
 
-    Html4Panel()
-    {
+    Html4Panel() {
         createComponents();
     }
 
-    private void createComponents()
-    {
+    private void createComponents() {
         panel = new HtmlPanel();
         rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
 
@@ -136,29 +117,23 @@ public class Html4Panel extends JPanel
         add(panel, BorderLayout.CENTER);
     }
 
-    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException
-    {
+    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
         String target = linkNode.getAttribute("target");
-        if (rel != null && rel.equalsIgnoreCase("action"))
-        {
+        if (rel != null && rel.equalsIgnoreCase("action")) {
             String name = href;
             Map<String, String> params = new HashMap<String, String>();
 
             int pos = href.indexOf('?');
-            if (pos >= 0)
-            {
+            if (pos >= 0) {
                 name = href.substring(0, pos);
                 String p1 = pos < href.length() ? href.substring(pos + 1) : "";
-                if (!p1.isEmpty())
-                {
+                if (!p1.isEmpty()) {
                     String[] p2 = p1.split("\\&");
-                    for (String p3 : p2)
-                    {
+                    for (String p3 : p2) {
                         pos = p3.indexOf('=');
-                        if (pos > 0)
-                        {
+                        if (pos > 0) {
                             String id = p3.substring(0, pos);
                             String value = pos < p3.length() ? p3.substring(pos + 1) : "";
                             params.put(id, value);
@@ -169,48 +144,37 @@ public class Html4Panel extends JPanel
 
             performUrlAction(name, params);
             throw new LinkVetoException();
-        }
-        else if (target != null && target.equalsIgnoreCase("_external"))
-        {
-            try
-            {
+        } else if (target != null && target.equalsIgnoreCase("_external")) {
+            try {
                 URI uri = new URI(href);
-                if (Desktop.isDesktopSupported())
-                {
+                if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().browse(uri);
-                }
-                else
-                {
+                } else {
                     JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             throw new LinkVetoException();
         }
     }
 
-    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
-    {
+    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
         /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
           if (formInputs != null)
               for (FormInput fi : formInputs)
                   System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
     }
 
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
+    protected void performUrlAction(String name, Map<String, String> params) {
         // do nothing
     }
 
-    public void navigate(URL url) throws Exception
-    {
+    public void navigate(URL url) throws Exception {
         rcontext.navigate(url, "_this");
     }
 
-    public HtmlRendererContext getHtmlRenderContext()
-    {
+    public HtmlRendererContext getHtmlRenderContext() {
         return rcontext;
     }
 }

@@ -46,32 +46,27 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class CorrelationsAction extends BaseAction
-{
+public class CorrelationsAction extends BaseAction {
 
-    public CorrelationsAction()
-    {
+    public CorrelationsAction() {
         super("Correlations");
         setDesc("Correlations analysis");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -84,26 +79,20 @@ public class CorrelationsAction extends BaseAction
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         final CorrelationAnalysis analysis = wiz.getAnalysis();
 
-        if (!analysis.isTransposeData())
-        {
-            if (matrixView.getColumns().getSelected(  ).length > 0)
-            {
+        if (!analysis.isTransposeData()) {
+            if (matrixView.getColumns().getSelected().length > 0) {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getColumns().visibleFromSelection();
                 matrixView = mv;
             }
-        }
-        else
-        {
-            if (matrixView.getRows().getSelected(  ).length > 0)
-            {
+        } else {
+            if (matrixView.getRows().getSelected().length > 0) {
                 Heatmap mv = new Heatmap(matrixView);
                 mv.getRows().visibleFromSelection();
                 matrixView = mv;
@@ -112,17 +101,13 @@ public class CorrelationsAction extends BaseAction
 
         analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     new CorrelationProcessor(analysis).run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -131,20 +116,15 @@ public class CorrelationsAction extends BaseAction
                     String ext = PersistenceUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
-                    if (!analysisTitle.equals(""))
-                    {
+                    if (!analysisTitle.equals("")) {
                         editor.setName(analysis.getTitle() + "." + CorrelationAnalysisFormat.EXTENSION);
-                    }
-                    else
-                    {
+                    } else {
                         editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CorrelationAnalysisFormat.EXTENSION));
                     }
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -153,8 +133,7 @@ public class CorrelationsAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

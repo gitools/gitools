@@ -31,8 +31,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class DataIntegrationDimensionsWizard extends AbstractWizard
-{
+public class DataIntegrationDimensionsWizard extends AbstractWizard {
     private static final long serialVersionUID = -6058042494975580570L;
 
     private DataIntegrationPage dataIntegrationPage;
@@ -43,8 +42,7 @@ public class DataIntegrationDimensionsWizard extends AbstractWizard
     private List<ArrayList<DataIntegrationCriteria>> criteria;
     private String dimensionName;
 
-    public DataIntegrationDimensionsWizard(Heatmap heatmap)
-    {
+    public DataIntegrationDimensionsWizard(Heatmap heatmap) {
         super();
         this.heatmap = heatmap;
         setTitle("Add data to heatmap");
@@ -52,8 +50,7 @@ public class DataIntegrationDimensionsWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         dataIntegrationPage = new DataIntegrationPage(heatmap);
         addPage(dataIntegrationPage);
 
@@ -62,13 +59,10 @@ public class DataIntegrationDimensionsWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         // TODO Auto-generated method stub
-        if (getCurrentPage() == dataDetailsPage)
-        {
-            if (dataDetailsPage.isComplete())
-            {
+        if (getCurrentPage() == dataDetailsPage) {
+            if (dataDetailsPage.isComplete()) {
                 return true;
             }
         }
@@ -76,25 +70,21 @@ public class DataIntegrationDimensionsWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         values = dataIntegrationPage.getValues();
         criteria = dataIntegrationPage.getCriteria();
         dimensionName = dataDetailsPage.getDimensionName();
     }
 
-    public List<ArrayList<DataIntegrationCriteria>> getCriteria()
-    {
+    public List<ArrayList<DataIntegrationCriteria>> getCriteria() {
         return criteria;
     }
 
-    public double[] getValues()
-    {
+    public double[] getValues() {
         return values;
     }
 
-    public String getDimensionName()
-    {
+    public String getDimensionName() {
         return dimensionName;
     }
     

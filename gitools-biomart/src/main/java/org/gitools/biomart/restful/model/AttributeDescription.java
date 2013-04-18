@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AttributeDescription extends AbstractDescription
-{
+public class AttributeDescription extends AbstractDescription {
 
     @XmlAttribute
     private String datasetLink;
@@ -70,123 +69,99 @@ public class AttributeDescription extends AbstractDescription
     private String pipeDisplay;
 
 
-    public String getCheckForNulls()
-    {
+    public String getCheckForNulls() {
         return checkForNulls;
     }
 
-    public void setCheckForNulls(String checkForNulls)
-    {
+    public void setCheckForNulls(String checkForNulls) {
         this.checkForNulls = checkForNulls;
     }
 
-    public String getDatasetLink()
-    {
+    public String getDatasetLink() {
         return datasetLink;
     }
 
-    public void setDatasetLink(String datasetLink)
-    {
+    public void setDatasetLink(String datasetLink) {
         this.datasetLink = datasetLink;
     }
 
-    public String getHomepageURL()
-    {
+    public String getHomepageURL() {
         return homepageURL;
     }
 
-    public void setHomepageURL(String homepageURL)
-    {
+    public void setHomepageURL(String homepageURL) {
         this.homepageURL = homepageURL;
     }
 
-    public String getImageURL()
-    {
+    public String getImageURL() {
         return imageURL;
     }
 
-    public void setImageURL(String imageURL)
-    {
+    public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
 
-    public String getLinkoutURL()
-    {
+    public String getLinkoutURL() {
         return linkoutURL;
     }
 
-    public void setLinkoutURL(String linkoutURL)
-    {
+    public void setLinkoutURL(String linkoutURL) {
         this.linkoutURL = linkoutURL;
     }
 
-    public String getMaxLength()
-    {
+    public String getMaxLength() {
         return maxLength;
     }
 
-    public void setMaxLength(String maxLength)
-    {
+    public void setMaxLength(String maxLength) {
         this.maxLength = maxLength;
     }
 
-    public String getPipeDisplay()
-    {
+    public String getPipeDisplay() {
         return pipeDisplay;
     }
 
-    public void setPipeDisplay(String pipeDisplay)
-    {
+    public void setPipeDisplay(String pipeDisplay) {
         this.pipeDisplay = pipeDisplay;
     }
 
-    public String getPointerAttribute()
-    {
+    public String getPointerAttribute() {
         return pointerAttribute;
     }
 
-    public void setPointerAttribute(String pointerAttribute)
-    {
+    public void setPointerAttribute(String pointerAttribute) {
         this.pointerAttribute = pointerAttribute;
     }
 
-    public String getPointerDataset()
-    {
+    public String getPointerDataset() {
         return pointerDataset;
     }
 
-    public void setPointerDataset(String pointerDataset)
-    {
+    public void setPointerDataset(String pointerDataset) {
         this.pointerDataset = pointerDataset;
     }
 
-    public String getPointerFilter()
-    {
+    public String getPointerFilter() {
         return pointerFilter;
     }
 
-    public void setPointerFilter(String pointerFilter)
-    {
+    public void setPointerFilter(String pointerFilter) {
         this.pointerFilter = pointerFilter;
     }
 
-    public String getPointerInterface()
-    {
+    public String getPointerInterface() {
         return pointerInterface;
     }
 
-    public void setPointerInterface(String pointerInterface)
-    {
+    public void setPointerInterface(String pointerInterface) {
         this.pointerInterface = pointerInterface;
     }
 
-    public String getSource()
-    {
+    public String getSource() {
         return source;
     }
 
-    public void setSource(String source)
-    {
+    public void setSource(String source) {
         this.source = source;
     }
 

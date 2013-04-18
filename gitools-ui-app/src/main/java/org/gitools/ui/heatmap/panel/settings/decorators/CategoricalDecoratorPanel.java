@@ -38,35 +38,29 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class CategoricalDecoratorPanel extends DecoratorPanel
-{
+public class CategoricalDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
     private JButton editButton;
     private JLabel totalCategories;
     private JTextField emptyColor;
 
-    public CategoricalDecoratorPanel()
-    {
+    public CategoricalDecoratorPanel() {
         super("Categorical scale", new CategoricalDecorator());
 
-        editButton.addActionListener(new ActionListener()
-        {
+        editButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 editCategoricalColorScale();
             }
         });
     }
 
-    private CategoricalDecorator getDecorator()
-    {
+    private CategoricalDecorator getDecorator() {
         return (CategoricalDecorator) getPanelModel().getBean();
     }
 
 
-    private void editCategoricalColorScale()
-    {
+    private void editCategoricalColorScale() {
 
 
         CategoricalDecorator elementDecorator = getDecorator();
@@ -75,8 +69,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
 
         ColoredLabel[] coloredLabels = new ColoredLabel[scalePoints.length];
         int index = 0;
-        for (ColorScalePoint sp : scalePoints)
-        {
+        for (ColorScalePoint sp : scalePoints) {
             coloredLabels[index] = new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor());
             index++;
         }
@@ -84,14 +77,12 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
         EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.get(), coloredLabels);
         dialog.getPage().setValueMustBeNumeric(true);
         dialog.setVisible(true);
-        if (dialog.getReturnStatus() == AbstractDialog.RET_OK)
-        {
+        if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {
             coloredLabels = dialog.getPage().getColoredLabels();
 
             ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.length];
             index = 0;
-            for (ColoredLabel cl : coloredLabels)
-            {
+            for (ColoredLabel cl : coloredLabels) {
                 newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());
                 index++;
             }
@@ -103,14 +94,11 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
 
 
     @Override
-    public void bind()
-    {
+    public void bind() {
         ValueModel categories = model(CategoricalDecorator.PROPERTY_CATEGORIES);
-        categories.addValueChangeListener(new PropertyChangeListener()
-        {
+        categories.addValueChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
+            public void propertyChange(PropertyChangeEvent evt) {
                 totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
             }
         });
@@ -119,15 +107,12 @@ public class CategoricalDecoratorPanel extends DecoratorPanel
     }
 
 
-
     @Override
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         this.emptyColor = new MyWebColorChooserField();
     }
 }

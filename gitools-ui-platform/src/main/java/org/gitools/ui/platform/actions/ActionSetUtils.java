@@ -34,12 +34,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.util.List;
 
-public class ActionSetUtils
-{
+public class ActionSetUtils {
 
     @NotNull
-    public static JToolBar createToolBar(@NotNull ActionSet actionSet)
-    {
+    public static JToolBar createToolBar(@NotNull ActionSet actionSet) {
         WebToolBar toolBar = new WebToolBar(WebToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
         toolBar.setToolbarStyle(ToolbarStyle.attached);
@@ -47,17 +45,12 @@ public class ActionSetUtils
     }
 
     @NotNull
-    private static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet)
-    {
+    private static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet) {
 
-        for (BaseAction a : actionSet.getActions())
-        {
-            if (a instanceof SeparatorAction)
-            {
+        for (BaseAction a : actionSet.getActions()) {
+            if (a instanceof SeparatorAction) {
                 toolBar.addSeparator();
-            }
-            else
-            {
+            } else {
                 toolBar.add(createTool(a));
             }
         }
@@ -65,8 +58,7 @@ public class ActionSetUtils
         return toolBar;
     }
 
-    private static JComponent createTool(@NotNull BaseAction a)
-    {
+    private static JComponent createTool(@NotNull BaseAction a) {
         WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
         tool.setAction(a);
         tool.setHideActionText(true);
@@ -77,18 +69,13 @@ public class ActionSetUtils
     }
 
     @NotNull
-    public static JPopupMenu createPopupMenu(@NotNull ActionSet actionSet)
-    {
+    public static JPopupMenu createPopupMenu(@NotNull ActionSet actionSet) {
         JPopupMenu popupMenu = new JPopupMenu();
 
-        for (BaseAction a : actionSet.getActions())
-        {
-            if (a instanceof SeparatorAction)
-            {
+        for (BaseAction a : actionSet.getActions()) {
+            if (a instanceof SeparatorAction) {
                 popupMenu.addSeparator();
-            }
-            else
-            {
+            } else {
                 popupMenu.add(createPopupMenuItem(a));
             }
         }
@@ -98,12 +85,9 @@ public class ActionSetUtils
     }
 
     @NotNull
-    private static JMenuItem createPopupMenuItem(Action a)
-    {
-        JMenuItem item = new JMenuItem(a)
-        {
-            public void setToolTipText(String text)
-            {
+    private static JMenuItem createPopupMenuItem(Action a) {
+        JMenuItem item = new JMenuItem(a) {
+            public void setToolTipText(String text) {
                 // Ignore!  Actions (e.g. undo/redo) set this when changing
                 // their text due to changing enabled state.
             }
@@ -113,8 +97,7 @@ public class ActionSetUtils
     }
 
     @NotNull
-    public static JMenuBar createMenuBar(@NotNull ActionSet actionSet)
-    {
+    public static JMenuBar createMenuBar(@NotNull ActionSet actionSet) {
         WebMenuBar menuBar = new WebMenuBar();
         for (BaseAction a : actionSet.getActions())
             menuBar.add(createMenu(a));
@@ -122,23 +105,17 @@ public class ActionSetUtils
     }
 
     @NotNull
-    private static JMenu createMenu(@NotNull BaseAction action)
-    {
+    private static JMenu createMenu(@NotNull BaseAction action) {
         WebMenu menu = new WebMenu(action);
 
 
         List<BaseAction> actions = ((ActionSet) action).getActions();
         for (BaseAction a : actions)
-            if (a instanceof SeparatorAction)
-            {
+            if (a instanceof SeparatorAction) {
                 menu.addSeparator();
-            }
-            else if (a instanceof ActionSet)
-            {
+            } else if (a instanceof ActionSet) {
                 menu.add(createMenu(a));
-            }
-            else
-            {
+            } else {
                 menu.add(a);
             }
 

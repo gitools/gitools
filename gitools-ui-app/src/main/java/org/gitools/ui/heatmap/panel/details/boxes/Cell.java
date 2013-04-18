@@ -29,8 +29,7 @@ import java.util.Collection;
 /**
  * Class to represent the content of one matrix cell
  */
-public class Cell implements Serializable
-{
+public class Cell implements Serializable {
 
     private final PropertyItem row;
     private final PropertyItem column;
@@ -43,8 +42,7 @@ public class Cell implements Serializable
      * @param column the column
      * @param values the values
      */
-    public Cell(@NotNull PropertyItem row, @NotNull PropertyItem column, @NotNull Collection<PropertyItem> values)
-    {
+    public Cell(@NotNull PropertyItem row, @NotNull PropertyItem column, @NotNull Collection<PropertyItem> values) {
         this.row = row;
         this.column = column;
         this.values = values;
@@ -55,8 +53,7 @@ public class Cell implements Serializable
      *
      * @return the column
      */
-    public PropertyItem getColumn()
-    {
+    public PropertyItem getColumn() {
         return column;
     }
 
@@ -65,8 +62,7 @@ public class Cell implements Serializable
      *
      * @return the row
      */
-    public PropertyItem getRow()
-    {
+    public PropertyItem getRow() {
         return row;
     }
 
@@ -75,8 +71,7 @@ public class Cell implements Serializable
      *
      * @return the values
      */
-    public Collection<PropertyItem> getValues()
-    {
+    public Collection<PropertyItem> getValues() {
         return values;
     }
 

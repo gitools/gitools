@@ -27,22 +27,18 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.tree.TreeModel;
 
-public abstract class FilteredTreePage extends AbstractWizardPage
-{
+public abstract class FilteredTreePage extends AbstractWizardPage {
 
     @Nullable
     protected FilteredTreePanel panel;
 
     @Nullable
     @Override
-    public JComponent createControls()
-    {
-        panel = new FilteredTreePanel()
-        {
+    public JComponent createControls() {
+        panel = new FilteredTreePanel() {
             @Nullable
             @Override
-            protected TreeModel updateModel(String filterText)
-            {
+            protected TreeModel updateModel(String filterText) {
                 return pageCreateModel(filterText);
             }
         };
@@ -54,14 +50,12 @@ public abstract class FilteredTreePage extends AbstractWizardPage
     protected abstract TreeModel createModel(String filterText);
 
     @Nullable
-    TreeModel pageCreateModel(String filterText)
-    {
+    TreeModel pageCreateModel(String filterText) {
         return createModel(filterText);
     }
 
     @Nullable
-    protected FilteredTreePanel getPanel()
-    {
+    protected FilteredTreePanel getPanel() {
         return panel;
     }
 }

@@ -33,15 +33,13 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ColorScalePanel extends JPanel implements PropertyChangeListener
-{
+public class ColorScalePanel extends JPanel implements PropertyChangeListener {
 
     private Heatmap heatmap;
 
     private ColorScaleDrawer drawer;
 
-    public ColorScalePanel(Heatmap heatmap)
-    {
+    public ColorScalePanel(Heatmap heatmap) {
         this.heatmap = heatmap;
 
         // Listen
@@ -52,23 +50,20 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener
 
     }
 
-    private void init(IColorScale scale)
-    {
+    private void init(IColorScale scale) {
         this.drawer = new ColorScaleDrawer(scale);
         setPreferredSize(this.drawer.getSize());
         repaint();
     }
 
-    public void update()
-    {
+    public void update() {
         drawer.resetZoom();
         setPreferredSize(drawer.getSize());
         repaint();
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g)
-    {
+    protected void paintComponent(@NotNull Graphics g) {
         super.paintComponent(g);
         Dimension size = getSize();
         Rectangle box = new Rectangle(0, 0, size.width, size.height);
@@ -77,8 +72,7 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
+    public void propertyChange(PropertyChangeEvent evt) {
         init(heatmap.getLayers().getTopLayer().getDecorator().getScale());
     }
 }

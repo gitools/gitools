@@ -26,8 +26,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public interface IProgressMonitor
-{
+public interface IProgressMonitor {
 
     public void begin(String title, int totalWork);
 

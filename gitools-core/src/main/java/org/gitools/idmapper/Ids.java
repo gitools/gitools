@@ -21,8 +21,7 @@
  */
 package org.gitools.idmapper;
 
-public interface Ids
-{
+public interface Ids {
 
     public static final String NCBI_REFSEQ = "ncbi:refseq";
     public static final String NCBI_UNIGENE = "ncbi:unigene";

@@ -36,8 +36,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
-{
+public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
     private final HeatmapDimension hdim;
@@ -49,8 +48,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
     private ColoredLabelsGroupsPage clustersPage;
     private HclLevelPage hclPage;
 
-    public HierarchicalColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDimension hdim, @NotNull HeatmapHierarchicalColoredLabelsHeader header)
-    {
+    public HierarchicalColoredLabelsHeaderWizard(Heatmap heatmap, HeatmapDimension hdim, @NotNull HeatmapHierarchicalColoredLabelsHeader header) {
 
         super();
 
@@ -62,8 +60,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         headerPage = new ColoredLabelsConfigPage(header);
         addPage(headerPage);
 
@@ -75,24 +72,18 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         return true;
     }
 
     @Override
-    public void performCancel()
-    {
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+    public void performCancel() {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     header.setTreeLevel(previousLevel);
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }
@@ -100,22 +91,16 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
+    public void pageLeft(IWizardPage currentPage) {
         super.pageLeft(currentPage);
 
-        if (currentPage == hclPage)
-        {
-            JobThread.execute(AppFrame.get(), new JobRunnable()
-            {
+        if (currentPage == hclPage) {
+            JobThread.execute(AppFrame.get(), new JobRunnable() {
                 @Override
-                public void run(@NotNull IProgressMonitor monitor)
-                {
-                    try
-                    {
+                public void run(@NotNull IProgressMonitor monitor) {
+                    try {
                         header.setTreeLevel(hclPage.getLevel());
-                    } catch (Throwable ex)
-                    {
+                    } catch (Throwable ex) {
                         monitor.exception(ex);
                     }
                 }
@@ -123,8 +108,7 @@ public class HierarchicalColoredLabelsHeaderWizard extends AbstractWizard
         }
     }
 
-    public HeatmapColoredLabelsHeader getHeader()
-    {
+    public HeatmapColoredLabelsHeader getHeader() {
         return header;
     }
 }

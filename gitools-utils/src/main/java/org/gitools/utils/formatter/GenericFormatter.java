@@ -29,8 +29,7 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericFormatter implements Serializable
-{
+public class GenericFormatter implements Serializable {
 
     private static final long oneMicrosecond = 1000;
     private static final long oneMilisecond = 1000 * oneMicrosecond;
@@ -45,8 +44,7 @@ public class GenericFormatter implements Serializable
     @NotNull
     private final Map<Class<?>, String> customFormatMap = new HashMap<Class<?>, String>();
 
-    static
-    {
+    static {
         defaultGenericFormatMap.put(Float.class, "%.3g");
         defaultGenericFormatMap.put(Double.class, "%.3g");
     }
@@ -57,29 +55,24 @@ public class GenericFormatter implements Serializable
     private final StringBuilder sb;
     private final Formatter fmt;
 
-    public GenericFormatter(String ltString)
-    {
+    public GenericFormatter(String ltString) {
         this.ltString = ltString;
         genericFormatMap = defaultGenericFormatMap;
         sb = new StringBuilder(12);
         fmt = new Formatter(sb);
     }
 
-    public GenericFormatter()
-    {
+    public GenericFormatter() {
         this("&lt;");
     }
 
-    public void addCustomFormatter(Class<?> c, String s)
-    {
+    public void addCustomFormatter(Class<?> c, String s) {
         customFormatMap.put(c, s);
     }
 
     @NotNull
-    public String pvalue(double value)
-    {
-        if (value < 1e-16)
-        {
+    public String pvalue(double value) {
+        if (value < 1e-16) {
             return ltString + "1.0e-16";
         }
 
@@ -89,40 +82,33 @@ public class GenericFormatter implements Serializable
     }
 
     @NotNull
-    public String percentage(double value)
-    {
+    public String percentage(double value) {
         return format("%.2g%%", value * 100.0);
     }
 
     @NotNull
-    public String elapsedTime(Long elapsedTime)
-    {
+    public String elapsedTime(Long elapsedTime) {
         return elapsedTime + " ns";
     }
 
     @NotNull
-    String format(String format, Object... args)
-    {
+    String format(String format, Object... args) {
         sb.setLength(0);
         fmt.format(format, args);
         return sb.toString();
     }
 
     @NotNull
-    public String format(@Nullable Object value)
-    {
-        if (value == null)
-        {
+    public String format(@Nullable Object value) {
+        if (value == null) {
             return "None";
         }
 
         String format = customFormatMap.get(value.getClass());
-        if (format == null)
-        {
+        if (format == null) {
             format = genericFormatMap.get(value.getClass());
         }
-        if (format == null)
-        {
+        if (format == null) {
             format = "%s";
         }
 

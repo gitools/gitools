@@ -37,8 +37,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class CategoricalDecorator extends Decorator<CategoricalColorScale>
-{
+public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     private final static GenericFormatter fmt = new GenericFormatter("<");
     public static final String PROPERTY_COLOR = "color";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
@@ -46,27 +45,22 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale>
 
     private CategoricalColorScale scale;
 
-    public CategoricalDecorator()
-    {
+    public CategoricalDecorator() {
         super();
 
         this.scale = new CategoricalColorScale();
     }
 
-    public CategoricalColorScale getScale()
-    {
+    public CategoricalColorScale getScale() {
         return scale;
     }
 
-    public void setScale(CategoricalColorScale scale)
-    {
+    public void setScale(CategoricalColorScale scale) {
         this.scale = scale;
     }
 
-    public final void setColor(double value, Color valueColor)
-    {
-        if (getScale().getColorScalePoint(value) != null)
-        {
+    public final void setColor(double value, Color valueColor) {
+        if (getScale().getColorScalePoint(value) != null) {
             Color old = getScale().getColorScalePoint(value).getColor();
             getScale().getColorScalePoint(value).setColor(valueColor);
             firePropertyChange(PROPERTY_COLOR, old, valueColor);
@@ -75,27 +69,23 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale>
 
     @XmlElement(name = "empty-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getEmptyColor()
-    {
+    public Color getEmptyColor() {
         return getScale().getEmptyColor();
     }
 
-    public void setEmptyColor(Color color)
-    {
+    public void setEmptyColor(Color color) {
         Color old = getScale().getEmptyColor();
         getScale().setEmptyColor(color);
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
     @Override
-    public void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer)
-    {
+    public void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer) {
         decoration.reset();
 
         double v = toDouble(matrix, row, column, layer);
 
-        if (Double.isNaN(v))
-        {
+        if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;
@@ -109,13 +99,11 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale>
 
     @XmlElementWrapper(name = "categories")
     @XmlElement(name = "category")
-    public ColorScalePoint[] getCategories()
-    {
+    public ColorScalePoint[] getCategories() {
         return getScale().getPointObjects();
     }
 
-    public void setCategories(ColorScalePoint[] newScalePoints)
-    {
+    public void setCategories(ColorScalePoint[] newScalePoints) {
         ColorScalePoint[] old = getScale().getPointObjects();
         getScale().setPointObjects(newScalePoints);
         firePropertyChange(PROPERTY_CATEGORIES, old, newScalePoints);

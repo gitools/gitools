@@ -30,15 +30,13 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class MTCFactory
-{
+public class MTCFactory {
 
     private static final Map<String, Class<? extends MTC>> nameMap = new HashMap<String, Class<? extends MTC>>();
 
     private static final Map<Class<? extends MTC>, String> classMap = new HashMap<Class<? extends MTC>, String>();
 
-    static
-    {
+    static {
         nameMap.put(Bonferroni.SHORT_NAME, Bonferroni.class);
         nameMap.put(BenjaminiHochbergFdr.SHORT_NAME, BenjaminiHochbergFdr.class);
 
@@ -47,23 +45,19 @@ public class MTCFactory
     }
 
     @NotNull
-    public static String[] getAvailableMtcNames()
-    {
+    public static String[] getAvailableMtcNames() {
         String[] names = new String[nameMap.size()];
         nameMap.keySet().toArray(names);
         return names;
     }
 
     @Nullable
-    public static MTC createFromName(String name)
-    {
+    public static MTC createFromName(String name) {
         MTC mtc = null;
-        try
-        {
+        try {
             Class<? extends MTC> cls = nameMap.get(name);
             mtc = cls.newInstance();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
         return mtc;

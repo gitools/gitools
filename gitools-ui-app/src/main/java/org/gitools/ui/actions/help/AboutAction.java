@@ -32,13 +32,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class AboutAction extends BaseAction
-{
+public class AboutAction extends BaseAction {
 
     private static final long serialVersionUID = 8302818623988394433L;
 
-    public AboutAction()
-    {
+    public AboutAction() {
         super("About " + AppFrame.getAppName() + "...");
         setDesc("Know more about this application");
         setMnemonic(KeyEvent.VK_A);
@@ -46,8 +44,7 @@ public class AboutAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         new AboutDialog(AppFrame.get()).setVisible(true);
     }
 

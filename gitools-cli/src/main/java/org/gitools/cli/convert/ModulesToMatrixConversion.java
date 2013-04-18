@@ -26,12 +26,10 @@ import org.gitools.model.ModuleMap;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
-public class ModulesToMatrixConversion implements ConversionDelegate
-{
+public class ModulesToMatrixConversion implements ConversionDelegate {
 
     @Override
-    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception
-    {
+    public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
         return MatrixUtils.moduleMapToMatrix((ModuleMap) src);
     }
 

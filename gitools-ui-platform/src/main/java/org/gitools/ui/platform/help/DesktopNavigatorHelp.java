@@ -27,23 +27,18 @@ import java.awt.*;
 import java.net.URL;
 
 
-public class DesktopNavigatorHelp extends Help
-{
+public class DesktopNavigatorHelp extends Help {
 
-    public DesktopNavigatorHelp()
-    {
+    public DesktopNavigatorHelp() {
         super();
     }
 
     @Override
-    public void showHelp(@NotNull HelpContext context) throws HelpException
-    {
-        try
-        {
+    public void showHelp(@NotNull HelpContext context) throws HelpException {
+        try {
             URL url = getHelpUrl(context);
             Desktop.getDesktop().browse(url.toURI());
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new HelpException(ex);
         }
     }

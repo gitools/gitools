@@ -33,8 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ExcelReader
-{
+public class ExcelReader {
 
     private final File file;
 
@@ -47,14 +46,12 @@ public class ExcelReader
     private List<ExcelHeader> headers;
 
 
-    public ExcelReader(File file)
-    {
+    public ExcelReader(File file) {
         super();
         this.file = file;
     }
 
-    public void init() throws Exception
-    {
+    public void init() throws Exception {
 
         // Open the workbook
         openWorkbook(file);
@@ -66,11 +63,9 @@ public class ExcelReader
 
     }
 
-    private void openWorkbook(@NotNull File file) throws IOException, InvalidFormatException
-    {
+    private void openWorkbook(@NotNull File file) throws IOException, InvalidFormatException {
         FileInputStream fis = null;
-        try
-        {
+        try {
             System.out.println("Opening workbook [" + file.getName() + "]");
 
             fis = new FileInputStream(file);
@@ -80,47 +75,37 @@ public class ExcelReader
             this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
             this.formatter = new DataFormatter(Locale.ENGLISH, true);
 
-        } finally
-        {
-            if (fis != null)
-            {
+        } finally {
+            if (fis != null) {
                 fis.close();
             }
         }
     }
 
 
-    private String cellToString(@NotNull Cell cell)
-    {
-        if (cell.getCellType() != Cell.CELL_TYPE_FORMULA)
-        {
+    private String cellToString(@NotNull Cell cell) {
+        if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) {
             return this.formatter.formatCellValue(cell);
-        }
-        else
-        {
+        } else {
             return this.formatter.formatCellValue(cell, this.evaluator);
         }
     }
 
     @NotNull
-    private List<ExcelHeader> rowToHeader(@Nullable Row header, @NotNull Row firstRow)
-    {
+    private List<ExcelHeader> rowToHeader(@Nullable Row header, @NotNull Row firstRow) {
 
         Cell cell = null;
         Cell firstCell = null;
         int lastCellNum = 0;
         List<ExcelHeader> headers = new ArrayList<ExcelHeader>();
 
-        if (header != null)
-        {
+        if (header != null) {
 
             lastCellNum = header.getLastCellNum();
-            for (int i = 0; i <= lastCellNum; i++)
-            {
+            for (int i = 0; i <= lastCellNum; i++) {
                 cell = header.getCell(i);
                 firstCell = firstRow.getCell(i);
-                if (cell != null)
-                {
+                if (cell != null) {
                     int cellType = (firstCell == null ? Cell.CELL_TYPE_BLANK : firstCell.getCellType());
                     headers.add(new ExcelHeader(cellToString(cell), i, cellType));
                 }
@@ -130,37 +115,31 @@ public class ExcelReader
 
     }
 
-    public List<ExcelHeader> getHeaders()
-    {
+    public List<ExcelHeader> getHeaders() {
         return headers;
     }
 
     @Nullable
-    public String getValue(int rowPos, int colPos)
-    {
+    public String getValue(int rowPos, int colPos) {
 
         Row row = sheet.getRow(rowPos);
-        if (row == null)
-        {
+        if (row == null) {
             return null;
         }
 
         Cell cell = row.getCell(colPos);
-        if (cell == null)
-        {
+        if (cell == null) {
             return null;
         }
 
         return cellToString(cell);
     }
 
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
 
-    public int getLastRowNum()
-    {
+    public int getLastRowNum() {
         return sheet.getLastRowNum();
     }
 }

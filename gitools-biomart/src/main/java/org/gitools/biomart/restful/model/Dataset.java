@@ -35,8 +35,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Dataset
-{
+public class Dataset {
 
     @XmlAttribute(required = true)
     private String name;
@@ -56,29 +55,24 @@ public class Dataset
     @XmlElement(name = "Attribute", required = true)
     private final List<Attribute> attribute = new ArrayList<Attribute>(0);
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
-    public String getInterface()
-    {
+    public String getInterface() {
         return _interface;
     }
 
-    public void setInterface(String _interface)
-    {
+    public void setInterface(String _interface) {
         this._interface = _interface;
     }
 
     @NotNull
-    public List<Filter> getFilter()
-    {
+    public List<Filter> getFilter() {
         return this.filter;
     }
 
@@ -86,14 +80,12 @@ public class Dataset
      * @noinspection UnusedDeclaration
      */
     @NotNull
-    public List<Filter> getValueFilter()
-    {
+    public List<Filter> getValueFilter() {
         return valueFilter;
     }
 
     @NotNull
-    public List<Attribute> getAttribute()
-    {
+    public List<Attribute> getAttribute() {
         return this.attribute;
     }
 }

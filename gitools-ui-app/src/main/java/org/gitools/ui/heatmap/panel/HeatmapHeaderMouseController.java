@@ -36,8 +36,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener
-{
+public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private final Heatmap heatmap;
     private final JViewport viewPort;
@@ -57,8 +56,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
 
-    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel, boolean horizontal)
-    {
+    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel, boolean horizontal) {
         this.heatmap = panel.getHeatmap();
         this.viewPort = horizontal ? panel.getColumnViewPort() : panel.getRowViewPort();
         this.headerPanel = horizontal ? panel.getColumnPanel() : panel.getRowPanel();
@@ -72,25 +70,21 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         this.mode = Mode.none;
     }
 
-    public void addHeatmapMouseListener(HeatmapMouseListener listener)
-    {
+    public void addHeatmapMouseListener(HeatmapMouseListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void mouseClicked(@NotNull MouseEvent e)
-    {
+    public void mouseClicked(@NotNull MouseEvent e) {
         // Skip right click
-        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
-        {
+        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             return;
         }
 
         panel.requestFocusInWindow();
 
         int index = convertToIndex(e);
-        if (!isValidIndex(index))
-        {
+        if (!isValidIndex(index)) {
             return;
         }
 
@@ -101,8 +95,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             l.mouseClicked(row, col, e);
     }
 
-    private int convertToIndex(@NotNull MouseEvent e)
-    {
+    private int convertToIndex(@NotNull MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
@@ -112,23 +105,18 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mousePressed(@NotNull MouseEvent e)
-    {
+    public void mousePressed(@NotNull MouseEvent e) {
         // Skip right click
-        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
-        {
+        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             return;
         }
 
         // check if it's a already selected
         int index = convertToIndex(e);
 
-        if (isSelectedIndex(index))
-        {
+        if (isSelectedIndex(index)) {
             mode = Mode.movingSelected;
-        }
-        else
-        {
+        } else {
             int modifiers = e.getModifiers();
             boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
             boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
@@ -137,8 +125,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
 
 
-        switch (mode)
-        {
+        switch (mode) {
             case selecting:
                 updateSelection(e, false);
                 break;
@@ -153,64 +140,51 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         panel.requestFocusInWindow();
     }
 
-    private boolean isSelectedIndex(int index)
-    {
-        if (!isValidIndex(index))
-        {
+    private boolean isSelectedIndex(int index) {
+        if (!isValidIndex(index)) {
             return false;
         }
 
-        IMatrixView matrixView = heatmap  ;
-        if (horizontal)
-        {
-            return matrixView.getColumns().isSelected(  index);
+        IMatrixView matrixView = heatmap;
+        if (horizontal) {
+            return matrixView.getColumns().isSelected(index);
         }
 
-        return matrixView.getRows().isSelected(  index);
+        return matrixView.getRows().isSelected(index);
 
     }
 
     @Override
-    public void mouseReleased(@NotNull MouseEvent e)
-    {
+    public void mouseReleased(@NotNull MouseEvent e) {
         panel.mouseReleased(e);
 
         setLeading(e);
         mode = Mode.none;
     }
 
-    private void setLeading(@NotNull MouseEvent e)
-    {
+    private void setLeading(@NotNull MouseEvent e) {
         int index = convertToIndex(e);
-        if (isValidIndex(index))
-        {
-            IMatrixView matrixView = heatmap  ;
-            if (horizontal)
-            {
+        if (isValidIndex(index)) {
+            IMatrixView matrixView = heatmap;
+            if (horizontal) {
                 matrixView.getColumns().setSelectionLead(index);
-            }
-            else
-            {
+            } else {
                 matrixView.getRows().setSelectionLead(index);
             }
         }
     }
 
     @Override
-    public void mouseEntered(MouseEvent e)
-    {
+    public void mouseEntered(MouseEvent e) {
     }
 
     @Override
-    public void mouseExited(MouseEvent e)
-    {
+    public void mouseExited(MouseEvent e) {
     }
 
     @Override
-    public void mouseDragged(@NotNull MouseEvent e)
-    {
-        switch (mode)
-        {
+    public void mouseDragged(@NotNull MouseEvent e) {
+        switch (mode) {
             case selecting:
                 updateSelection(e, true);
                 break;
@@ -224,11 +198,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseMoved(@NotNull MouseEvent e)
-    {
+    public void mouseMoved(@NotNull MouseEvent e) {
         int index = convertToIndex(e);
-        if (!isValidIndex(index))
-        {
+        if (!isValidIndex(index)) {
             return;
         }
 
@@ -240,38 +212,29 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseWheelMoved(@NotNull MouseWheelEvent e)
-    {
+    public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
         int rotation = e.getWheelRotation();
 
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
-        if (!shiftDown && !ctrlDown)
-        {
+        if (!shiftDown && !ctrlDown) {
             HeatmapPosition pos = panel.getScrollPosition();
 
-            if (horizontal)
-            {
+            if (horizontal) {
                 panel.setScrollColumnPosition(pos.column + rotation);
-            }
-            else
-            {
+            } else {
                 panel.setScrollRowPosition(pos.row + rotation);
             }
-        }
-        else
-        {
+        } else {
             int width = heatmap.getColumns().getCellSize() + rotation * -1;
-            if (width < 1)
-            {
+            if (width < 1) {
                 width = 1;
             }
 
             int height = heatmap.getRows().getCellSize() + rotation * -1;
-            if (height < 1)
-            {
+            if (height < 1) {
                 height = 1;
             }
 
@@ -280,58 +243,41 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
     }
 
-    private void updateSelectionMove(@NotNull MouseEvent e, boolean dragging)
-    {
+    private void updateSelectionMove(@NotNull MouseEvent e, boolean dragging) {
         int index = convertToIndex(e);
 
-        if (!isValidIndex(index))
-        {
+        if (!isValidIndex(index)) {
             return;
         }
 
-        if (!dragging)
-        {
+        if (!dragging) {
             selectionMoveLastIndex = index;
-        }
-        else
-        {
+        } else {
 
             int indexDiff = selectionMoveLastIndex - index;
             selectionMoveLastIndex = index;
 
-            IMatrixView matrixView = heatmap  ;
-            if (indexDiff > 0)
-            {
-                if (horizontal)
-                {
-                    for (int i = 0; i < indexDiff; i++)
-                    {
-                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT,  matrixView.getColumns().getSelected(  ));
+            IMatrixView matrixView = heatmap;
+            if (indexDiff > 0) {
+                if (horizontal) {
+                    for (int i = 0; i < indexDiff; i++) {
+                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
                     }
-                }
-                else
-                {
-                    for (int i = 0; i < indexDiff; i++)
-                    {
-                        matrixView.getRows().move(org.gitools.matrix.model.Direction.UP , matrixView.getRows().getSelected(  ));
+                } else {
+                    for (int i = 0; i < indexDiff; i++) {
+                        matrixView.getRows().move(org.gitools.matrix.model.Direction.UP, matrixView.getRows().getSelected());
                     }
                 }
             }
 
-            if (indexDiff < 0)
-            {
-                if (horizontal)
-                {
-                    for (int i = 0; i > indexDiff; i--)
-                    {
-                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  matrixView.getColumns().getSelected(  ));
+            if (indexDiff < 0) {
+                if (horizontal) {
+                    for (int i = 0; i > indexDiff; i--) {
+                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
                     }
-                }
-                else
-                {
-                    for (int i = 0; i > indexDiff; i--)
-                    {
-                        matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN,  matrixView.getRows().getSelected(  ));
+                } else {
+                    for (int i = 0; i > indexDiff; i--) {
+                        matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
                     }
                 }
             }
@@ -340,18 +286,15 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         setLeading(e);
     }
 
-    private void updateSelection(@NotNull MouseEvent e, boolean dragging)
-    {
+    private void updateSelection(@NotNull MouseEvent e, boolean dragging) {
         int index = convertToIndex(e);
 
-        if (!isValidIndex(index))
-        {
+        if (!isValidIndex(index)) {
             return;
         }
 
         boolean indexChanged = (selLast != index);
-        if (indexChanged)
-        {
+        if (indexChanged) {
             setLeading(e);
         }
         selLast = index;
@@ -360,52 +303,39 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
-        IMatrixView mv = heatmap  ;
+        IMatrixView mv = heatmap;
 
         int[] sel = null;
 
-        if (!dragging && !shiftDown && !ctrlDown)
-        {
+        if (!dragging && !shiftDown && !ctrlDown) {
             selStart = selEnd = index;
             sel = new int[]{index};
-        }
-        else if (ctrlDown)
-        {
-            boolean selected = horizontal ? mv.getColumns().isSelected(  index) : mv.getRows().isSelected(  index);
+        } else if (ctrlDown) {
+            boolean selected = horizontal ? mv.getColumns().isSelected(index) : mv.getRows().isSelected(index);
 
-            int[] prevSel = horizontal ? mv.getColumns().getSelected(  ) : mv.getRows().getSelected(  );
+            int[] prevSel = horizontal ? mv.getColumns().getSelected() : mv.getRows().getSelected();
 
-            if (dragging && !indexChanged)
-            {
+            if (dragging && !indexChanged) {
                 sel = prevSel;
-            }
-            else
-            {
-                if (!selected)
-                {
+            } else {
+                if (!selected) {
                     sel = new int[prevSel.length + 1];
                     System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
                     sel[sel.length - 1] = index;
                     Arrays.sort(sel);
-                }
-                else
-                {
+                } else {
                     sel = new int[prevSel.length - 1];
                     int i = 0;
                     int j = 0;
-                    while (i < prevSel.length)
-                    {
-                        if (prevSel[i] != index)
-                        {
+                    while (i < prevSel.length) {
+                        if (prevSel[i] != index) {
                             sel[j++] = prevSel[i];
                         }
                         i++;
                     }
                 }
             }
-        }
-        else if (dragging || shiftDown)
-        {
+        } else if (dragging || shiftDown) {
             selEnd = index;
 
             int start = selStart <= selEnd ? selStart : selEnd;
@@ -415,73 +345,55 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             sel = new int[size];
             for (int i = start; i <= end; i++)
                 sel[i - start] = i;
-        }
-        else
-        {
+        } else {
             sel = new int[0];
         }
 
-        if (horizontal)
-        {
-            if (mv.getRows().getSelected(  ).length != 0)
-            {
-                mv.getRows().setSelected(  new int[0]);
+        if (horizontal) {
+            if (mv.getRows().getSelected().length != 0) {
+                mv.getRows().setSelected(new int[0]);
             }
-            mv.getColumns().setSelected(  sel);
-        }
-        else
-        {
-            if (mv.getColumns().getSelected(  ).length != 0)
-            {
-                mv.getColumns().setSelected(  new int[0]);
+            mv.getColumns().setSelected(sel);
+        } else {
+            if (mv.getColumns().getSelected().length != 0) {
+                mv.getColumns().setSelected(new int[0]);
             }
-            mv.getRows().setSelected(  sel);
+            mv.getRows().setSelected(sel);
         }
 
     }
 
-    private int getIndexCount()
-    {
-        return horizontal ? heatmap  .getColumns().size() : heatmap  .getRows().size();
+    private int getIndexCount() {
+        return horizontal ? heatmap.getColumns().size() : heatmap.getRows().size();
     }
 
-    private boolean isValidIndex(int index)
-    {
-        if (index < 0 || index >= getIndexCount())
-        {
+    private boolean isValidIndex(int index) {
+        if (index < 0 || index >= getIndexCount()) {
             return false;
         }
 
         return true;
     }
 
-    private void updateScroll(@NotNull MouseEvent e, boolean dragging)
-    {
+    private void updateScroll(@NotNull MouseEvent e, boolean dragging) {
         point = e.getPoint();
 
-        if (!dragging)
-        {
+        if (!dragging) {
             startPoint = point;
             startScrollValue = panel.getScrollValue();
-        }
-        else
-        {
+        } else {
             int widthOffset = point.x - startPoint.x;
             int heightOffset = point.y - startPoint.y;
 
-            if (horizontal)
-            {
+            if (horizontal) {
                 panel.setScrollColumnValue(startScrollValue.x - widthOffset);
-            }
-            else
-            {
+            } else {
                 panel.setScrollRowValue(startScrollValue.y - heightOffset);
             }
         }
     }
 
-    private enum Mode
-    {
+    private enum Mode {
         none, selecting, moving, movingSelected
     }
 }

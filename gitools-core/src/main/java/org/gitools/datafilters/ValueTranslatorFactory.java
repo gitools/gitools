@@ -24,36 +24,26 @@ package org.gitools.datafilters;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ValueTranslatorFactory
-{
+public class ValueTranslatorFactory {
 
     @Nullable
-    public static ValueTranslator createValueTranslator(Class<?> cls)
-    {
+    public static ValueTranslator createValueTranslator(Class<?> cls) {
         ValueTranslator vt = null;
 
-        if (double.class.equals(cls) || Double.class.equals(cls))
-        {
+        if (double.class.equals(cls) || Double.class.equals(cls)) {
             vt = new DoubleTranslator();
-        }
-        else if (int.class.equals(cls) || Integer.class.equals(cls))
-        {
+        } else if (int.class.equals(cls) || Integer.class.equals(cls)) {
             vt = new IntegerTranslator();
-        }
-        else
-        {
-            vt = new ValueTranslator()
-            {
+        } else {
+            vt = new ValueTranslator() {
                 @Override
-                public Object stringToValue(String str)
-                {
+                public Object stringToValue(String str) {
                     return str;
                 }
 
                 @NotNull
                 @Override
-                public String valueToString(@Nullable Object value)
-                {
+                public String valueToString(@Nullable Object value) {
                     return value != null ? value.toString() : "";
                 }
             };

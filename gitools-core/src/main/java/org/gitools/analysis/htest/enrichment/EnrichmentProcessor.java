@@ -53,18 +53,15 @@ import java.util.Date;
  * 'cond' is an abbreviation for condition.
  */
 
-public class EnrichmentProcessor extends HtestProcessor
-{
+public class EnrichmentProcessor extends HtestProcessor {
 
-    private class RunSlot extends ThreadSlot
-    {
+    private class RunSlot extends ThreadSlot {
         @Nullable
         public DoubleMatrix1D population;
         @Nullable
         public Test test;
 
-        public RunSlot(ThreadQueue threadQueue)
-        {
+        public RunSlot(ThreadQueue threadQueue) {
             super(threadQueue);
             population = null;
             test = null;
@@ -73,15 +70,13 @@ public class EnrichmentProcessor extends HtestProcessor
 
     private final EnrichmentAnalysis analysis;
 
-    public EnrichmentProcessor(EnrichmentAnalysis analysis)
-    {
+    public EnrichmentProcessor(EnrichmentAnalysis analysis) {
 
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
@@ -127,11 +122,9 @@ public class EnrichmentProcessor extends HtestProcessor
         ThreadQueue threadQueue = new ThreadQueue(numProcs);
 
         for (int i = 0; i < numProcs; i++)
-            try
-            {
+            try {
                 threadQueue.put(new RunSlot(threadQueue));
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
             }
 
@@ -140,16 +133,14 @@ public class EnrichmentProcessor extends HtestProcessor
 
 		/* Test analysis */
 
-        for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++)
-        {
+        for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++) {
 
             //final String condName = conditions.getQuick(condIndex).toString();
             final String condName = dataMatrix.getColumns().getLabel(condIndex);
 
             //final DoubleMatrix1D condItems = data.viewRow(condIndex);
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
-            for (int i = 0; i < numRows; i++)
-            {
+            for (int i = 0; i < numRows; i++) {
                 double value = MatrixUtils.doubleValue(dataMatrix.getCellValue(i, condIndex, 0));
 
                 condItems.setQuick(i, value);
@@ -161,23 +152,19 @@ public class EnrichmentProcessor extends HtestProcessor
 
             condMonitor.begin("Condition " + condName + "...", numModules);
 
-            for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++)
-            {
+            for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
 
                 final String moduleName = modules.getQuick(moduleIndex).toString();
                 final int[] itemIndices = moduleItemIndices[moduleIndex];
 
                 final RunSlot slot;
-                try
-                {
+                try {
                     slot = (RunSlot) threadQueue.take();
-                } catch (InterruptedException ex)
-                {
+                } catch (InterruptedException ex) {
                     throw new AnalysisException(ex);
                 }
 
-                if (slot.population != population)
-                {
+                if (slot.population != population) {
                     slot.population = population;
                     slot.test = testFactory.create();
                     slot.test.processPopulation(condName, population);
@@ -186,37 +173,28 @@ public class EnrichmentProcessor extends HtestProcessor
                 final int condIdx = condIndex;
                 final int moduleIdx = moduleIndex;
 
-                slot.execute(new Runnable()
-                {
+                slot.execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         CommonResult result = null;
-                        try
-                        {
-                            int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction()
-                            {
+                        try {
+                            int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction() {
                                 @Override
-                                public double apply(double d)
-                                {
+                                public double apply(double d) {
                                     return Double.isNaN(d) ? 0 : 1;
                                 }
                             });
 
-                            if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize)
-                            {
+                            if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize) {
                                 result = slot.test.processTest(condName, condItems, moduleName, itemIndices);
                             }
-                        } catch (Throwable cause)
-                        {
+                        } catch (Throwable cause) {
                             cause.printStackTrace();
                         }
 
-                        try
-                        {
+                        try {
                             resultsMatrix.setCell(moduleIdx, condIdx, result);
-                        } catch (Throwable cause)
-                        {
+                        } catch (Throwable cause) {
                             cause.printStackTrace();
                         }
                     }
@@ -231,8 +209,7 @@ public class EnrichmentProcessor extends HtestProcessor
 
         ThreadManager.shutdown(monitor);
 
-        if (monitor.isCancelled())
-        {
+        if (monitor.isCancelled()) {
             return;
         }
 

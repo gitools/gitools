@@ -28,13 +28,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.List;
 
-public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference>
-{
+public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference> {
     private final IResourceLocator resourceLocator;
     private final List<ResourceReference> dependencies;
 
-    public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator)
-    {
+    public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator) {
         super();
         this.resourceLocator = resourceLocator;
         this.dependencies = dependencies;
@@ -42,15 +40,13 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
 
     @NotNull
     @Override
-    public ResourceReference unmarshal(@NotNull ResourceReferenceXmlElement resourceReference) throws Exception
-    {
+    public ResourceReference unmarshal(@NotNull ResourceReferenceXmlElement resourceReference) throws Exception {
 
         String referenceName = resourceReference.getPath();
         IResourceLocator referenceLocator = resourceLocator.getReferenceLocator(referenceName);
 
         String extension = resourceReference.getFormat();
-        if (StringUtils.isEmpty(extension))
-        {
+        if (StringUtils.isEmpty(extension)) {
             extension = referenceLocator.getExtension();
         }
 
@@ -64,18 +60,15 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
     }
 
     @Override
-    public ResourceReferenceXmlElement marshal(ResourceReference resourceReference) throws Exception
-    {
-        if (resourceReference == null)
-        {
+    public ResourceReferenceXmlElement marshal(ResourceReference resourceReference) throws Exception {
+        if (resourceReference == null) {
             return null;
         }
 
         PersistenceManager pm = PersistenceManager.get();
 
         // It's a memory instance. Change the resource locator.
-        if (resourceReference.getLocator() == null)
-        {
+        if (resourceReference.getLocator() == null) {
             String parentName = resourceLocator.getBaseName();
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
             resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension));

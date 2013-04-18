@@ -27,25 +27,21 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Sum of logarithms
  */
-public class LogSumAggregator extends AbstractAggregator
-{
+public class LogSumAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new LogSumAggregator();
 
-    private LogSumAggregator()
-    {
+    private LogSumAggregator() {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data)
-    {
+    public double aggregate(@NotNull double[] data) {
         return aggregate(data, Functions.plus, Functions.log, 0);
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Sum of logarithms";
     }
 }

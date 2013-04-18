@@ -34,21 +34,18 @@ import java.util.List;
  * A Generic details panel with a properties table of all the cell values,
  * the row, the column and the matrix size.
  */
-public class GenericDetailsPanel extends AbstractDetailsPanel
-{
+public class GenericDetailsPanel extends AbstractDetailsPanel {
     /**
      * Instantiates a new Generic details panel.
      *
      * @param heatmap the heatmap
      */
-    public GenericDetailsPanel(Heatmap heatmap)
-    {
+    public GenericDetailsPanel(Heatmap heatmap) {
         super(heatmap);
     }
 
     @Override
-    protected void updateBoxes()
-    {
+    protected void updateBoxes() {
         List<PropertyItem> properties = new ArrayList<PropertyItem>();
 
         Cell cell = getSelectedCell();
@@ -56,14 +53,13 @@ public class GenericDetailsPanel extends AbstractDetailsPanel
         properties.add(cell.getColumn());
         properties.add(cell.getRow());
         properties.add(new PropertyItem("Size", "Matrix size: Columns x Rows", String.valueOf(getColumnsCount()) + " x " + String.valueOf(getRowsCount())));
-        properties.add(new PropertyItem("",""));
+        properties.add(new PropertyItem("", ""));
         properties.addAll(cell.getValues());
 
         Dimension size = getSize();
-        add(new PropertiesBox(size.width, properties){
+        add(new PropertiesBox(size.width, properties) {
             @Override
-            protected void onMouseClick(PropertyItem propertyItem)
-            {
+            protected void onMouseClick(PropertyItem propertyItem) {
                 getHeatmap().getLayers().setTopLayerIndex(propertyItem.getIndex());
             }
         });

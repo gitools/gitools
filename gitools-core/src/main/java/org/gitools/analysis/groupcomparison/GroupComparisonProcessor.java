@@ -41,26 +41,22 @@ import java.util.Date;
 import java.util.List;
 
 
-public class GroupComparisonProcessor extends HtestProcessor
-{
+public class GroupComparisonProcessor extends HtestProcessor {
 
     private final GroupComparisonAnalysis analysis;
 
-    public GroupComparisonProcessor(GroupComparisonAnalysis analysis)
-    {
+    public GroupComparisonProcessor(GroupComparisonAnalysis analysis) {
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
         // Prepare data
         IMatrix data = analysis.getData().get();
-        if (analysis.isTransposeData())
-        {
+        if (analysis.isTransposeData()) {
             data = new TransposedMatrixView(data);
         }
 
@@ -93,10 +89,8 @@ public class GroupComparisonProcessor extends HtestProcessor
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
 
-        for (int column = 0; column < columnLabels.length; column++)
-        {
-            for (int row = 0; row < numRows; row++)
-            {
+        for (int column = 0; column < columnLabels.length; column++) {
+            for (int row = 0; row < numRows; row++) {
 
                 int[] group1 = getColumnIndices(data, analysis.getGroups1(), row);
                 int[] group2 = getColumnIndices(data, analysis.getGroups2(), row);
@@ -104,22 +98,18 @@ public class GroupComparisonProcessor extends HtestProcessor
 
                 double[] groupVals1 = new double[group1.length];
                 double[] groupVals2 = new double[group2.length];
-                for (int gi = 0; gi < group1.length; gi++)
-                {
+                for (int gi = 0; gi < group1.length; gi++) {
                     Object value = data.getCellValue(row, group1[gi], attrIndex);
                     Double v = cast.getDoubleValue(value);
-                    if (v == null || Double.isNaN(v))
-                    {
+                    if (v == null || Double.isNaN(v)) {
                         v = Double.NaN;
                     }
                     groupVals1[gi] = v;
                 }
-                for (int gi = 0; gi < group2.length; gi++)
-                {
+                for (int gi = 0; gi < group2.length; gi++) {
                     Object value = data.getCellValue(row, group2[gi], attrIndex);
                     Double v = cast.getDoubleValue(value);
-                    if (v == null || Double.isNaN(v))
-                    {
+                    if (v == null || Double.isNaN(v)) {
                         v = Double.NaN;
                     }
                     groupVals2[gi] = v;
@@ -153,10 +143,8 @@ public class GroupComparisonProcessor extends HtestProcessor
 
     }
 
-    private int[] getColumnIndices(@NotNull IMatrix data, @NotNull ColumnGroup group, int row)
-    {
-        if (group.getColumns() != null && group.getColumns().length > 0)
-        {
+    private int[] getColumnIndices(@NotNull IMatrix data, @NotNull ColumnGroup group, int row) {
+        if (group.getColumns() != null && group.getColumns().length > 0) {
             return group.getColumns();
         }
 
@@ -168,19 +156,14 @@ public class GroupComparisonProcessor extends HtestProcessor
         BinaryCutoff binaryCutoff = group.getBinaryCutoff();
 
         List<Integer> columnIndicesList = new ArrayList<Integer>();
-        for (int col = 0; col < data.getColumns().size(); col++)
-        {
+        for (int col = 0; col < data.getColumns().size(); col++) {
             Object value = data.getCellValue(row, col, attrIndex);
             Double v = cast.getDoubleValue(value);
-            if (v == null || Double.isNaN(v))
-            {
+            if (v == null || Double.isNaN(v)) {
                 continue;
-            }
-            else
-            {
+            } else {
                 double compliesCutoff = binaryCutoff.apply(v);
-                if (compliesCutoff == 1.0)
-                {
+                if (compliesCutoff == 1.0) {
                     columnIndicesList.add(col);
                 }
             }

@@ -24,8 +24,7 @@ package org.gitools.cli.convert;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.Nullable;
 
-public interface ConversionDelegate
-{
+public interface ConversionDelegate {
 
     @Nullable
     Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception;

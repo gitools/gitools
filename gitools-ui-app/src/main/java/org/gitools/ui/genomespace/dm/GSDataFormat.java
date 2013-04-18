@@ -25,31 +25,26 @@ import java.net.URL;
  * @date 8/12/11
  * @noinspection ALL
  */
-class GSDataFormat
-{
+class GSDataFormat {
     private final String name;
     private final String version;
     private final URL url;
 
-    public GSDataFormat(String name, String version, URL url)
-    {
+    public GSDataFormat(String name, String version, URL url) {
         this.name = name;
         this.version = version;
         this.url = url;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public URL getUrl()
-    {
+    public URL getUrl() {
         return url;
     }
 }

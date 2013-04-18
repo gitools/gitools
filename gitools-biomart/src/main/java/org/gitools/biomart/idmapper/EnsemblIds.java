@@ -24,8 +24,7 @@ package org.gitools.biomart.idmapper;
 /**
  *
  */
-public interface EnsemblIds
-{
+public interface EnsemblIds {
     public static final String ENSEMBL_GENES = "ensembl:gene";
     public static final String ENSEMBL_TRANSCRIPTS = "ensembl:transcript";
     public static final String ENSEMBL_PROTEINS = "ensembl:protein";

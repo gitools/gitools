@@ -32,8 +32,7 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class FilterPage
-{
+public class FilterPage {
 
     @XmlAttribute
     private String internalName;
@@ -53,63 +52,51 @@ public class FilterPage
     @XmlElement(name = "FilterGroup")
     private List<FilterGroup> filterGroups = new ArrayList<FilterGroup>();
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public List<FilterGroup> getFilterGroups()
-    {
+    public List<FilterGroup> getFilterGroups() {
         return filterGroups;
     }
 
-    public void setFilterGroups(List<FilterGroup> filterGroups)
-    {
+    public void setFilterGroups(List<FilterGroup> filterGroups) {
         this.filterGroups = filterGroups;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 

@@ -42,30 +42,25 @@ import java.util.ArrayList;
 /**
  * @noinspection ALL
  */
-public class FilterByValueAction extends BaseAction
-{
+public class FilterByValueAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public FilterByValueAction()
-    {
+    public FilterByValueAction() {
         super("Filter by values...");
         setDesc("Filter by values");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -73,16 +68,13 @@ public class FilterByValueAction extends BaseAction
 
         int pvalueIndex = -1;
         String[] attrNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-        {
+        for (int i = 0; i < attributes.size(); i++) {
             attrNames[i] = attributes.get(i).getName();
-            if (pvalueIndex == -1 && attrNames[i].contains("p-value"))
-            {
+            if (pvalueIndex == -1 && attrNames[i].contains("p-value")) {
                 pvalueIndex = i;
             }
         }
-        if (pvalueIndex == -1)
-        {
+        if (pvalueIndex == -1) {
             pvalueIndex = 0;
         }
 
@@ -93,17 +85,14 @@ public class FilterByValueAction extends BaseAction
 
         dlg.setVisible(true);
 
-        if (dlg.getReturnStatus() != ValueFilterDialog.RET_OK)
-        {
+        if (dlg.getReturnStatus() != ValueFilterDialog.RET_OK) {
             AppFrame.get().setStatusText("Filter cancelled.");
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
                 MatrixViewValueFilter.filter(matrixView, dlg.getCriteriaList(), dlg.isAllCriteriaChecked(), dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked(), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());

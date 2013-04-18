@@ -34,8 +34,7 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener
-{
+public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
     private String title;
 
@@ -54,63 +53,52 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
     @NotNull
     private final List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
 
-    protected AbstractWizard()
-    {
+    protected AbstractWizard() {
     }
 
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
         fireWizardUpdate();
     }
 
     @Override
-    public Icon getLogo()
-    {
+    public Icon getLogo() {
         return logo;
     }
 
-    protected void setLogo(Icon icon)
-    {
+    protected void setLogo(Icon icon) {
         this.logo = icon;
         fireWizardUpdate();
     }
 
     @Override
-    public HelpContext getHelpContext()
-    {
+    public HelpContext getHelpContext() {
         return helpContext;
     }
 
-    public void setHelpContext(HelpContext helpContext)
-    {
+    public void setHelpContext(HelpContext helpContext) {
         this.helpContext = helpContext;
     }
 
-    protected void setHelpContext(String helpContextId)
-    {
+    protected void setHelpContext(String helpContextId) {
         this.helpContext = new HelpContext(helpContextId);
     }
 
-    protected void addPage(@NotNull IWizardPage page)
-    {
+    protected void addPage(@NotNull IWizardPage page) {
         String id = page.getId();
-        if (id == null)
-        {
+        if (id == null) {
             id = "Page" + pages.size();
         }
 
         addPage(id, page);
     }
 
-    protected void addPage(String id, @NotNull IWizardPage page)
-    {
+    protected void addPage(String id, @NotNull IWizardPage page) {
         page.setId(id);
         page.setWizard(this);
         pages.add(page);
@@ -121,27 +109,23 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     @Nullable
     @Override
-    public IWizardPage getStartingPage()
-    {
+    public IWizardPage getStartingPage() {
         return pages.size() > 0 ? pages.get(0) : null;
     }
 
     @Override
-    public IWizardPage getCurrentPage()
-    {
+    public IWizardPage getCurrentPage() {
         return currentPage;
     }
 
     @Override
-    public void setCurrentPage(IWizardPage currentPage)
-    {
+    public void setCurrentPage(IWizardPage currentPage) {
         this.currentPage = currentPage;
     }
 
     @Nullable
     @Override
-    public IWizardPage getNextPage(IWizardPage page)
-    {
+    public IWizardPage getNextPage(IWizardPage page) {
         int idx = pages.indexOf(page);
 
         return idx == -1 || idx == pages.size() - 1 ? null : pages.get(idx + 1);
@@ -149,89 +133,75 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     @Nullable
     @Override
-    public IWizardPage getPreviousPage(IWizardPage page)
-    {
+    public IWizardPage getPreviousPage(IWizardPage page) {
         int idx = pages.indexOf(page);
 
         return idx == -1 || idx == 0 ? null : pages.get(idx - 1);
     }
 
     @Override
-    public boolean isLastPage(@NotNull IWizardPage page)
-    {
+    public boolean isLastPage(@NotNull IWizardPage page) {
         return page.equals(pages.get(pages.size() - 1));
     }
 
     @Override
-    public IWizardPage getPage(String id)
-    {
+    public IWizardPage getPage(String id) {
         return pageIdMap.get(id);
     }
 
     @NotNull
     @Override
-    public IWizardPage[] getPages()
-    {
+    public IWizardPage[] getPages() {
         final IWizardPage[] pagesArray = new IWizardPage[pages.size()];
         pages.toArray(pagesArray);
         return pagesArray;
     }
 
     @Override
-    public int getPageCount()
-    {
+    public int getPageCount() {
         return pages.size();
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
+    public void pageLeft(IWizardPage currentPage) {
     }
 
     @Override
-    public void pageEntered(IWizardPage page)
-    {
+    public void pageEntered(IWizardPage page) {
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         return currentPage != null ? currentPage.isComplete() && isLastPage(currentPage) : false;
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         // do nothing
     }
 
     @Override
-    public void performCancel()
-    {
+    public void performCancel() {
         // do nothing
     }
 
     @Override
-    public void addWizardUpdateListener(IWizardUpdateListener listener)
-    {
+    public void addWizardUpdateListener(IWizardUpdateListener listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeWizardUpdateListener(IWizardUpdateListener listener)
-    {
+    public void removeWizardUpdateListener(IWizardUpdateListener listener) {
         listeners.remove(listener);
     }
 
     @Override
-    public void pageUpdated(IWizardPage page)
-    {
+    public void pageUpdated(IWizardPage page) {
         for (IWizardUpdateListener l : listeners)
             l.pageUpdated(page);
     }
 
-    private void fireWizardUpdate()
-    {
+    private void fireWizardUpdate() {
         for (IWizardUpdateListener l : listeners)
             l.wizardUpdated(this);
     }

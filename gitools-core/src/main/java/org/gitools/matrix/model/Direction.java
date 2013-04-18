@@ -21,8 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-public enum Direction
-{
+public enum Direction {
     UP,
     DOWN,
     LEFT,

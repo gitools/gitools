@@ -27,39 +27,32 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class HeatmapTextLabelsHeader extends HeatmapHeader
-{
-
-    private static final long serialVersionUID = -2580139666999968074L;
+public class HeatmapTextLabelsHeader extends HeatmapHeader {
 
     private static final String LABEL_PATTERN_CHANGED = "labelPatternChanged";
-    private static final String LINK_NAME_CHANGED = "linkNameChanged";
-    private static final String LINK_PATTERN_CHANGED = "linkPatternChanged";
 
-    public enum LabelSource
-    {
+    public enum LabelSource {
         ID, ANNOTATION, PATTERN
     }
 
+    @XmlElement(name = "label-source")
     private LabelSource labelSource;
+
+    @XmlElement(name = "label-annotation")
     private String labelAnnotation;
+
+    @XmlElement(name = "label-pattern")
     private String labelPattern;
 
-    @Deprecated
-    private String linkName;
-    @Deprecated
-    private String linkPattern;
-
-    public HeatmapTextLabelsHeader()
-    {
+    public HeatmapTextLabelsHeader() {
         this(null);
     }
 
-    public HeatmapTextLabelsHeader(HeatmapDimension hdim)
-    {
+    public HeatmapTextLabelsHeader(HeatmapDimension hdim) {
         super(hdim);
 
         size = 80;
@@ -67,30 +60,23 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         backgroundColor = Color.WHITE;
         font = new Font(Font.SANS_SERIF, Font.PLAIN, 11);
         IAnnotations am = hdim != null ? hdim.getAnnotations() : null;
-        if (am != null && am.getLabels().size() > 0)
-        {
+        if (am != null && am.getLabels().size() > 0) {
             labelSource = LabelSource.ANNOTATION;
             labelAnnotation = am.getLabels().iterator().next();
-        }
-        else
-        {
+        } else {
             labelSource = LabelSource.ID;
             labelAnnotation = "";
         }
 
         labelPattern = "${id}";
-        linkName = "Google";
-        linkPattern = "http://www.google.com/search?q=${url:id}";
     }
 
     @NotNull
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         StringBuilder sb = new StringBuilder();
         sb.append("Text: ");
-        switch (labelSource)
-        {
+        switch (labelSource) {
             case ID:
                 sb.append("ID");
                 break;
@@ -104,84 +90,45 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader
         return sb.toString();
     }
 
-    public Font getFont()
-    {
+    public Font getFont() {
         return font;
     }
 
-    public void setFont(Font font)
-    {
+    public void setFont(Font font) {
         Font old = this.font;
         this.font = font;
         firePropertyChange(PROPERTY_FONT, old, font);
     }
 
     @Override
-    protected void updateLargestLabelLength(Component component)
-    {
+    protected void updateLargestLabelLength(Component component) {
         this.largestLabelLength = 0;
     }
 
-    public LabelSource getLabelSource()
-    {
+    public LabelSource getLabelSource() {
         return labelSource;
     }
 
-    public void setLabelSource(LabelSource labelSource)
-    {
+    public void setLabelSource(LabelSource labelSource) {
         this.labelSource = labelSource;
     }
 
-    public String getLabelAnnotation()
-    {
+    public String getLabelAnnotation() {
         return labelAnnotation;
     }
 
-    public void setLabelAnnotation(String labelAnnotation)
-    {
+    public void setLabelAnnotation(String labelAnnotation) {
         this.labelAnnotation = labelAnnotation;
     }
 
-    public String getLabelPattern()
-    {
+    public String getLabelPattern() {
         return labelPattern;
     }
 
-    public void setLabelPattern(String pattern)
-    {
+    public void setLabelPattern(String pattern) {
         String old = this.labelPattern;
         this.labelPattern = pattern;
         firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    @Deprecated
-    public String getLinkName()
-    {
-        return linkName;
-    }
-
-    @Deprecated
-    public void setLinkName(String linkName)
-    {
-        String old = this.linkName;
-        this.linkName = linkName;
-        firePropertyChange(LINK_NAME_CHANGED, old, linkName);
-    }
-
-    @Deprecated
-    public String getLinkPattern()
-    {
-        return linkPattern;
-    }
-
-    @Deprecated
-    public void setLinkPattern(String linkPattern)
-    {
-        String old = this.linkPattern;
-        this.linkPattern = linkPattern;
-        firePropertyChange(LINK_PATTERN_CHANGED, old, linkPattern);
-    }
 }

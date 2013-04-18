@@ -26,8 +26,7 @@ import java.awt.*;
 /**
  * @noinspection ALL
  */
-public interface ColorGenerator
-{
+public interface ColorGenerator {
 
     /**
      * reset the state of the generator

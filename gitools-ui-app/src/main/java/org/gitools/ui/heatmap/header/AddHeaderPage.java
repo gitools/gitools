@@ -40,24 +40,20 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class AddHeaderPage extends AbstractWizardPage
-{
+public class AddHeaderPage extends AbstractWizardPage {
 
-    private class IconListRenderer extends DefaultListCellRenderer
-    {
+    private class IconListRenderer extends DefaultListCellRenderer {
 
         @Nullable
         private Map<Object, ImageIcon> icons = null;
 
-        public IconListRenderer(Map<Object, ImageIcon> icons)
-        {
+        public IconListRenderer(Map<Object, ImageIcon> icons) {
             this.icons = icons;
         }
 
         @NotNull
         @Override
-        public Component getListCellRendererComponent(JList list, @NotNull Object value, int index, boolean isSelected, boolean cellHasFocus)
-        {
+        public Component getListCellRendererComponent(JList list, @NotNull Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
             // Get the renderer component from parent class
 
@@ -75,30 +71,25 @@ public class AddHeaderPage extends AbstractWizardPage
     }
 
 
-    private static class HeaderType
-    {
+    private static class HeaderType {
         private final String title;
         private final Class<? extends HeatmapHeader> cls;
 
-        public HeaderType(String title, Class<? extends HeatmapHeader> cls)
-        {
+        public HeaderType(String title, Class<? extends HeatmapHeader> cls) {
             this.title = title;
             this.cls = cls;
         }
 
-        public String getTitle()
-        {
+        public String getTitle() {
             return title;
         }
 
-        public Class<? extends HeatmapHeader> getHeaderClass()
-        {
+        public Class<? extends HeatmapHeader> getHeaderClass() {
             return cls;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return title;
         }
     }
@@ -116,8 +107,7 @@ public class AddHeaderPage extends AbstractWizardPage
     /**
      * Creates new form AddHeaderDialog
      */
-    public AddHeaderPage()
-    {
+    public AddHeaderPage() {
         initComponents();
 
         Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
@@ -145,13 +135,11 @@ public class AddHeaderPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    public Class<? extends HeatmapHeader> getHeaderClass()
-    {
+    public Class<? extends HeatmapHeader> getHeaderClass() {
         return ((HeaderType) headerTypeList.getSelectedValue()).getHeaderClass();
     }
 
-    public String getHeaderTitle()
-    {
+    public String getHeaderTitle() {
         return ((HeaderType) headerTypeList.getSelectedValue()).getTitle();
     }
 
@@ -163,8 +151,7 @@ public class AddHeaderPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();

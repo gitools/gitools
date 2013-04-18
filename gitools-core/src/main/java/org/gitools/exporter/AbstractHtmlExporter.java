@@ -33,102 +33,82 @@ import java.nio.channels.FileChannel;
 /**
  * @noinspection ALL
  */
-public class AbstractHtmlExporter
-{
+public class AbstractHtmlExporter {
 
     File basePath;
     String indexName;
 
-    AbstractHtmlExporter()
-    {
+    AbstractHtmlExporter() {
         basePath = new File(System.getProperty("user.dir"));
         indexName = "index.html";
     }
 
-    public File getBasePath()
-    {
+    public File getBasePath() {
         return basePath;
     }
 
-    public void setBasePath(File basePath)
-    {
+    public void setBasePath(File basePath) {
         this.basePath = basePath;
     }
 
-    public String getIndexName()
-    {
+    public String getIndexName() {
         return indexName;
     }
 
-    public void setIndexName(String indexName)
-    {
+    public void setIndexName(String indexName) {
         this.indexName = indexName;
     }
 
     // FIXME
     @Nullable
-    File getTemplatePath()
-    {
+    File getTemplatePath() {
         File templatePath;
-        try
-        {
+        try {
             URL url = getClass().getProtectionDomain().getCodeSource().getLocation();
             File appPath = new File(url.toURI());
             appPath = (appPath.getParentFile() != null) ? appPath.getParentFile() : appPath;
             appPath = (appPath.getParentFile() != null) ? appPath.getParentFile() : appPath;
             templatePath = new File(appPath, "templates/default");
-            if (!templatePath.exists())
-            {
+            if (!templatePath.exists()) {
                 appPath = (appPath.getParentFile() != null) ? appPath.getParentFile() : appPath;
                 templatePath = new File(appPath, "templates/default");
-                if (!templatePath.exists())
-                {
+                if (!templatePath.exists()) {
                     return null;
                 }
             }
             //System.out.println(templatePath.getAbsolutePath());
-        } catch (URISyntaxException e)
-        {
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
         return templatePath;
     }
 
-    void copy(@NotNull File src, File dst) throws IOException
-    {
-        File[] list = src.listFiles(new FilenameFilter()
-        {
+    void copy(@NotNull File src, File dst) throws IOException {
+        File[] list = src.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name)
-            {
+            public boolean accept(File dir, String name) {
                 return true;
                 //return !name.endsWith(".vm");
             }
         });
 
-        for (File file : list)
-        {
+        for (File file : list) {
             File dstFile = new File(dst, file.getName());
             //System.out.println(file.getAbsolutePath() + "\n\t-> " + dstFile.getAbsolutePath());
-            if (file.isFile())
-            {
+            if (file.isFile()) {
                 copyFile(file, dstFile);
-            }
-            else if (file.isDirectory())
-            {
+            } else if (file.isDirectory()) {
                 dstFile.mkdir();
                 copy(file, dstFile);
             }
         }
     }
 
-    private void copyFile(File src, File dst) throws IOException
-    {
+    private void copyFile(File src, File dst) throws IOException {
         FileChannel in = new FileInputStream(src).getChannel();
         FileChannel out = new FileOutputStream(dst).getChannel();
         ByteBuffer buffer = ByteBuffer.allocate(1024);
-        while (in.read(buffer) != -1)
-        {
+        while (in.read(buffer) != -1) {
             buffer.flip(); // Prepare for writing
             out.write(buffer);
             buffer.clear(); // Prepare for reading

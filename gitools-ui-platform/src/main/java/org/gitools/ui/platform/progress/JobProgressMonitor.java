@@ -28,20 +28,17 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.io.PrintStream;
 
-public class JobProgressMonitor extends StreamProgressMonitor
-{
+public class JobProgressMonitor extends StreamProgressMonitor {
 
     private final JobProgressDialog dlg;
 
-    public JobProgressMonitor(JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug)
-    {
+    public JobProgressMonitor(JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
         super(out, verbose, debug);
 
         this.dlg = dlg;
     }
 
-    private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug)
-    {
+    private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
 
         super(parentMonitor, out, verbose, debug);
 
@@ -49,15 +46,11 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    public void begin(final String title, final int totalWork)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void begin(final String title, final int totalWork) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
-                if (!dlg.isVisible())
-                {
+            public void run() {
+                if (!dlg.isVisible()) {
                     dlg.setVisible(true);
                 }
                 dlg.setMessage(title);
@@ -70,13 +63,10 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    public void title(final String title)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void title(final String title) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 dlg.setMessage(title);
             }
         });
@@ -85,13 +75,10 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    public void worked(int workInc)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void worked(int workInc) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 dlg.setWork(totalWork);
                 dlg.setProgress(getWorked());
             }
@@ -101,17 +88,13 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    public void end()
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void end() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 dlg.setWork(totalWork);
                 dlg.setProgress(getTotalWork());
-                if (level == 0)
-                {
+                if (level == 0) {
                     dlg.dispose();
                 }
             }
@@ -121,13 +104,10 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    public void info(final String msg)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
+    public void info(final String msg) {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 dlg.setInfo(msg);
             }
         });
@@ -136,8 +116,7 @@ public class JobProgressMonitor extends StreamProgressMonitor
     }
 
     @Override
-    protected void print(String text)
-    {
+    protected void print(String text) {
         super.print(text);
 
         //TODO dlg.append(text);
@@ -145,8 +124,7 @@ public class JobProgressMonitor extends StreamProgressMonitor
 
     @NotNull
     @Override
-    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug)
-    {
+    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
 
         return new JobProgressMonitor(parentMonitor, dlg, out, verbose, debug);
     }

@@ -21,8 +21,7 @@
  */
 package org.gitools.modules.importer;
 
-public interface ModulesImporter
-{
+public interface ModulesImporter {
 
     ModuleCategory[] getModuleCategories();
 

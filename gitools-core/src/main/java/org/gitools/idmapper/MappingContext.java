@@ -27,28 +27,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 
-public class MappingContext extends HashMap<String, Object>
-{
+public class MappingContext extends HashMap<String, Object> {
 
     @NotNull
-    public String getString(String key)
-    {
+    public String getString(String key) {
         return (String) get(key);
     }
 
-    public void putString(String key, String value)
-    {
+    public void putString(String key, String value) {
         put(key, value);
     }
 
     @NotNull
-    public Integer getInteger(String key)
-    {
+    public Integer getInteger(String key) {
         return (Integer) get(key);
     }
 
-    public void putInteger(String key, Integer value)
-    {
+    public void putInteger(String key, Integer value) {
         put(key, value);
     }
 }

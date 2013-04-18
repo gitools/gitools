@@ -42,15 +42,13 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class FastSortRowsAction extends BaseAction
-{
+public class FastSortRowsAction extends BaseAction {
 
     private static final long serialVersionUID = -582380114189586206L;
 
     private ValueSortCriteria.SortDirection currentSort;
 
-    public FastSortRowsAction()
-    {
+    public FastSortRowsAction() {
         super("Sort rows");
 
         setDesc("Sort rows");
@@ -63,16 +61,12 @@ public class FastSortRowsAction extends BaseAction
 
     }
 
-    private void updateIcon()
-    {
+    private void updateIcon() {
 
-        if (currentSort == ValueSortCriteria.SortDirection.ASCENDING)
-        {
+        if (currentSort == ValueSortCriteria.SortDirection.ASCENDING) {
             setSmallIconFromResource(IconNames.sortSelectedColumns16Desc);
             setLargeIconFromResource(IconNames.sortSelectedColumns24Desc);
-        }
-        else
-        {
+        } else {
             setSmallIconFromResource(IconNames.sortSelectedColumns16Asc);
             setLargeIconFromResource(IconNames.sortSelectedColumns24Asc);
         }
@@ -80,31 +74,26 @@ public class FastSortRowsAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final IMatrixView matrixView = ActionUtils.getMatrixView();
 
 
         // Deduce default Aggregator from the associated ColorScale
         IAggregator defaultAggregator;
-        try
-        {
+        try {
             Heatmap heatmap = ActionUtils.getHeatmap();
             defaultAggregator = heatmap.getLayers().getTopLayer().getDecorator().getScale().defaultAggregator();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             defaultAggregator = MultAggregator.INSTANCE;
         }
         final IAggregator aggregator = defaultAggregator;
 
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
@@ -114,11 +103,9 @@ public class FastSortRowsAction extends BaseAction
         currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);
         updateIcon();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{new ValueSortCriteria(propIndex, aggregator, sort)};
 
                 monitor.begin("Sorting ...", 1);

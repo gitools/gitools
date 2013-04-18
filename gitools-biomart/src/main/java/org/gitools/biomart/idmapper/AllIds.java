@@ -26,7 +26,6 @@ import org.gitools.idmapper.Ids;
 /**
  *
  */
-public interface AllIds extends Ids, EnsemblIds
-{
+public interface AllIds extends Ids, EnsemblIds {
 
 }

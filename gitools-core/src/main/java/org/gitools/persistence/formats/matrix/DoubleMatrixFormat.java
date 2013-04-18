@@ -28,35 +28,29 @@ import org.gitools.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-public class DoubleMatrixFormat extends AbstractTextMatrixFormat<DoubleMatrix>
-{
+public class DoubleMatrixFormat extends AbstractTextMatrixFormat<DoubleMatrix> {
 
-    public DoubleMatrixFormat()
-    {
+    public DoubleMatrixFormat() {
         super(FileSuffixes.DOUBLE_MATRIX, DoubleMatrix.class);
     }
 
-    DoubleMatrixFormat(String extension, int skipLines, Integer... skipColumns)
-    {
+    DoubleMatrixFormat(String extension, int skipLines, Integer... skipColumns) {
         super(extension, DoubleMatrix.class, skipLines, skipColumns);
     }
 
     @NotNull
     @Override
-    protected DoubleMatrix createEntity()
-    {
+    protected DoubleMatrix createEntity() {
         return new DoubleMatrix();
     }
 
     @Override
-    protected DoubleMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected DoubleMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         return read(resourceLocator, getValueTranslator(), progressMonitor);
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, DoubleMatrix doubleMatrix, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(IResourceLocator resourceLocator, DoubleMatrix doubleMatrix, IProgressMonitor progressMonitor) throws PersistenceException {
         write(resourceLocator, doubleMatrix, getValueTranslator(), progressMonitor);
     }
 }

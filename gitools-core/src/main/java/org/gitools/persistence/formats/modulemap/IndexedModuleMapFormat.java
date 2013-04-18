@@ -33,34 +33,29 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
-{
+public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
 
-    public IndexedModuleMapFormat()
-    {
+    public IndexedModuleMapFormat() {
         super(FileSuffixes.MODULES_INDEXED_MAP, ModuleMap.class);
     }
 
     @NotNull
     @Override
-    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Loading modules...", 1);
 
 
         ModuleMap moduleMap = new ModuleMap();
 
-        try
-        {
+        try {
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             loadItemNames(moduleMap, progressMonitor, parser);
             loadModules(moduleMap, progressMonitor, parser);
             in.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
@@ -70,25 +65,21 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving modules...", moduleMap.getModuleNames().length);
 
-        try
-        {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             final PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             final String[] itemNames = moduleMap.getItemNames();
 
-            if (itemNames.length > 0)
-            {
+            if (itemNames.length > 0) {
                 pw.print('"');
                 pw.print(itemNames[0]);
                 pw.print('"');
 
-                for (int i = 1; i < itemNames.length; i++)
-                {
+                for (int i = 1; i < itemNames.length; i++) {
                     pw.print("\t\"");
                     pw.print(itemNames[i]);
                     pw.print('"');
@@ -102,14 +93,12 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
             int numModules = moduleNames.length;
 
-            for (int i = 0; i < numModules; i++)
-            {
+            for (int i = 0; i < numModules; i++) {
                 pw.print('"');
                 pw.print(moduleNames[i]);
                 pw.print('"');
 
-                for (int index : indices[i])
-                {
+                for (int index : indices[i]) {
                     pw.print('\t');
                     pw.print(index);
                 }
@@ -121,17 +110,14 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
             pw.close();
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally
-        {
+        } finally {
             progressMonitor.end();
         }
     }
 
-    private void loadItemNames(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader csvReader) throws IOException, DataFormatException
-    {
+    private void loadItemNames(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader csvReader) throws IOException, DataFormatException {
 
         progressMonitor.begin("Reading item names ...", 1);
 
@@ -145,8 +131,7 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
     }
 
-    private void loadModules(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader parser) throws NumberFormatException, IOException
-    {
+    private void loadModules(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader parser) throws NumberFormatException, IOException {
 
         progressMonitor.begin("Reading modules ...", 1);
 
@@ -156,23 +141,18 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         BitSet valid = new BitSet(itemNames.length);
 
-        if (isItemNamesFilterEnabled())
-        {
+        if (isItemNamesFilterEnabled()) {
             Map<String, Integer> itemIndices = new HashMap<String, Integer>();
             for (int i = 0; i < itemNames.length; i++)
                 itemIndices.put(itemNames[i], i);
 
-            for (String name : getItemNames())
-            {
+            for (String name : getItemNames()) {
                 Integer index = itemIndices.get(name);
-                if (index != null)
-                {
+                if (index != null) {
                     valid.set(index);
                 }
             }
-        }
-        else
-        {
+        } else {
             valid.set(0, itemNames.length);
         }
 
@@ -186,30 +166,24 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         int minSize = getMinSize();
         int maxSize = getMaxSize();
 
-        while ((fields = parser.readNext()) != null)
-        {
+        while ((fields = parser.readNext()) != null) {
 
             String moduleName = fields[0];
 
             Set<Integer> items = new HashSet<Integer>();
 
-            for (int j = 1; j < fields.length; j++)
-            {
+            for (int j = 1; j < fields.length; j++) {
                 int index = Integer.parseInt(fields[j]);
                 boolean inRange = index >= 0 && index < itemNames.length;
-                if (inRange && valid.get(index))
-                {
+                if (inRange && valid.get(index)) {
                     items.add(index);
                     used.set(index);
                 }
             }
 
-            if (items.size() >= minSize && items.size() <= maxSize)
-            {
+            if (items.size() >= minSize && items.size() <= maxSize) {
                 mapItemIndices.put(moduleName, items);
-            }
-            else
-            {
+            } else {
                 items.clear();
             }
         }
@@ -219,16 +193,14 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         int lastIndex = 0;
         int[] indexMap = new int[itemNames.length];
         for (int i = 0; i < itemNames.length; i++)
-            if (used.get(i))
-            {
+            if (used.get(i)) {
                 indexMap[i] = lastIndex++;
             }
 
         int i = 0;
         String[] finalItemNames = new String[lastIndex];
         for (int j = 0; j < itemNames.length; j++)
-            if (used.get(j))
-            {
+            if (used.get(j)) {
                 finalItemNames[i++] = itemNames[j];
             }
 
@@ -237,8 +209,7 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
 
         int[][] moduleItemIndices = new int[moduleNames.length][];
 
-        for (Map.Entry<String, Set<Integer>> entry : mapItemIndices.entrySet())
-        {
+        for (Map.Entry<String, Set<Integer>> entry : mapItemIndices.entrySet()) {
             moduleNames[i] = entry.getKey();
 
             int[] indices = new int[entry.getValue().size()];

@@ -29,8 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericClusteringResults implements ClusteringResults
-{
+public class GenericClusteringResults implements ClusteringResults {
 
     private String[] clusterTitles;
     private String[] dataLabels;
@@ -45,13 +44,14 @@ public class GenericClusteringResults implements ClusteringResults
     @Nullable
     private Map<String, Integer> dataLabelsIndex;
 
-    public GenericClusteringResults(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
-    {
+    public GenericClusteringResults() {
+    }
+
+    public GenericClusteringResults(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters) {
         init(dataLabels, clusters);
     }
 
-    final void init(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters)
-    {
+    final void init(String[] dataLabels, @NotNull Map<String, List<Integer>> clusters) {
         this.dataClusterIndex = null;
         this.clusterTitlesIndex = null;
         this.dataLabelsIndex = null;
@@ -61,8 +61,7 @@ public class GenericClusteringResults implements ClusteringResults
         clusterDataIndices = new int[numClusters][];
         clusterTitles = clusters.keySet().toArray(new String[numClusters]);
         Arrays.sort(clusterTitles);
-        for (int ci = 0; ci < numClusters; ci++)
-        {
+        for (int ci = 0; ci < numClusters; ci++) {
             List<Integer> indices = clusters.get(clusterTitles[ci]);
             int[] indicesArray = new int[indices.size()];
             for (int i = 0; i < indicesArray.length; i++)
@@ -71,10 +70,8 @@ public class GenericClusteringResults implements ClusteringResults
         }
     }
 
-    private void createClusterDataIndices()
-    {
-        if (dataClusterIndex == null)
-        {
+    private void createClusterDataIndices() {
+        if (dataClusterIndex == null) {
             throw new RuntimeException("Data cluster indices required");
         }
 
@@ -91,28 +88,23 @@ public class GenericClusteringResults implements ClusteringResults
             clusterDataIndices[ci] = new int[len[ci]];
 
         Arrays.fill(len, 0);
-        for (int i = 0; i < dataClusterIndex.length; i++)
-        {
+        for (int i = 0; i < dataClusterIndex.length; i++) {
             int ci = dataClusterIndex[i];
             int[] dataIndices = clusterDataIndices[ci];
             dataIndices[len[ci]++] = i;
         }
     }
 
-    private void createDataClusterIndices()
-    {
-        if (clusterDataIndices == null)
-        {
+    private void createDataClusterIndices() {
+        if (clusterDataIndices == null) {
             throw new RuntimeException("Cluster data indices required");
         }
 
         dataClusterIndex = new int[dataLabels.length];
 
-        for (int ci = 0; ci < clusterDataIndices.length; ci++)
-        {
+        for (int ci = 0; ci < clusterDataIndices.length; ci++) {
             int[] dataIndices = clusterDataIndices[ci];
-            if (dataIndices == null)
-            {
+            if (dataIndices == null) {
                 throw new RuntimeException("Cluster data indices required: " + ci);
             }
 
@@ -122,22 +114,18 @@ public class GenericClusteringResults implements ClusteringResults
     }
 
     @Override
-    public int getNumClusters()
-    {
+    public int getNumClusters() {
         return clusterTitles.length;
     }
 
     @Override
-    public String[] getClusterTitles()
-    {
+    public String[] getClusterTitles() {
         return clusterTitles;
     }
 
     @Override
-    public int getClusterTitleIndex(String clusterTitle)
-    {
-        if (clusterTitlesIndex == null)
-        {
+    public int getClusterTitleIndex(String clusterTitle) {
+        if (clusterTitlesIndex == null) {
             clusterTitlesIndex = new HashMap<String, Integer>();
             for (int i = 0; i < clusterTitles.length; i++)
                 clusterTitlesIndex.put(clusterTitles[i], i);
@@ -147,22 +135,18 @@ public class GenericClusteringResults implements ClusteringResults
     }
 
     @Override
-    public int getNumDataLabels()
-    {
+    public int getNumDataLabels() {
         return dataLabels.length;
     }
 
     @Override
-    public String[] getDataLabels()
-    {
+    public String[] getDataLabels() {
         return dataLabels;
     }
 
     @Override
-    public int getDataLabelIndex(String dataLabel)
-    {
-        if (dataLabelsIndex == null)
-        {
+    public int getDataLabelIndex(String dataLabel) {
+        if (dataLabelsIndex == null) {
             dataLabelsIndex = new HashMap<String, Integer>();
             for (int i = 0; i < dataLabels.length; i++)
                 dataLabelsIndex.put(dataLabels[i], i);
@@ -172,10 +156,8 @@ public class GenericClusteringResults implements ClusteringResults
     }
 
     @Override
-    public int[] getDataIndices(int clusterIndex)
-    {
-        if (clusterDataIndices == null)
-        {
+    public int[] getDataIndices(int clusterIndex) {
+        if (clusterDataIndices == null) {
             createClusterDataIndices();
         }
 
@@ -183,15 +165,13 @@ public class GenericClusteringResults implements ClusteringResults
     }
 
     @Override
-    public int[] getDataIndices(String clusterTitle)
-    {
+    public int[] getDataIndices(String clusterTitle) {
         return getDataIndices(getClusterIndex(clusterTitle));
     }
 
     @NotNull
     @Override
-    public String[] getDataLabels(int clusterIndex)
-    {
+    public String[] getDataLabels(int clusterIndex) {
         int[] indices = getDataIndices(clusterIndex);
         String[] labels = new String[indices.length];
         for (int i = 0; i < indices.length; i++)
@@ -201,16 +181,13 @@ public class GenericClusteringResults implements ClusteringResults
 
     @NotNull
     @Override
-    public String[] getDataLabels(String clusterTitle)
-    {
+    public String[] getDataLabels(String clusterTitle) {
         return getDataLabels(getClusterIndex(clusterTitle));
     }
 
     @Override
-    public int getClusterIndex(int dataIndex)
-    {
-        if (dataClusterIndex == null)
-        {
+    public int getClusterIndex(int dataIndex) {
+        if (dataClusterIndex == null) {
             createDataClusterIndices();
         }
 
@@ -218,17 +195,14 @@ public class GenericClusteringResults implements ClusteringResults
     }
 
     @Override
-    public int getClusterIndex(String dataLabel)
-    {
+    public int getClusterIndex(String dataLabel) {
         return getClusterIndex(getDataLabelIndex(dataLabel));
     }
 
     @NotNull
     @Override
-    public Map<String, int[]> getDataIndicesByClusterTitle()
-    {
-        if (clusterDataIndices == null)
-        {
+    public Map<String, int[]> getDataIndicesByClusterTitle() {
+        if (clusterDataIndices == null) {
             createClusterDataIndices();
         }
 
@@ -241,10 +215,8 @@ public class GenericClusteringResults implements ClusteringResults
 
     @NotNull
     @Override
-    public Map<String, Integer> getClusterIndexByDataLabel()
-    {
-        if (dataClusterIndex == null)
-        {
+    public Map<String, Integer> getClusterIndexByDataLabel() {
+        if (dataClusterIndex == null) {
             createDataClusterIndices();
         }
 

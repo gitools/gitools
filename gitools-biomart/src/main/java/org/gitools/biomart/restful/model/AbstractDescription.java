@@ -29,8 +29,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class AbstractDescription
-{
+public abstract class AbstractDescription {
 
     @XmlAttribute
     private String internalName;
@@ -59,97 +58,78 @@ public abstract class AbstractDescription
     @XmlAttribute
     private boolean default_;
 
-    AbstractDescription()
-    {
+    AbstractDescription() {
     }
 
-    public String getInternalName()
-    {
+    public String getInternalName() {
         return internalName;
     }
 
-    public void setInternalName(String internalName)
-    {
+    public void setInternalName(String internalName) {
         this.internalName = internalName;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public boolean isHidden()
-    {
+    public boolean isHidden() {
         return hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
+    public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 
-    public boolean isHideDisplay()
-    {
+    public boolean isHideDisplay() {
         return hideDisplay;
     }
 
-    public void setHideDisplay(boolean hideDisplay)
-    {
+    public void setHideDisplay(boolean hideDisplay) {
         this.hideDisplay = hideDisplay;
     }
 
-    public String getTableConstraint()
-    {
+    public String getTableConstraint() {
         return tableConstraint;
     }
 
-    public void setTableConstraint(String tableConstraint)
-    {
+    public void setTableConstraint(String tableConstraint) {
         this.tableConstraint = tableConstraint;
     }
 
-    public String getField()
-    {
+    public String getField() {
         return field;
     }
 
-    public void setField(String field)
-    {
+    public void setField(String field) {
         this.field = field;
     }
 
-    public String getKey()
-    {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public boolean isDefault()
-    {
+    public boolean isDefault() {
         return default_;
     }
 
-    public void setDefault(boolean default_)
-    {
+    public void setDefault(boolean default_) {
         this.default_ = default_;
     }
 }

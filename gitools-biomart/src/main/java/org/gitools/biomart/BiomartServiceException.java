@@ -21,21 +21,17 @@
  */
 package org.gitools.biomart;
 
-public class BiomartServiceException extends Exception
-{
+public class BiomartServiceException extends Exception {
 
-    public BiomartServiceException(String msg)
-    {
+    public BiomartServiceException(String msg) {
         super(msg);
     }
 
-    public BiomartServiceException(String msg, Throwable cause)
-    {
+    public BiomartServiceException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
-    public BiomartServiceException(Throwable cause)
-    {
+    public BiomartServiceException(Throwable cause) {
         super(cause);
     }
 }

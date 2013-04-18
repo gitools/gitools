@@ -21,16 +21,13 @@
  */
 package org.gitools.analysis;
 
-public class AnalysisException extends Exception
-{
+public class AnalysisException extends Exception {
 
-    public AnalysisException(String msg)
-    {
+    public AnalysisException(String msg) {
         super(msg);
     }
 
-    public AnalysisException(Throwable cause)
-    {
+    public AnalysisException(Throwable cause) {
         super(cause);
     }
 

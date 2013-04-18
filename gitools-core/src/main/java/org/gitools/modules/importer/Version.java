@@ -21,7 +21,6 @@
  */
 package org.gitools.modules.importer;
 
-public interface Version extends Ref
-{
+public interface Version extends Ref {
 
 }

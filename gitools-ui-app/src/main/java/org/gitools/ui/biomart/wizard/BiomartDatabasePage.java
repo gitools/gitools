@@ -38,27 +38,22 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartDatabasePage extends AbstractWizardPage
-{
+public class BiomartDatabasePage extends AbstractWizardPage {
 
 
-    private static class DatabaseListWrapper
-    {
+    private static class DatabaseListWrapper {
         private final MartLocation mart;
 
-        public DatabaseListWrapper(MartLocation mart)
-        {
+        public DatabaseListWrapper(MartLocation mart) {
             this.mart = mart;
         }
 
-        public MartLocation getMart()
-        {
+        public MartLocation getMart() {
             return mart;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return mart.getDisplayName();
         }
     }
@@ -69,8 +64,7 @@ public class BiomartDatabasePage extends AbstractWizardPage
 
     private boolean updated;
 
-    public BiomartDatabasePage(BiomartService biomartService /*IBiomartService biomartService*/)
-    {
+    public BiomartDatabasePage(BiomartService biomartService /*IBiomartService biomartService*/) {
         super();
 
         this.biomartService = biomartService;
@@ -82,15 +76,12 @@ public class BiomartDatabasePage extends AbstractWizardPage
     }
 
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         panelDataset = new FilteredListPanel();
 
-        panelDataset.list.addListSelectionListener(new ListSelectionListener()
-        {
+        panelDataset.list.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 selectionChangeActionPerformed();
             }
         });
@@ -99,10 +90,8 @@ public class BiomartDatabasePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
-        if (updated)
-        {
+    public void updateControls() {
+        if (updated) {
             return;
         }
 
@@ -110,26 +99,20 @@ public class BiomartDatabasePage extends AbstractWizardPage
 
         panelDataset.setListData(new Object[]{});
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
             @Override
-            public void run()
-            {
-                try
-                {
+            public void run() {
+                try {
                     List<MartLocation> registry = biomartService.getRegistry();
                     final List<DatabaseListWrapper> listData = new ArrayList<DatabaseListWrapper>();
                     for (MartLocation mart : registry)
-                        if (mart.getVisible() != 0)
-                        {
+                        if (mart.getVisible() != 0) {
                             listData.add(new DatabaseListWrapper(mart));
                         }
 
-                    SwingUtilities.invokeAndWait(new Runnable()
-                    {
+                    SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             panelDataset.setListData(listData.toArray(new DatabaseListWrapper[listData.size()]));
 
                             setMessage(MessageStatus.INFO, "");
@@ -137,8 +120,7 @@ public class BiomartDatabasePage extends AbstractWizardPage
                     });
 
                     updated = true;
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     setStatus(MessageStatus.ERROR);
                     setMessage(e.getMessage());
                     ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), e);
@@ -148,14 +130,12 @@ public class BiomartDatabasePage extends AbstractWizardPage
         }).start();
     }
 
-    public MartLocation getMart()
-    {
+    public MartLocation getMart() {
         DatabaseListWrapper model = (DatabaseListWrapper) panelDataset.getSelectedValue();
         return model.getMart();
     }
 
-    private void selectionChangeActionPerformed()
-    {
+    private void selectionChangeActionPerformed() {
         Object value = panelDataset.list.getSelectedValue();
         setComplete(value != null);
     }

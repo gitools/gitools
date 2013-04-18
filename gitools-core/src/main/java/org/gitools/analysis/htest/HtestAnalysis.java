@@ -43,8 +43,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlSeeAlso({EnrichmentAnalysis.class, OncodriveAnalysis.class})
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HtestAnalysis extends Analysis
-{
+public class HtestAnalysis extends Analysis {
 
     /**
      * Data binary cutoff enabled
@@ -97,107 +96,86 @@ public class HtestAnalysis extends Analysis
      */
     private ResourceReference<ObjectMatrix> results;
 
-    protected HtestAnalysis()
-    {
+    protected HtestAnalysis() {
     }
 
-    public boolean isBinaryCutoffEnabled()
-    {
+    public boolean isBinaryCutoffEnabled() {
         return binaryCutoffEnabled;
     }
 
-    public void setBinaryCutoffEnabled(boolean binaryCutoffEnabled)
-    {
+    public void setBinaryCutoffEnabled(boolean binaryCutoffEnabled) {
         this.binaryCutoffEnabled = binaryCutoffEnabled;
     }
 
-    public CutoffCmp getBinaryCutoffCmp()
-    {
+    public CutoffCmp getBinaryCutoffCmp() {
         return binaryCutoffCmp;
     }
 
-    public void setBinaryCutoffCmp(CutoffCmp comparator)
-    {
+    public void setBinaryCutoffCmp(CutoffCmp comparator) {
         this.binaryCutoffCmp = comparator;
     }
 
-    public double getBinaryCutoffValue()
-    {
+    public double getBinaryCutoffValue() {
         return binaryCutoffValue;
     }
 
-    public void setBinaryCutoffValue(double value)
-    {
+    public void setBinaryCutoffValue(double value) {
         this.binaryCutoffValue = value;
     }
 
-    public ToolConfig getTestConfig()
-    {
+    public ToolConfig getTestConfig() {
         return testConfig;
     }
 
-    public void setTestConfig(ToolConfig testConfig)
-    {
+    public void setTestConfig(ToolConfig testConfig) {
         this.testConfig = testConfig;
     }
 
-    public ResourceReference<ModuleMap> getModuleMap()
-    {
+    public ResourceReference<ModuleMap> getModuleMap() {
         return moduleMap;
     }
 
-    public void setModuleMap(ResourceReference<ModuleMap> moduleMap)
-    {
+    public void setModuleMap(ResourceReference<ModuleMap> moduleMap) {
         this.moduleMap = moduleMap;
     }
 
-    public int getMinModuleSize()
-    {
+    public int getMinModuleSize() {
         return minModuleSize;
     }
 
-    public void setMinModuleSize(int minModuleSize)
-    {
+    public void setMinModuleSize(int minModuleSize) {
         this.minModuleSize = minModuleSize;
     }
 
-    public int getMaxModuleSize()
-    {
+    public int getMaxModuleSize() {
         return maxModuleSize;
     }
 
-    public void setMaxModuleSize(int maxModuleSize)
-    {
+    public void setMaxModuleSize(int maxModuleSize) {
         this.maxModuleSize = maxModuleSize;
     }
 
-    public ResourceReference<IMatrix> getData()
-    {
+    public ResourceReference<IMatrix> getData() {
         return data;
     }
 
-    public void setData(ResourceReference<IMatrix> data)
-    {
+    public void setData(ResourceReference<IMatrix> data) {
         this.data = data;
     }
 
-    public String getMtc()
-    {
+    public String getMtc() {
         return mtc;
     }
 
-    public void setMtc(String mtc)
-    {
+    public void setMtc(String mtc) {
         this.mtc = mtc;
     }
 
-    public ResourceReference<ObjectMatrix> getResults()
-    {
+    public ResourceReference<ObjectMatrix> getResults() {
         return results;
     }
 
-    public void setResults(ResourceReference<ObjectMatrix> results)
-    {
+    public void setResults(ResourceReference<ObjectMatrix> results) {
         this.results = results;
     }
 }

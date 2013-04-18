@@ -33,11 +33,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class CobwebParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage
-{
+public class CobwebParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
 
-    public CobwebParamsPage()
-    {
+    public CobwebParamsPage() {
 
         initComponents();
 
@@ -45,15 +43,13 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
         setComplete(true);
     }
 
-    private boolean validated()
-    {
+    private boolean validated() {
         return (isValidNumber(cutOffField.getText()) && isValidInteger(seedField.getText()) &&
                 isValidNumber(acuityField.getText()));
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
     }
@@ -66,8 +62,7 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         acuityField = new javax.swing.JTextField();
@@ -125,25 +120,19 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
     private javax.swing.JTextField seedField;
     // End of variables declaration//GEN-END:variables
 
-    private boolean isValidNumber(String text)
-    {
-        try
-        {
+    private boolean isValidNumber(String text) {
+        try {
             Double.parseDouble(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
     }
 
-    private boolean isValidInteger(String text)
-    {
-        try
-        {
+    private boolean isValidInteger(String text) {
+        try {
             Integer.parseInt(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
@@ -151,13 +140,11 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
 
     @Nullable
     @Override
-    public AbstractClusteringValueMethod getMethod()
-    {
+    public AbstractClusteringValueMethod getMethod() {
 
         WekaCobWebMethod cobweb = null;
 
-        if (validated())
-        {
+        if (validated()) {
             cobweb = (WekaCobWebMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
 
             cobweb.setCutoff(new Float(cutOffField.getText()));
@@ -170,14 +157,12 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
 
     @Nullable
     @Override
-    public ClusteringMethodDescriptor getMethodDescriptor()
-    {
+    public ClusteringMethodDescriptor getMethodDescriptor() {
 
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
 
         for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaCobWebMethod.class))
-            {
+            if (desc.getMethodClass().equals(WekaCobWebMethod.class)) {
                 return desc;
             }
 

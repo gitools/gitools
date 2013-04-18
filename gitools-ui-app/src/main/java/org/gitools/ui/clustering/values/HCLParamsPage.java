@@ -37,11 +37,9 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class HCLParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage
-{
+public class HCLParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
 
-    public HCLParamsPage()
-    {
+    public HCLParamsPage() {
 
         initComponents();
 
@@ -51,8 +49,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
 
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
     }
@@ -65,8 +62,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         linkTypeCombo = new javax.swing.JComboBox();
@@ -101,8 +97,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
 
     @Nullable
     @Override
-    public AbstractClusteringValueMethod getMethod()
-    {
+    public AbstractClusteringValueMethod getMethod() {
 
         WekaHCLMethod method = null;
 
@@ -114,12 +109,9 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
         method.setNumClusters(1);
         method.setPrintNewick(true);
 
-        if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean"))
-        {
+        if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
             method.setDistanceFunction(new EuclideanDistance());
-        }
-        else
-        {
+        } else {
             method.setDistanceFunction(new ManhattanDistance());
         }
 
@@ -128,13 +120,11 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
 
     @Nullable
     @Override
-    public ClusteringMethodDescriptor getMethodDescriptor()
-    {
+    public ClusteringMethodDescriptor getMethodDescriptor() {
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
 
         for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaHCLMethod.class))
-            {
+            if (desc.getMethodClass().equals(WekaHCLMethod.class)) {
                 return desc;
             }
 

@@ -35,66 +35,52 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public class MatrixViewLabelFilter
-{
+public class MatrixViewLabelFilter {
 
-    public enum FilterDimension
-    {
+    public enum FilterDimension {
         ROWS, COLUMNS
     }
 
-    private static interface LabelFilter
-    {
+    private static interface LabelFilter {
         int matchIndex(String label);
     }
 
-    private static class StringFilter implements LabelFilter
-    {
+    private static class StringFilter implements LabelFilter {
         private final Map<String, Integer> values;
 
-        public StringFilter(@NotNull List<String> values)
-        {
+        public StringFilter(@NotNull List<String> values) {
             this.values = new HashMap<String, Integer>();
-            for (int i = 0; i < values.size(); i++)
-            {
+            for (int i = 0; i < values.size(); i++) {
                 String v = values.get(i).trim();
-                if (!v.isEmpty())
-                {
+                if (!v.isEmpty()) {
                     this.values.put(v, i);
                 }
             }
         }
 
         @Override
-        public int matchIndex(String label)
-        {
+        public int matchIndex(String label) {
             Integer index = values.get(label);
             return index != null ? index : -1;
         }
     }
 
-    private static class RegexFilter implements LabelFilter
-    {
+    private static class RegexFilter implements LabelFilter {
         private final List<Pattern> patterns;
 
-        public RegexFilter(@NotNull List<String> values)
-        {
+        public RegexFilter(@NotNull List<String> values) {
             patterns = new ArrayList<Pattern>(values.size());
             for (String value : values)
-                if (!value.trim().isEmpty())
-                {
+                if (!value.trim().isEmpty()) {
                     patterns.add(Pattern.compile(value));
                 }
         }
 
         @Override
-        public int matchIndex(String label)
-        {
-            for (int i = 0; i < patterns.size(); i++)
-            {
+        public int matchIndex(String label) {
+            for (int i = 0; i < patterns.size(); i++) {
                 Pattern pat = patterns.get(i);
-                if (pat.matcher(label).matches())
-                {
+                if (pat.matcher(label).matches()) {
                     return i;
                 }
             }
@@ -102,17 +88,14 @@ public class MatrixViewLabelFilter
         }
     }
 
-    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, IAnnotations annMatrix, @NotNull List<String> values, boolean useRegex)
-    {
+    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, IAnnotations annMatrix, @NotNull List<String> values, boolean useRegex) {
 
         LabelProvider labelProvider = null;
 
-        switch (dim)
-        {
+        switch (dim) {
             case ROWS:
                 labelProvider = new MatrixRowsLabelProvider(matrixView);
-                if (!pattern.equalsIgnoreCase("${id}"))
-                {
+                if (!pattern.equalsIgnoreCase("${id}")) {
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
@@ -121,8 +104,7 @@ public class MatrixViewLabelFilter
 
             case COLUMNS:
                 labelProvider = new MatrixColumnsLabelProvider(matrixView);
-                if (!pattern.equalsIgnoreCase("${id}"))
-                {
+                if (!pattern.equalsIgnoreCase("${id}")) {
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
 
@@ -132,16 +114,12 @@ public class MatrixViewLabelFilter
     }
 
     @NotNull
-    public static int[] filterLabels(@NotNull LabelProvider labelProvider, @NotNull List<String> values, boolean useRegex, int[] visibleIndices)
-    {
+    public static int[] filterLabels(@NotNull LabelProvider labelProvider, @NotNull List<String> values, boolean useRegex, int[] visibleIndices) {
 
         LabelFilter filter = null;
-        if (useRegex)
-        {
+        if (useRegex) {
             filter = new RegexFilter(values);
-        }
-        else
-        {
+        } else {
             filter = new StringFilter(values);
         }
 
@@ -149,12 +127,10 @@ public class MatrixViewLabelFilter
         final List<Integer> matchIndices = new ArrayList<Integer>();
 
         int count = labelProvider.getCount();
-        for (int index = 0; index < count; index++)
-        {
+        for (int index = 0; index < count; index++) {
             String label = labelProvider.getLabel(index);
             int mi = filter.matchIndex(label);
-            if (mi != -1)
-            {
+            if (mi != -1) {
                 selectedIndices.add(visibleIndices[index]);
                 matchIndices.add(mi);
             }
@@ -164,11 +140,9 @@ public class MatrixViewLabelFilter
         for (int i = 0; i < sortIndices.length; i++)
             sortIndices[i] = i;
 
-        Arrays.sort(sortIndices, new Comparator<Integer>()
-        {
+        Arrays.sort(sortIndices, new Comparator<Integer>() {
             @Override
-            public int compare(Integer i1, Integer i2)
-            {
+            public int compare(Integer i1, Integer i2) {
                 int d1 = matchIndices.get(i1);
                 int d2 = matchIndices.get(i2);
                 return d1 - d2;

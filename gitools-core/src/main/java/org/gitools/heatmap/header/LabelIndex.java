@@ -19,39 +19,38 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.stats.mtc;
+package org.gitools.heatmap.header;
 
-import cern.colt.function.DoubleFunction;
-import cern.colt.matrix.DoubleMatrix1D;
-import org.jetbrains.annotations.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
-public class Bonferroni implements MTC {
+@XmlAccessorType(XmlAccessType.FIELD)
+public class LabelIndex {
+    private String label;
+    private Integer index;
 
-    @NotNull
-    public static final String SHORT_NAME = "bonferroni";
+    public LabelIndex() {
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "Bonferroni";
     }
 
-    @NotNull
-    @Override
-    public String getShortName() {
-        return SHORT_NAME;
+    public LabelIndex(String key, Integer value) {
+        this.label = key;
+        this.index = value;
     }
 
-    @Override
-    public void correct(@NotNull DoubleMatrix1D values) {
-        final int n = values.size();
-
-        values.assign(new DoubleFunction() {
-            @Override
-            public double apply(double v) {
-                return Math.min(1.0, v * n);
-            }
-        });
+    public Integer getIndex() {
+        return index;
     }
 
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }

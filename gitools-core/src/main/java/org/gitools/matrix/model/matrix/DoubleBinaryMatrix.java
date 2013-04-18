@@ -27,97 +27,79 @@ import org.gitools.matrix.model.matrix.element.DoubleElementAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DoubleBinaryMatrix extends BaseMatrix
-{
+public class DoubleBinaryMatrix extends BaseMatrix {
 
     private BitMatrix cells;
     private BitMatrix cellsNan;
 
-    public DoubleBinaryMatrix()
-    {
+    public DoubleBinaryMatrix() {
         this("", new String[0], new String[0], new BitMatrix(0, 0));
     }
 
-    public DoubleBinaryMatrix(String title, String[] colNames, String[] rowNames, BitMatrix cells)
-    {
+    public DoubleBinaryMatrix(String title, String[] colNames, String[] rowNames, BitMatrix cells) {
 
         super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         this.cells = cells;
     }
 
-    public DoubleBinaryMatrix(String title, @NotNull String[] colNames, @NotNull String[] rowNames)
-    {
+    public DoubleBinaryMatrix(String title, @NotNull String[] colNames, @NotNull String[] rowNames) {
 
         super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
 
         makeCells(rowNames.length, colNames.length);
     }
 
-    protected int internalColumnCount()
-    {
+    protected int internalColumnCount() {
         return cells.columns();
     }
 
-    protected int internalRowCount()
-    {
+    protected int internalRowCount() {
         return cells.rows();
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return getCell(row, column) == null;
     }
 
-    public Object getCell(int row, int column)
-    {
-        if (cellsNan.getQuick(column, row))
-        {
+    public Object getCell(int row, int column) {
+        if (cellsNan.getQuick(column, row)) {
             return Double.NaN;
-        }
-        else
-        {
+        } else {
             return cells.getQuick(column, row) ? 1.0 : 0.0;
         }
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return getCell(row, column);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, @Nullable Object value)
-    {
-        if (value != null)
-        {
+    public void setCellValue(int row, int column, int layer, @Nullable Object value) {
+        if (value != null) {
             cells.putQuick(column, row, ((Double) value) == 1.0);
             cellsNan.putQuick(column, row, Double.isNaN((Double) value));
-        }
-        else // FIXME null and NaN are different things
+        } else // FIXME null and NaN are different things
         {
             cellsNan.putQuick(column, row, true);
         }
     }
 
     @Override
-    public void makeCells(int rows, int columns)
-    {
+    public void makeCells(int rows, int columns) {
         cells = new BitMatrix(columns, rows);
         cells.clear();
 
         cellsNan = new BitMatrix(columns, rows);
         cellsNan.clear();
 
-        if (this.rows == null || this.rows.cardinality() != rows)
-        {
+        if (this.rows == null || this.rows.cardinality() != rows) {
             setRows(ObjectFactory1D.dense.make(rows));
         }
 
-        if (this.columns == null || this.columns.cardinality() != columns)
-        {
+        if (this.columns == null || this.columns.cardinality() != columns) {
             setColumns(ObjectFactory1D.dense.make(columns));
         }
     }

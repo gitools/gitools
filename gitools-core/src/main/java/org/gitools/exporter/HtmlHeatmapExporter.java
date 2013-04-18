@@ -31,28 +31,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HtmlHeatmapExporter extends AbstractHtmlExporter
-{
+public class HtmlHeatmapExporter extends AbstractHtmlExporter {
 
-    public HtmlHeatmapExporter()
-    {
+    public HtmlHeatmapExporter() {
         super();
     }
 
-    public void exportHeatmap(@NotNull Heatmap figure)
-    {
+    public void exportHeatmap(@NotNull Heatmap figure) {
 
         File templatePath = getTemplatePath();
-        if (templatePath == null)
-        {
+        if (templatePath == null) {
             throw new RuntimeException("Unable to locate templates path !");
         }
 
-        try
-        {
+        try {
             copy(new File(templatePath, "media"), basePath);
-        } catch (IOException e1)
-        {
+        } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
@@ -61,8 +55,7 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter
         eng.setFileLoaderPath(templatePath);
         eng.init();
 
-        try
-        {
+        try {
             Map<String, Object> context = new HashMap<String, Object>();
             context.put("fmt", new GenericFormatter());
             context.put("figure", figure);
@@ -74,8 +67,7 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter
             eng.loadTemplate("matrixfigure.vm");
             eng.render(file);
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

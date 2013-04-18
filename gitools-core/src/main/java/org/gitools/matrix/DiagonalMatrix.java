@@ -26,53 +26,43 @@ import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.persistence.IResourceLocator;
 
-public class DiagonalMatrix implements IMatrix
-{
+public class DiagonalMatrix implements IMatrix {
 
     private final IMatrix m;
 
     private IResourceLocator locator;
 
-    public DiagonalMatrix(IMatrix matrix)
-    {
+    public DiagonalMatrix(IMatrix matrix) {
         this.m = matrix;
     }
 
-    public IResourceLocator getLocator()
-    {
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public void setLocator(IResourceLocator locator)
-    {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
     }
 
     @Override
-    public IMatrixDimension getRows()
-    {
+    public IMatrixDimension getRows() {
         return m.getRows();
     }
 
     @Override
-    public IMatrixDimension getColumns()
-    {
+    public IMatrixDimension getColumns() {
         return m.getColumns();
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return m.isEmpty(row, column);
     }
 
 
-
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
-        if (column < row)
-        {
+    public Object getCellValue(int row, int column, int layer) {
+        if (column < row) {
             int tmp = column;
             column = row;
             row = tmp;
@@ -81,10 +71,8 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
-        if (column < row)
-        {
+    public void setCellValue(int row, int column, int layer, Object value) {
+        if (column < row) {
             int tmp = column;
             column = row;
             row = tmp;
@@ -94,19 +82,16 @@ public class DiagonalMatrix implements IMatrix
     }
 
     @Override
-    public IMatrixLayers getLayers()
-    {
+    public IMatrixLayers getLayers() {
         return m.getLayers();
     }
 
     @Override
-    public void detach()
-    {
+    public void detach() {
         m.detach();
     }
 
-    public IMatrix getWrappedMatrix()
-    {
+    public IMatrix getWrappedMatrix() {
         return m;
     }
 

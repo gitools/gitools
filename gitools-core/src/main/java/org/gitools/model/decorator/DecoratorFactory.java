@@ -33,13 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DecoratorFactory
-{
+public class DecoratorFactory {
 
     private static final List<DecoratorDescriptor> descriptors = new ArrayList<DecoratorDescriptor>();
 
-    static
-    {
+    static {
         descriptors.add(new DecoratorDescriptor(DecoratorNames.BINARY, BinaryDecorator.class));
 
         descriptors.add(new DecoratorDescriptor(DecoratorNames.LINEAR, LinearDecorator.class));
@@ -54,14 +52,11 @@ public class DecoratorFactory
     }
 
     @Nullable
-    public static <D extends Decorator> D create(Class<D> decoratorClass)
-    {
+    public static <D extends Decorator> D create(Class<D> decoratorClass) {
         D decorator;
-        try
-        {
+        try {
             decorator = decoratorClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
 
@@ -69,12 +64,10 @@ public class DecoratorFactory
     }
 
     @Nullable
-    public static DecoratorDescriptor getDescriptor(Class<? extends Decorator> decoratorClass)
-    {
+    public static DecoratorDescriptor getDescriptor(Class<? extends Decorator> decoratorClass) {
 
         for (DecoratorDescriptor desc : descriptors)
-            if (desc.getDecoratorClass().equals(decoratorClass))
-            {
+            if (desc.getDecoratorClass().equals(decoratorClass)) {
                 return desc;
             }
 
@@ -82,37 +75,27 @@ public class DecoratorFactory
     }
 
     @NotNull
-    public static List<DecoratorDescriptor> getDescriptors()
-    {
+    public static List<DecoratorDescriptor> getDescriptors() {
         return descriptors;
     }
 
-    public static Decorator defaultDecorator(IMatrix matrix, int layer)
-    {
+    public static Decorator defaultDecorator(IMatrix matrix, int layer) {
         Decorator decorator;
 
-        if (matrix instanceof ObjectMatrix)
-        {
+        if (matrix instanceof ObjectMatrix) {
             ObjectMatrix om = (ObjectMatrix) matrix;
 
             Class<?> c = om.getObjectCellAdapter().getElementClass();
 
-            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c)
-            {
+            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c) {
                 decorator = new ZScoreDecorator();
-            }
-            else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c)
-            {
+            } else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c) {
                 decorator = new PValueDecorator();
-            }
-            else
-            {
+            } else {
                 decorator = new LinearDecorator();
             }
 
-        }
-        else
-        {
+        } else {
             decorator = new LinearDecorator();
         }
 

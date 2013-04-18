@@ -30,24 +30,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TextLabelsConfigPage extends AbstractWizardPage
-{
+public class TextLabelsConfigPage extends AbstractWizardPage {
 
     private final HeatmapHeader header;
 
     private Font font;
 
-    public TextLabelsConfigPage(HeatmapHeader header)
-    {
+    public TextLabelsConfigPage(HeatmapHeader header) {
         this.header = header;
 
         initComponents();
 
-        fontBtn.addActionListener(new ActionListener()
-        {
+        fontBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 selectFont();
             }
         });
@@ -57,33 +53,28 @@ public class TextLabelsConfigPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         font = header.getFont();
         fontChanged();
         fgColor.setColor(header.getLabelColor());
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         header.setFont(font);
         header.setLabelColor(fgColor.getColor());
     }
 
-    private void fontChanged()
-    {
+    private void fontChanged() {
         fontField.setText(FontUtils.fontText(font));
         fontField.setFont(font);
     }
 
-    private void selectFont()
-    {
+    private void selectFont() {
         FontChooserDialog dlg = new FontChooserDialog(null, header.getFont());
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -91,8 +82,7 @@ public class TextLabelsConfigPage extends AbstractWizardPage
         fontChanged();
     }
 
-    public void setFgColorEnabled(boolean enabled)
-    {
+    public void setFgColorEnabled(boolean enabled) {
         fgColor.setEnabled(enabled);
     }
 
@@ -104,8 +94,7 @@ public class TextLabelsConfigPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
         fontField = new javax.swing.JTextField();

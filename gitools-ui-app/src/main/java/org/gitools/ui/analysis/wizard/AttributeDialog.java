@@ -24,8 +24,7 @@ package org.gitools.ui.analysis.wizard;
 import org.gitools.model.Property;
 import org.jetbrains.annotations.NotNull;
 
-class AttributeDialog extends javax.swing.JDialog
-{
+class AttributeDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -38,28 +37,24 @@ class AttributeDialog extends javax.swing.JDialog
     /**
      * Creates new form AttributeDialog
      */
-    public AttributeDialog(java.awt.Window parent)
-    {
+    public AttributeDialog(java.awt.Window parent) {
         super(parent);
         setModal(true);
 
         initComponents();
     }
 
-    public void setAttribute(@NotNull Property attr)
-    {
+    public void setAttribute(@NotNull Property attr) {
         name.setText(attr.getName());
         value.setText(attr.getValue());
     }
 
     @NotNull
-    public Property getAttribute()
-    {
+    public Property getAttribute() {
         return new Property(name.getText(), value.getText());
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return returnStatus == RET_CANCEL;
     }
 
@@ -71,8 +66,7 @@ class AttributeDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -83,28 +77,22 @@ class AttributeDialog extends javax.swing.JDialog
         jScrollPane1 = new javax.swing.JScrollPane();
         value = new javax.swing.JTextArea();
 
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -129,26 +117,22 @@ class AttributeDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();

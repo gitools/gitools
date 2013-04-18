@@ -26,35 +26,29 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class HeatmapPosition
-{
+public class HeatmapPosition {
 
     public int row;
     public int column;
 
-    public HeatmapPosition()
-    {
+    public HeatmapPosition() {
     }
 
-    public HeatmapPosition(int row, int column)
-    {
+    public HeatmapPosition(int row, int column) {
         this.row = row;
         this.column = column;
     }
 
-    HeatmapPosition(@NotNull HeatmapPosition pos)
-    {
+    HeatmapPosition(@NotNull HeatmapPosition pos) {
         this.row = pos.row;
         this.column = pos.column;
     }
 
-    public int getRow()
-    {
+    public int getRow() {
         return row;
     }
 
-    public int getColumn()
-    {
+    public int getColumn() {
         return column;
     }
 }

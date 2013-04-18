@@ -37,8 +37,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
-{
+public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 
 
     private final HeatmapHeaderDrawer colDrawer;
@@ -55,15 +54,13 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
     @NotNull
     private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
 
-    static
-    {
+    static {
         headerRelationsMap.put(HeatmapColoredLabelsHeader.class, HeatmapDataHeatmapHeader.class);
         headerRelationsMap.put(HeatmapTextLabelsHeader.class, HeatmapDataHeatmapHeader.class);
     }
 
 
-    public HeatmapHeaderIntersectionDrawer(Heatmap heatmap, HeatmapHeaderDrawer colDrawer, HeatmapHeaderDrawer rowDrawer)
-    {
+    public HeatmapHeaderIntersectionDrawer(Heatmap heatmap, HeatmapHeaderDrawer colDrawer, HeatmapHeaderDrawer rowDrawer) {
         super(heatmap);
 
         this.colDrawer = colDrawer;
@@ -73,11 +70,9 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         updateDrawers(null);
     }
 
-    private boolean isCompatiblePair(@NotNull HeatmapHeader thisHeader, @NotNull HeatmapHeader oppositeHeader)
-    {
+    private boolean isCompatiblePair(@NotNull HeatmapHeader thisHeader, @NotNull HeatmapHeader oppositeHeader) {
         boolean answer = false;
-        if (headerRelationsMap.get(thisHeader.getClass()) == oppositeHeader.getClass())
-        {
+        if (headerRelationsMap.get(thisHeader.getClass()) == oppositeHeader.getClass()) {
             String pattern1 = thisHeader.getAnnotationPattern();
             String pattern2 = oppositeHeader.getAnnotationPattern();
             answer = pattern1 != null && pattern2 != null &&
@@ -86,23 +81,19 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         return answer;
     }
 
-    public final void updateDrawers(HeatmapDimension evtSrc)
-    {
+    public final void updateDrawers(HeatmapDimension evtSrc) {
 
-        if (heatmap.getRows() == evtSrc)
-        {
+        if (heatmap.getRows() == evtSrc) {
             rowDrawer.update();
         }
 
-        if (heatmap.getColumns() == evtSrc)
-        {
+        if (heatmap.getColumns() == evtSrc) {
             colDrawer.update();
         }
         getHeaderDrawers();
     }
 
-    private void getHeaderDrawers()
-    {
+    private void getHeaderDrawers() {
         XCoordinates = new HashMap<Object, Integer>();
         YCoordinates = new HashMap<Object, Integer>();
         List<AbstractHeatmapHeaderDrawer> colHeaderDrawers = colDrawer.getDrawers();
@@ -112,15 +103,12 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
         headerLegendDrawers = new MultiValueMap();
 
         int XPosition = 0;
-        for (AbstractHeatmapHeaderDrawer d : rowHeaderDrawers)
-        {
+        for (AbstractHeatmapHeaderDrawer d : rowHeaderDrawers) {
             HeatmapHeader thisH = rowHeaders.get(rowHeaderDrawers.indexOf(d));
             XCoordinates.put(d, XPosition);
             XCoordinates.put(thisH, XPosition);
-            for (HeatmapHeader oppositeH : colHeaders)
-            {
-                if (isCompatiblePair(thisH, oppositeH))
-                {
+            for (HeatmapHeader oppositeH : colHeaders) {
+                if (isCompatiblePair(thisH, oppositeH)) {
                     headerLegendDrawers.put(d, oppositeH);
                 }
             }
@@ -129,21 +117,17 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 
 
         int colHeaderSize = 0;
-        for (AbstractHeatmapDrawer d : colHeaderDrawers)
-        {
+        for (AbstractHeatmapDrawer d : colHeaderDrawers) {
             colHeaderSize += d.getSize().height;
         }
-        for (AbstractHeatmapDrawer d : colHeaderDrawers)
-        {
+        for (AbstractHeatmapDrawer d : colHeaderDrawers) {
             HeatmapHeader thisH = colHeaders.get(colHeaderDrawers.indexOf(d));
             int size = d.getSize().height;
             colHeaderSize -= size;
             YCoordinates.put(d, colHeaderSize);
             YCoordinates.put(thisH, colHeaderSize);
-            for (HeatmapHeader oppositeH : rowHeaders)
-            {
-                if (isCompatiblePair(thisH, oppositeH))
-                {
+            for (HeatmapHeader oppositeH : rowHeaders) {
+                if (isCompatiblePair(thisH, oppositeH)) {
                     headerLegendDrawers.put(d, oppositeH);
                 }
             }
@@ -153,14 +137,12 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 
     @NotNull
     @Override
-    public Dimension getSize()
-    {
+    public Dimension getSize() {
         return new Dimension(rowDrawer.getSize().width, colDrawer.getSize().height);
     }
 
     @Override
-    public void draw(Graphics2D g, @NotNull Rectangle box, Rectangle clip)
-    {
+    public void draw(Graphics2D g, @NotNull Rectangle box, Rectangle clip) {
 
         Dimension d = getSize();
 
@@ -176,50 +158,41 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer
 
     @NotNull
     @Override
-    public HeatmapPosition getPosition(Point p)
-    {
+    public HeatmapPosition getPosition(Point p) {
         return new HeatmapPosition(colDrawer.getSize().width, 0);
     }
 
     @NotNull
     @Override
-    public Point getPoint(HeatmapPosition p)
-    {
+    public Point getPoint(HeatmapPosition p) {
         return new Point(0, 0);
     }
 
 
-    void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection)
-    {
+    void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection) {
 
         getHeaderDrawers();
 
-        if (headerLegendDrawers == null || headerLegendDrawers.size() == 0)
-        {
+        if (headerLegendDrawers == null || headerLegendDrawers.size() == 0) {
             return;
         }
 
         Set legendDrawers = headerLegendDrawers.keySet();
-        for (Object d : legendDrawers)
-        {
+        for (Object d : legendDrawers) {
             AbstractHeatmapHeaderDrawer drawer = (AbstractHeatmapHeaderDrawer) d;
             Collection headers = headerLegendDrawers.getCollection(d);
-            for (Object h : headers)
-            {
+            for (Object h : headers) {
                 HeatmapHeader header = (HeatmapHeader) h;
                 int x;
                 int y;
                 int width;
                 int height;
-                if (drawer.isHorizontal())
-                {
+                if (drawer.isHorizontal()) {
                     x = XCoordinates.get(header);
                     y = YCoordinates.get(drawer);
                     width = header.getSize();
                     height = drawer.getSize().height;
-                }
-                else
-                {
+                } else {
                     x = XCoordinates.get(drawer);
                     y = YCoordinates.get(header);
                     width = drawer.getSize().width;

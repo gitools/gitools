@@ -28,16 +28,14 @@ import java.awt.*;
  * @noinspection ALL
  */
 @Deprecated
-public abstract class BaseDialog extends JDialog
-{
+public abstract class BaseDialog extends JDialog {
 
     private static final long serialVersionUID = 183914906195441688L;
 
     private String dialogTitle;
     private String dialogSubtitle;
 
-    public BaseDialog(JFrame owner, String windowTitle, String dialogTitle, String dialogSubtitle)
-    {
+    public BaseDialog(JFrame owner, String windowTitle, String dialogTitle, String dialogSubtitle) {
         setModal(true);
         setLocationByPlatform(true);
         setTitle(windowTitle);
@@ -46,13 +44,11 @@ public abstract class BaseDialog extends JDialog
     }
 
     //Titles
-    void setDialogTitle(String dialogTitle)
-    {
+    void setDialogTitle(String dialogTitle) {
         this.dialogTitle = dialogTitle;
     }
 
-    void setDialogSubtitle(String dialogSubtitle)
-    {
+    void setDialogSubtitle(String dialogSubtitle) {
         this.dialogSubtitle = dialogSubtitle;
     }
 
@@ -63,8 +59,7 @@ public abstract class BaseDialog extends JDialog
 
     abstract void removeButton(JButton button);
 
-    protected void createComponents(JComponent cntComponent)
-    {
+    protected void createComponents(JComponent cntComponent) {
 
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BorderLayout());
@@ -77,8 +72,7 @@ public abstract class BaseDialog extends JDialog
         titleField.setEditable(false);
         titleField.setOpaque(false);
         titlePanel.add(titleField, BorderLayout.CENTER);
-        if (dialogSubtitle != null)
-        {
+        if (dialogSubtitle != null) {
             JTextArea subtitleField = new JTextArea();
             subtitleField.setText(dialogSubtitle);
             Font subtitleFont = new Font(subtitleField.getFont().getName(), subtitleField.getFont().getStyle(), 14);

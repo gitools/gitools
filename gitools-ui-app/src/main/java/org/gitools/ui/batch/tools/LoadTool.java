@@ -30,8 +30,7 @@ import org.kohsuke.args4j.Option;
 /**
  * @noinspection ALL
  */
-public class LoadTool extends AbstractTool
-{
+public class LoadTool extends AbstractTool {
 
     @Argument(index = 0, metaVar = "<matrix-file>", required = true,
             usage = "Matrix file ")
@@ -47,22 +46,19 @@ public class LoadTool extends AbstractTool
     private String cols;
 
 
-    public LoadTool()
-    {
+    public LoadTool() {
         super();
     }
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "load";
     }
 
     @NotNull
     @Override
-    protected JobRunnable newJob()
-    {
+    protected JobRunnable newJob() {
         return new CommandLoadFile(file, rows, cols);
     }
 }

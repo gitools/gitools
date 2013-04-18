@@ -38,32 +38,27 @@ import java.util.BitSet;
 import java.util.Date;
 
 
-public class OverlappingProcessor implements AnalysisProcessor
-{
+public class OverlappingProcessor implements AnalysisProcessor {
 
     private final OverlappingAnalysis analysis;
 
-    public OverlappingProcessor(OverlappingAnalysis analysis)
-    {
+    public OverlappingProcessor(OverlappingAnalysis analysis) {
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
         Date startTime = new Date();
 
         IMatrix data = analysis.getSourceData().get();
 
         int attrIndex = 0;
         String attrName = analysis.getAttributeName();
-        if (attrName != null && !attrName.isEmpty())
-        {
+        if (attrName != null && !attrName.isEmpty()) {
             attrIndex = data.getLayers().findId(attrName);
         }
 
-        if (analysis.isTransposeData())
-        {
+        if (analysis.isTransposeData()) {
             TransposedMatrixView mt = new TransposedMatrixView();
             mt.setMatrix(data);
             data = mt;
@@ -91,8 +86,7 @@ public class OverlappingProcessor implements AnalysisProcessor
         BitSet xna = new BitSet(numRows);
 
         Double replaceNanValue = analysis.getReplaceNanValue();
-        if (replaceNanValue == null)
-        {
+        if (replaceNanValue == null) {
             replaceNanValue = Double.NaN;
         }
 
@@ -103,17 +97,14 @@ public class OverlappingProcessor implements AnalysisProcessor
         Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
-        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++)
-        {
+        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
             int rowCount = 0;
 
-            for (int row = 0; row < numRows; row++)
-            {
+            for (int row = 0; row < numRows; row++) {
                 Object value = data.getCellValue(row, i, attrIndex);
                 Double v = cast.getDoubleValue(value);
                 v = transformValue(v, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, i);
-                if (v == 1.0)
-                {
+                if (v == 1.0) {
                     rowCount++;
                 }
 
@@ -121,8 +112,7 @@ public class OverlappingProcessor implements AnalysisProcessor
                 xna.set(row, Double.isNaN(v));
             }
 
-            for (int j = i; j < numColumns && !monitor.isCancelled(); j++)
-            {
+            for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
                 monitor.info("Overlapping " + data.getColumns().getLabel(i) + " with " + data.getColumns().getLabel(j));
 
                 //TODO Parallelize
@@ -130,20 +120,17 @@ public class OverlappingProcessor implements AnalysisProcessor
                     int columnCount = 0;
                     int bothCount = 0;
 
-                    for (int row = 0; row < numRows; row++)
-                    {
+                    for (int row = 0; row < numRows; row++) {
                         double v0 = xna.get(row) ? Double.NaN : (x.get(row) ? 1.0 : 0.0);
 
                         Object value = data.getCellValue(row, j, attrIndex);
                         Double v1 = cast.getDoubleValue(value);
                         v1 = transformValue(v1, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, j);
 
-                        if (v1 == 1.0)
-                        {
+                        if (v1 == 1.0) {
                             columnCount++;
                         }
-                        if (v0 == 1.0 && v1 == 1.0)
-                        {
+                        if (v0 == 1.0 && v1 == 1.0) {
                             bothCount++;
                         }
                     }
@@ -162,23 +149,19 @@ public class OverlappingProcessor implements AnalysisProcessor
     }
 
     @Nullable
-    private Double transformValue(@Nullable Double v, double replaceNanValue, boolean binaryCutoffEnabled, @NotNull CutoffCmp cutoffCmp, Double cutoffValue, int row, int column) throws AnalysisException
-    {
+    private Double transformValue(@Nullable Double v, double replaceNanValue, boolean binaryCutoffEnabled, @NotNull CutoffCmp cutoffCmp, Double cutoffValue, int row, int column) throws AnalysisException {
 
         boolean isNaN = v != null ? Double.isNaN(v) : true;
 
-        if (isNaN)
-        {
+        if (isNaN) {
             v = replaceNanValue;
         }
 
-        if (!isNaN && binaryCutoffEnabled)
-        {
+        if (!isNaN && binaryCutoffEnabled) {
             v = cutoffCmp.compare(v, cutoffValue) ? 1.0 : 0.0;
         }
 
-        if (!isNaN && v != 1.0 && v != 0.0)
-        {
+        if (!isNaN && v != 1.0 && v != 0.0) {
             throw new AnalysisException("Not binary value found at row " + row + " column " + column);
         }
 

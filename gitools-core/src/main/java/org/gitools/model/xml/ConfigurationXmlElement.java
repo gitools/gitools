@@ -34,36 +34,30 @@ import java.util.List;
  * @noinspection ALL
  */
 @XmlRootElement(name = "configuration")
-public class ConfigurationXmlElement
-{
+public class ConfigurationXmlElement {
 
     @XmlType(propOrder = {"key", "value"})
     @XmlRootElement
-    public static class ConfigurationXmlEntry
-    {
+    public static class ConfigurationXmlEntry {
         @XmlAttribute
         private String key;
 
         @XmlAttribute
         private String value;
 
-        public ConfigurationXmlEntry()
-        {
+        public ConfigurationXmlEntry() {
         }
 
-        public ConfigurationXmlEntry(String key, String value)
-        {
+        public ConfigurationXmlEntry(String key, String value) {
             this.key = key;
             this.value = value;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return key;
         }
 
-        public String getValue()
-        {
+        public String getValue() {
             return value;
         }
     }
@@ -72,13 +66,11 @@ public class ConfigurationXmlElement
     @XmlElement(name = "property")
     private final List<ConfigurationXmlEntry> configuration = new ArrayList<ConfigurationXmlElement.ConfigurationXmlEntry>();
 
-    public ConfigurationXmlElement()
-    {
+    public ConfigurationXmlElement() {
     }
 
     @NotNull
-    public List<ConfigurationXmlEntry> getConfiguration()
-    {
+    public List<ConfigurationXmlEntry> getConfiguration() {
         return configuration;
     }
 }

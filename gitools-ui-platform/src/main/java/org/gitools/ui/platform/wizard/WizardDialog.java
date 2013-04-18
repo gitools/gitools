@@ -41,8 +41,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class WizardDialog extends AbstractDialog
-{
+public class WizardDialog extends AbstractDialog {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,8 +61,7 @@ public class WizardDialog extends AbstractDialog
 
     private boolean cancelled;
 
-    public WizardDialog(Window owner, @NotNull IWizard wizard)
-    {
+    public WizardDialog(Window owner, @NotNull IWizard wizard) {
 
         super(owner, wizard.getTitle(), wizard.getLogo());
 
@@ -74,17 +72,14 @@ public class WizardDialog extends AbstractDialog
         pageControlsMap = new HashMap<String, JComponent>();
         pageHistory = new Stack<IWizardPage>();
 
-        wizard.addWizardUpdateListener(new IWizardUpdateListener()
-        {
+        wizard.addWizardUpdateListener(new IWizardUpdateListener() {
             @Override
-            public void pageUpdated(IWizardPage page)
-            {
+            public void pageUpdated(IWizardPage page) {
                 updateState();
             }
 
             @Override
-            public void wizardUpdated(IWizard wizard)
-            {
+            public void wizardUpdated(IWizard wizard) {
                 updateState();
             }
         });
@@ -97,27 +92,21 @@ public class WizardDialog extends AbstractDialog
     }
 
     @Nullable
-    IWizard getWizard()
-    {
+    IWizard getWizard() {
         return currentPage != null ? currentPage.getWizard() : null;
     }
 
-    IWizardPage getCurrentPage()
-    {
+    IWizardPage getCurrentPage() {
         return currentPage;
     }
 
-    final void setCurrentPage(@NotNull IWizardPage page)
-    {
+    final void setCurrentPage(@NotNull IWizardPage page) {
         setCurrentPage(page, true);
     }
 
-    final void setCurrentPage(@NotNull IWizardPage page, boolean updateHistory)
-    {
-        if (currentPage != null)
-        {
-            if (updateHistory)
-            {
+    final void setCurrentPage(@NotNull IWizardPage page, boolean updateHistory) {
+        if (currentPage != null) {
+            if (updateHistory) {
                 pageHistory.push(currentPage);
             }
 
@@ -130,8 +119,7 @@ public class WizardDialog extends AbstractDialog
         getWizard().setCurrentPage(page);
 
         JComponent contents = getPageContents(page.getId());
-        if (contents == null)
-        {
+        if (contents == null) {
             contents = new JPanel();
         }
 
@@ -146,8 +134,7 @@ public class WizardDialog extends AbstractDialog
         getWizard().pageEntered(page);
     }
 
-    private void updateButtons()
-    {
+    private void updateButtons() {
         final IWizardPage page = getCurrentPage();
         final IWizard wizard = page.getWizard();
 
@@ -157,12 +144,10 @@ public class WizardDialog extends AbstractDialog
         cancelButton.setEnabled(true);
     }
 
-    JComponent getPageContents(String id)
-    {
+    JComponent getPageContents(String id) {
         JComponent contents = pageControlsMap.get(id);
         IWizard wizard = getWizard();
-        if (contents == null && wizard != null)
-        {
+        if (contents == null && wizard != null) {
             IWizardPage page = wizard.getPage(id);
             contents = page.createControls();
             pageControlsMap.put(id, contents);
@@ -170,69 +155,56 @@ public class WizardDialog extends AbstractDialog
         return contents;
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
     @Override
-    protected JComponent createContainer()
-    {
+    protected JComponent createContainer() {
         pagePanel = new JPanel(new BorderLayout());
         return pagePanel;
     }
 
     @NotNull
     @Override
-    protected List<JButton> createButtons()
-    {
+    protected List<JButton> createButtons() {
 
         helpButton = new JButton("Help");
-        helpButton.addActionListener(new ActionListener()
-        {
+        helpButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 helpActionPerformed();
             }
         });
 
         backButton = new JButton("< Back");
-        backButton.addActionListener(new ActionListener()
-        {
+        backButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 backActionPerformed();
             }
         });
 
         nextButton = new JButton("Next >");
-        nextButton.addActionListener(new ActionListener()
-        {
+        nextButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 nextActionPerformed();
             }
         });
 
         cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener()
-        {
+        cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 cancelActionPerformed();
             }
         });
 
         finishButton = new JButton("Finish");
-        finishButton.addActionListener(new ActionListener()
-        {
+        finishButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 finishActionPerformed();
             }
         });
@@ -242,42 +214,33 @@ public class WizardDialog extends AbstractDialog
         return Arrays.asList(backButton, nextButton, DialogButtonsPanel.SEPARATOR, cancelButton, DialogButtonsPanel.SEPARATOR, finishButton, DialogButtonsPanel.SEPARATOR, helpButton);
     }
 
-    private void helpActionPerformed()
-    {
+    private void helpActionPerformed() {
         final IWizard wizard = currentPage.getWizard();
         HelpContext context = currentPage.getHelpContext();
-        if (context == null)
-        {
+        if (context == null) {
             context = wizard.getHelpContext();
         }
 
-        if (context == null)
-        {
+        if (context == null) {
             context = new HelpContext("__default__"); //FIXME
         }
 
-        if (context != null)
-        {
-            try
-            {
+        if (context != null) {
+            try {
                 Help.getDefault().showHelp(context);
-            } catch (HelpException ex)
-            {
+            } catch (HelpException ex) {
                 ExceptionDialog dlg = new ExceptionDialog(this, ex);
                 dlg.setVisible(true);
             }
         }
     }
 
-    private void backActionPerformed()
-    {
+    private void backActionPerformed() {
         setCurrentPage(pageHistory.pop(), false);
     }
 
-    private void nextActionPerformed()
-    {
-        if (currentPage == null)
-        {
+    private void nextActionPerformed() {
+        if (currentPage == null) {
             return;
         }
 
@@ -286,10 +249,8 @@ public class WizardDialog extends AbstractDialog
         setCurrentPage(wizard.getNextPage(currentPage));
     }
 
-    private void finishActionPerformed()
-    {
-        if (currentPage != null)
-        {
+    private void finishActionPerformed() {
+        if (currentPage != null) {
             currentPage.updateModel();
             currentPage.getWizard().pageLeft(currentPage);
             currentPage.getWizard().performFinish();
@@ -300,10 +261,8 @@ public class WizardDialog extends AbstractDialog
         setVisible(false);
     }
 
-    private void cancelActionPerformed()
-    {
-        if (currentPage != null)
-        {
+    private void cancelActionPerformed() {
+        if (currentPage != null) {
             currentPage.getWizard().performCancel();
         }
 
@@ -312,10 +271,8 @@ public class WizardDialog extends AbstractDialog
         setVisible(false);
     }
 
-    void updateState()
-    {
-        if (currentPage != null)
-        {
+    void updateState() {
+        if (currentPage != null) {
             DialogHeaderPanel header = getHeaderPanel();
             header.setTitle(currentPage.getTitle());
             header.setLeftLogo(currentPage.getLogo());

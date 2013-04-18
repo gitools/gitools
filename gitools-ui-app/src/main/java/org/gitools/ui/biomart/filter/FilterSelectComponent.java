@@ -33,32 +33,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FilterSelectComponent extends FilterComponent
-{
+public class FilterSelectComponent extends FilterComponent {
 
     // Biomart Configuration Wrappers
-    private static class OptionListWrapper
-    {
+    private static class OptionListWrapper {
 
         private final Option option;
 
-        public OptionListWrapper(Option filterOption)
-        {
+        public OptionListWrapper(Option filterOption) {
             this.option = filterOption;
         }
 
-        public Option getOption()
-        {
+        public Option getOption() {
             return option;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
 
             String res = option.getDisplayName();
-            if (res != null)
-            {
+            if (res != null) {
                 res = res.replace(":", "");
             }
 
@@ -76,8 +70,7 @@ public class FilterSelectComponent extends FilterComponent
     private final HashMap<Option, HashMap<String, List<Option>>> pushActions; // N options, each one with its list of components and options to show
 
 
-    public FilterSelectComponent(FilterDescription d, FilterDescriptionPanel collectionParent)
-    {
+    public FilterSelectComponent(FilterDescription d, FilterDescriptionPanel collectionParent) {
 
         super(d, collectionParent);
 
@@ -87,15 +80,11 @@ public class FilterSelectComponent extends FilterComponent
 
         buildComponent();
 
-        if (component.equals("ComboBox") && pushActions.size() > 0)
-        {
-            comboComponent.addItemListener(new ItemListener()
-            {
+        if (component.equals("ComboBox") && pushActions.size() > 0) {
+            comboComponent.addItemListener(new ItemListener() {
                 @Override
-                public void itemStateChanged(@NotNull ItemEvent e)
-                {
-                    if (e.getStateChange() == ItemEvent.SELECTED)
-                    {
+                public void itemStateChanged(@NotNull ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
 
                         setPushOptionsComponent(((OptionListWrapper) comboComponent.getSelectedItem()).getOption());
 
@@ -114,8 +103,7 @@ public class FilterSelectComponent extends FilterComponent
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         listComponent = new javax.swing.JList();
@@ -137,13 +125,11 @@ public class FilterSelectComponent extends FilterComponent
     // End of variables declaration//GEN-END:variables
 
     //FIXME : Test initialisation String list of options
-    private void buildComponent()
-    {
+    private void buildComponent() {
 
         List<OptionListWrapper> options = InitListOptions();
 
-        if (filterDescription.getMultipleValues() == 0)
-        {
+        if (filterDescription.getMultipleValues() == 0) {
 
             component = "ComboBox";
 
@@ -167,15 +153,12 @@ public class FilterSelectComponent extends FilterComponent
             currentHeight = COMBO_HEIGHT;
 
             //process pushActions
-            if (filterDescription != null)
-            {
+            if (filterDescription != null) {
                 loadPushActions();
             }
 
 
-        }
-        else
-        {
+        } else {
 
             component = "List";
             listComponent.setVisible(true);
@@ -197,8 +180,7 @@ public class FilterSelectComponent extends FilterComponent
 
     }
 
-    private void setPushOptionsComponent(Option optionSelected)
-    {
+    private void setPushOptionsComponent(Option optionSelected) {
 
         //search and set component options
 
@@ -213,28 +195,23 @@ public class FilterSelectComponent extends FilterComponent
 
         for (FilterPage page : collectionsCache.keySet())
 
-            for (FilterGroup group : collectionsCache.get(page).collections.keySet())
-            {
+            for (FilterGroup group : collectionsCache.get(page).collections.keySet()) {
                 //System.out.println("Group: "+group.getInternalName());
 
                 for (FilterCollectionPanel panel : collectionsCache.get(page).collections.get(group))
 
-                    for (Component componentPanel : panel.getDescriptionsPanel().getComponents())
-                    {
+                    for (Component componentPanel : panel.getDescriptionsPanel().getComponents()) {
 
                         descriptionPanel = ((FilterDescriptionPanel) componentPanel);
 
-                        for (Component compo : descriptionPanel.getComponents())
-                        {
+                        for (Component compo : descriptionPanel.getComponents()) {
 
                             filterCompo = (FilterComponent) compo;
 
-                            if (filterCompo.getFilterDescription() != null && filterCompo.getFilterDescription().getInternalName() != null)
-                            {
+                            if (filterCompo.getFilterDescription() != null && filterCompo.getFilterDescription().getInternalName() != null) {
                                 //System.out.println ("Component: "+filterCompo.getFilterDescription().getInternalName());
 
-                                if (pushActions.get(optionSelected).get(filterCompo.getFilterDescription().getInternalName()) != null)
-                                {
+                                if (pushActions.get(optionSelected).get(filterCompo.getFilterDescription().getInternalName()) != null) {
                                     //System.out.println ("options; "+ pushActions.get(optionSelected).get(filterCompo.getFilterDescription().getInternalName()));
 
                                     filterCompo.setListOptions(pushActions.get(optionSelected).get(filterCompo.getFilterDescription().getInternalName()));
@@ -248,27 +225,23 @@ public class FilterSelectComponent extends FilterComponent
 
 
     @NotNull
-    private List<OptionListWrapper> InitListOptions()
-    {
+    private List<OptionListWrapper> InitListOptions() {
 
         List<OptionListWrapper> res = new ArrayList<OptionListWrapper>();
 
-        for (Option o : filterDescription.getOptions())
-        {
+        for (Option o : filterDescription.getOptions()) {
             OptionListWrapper wrapper = new OptionListWrapper(o);
             res.add(wrapper);
         }
 
         // Load default options from some component with push action
-        if (parentPanel != null && parentPanel.getParentCollection().getFilterConfigurationPage().getDefaultSelecComposData().size() > 0)
-        {
+        if (parentPanel != null && parentPanel.getParentCollection().getFilterConfigurationPage().getDefaultSelecComposData().size() > 0) {
             if (parentPanel.getParentCollection().getFilterConfigurationPage().
                     getDefaultSelecComposData().get(filterDescription.getInternalName()) != null)
 
             {
                 for (Option o : parentPanel.getParentCollection().getFilterConfigurationPage().
-                        getDefaultSelecComposData().get(filterDescription.getInternalName()))
-                {
+                        getDefaultSelecComposData().get(filterDescription.getInternalName())) {
 
                     OptionListWrapper wrapper = new OptionListWrapper(o);
 
@@ -282,17 +255,13 @@ public class FilterSelectComponent extends FilterComponent
     /**
      * Load PushActions of component
      */
-    private void loadPushActions()
-    {
+    private void loadPushActions() {
 
-        for (Option o : filterDescription.getOptions())
-        {
-            if (o.getPushactions() != null)
-            {
+        for (Option o : filterDescription.getOptions()) {
+            if (o.getPushactions() != null) {
                 HashMap<String, List<Option>> actions = new HashMap<String, List<Option>>();
 
-                for (PushAction action : o.getPushactions())
-                {
+                for (PushAction action : o.getPushactions()) {
 
                     actions.put(action.getRef(), action.getOptions());
                 }
@@ -306,18 +275,15 @@ public class FilterSelectComponent extends FilterComponent
     @NotNull
     @Override
     // FIXME : get Filter for selected value/s in list
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();
 
         Filter f = null;
 
-        if (hasChild())
-        {
+        if (hasChild()) {
 
-            if (component.equals("ComboBox"))
-            {
+            if (component.equals("ComboBox")) {
                 f = new Filter();
 
                 f.setName(((OptionListWrapper) comboComponent.getSelectedItem()).getOption().getInternalName());
@@ -327,11 +293,8 @@ public class FilterSelectComponent extends FilterComponent
                 f.setRadio(getChildComponent().getFilters().get(0).getRadio());
 
                 filters.add(f);
-            }
-            else
-            {
-                for (Object optionWrapper : listComponent.getSelectedValues())
-                {
+            } else {
+                for (Object optionWrapper : listComponent.getSelectedValues()) {
                     f = new Filter();
 
                     f.setName(((OptionListWrapper) optionWrapper).getOption().getInternalName());
@@ -344,29 +307,21 @@ public class FilterSelectComponent extends FilterComponent
                 }
             }
 
-        }
-        else
-        {
+        } else {
 
             f = new Filter();
 
             f.setName(filterDescription.getInternalName());
 
-            if (component.equals("ComboBox"))
-            {
-                if (comboComponent.getSelectedItem() != null)
-                {
+            if (component.equals("ComboBox")) {
+                if (comboComponent.getSelectedItem() != null) {
                     f.setValue(comboComponent.getSelectedItem().toString());
                 }
-            }
-            else
-            {
-                if (listComponent.getSelectedValues() != null && listComponent.getSelectedValues().length > 0)
-                {
+            } else {
+                if (listComponent.getSelectedValues() != null && listComponent.getSelectedValues().length > 0) {
                     StringBuilder sb = new StringBuilder();
                     Object[] list = listComponent.getSelectedValues();
-                    if (list.length > 0)
-                    {
+                    if (list.length > 0) {
                         sb.append(((OptionListWrapper) list[0]).getOption().getValue());
                         for (int i = 1; i < list.length; i++)
                             sb.append(", ").append(((OptionListWrapper) list[i]).getOption().getValue());
@@ -383,17 +338,14 @@ public class FilterSelectComponent extends FilterComponent
     @NotNull
     @Override
     //Always render filter from select component filter
-    public Boolean hasChanged()
-    {
+    public Boolean hasChanged() {
         return true;
     }
 
     @Override
-    public void setListOptions(@NotNull List<Option> optionList)
-    {
+    public void setListOptions(@NotNull List<Option> optionList) {
 
-        if (this.component.equals("ComboBox"))
-        {
+        if (this.component.equals("ComboBox")) {
 
             DefaultComboBoxModel m = new DefaultComboBoxModel();
 
@@ -402,9 +354,7 @@ public class FilterSelectComponent extends FilterComponent
 
             comboComponent.setModel(m);
 
-        }
-        else
-        {
+        } else {
 
             DefaultListModel m = new DefaultListModel();
 
@@ -419,14 +369,12 @@ public class FilterSelectComponent extends FilterComponent
     /**
      * @noinspection UnusedDeclaration
      */
-    public HashMap<Option, HashMap<String, List<Option>>> getPushActions()
-    {
+    public HashMap<Option, HashMap<String, List<Option>>> getPushActions() {
 
         return pushActions;
     }
 
-    public HashMap<String, List<Option>> getPushActionData_defaultOption()
-    {
+    public HashMap<String, List<Option>> getPushActionData_defaultOption() {
 
         if (pushActions.size() > 0)
 
@@ -435,16 +383,12 @@ public class FilterSelectComponent extends FilterComponent
 
             {
                 return pushActions.get(((OptionListWrapper) comboComponent.getSelectedItem()).getOption());
-            }
-
-            else
+            } else
 
             {
                 return pushActions.get(((OptionListWrapper) listComponent.getSelectedValue()).getOption());
             }
-        }
-
-        else
+        } else
 
         {
             return new HashMap<String, List<Option>>();

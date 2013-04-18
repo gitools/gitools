@@ -25,18 +25,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class IdTypeXmlAdapter extends XmlAdapter<String, IdType>
-{
+public class IdTypeXmlAdapter extends XmlAdapter<String, IdType> {
 
     @Override
-    public IdType unmarshal(String v) throws Exception
-    {
+    public IdType unmarshal(String v) throws Exception {
         return IdTypeManager.getDefault().getIdType(v);
     }
 
     @Override
-    public String marshal(@NotNull IdType v) throws Exception
-    {
+    public String marshal(@NotNull IdType v) throws Exception {
         return v.getKey();
     }
 

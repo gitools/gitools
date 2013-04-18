@@ -23,26 +23,21 @@ package org.gitools.matrix.model.matrix.element;
 
 import org.jetbrains.annotations.Nullable;
 
-public class BeanElementFactory implements IElementFactory
-{
+public class BeanElementFactory implements IElementFactory {
 
     private final Class<?> elementClass;
 
-    public BeanElementFactory(Class<?> elementClass)
-    {
+    public BeanElementFactory(Class<?> elementClass) {
         this.elementClass = elementClass;
     }
 
     @Nullable
     @Override
-    public Object create()
-    {
+    public Object create() {
         Object object = null;
-        try
-        {
+        try {
             object = elementClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return object;

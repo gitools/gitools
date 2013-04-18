@@ -32,32 +32,27 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class InvertSelectionAction extends BaseAction
-{
+public class InvertSelectionAction extends BaseAction {
 
     private static final long serialVersionUID = 3124483059501436713L;
 
-    public InvertSelectionAction()
-    {
+    public InvertSelectionAction() {
         super("Invert selection");
 
         setDesc("Invert selection");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
 
-        if (matrixView != null)
-        {
+        if (matrixView != null) {
             matrixView.getRows().invertSelection();
             matrixView.getColumns().invertSelection();
         }

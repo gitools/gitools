@@ -26,28 +26,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class MedianStatistic implements Statistic
-{
+public class MedianStatistic implements Statistic {
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "median";
     }
 
     @Override
-    public double calc(@NotNull DoubleMatrix1D values)
-    {
+    public double calc(@NotNull DoubleMatrix1D values) {
 
         final int size = values.size();
 
-        if (size == 0)
-        {
+        if (size == 0) {
             return Double.NaN;
-        }
-        else if (size == 1)
-        {
+        } else if (size == 1) {
             return values.getQuick(0);
         }
 
@@ -60,8 +54,7 @@ public class MedianStatistic implements Statistic
         final int middle = size / 2;
         double median = tmp[middle];
 
-        if (size % 2 == 0)
-        {
+        if (size % 2 == 0) {
             median = (tmp[middle - 1] + median) / 2.0;
         }
 

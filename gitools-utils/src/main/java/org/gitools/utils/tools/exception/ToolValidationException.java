@@ -24,13 +24,11 @@ package org.gitools.utils.tools.exception;
 /**
  * @noinspection ALL
  */
-public class ToolValidationException extends ToolException
-{
+public class ToolValidationException extends ToolException {
 
     private static final long serialVersionUID = 8796340228174037831L;
 
-    public ToolValidationException(String msg)
-    {
+    public ToolValidationException(String msg) {
         super(msg);
     }
 }

@@ -33,14 +33,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 
-public class EnsemblMapper extends AbstractMapper implements AllIds
-{
+public class EnsemblMapper extends AbstractMapper implements AllIds {
 
     private final BiomartService service;
     private final String dataset;
 
-    public EnsemblMapper(BiomartService service, String dataset)
-    {
+    public EnsemblMapper(BiomartService service, String dataset) {
         super("Ensembl", false, true);
 
         this.service = service;
@@ -49,12 +47,10 @@ public class EnsemblMapper extends AbstractMapper implements AllIds
 
     @NotNull
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException
-    {
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
         String srcInternalName = getInternalName(src.getId());
         String dstInternalName = getInternalName(dst.getId());
-        if (srcInternalName == null || dstInternalName == null)
-        {
+        if (srcInternalName == null || dstInternalName == null) {
             throw new MappingException("Unsupported mapping from " + src + " to " + dst);
         }
 
@@ -63,36 +59,29 @@ public class EnsemblMapper extends AbstractMapper implements AllIds
         final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         Query q = createQuery(dataset, srcInternalName, dstInternalName);
-        try
-        {
-            service.queryModule(q, new BiomartQueryHandler()
-            {
+        try {
+            service.queryModule(q, new BiomartQueryHandler() {
                 @Override
-                public void begin() throws Exception
-                {
+                public void begin() throws Exception {
                 }
 
                 @Override
-                public void end()
-                {
+                public void end() {
                 }
 
                 @Override
-                public void line(String[] rowFields) throws Exception
-                {
+                public void line(String[] rowFields) throws Exception {
                     String srcf = rowFields[0];
                     String dstf = rowFields[1];
                     Set<String> items = map.get(srcf);
-                    if (items == null)
-                    {
+                    if (items == null) {
                         items = new HashSet<String>();
                         map.put(srcf, items);
                     }
                     items.add(dstf);
                 }
             }, monitor);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new MappingException(ex);
         }
 
@@ -100,8 +89,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds
 
         monitor.begin("Mapping Ensembl IDs...", 1);
 
-        if (data.isEmpty())
-        {
+        if (data.isEmpty()) {
             data.identity(map.keySet());
         }
 
@@ -114,8 +102,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds
 
     private static final Map<String, String> inameMap = new HashMap<String, String>();
 
-    static
-    {
+    static {
         inameMap.put(ENSEMBL_GENES, "ensembl_gene_id");
         inameMap.put(ENSEMBL_TRANSCRIPTS, "ensembl_transcript_id");
         inameMap.put(ENSEMBL_PROTEINS, "ensembl_peptide_id");
@@ -132,19 +119,16 @@ public class EnsemblMapper extends AbstractMapper implements AllIds
         inameMap.put(GO_ID, "go_id");
     }
 
-    public static String getInternalName(@NotNull String id)
-    {
+    public static String getInternalName(@NotNull String id) {
         String iname = inameMap.get(id);
-        if (iname == null && id.startsWith("ensembl:"))
-        {
+        if (iname == null && id.startsWith("ensembl:")) {
             return id.substring(8);
         }
         return iname;
     }
 
     @NotNull
-    public static Query createQuery(String dataset, String srcInternalName, String dstInternalName)
-    {
+    public static Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
         Query q = new Query();
         q.setVirtualSchemaName("default");
         q.setUniqueRows(1);

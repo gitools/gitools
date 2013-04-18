@@ -27,28 +27,24 @@ import org.gitools.ui.platform.editor.IEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class SaveAsAction extends BaseAction
-{
+public class SaveAsAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public SaveAsAction()
-    {
+    public SaveAsAction() {
         super("Save As ...");
         setDesc("Save to another location");
         setMnemonic(KeyEvent.VK_A);
     }
 
     @Override
-    public boolean isEnabledByEditor(IEditor editor)
-    {
+    public boolean isEnabledByEditor(IEditor editor) {
         return false;
         //return editor != null && editor.isSaveAsAllowed();
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         //TODO
     }
 }

@@ -31,8 +31,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 
-public class FileChooserPage extends AbstractWizardPage
-{
+public class FileChooserPage extends AbstractWizardPage {
 
     private int selectionMode;
     private File currentPath;
@@ -41,43 +40,35 @@ public class FileChooserPage extends AbstractWizardPage
 
     private JFileChooser fileChooser;
 
-    public FileChooserPage()
-    {
+    public FileChooserPage() {
         this(JFileChooser.FILES_ONLY);
     }
 
-    private FileChooserPage(int selectionMode)
-    {
+    private FileChooserPage(int selectionMode) {
         this.selectionMode = selectionMode;
     }
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
 
         fileChooser = new JFileChooser();
         fileChooser.setControlButtonsAreShown(false);
         fileChooser.setFileSelectionMode(selectionMode);
         fileChooser.setFileFilter(fileFilter);
 
-        if (currentPath != null)
-        {
+        if (currentPath != null) {
             fileChooser.setCurrentDirectory(currentPath);
         }
-        if (selectedFile != null)
-        {
+        if (selectedFile != null) {
             fileChooser.setSelectedFile(selectedFile);
         }
         updateComplete();
 
-        fileChooser.addPropertyChangeListener(new PropertyChangeListener()
-        {
+        fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt)
-            {
-                if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName()) || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName()))
-                {
+            public void propertyChange(@NotNull PropertyChangeEvent evt) {
+                if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName()) || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
                     updateComplete();
                 }
             }
@@ -89,49 +80,41 @@ public class FileChooserPage extends AbstractWizardPage
         return p;
     }
 
-    private void updateComplete()
-    {
+    private void updateComplete() {
         setComplete(fileChooser.getSelectedFile() != null || fileChooser.getSelectedFiles().length > 0);
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setFileSelectionMode(int selectionMode)
-    {
+    public void setFileSelectionMode(int selectionMode) {
         this.selectionMode = selectionMode;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setCurrentPath(File file)
-    {
+    public void setCurrentPath(File file) {
         currentPath = file;
     }
 
-    public void setSelectedFile(File file)
-    {
+    public void setSelectedFile(File file) {
         selectedFile = file;
     }
 
-    public File getSelectedFile()
-    {
+    public File getSelectedFile() {
         return fileChooser.getSelectedFile();
     }
 
-    public File[] getSelectedFiles()
-    {
+    public File[] getSelectedFiles() {
         return fileChooser.getSelectedFiles();
     }
 
-    public FileFilter getFileFilter()
-    {
+    public FileFilter getFileFilter() {
         return fileFilter;
     }
 
-    public void setFileFilter(FileFilter fileFilter)
-    {
+    public void setFileFilter(FileFilter fileFilter) {
         this.fileFilter = fileFilter;
     }
 }

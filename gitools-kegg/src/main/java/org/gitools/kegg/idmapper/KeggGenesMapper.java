@@ -32,8 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class KeggGenesMapper extends AbstractKeggMapper implements AllIds
-{
+public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
     public static final String NCBI_DB = "ncbi-geneid";
     public static final String UNIPROT_DB = "uniprot";
@@ -42,23 +41,20 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds
 
     private static final Map<String, String> fileKey = new HashMap<String, String>();
 
-    static
-    {
+    static {
         fileKey.put(NCBI_GENES, NCBI_DB);
         fileKey.put(UNIPROT, UNIPROT_DB);
         fileKey.put(PDB, PDB_DB);
         fileKey.put(ENSEMBL_GENES, ENSEMBL_DB);
     }
 
-    public KeggGenesMapper(KeggService service, String organismId)
-    {
+    public KeggGenesMapper(KeggService service, String organismId) {
         super("KeggGenes", false, true, service, organismId);
     }
 
     @NotNull
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException
-    {
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         monitor.begin("Getting mapping information from KEGG ...", 1);
@@ -66,36 +62,30 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds
         // TODO Filter out items not in data if data is not empty
 
         // Get map from the API
-        try
-        {
+        try {
             String prefix = fileKey.get(dst.getId());
-            if (!KEGG_GENES.equals(src.getId()) || prefix == null)
-            {
+            if (!KEGG_GENES.equals(src.getId()) || prefix == null) {
                 throw new MappingException("Unsupported mapping from " + src + " to " + dst);
             }
 
-            if (prefix.equals(ENSEMBL_DB))
-            {
+            if (prefix.equals(ENSEMBL_DB)) {
                 prefix = prefix + "-" + organismId;
             }
 
             List<IdConversion> relations = service.getConvert(organismId, prefix);
 
             int plen = prefix.length() + 1;
-            for (IdConversion rel : relations)
-            {
+            for (IdConversion rel : relations) {
                 String srcId = rel.getSourceId();
                 String dstId = rel.getTargetId();
                 Set<String> b = map.get(srcId);
-                if (b == null)
-                {
+                if (b == null) {
                     b = new HashSet<String>();
                     map.put(srcId, b);
                 }
                 b.add(dstId.substring(plen));
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new MappingException(ex);
         }
 
@@ -103,8 +93,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds
 
         monitor.begin("Mapping KEGG genes ...", 1);
 
-        if (data.isEmpty())
-        {
+        if (data.isEmpty()) {
             data.identity(map.keySet());
         }
 

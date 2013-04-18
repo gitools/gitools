@@ -36,8 +36,7 @@ import java.util.Iterator;
 /**
  * @noinspection ALL
  */
-public class ColorScaleDrawer
-{
+public class ColorScaleDrawer {
 
     private NumericColorScale scale;
 
@@ -58,8 +57,7 @@ public class ColorScaleDrawer
     private final Font legendFont;
     private final String legendFormat;
 
-    public ColorScaleDrawer(IColorScale scale)
-    {
+    public ColorScaleDrawer(IColorScale scale) {
         setScale(scale);
 
         this.bgColor = Color.WHITE;
@@ -77,55 +75,45 @@ public class ColorScaleDrawer
         this.legendFormat = "%.3g";
     }
 
-    public IColorScale getScale()
-    {
+    public IColorScale getScale() {
         return scale;
     }
 
-    void setScale(IColorScale scale)
-    {
+    void setScale(IColorScale scale) {
         this.scale = (NumericColorScale) scale;
         resetZoom();
     }
 
-    public void resetZoom()
-    {
+    public void resetZoom() {
         zoomRangeMin = scale.getMinValue();
         zoomRangeMax = scale.getMaxValue();
     }
 
-    public double getZoomRangeMin()
-    {
+    public double getZoomRangeMin() {
         return zoomRangeMin;
     }
 
-    public void setZoomRangeMin(double zoomRangeMin)
-    {
+    public void setZoomRangeMin(double zoomRangeMin) {
         this.zoomRangeMin = zoomRangeMin;
     }
 
-    public double getZoomRangeMax()
-    {
+    public double getZoomRangeMax() {
         return zoomRangeMax;
     }
 
-    public void setZoomRangeMax(double zoomRangeMax)
-    {
+    public void setZoomRangeMax(double zoomRangeMax) {
         this.zoomRangeMax = zoomRangeMax;
     }
 
-    public int getBarSize()
-    {
+    public int getBarSize() {
         return barSize;
     }
 
-    public void setBarSize(int barSize)
-    {
+    public void setBarSize(int barSize) {
         this.barSize = barSize;
     }
 
-    public void draw(@NotNull Graphics2D g, @NotNull Rectangle bounds, Rectangle clip)
-    {
+    public void draw(@NotNull Graphics2D g, @NotNull Rectangle bounds, Rectangle clip) {
 
         g.setColor(bgColor);
         g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -148,8 +136,7 @@ public class ColorScaleDrawer
 
         int rangeXLeft = scaleXLeft;
 
-        for (ColorScaleRange range : ranges)
-        {
+        for (ColorScaleRange range : ranges) {
 
 
             int rangeWidth = (int) range.getWidth();
@@ -157,10 +144,8 @@ public class ColorScaleDrawer
             int rangeEnd = rangeXLeft + rangeWidth;
 
             //paint the colored box of scale range
-            if (!(range.getType().equals(ColorScaleRange.EMPTY_TYPE)))
-            {
-                for (int x = rangeXLeft; x <= rangeEnd; x++)
-                {
+            if (!(range.getType().equals(ColorScaleRange.EMPTY_TYPE))) {
+                for (int x = rangeXLeft; x <= rangeEnd; x++) {
                     double value = getValueForX(x, range.getType(), rangeXLeft, rangeEnd, range.getMinValue(), range.getMaxValue());
                     final Color color = scale.valueColor(value);
                     g.setColor(color);
@@ -169,15 +154,13 @@ public class ColorScaleDrawer
             }
 
             //paint Border
-            if (range.isBorderEnabled())
-            {
+            if (range.isBorderEnabled()) {
                 g.setColor(barBorderColor);
                 g.drawRect(rangeXLeft, scaleYTop, rangeWidth, scaleHeight);
             }
 
             //paint legend
-            if (legendEnabled)
-            {
+            if (legendEnabled) {
 
                 int lastX = rangeXLeft;
                 int fontHeight = g.getFontMetrics().getHeight();
@@ -188,32 +171,27 @@ public class ColorScaleDrawer
                 g.setColor(legendPointColor);
 
 
-                if (range.getLeftLabel() != null)
-                {
+                if (range.getLeftLabel() != null) {
                     String legend = gf.format(range.getLeftLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeXLeft + legendPadding;
                     g.drawString(legend, legendStart, ye);
                     lastX = fontWidth + legendPadding;
                 }
-                if (range.getCenterLabel() != null)
-                {
+                if (range.getCenterLabel() != null) {
                     String legend = gf.format(range.getCenterLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeEnd - (rangeWidth / 2 + fontWidth / 2);
-                    if (legendStart > lastX + legendPadding * 2)
-                    {
+                    if (legendStart > lastX + legendPadding * 2) {
                         g.drawString(legend, legendStart, ye);
                         lastX = legendStart + fontWidth + legendPadding;
                     }
                 }
-                if (range.getRightLabel() != null)
-                {
+                if (range.getRightLabel() != null) {
                     String legend = gf.format(range.getRightLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeXLeft + rangeWidth - legendPadding - fontWidth;
-                    if (legendStart > lastX + legendPadding)
-                    {
+                    if (legendStart > lastX + legendPadding) {
                         g.drawString(legend, legendStart, ye);
                     }
                 }
@@ -224,24 +202,18 @@ public class ColorScaleDrawer
         }
     }
 
-    private double getValueForX(int x, @NotNull String type, int minX, int maxX, double minValue, double maxValue)
-    {
-        if (type.equals(ColorScaleRange.LINEAR_TYPE))
-        {
+    private double getValueForX(int x, @NotNull String type, int minX, int maxX, double minValue, double maxValue) {
+        if (type.equals(ColorScaleRange.LINEAR_TYPE)) {
 
             double delta = (maxValue - minValue) / (maxX - minX);
             return minValue + delta * (x - minX);
 
-        }
-        else if (type.equals(ColorScaleRange.LOGARITHMIC_TYPE))
-        {
+        } else if (type.equals(ColorScaleRange.LOGARITHMIC_TYPE)) {
 
             double exp = 1.0 * (x - minX) / (maxX - minX);
             return minValue + ((Math.pow(10, exp) - 1) / 9) * (maxValue - minValue);
 
-        }
-        else if (type.equals(ColorScaleRange.CONSTANT_TYPE))
-        {
+        } else if (type.equals(ColorScaleRange.CONSTANT_TYPE)) {
 
             return maxValue;
 
@@ -251,11 +223,9 @@ public class ColorScaleDrawer
         return 0;
     }
 
-    private void adjustRangeWidths(int scaleWidth, @NotNull ArrayList<ColorScaleRange> ranges)
-    {
+    private void adjustRangeWidths(int scaleWidth, @NotNull ArrayList<ColorScaleRange> ranges) {
         double rangesWidth = 0;
-        for (ColorScaleRange r : ranges)
-        {
+        for (ColorScaleRange r : ranges) {
             rangesWidth += r.getWidth();
         }
 
@@ -264,19 +234,16 @@ public class ColorScaleDrawer
         double resizeFactor = scaleWidth / rangesWidth;
 
         Iterator iter = rangesSet.iterator();
-        while (iter.hasNext())
-        {
+        while (iter.hasNext()) {
             ColorScaleRange r = (ColorScaleRange) iter.next();
             r.setWidth(r.getWidth() * resizeFactor);
         }
     }
 
     @NotNull
-    public Dimension getSize()
-    {
+    public Dimension getSize() {
         int height = heightPadding * 2 + barSize;
-        if (legendEnabled)
-        {
+        if (legendEnabled) {
             BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
             height += g.getFontMetrics(legendFont).getHeight() + legendPadding;

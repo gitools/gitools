@@ -24,8 +24,8 @@ package org.gitools.analysis.htest.enrichment;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.HtestCommand;
 import org.gitools.datafilters.ValueTranslator;
-import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.matrix.BaseMatrix;
 import org.gitools.model.GeneSet;
 import org.gitools.model.ModuleMap;
 import org.gitools.persistence.*;
@@ -42,14 +42,12 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.*;
 
-public class EnrichmentCommand extends HtestCommand
-{
+public class EnrichmentCommand extends HtestCommand {
 
     private final IResourceFormat modulesFormat;
     private final String modulesPath;
 
-    public EnrichmentCommand(EnrichmentAnalysis analysis, IResourceFormat dataFormat, String dataFile, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName)
-    {
+    public EnrichmentCommand(EnrichmentAnalysis analysis, IResourceFormat dataFormat, String dataFile, int valueIndex, String populationPath, Double populationDefaultValue, IResourceFormat modulesFormat, String modulesFile, String workdir, String fileName) {
 
         super(analysis, dataFormat, dataFile, valueIndex, populationPath, populationDefaultValue, workdir, fileName);
 
@@ -58,11 +56,9 @@ public class EnrichmentCommand extends HtestCommand
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
-        try
-        {
+        try {
             final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
 
             // Load data and modules
@@ -82,18 +78,15 @@ public class EnrichmentCommand extends HtestCommand
             processor.run(monitor);
 
             save(enrichAnalysis, monitor);
-        } catch (Throwable ex)
-        {
+        } catch (Throwable ex) {
             throw new AnalysisException(ex);
         }
     }
 
-    private void save(final EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException
-    {
+    private void save(final EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
 
         File workdirFile = new File(workdir);
-        if (!workdirFile.exists())
-        {
+        if (!workdirFile.exists()) {
             workdirFile.mkdirs();
         }
 
@@ -114,15 +107,13 @@ public class EnrichmentCommand extends HtestCommand
      * @param monitor
      * @throws PersistenceException
      */
-    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, String modulesFileName, @NotNull EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException
-    {
+    private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, String modulesFileName, @NotNull EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
 
         // Load background population
 
         String[] populationLabels = null;
 
-        if (populationFileName != null)
-        {
+        if (populationFileName != null) {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(populationFileName));
 
             IResourceFormat<GeneSet> resourceFormat = PersistenceManager.get().getFormat(populationFileName, GeneSet.class);
@@ -142,8 +133,7 @@ public class EnrichmentCommand extends HtestCommand
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
         dataProps.put(AbstractMatrixFormat.VALUE_TRANSLATORS, valueTranslators);
         dataProps.put(MultiValueMatrixFormat.VALUE_INDICES, new int[]{valueIndex});
-        if (populationLabels != null)
-        {
+        if (populationLabels != null) {
             dataProps.put(AbstractTextMatrixFormat.POPULATION_LABELS, populationLabels);
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
@@ -166,16 +156,13 @@ public class EnrichmentCommand extends HtestCommand
         moduleMap.load(monitor);
 
         // Filter rows if DiscardNonMappedRows is enabled
-        if (analysis.isDiscardNonMappedRows())
-        {
+        if (analysis.isDiscardNonMappedRows()) {
 
             BaseMatrix fmatrix = null;
-            try
-            {
+            try {
                 fmatrix = dataMatrix.get().getClass().newInstance();
                 fmatrix.setObjectCellAdapter(dataMatrix.get().getObjectCellAdapter());
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 throw new PersistenceException("Error filtering data matrix.", ex);
             }
 
@@ -186,8 +173,7 @@ public class EnrichmentCommand extends HtestCommand
             backgroundNames.addAll(Arrays.asList(names));
 
             for (int i = 0; i < dataMatrix.get().getRows().size(); i++)
-                if (backgroundNames.contains(dataMatrix.get().internalRowLabel(i)))
-                {
+                if (backgroundNames.contains(dataMatrix.get().internalRowLabel(i))) {
                     rows.add(i);
                 }
 
@@ -197,21 +183,17 @@ public class EnrichmentCommand extends HtestCommand
             fmatrix.make(numRows, numColumns);
             fmatrix.setColumns(dataMatrix.get().getInternalColumns());
 
-            for (int ri = 0; ri < numRows; ri++)
-            {
+            for (int ri = 0; ri < numRows; ri++) {
                 int srcRow = rows.get(ri);
                 fmatrix.setRow(ri, dataMatrix.get().internalRowLabel(srcRow));
-                for (int ci = 0; ci < numColumns; ci++)
-                {
+                for (int ci = 0; ci < numColumns; ci++) {
                     Object value = dataMatrix.get().getCellValue(srcRow, ci, 0);
                     fmatrix.setCellValue(ri, ci, 0, value);
                 }
             }
 
             analysis.setData(new ResourceReference<IMatrix>("data", fmatrix));
-        }
-        else
-        {
+        } else {
             analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
         }
 

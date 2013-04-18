@@ -29,51 +29,42 @@ import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.jetbrains.annotations.NotNull;
 
-public class AnnPatClusteringData implements ClusteringData
-{
+public class AnnPatClusteringData implements ClusteringData {
 
-    public class Instance implements ClusteringDataInstance
-    {
+    public class Instance implements ClusteringDataInstance {
 
         private final VariableValueResolver resolver;
 
-        public Instance(VariableValueResolver resolver)
-        {
+        public Instance(VariableValueResolver resolver) {
             this.resolver = resolver;
         }
 
         @Override
-        public int getNumAttributes()
-        {
+        public int getNumAttributes() {
             return 1;
         }
 
         @NotNull
         @Override
-        public String getAttributeName(int attribute)
-        {
+        public String getAttributeName(int attribute) {
             return "value";
         }
 
         @NotNull
         @Override
-        public Class<?> getValueClass(int attribute)
-        {
+        public Class<?> getValueClass(int attribute) {
             return String.class;
         }
 
         @Override
-        public Object getValue(int attribute)
-        {
+        public Object getValue(int attribute) {
             return pat.generate(resolver);
         }
 
         @NotNull
         @Override
-        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass)
-        {
-            if (!String.class.equals(valueClass))
-            {
+        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass) {
+            if (!String.class.equals(valueClass)) {
                 throw new RuntimeException("Unsupported value class: " + valueClass.getName());
             }
 
@@ -84,28 +75,24 @@ public class AnnPatClusteringData implements ClusteringData
     private final HeatmapDimension dimension;
     private final TextPattern pat;
 
-    public AnnPatClusteringData(HeatmapDimension dimension, String pattern)
-    {
+    public AnnPatClusteringData(HeatmapDimension dimension, String pattern) {
         this.dimension = dimension;
         this.pat = new TextPattern(pattern);
     }
 
     @Override
-    public int getSize()
-    {
+    public int getSize() {
         return dimension.size();
     }
 
     @Override
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         return dimension.getLabel(index);
     }
 
     @NotNull
     @Override
-    public ClusteringDataInstance getInstance(int index)
-    {
+    public ClusteringDataInstance getInstance(int index) {
         return new Instance(new AnnotationResolver(dimension.getAnnotations(), dimension.getLabel(index), "N/A"));
     }
 }

@@ -37,18 +37,14 @@ import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdap
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapDimension extends Model implements IMatrixViewDimension
-{
+public class HeatmapDimension extends Model implements IMatrixViewDimension {
     public static final String PROPERTY_GRID_COLOR = "gridColor";
     public static final String PROPERTY_GRID_SIZE = "gridSize";
     public static final String PROPERTY_CELL_SIZE = "cellSize";
@@ -61,21 +57,25 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
 
     private static final int INT_BIT_SIZE = 32;
 
-
     @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
+    @XmlElement(name = "identifier-type")
     private IdType idType;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<AnnotationMatrix> annotations;
 
-    @XmlElement
+    @XmlElementWrapper(name = "headers")
+    @XmlElement(name = "header")
     private LinkedList<HeatmapHeader> headers;
 
+    @XmlElement(name = "grid-size")
     private int gridSize;
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    @XmlElement(name = "grid-color")
     private Color gridColor;
 
+    @XmlElement(name = "cell-size")
     private int cellSize;
 
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
@@ -96,20 +96,17 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     @XmlTransient
     private IMatrixDimension matrixDimension;
 
-    public HeatmapDimension()
-    {
+    public HeatmapDimension() {
         commonInit();
     }
 
-    public HeatmapDimension(IMatrixDimension matrixDimension, String label)
-    {
+    public HeatmapDimension(Heatmap heatmap, IMatrixDimension matrixDimension, String label) {
         commonInit();
         this.annotations = new ResourceReference<AnnotationMatrix>(label + "-annotations", new AnnotationMatrix());
-        init(matrixDimension);
+        init(heatmap, matrixDimension);
     }
 
-    private void commonInit()
-    {
+    private void commonInit() {
         this.idType = IdTypeManager.getDefault().getDefaultIdType();
         this.headers = new LinkedList<HeatmapHeader>();
         this.gridSize = 1;
@@ -120,45 +117,41 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         selectionLead = -1;
     }
 
-    public void init(IMatrixDimension matrixDimension)
-    {
+    public void init(Heatmap heatmap, IMatrixDimension matrixDimension) {
         this.matrixDimension = matrixDimension;
 
-        if (visible == null)
-        {
+        if (visible == null) {
             visible = new int[size()];
-            for (int i = 0; i < size(); i++)
-            {
+            for (int i = 0; i < size(); i++) {
                 visible[i] = i;
             }
         }
 
         selectedBitmap = newSelectionBitmap(size());
+
+        for (HeatmapHeader header : headers) {
+            header.init(heatmap);
+        }
     }
 
-    public int[] getVisible()
-    {
+    public int[] getVisible() {
         return visible;
     }
 
-    public void setVisible(int[] indices)
-    {
+    public void setVisible(int[] indices) {
         setVisible(indices, true);
     }
 
-    private void setVisible(int[] indices, boolean updateLead)
-    {
+    private void setVisible(int[] indices, boolean updateLead) {
         // update selection according to new visibility
         int[] selection = selectionFromVisible(selectedBitmap, indices);
 
         int nextLeadRow = -1;
         final int leadRow = selectionLead >= 0 ? visible[selectionLead] : -1;
 
-        if (updateLead)
-        {
+        if (updateLead) {
             for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
-                if (indices[i] == leadRow)
-                {
+                if (indices[i] == leadRow) {
                     nextLeadRow = i;
                 }
         }
@@ -167,20 +160,17 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_VISIBLE, null, indices);
 
         setSelected(selection);
-        if (updateLead)
-        {
+        if (updateLead) {
             setSelectionLead(nextLeadRow);
         }
     }
 
     @NotNull
-    private int[] selectionFromVisible(int[] bitmap, @NotNull int[] visible)
-    {
+    private int[] selectionFromVisible(int[] bitmap, @NotNull int[] visible) {
         int selectionCount = 0;
         int[] selectionBuffer = new int[visible.length];
         for (int i = 0; i < visible.length; i++)
-            if (checkSelectionBitmap(bitmap, visible[i]))
-            {
+            if (checkSelectionBitmap(bitmap, visible[i])) {
                 selectionBuffer[selectionCount++] = i;
             }
 
@@ -189,125 +179,103 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         return selection;
     }
 
-    private boolean checkSelectionBitmap(int[] bitmap, int index)
-    {
+    private boolean checkSelectionBitmap(int[] bitmap, int index) {
         int bindex = index / INT_BIT_SIZE;
         int bit = 1 << (index % INT_BIT_SIZE);
         return (bitmap[bindex] & bit) != 0;
     }
 
-    public IdType getIdType()
-    {
+    public IdType getIdType() {
         return idType;
     }
 
-    public void setIdType(IdType idType)
-    {
+    public void setIdType(IdType idType) {
         IdType old = this.idType;
         this.idType = idType;
         firePropertyChange(PROPERTY_ID_TYPE, old, idType);
     }
 
-    public int getCellSize()
-    {
+    public int getCellSize() {
         return cellSize;
     }
 
-    public void setCellSize(int newValue)
-    {
+    public void setCellSize(int newValue) {
         int oldValue = this.cellSize;
         this.cellSize = newValue;
         firePropertyChange(PROPERTY_CELL_SIZE, oldValue, newValue);
     }
 
-    public List<HeatmapHeader> getHeaders()
-    {
+    public List<HeatmapHeader> getHeaders() {
         return headers;
     }
 
-    public void updateHeaders()
-    {
+    public void updateHeaders() {
         firePropertyChange(PROPERTY_HEADERS, null, null);
     }
 
-    public void addHeader(@NotNull HeatmapHeader header)
-    {
-        if (header.getHeatmapDim() == null)
-        {
+    public void addHeader(@NotNull HeatmapHeader header) {
+        if (header.getHeatmapDim() == null) {
             header.setHeatmapDim(this);
         }
         headers.addFirst(header);
         firePropertyChange(PROPERTY_HEADERS, null, headers);
     }
 
-    public int getHeaderSize()
-    {
+    public int getHeaderSize() {
         int size = 0;
         for (HeatmapHeader h : headers)
             size += h.getSize();
         return size;
     }
 
-    public int getGridSize()
-    {
+    public int getGridSize() {
         return gridSize;
     }
 
-    public void setGridSize(int gridSize)
-    {
+    public void setGridSize(int gridSize) {
         int old = this.gridSize;
         this.gridSize = gridSize;
         firePropertyChange(PROPERTY_GRID_SIZE, old, gridSize);
     }
 
-    public Color getGridColor()
-    {
+    public Color getGridColor() {
         return gridColor;
     }
 
-    public void setGridColor(Color gridColor)
-    {
+    public void setGridColor(Color gridColor) {
         Color old = this.gridColor;
         this.gridColor = gridColor;
         firePropertyChange(PROPERTY_GRID_COLOR, old, gridColor);
     }
 
-    public IAnnotations getAnnotations()
-    {
-        if (annotations == null)
-        {
+    public IAnnotations getAnnotations() {
+        if (annotations == null) {
             return null;
         }
 
         return annotations.get();
     }
 
-    public void addAnnotations(IAnnotations annotations)
-    {
+    public void addAnnotations(IAnnotations annotations) {
         this.annotations.get().addAnnotations(annotations);
     }
 
-    public boolean isHighlighted(String label)
-    {
+    public boolean isHighlighted(String label) {
         return highlightedLabels.contains(label);
     }
 
-    public void setHighlightedLabels(Set<String> highlightedLabels)
-    {
+    public void setHighlightedLabels(Set<String> highlightedLabels) {
         this.highlightedLabels = highlightedLabels;
         firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
     }
 
-    public void clearHighlightedLabels()
-    {
+    public void clearHighlightedLabels() {
         highlightedLabels.clear();
         firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
     }
 
-    public void move(Direction direction, int[] indices)
-    {
-        switch (direction)
-        {
+    public void move(Direction direction, int[] indices) {
+        switch (direction) {
             case UP:
             case LEFT:
                 moveLeft(indices);
@@ -318,13 +286,10 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         }
     }
 
-    private void moveLeft(int[] indices)
-    {
-        if (indices != null && indices.length > 0)
-        {
+    private void moveLeft(int[] indices) {
+        if (indices != null && indices.length > 0) {
             Arrays.sort(indices);
-            if (indices[0] > 0 && Arrays.binarySearch(indices, selectionLead) >= 0)
-            {
+            if (indices[0] > 0 && Arrays.binarySearch(indices, selectionLead) >= 0) {
                 selectionLead--;
             }
         }
@@ -334,13 +299,10 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
-    private void moveRight(int[] indices)
-    {
-        if (indices != null && indices.length > 0)
-        {
+    private void moveRight(int[] indices) {
+        if (indices != null && indices.length > 0) {
             Arrays.sort(indices);
-            if (indices[indices.length - 1] < size() - 1 && Arrays.binarySearch(indices, selectionLead) >= 0)
-            {
+            if (indices[indices.length - 1] < size() - 1 && Arrays.binarySearch(indices, selectionLead) >= 0) {
                 selectionLead++;
             }
         }
@@ -350,24 +312,17 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
-    public void hide(int[] indices)
-    {
+    public void hide(int[] indices) {
         int[] rows = visible;
 
         int[] sel = indices;
-        if (sel == null || sel.length == 0)
-        {
-            if (selectionLead != -1)
-            {
+        if (sel == null || sel.length == 0) {
+            if (selectionLead != -1) {
                 sel = new int[]{selectionLead};
-            }
-            else
-            {
+            } else {
                 sel = new int[0];
             }
-        }
-        else
-        {
+        } else {
             Arrays.sort(sel);
         }
 
@@ -378,14 +333,10 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         int i = 0;
         int j = 0;
         int k = 0;
-        while (i < rows.length && j < sel.length)
-        {
-            if (i != sel[j])
-            {
+        while (i < rows.length && j < sel.length) {
+            if (i != sel[j]) {
                 vrows[k++] = rows[i];
-            }
-            else
-            {
+            } else {
                 j++;
             }
 
@@ -396,8 +347,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
             vrows[k++] = rows[i++];
 
         int count = vrows.length - 1;
-        if (nextLead > count)
-        {
+        if (nextLead > count) {
             nextLead = count;
         }
 
@@ -408,32 +358,25 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_SELECTION_LEAD, null, selectionLead);
     }
 
-    public int[] getSelected()
-    {
+    public int[] getSelected() {
         return selected;
     }
 
-    public void setSelected(int[] indices)
-    {
+    public void setSelected(int[] indices) {
         this.selected = indices;
         updateSelectionBitmap(selectedBitmap, indices, visible);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
-    public boolean isSelected(int index)
-    {
-        if (index >= visible.length)
-        {
+    public boolean isSelected(int index) {
+        if (index >= visible.length) {
             return false;
-        }
-        else
-        {
+        } else {
             return checkSelectionBitmap(selectedBitmap, visible[index]);
         }
     }
 
-    public void selectAll()
-    {
+    public void selectAll() {
         selected = new int[size()];
         for (int i = 0; i < size(); i++)
             selected[i] = i;
@@ -443,55 +386,44 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
-    public void invertSelection()
-    {
-        if (selected.length == 0)
-        {
+    public void invertSelection() {
+        if (selected.length == 0) {
             selectAll();
-        }
-        else
-        {
+        } else {
             setSelected(invertSelectionArray(selected, size()));
         }
 
     }
 
-    public void clearSelection()
-    {
+    public void clearSelection() {
         selected = new int[0];
         Arrays.fill(selectedBitmap, 0);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
-    public int getSelectionLead()
-    {
+    public int getSelectionLead() {
         return selectionLead;
     }
 
-    public void setSelectionLead(int selectionLead)
-    {
+    public void setSelectionLead(int selectionLead) {
         boolean changed = this.selectionLead != selectionLead;
 
         this.selectionLead = selectionLead;
-        if (changed)
-        {
+        if (changed) {
             firePropertyChange(PROPERTY_SELECTION_LEAD, null, selectionLead);
         }
     }
 
     @Override
-    public int size()
-    {
+    public int size() {
         return matrixDimension.size();
     }
 
-    public int visibleSize()
-    {
+    public int visibleSize() {
         return visible.length;
     }
 
-    public void visibleFromSelection()
-    {
+    public void visibleFromSelection() {
         int[] sel = selected;
         int[] view = visible;
         int[] newview = new int[sel.length];
@@ -502,25 +434,21 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
         setVisible(newview);
     }
 
-    private int[] newSelectionBitmap(int size)
-    {
+    private int[] newSelectionBitmap(int size) {
         int[] a = new int[(size + INT_BIT_SIZE - 1) / INT_BIT_SIZE];
         Arrays.fill(a, 0);
         return a;
     }
 
-    private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection)
-    {
+    private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection) {
 
-        if (indices.length == 0 || indices[0] == 0)
-        {
+        if (indices.length == 0 || indices[0] == 0) {
             return;
         }
 
         Arrays.sort(indices);
 
-        for (int idx : indices)
-        {
+        for (int idx : indices) {
             int tmp = array[idx - 1];
             array[idx - 1] = array[idx];
             array[idx] = tmp;
@@ -530,18 +458,15 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
             selection[i]--;
     }
 
-    private void arrayMoveRight(@NotNull int[] array, @NotNull int[] indices, @NotNull int[] selection)
-    {
+    private void arrayMoveRight(@NotNull int[] array, @NotNull int[] indices, @NotNull int[] selection) {
 
-        if (indices.length == 0 || indices[indices.length - 1] == array.length - 1)
-        {
+        if (indices.length == 0 || indices[indices.length - 1] == array.length - 1) {
             return;
         }
 
         Arrays.sort(indices);
 
-        for (int i = indices.length - 1; i >= 0; i--)
-        {
+        for (int i = indices.length - 1; i >= 0; i--) {
             int idx = indices[i];
             int tmp = array[idx + 1];
             array[idx + 1] = array[idx];
@@ -552,11 +477,9 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
             selection[i]++;
     }
 
-    private void updateSelectionBitmap(@NotNull int[] bitmap, @NotNull int[] indices, int[] visible)
-    {
+    private void updateSelectionBitmap(@NotNull int[] bitmap, @NotNull int[] indices, int[] visible) {
         Arrays.fill(bitmap, 0);
-        for (int visibleIndex : indices)
-        {
+        for (int visibleIndex : indices) {
             int index = visible[visibleIndex];
             int bindex = index / INT_BIT_SIZE;
             int bit = 1 << (index % INT_BIT_SIZE);
@@ -565,15 +488,13 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     }
 
     @NotNull
-    private int[] invertSelectionArray(@NotNull int[] array, int count)
-    {
+    private int[] invertSelectionArray(@NotNull int[] array, int count) {
         int size = count - array.length;
         int[] invArray = new int[size];
 
         int j = 0;
         int lastIndex = 0;
-        for (int i = 0; i < array.length; i++)
-        {
+        for (int i = 0; i < array.length; i++) {
             while (lastIndex < array[i])
                 invArray[j++] = lastIndex++;
             lastIndex = array[i] + 1;
@@ -585,14 +506,12 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension
     }
 
     @Override
-    public String getLabel(int index)
-    {
+    public String getLabel(int index) {
         return matrixDimension.getLabel(visible[index]);
     }
 
     @Override
-    public int getIndex(String label)
-    {
+    public int getIndex(String label) {
         return matrixDimension.getIndex(label);
     }
 }

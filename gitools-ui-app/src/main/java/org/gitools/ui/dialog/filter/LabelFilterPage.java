@@ -40,25 +40,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LabelFilterPage extends AbstractWizardPage
-{
+public class LabelFilterPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String rowsPatt;
     private String colsPatt;
 
-    public LabelFilterPage(Heatmap hm)
-    {
+    public LabelFilterPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
 
-        ActionListener dimChangedListener = new ActionListener()
-        {
+        ActionListener dimChangedListener = new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 dimChanged();
             }
         };
@@ -66,29 +62,23 @@ public class LabelFilterPage extends AbstractWizardPage
         rowsRb.addActionListener(dimChangedListener);
         colsRb.addActionListener(dimChangedListener);
 
-        rowsPattBtn.addActionListener(new ActionListener()
-        {
+        rowsPattBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectRowsPattern();
             }
         });
 
-        colsPattBtn.addActionListener(new ActionListener()
-        {
+        colsPattBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae)
-            {
+            public void actionPerformed(ActionEvent ae) {
                 selectColsPattern();
             }
         });
 
-        patterns.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        patterns.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 saveBtn.setEnabled(patterns.getDocument().getLength() > 0);
             }
         });
@@ -105,8 +95,7 @@ public class LabelFilterPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    private void dimChanged()
-    {
+    private void dimChanged() {
         boolean rs = rowsRb.isSelected();
         rowsPattFld.setEnabled(rs);
         rowsPattBtn.setEnabled(rs);
@@ -116,17 +105,14 @@ public class LabelFilterPage extends AbstractWizardPage
     }
 
     @NotNull
-    String readNamesFromFile(File file) throws IOException
-    {
+    String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
         String line;
 
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             line = line.trim();
-            if (!line.isEmpty())
-            {
+            if (!line.isEmpty()) {
                 sb.append(line).append('\n');
             }
         }
@@ -134,13 +120,11 @@ public class LabelFilterPage extends AbstractWizardPage
         return sb.toString();
     }
 
-    private void selectRowsPattern()
-    {
+    private void selectRowsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -148,13 +132,11 @@ public class LabelFilterPage extends AbstractWizardPage
         rowsPattFld.setText(page.getPatternTitle());
     }
 
-    private void selectColsPattern()
-    {
+    private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -163,49 +145,36 @@ public class LabelFilterPage extends AbstractWizardPage
     }
 
     @NotNull
-    public FilterDimension getFilterDimension()
-    {
-        if (rowsRb.isSelected())
-        {
+    public FilterDimension getFilterDimension() {
+        if (rowsRb.isSelected()) {
             return FilterDimension.ROWS;
-        }
-        else
-        {
+        } else {
             return FilterDimension.COLUMNS;
         }
     }
 
-    public String getPattern()
-    {
-        if (rowsRb.isSelected())
-        {
+    public String getPattern() {
+        if (rowsRb.isSelected()) {
             return rowsPatt;
-        }
-        else
-        {
+        } else {
             return colsPatt;
         }
     }
 
     @NotNull
-    public List<String> getValues()
-    {
+    public List<String> getValues() {
         List<String> values = new ArrayList<String>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;
-        try
-        {
-            while ((line = br.readLine()) != null)
-            {
+        try {
+            while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (!line.isEmpty())
-                {
+                if (!line.isEmpty()) {
                     values.add(line);
                 }
             }
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
             dlg.setVisible(true);
         }
@@ -213,8 +182,7 @@ public class LabelFilterPage extends AbstractWizardPage
         return values;
     }
 
-    public boolean isUseRegexChecked()
-    {
+    public boolean isUseRegexChecked() {
         return useRegexCheck.isSelected();
     }
 
@@ -226,8 +194,7 @@ public class LabelFilterPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -256,10 +223,8 @@ public class LabelFilterPage extends AbstractWizardPage
         jLabel3.setText("One label or regular expression per line");
 
         loadBtn.setText("Load...");
-        loadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadBtnActionPerformed(evt);
             }
         });
@@ -268,10 +233,8 @@ public class LabelFilterPage extends AbstractWizardPage
 
         saveBtn.setText("Save...");
         saveBtn.setEnabled(false);
-        saveBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveBtnActionPerformed(evt);
             }
         });
@@ -295,36 +258,29 @@ public class LabelFilterPage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(rowsPattBtn).addComponent(rowsRb).addComponent(rowsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(colsPattBtn).addComponent(colsRb).addComponent(colsPattFld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(loadBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addGap(18, 18, 18).addComponent(useRegexCheck).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_loadBtnActionPerformed
+    private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
 
-        try
-        {
+        try {
             File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
             Settings.getDefault().setLastFilterPath(file.getParent());
 
             patterns.setText(readNamesFromFile(file));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtnActionPerformed
 
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_saveBtnActionPerformed
-        try
-        {
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        try {
             File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
 
-            if (file == null)
-            {
+            if (file == null) {
                 return;
             }
 
@@ -333,8 +289,7 @@ public class LabelFilterPage extends AbstractWizardPage
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.append(patterns.getText()).append('\n');
             bw.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
             edlg.setVisible(true);
         }

@@ -26,28 +26,23 @@ import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.NumericColorScale;
 
-public class ScaleExportWizard extends AbstractWizard
-{
+public class ScaleExportWizard extends AbstractWizard {
 
     private final SaveFilePage savePage;
     private final ScaleExportConfigPage configPage;
 
-    public ScaleExportWizard()
-    {
+    public ScaleExportWizard() {
         savePage = new SaveFilePage();
         configPage = new ScaleExportConfigPage();
     }
 
-    public SaveFilePage getSavePage()
-    {
+    public SaveFilePage getSavePage() {
         return savePage;
     }
 
-    public void setScale(IColorScale scale)
-    {
+    public void setScale(IColorScale scale) {
 
-        if (scale instanceof NumericColorScale)
-        {
+        if (scale instanceof NumericColorScale) {
             NumericColorScale nScale = (NumericColorScale) scale;
             configPage.setRange(nScale.getMinValue(), nScale.getMaxValue());
         }
@@ -55,29 +50,24 @@ public class ScaleExportWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         addPage(savePage);
         addPage(configPage);
     }
 
-    public boolean isPartialRange()
-    {
+    public boolean isPartialRange() {
         return configPage.isPartialRange();
     }
 
-    public double getRangeMin()
-    {
+    public double getRangeMin() {
         return configPage.getRangeMin();
     }
 
-    public double getRangeMax()
-    {
+    public double getRangeMax() {
         return configPage.getRangeMax();
     }
 
-    public int getScaleSize()
-    {
+    public int getScaleSize() {
         return configPage.getScaleSize();
     }
 }

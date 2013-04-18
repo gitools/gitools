@@ -32,52 +32,43 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ColoredLabelsConfigPage extends AbstractWizardPage
-{
+public class ColoredLabelsConfigPage extends AbstractWizardPage {
 
     private HeatmapColoredLabelsHeader header;
 
     private Font labelFont;
 
-    public ColoredLabelsConfigPage()
-    {
+    public ColoredLabelsConfigPage() {
         this(new HeatmapColoredLabelsHeader(null));
     }
 
     /**
      * Creates new form ColoredClustersConfigPage
      */
-    public ColoredLabelsConfigPage(HeatmapColoredLabelsHeader header)
-    {
+    public ColoredLabelsConfigPage(HeatmapColoredLabelsHeader header) {
         super();
 
         this.header = header;
 
         initComponents();
 
-        labelVisibleChk.addChangeListener(new ChangeListener()
-        {
+        labelVisibleChk.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e)
-            {
+            public void stateChanged(ChangeEvent e) {
                 labelVisibleChanged();
             }
         });
 
-        forceLabelColorChk.addChangeListener(new ChangeListener()
-        {
+        forceLabelColorChk.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent e)
-            {
+            public void stateChanged(ChangeEvent e) {
                 labelVisibleChanged();
             }
         });
 
-        labelFontBtn.addActionListener(new ActionListener()
-        {
+        labelFontBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 selectFont();
             }
         });
@@ -87,8 +78,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
         titleField.setText(header.getTitle());
@@ -105,8 +95,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
 
     }
 
-    private void labelVisibleChanged()
-    {
+    private void labelVisibleChanged() {
         boolean e = labelVisibleChk.isSelected();
         labelFontField.setEnabled(e);
         fontLabel.setEnabled(e);
@@ -117,19 +106,16 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
         labelRotatedChk.setVisible(false);
     }
 
-    private void fontChanged()
-    {
+    private void fontChanged() {
         labelFontField.setText(FontUtils.fontText(labelFont));
         labelFontField.setFont(labelFont);
     }
 
-    private void selectFont()
-    {
+    private void selectFont() {
         FontChooserDialog dlg = new FontChooserDialog(null, header.getLabelFont());
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -138,8 +124,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
         header.setTitle(titleField.getText());
@@ -161,8 +146,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         colorGroup = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
@@ -227,13 +211,11 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage
     // End of variables declaration//GEN-END:variables
 
 
-    public HeatmapColoredLabelsHeader getHeader()
-    {
+    public HeatmapColoredLabelsHeader getHeader() {
         return header;
     }
 
-    public void setHeader(HeatmapColoredLabelsHeader header)
-    {
+    public void setHeader(HeatmapColoredLabelsHeader header) {
         this.header = header;
     }
 }

@@ -29,36 +29,30 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class FisherTest extends AbstractTest
-{
+public class FisherTest extends AbstractTest {
 
-    public FisherTest()
-    {
+    public FisherTest() {
     }
 
     @NotNull
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "fisher";
     }
 
     @NotNull
     @Override
-    public Class<? extends CommonResult> getResultClass()
-    {
+    public Class<? extends CommonResult> getResultClass() {
         return FisherResult.class;
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population)
-    {
+    public void processPopulation(String name, DoubleMatrix1D population) {
     }
 
     @NotNull
     @Override
-    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, @NotNull int[] groupItemIndices)
-    {
+    public CommonResult processTest(String condName, @NotNull DoubleMatrix1D condItems, String groupName, @NotNull int[] groupItemIndices) {
 
         int[] ctable = new int[4];
 
@@ -88,8 +82,7 @@ public class FisherTest extends AbstractTest
      * @param groupItems item indices to propItems for the items that belongs to the group
      * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      */
-    private void calcContingencyTable(@NotNull DoubleMatrix1D condItems, @NotNull int[] groupItems, int[] ctable)
-    {
+    private void calcContingencyTable(@NotNull DoubleMatrix1D condItems, @NotNull int[] groupItems, int[] ctable) {
 
         // Initialize the contingency table with zeros
         for (int i = 0; i < 4; i++)
@@ -100,21 +93,17 @@ public class FisherTest extends AbstractTest
 
         // count
         int k = 0;
-        for (int i = 0; i < condItems.size(); i++)
-        {
+        for (int i = 0; i < condItems.size(); i++) {
             double value = condItems.getQuick(i);
 
             boolean belongsToGroup = k < groupItems.length && groupItems[k] == i;
-            if (belongsToGroup)
-            {
+            if (belongsToGroup) {
                 k++;
             }
 
-            if (!Double.isNaN(value))
-            {
+            if (!Double.isNaN(value)) {
                 int j = (value == 1.0) ? 0 : 1;
-                if (!belongsToGroup)
-                {
+                if (!belongsToGroup) {
                     j += 2;
                 }
 

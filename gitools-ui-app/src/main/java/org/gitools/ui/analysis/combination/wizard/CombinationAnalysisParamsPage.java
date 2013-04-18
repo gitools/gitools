@@ -30,35 +30,29 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class CombinationAnalysisParamsPage extends AbstractWizardPage
-{
+public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 
     @Nullable
     private IMatrixLayers attrs;
 
-    private static class AttrOption
-    {
+    private static class AttrOption {
         private String name;
         private IMatrixLayer attr;
 
-        public AttrOption(String name)
-        {
+        public AttrOption(String name) {
             this.name = name;
         }
 
-        public AttrOption(IMatrixLayer attr)
-        {
+        public AttrOption(IMatrixLayer attr) {
             this.attr = attr;
         }
 
-        public IMatrixLayer getAttr()
-        {
+        public IMatrixLayer getAttr() {
             return attr;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return attr != null ? attr.getName() : name;
         }
     }
@@ -66,8 +60,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
     private String preferredSizeAttr;
     private String preferredPvalueAttr;
 
-    public CombinationAnalysisParamsPage()
-    {
+    public CombinationAnalysisParamsPage() {
         initComponents();
 
         dissableAttrCb();
@@ -78,8 +71,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    private void dissableAttrCb()
-    {
+    private void dissableAttrCb() {
         sizeAttrCb.setModel(new DefaultComboBoxModel());
         sizeAttrLabel.setEnabled(false);
         sizeAttrCb.setEnabled(false);
@@ -88,12 +80,10 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable IMatrixLayers<? extends IMatrixLayer> attrs)
-    {
+    public void setAttributes(@Nullable IMatrixLayers<? extends IMatrixLayer> attrs) {
         this.attrs = attrs;
 
-        if (attrs != null)
-        {
+        if (attrs != null) {
             AttrOption[] sizeAttrs = new AttrOption[attrs.size() + 1];
             sizeAttrs[0] = new AttrOption("All columns with the same weight");
             for (int i = 0; i < attrs.size(); i++)
@@ -108,16 +98,13 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
             int sizeIndex = -1;
             int pvalueIndex = -1;
             int i = 0;
-            for (IMatrixLayer a : attrs)
-            {
+            for (IMatrixLayer a : attrs) {
                 String aid = a.getId();
-                if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$")))
-                {
+                if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$"))) {
                     sizeIndex = i;
                 }
 
-                if (pvalueIndex == -1 && (aid.equals(preferredPvalueAttr) || aid.matches("^(right-|.*)p-value$")))
-                {
+                if (pvalueIndex == -1 && (aid.equals(preferredPvalueAttr) || aid.matches("^(right-|.*)p-value$"))) {
                     pvalueIndex = i;
                 }
 
@@ -132,44 +119,36 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
             sizeAttrCb.setEnabled(true);
             pvalueAttrLabel.setEnabled(true);
             pvalueAttrCb.setEnabled(true);
-        }
-        else
-        {
+        } else {
             dissableAttrCb();
         }
     }
 
-    public void setPreferredSizeAttr(String preferredSizeAttr)
-    {
+    public void setPreferredSizeAttr(String preferredSizeAttr) {
         this.preferredSizeAttr = preferredSizeAttr;
     }
 
-    public void setPreferredPvalueAttr(String preferredPvalueAttr)
-    {
+    public void setPreferredPvalueAttr(String preferredPvalueAttr) {
         this.preferredPvalueAttr = preferredPvalueAttr;
     }
 
     @Nullable
-    public IMatrixLayer getSizeAttribute()
-    {
+    public IMatrixLayer getSizeAttribute() {
         AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
     @Nullable
-    public IMatrixLayer getPvalueAttribute()
-    {
+    public IMatrixLayer getPvalueAttribute() {
         AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
-    public boolean isTransposeEnabled()
-    {
+    public boolean isTransposeEnabled() {
         return applyToRowsRb.isSelected();
     }
 
-    public void setTransposeEnabled(boolean transpose)
-    {
+    public void setTransposeEnabled(boolean transpose) {
         applyToColumnsRb.setSelected(!transpose);
     }
 
@@ -181,8 +160,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyButtonGroup = new javax.swing.ButtonGroup();
         sizeAttrLabel = new javax.swing.JLabel();

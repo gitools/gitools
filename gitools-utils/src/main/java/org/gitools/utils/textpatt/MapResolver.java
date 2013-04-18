@@ -27,22 +27,18 @@ import java.util.Map;
 /**
  * @noinspection ALL
  */
-public class MapResolver implements TextPattern.VariableValueResolver
-{
+public class MapResolver implements TextPattern.VariableValueResolver {
 
     private final Map map;
 
-    public MapResolver(Map map)
-    {
+    public MapResolver(Map map) {
         this.map = map;
     }
 
     @Override
-    public String resolveValue(String variableName)
-    {
+    public String resolveValue(String variableName) {
         Object value = map.get(variableName);
-        if (value == null)
-        {
+        if (value == null) {
             return "";
         }
 

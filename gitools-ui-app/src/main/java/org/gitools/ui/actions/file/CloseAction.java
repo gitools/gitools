@@ -36,13 +36,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class CloseAction extends BaseAction
-{
+public class CloseAction extends BaseAction {
 
     private static final long serialVersionUID = 2399811452235609343L;
 
-    public CloseAction()
-    {
+    public CloseAction() {
         super("Close");
 
         setDesc("Close current tab");
@@ -52,12 +50,10 @@ public class CloseAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         EditorsPanel editorsPanel = AppFrame.get().getEditorsPanel();
         AbstractEditor currentEditor = editorsPanel.getSelectedEditor();
-        if (currentEditor != null)
-        {
+        if (currentEditor != null) {
             editorsPanel.removeEditor(currentEditor);
         }
 
@@ -66,8 +62,7 @@ public class CloseAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByEditor(@Nullable IEditor editor)
-    {
+    public boolean isEnabledByEditor(@Nullable IEditor editor) {
         return editor != null;
     }
 }

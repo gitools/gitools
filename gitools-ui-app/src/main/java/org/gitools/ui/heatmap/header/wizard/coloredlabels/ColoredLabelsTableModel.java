@@ -35,8 +35,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-class ColoredLabelsTableModel implements TableModel
-{
+class ColoredLabelsTableModel implements TableModel {
 
     private static final String[] columnName = new String[]{"Value", "Displayed Label", "Color"};
 
@@ -49,73 +48,60 @@ class ColoredLabelsTableModel implements TableModel
     private boolean valueEditable = true;
     private boolean valueMustBeNumeric = false;
 
-    public ColoredLabelsTableModel(@NotNull ColoredLabel[] coloredLabels)
-    {
+    public ColoredLabelsTableModel(@NotNull ColoredLabel[] coloredLabels) {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
             list.add(cl);
         this.labelList = list;
     }
 
-    public ColoredLabelsTableModel()
-    {
+    public ColoredLabelsTableModel() {
         this.labelList = new ArrayList<ColoredLabel>();
     }
 
-    public ColoredLabelsTableModel(List<ColoredLabel> coloredLabels)
-    {
+    public ColoredLabelsTableModel(List<ColoredLabel> coloredLabels) {
         this.labelList = coloredLabels;
     }
 
-    public void setValueEditable(boolean editable)
-    {
+    public void setValueEditable(boolean editable) {
         this.valueEditable = editable;
     }
 
-    public boolean isValueEditable()
-    {
+    public boolean isValueEditable() {
         return this.valueEditable;
     }
 
-    public boolean isValueMustBeNumeric()
-    {
+    public boolean isValueMustBeNumeric() {
         return valueMustBeNumeric;
     }
 
-    public void setValueMustBeNumeric(boolean valueMustBeNumeric)
-    {
+    public void setValueMustBeNumeric(boolean valueMustBeNumeric) {
         this.valueMustBeNumeric = valueMustBeNumeric;
     }
 
     @Override
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return labelList.size();
     }
 
     @Override
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return 3;
     }
 
     @Override
-    public String getColumnName(int columnIndex)
-    {
+    public String getColumnName(int columnIndex) {
         return columnName[columnIndex];
     }
 
     @Override
-    public Class<?> getColumnClass(int columnIndex)
-    {
+    public Class<?> getColumnClass(int columnIndex) {
         return columnClass[columnIndex];
     }
 
     @Override
-    public boolean isCellEditable(int rowIndex, int columnIndex)
-    {
-        if (columnIndex == 0)
-        {
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if (columnIndex == 0) {
             return this.isValueEditable();
         }
         return true;
@@ -123,10 +109,8 @@ class ColoredLabelsTableModel implements TableModel
 
     @Nullable
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex)
-    {
-        switch (columnIndex)
-        {
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
             case 0:
                 return labelList.get(rowIndex).getValue();
             case 1:
@@ -138,21 +122,16 @@ class ColoredLabelsTableModel implements TableModel
     }
 
     @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-    {
-        switch (columnIndex)
-        {
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        switch (columnIndex) {
             case 0:
                 String value = (String) aValue;
-                try
-                {
-                    if (this.valueMustBeNumeric)
-                    {
+                try {
+                    if (this.valueMustBeNumeric) {
                         Double.parseDouble(value);
                     }
                     labelList.get(rowIndex).setValue(value);
-                } catch (NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                     // do nothing
                 }
                 break;
@@ -168,26 +147,22 @@ class ColoredLabelsTableModel implements TableModel
         }
     }
 
-    public List<ColoredLabel> getList()
-    {
+    public List<ColoredLabel> getList() {
         return labelList;
     }
 
-    public void addLabel(final ColoredLabel coloredLabel)
-    {
+    public void addLabel(final ColoredLabel coloredLabel) {
         labelList.add(coloredLabel);
         fireContentChanged();
     }
 
-    void addAllLabels(@NotNull List<ColoredLabel> list)
-    {
+    void addAllLabels(@NotNull List<ColoredLabel> list) {
         int initialRow = labelList.size();
         labelList.addAll(list);
         fireContentChanged();
     }
 
-    void addAllLabels(@NotNull ColoredLabel[] coloredLabels)
-    {
+    void addAllLabels(@NotNull ColoredLabel[] coloredLabels) {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
             list.add(cl);
@@ -195,8 +170,7 @@ class ColoredLabelsTableModel implements TableModel
         fireContentChanged();
     }
 
-    void removeLabel(@NotNull int[] rowsToRemove)
-    {
+    void removeLabel(@NotNull int[] rowsToRemove) {
         List<Object> objects = new ArrayList<Object>(rowsToRemove.length);
         for (int index : rowsToRemove)
             objects.add(labelList.get(index));
@@ -205,22 +179,19 @@ class ColoredLabelsTableModel implements TableModel
         fireContentChanged();
     }
 
-    private void fireContentChanged()
-    {
+    private void fireContentChanged() {
         TableModelEvent e = new TableModelEvent(this);
         for (TableModelListener l : listeners)
             l.tableChanged(e);
     }
 
     @Override
-    public void addTableModelListener(TableModelListener l)
-    {
+    public void addTableModelListener(TableModelListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removeTableModelListener(TableModelListener l)
-    {
+    public void removeTableModelListener(TableModelListener l) {
         listeners.remove(l);
     }
 }

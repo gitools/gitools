@@ -38,8 +38,7 @@ import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-public class ColoredLabelsHeaderWizard extends AbstractWizard
-{
+public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
     private final HeatmapDimension hdim;
 
@@ -54,8 +53,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     private ColoredLabelsConfigPage headerPage;
     private ColoredLabelsGroupsPage clustersPage;
 
-    public ColoredLabelsHeaderWizard(HeatmapDimension hdim, HeatmapColoredLabelsHeader header)
-    {
+    public ColoredLabelsHeaderWizard(HeatmapDimension hdim, HeatmapColoredLabelsHeader header) {
         super();
 
         this.hdim = hdim;
@@ -67,10 +65,8 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
-        if (!editionMode)
-        {
+    public void addPages() {
+        if (!editionMode) {
             sourcePage = new PatternSourcePage(hdim, true);
             addPage(sourcePage);
         }
@@ -84,24 +80,20 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         return currentPage != sourcePage;
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
+    public void pageLeft(IWizardPage currentPage) {
         super.pageLeft(currentPage);
 
-        if (currentPage != sourcePage || editionMode)
-        {
+        if (currentPage != sourcePage || editionMode) {
             return;
         }
 
         String pattern = sourcePage.getPattern();
-        if (lastPattern.equals(pattern))
-        {
+        if (lastPattern.equals(pattern)) {
             return;
         }
 
@@ -112,18 +104,14 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
 
         header.setTitle("Colors: " + sourcePage.getPatternTitle());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     final ClusteringResults results = clusteringMethod.cluster(data, monitor);
 
                     header.updateFromClusterResults(results);
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }
@@ -132,19 +120,16 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         ColoredLabel[] cls = clustersPage.getColoredLabels();
         header.setClusters(cls);
     }
 
-    public HeatmapColoredLabelsHeader getHeader()
-    {
+    public HeatmapColoredLabelsHeader getHeader() {
         return header;
     }
 
-    public void setEditionMode(boolean editionMode)
-    {
+    public void setEditionMode(boolean editionMode) {
         this.editionMode = editionMode;
     }
 }

@@ -34,8 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Properties;
 
-public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends AbstractResourceFormat<T>
-{
+public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends AbstractResourceFormat<T> {
 
     public static final String POPULATION_LABELS = "population_labels";
     public static final String BACKGROUND_VALUE = "background_value";
@@ -49,20 +48,17 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
     private Map<Integer, ValueTranslator> valueTranslatorMap;
 
 
-    AbstractMatrixFormat(String extension, Class<T> resourceClass)
-    {
+    AbstractMatrixFormat(String extension, Class<T> resourceClass) {
         super(extension, resourceClass);
     }
 
     @Override
-    public boolean isConfigurable()
-    {
+    public boolean isConfigurable() {
         return true;
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Save properties
         this.properties = properties;
@@ -71,28 +67,21 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
         this.populationLabels = (String[]) properties.get(POPULATION_LABELS);
 
         // Background value
-        if (properties.containsKey(BACKGROUND_VALUE))
-        {
+        if (properties.containsKey(BACKGROUND_VALUE)) {
             this.backgroundValue = (Double) properties.get(BACKGROUND_VALUE);
-        }
-        else
-        {
+        } else {
             this.backgroundValue = 0.0;
         }
 
         // Value translator map
-        if (properties.containsKey(VALUE_TRANSLATORS))
-        {
+        if (properties.containsKey(VALUE_TRANSLATORS)) {
             valueTranslatorMap = (Map<Integer, ValueTranslator>) properties.get(VALUE_TRANSLATORS);
-        }
-        else
-        {
+        } else {
             valueTranslatorMap = null;
         }
     }
 
-    Properties getProperties()
-    {
+    Properties getProperties() {
         return properties;
     }
 
@@ -102,8 +91,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return population labels
      */
-    String[] getPopulationLabels()
-    {
+    String[] getPopulationLabels() {
         return populationLabels;
     }
 
@@ -112,8 +100,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      *
      * @return background value
      */
-    Double getBackgroundValue()
-    {
+    Double getBackgroundValue() {
         return this.backgroundValue;
     }
 
@@ -125,8 +112,7 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      * @return value translator
      */
     @Nullable
-    ValueTranslator getValueTranslator()
-    {
+    ValueTranslator getValueTranslator() {
         return getValueTranslator(0);
     }
 
@@ -138,19 +124,14 @@ public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends Abstrac
      */
     @Nullable
     @Deprecated
-    ValueTranslator getValueTranslator(int i)
-    {
-        if (valueTranslatorMap == null)
-        {
+    ValueTranslator getValueTranslator(int i) {
+        if (valueTranslatorMap == null) {
             return new DoubleTranslator();
         }
 
-        if (valueTranslatorMap.containsKey(i))
-        {
+        if (valueTranslatorMap.containsKey(i)) {
             return valueTranslatorMap.get(i);
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

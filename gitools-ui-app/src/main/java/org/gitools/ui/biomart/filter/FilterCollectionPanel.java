@@ -35,8 +35,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class FilterCollectionPanel extends JPanel
-{
+public class FilterCollectionPanel extends JPanel {
 
     private BiomartFilterConfigurationPage filterConfigurationPage;
 
@@ -49,8 +48,7 @@ public class FilterCollectionPanel extends JPanel
     /**
      * Creates new form FilterCollectionPanel1
      */
-    public FilterCollectionPanel(@NotNull FilterCollection fc, BiomartFilterConfigurationPage parent)
-    {
+    public FilterCollectionPanel(@NotNull FilterCollection fc, BiomartFilterConfigurationPage parent) {
 
         initComponents();
 
@@ -62,8 +60,7 @@ public class FilterCollectionPanel extends JPanel
 
     }
 
-    private void buildDescriptions(@NotNull FilterCollection fc)
-    {
+    private void buildDescriptions(@NotNull FilterCollection fc) {
 
         collectionCheckBox.setText(fc.getDisplayName());
 
@@ -75,11 +72,9 @@ public class FilterCollectionPanel extends JPanel
 
         Boolean doLblDescription = renderLabelDescription(fc);
 
-        for (FilterDescription d : fc.getFilterDescriptions())
-        {
+        for (FilterDescription d : fc.getFilterDescriptions()) {
 
-            if (!d.isHideDisplay())
-            {
+            if (!d.isHideDisplay()) {
 
                 description = new FilterDescriptionPanel(d, this, doLblDescription);
 
@@ -93,8 +88,7 @@ public class FilterCollectionPanel extends JPanel
         validate();
     }
 
-    public JPanel getDescriptionsPanel()
-    {
+    public JPanel getDescriptionsPanel() {
         return descriptionsPanel;
     }
 
@@ -105,55 +99,46 @@ public class FilterCollectionPanel extends JPanel
      * @return
      */
     @NotNull
-    private Boolean renderLabelDescription(@NotNull FilterCollection fc)
-    {
+    private Boolean renderLabelDescription(@NotNull FilterCollection fc) {
         Integer components = 0;
 
         for (FilterDescription d : fc.getFilterDescriptions())
-            if (!d.isHideDisplay())
-            {
+            if (!d.isHideDisplay()) {
                 components++;
             }
 
         return components > 1;
     }
 
-    public Boolean isPanelRendered()
-    {
+    public Boolean isPanelRendered() {
 
         return rendered;
 
     }
 
-    public FilterCollectionPanel()
-    {
+    public FilterCollectionPanel() {
 
         initComponents();
     }
 
     @NotNull
-    public Integer getCurrentHeigh()
-    {
+    public Integer getCurrentHeigh() {
         return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
     }
 
     @NotNull
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();
         List<Filter> filtersAux = null;
 
-        if (collectionCheckBox.isSelected())
-        {
+        if (collectionCheckBox.isSelected()) {
             // Obtain the filters involved for this event
-            for (Component compo : descriptionsPanel.getComponents())
-            {
+            for (Component compo : descriptionsPanel.getComponents()) {
                 filtersAux = ((FilterDescriptionPanel) compo).getFilters();
 
                 for (Filter f : filtersAux)
-                    if (f.getName() != null && f.getValue() != null && !f.getValue().isEmpty())
-                    {
+                    if (f.getName() != null && f.getValue() != null && !f.getValue().isEmpty()) {
                         filters.add(f);
                     }
             }
@@ -161,8 +146,7 @@ public class FilterCollectionPanel extends JPanel
         return filters;
     }
 
-    public BiomartFilterConfigurationPage getFilterConfigurationPage()
-    {
+    public BiomartFilterConfigurationPage getFilterConfigurationPage() {
         return filterConfigurationPage;
     }
 
@@ -175,8 +159,7 @@ public class FilterCollectionPanel extends JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         descriptionsPanel = new javax.swing.JPanel();
         collectionCheckBox = new javax.swing.JCheckBox();
@@ -191,10 +174,8 @@ public class FilterCollectionPanel extends JPanel
         descriptionsPanelLayout.setVerticalGroup(descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 247, Short.MAX_VALUE));
 
         collectionCheckBox.setText("name");
-        collectionCheckBox.addChangeListener(new javax.swing.event.ChangeListener()
-        {
-            public void stateChanged(javax.swing.event.ChangeEvent evt)
-            {
+        collectionCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 stateChangedAction(evt);
             }
         });
@@ -205,8 +186,7 @@ public class FilterCollectionPanel extends JPanel
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(collectionCheckBox).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(descriptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(16, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void stateChangedAction(javax.swing.event.ChangeEvent evt)
-    {//GEN-FIRST:event_stateChangedAction
+    private void stateChangedAction(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_stateChangedAction
     }//GEN-LAST:event_stateChangedAction
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

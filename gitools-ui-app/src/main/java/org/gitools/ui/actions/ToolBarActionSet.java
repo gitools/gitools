@@ -30,18 +30,15 @@ import javax.swing.*;
 /**
  * @noinspection ALL
  */
-public final class ToolBarActionSet extends ActionSet
-{
+public final class ToolBarActionSet extends ActionSet {
 
     private static final long serialVersionUID = 6924230823891805344L;
 
-    public ToolBarActionSet()
-    {
+    public ToolBarActionSet() {
         super(new BaseAction[]{FileActions.openAction, FileActions.saveAction, BaseAction.separator, FileActions.openGenomeSpaceAction, FileActions.openIntegrativeGenomicViewerAction, HeatmapActions.cloneAction});
     }
 
-    public JToolBar createToolBar()
-    {
+    public JToolBar createToolBar() {
         return ActionSetUtils.createToolBar(this);
     }
 }

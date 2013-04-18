@@ -29,39 +29,32 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultFileFilterAdaptor extends DefaultFileFilter
-{
+public class DefaultFileFilterAdaptor extends DefaultFileFilter {
     private FileFilter filter;
 
-    public DefaultFileFilterAdaptor(FileFilter filter)
-    {
+    public DefaultFileFilterAdaptor(FileFilter filter) {
         this.filter = filter;
     }
 
     @Override
-    public ImageIcon getIcon()
-    {
+    public ImageIcon getIcon() {
         return null;
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return filter.getDescription();
     }
 
     @Override
-    public boolean accept(File pathname)
-    {
+    public boolean accept(File pathname) {
         return filter.accept(pathname);
     }
 
-    public static List<DefaultFileFilter> adapt(FileFilter[] filters)
-    {
+    public static List<DefaultFileFilter> adapt(FileFilter[] filters) {
         List<DefaultFileFilter> result = new ArrayList<DefaultFileFilter>(filters.length);
 
-        for (FileFilter filter : filters)
-        {
+        for (FileFilter filter : filters) {
             result.add(new DefaultFileFilterAdaptor(filter));
         }
 

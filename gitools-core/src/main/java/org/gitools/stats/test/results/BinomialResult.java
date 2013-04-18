@@ -23,11 +23,9 @@ package org.gitools.stats.test.results;
 
 import org.gitools.matrix.model.matrix.element.AttributeDef;
 
-public class BinomialResult extends CommonResult
-{
+public class BinomialResult extends CommonResult {
 
-    public enum Distribution
-    {
+    public enum Distribution {
         BINOMIAL, NORMAL, POISSON /** @noinspection UnusedDeclaration*/
     }
 
@@ -37,16 +35,14 @@ public class BinomialResult extends CommonResult
     private double expectedStdev;
     private double probability;
 
-    public BinomialResult()
-    {
+    public BinomialResult() {
         super(0, 0.0, 0.0, 0.0);
         observed = 0;
         expectedMean = expectedStdev = 0;
         probability = 0;
     }
 
-    public BinomialResult(Distribution aprox, int n, double leftPvalue, double rightPvalue, double twoTailPvalue, int observed, double expectedMean, double expectedStdev, double p)
-    {
+    public BinomialResult(Distribution aprox, int n, double leftPvalue, double rightPvalue, double twoTailPvalue, int observed, double expectedMean, double expectedStdev, double p) {
 
         super(n, leftPvalue, rightPvalue, twoTailPvalue);
 
@@ -61,57 +57,47 @@ public class BinomialResult extends CommonResult
      * @noinspection UnusedDeclaration
      */
     @AttributeDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
-    public int getObserved()
-    {
+    public int getObserved() {
         return observed;
     }
 
-    public void setObserved(int observed)
-    {
+    public void setObserved(int observed) {
         this.observed = observed;
     }
 
     @AttributeDef(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
-    public double getExpectedMean()
-    {
+    public double getExpectedMean() {
         return expectedMean;
     }
 
-    public void setExpectedMean(double expectedMean)
-    {
+    public void setExpectedMean(double expectedMean) {
         this.expectedMean = expectedMean;
     }
 
     @AttributeDef(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
-    public double getExpectedStdev()
-    {
+    public double getExpectedStdev() {
         return expectedStdev;
     }
 
-    public void setExpectedStdev(double expectedStdev)
-    {
+    public void setExpectedStdev(double expectedStdev) {
         this.expectedStdev = expectedStdev;
     }
 
     @AttributeDef(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
-    public Distribution getDistribution()
-    {
+    public Distribution getDistribution() {
         return distribution;
     }
 
-    public void setDistribution(Distribution distribution)
-    {
+    public void setDistribution(Distribution distribution) {
         this.distribution = distribution;
     }
 
     @AttributeDef(id = "probability", name = "Probability", description = "Population probability of a positive event")
-    public double getProbability()
-    {
+    public double getProbability() {
         return probability;
     }
 
-    public void setProbability(double probability)
-    {
+    public void setProbability(double probability) {
         this.probability = probability;
     }
 }

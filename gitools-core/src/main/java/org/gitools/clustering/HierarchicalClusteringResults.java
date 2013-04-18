@@ -24,53 +24,61 @@ package org.gitools.clustering;
 import org.gitools.newick.NewickNode;
 import org.gitools.newick.NewickTree;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HierarchicalClusteringResults extends GenericClusteringResults
-{
+@XmlAccessorType(XmlAccessType.NONE)
+public class HierarchicalClusteringResults extends GenericClusteringResults {
 
+    @XmlElement
     private NewickTree tree;
+
+    @XmlElement
     private int level;
 
-    public HierarchicalClusteringResults(String[] labels, NewickTree tree, int level)
-    {
-        super(labels, new HashMap<String, List<Integer>>());
+    @XmlElement
+    private String[] labels;
 
+    public HierarchicalClusteringResults() {
+        super();
+    }
+
+    public HierarchicalClusteringResults(String[] labels, NewickTree tree, int level) {
+        super();
+
+        this.labels = labels;
         this.tree = tree;
         this.level = level;
 
-        updateClusters();
+        init();
     }
 
-    public NewickTree getTree()
-    {
+    public NewickTree getTree() {
         return tree;
     }
 
-    public void setNewickTree(NewickTree tree)
-    {
+    public void setNewickTree(NewickTree tree) {
         this.tree = tree;
         this.level = 0;
-        updateClusters();
+        init();
     }
 
-    public int getLevel()
-    {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level)
-    {
+    public void setLevel(int level) {
         this.level = level;
-        updateClusters();
+        init();
     }
 
-    private void updateClusters()
-    {
+    public void init() {
         NewickNode root = tree.getRoot();
 
         List<NewickNode> clusterLeaves = root.getLeaves(level);
@@ -85,8 +93,7 @@ public class HierarchicalClusteringResults extends GenericClusteringResults
 
         int index = 0;
         Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
-        for (NewickNode cluster : clusterLeaves)
-        {
+        for (NewickNode cluster : clusterLeaves) {
             List<NewickNode> nodes = cluster.getLeaves();
             List<Integer> indices = new ArrayList<Integer>(nodes.size());
             for (NewickNode node : nodes)
@@ -96,6 +103,8 @@ public class HierarchicalClusteringResults extends GenericClusteringResults
             clusters.put(name, indices);
         }
 
-        init(getDataLabels(), clusters);
+        init(labels, clusters);
     }
+
+
 }

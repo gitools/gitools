@@ -35,25 +35,21 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class ShowAllAction extends BaseAction
-{
+public class ShowAllAction extends BaseAction {
 
     private static final long serialVersionUID = 7110623490709997414L;
 
-    public enum ElementType
-    {
+    public enum ElementType {
         ROWS, COLUMNS
     }
 
     private final ElementType type;
 
-    public ShowAllAction(@NotNull ElementType type)
-    {
+    public ShowAllAction(@NotNull ElementType type) {
         super(null);
 
         this.type = type;
-        switch (type)
-        {
+        switch (type) {
             case ROWS:
                 setName("Show all rows");
                 setDesc("Show all rows");
@@ -70,25 +66,21 @@ public class ShowAllAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null)
-        {
+        if (matrixView == null) {
             return;
         }
 
         final IMatrix contents = matrixView.getContents();
 
-        if (type == ElementType.ROWS)
-        {
+        if (type == ElementType.ROWS) {
             int rowCount = contents.getRows().size();
 
             int[] visibleRows = new int[rowCount];
@@ -99,9 +91,7 @@ public class ShowAllAction extends BaseAction
             matrixView.getRows().setVisible(visibleRows);
 
             AppFrame.get().setStatusText(visibleRows.length + " rows");
-        }
-        else if (type == ElementType.COLUMNS)
-        {
+        } else if (type == ElementType.COLUMNS) {
             int columnCount = contents.getColumns().size();
 
             int[] visibleColumns = new int[columnCount];

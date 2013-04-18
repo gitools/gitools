@@ -35,8 +35,7 @@ import java.util.Date;
 /**
  * @noinspection ALL
  */
-public class ToolManager
-{
+public class ToolManager {
 
     private ToolSet toolSet;
 
@@ -48,104 +47,84 @@ public class ToolManager
     private PrintStream outputStream = System.out;
     private PrintStream errorStream = System.err;
 
-    public ToolManager(ToolSet toolSet, String appName, String appVersion)
-    {
+    public ToolManager(ToolSet toolSet, String appName, String appVersion) {
         this.toolSet = toolSet;
         this.appName = appName;
         this.appVersion = appVersion;
         this.usageWidth = 120;
     }
 
-    public ToolSet getToolSet()
-    {
+    public ToolSet getToolSet() {
         return toolSet;
     }
 
-    public void setToolSet(ToolSet toolSet)
-    {
+    public void setToolSet(ToolSet toolSet) {
         this.toolSet = toolSet;
     }
 
-    public String getAppName()
-    {
+    public String getAppName() {
         return appName;
     }
 
-    public void setAppName(String appName)
-    {
+    public void setAppName(String appName) {
         this.appName = appName;
     }
 
-    public String getAppVersion()
-    {
+    public String getAppVersion() {
         return appVersion;
     }
 
-    public void setAppVersion(String appVersion)
-    {
+    public void setAppVersion(String appVersion) {
         this.appVersion = appVersion;
     }
 
-    public int getUsageWidth()
-    {
+    public int getUsageWidth() {
         return usageWidth;
     }
 
-    public void setUsageWidth(int usageWidth)
-    {
+    public void setUsageWidth(int usageWidth) {
         this.usageWidth = usageWidth;
     }
 
-    public PrintStream getOutputStream()
-    {
+    public PrintStream getOutputStream() {
         return outputStream;
     }
 
-    public void setOutputStream(PrintStream outputStream)
-    {
+    public void setOutputStream(PrintStream outputStream) {
         this.outputStream = outputStream;
     }
 
-    public PrintStream getErrorStream()
-    {
+    public PrintStream getErrorStream() {
         return errorStream;
     }
 
-    public void setErrorStream(PrintStream errorStream)
-    {
+    public void setErrorStream(PrintStream errorStream) {
         this.errorStream = errorStream;
     }
 
     /**
      * Launches a tool from the raw java arguments.
      */
-    public int launch(@NotNull String[] args) throws ToolException
-    {
+    public int launch(@NotNull String[] args) throws ToolException {
         return launch(args, null);
     }
 
     /**
      * Launches a tool from the raw java arguments.
      */
-    int launch(@NotNull String[] args, Object context) throws ToolException
-    {
-        if (args.length < 1)
-        {
+    int launch(@NotNull String[] args, Object context) throws ToolException {
+        if (args.length < 1) {
             printUsage(errorStream);
             return -1;
         }
 
         final String toolName = args[0];
 
-        if (toolName.equalsIgnoreCase("list"))
-        {
+        if (toolName.equalsIgnoreCase("list")) {
             printAvailableTools(outputStream, toolSet);
             return 0;
-        }
-        else if (toolName.equalsIgnoreCase("help"))
-        {
-            if (args.length < 2)
-            {
+        } else if (toolName.equalsIgnoreCase("help")) {
+            if (args.length < 2) {
                 printUsage(outputStream);
                 return 0;
             }
@@ -163,30 +142,25 @@ public class ToolManager
     /**
      * Launches a tool from its name and the arguments passed to it
      */
-    int launch(String name, @NotNull String[] args, Object context) throws ToolException
-    {
+    int launch(String name, @NotNull String[] args, Object context) throws ToolException {
 
         // look for the tool
 
         ToolDescriptor toolDesc = getToolDescriptorFromName(name);
-        if (toolDesc == null)
-        {
+        if (toolDesc == null) {
             throw new ToolException("There isn't any tool named '" + name + "'");
         }
 
         ToolLifeCycle tool;
-        try
-        {
+        try {
             final Class<? extends ToolLifeCycle> lifeCycleClass = toolDesc.getLifeCycleClass();
 
-            if (lifeCycleClass == null)
-            {
+            if (lifeCycleClass == null) {
                 throw new ToolException("LifeCycle class not defined.");
             }
 
             tool = lifeCycleClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
 
@@ -197,17 +171,14 @@ public class ToolManager
         // prepare arguments
 
         final Class<?> argsClass = toolDesc.getArgumentsClass();
-        if (argsClass == null)
-        {
+        if (argsClass == null) {
             throw new ToolException("Tool '" + name + "' doesn't define an arguments class");
         }
 
         Object argsObject;
-        try
-        {
+        try {
             argsObject = argsClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
 
@@ -216,11 +187,9 @@ public class ToolManager
         CmdLineParser parser = new CmdLineParser(argsObject);
         parser.setUsageWidth(usageWidth);
 
-        try
-        {
+        try {
             parser.parseArgument(args);
-        } catch (CmdLineException e)
-        {
+        } catch (CmdLineException e) {
 
             logExceptionError(toolDesc, args, e, errorStream, null);
 
@@ -231,29 +200,24 @@ public class ToolManager
 
         // look for known basic arguments
 
-        if (argsObject instanceof BaseArguments)
-        {
+        if (argsObject instanceof BaseArguments) {
             final BaseArguments bargs = (BaseArguments) argsObject;
-            if (bargs.help)
-            {
+            if (bargs.help) {
                 tool.printUsage(outputStream, appName, toolDesc, parser);
                 System.exit(0);
             }
-            if (bargs.errorLog != null)
-            {
+            if (bargs.errorLog != null) {
                 logName = bargs.errorLog;
             }
         }
 
-        try
-        {
+        try {
             tool.validate(argsObject);
         }
         /*catch (ToolUsageException e) {
             usage(name, appName);
 			System.exit(0);
-		}*/ catch (ToolValidationException e)
-        {
+		}*/ catch (ToolValidationException e) {
             errorStream.println(e.getLocalizedMessage());
             return -1;
         }
@@ -262,23 +226,18 @@ public class ToolManager
 
         int code = 0;
 
-        try
-        {
+        try {
             tool.run(argsObject);
-        } catch (ToolException e)
-        {
+        } catch (ToolException e) {
             code = -1;
 
             logExceptionError(toolDesc, args, e, errorStream, logName);
-        } finally
-        {
+        } finally {
             // uninitialize
 
-            try
-            {
+            try {
                 tool.uninitialize();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Nothing
             }
         }
@@ -286,35 +245,26 @@ public class ToolManager
         return code;
     }
 
-    private void logExceptionError(@NotNull ToolDescriptor toolDesc, @NotNull String[] args, @NotNull Throwable e, @NotNull PrintStream err, @Nullable String logName)
-    {
+    private void logExceptionError(@NotNull ToolDescriptor toolDesc, @NotNull String[] args, @NotNull Throwable e, @NotNull PrintStream err, @Nullable String logName) {
 
         err.println("ERROR " + getErrorLine(e));
 
         Throwable cause = e.getCause();
-        while (cause != null)
-        {
+        while (cause != null) {
             err.println("  Caused by " + getErrorLine(cause));
             cause = cause.getCause();
         }
 
-        try
-        {
+        try {
             File file = null;
             Writer writer = null;
-            if (logName == null)
-            {
+            if (logName == null) {
                 file = File.createTempFile("intogen-error-report-" + toolDesc.getName() + "-", ".txt");
                 writer = new BufferedWriter(new FileWriter(file));
-            }
-            else
-            {
-                if (logName.equals("-"))
-                {
+            } else {
+                if (logName.equals("-")) {
                     writer = new OutputStreamWriter(errorStream);
-                }
-                else
-                {
+                } else {
                     file = new File(logName);
                     writer = new FileWriter(file);
                 }
@@ -324,12 +274,9 @@ public class ToolManager
             pw.println("Error executing tool '" + toolDesc.getName() + "':");
             pw.print("\n  Arguments:");
             for (String arg : args)
-                if (arg.indexOf(' ') != -1)
-                {
+                if (arg.indexOf(' ') != -1) {
                     pw.print(" \"" + arg + "\"");
-                }
-                else
-                {
+                } else {
                     pw.print(" " + arg);
                 }
             pw.println();
@@ -343,61 +290,50 @@ public class ToolManager
             e.printStackTrace(pw);
             pw.close();
 
-            if (file != null)
-            {
+            if (file != null) {
                 err.println("\nAn error report has been generated on:");
                 err.println("\t" + file.getAbsolutePath());
             }
-        } catch (Exception e1)
-        {
+        } catch (Exception e1) {
         }
     }
 
     @NotNull
-    private String getErrorLine(@NotNull Throwable t)
-    {
+    private String getErrorLine(@NotNull Throwable t) {
         final StringBuilder sb = new StringBuilder();
         sb.append(t.getClass().getSimpleName());
         final String msg = t.getMessage();
-        if (msg != null)
-        {
+        if (msg != null) {
             sb.append(": " + msg);
         }
         return sb.toString();
     }
 
-    void printToolUsage(String name, String appName, Object context) throws ToolException
-    {
+    void printToolUsage(String name, String appName, Object context) throws ToolException {
 
         ToolDescriptor toolDesc = getToolDescriptorFromName(name);
-        if (toolDesc == null)
-        {
+        if (toolDesc == null) {
             throw new ToolException("There isn't any tool named '" + name + "'");
         }
 
         ToolLifeCycle tool;
-        try
-        {
+        try {
             tool = (ToolLifeCycle) toolDesc.getLifeCycleClass().newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
 
         tool.initialize(context);
 
         final Class<?> argsClass = toolDesc.getArgumentsClass();
-        if (argsClass == null)
-        {
+        if (argsClass == null) {
             throw new ToolException("Tool '" + name + "' doesn't define an arguments class");
         }
 
         Object argsObject;
-        try
-        {
+        try {
             argsObject = argsClass.newInstance();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
         }
 
@@ -407,8 +343,7 @@ public class ToolManager
         tool.printUsage(outputStream, appName, toolDesc, parser);
     }
 
-    private void printUsage(@NotNull PrintStream out)
-    {
+    private void printUsage(@NotNull PrintStream out) {
         out.println(appName + " version " + appVersion);
         out.println("\nUsage: " + appName + " <tool-name> <tool-arguments>\n");
         out.println("To get the list of availables tools write:");
@@ -418,11 +353,9 @@ public class ToolManager
         out.println();
     }
 
-    private void printAvailableTools(@NotNull PrintStream out, @NotNull ToolSet toolSet)
-    {
+    private void printAvailableTools(@NotNull PrintStream out, @NotNull ToolSet toolSet) {
         out.println("The list of available tools:\n");
-        for (ToolDescriptor toolDesc : toolSet.getToolDescriptors())
-        {
+        for (ToolDescriptor toolDesc : toolSet.getToolDescriptors()) {
             final String name = toolDesc.getName();
             out.print(name);
             for (int i = 0; i < 30 - name.length(); i++)
@@ -432,11 +365,9 @@ public class ToolManager
     }
 
     @Nullable
-    private ToolDescriptor getToolDescriptorFromName(String name)
-    {
+    private ToolDescriptor getToolDescriptorFromName(String name) {
         for (ToolDescriptor desc : toolSet.getToolDescriptors())
-            if (desc.getName().equalsIgnoreCase(name))
-            {
+            if (desc.getName().equalsIgnoreCase(name)) {
                 return desc;
             }
         return null;

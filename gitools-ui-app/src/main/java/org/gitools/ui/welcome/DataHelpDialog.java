@@ -29,8 +29,7 @@ import java.net.URL;
 /**
  * @noinspection ALL
  */
-class DataHelpDialog extends javax.swing.JDialog
-{
+class DataHelpDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -45,25 +44,21 @@ class DataHelpDialog extends javax.swing.JDialog
     /**
      * Creates new form DataHelpDialog
      */
-    public DataHelpDialog(java.awt.Frame parent)
-    {
+    public DataHelpDialog(java.awt.Frame parent) {
         super(parent);
         setModal(true);
 
         initComponents();
 
-        rcontext = new SimpleHtmlRendererContext(htmlPanel, new SimpleUserAgentContext())
-        {
+        rcontext = new SimpleHtmlRendererContext(htmlPanel, new SimpleUserAgentContext()) {
             @Override
-            protected boolean isNavigationAsynchronous()
-            {
+            protected boolean isNavigationAsynchronous() {
                 return false;
             }
         };
 
         URL url = getClass().getResource("/html/help_data.html");
-        if (url != null)
-        {
+        if (url != null) {
             rcontext.navigate(url, "_this");
         }
 
@@ -73,8 +68,7 @@ class DataHelpDialog extends javax.swing.JDialog
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
@@ -86,26 +80,21 @@ class DataHelpDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         htmlPanel = new org.lobobrowser.html.gui.HtmlPanel();
 
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("Close");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
@@ -118,21 +107,18 @@ class DataHelpDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();

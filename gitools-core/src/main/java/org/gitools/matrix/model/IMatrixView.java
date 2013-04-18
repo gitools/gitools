@@ -23,8 +23,7 @@ package org.gitools.matrix.model;
 
 import org.gitools.model.IModel;
 
-public interface IMatrixView extends IModel, IMatrix
-{
+public interface IMatrixView extends IModel, IMatrix {
     IMatrixViewDimension getRows();
 
     IMatrixViewDimension getColumns();

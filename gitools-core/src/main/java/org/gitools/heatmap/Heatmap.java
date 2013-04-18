@@ -22,10 +22,10 @@
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
-import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.matrix.model.matrix.DoubleMatrix;
 import org.gitools.model.Resource;
 import org.gitools.model.decorator.impl.BinaryDecorator;
 import org.gitools.persistence.ResourceReference;
@@ -41,8 +41,7 @@ import java.beans.PropertyChangeListener;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(propOrder = {"rows", "columns", "data", "layers"})
-public class Heatmap extends Resource implements IMatrixView
-{
+public class Heatmap extends Resource implements IMatrixView {
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
@@ -59,30 +58,26 @@ public class Heatmap extends Resource implements IMatrixView
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
-    public Heatmap()
-    {
+    public Heatmap() {
         this.rows = new HeatmapDimension();
         this.columns = new HeatmapDimension();
         this.layers = new HeatmapLayers();
     }
 
-    public Heatmap(IMatrix data)
-    {
+    public Heatmap(IMatrix data) {
 
-        this.rows = new HeatmapDimension(data.getRows(), "rows");
-        this.columns = new HeatmapDimension(data.getColumns(), "columns");
+        this.rows = new HeatmapDimension(this, data.getRows(), "rows");
+        this.columns = new HeatmapDimension(this, data.getColumns(), "columns");
         this.layers = new HeatmapLayers(data);
 
         this.data = new ResourceReference<IMatrix>("data", data);
     }
 
-    public HeatmapDimension getRows()
-    {
+    public HeatmapDimension getRows() {
         return rows;
     }
 
-    public void setRows(@NotNull HeatmapDimension rows)
-    {
+    public void setRows(@NotNull HeatmapDimension rows) {
         this.rows.removePropertyChangeListener(propertyListener);
         rows.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.rows;
@@ -90,19 +85,16 @@ public class Heatmap extends Resource implements IMatrixView
         firePropertyChange(PROPERTY_ROWS, old, rows);
     }
 
-    public HeatmapDimension getColumns()
-    {
+    public HeatmapDimension getColumns() {
         return columns;
     }
 
     @Override
-    public boolean isEmpty(int row, int column)
-    {
+    public boolean isEmpty(int row, int column) {
         return getContents().isEmpty(rows.getVisible()[row], columns.getVisible()[column]);
     }
 
-    public void setColumns(@NotNull HeatmapDimension columns)
-    {
+    public void setColumns(@NotNull HeatmapDimension columns) {
         this.columns.removePropertyChangeListener(propertyListener);
         columns.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.columns;
@@ -110,21 +102,16 @@ public class Heatmap extends Resource implements IMatrixView
         firePropertyChange(PROPERTY_COLUMNS, old, columns);
     }
 
-    public void detach()
-    {
-        if (data != null && data.isLoaded())
-        {
+    public void detach() {
+        if (data != null && data.isLoaded()) {
             data.get().detach();
         }
     }
 
-    public void init()
-    {
-        propertyListener = new PropertyChangeListener()
-        {
+    public void init() {
+        propertyListener = new PropertyChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt)
-            {
+            public void propertyChange(PropertyChangeEvent evt) {
                 firePropertyChange(evt);
             }
         };
@@ -133,15 +120,13 @@ public class Heatmap extends Resource implements IMatrixView
         this.layers.addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
-        this.rows.init(matrix.getRows());
-        this.columns.init(matrix.getColumns());
+        this.rows.init(this, matrix.getRows());
+        this.columns.init(this, matrix.getColumns());
 
-        if (this.rows.getHeaderSize() == 0)
-        {
+        if (this.rows.getHeaderSize() == 0) {
             this.rows.addHeader(new HeatmapTextLabelsHeader());
         }
-        if (this.columns.getHeaderSize() == 0)
-        {
+        if (this.columns.getHeaderSize() == 0) {
             this.columns.addHeader(new HeatmapTextLabelsHeader());
         }
 
@@ -152,46 +137,37 @@ public class Heatmap extends Resource implements IMatrixView
 
     // IMatrixView adaptor methods
     @Override
-    public IMatrix getContents()
-    {
+    public IMatrix getContents() {
         return getData().get();
     }
 
-    public ResourceReference<IMatrix> getData()
-    {
+    public ResourceReference<IMatrix> getData() {
         return data;
     }
 
-    public void setData(ResourceReference<IMatrix> data)
-    {
+    public void setData(ResourceReference<IMatrix> data) {
         this.data = data;
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer)
-    {
+    public Object getCellValue(int row, int column, int layer) {
         return getContents().getCellValue(rows.getVisible()[row], columns.getVisible()[column], layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value)
-    {
+    public void setCellValue(int row, int column, int layer, Object value) {
         getContents().setCellValue(rows.getVisible()[row], columns.getVisible()[column], layer, value);
     }
 
     @Override
-    public HeatmapLayers getLayers()
-    {
+    public HeatmapLayers getLayers() {
         return layers;
     }
 
     @Deprecated
-    private void particularInitialization(IMatrix matrix)
-    {
-        if (matrix instanceof DoubleBinaryMatrix)
-        {
-            for (HeatmapLayer layer : getLayers())
-            {
+    private void particularInitialization(IMatrix matrix) {
+        if (matrix instanceof DoubleBinaryMatrix) {
+            for (HeatmapLayer layer : getLayers()) {
                 BinaryDecorator decorator = new BinaryDecorator();
                 decorator.setCutoff(1.0);
                 decorator.setComparator(CutoffCmp.EQ);
@@ -200,9 +176,7 @@ public class Heatmap extends Resource implements IMatrixView
 
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
-        }
-        else if (matrix instanceof DoubleMatrix)
-        {
+        } else if (matrix instanceof DoubleMatrix) {
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
         }

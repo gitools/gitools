@@ -35,30 +35,25 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ClusteringMethodsPage extends AbstractWizardPage
-{
+public class ClusteringMethodsPage extends AbstractWizardPage {
 
-    public ClusteringMethodsPage()
-    {
+    public ClusteringMethodsPage() {
 
         initComponents();
 
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
         DefaultListModel model = new DefaultListModel();
         for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().getSuperclass() != null && desc.getMethodClass().getSuperclass().equals(AbstractClusteringValueMethod.class))
-            {
+            if (desc.getMethodClass().getSuperclass() != null && desc.getMethodClass().getSuperclass().equals(AbstractClusteringValueMethod.class)) {
                 model.addElement(desc);
             }
 
         annList.setModel(model);
         annList.setSelectedIndex(0);
 
-        annList.addListSelectionListener(new ListSelectionListener()
-        {
+        annList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e)
-            {
+            public void valueChanged(ListSelectionEvent e) {
                 updateCompleted();
             }
         });
@@ -67,8 +62,7 @@ public class ClusteringMethodsPage extends AbstractWizardPage
         setComplete(true);
     }
 
-    private void updateCompleted()
-    {
+    private void updateCompleted() {
         boolean completed = annList.getSelectedIndices().length > 0;
 
         setComplete(completed);
@@ -76,23 +70,18 @@ public class ClusteringMethodsPage extends AbstractWizardPage
 
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
 
     }
 
     @Nullable
-    public ClusteringMethodDescriptor getMethodDescriptor()
-    {
+    public ClusteringMethodDescriptor getMethodDescriptor() {
         int indice = annList.getSelectedIndex();
 
-        if (indice >= 0)
-        {
+        if (indice >= 0) {
             return (ClusteringMethodDescriptor) annList.getModel().getElementAt(indice);
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -105,8 +94,7 @@ public class ClusteringMethodsPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         optGroup = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();

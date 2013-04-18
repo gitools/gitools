@@ -28,8 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.zip.Deflater;
 
-public abstract class AbstractCompressor
-{
+public abstract class AbstractCompressor {
     protected static final char SEPARATOR = '\t';
 
     private static final int MAX_LINES_TO_DICTIONARY = 5000000;
@@ -45,37 +44,30 @@ public abstract class AbstractCompressor
     private long fileLinesCount;
     private long averageLineLength;
 
-    public AbstractCompressor()
-    {
+    public AbstractCompressor() {
     }
 
-    protected CompressDimension getColumns()
-    {
+    protected CompressDimension getColumns() {
         return columns;
     }
 
-    protected CompressDimension getRows()
-    {
+    protected CompressDimension getRows() {
         return rows;
     }
 
-    protected String[] getHeader()
-    {
+    protected String[] getHeader() {
         return header;
     }
 
-    protected byte[] getDictionary()
-    {
+    protected byte[] getDictionary() {
         return dictionary;
     }
 
-    protected long getAverageLineLength()
-    {
+    protected long getAverageLineLength() {
         return averageLineLength;
     }
 
-    protected long getTotalLines()
-    {
+    protected long getTotalLines() {
         return fileLinesCount;
     }
 
@@ -85,12 +77,11 @@ public abstract class AbstractCompressor
      * @param values The strings
      * @return The byte arrays
      * @throws java.io.UnsupportedEncodingException
+     *
      */
-    protected static byte[] stringToByteArray(String[] values) throws UnsupportedEncodingException
-    {
+    protected static byte[] stringToByteArray(String[] values) throws UnsupportedEncodingException {
         StringBuilder buffer = new StringBuilder(values.length * 10);
-        for (String value : values)
-        {
+        for (String value : values) {
             buffer.append(value).append('\t');
         }
         return buffer.toString().getBytes("UTF-8");
@@ -99,16 +90,14 @@ public abstract class AbstractCompressor
     /**
      * This class contains all the values of an uncompressed row
      */
-    protected static class NotCompressRow
-    {
+    protected static class NotCompressRow {
         private List<String> values;
         private CompressDimension columns;
 
         /**
          * @param columns The columns dimension
          */
-        public NotCompressRow(CompressDimension columns)
-        {
+        public NotCompressRow(CompressDimension columns) {
             this.values = new ArrayList<String>(columns.size());
             this.columns = columns;
         }
@@ -118,8 +107,7 @@ public abstract class AbstractCompressor
          *
          * @param columnFields the fields
          */
-        public void append(String columnFields)
-        {
+        public void append(String columnFields) {
             values.add(columnFields);
         }
 
@@ -129,13 +117,11 @@ public abstract class AbstractCompressor
          * @return
          * @throws java.io.IOException
          */
-        public byte[] toByteArray() throws IOException
-        {
+        public byte[] toByteArray() throws IOException {
             // Write the buffer
             ByteArrayOutputStream bytes = new ByteArrayOutputStream(values.size() * (columns.size() - 2) * 8);
             DataOutputStream out = new DataOutputStream(bytes);
-            for (String value : values)
-            {
+            for (String value : values) {
                 // Column position
                 int column = columns.getIndex(parseField(value, 0));
                 out.writeInt(column);
@@ -157,11 +143,10 @@ public abstract class AbstractCompressor
          * @return
          * @throws UnsupportedEncodingException
          */
-        private byte[] createColumnLine(String fields) throws UnsupportedEncodingException
-        {
+        private byte[] createColumnLine(String fields) throws UnsupportedEncodingException {
             int firstTab = fields.indexOf(SEPARATOR);
             int secondTab = fields.indexOf(SEPARATOR, firstTab + 1);
-            return fields.substring(secondTab+1).getBytes("UTF-8");
+            return fields.substring(secondTab + 1).getBytes("UTF-8");
         }
     }
 
@@ -171,7 +156,6 @@ public abstract class AbstractCompressor
      * @param str The string to split using SEPARATOR
      * @param num The position to return
      * @return The string at 'num' position using 'SEPARATOR' in 'str' string.
-     *
      */
     protected static String parseField(String str, int num) {
         int start = -1;
@@ -189,8 +173,7 @@ public abstract class AbstractCompressor
         return result.replace('"', ' ').trim();
     }
 
-    protected CompressRow compressRow(NotCompressRow row) throws Exception
-    {
+    protected CompressRow compressRow(NotCompressRow row) throws Exception {
         // Prepare a buffer with all the columns of this row
         byte[] input = row.toByteArray();
 
@@ -211,8 +194,7 @@ public abstract class AbstractCompressor
      * @return The length of the compressed buffer
      * @throws Exception
      */
-    private int compressDeflater(byte[] input) throws Exception
-    {
+    private int compressDeflater(byte[] input) throws Exception {
         deflater.reset();
         deflater.setInput(input);
         deflater.setDictionary(dictionary);
@@ -228,8 +210,7 @@ public abstract class AbstractCompressor
      * @param reader Input matrix reader
      * @throws Exception
      */
-    protected void initialize(IMatrixReader reader) throws Exception
-    {
+    protected void initialize(IMatrixReader reader) throws Exception {
         // Some internal variables
         Map<String, Integer> frequencies = new HashMap<String, Integer>();
         Set<String> rows = new HashSet<String>(1000);
@@ -243,33 +224,28 @@ public abstract class AbstractCompressor
         int maxLineLength = 0;
         long totalLineLength = 0;
         fileLinesCount = 0;
-        while ((fields = reader.readNext()) != null)
-        {
+        while ((fields = reader.readNext()) != null) {
             fileLinesCount++;
 
-            if (!columns.contains(fields[0]))
-            {
+            if (!columns.contains(fields[0])) {
                 columns.add(fields[0]);
             }
 
-            if (!rows.contains(fields[1]))
-            {
+            if (!rows.contains(fields[1])) {
                 rows.add(fields[1]);
             }
 
             // Update frequencies
             if (fileLinesCount < MAX_LINES_TO_DICTIONARY) {
                 int length = 0;
-                for (int i=2; i < fields.length; i++)
-                {
+                for (int i = 2; i < fields.length; i++) {
                     length += fields[i].length() + 1;
                     Integer freq = frequencies.get(fields[i]);
                     freq = (freq == null) ? 1 : freq + 1;
                     frequencies.put(fields[i], freq);
                 }
                 totalLineLength += (length + fields[0].length() + fields[1].length());
-                if (length > maxLineLength)
-                {
+                if (length > maxLineLength) {
                     maxLineLength = length;
                 }
             }
@@ -280,20 +256,16 @@ public abstract class AbstractCompressor
 
         // Filter entries with frequency = 1
         List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(frequencies.size());
-        for (Map.Entry<String, Integer> entry : frequencies.entrySet())
-        {
-            if (entry.getValue() > MIN_FREQUENCY)
-            {
+        for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {
+            if (entry.getValue() > MIN_FREQUENCY) {
                 entries.add(entry);
             }
         }
 
         // Sort the frequency table by frequency
-        Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>()
-        {
+        Collections.sort(entries, new Comparator<Map.Entry<String, Integer>>() {
             @Override
-            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2)
-            {
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
                 return (o1.getValue().compareTo(o2.getValue()));
             }
         });
@@ -301,12 +273,10 @@ public abstract class AbstractCompressor
         // Convert the frequency table into a deflate dictionary
         StringBuilder buffer = new StringBuilder();
         long count = 0;
-        for (Map.Entry<String, Integer> entry : entries)
-        {
+        for (Map.Entry<String, Integer> entry : entries) {
             buffer.append(entry.getKey());
 
-            if (count++ > MAX_DICTIONARY_ENTRIES)
-            {
+            if (count++ > MAX_DICTIONARY_ENTRIES) {
                 break;
             }
         }

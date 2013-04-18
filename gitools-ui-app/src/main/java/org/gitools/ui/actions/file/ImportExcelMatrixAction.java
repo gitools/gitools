@@ -32,13 +32,11 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class ImportExcelMatrixAction extends BaseAction
-{
+public class ImportExcelMatrixAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public ImportExcelMatrixAction()
-    {
+    public ImportExcelMatrixAction() {
         super("Excel matrix ...");
         setLargeIconFromResource(IconNames.excel24);
         setSmallIconFromResource(IconNames.excel16);
@@ -46,8 +44,7 @@ public class ImportExcelMatrixAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), new ImportExcelWizard());
 
         wizDlg.open();

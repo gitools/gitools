@@ -34,13 +34,11 @@ import java.awt.event.KeyEvent;
 /**
  * @noinspection ALL
  */
-public class UnselectAllAction extends BaseAction
-{
+public class UnselectAllAction extends BaseAction {
 
     private static final long serialVersionUID = 1581417292789818975L;
 
-    public UnselectAllAction()
-    {
+    public UnselectAllAction() {
         super("Unselect all");
 
         setDesc("Unselect all");
@@ -50,18 +48,15 @@ public class UnselectAllAction extends BaseAction
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView != null)
-        {
+        if (matrixView != null) {
             matrixView.getColumns().clearSelection();
             matrixView.getRows().clearSelection();
         }

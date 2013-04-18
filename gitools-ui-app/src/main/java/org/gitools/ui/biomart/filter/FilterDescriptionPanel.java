@@ -31,8 +31,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class FilterDescriptionPanel extends javax.swing.JPanel
-{
+public class FilterDescriptionPanel extends javax.swing.JPanel {
 
     private final FilterCollectionPanel parentCollection;
     private FilterDescription filterDescription;
@@ -41,27 +40,22 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
     private Boolean renderPanel;
     private Boolean renderLabel;
 
-    public FilterDescriptionPanel(FilterDescription description, FilterCollectionPanel collectionParent, boolean labelRendered)
-    {
+    public FilterDescriptionPanel(FilterDescription description, FilterCollectionPanel collectionParent, boolean labelRendered) {
 
         this.filterDescription = description;
         this.parentCollection = collectionParent;
         this.currentHeight = 0;
         this.renderLabel = labelRendered;
 
-        if (filterDescription.getDisplayType() != null)
-        {
+        if (filterDescription.getDisplayType() != null) {
 
             this.renderPanel = true;
 
             buildComponent();
 
-        }
-        else if (filterDescription.getPointerDataset() != null)
-        {
+        } else if (filterDescription.getPointerDataset() != null) {
 
-            try
-            {
+            try {
                 DatasetInfo d = new DatasetInfo();
 
                 d.setName(filterDescription.getPointerDataset());
@@ -73,8 +67,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
                 buildPointerFilterComponents(configuration);
 
                 renderPanel = true;
-            } catch (@NotNull final Exception ex)
-            {
+            } catch (@NotNull final Exception ex) {
 
                 System.out.println("Pointer dataset :" + filterDescription.getPointerDataset() + " has not been found");
 
@@ -82,9 +75,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
                 return;
             }
-        }
-        else
-        {
+        } else {
             this.renderPanel = false;
         }
     }
@@ -95,8 +86,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
      * @param configuration
      * @param DefaultOptions
      */
-    private void buildPointerFilterComponents(@NotNull DatasetConfig configuration)
-    {
+    private void buildPointerFilterComponents(@NotNull DatasetConfig configuration) {
 
         for (FilterPage page : configuration.getFilterPages())
 
@@ -112,8 +102,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
                             for (FilterDescription desc : collection.getFilterDescriptions())
 
-                                if ((desc.getInternalName().equals(filterDescription.getPointerFilter())) && (!desc.isHideDisplay()))
-                                {
+                                if ((desc.getInternalName().equals(filterDescription.getPointerFilter())) && (!desc.isHideDisplay())) {
 
                                     this.renderPanel = true;
 
@@ -123,8 +112,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
                                     // combo component!
 
                                     if (parentCollection.getFilterConfigurationPage().
-                                            getDefaultSelecComposData().get(filterDescription.getPointerFilter()) != null)
-                                    {
+                                            getDefaultSelecComposData().get(filterDescription.getPointerFilter()) != null) {
 
                                         desc.setStyle("menu");
 
@@ -142,8 +130,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
     /**
      * Builds components for the filterDescription
      */
-    private void buildComponent()
-    {
+    private void buildComponent() {
 
         String displayType = filterDescription.getDisplayType();
 
@@ -155,8 +142,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
         FilterComponent child = null;
 
-        if (displayType.equals("container"))
-        {
+        if (displayType.equals("container")) {
 
             String displayStyleOption = filterDescription.getOptions().get(0).getDisplayType();
 
@@ -167,24 +153,18 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
             Option filterOptions = filterDescription.getOptions().get(0);
 
 
-            if (displayStyleOption.equals("list"))
-            {
+            if (displayStyleOption.equals("list")) {
 
-                if (multipleValuesOption == 1)
-                {
+                if (multipleValuesOption == 1) {
 
                     child = new FilterCheckBoxComponent(filterOptions);
 
-                }
-                else
-                {
+                } else {
 
                     child = new FilterRadioComponent(filterOptions);
 
                 }
-            }
-            else if (displayStyleOption.equals("text"))
-            {
+            } else if (displayStyleOption.equals("text")) {
 
                 child = new FilterTextComponent(filterOptions);
             }
@@ -193,14 +173,10 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
             filterComponent = componentParent;
 
-        }
-        else
-        {
-            if (displayType.equals("list"))
-            {
+        } else {
+            if (displayType.equals("list")) {
 
-                if (style.equals("menu") && (graph == null || !graph.equals("1")))
-                {
+                if (style.equals("menu") && (graph == null || !graph.equals("1"))) {
 
                     FilterSelectComponent selecComponent = new FilterSelectComponent(filterDescription, this);
 
@@ -208,26 +184,16 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
                     parentCollection.getFilterConfigurationPage().storeSelecComponentsDefaultData(selecComponent.getPushActionData_defaultOption());
 
                     filterComponent = selecComponent;
-                }
-                else if (style.equals("menu") && graph != null && graph.equals("1"))
-                {
+                } else if (style.equals("menu") && graph != null && graph.equals("1")) {
                     filterComponent = new FilterTextComponent(filterDescription, this);
-                }
-                else if (multipleValues)
-                {
+                } else if (multipleValues) {
                     filterComponent = new FilterCheckBoxComponent(filterDescription, this);
-                }
-                else
-                {
+                } else {
                     filterComponent = new FilterRadioComponent(filterDescription, this);
                 }
-            }
-            else if (displayType.equals("text"))
-            {
+            } else if (displayType.equals("text")) {
                 filterComponent = new FilterTextComponent(filterDescription, this);
-            }
-            else
-            {
+            } else {
                 System.out.println("Component " + filterDescription.getInternalName() + "has not been builded");
                 return;
             }
@@ -243,8 +209,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
 
         this.add(filterComponent);
 
-        if (child != null)
-        {
+        if (child != null) {
 
             this.add(child);
             currentHeight += child.getCurrentHeight();
@@ -262,8 +227,7 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -274,26 +238,22 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-    public FilterDescription getFilterDescription()
-    {
+    public FilterDescription getFilterDescription() {
         return filterDescription;
     }
 
-    public final FilterCollectionPanel getParentCollection()
-    {
+    public final FilterCollectionPanel getParentCollection() {
         return parentCollection;
     }
 
-    public List<Filter> getFilters()
-    {
+    public List<Filter> getFilters() {
         return filterComponent.getFilters();
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setFilterComponents(FilterComponent components)
-    {
+    public void setFilterComponents(FilterComponent components) {
         this.filterComponent = components;
     }
 
@@ -301,33 +261,27 @@ public class FilterDescriptionPanel extends javax.swing.JPanel
      * @noinspection UnusedDeclaration
      */
     @Nullable
-    public Boolean isChild()
-    {
+    public Boolean isChild() {
         return (filterDescription == null);
     }
 
-    Integer getCurrentHeight()
-    {
+    Integer getCurrentHeight() {
         return currentHeight;
     }
 
-    public Boolean getRenderPanel()
-    {
+    public Boolean getRenderPanel() {
         return renderPanel;
     }
 
-    public void setRenderPanel(Boolean rendered)
-    {
+    public void setRenderPanel(Boolean rendered) {
         this.renderPanel = rendered;
     }
 
-    public Boolean getRenderLabel()
-    {
+    public Boolean getRenderLabel() {
         return renderLabel;
     }
 
-    public void setRenderLabel(Boolean renderLabel)
-    {
+    public void setRenderLabel(Boolean renderLabel) {
         this.renderLabel = renderLabel;
     }
 

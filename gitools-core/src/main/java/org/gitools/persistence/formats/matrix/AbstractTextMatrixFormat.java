@@ -37,34 +37,27 @@ import java.util.zip.DataFormatException;
 /**
  * @noinspection ALL
  */
-public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends AbstractMatrixFormat<R>
-{
+public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends AbstractMatrixFormat<R> {
 
     private final int skipLines;
     private final Set<Integer> skipColumns;
 
     private R matrix;
 
-    AbstractTextMatrixFormat(String extension, Class<R> resourceClass)
-    {
+    AbstractTextMatrixFormat(String extension, Class<R> resourceClass) {
         this(extension, resourceClass, 0);
     }
 
-    AbstractTextMatrixFormat(String extension, Class<R> resourceClass, int skipLines, Integer... skipColumns)
-    {
+    AbstractTextMatrixFormat(String extension, Class<R> resourceClass, int skipLines, Integer... skipColumns) {
         super(extension, resourceClass);
         this.skipLines = skipLines;
         this.skipColumns = new HashSet<Integer>(Arrays.asList(skipColumns));
     }
 
-    protected boolean isBinaryValues()
-    {
-        if (getProperties().containsKey(BINARY_VALUES))
-        {
+    protected boolean isBinaryValues() {
+        if (getProperties().containsKey(BINARY_VALUES)) {
             return (Boolean) getProperties().get(BINARY_VALUES);
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -73,8 +66,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
     protected abstract R createEntity();
 
     @Override
-    protected void configureResource(@NotNull IResourceLocator resourceLocator, @NotNull Properties properties, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void configureResource(@NotNull IResourceLocator resourceLocator, @NotNull Properties properties, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
         super.configureResource(resourceLocator, properties, progressMonitor);
 
         matrix = createEntity();
@@ -82,8 +74,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         readMetadata(resourceLocator, matrix, progressMonitor);
     }
 
-    R read(@NotNull IResourceLocator resourceLocator, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    R read(@NotNull IResourceLocator resourceLocator, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Loading matrix...", 1);
 
@@ -94,28 +85,23 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         return matrix;
     }
 
-    private void readMetadata(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    private void readMetadata(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Reading names ...", 1);
 
-        try
-        {
+        try {
 
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            if (skipLines > 0)
-            {
-                for (int s = 0; s < skipLines; s++)
-                {
+            if (skipLines > 0) {
+                for (int s = 0; s < skipLines; s++) {
                     parser.readNext();
                 }
             }
 
             final String[] header = skipColumns(parser.readNext());
-            if (header.length < 2)
-            {
+            if (header.length < 2) {
                 throw new DataFormatException("At least 2 columns expected.");
             }
 
@@ -137,23 +123,18 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             String[] fields;
 
             final List<String> names = new ArrayList<String>();
-            while ((fields = skipColumns(parser.readNext())) != null)
-            {
-                if (popLabelsSet == null || popLabelsSet.contains(fields[0]))
-                {
+            while ((fields = skipColumns(parser.readNext())) != null) {
+                if (popLabelsSet == null || popLabelsSet.contains(fields[0])) {
                     names.add(fields[0]);
                 }
             }
 
             // Incorporate background names
 
-            if (populationLabels != null)
-            {
+            if (populationLabels != null) {
                 final Set<String> nameSet = new HashSet<String>(names);
-                for (String name : populationLabels)
-                {
-                    if (!nameSet.contains(name))
-                    {
+                for (String name : populationLabels) {
+                    if (!nameSet.contains(name)) {
                         names.add(name);
                         nameSet.add(name);
                     }
@@ -164,8 +145,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             matrix.setRows(rowNames);
 
             in.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
@@ -174,8 +154,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         progressMonitor.end();
     }
 
-    private void readData(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @Nullable int[] columnsOrder, @Nullable int[] rowsOrder, @NotNull IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    private void readData(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @Nullable int[] columnsOrder, @Nullable int[] rowsOrder, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Reading data ...", 1);
 
@@ -188,8 +167,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         // Sort column names ordered by columnsOrder
 
         final String[] finalColumnNames = new String[numColumns];
-        for (int i = 0; i < numColumns; i++)
-        {
+        for (int i = 0; i < numColumns; i++) {
             int colidx = columnsOrder != null ? columnsOrder[i] : i;
             finalColumnNames[colidx] = columnNames[i];
         }
@@ -200,15 +178,12 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         String[] populationLabels = getPopulationLabels();
         final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
-        try
-        {
+        try {
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            if (skipLines > 0)
-            {
-                for (int s = 0; s < skipLines; s++)
-                {
+            if (skipLines > 0) {
+                for (int s = 0; s < skipLines; s++) {
                     parser.readNext();
                 }
             }
@@ -220,23 +195,19 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             String[] fields;
             int row = 0;
 
-            while ((fields = skipColumns(parser.readNext())) != null)
-            {
-                if (popLabelsSet != null && !popLabelsSet.contains(fields[0]))
-                {
+            while ((fields = skipColumns(parser.readNext())) != null) {
+                if (popLabelsSet != null && !popLabelsSet.contains(fields[0])) {
                     continue;
                 }
 
                 int rowidx = rowsOrder != null ? rowsOrder[row] : row;
 
-                if (rowidx >= 0)
-                {
+                if (rowidx >= 0) {
                     rowNames[rowidx] = fields[0];
 
                     int col = 0;
 
-                    while (col < numColumns && col < fields.length - 1)
-                    {
+                    while (col < numColumns && col < fields.length - 1) {
 
                         int colidx = columnsOrder != null ? columnsOrder[col] : col;
 
@@ -247,8 +218,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
                     }
 
                     // fill the rest of the columns with NaNs
-                    while (col < numColumns)
-                    {
+                    while (col < numColumns) {
                         int colidx = columnsOrder != null ? columnsOrder[col] : col;
                         matrix.setCellValue(rowidx, colidx, 0, Double.NaN);
                         col++;
@@ -260,8 +230,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             // Fill the rest of population rows with background value
 
             Double backgroundValue = getBackgroundValue();
-            while (row < numRows)
-            {
+            while (row < numRows) {
                 for (int col = 0; col < numColumns; col++)
                     matrix.setCellValue(row, col, 0, backgroundValue);
 
@@ -269,8 +238,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             }
 
             in.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
@@ -278,29 +246,23 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
     }
 
     @Nullable
-    private String[] skipColumns(@Nullable String[] columns)
-    {
-        if (skipColumns.isEmpty())
-        {
+    private String[] skipColumns(@Nullable String[] columns) {
+        if (skipColumns.isEmpty()) {
             return columns;
         }
 
-        if (columns == null || columns.length == 0)
-        {
+        if (columns == null || columns.length == 0) {
             return columns;
         }
 
         String[] result = new String[columns.length - skipColumns.size()];
         int r = 0;
-        for (int i = 0; i < columns.length; i++)
-        {
-            if (!skipColumns.contains(Integer.valueOf(i)))
-            {
+        for (int i = 0; i < columns.length; i++) {
+            if (!skipColumns.contains(Integer.valueOf(i))) {
                 result[r] = columns[i];
                 r++;
 
-                if (r == result.length)
-                {
+                if (r == result.length) {
                     break;
                 }
             }
@@ -309,13 +271,11 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         return result;
     }
 
-    void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException
-    {
+    void write(@NotNull IResourceLocator resourceLocator, @NotNull R matrix, @NotNull ValueTranslator valueTranslator, @NotNull IProgressMonitor monitor) throws PersistenceException {
 
         monitor.begin("Saving matrix...", matrix.getColumns().size());
 
-        try
-        {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
@@ -325,8 +285,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
             pw.print(matrix.getTitle() != null ? matrix.getTitle() : "");
 
-            for (int i = 0; i < numCols; i++)
-            {
+            for (int i = 0; i < numCols; i++) {
                 final String name = i < colNames.length ? colNames[i] : "";
                 pw.print('\t');
                 pw.print(name);
@@ -338,14 +297,12 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
             final String[] rowNames = matrix.getRowStrings();
 
-            for (int i = 0; i < numRows; i++)
-            {
+            for (int i = 0; i < numRows; i++) {
                 final String name = i < rowNames.length ? rowNames[i] : "";
 
                 pw.print(name);
 
-                for (int j = 0; j < numCols; j++)
-                {
+                for (int j = 0; j < numCols; j++) {
                     pw.print('\t');
                     pw.print(valueTranslator.valueToString(matrix.getCellValue(i, j, 0)));
                 }
@@ -356,8 +313,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             }
 
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 

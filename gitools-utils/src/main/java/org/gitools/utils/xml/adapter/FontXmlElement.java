@@ -24,19 +24,16 @@ package org.gitools.utils.xml.adapter;
 /**
  * @noinspection ALL
  */
-public class FontXmlElement
-{
+public class FontXmlElement {
 
     public String name;
     public int style;
     public int size;
 
-    public FontXmlElement()
-    {
+    public FontXmlElement() {
     }
 
-    public FontXmlElement(String name, int style, int size)
-    {
+    public FontXmlElement(String name, int style, int size) {
         this.name = name;
         this.style = style;
         this.size = size;

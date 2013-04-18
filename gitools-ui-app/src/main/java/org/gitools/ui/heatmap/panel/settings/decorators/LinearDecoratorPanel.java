@@ -28,8 +28,7 @@ import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 
-public class LinearDecoratorPanel extends DecoratorPanel
-{
+public class LinearDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
     private JFormattedTextField minValue;
     private JTextField minColor;
@@ -39,14 +38,12 @@ public class LinearDecoratorPanel extends DecoratorPanel
     private JTextField maxColor;
     private JTextField emptyColor;
 
-    public LinearDecoratorPanel(String name, Decorator defaultDecorator)
-    {
+    public LinearDecoratorPanel(String name, Decorator defaultDecorator) {
         super(name, defaultDecorator);
     }
 
     @Override
-    public void bind()
-    {
+    public void bind() {
         Bindings.bind(minValue, model(LinearDecorator.PROPERTY_MIN_VALUE));
         Bindings.bind(midValue, model(LinearDecorator.PROPERTY_MID_VALUE));
         Bindings.bind(maxValue, model(LinearDecorator.PROPERTY_MAX_VALUE));
@@ -58,13 +55,11 @@ public class LinearDecoratorPanel extends DecoratorPanel
     }
 
     @Override
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         this.minColor = new MyWebColorChooserField();
         this.midColor = new MyWebColorChooserField();
         this.maxColor = new MyWebColorChooserField();

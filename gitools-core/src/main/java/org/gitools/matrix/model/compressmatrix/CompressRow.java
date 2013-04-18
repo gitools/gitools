@@ -25,19 +25,17 @@ package org.gitools.matrix.model.compressmatrix;
  * A compress row contains a compressed buffer with all the
  * values of a matrix row.
  */
-public class CompressRow
-{
+public class CompressRow {
     private int length;
     private byte[] content;
 
     /**
      * Instantiates a new Compress row.
      *
-     * @param length the length of the content when it is expanded.
+     * @param length  the length of the content when it is expanded.
      * @param content the content is a buffer with all the compressed values
      */
-    public CompressRow(int length, byte[] content)
-    {
+    public CompressRow(int length, byte[] content) {
         this.length = length;
         this.content = content;
     }
@@ -47,8 +45,7 @@ public class CompressRow
      *
      * @return the byte [ ]
      */
-    public byte[] getContent()
-    {
+    public byte[] getContent() {
         return content;
     }
 
@@ -57,8 +54,7 @@ public class CompressRow
      *
      * @return the length
      */
-    public int getNotCompressedLength()
-    {
+    public int getNotCompressedLength() {
         return length;
     }
 

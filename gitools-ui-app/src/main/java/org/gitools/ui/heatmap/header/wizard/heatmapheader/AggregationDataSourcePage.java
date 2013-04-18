@@ -32,16 +32,14 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AggregationDataSourcePage extends AbstractWizardPage
-{
+public class AggregationDataSourcePage extends AbstractWizardPage {
 
     private final IAggregator[] aggregatorsArray;
 
 
-    public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows)
-    {
+    public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows) {
 
-        IMatrixLayers attributes = heatmap  .getLayers();
+        IMatrixLayers attributes = heatmap.getLayers();
         String[] cellAttributes = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
             cellAttributes[i] = attributes.get(i).getName();
@@ -59,33 +57,26 @@ public class AggregationDataSourcePage extends AbstractWizardPage
 
         valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
         valueCb.setSelectedIndex(heatmap.getLayers().getTopLayerIndex());
-        valueCb.addActionListener(new ActionListener()
-        {
+        valueCb.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 updateControls();
             }
         });
 
         aggregatorCb.setModel(new DefaultComboBoxModel(aggregatorNames));
-        aggregatorCb.addActionListener(new ActionListener()
-        {
+        aggregatorCb.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 updateControls();
             }
         });
 
-        if (applyToRows)
-        {
+        if (applyToRows) {
             useAllRb.setText("Use values from all columns");
             useSelectedRb.setText("Use values from selected columns");
             separateAggregationCb.setText("aggregate by column annotations groups");
-        }
-        else
-        {
+        } else {
             useAllRb.setText("Use values from all rows");
             useSelectedRb.setText("Use values from selected rows");
             separateAggregationCb.setText("aggregate by row annotations groups");
@@ -95,47 +86,39 @@ public class AggregationDataSourcePage extends AbstractWizardPage
 
     }
 
-    public IAggregator getDataAggregator()
-    {
+    public IAggregator getDataAggregator() {
         return aggregatorsArray[aggregatorCb.getSelectedIndex()];
     }
 
-    public int getSelectedDataValueIndex()
-    {
+    public int getSelectedDataValueIndex() {
         return valueCb.getSelectedIndex();
     }
 
-    public String getSelectedDataValueName()
-    {
+    public String getSelectedDataValueName() {
         return valueCb.getSelectedItem().toString();
     }
 
-    public boolean useAllColumnsOrRows()
-    {
+    public boolean useAllColumnsOrRows() {
         return useAllRb.isSelected();
     }
 
-    private void updateCompleted()
-    {
+    private void updateCompleted() {
         boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
         setComplete(completed);
     }
 
-    public boolean aggregateAnnotationsSeparately()
-    {
+    public boolean aggregateAnnotationsSeparately() {
         return separateAggregationCb.isEnabled() && separateAggregationCb.isSelected();
     }
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         updateCompleted();
     }
 
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
     }
 
@@ -148,8 +131,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         allOrSelected = new javax.swing.ButtonGroup();
         valueCb = new javax.swing.JComboBox();
@@ -175,29 +157,23 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         allOrSelected.add(useAllRb);
         useAllRb.setSelected(true);
         useAllRb.setText("use all");
-        useAllRb.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useAllRb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useAllRbActionPerformed(evt);
             }
         });
 
         allOrSelected.add(useSelectedRb);
         useSelectedRb.setText("use selected");
-        useSelectedRb.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        useSelectedRb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 useSelectedRbActionPerformed(evt);
             }
         });
 
         separateAggregationCb.setText("aggregate sperately for annotation groups");
-        separateAggregationCb.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        separateAggregationCb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 separateAggregationCbActionPerformed(evt);
             }
         });
@@ -208,18 +184,15 @@ public class AggregationDataSourcePage extends AbstractWizardPage
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(15, 15, 15).addComponent(separateAggregationCb).addGap(18, 18, 18).addComponent(useAllRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(useSelectedRb).addContainerGap(83, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void useAllRbActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_useAllRbActionPerformed
+    private void useAllRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAllRbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_useAllRbActionPerformed
 
-    private void useSelectedRbActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_useSelectedRbActionPerformed
+    private void useSelectedRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useSelectedRbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_useSelectedRbActionPerformed
 
-    private void separateAggregationCbActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_separateAggregationCbActionPerformed
+    private void separateAggregationCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_separateAggregationCbActionPerformed
         useAllRb.setEnabled(!separateAggregationCb.isSelected());
         useSelectedRb.setEnabled(!separateAggregationCb.isSelected());
     }//GEN-LAST:event_separateAggregationCbActionPerformed

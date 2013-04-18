@@ -37,13 +37,11 @@ import java.io.IOException;
 /**
  * @noinspection ALL
  */
-public class OpenGenomeSpaceAction extends BaseAction
-{
+public class OpenGenomeSpaceAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public OpenGenomeSpaceAction()
-    {
+    public OpenGenomeSpaceAction() {
         super("from Genomespace ...");
         setDesc("Open a heatmap or an analysis from Genomespace");
         setLargeIconFromResource(IconNames.gs24);
@@ -52,28 +50,23 @@ public class OpenGenomeSpaceAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         GSFileBrowser fileBrowser = null;
-        try
-        {
+        try {
             fileBrowser = new GSFileBrowser(AppFrame.get(), GSFileBrowser.Mode.OPEN);
             fileBrowser.setVisible(true);
 
             String fileURL = fileBrowser.getFileURL();
 
-            if (!StringUtils.isEmpty(fileURL))
-            {
+            if (!StringUtils.isEmpty(fileURL)) {
                 JobRunnable loadFile = new CommandLoadFile(fileURL);
                 JobThread.execute(AppFrame.get(), loadFile);
                 AppFrame.get().setStatusText("Done.");
             }
 
-        } catch (IOException e1)
-        {
+        } catch (IOException e1) {
             e1.printStackTrace();
-        } catch (JSONException e1)
-        {
+        } catch (JSONException e1) {
             e1.printStackTrace();
         }
 

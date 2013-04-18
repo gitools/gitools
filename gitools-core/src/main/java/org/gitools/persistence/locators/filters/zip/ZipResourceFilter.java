@@ -25,21 +25,17 @@ import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.locators.filters.AbstractResourceFilter;
 import org.jetbrains.annotations.NotNull;
 
-public class ZipResourceFilter extends AbstractResourceFilter
-{
+public class ZipResourceFilter extends AbstractResourceFilter {
     public static final String SUFFIX = "zip";
 
-    public ZipResourceFilter()
-    {
+    public ZipResourceFilter() {
         super(SUFFIX);
     }
 
     @NotNull
     @Override
-    public IResourceLocator apply(IResourceLocator resourceLocator)
-    {
-        if (isFiltered(resourceLocator.getExtension()))
-        {
+    public IResourceLocator apply(IResourceLocator resourceLocator) {
+        if (isFiltered(resourceLocator.getExtension())) {
 
             String entryName = removeExtension(resourceLocator.getName());
 

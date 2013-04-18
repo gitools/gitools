@@ -21,6 +21,7 @@
  */
 package org.gitools.heatmap.header;
 
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.model.AbstractModel;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -33,9 +34,7 @@ import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDataHeatmapHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
-public abstract class HeatmapHeader extends AbstractModel
-{
-
+public abstract class HeatmapHeader extends AbstractModel {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_SIZE = "size";
     public static final String PROPERTY_VISIBLE = "visible";
@@ -47,71 +46,50 @@ public abstract class HeatmapHeader extends AbstractModel
     public static final String PROPERTY_LABEL_COLOR = "labelColor";
     public static final String PROPERTY_LARGEST_LABEL_LENGTH = "largestLabelLength";
 
-    /**
-     * The title of the cluster set
-     */
+    @XmlElement
     private String title;
 
-    /**
-     * The height/width of the color band
-     */
+    @XmlElement
     protected int size;
 
-    /**
-     * Wether the cluster set is visible
-     */
+    @XmlElement
     private boolean visible;
 
-    /* Background color*/
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    @XmlElement(name = "background-color")
     protected Color backgroundColor;
 
-    /* Color band margin */ int margin;
+    @XmlElement
+    int margin;
 
-    /**
-     * Whether to show labels of each cluster
-     */
+    @XmlElement(name = "label-visible")
     protected boolean labelVisible;
 
-    /**
-     * The font to use for labels
-     */
     @XmlJavaTypeAdapter(FontXmlAdapter.class)
     protected Font font;
 
-    /**
-     * If false the label is painted along the color band,
-     * otherwise the label is perpendicular to the color band
-     */
+    @XmlElement(name = "label-rotated")
     protected boolean labelRotated;
 
-    /* If the header is referring to annotation from
-    * the other dimension, the pattern is stored here*/
     @Nullable
+    @XmlElement(name = "annotation-pattern")
     private String annotationPattern;
 
+    @XmlElement(name = "annotation-values")
     private String[] annotationValues;
 
-    /**
-     * Tells the drawer how long the largest label is with current
-     * font settings
-     */
-
+    @XmlElement(name = "largest-label")
     protected int largestLabelLength;
 
-    /**
-     * Label foreground color
-     */
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
+    @XmlElement(name = "label-color")
     protected Color labelColor;
 
-    public HeatmapHeader()
-    {
+    public HeatmapHeader() {
 
     }
 
-    HeatmapHeader(HeatmapDimension dim)
-    {
+    HeatmapHeader(HeatmapDimension dim) {
         this.dim = dim;
         this.title = "";
         this.size = 100;
@@ -129,29 +107,25 @@ public abstract class HeatmapHeader extends AbstractModel
     @XmlTransient
     private HeatmapDimension dim;
 
-    public HeatmapDimension getHeatmapDim()
-    {
+    public HeatmapDimension getHeatmapDim() {
         return dim;
     }
 
-    public void setHeatmapDim(HeatmapDimension dim)
-    {
+    public void setHeatmapDim(HeatmapDimension dim) {
         this.dim = dim;
     }
 
     /**
      * The title
      */
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
     /**
      * The title
      */
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         String old = this.title;
         this.title = title;
         firePropertyChange(PROPERTY_TITLE, old, title);
@@ -160,16 +134,14 @@ public abstract class HeatmapHeader extends AbstractModel
     /**
      * The height/width
      */
-    public int getSize()
-    {
+    public int getSize() {
         return size;
     }
 
     /**
      * The height/width
      */
-    public void setSize(int size)
-    {
+    public void setSize(int size) {
         int old = this.size;
         this.size = size;
         firePropertyChange(PROPERTY_SIZE, old, size);
@@ -178,39 +150,33 @@ public abstract class HeatmapHeader extends AbstractModel
     /**
      * Wether the header is visible
      */
-    public boolean isVisible()
-    {
+    public boolean isVisible() {
         return visible;
     }
 
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         boolean old = this.visible;
         this.visible = visible;
         firePropertyChange(PROPERTY_VISIBLE, old, visible);
     }
 
-    public Color getBackgroundColor()
-    {
+    public Color getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void setBackgroundColor(Color color)
-    {
+    public void setBackgroundColor(Color color) {
         Color old = this.backgroundColor;
         this.backgroundColor = color;
         firePropertyChange(PROPERTY_BACKGROUND_COLOR, old, color);
     }
 
     /* Color band margin */
-    public int getMargin()
-    {
+    public int getMargin() {
         return margin;
     }
 
     /* Color band margin */
-    public void setMargin(int margin)
-    {
+    public void setMargin(int margin) {
         int old = this.margin;
         this.margin = margin;
         firePropertyChange(PROPERTY_MARGIN, old, margin);
@@ -219,41 +185,35 @@ public abstract class HeatmapHeader extends AbstractModel
     /**
      * Whether to show labels of each value
      */
-    public void setLabelVisible(boolean labelVisible)
-    {
+    public void setLabelVisible(boolean labelVisible) {
         boolean old = this.labelVisible;
         this.labelVisible = labelVisible;
         firePropertyChange(PROPERTY_LABEL_VISIBLE, old, labelVisible);
     }
 
-    public boolean isLabelVisible()
-    {
+    public boolean isLabelVisible() {
         return this.labelVisible;
     }
 
-    public Font getFont()
-    {
+    public Font getFont() {
         return font;
     }
 
-    public void setFont(Font font)
-    {
+    public void setFont(Font font) {
         this.font = font;
     }
 
     /**
      * The font to use for labels
      */
-    public Font getLabelFont()
-    {
+    public Font getLabelFont() {
         return font;
     }
 
     /**
      * The font to use for labels
      */
-    public void setLabelFont(Font font)
-    {
+    public void setLabelFont(Font font) {
         Font old = this.font;
         this.font = font;
         updateLargestLabelLength(null);
@@ -264,8 +224,7 @@ public abstract class HeatmapHeader extends AbstractModel
      * If false the label is painted along the color band,
      * otherwise the label is perpendicular to the color band
      */
-    public boolean isLabelRotated()
-    {
+    public boolean isLabelRotated() {
         return labelRotated;
     }
 
@@ -273,8 +232,7 @@ public abstract class HeatmapHeader extends AbstractModel
      * If false the label is painted along the color band,
      * otherwise the label is perpendicular to the color band
      */
-    public void setLabelRotated(boolean labelRotated)
-    {
+    public void setLabelRotated(boolean labelRotated) {
         boolean old = this.labelRotated;
         this.labelRotated = labelRotated;
         firePropertyChange(PROPERTY_LABEL_ROTATED, old, labelRotated);
@@ -283,55 +241,50 @@ public abstract class HeatmapHeader extends AbstractModel
     /**
      * Label foreground color
      */
-    public Color getLabelColor()
-    {
+    public Color getLabelColor() {
         return labelColor;
     }
 
     /**
      * Label foreground color
      */
-    public void setLabelColor(Color labelColor)
-    {
+    public void setLabelColor(Color labelColor) {
         Color old = this.labelColor;
         this.labelColor = labelColor;
         firePropertyChange(PROPERTY_LABEL_COLOR, old, labelColor);
     }
 
-    public int getLargestLabelLength()
-    {
+    public int getLargestLabelLength() {
         return largestLabelLength;
     }
 
-    void setLargestLabelLength(int largestLabelLength)
-    {
+    void setLargestLabelLength(int largestLabelLength) {
         int old = this.largestLabelLength;
         this.largestLabelLength = largestLabelLength;
         firePropertyChange(PROPERTY_LARGEST_LABEL_LENGTH, old, largestLabelLength);
     }
 
     @Nullable
-    public String getAnnotationPattern()
-    {
+    public String getAnnotationPattern() {
         return annotationPattern;
     }
 
-    public void setAnnotationPattern(String annotationPattern)
-    {
+    public void setAnnotationPattern(String annotationPattern) {
         this.annotationPattern = annotationPattern;
-        //TODO: needs fireproperty change? - one time action
     }
 
-    public String[] getAnnotationValues(boolean horizontal)
-    {
+    public String[] getAnnotationValues(boolean horizontal) {
         return annotationValues;
     }
 
-    public void setAnnotationValues(String[] annotationValues)
-    {
+    public void setAnnotationValues(String[] annotationValues) {
         this.annotationValues = annotationValues;
     }
 
     abstract protected void updateLargestLabelLength(Component component);
+
+    public void init(Heatmap heatmap) {
+
+    }
 
 }

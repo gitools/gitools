@@ -24,7 +24,6 @@ package org.gitools.kegg.idmapper;
 import org.gitools.biomart.idmapper.EnsemblIds;
 import org.gitools.idmapper.Ids;
 
-public interface AllIds extends Ids, KeggIds, EnsemblIds
-{
+public interface AllIds extends Ids, KeggIds, EnsemblIds {
 
 }

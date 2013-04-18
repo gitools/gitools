@@ -23,8 +23,7 @@ package org.gitools.ui.platform.progress;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-public interface JobRunnable
-{
+public interface JobRunnable {
 
     void run(IProgressMonitor monitor);
 }

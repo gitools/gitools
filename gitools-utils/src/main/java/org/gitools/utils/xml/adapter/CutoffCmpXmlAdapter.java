@@ -26,18 +26,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class CutoffCmpXmlAdapter extends XmlAdapter<String, CutoffCmp>
-{
+public class CutoffCmpXmlAdapter extends XmlAdapter<String, CutoffCmp> {
 
     @Override
-    public CutoffCmp unmarshal(String v) throws Exception
-    {
+    public CutoffCmp unmarshal(String v) throws Exception {
         return CutoffCmp.getFromName(v);
     }
 
     @Override
-    public String marshal(@NotNull CutoffCmp v) throws Exception
-    {
+    public String marshal(@NotNull CutoffCmp v) throws Exception {
         return v.getAbbreviation();
     }
 

@@ -37,8 +37,7 @@ import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "binary")
-public class BinaryDecorator extends Decorator<BinaryColorScale>
-{
+public class BinaryDecorator extends Decorator<BinaryColorScale> {
     private final static GenericFormatter fmt = new GenericFormatter("<");
     public static final String PROPERTY_COMPARATOR = "comparator";
     public static final String PROPERTY_CUTOFF = "cutoff";
@@ -49,46 +48,39 @@ public class BinaryDecorator extends Decorator<BinaryColorScale>
     @XmlTransient
     private BinaryColorScale scale;
 
-    public BinaryDecorator()
-    {
+    public BinaryDecorator() {
         super();
 
         this.scale = new BinaryColorScale();
     }
 
 
-    public BinaryColorScale getScale()
-    {
+    public BinaryColorScale getScale() {
         return scale;
     }
 
-    public void setScale(BinaryColorScale scale)
-    {
+    public void setScale(BinaryColorScale scale) {
         this.scale = scale;
     }
 
     @XmlElement(name = "comparator")
     @XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
-    public CutoffCmp getComparator()
-    {
+    public CutoffCmp getComparator() {
         return CutoffCmp.getFromName(getScale().getComparator());
     }
 
-    public void setComparator(CutoffCmp cutoffCmp)
-    {
+    public void setComparator(CutoffCmp cutoffCmp) {
         CutoffCmp old = getComparator();
         getScale().setComparator(cutoffCmp.getShortName());
         firePropertyChange(PROPERTY_COMPARATOR, old, cutoffCmp);
     }
 
     @XmlElement(name = "cutoff")
-    public double getCutoff()
-    {
+    public double getCutoff() {
         return getScale().getCutoff();
     }
 
-    public void setCutoff(double cutoff)
-    {
+    public void setCutoff(double cutoff) {
         double old = getScale().getCutoff();
         getScale().setCutoff(cutoff);
         firePropertyChange(PROPERTY_CUTOFF, old, cutoff);
@@ -96,13 +88,11 @@ public class BinaryDecorator extends Decorator<BinaryColorScale>
 
     @XmlElement(name = "true-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getColor()
-    {
+    public Color getColor() {
         return getScale().getMaxColor();
     }
 
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         Color old = getScale().getMaxColor();
         getScale().setMaxColor(color);
         firePropertyChange(PROPERTY_COLOR, old, color);
@@ -110,13 +100,11 @@ public class BinaryDecorator extends Decorator<BinaryColorScale>
 
     @XmlElement(name = "false-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getNonSignificantColor()
-    {
+    public Color getNonSignificantColor() {
         return getScale().getMinColor();
     }
 
-    public void setNonSignificantColor(Color color)
-    {
+    public void setNonSignificantColor(Color color) {
         Color old = getScale().getMinColor();
         this.getScale().setMinColor(color);
         firePropertyChange(PROPERTY_NON_SIGNIFICANT_COLOR, old, color);
@@ -124,28 +112,24 @@ public class BinaryDecorator extends Decorator<BinaryColorScale>
 
     @XmlElement(name = "empty-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
-    public Color getEmptyColor()
-    {
+    public Color getEmptyColor() {
         return getScale().getEmptyColor();
     }
 
-    public void setEmptyColor(Color color)
-    {
+    public void setEmptyColor(Color color) {
         Color old = getScale().getEmptyColor();
         getScale().setEmptyColor(color);
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer)
-    {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
 
         decoration.reset();
 
         double v = toDouble(matrix, row, column, layer);
 
-        if (Double.isNaN(v))
-        {
+        if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
             decoration.setToolTip("Empty cell");
             return;

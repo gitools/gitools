@@ -32,8 +32,7 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.jetbrains.annotations.NotNull;
 
-public class ModulesImportWizard extends AbstractWizard
-{
+public class ModulesImportWizard extends AbstractWizard {
 
     @NotNull
     private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.MODULES_2C_MAP, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED,};
@@ -45,8 +44,7 @@ public class ModulesImportWizard extends AbstractWizard
     private ModulesFeaturesPage featuresPage;
     private SaveFilePage saveFilePage;
 
-    protected ModulesImportWizard(ModulesImporter importer)
-    {
+    protected ModulesImportWizard(ModulesImporter importer) {
         this.importer = importer;
 
         setTitle("Import modules...");
@@ -54,8 +52,7 @@ public class ModulesImportWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
 
         moduleCategoryPage = new ModulesSourcePage(importer);
         addPage(moduleCategoryPage);
@@ -67,11 +64,9 @@ public class ModulesImportWizard extends AbstractWizard
         addPage(featuresPage);
 
         // Destination
-        saveFilePage = new SaveFilePage()
-        {
+        saveFilePage = new SaveFilePage() {
             @Override
-            public void updateModel()
-            {
+            public void updateModel() {
                 Settings.getDefault().setLastMapPath(getFolder());
             }
         };
@@ -82,20 +77,16 @@ public class ModulesImportWizard extends AbstractWizard
     }
 
     @Override
-    public void pageEntered(IWizardPage page)
-    {
-        if (saveFilePage.equals(page))
-        {
-            if (saveFilePage.getFileNameWithoutExtension().isEmpty())
-            {
+    public void pageEntered(IWizardPage page) {
+        if (saveFilePage.equals(page)) {
+            if (saveFilePage.getFileNameWithoutExtension().isEmpty()) {
                 saveFilePage.setFileNameWithoutExtension(automaticFileName(importer));
             }
         }
     }
 
     @NotNull
-    private String automaticFileName(@NotNull ModulesImporter importer)
-    {
+    private String automaticFileName(@NotNull ModulesImporter importer) {
         StringBuilder sb = new StringBuilder();
         sb.append(importer.getOrganism().getName().replace(' ', '_'));
         sb.append("__");
@@ -105,8 +96,7 @@ public class ModulesImportWizard extends AbstractWizard
         return sb.toString();
     }
 
-    public SaveFilePage getSaveFilePage()
-    {
+    public SaveFilePage getSaveFilePage() {
         return saveFilePage;
     }
 }

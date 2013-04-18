@@ -23,14 +23,11 @@ package org.gitools.stats.test;
 
 import cern.colt.function.DoubleProcedure;
 
-abstract class AbstractTest implements Test
-{
+abstract class AbstractTest implements Test {
 
-    static final DoubleProcedure notNaNProc = new DoubleProcedure()
-    {
+    static final DoubleProcedure notNaNProc = new DoubleProcedure() {
         @Override
-        public boolean apply(double element)
-        {
+        public boolean apply(double element) {
             return !Double.isNaN(element);
         }
     };

@@ -50,8 +50,7 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
-{
+public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
 
     public static final String VALUE_INDICES = "valueIndices";
 
@@ -61,8 +60,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     private static final Map<String, Class<?>> typeToClass = new HashMap<String, Class<?>>();
     private static final Map<Class<?>, String> classToType = new HashMap<Class<?>, String>();
 
-    static
-    {
+    static {
         typeToClass.put("zscore-test", ZScoreResult.class);
         typeToClass.put("binomial-test", BinomialResult.class);
         typeToClass.put("fisher-test", FisherResult.class);
@@ -75,8 +73,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             classToType.put(e.getValue(), e.getKey());
     }
 
-    public MultiValueMatrixFormat()
-    {
+    public MultiValueMatrixFormat() {
         super(FileSuffixes.OBJECT_MATRIX, ObjectMatrix.class);
     }
 
@@ -85,12 +82,10 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
      * using only its headers */
     private static final Map<String, Class<?>> elementClasses = new HashMap<String, Class<?>>();
 
-    static
-    {
+    static {
         Class<?>[] classes = new Class<?>[]{ZScoreResult.class, BinomialResult.class, FisherResult.class, CorrelationResult.class, CombinationResult.class, OverlappingResult.class, GroupComparisonResult.class};
 
-        for (Class<?> elementClass : classes)
-        {
+        for (Class<?> elementClass : classes) {
             AbstractElementAdapter adapter = new BeanElementAdapter(elementClass);
 
             elementClasses.put(getElementClassId(adapter.getProperties()), elementClass);
@@ -98,8 +93,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @NotNull
-    private static String getElementClassId(IMatrixLayers properties)
-    {
+    private static String getElementClassId(IMatrixLayers properties) {
         String[] ids = new String[properties.size()];
         for (int i = 0; i < properties.size(); i++)
             ids[i] = properties.get(i).getId();
@@ -108,8 +102,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @NotNull
-    private static String getElementClassId(@NotNull String[] ids)
-    {
+    private static String getElementClassId(@NotNull String[] ids) {
         String[] ids2 = new String[ids.length];
         System.arraycopy(ids, 0, ids2, 0, ids.length);
         Arrays.sort(ids2);
@@ -123,39 +116,31 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     private Map<String, String> meta;
 
     @Override
-    protected void configureResource(@NotNull IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void configureResource(@NotNull IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
         super.configureResource(resourceLocator, properties, progressMonitor);
 
         meta = new HashMap<String, String>();
-        try
-        {
+        try {
             InputStream in = resourceLocator.openInputStream();
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
             boolean done = false;
             String cl;
-            while (!done && (cl = r.readLine()) != null)
-            {
-                if (cl.startsWith(META_TAG))
-                {
+            while (!done && (cl = r.readLine()) != null) {
+                if (cl.startsWith(META_TAG)) {
                     cl = cl.substring(META_TAG.length()).trim();
                     int pos = cl.indexOf(':');
-                    if (pos > 0 && pos < cl.length() - 1)
-                    {
+                    if (pos > 0 && pos < cl.length() - 1) {
                         String key = cl.substring(0, pos).trim();
                         String value = cl.substring(pos + 1).trim();
                         meta.put(key, value);
                     }
-                }
-                else
-                {
+                } else {
                     done = true;
                 }
             }
             r.close();
             in.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new PersistenceException(ex);
         }
 
@@ -163,15 +148,13 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
     @NotNull
     @Override
-    protected ObjectMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor monitor) throws PersistenceException
-    {
+    protected ObjectMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor monitor) throws PersistenceException {
 
         ObjectMatrix resultsMatrix = new ObjectMatrix();
 
         monitor.begin("Loading results ...", 1);
 
-        try
-        {
+        try {
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
@@ -179,8 +162,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
             String[] line = parser.readNext();
-            if (line.length < 3)
-            {
+            if (line.length < 3) {
                 throw new DataFormatException("At least 3 columns expected.");
             }
 
@@ -188,26 +170,20 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             int[] indices;
             int numAttributes;
             Properties properties = getProperties();
-            if (properties.containsKey(VALUE_INDICES))
-            {
+            if (properties.containsKey(VALUE_INDICES)) {
                 indices = (int[]) properties.get(VALUE_INDICES);
                 numAttributes = indices.length;
-            }
-            else
-            {
+            } else {
                 numAttributes = line.length - 2;
                 indices = new int[numAttributes];
-                for (int i = 0; i < indices.length; i++)
-                {
+                for (int i = 0; i < indices.length; i++) {
                     indices[i] = i;
                 }
             }
 
             ValueTranslator[] valueTranslators = new ValueTranslator[numAttributes];
-            if (properties.containsKey(VALUE_TRANSLATORS))
-            {
-                for (int i = 0; i < numAttributes; i++)
-                {
+            if (properties.containsKey(VALUE_TRANSLATORS)) {
+                for (int i = 0; i < numAttributes; i++) {
                     valueTranslators[i] = getValueTranslator(i);
                 }
             }
@@ -215,8 +191,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             // read header
             // first the wanted, and then all column headers
             String[] attributeNames = new String[numAttributes];
-            for (int i = 0; i < numAttributes; i++)
-            {
+            for (int i = 0; i < numAttributes; i++) {
                 attributeNames[i] = line[indices[i] + 2];
             }
             String[] allAttributeNames = new String[line.length - 2];
@@ -228,15 +203,12 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             Class<?> elementClass = null;
 
             // only try to force special type if all the values are going to be loaded
-            if (readAllValues)
-            {
-                if (meta.containsKey(TYPE_TAG))
-                {
+            if (readAllValues) {
+                if (meta.containsKey(TYPE_TAG)) {
                     elementClass = typeToClass.get(meta.get(TYPE_TAG));
                 }
 
-                if (elementClass == null)
-                {
+                if (elementClass == null) {
                     // infer element class and create corresponding adapter and factory
                     elementClass = elementClasses.get(getElementClassId(allAttributeNames));
                 }
@@ -245,22 +217,18 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             AbstractElementAdapter origElementAdapter = null;
             AbstractElementAdapter destElementAdapter = null;
             IElementFactory elementFactory = null;
-            if (elementClass == null)
-            {
+            if (elementClass == null) {
                 origElementAdapter = new ArrayElementAdapter(allAttributeNames);
                 destElementAdapter = new ArrayElementAdapter(attributeNames);
                 elementFactory = new ArrayElementFactory(attributeNames.length);
-            }
-            else
-            {
+            } else {
                 origElementAdapter = new BeanElementAdapter(elementClass);
                 destElementAdapter = new BeanElementAdapter(elementClass);
                 elementFactory = new BeanElementFactory(elementClass);
             }
 
             Map<String, Integer> attrIdmap = new HashMap<String, Integer>();
-            for (int i = 0; i < allAttributeNames.length; i++)
-            {
+            for (int i = 0; i < allAttributeNames.length; i++) {
                 attrIdmap.put(allAttributeNames[i], i);
             }
 
@@ -269,48 +237,39 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             Map<String, Integer> rowMap = new HashMap<String, Integer>();
             List<Object[]> list = new ArrayList<Object[]>();
 
-            while ((line = parser.readNext()) != null)
-            {
+            while ((line = parser.readNext()) != null) {
                 final String columnName = line[0];
                 final String rowName = line[1];
 
-                if (popLabelsSet != null && !(popLabelsSet.contains(rowName)))
-                {
+                if (popLabelsSet != null && !(popLabelsSet.contains(rowName))) {
                     continue;
                 }
 
 
                 Integer columnIndex = columnMap.get(columnName);
-                if (columnIndex == null)
-                {
+                if (columnIndex == null) {
                     columnIndex = columnMap.size();
                     columnMap.put(columnName, columnIndex);
                 }
 
                 Integer rowIndex = rowMap.get(rowName);
-                if (rowIndex == null)
-                {
+                if (rowIndex == null) {
                     rowIndex = rowMap.size();
                     rowMap.put(rowName, rowIndex);
                 }
 
                 Object element = elementFactory.create();
 
-                for (int i = 0; i < indices.length; i++)
-                {
+                for (int i = 0; i < indices.length; i++) {
                     final String property = allAttributeNames[indices[i]];
                     final Integer sourceIdx = attrIdmap.get(property);
                     final Integer destIdx = destElementAdapter.getPropertyIndex(property);
 
                     Object value;
-                    if (sourceIdx != null)
-                    {
-                        if (valueTranslators[i] != null)
-                        {
+                    if (sourceIdx != null) {
+                        if (valueTranslators[i] != null) {
                             value = valueTranslators[i].stringToValue(line[sourceIdx + 2]);
-                        }
-                        else
-                        {
+                        } else {
                             value = parsePropertyValue(origElementAdapter.getProperty(origElementAdapter.getPropertyIndex(property)), line[sourceIdx + 2]);
                         }
                         destElementAdapter.setValue(element, destIdx, value);
@@ -321,19 +280,14 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             }
 
             // add missing population labels to matrix
-            if (popLabelsSet != null)
-            {
-                for (String rowName : popLabelsSet)
-                {
-                    if (!rowMap.containsKey(rowName))
-                    {
+            if (popLabelsSet != null) {
+                for (String rowName : popLabelsSet) {
+                    if (!rowMap.containsKey(rowName)) {
                         int rowIndex = rowMap.size();
                         rowMap.put(rowName, rowIndex);
-                        for (Integer columnIndex : columnMap.values())
-                        {
+                        for (Integer columnIndex : columnMap.values()) {
                             Object element = elementFactory.create();
-                            for (int i = 0; i < indices.length; i++)
-                            {
+                            for (int i = 0; i < indices.length; i++) {
                                 Double backgroundValue = getBackgroundValue();
                                 origElementAdapter.setValue(element, i, backgroundValue);
                             }
@@ -360,8 +314,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
             resultsMatrix.setObjectCellAdapter(destElementAdapter);
 
-            for (Object[] result : list)
-            {
+            for (Object[] result : list) {
                 int[] coord = (int[]) result[0];
                 final int columnIndex = coord[0];
                 final int rowIndex = coord[1];
@@ -371,8 +324,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             }
 
             in.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
@@ -382,63 +334,39 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Nullable
-    private Object parsePropertyValue(@NotNull IMatrixLayer property, String string)
-    {
+    private Object parsePropertyValue(@NotNull IMatrixLayer property, String string) {
 
         final Class<?> propertyClass = property.getValueClass();
 
         Object value = null;
-        try
-        {
-            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class))
-            {
+        try {
+            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class)) {
                 value = Double.parseDouble(string);
-            }
-            else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class))
-            {
+            } else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class)) {
                 value = Double.parseDouble(string);
-            }
-            else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class))
-            {
+            } else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class)) {
                 value = Integer.parseInt(string);
-            }
-            else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class))
-            {
+            } else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class)) {
                 value = Long.parseLong(string);
-            }
-            else if (propertyClass.isEnum())
-            {
+            } else if (propertyClass.isEnum()) {
                 Object[] cts = propertyClass.getEnumConstants();
                 for (Object o : cts)
-                    if (o.toString().equals(string))
-                    {
+                    if (o.toString().equals(string)) {
                         value = o;
                     }
-            }
-            else
-            {
+            } else {
                 value = string;
             }
-        } catch (Exception e)
-        {
-            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class))
-            {
+        } catch (Exception e) {
+            if (propertyClass.equals(double.class) || propertyClass.equals(Double.class)) {
                 value = Double.NaN;
-            }
-            else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class))
-            {
+            } else if (propertyClass.equals(float.class) || propertyClass.equals(Float.class)) {
                 value = Float.NaN;
-            }
-            else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class))
-            {
+            } else if (propertyClass.equals(int.class) || propertyClass.equals(Integer.class)) {
                 value = new Integer(0);
-            }
-            else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class))
-            {
+            } else if (propertyClass.equals(long.class) || propertyClass.equals(Long.class)) {
                 value = new Long(0);
-            }
-            else if (propertyClass.isEnum())
-            {
+            } else if (propertyClass.isEnum()) {
                 value = string;
             }
         }
@@ -446,40 +374,34 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ObjectMatrix results, @NotNull IProgressMonitor monitor) throws PersistenceException
-    {
+    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ObjectMatrix results, @NotNull IProgressMonitor monitor) throws PersistenceException {
 
         boolean orderByColumn = true;
 
         monitor.begin("Saving results...", results.getRows().size() * results.getColumns().size());
 
-        try
-        {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             Writer writer = new OutputStreamWriter(out);
             AbstractElementAdapter cellAdapter = results.getObjectCellAdapter();
 
             Class<?> elementClass = cellAdapter.getElementClass();
             String typeName = classToType.get(elementClass);
-            if (typeName != null)
-            {
+            if (typeName != null) {
                 writer.write(META_TAG + " " + TYPE_TAG + ": " + typeName + "\n");
             }
 
             writeCells(writer, results, orderByColumn, monitor);
             writer.close();
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally
-        {
+        } finally {
             monitor.end();
         }
     }
 
-    private void writeCells(Writer writer, @NotNull ObjectMatrix resultsMatrix, boolean orderByColumn, @NotNull IProgressMonitor progressMonitor)
-    {
+    private void writeCells(Writer writer, @NotNull ObjectMatrix resultsMatrix, boolean orderByColumn, @NotNull IProgressMonitor progressMonitor) {
 
         RawCsvWriter out = new RawCsvWriter(writer, '\t', '"');
 
@@ -487,8 +409,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         out.writeSeparator();
         out.writeQuotedValue("row");
 
-        for (IMatrixLayer prop : resultsMatrix.getLayers())
-        {
+        for (IMatrixLayer prop : resultsMatrix.getLayers()) {
             out.writeSeparator();
             out.writeQuotedValue(prop.getId());
         }
@@ -498,25 +419,20 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
         int numColumns = resultsMatrix.getColumns().size();
         int numRows = resultsMatrix.getRows().size();
 
-        if (orderByColumn)
-        {
+        if (orderByColumn) {
             for (int colIndex = 0; colIndex < numColumns; colIndex++)
                 for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
                     writeLine(out, resultsMatrix, colIndex, rowIndex, progressMonitor);
-        }
-        else
-        {
+        } else {
             for (int rowIndex = 0; rowIndex < numRows; rowIndex++)
                 for (int colIndex = 0; colIndex < numColumns; colIndex++)
                     writeLine(out, resultsMatrix, colIndex, rowIndex, progressMonitor);
         }
     }
 
-    private void writeLine(@NotNull RawCsvWriter out, @NotNull ObjectMatrix resultsMatrix, int colIndex, int rowIndex, @NotNull IProgressMonitor progressMonitor)
-    {
+    private void writeLine(@NotNull RawCsvWriter out, @NotNull ObjectMatrix resultsMatrix, int colIndex, int rowIndex, @NotNull IProgressMonitor progressMonitor) {
 
-        if (resultsMatrix.isEmpty(rowIndex, colIndex))
-        {
+        if (resultsMatrix.isEmpty(rowIndex, colIndex)) {
             return;
         }
 
@@ -531,22 +447,16 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
         DoubleTranslator doubleTrans = new DoubleTranslator();
 
-        for (int propIndex = 0; propIndex < numProperties; propIndex++)
-        {
+        for (int propIndex = 0; propIndex < numProperties; propIndex++) {
             out.writeSeparator();
 
             Object value = resultsMatrix.getCellValue(rowIndex, colIndex, propIndex);
-            if (value instanceof Double)
-            {
+            if (value instanceof Double) {
                 Double v = (Double) value;
                 out.write(doubleTrans.valueToString(v));
-            }
-            else if (value instanceof Integer)
-            {
+            } else if (value instanceof Integer) {
                 out.writeValue(value.toString());
-            }
-            else
-            {
+            } else {
                 out.writeQuotedValue(value.toString());
             }
         }
@@ -557,14 +467,12 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
     }
 
     @Deprecated
-    public static IMatrixLayers readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException
-    {
+    public static IMatrixLayers readMetaAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
         AbstractElementAdapter elementAdapter = null;
 
         Map<String, String> meta = readFormatAttributes(file, monitor);
 
-        try
-        {
+        try {
             Reader reader = IOUtils.openReader(file);
 
             CSVReader parser = new CSVReader(reader);
@@ -572,8 +480,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
             String[] line = parser.readNext();
 
             // read header
-            if (line.length < 3)
-            {
+            if (line.length < 3) {
                 throw new DataFormatException("At least 3 columns expected.");
             }
 
@@ -583,29 +490,23 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
             Class<?> elementClass = null;
 
-            if (meta.containsKey(TYPE_TAG))
-            {
+            if (meta.containsKey(TYPE_TAG)) {
                 elementClass = typeToClass.get(meta.get(TYPE_TAG));
             }
 
-            if (elementClass == null)
-            {
+            if (elementClass == null) {
                 // infer element class and create corresponding adapter and factory
                 elementClass = elementClasses.get(getElementClassId(attributeNames));
             }
 
-            if (elementClass == null)
-            {
+            if (elementClass == null) {
                 elementAdapter = new ArrayElementAdapter(attributeNames);
-            }
-            else
-            {
+            } else {
                 elementAdapter = new BeanElementAdapter(elementClass);
             }
 
             reader.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new PersistenceException(ex);
         }
 
@@ -614,35 +515,27 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix>
 
     @NotNull
     @Deprecated
-    private static Map<String, String> readFormatAttributes(File file, IProgressMonitor monitor) throws PersistenceException
-    {
+    private static Map<String, String> readFormatAttributes(File file, IProgressMonitor monitor) throws PersistenceException {
         Map<String, String> meta = new HashMap<String, String>();
-        try
-        {
+        try {
             BufferedReader r = new BufferedReader(IOUtils.openReader(file));
             boolean done = false;
             String cl = null;
-            while (!done && (cl = r.readLine()) != null)
-            {
-                if (cl.startsWith(META_TAG))
-                {
+            while (!done && (cl = r.readLine()) != null) {
+                if (cl.startsWith(META_TAG)) {
                     cl = cl.substring(META_TAG.length()).trim();
                     int pos = cl.indexOf(':');
-                    if (pos > 0 && pos < cl.length() - 1)
-                    {
+                    if (pos > 0 && pos < cl.length() - 1) {
                         String key = cl.substring(0, pos).trim();
                         String value = cl.substring(pos + 1).trim();
                         meta.put(key, value);
                     }
-                }
-                else
-                {
+                } else {
                     done = true;
                 }
             }
             r.close();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new PersistenceException(ex);
         }
         return meta;

@@ -28,30 +28,25 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-public class IconUtils
-{
+public class IconUtils {
 
     public static final String nullResourceImage = "/img/null.gif";
 
     @NotNull
-    public static Icon getIconResource(String name)
-    {
+    public static Icon getIconResource(String name) {
         return getImageIconResource(name);
     }
 
     @NotNull
-    public static Image getImageResource(String name)
-    {
+    public static Image getImageResource(String name) {
         Icon icon = getImageIconResource(name);
         return iconToImage(icon, icon.getIconWidth(), icon.getIconHeight());
     }
 
     @NotNull
-    public static ImageIcon getImageIconResource(String name)
-    {
+    public static ImageIcon getImageIconResource(String name) {
         URL url = IconUtils.class.getResource(name);
-        if (url == null)
-        {
+        if (url == null) {
             url = IconUtils.class.getResource(nullResourceImage);
         }
 
@@ -59,8 +54,7 @@ public class IconUtils
     }
 
     @NotNull
-    public static ImageIcon getImageIconResourceScaledByHeight(String name, int height)
-    {
+    public static ImageIcon getImageIconResourceScaledByHeight(String name, int height) {
 
         ImageIcon icon = getImageIconResource(name);
         int w = icon.getIconWidth();
@@ -71,19 +65,15 @@ public class IconUtils
         return new ImageIcon(iconToImage(icon, width, height));
     }
 
-    private static Image iconToImage(@NotNull Icon icon, int width, int height)
-    {
+    private static Image iconToImage(@NotNull Icon icon, int width, int height) {
 
         int w = icon.getIconWidth();
         int h = icon.getIconHeight();
         boolean sameSize = w == width && h == height;
 
-        if (icon instanceof ImageIcon && sameSize)
-        {
+        if (icon instanceof ImageIcon && sameSize) {
             return ((ImageIcon) icon).getImage();
-        }
-        else
-        {
+        } else {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gd = ge.getDefaultScreenDevice();
             GraphicsConfiguration gc = gd.getDefaultConfiguration();
@@ -91,12 +81,9 @@ public class IconUtils
             Graphics2D g = image.createGraphics();
             icon.paintIcon(null, g, 0, 0);
             g.dispose();
-            if (sameSize)
-            {
+            if (sameSize) {
                 return image;
-            }
-            else
-            {
+            } else {
                 return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             }
         }

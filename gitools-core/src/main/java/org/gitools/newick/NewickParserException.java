@@ -21,16 +21,13 @@
  */
 package org.gitools.newick;
 
-class NewickParserException extends Exception
-{
+class NewickParserException extends Exception {
 
-    public NewickParserException(String msg)
-    {
+    public NewickParserException(String msg) {
         super(msg);
     }
 
-    public NewickParserException(Throwable cause)
-    {
+    public NewickParserException(Throwable cause) {
         super(cause);
     }
 

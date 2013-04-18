@@ -24,24 +24,20 @@ package org.gitools.ui.utils;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public abstract class DocumentChangeListener implements DocumentListener
-{
+public abstract class DocumentChangeListener implements DocumentListener {
 
     @Override
-    public void changedUpdate(DocumentEvent e)
-    {
+    public void changedUpdate(DocumentEvent e) {
         update(e);
     }
 
     @Override
-    public void insertUpdate(DocumentEvent e)
-    {
+    public void insertUpdate(DocumentEvent e) {
         update(e);
     }
 
     @Override
-    public void removeUpdate(DocumentEvent e)
-    {
+    public void removeUpdate(DocumentEvent e) {
         update(e);
     }
 

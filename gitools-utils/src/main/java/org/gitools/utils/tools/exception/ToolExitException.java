@@ -24,20 +24,17 @@ package org.gitools.utils.tools.exception;
 /**
  * @noinspection ALL
  */
-public class ToolExitException extends ToolException
-{
+public class ToolExitException extends ToolException {
 
     private static final long serialVersionUID = -1922487556805827074L;
 
     private final int returnCode;
 
-    public ToolExitException(int returnCode)
-    {
+    public ToolExitException(int returnCode) {
         this.returnCode = returnCode;
     }
 
-    public final int getReturnCode()
-    {
+    public final int getReturnCode() {
         return returnCode;
     }
 }

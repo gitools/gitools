@@ -51,8 +51,7 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class CorrelationAnalysisFromFileWizard extends AbstractWizard
-{
+public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CorrelationAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
@@ -64,8 +63,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public CorrelationAnalysisFromFileWizard()
-    {
+    public CorrelationAnalysisFromFileWizard() {
         super();
 
         setTitle("Correlation analysis");
@@ -74,11 +72,9 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     }
 
     @Override
-    public void addPages()
-    {
+    public void addPages() {
         // Example
-        if (Settings.getDefault().isShowCombinationExamplePage())
-        {
+        if (Settings.getDefault().isShowCombinationExamplePage()) {
             examplePage = new ExamplePage("a correlation analysis");
             examplePage.setTitle("Correlation analysis");
             addPage(examplePage);
@@ -111,40 +107,31 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage)
-    {
-        if (currentPage == examplePage)
-        {
+    public void pageLeft(IWizardPage currentPage) {
+        if (currentPage == examplePage) {
             Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
-            if (examplePage.isExampleEnabled())
-            {
-                JobThread.execute(AppFrame.get(), new JobRunnable()
-                {
+            if (examplePage.isExampleEnabled()) {
+                JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor)
-                    {
+                    public void run(@NotNull IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("correlations", monitor);
 
-                        if (basePath == null)
-                        {
+                        if (basePath == null) {
                             throw new RuntimeException("Unexpected error: There are no examples available");
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
                         Properties props = new Properties();
-                        try
-                        {
+                        try {
                             monitor.begin("Loading example parameters ...", 1);
 
                             final CorrelationAnalysis a = PersistenceManager.get().load(analysisFile, CorrelationAnalysis.class, props, monitor);
 
-                            SwingUtilities.invokeLater(new Runnable()
-                            {
+                            SwingUtilities.invokeLater(new Runnable() {
                                 @Override
-                                public void run()
-                                {
+                                public void run() {
                                     setAnalysis(a);
 
                                     dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
@@ -153,8 +140,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
                             });
 
                             monitor.end();
-                        } catch (Exception ex)
-                        {
+                        } catch (Exception ex) {
                             monitor.exception(ex);
                         }
                     }
@@ -164,8 +150,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     }
 
     @Override
-    public boolean canFinish()
-    {
+    public boolean canFinish() {
         boolean canFinish = super.canFinish();
 
         IWizardPage page = getCurrentPage();
@@ -176,39 +161,32 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
     }
 
     @Override
-    public void performFinish()
-    {
+    public void performFinish() {
         Settings.getDefault().setLastWorkPath(saveFilePage.getFolder());
     }
 
-    public String getWorkdir()
-    {
+    public String getWorkdir() {
         return saveFilePage.getFolder();
     }
 
-    public String getFileName()
-    {
+    public String getFileName() {
         return saveFilePage.getFileName();
     }
 
-    public IResourceFormat<? extends IMatrix> getDataFileFormat()
-    {
+    public IResourceFormat<? extends IMatrix> getDataFileFormat() {
         return dataPage.getFileFormat().getFormat(IMatrix.class);
     }
 
-    public File getDataFile()
-    {
+    public File getDataFile() {
         return dataPage.getFile();
     }
 
-    public File getPopulationFile()
-    {
+    public File getPopulationFile() {
         return dataFilterPage.getRowsFilterFile();
     }
 
     @NotNull
-    public CorrelationAnalysis getAnalysis()
-    {
+    public CorrelationAnalysis getAnalysis() {
         CorrelationAnalysis a = new CorrelationAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
@@ -222,14 +200,12 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard
         return a;
     }
 
-    private void setAnalysis(@NotNull CorrelationAnalysis a)
-    {
+    private void setAnalysis(@NotNull CorrelationAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());
         corrPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
-        if (a.getReplaceNanValue() != null)
-        {
+        if (a.getReplaceNanValue() != null) {
             corrPage.setReplaceNanValue(a.getReplaceNanValue());
         }
         corrPage.setTransposeEnabled(a.isTransposeData());

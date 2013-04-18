@@ -28,19 +28,16 @@ import java.awt.color.ColorSpace;
 /**
  * @noinspection ALL
  */
-class HLSColorSpace extends ColorSpace
-{
+class HLSColorSpace extends ColorSpace {
 
 
-    public HLSColorSpace()
-    {
+    public HLSColorSpace() {
         super(ColorSpace.TYPE_HLS, 3);
     }
 
     @NotNull
     @Override
-    public float[] toRGB(float[] colorvalue)
-    {
+    public float[] toRGB(float[] colorvalue) {
 
         /**
          * This sample code is made available as part of the book "Digital Image
@@ -63,16 +60,11 @@ class HLSColorSpace extends ColorSpace
         float H = colorvalue[0];
         float L = colorvalue[1];
         float S = colorvalue[2];
-        if (L <= 0)
-        {
+        if (L <= 0) {
             R = G = B = 0;
-        }
-        else if (L >= 1)
-        {
+        } else if (L >= 1) {
             R = G = B = 1;
-        }
-        else
-        {
+        } else {
             float hh = (6 * H) % 6;
             int c1 = (int) hh;
             float c2 = hh - c1;
@@ -81,8 +73,7 @@ class HLSColorSpace extends ColorSpace
             float x = L - d;
             float y = w - (w - x) * c2;
             float z = x + (w - x) * c2;
-            switch (c1)
-            {
+            switch (c1) {
                 case 0:
                     R = w;
                     G = z;
@@ -120,22 +111,19 @@ class HLSColorSpace extends ColorSpace
 
     @NotNull
     @Override
-    public float[] fromRGB(float[] rgbvalue)
-    {
+    public float[] fromRGB(float[] rgbvalue) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @NotNull
     @Override
-    public float[] toCIEXYZ(float[] colorvalue)
-    {
+    public float[] toCIEXYZ(float[] colorvalue) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @NotNull
     @Override
-    public float[] fromCIEXYZ(float[] colorvalue)
-    {
+    public float[] fromCIEXYZ(float[] colorvalue) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

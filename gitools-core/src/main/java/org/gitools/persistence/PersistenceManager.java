@@ -33,15 +33,13 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.*;
 
-public class PersistenceManager implements Serializable
-{
+public class PersistenceManager implements Serializable {
 
     @NotNull
     private static final PersistenceManager defaultManager = new PersistenceManager();
 
     @NotNull
-    public static PersistenceManager get()
-    {
+    public static PersistenceManager get() {
         return defaultManager;
     }
 
@@ -49,14 +47,11 @@ public class PersistenceManager implements Serializable
     private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
     private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<Class<? extends IResource>, String>();
 
-    private PersistenceManager()
-    {
+    private PersistenceManager() {
     }
 
-    public <R extends IResource> IResourceFormat<R> getFormat(String fileNameOrExtension, Class<R> resourceClass)
-    {
-        if (resourceClass == null)
-        {
+    public <R extends IResource> IResourceFormat<R> getFormat(String fileNameOrExtension, Class<R> resourceClass) {
+        if (resourceClass == null) {
             resourceClass = (Class<R>) IResource.class;
         }
 
@@ -64,14 +59,11 @@ public class PersistenceManager implements Serializable
 
         Map<String, IResourceFormat> extensions = formats.get(resourceClass);
 
-        if (extensions == null)
-        {
+        if (extensions == null) {
 
             // Try to deduce from the extension and the parent class
-            for (Class<? extends IResource> keyClass : formats.keySet())
-            {
-                if (resourceClass.isAssignableFrom(keyClass) && formats.get(keyClass).containsKey(extension))
-                {
+            for (Class<? extends IResource> keyClass : formats.keySet()) {
+                if (resourceClass.isAssignableFrom(keyClass) && formats.get(keyClass).containsKey(extension)) {
                     return formats.get(keyClass).get(extension);
                 }
             }
@@ -81,8 +73,7 @@ public class PersistenceManager implements Serializable
 
         IResourceFormat resourceFormat = extensions.get(extension);
 
-        if (resourceFormat == null)
-        {
+        if (resourceFormat == null) {
             // Return the default format for the given resource class
             String defaultExtension = getDefaultExtension(resourceClass);
 
@@ -92,32 +83,26 @@ public class PersistenceManager implements Serializable
         return resourceFormat;
     }
 
-    public String getFormatExtension(String fileNameOrExtension)
-    {
+    public String getFormatExtension(String fileNameOrExtension) {
         String extension = removeFiltersExtensions(fileNameOrExtension);
 
         int dot = extension.lastIndexOf(".");
-        if (dot != -1)
-        {
+        if (dot != -1) {
             extension = extension.substring(dot + 1);
         }
 
         return extension;
     }
 
-    public String getDefaultExtension(Class<? extends IResource> resourceClass)
-    {
-        if (classToDefaultExtension.containsKey(resourceClass))
-        {
+    public String getDefaultExtension(Class<? extends IResource> resourceClass) {
+        if (classToDefaultExtension.containsKey(resourceClass)) {
             return classToDefaultExtension.get(resourceClass);
         }
 
         // Look for a class high in the hierarchy
-        for (Class<? extends IResource> keyClass : classToDefaultExtension.keySet())
-        {
+        for (Class<? extends IResource> keyClass : classToDefaultExtension.keySet()) {
 
-            if (keyClass.isAssignableFrom(resourceClass))
-            {
+            if (keyClass.isAssignableFrom(resourceClass)) {
                 return classToDefaultExtension.get(keyClass);
             }
         }
@@ -126,30 +111,25 @@ public class PersistenceManager implements Serializable
     }
 
     @Deprecated
-    public <R extends IResource> R load(@NotNull File file, @NotNull Class<R> resourceClass, @NotNull Properties properties, IProgressMonitor progressMonitor)
-    {
+    public <R extends IResource> R load(@NotNull File file, @NotNull Class<R> resourceClass, @NotNull Properties properties, IProgressMonitor progressMonitor) {
         return load(new UrlResourceLocator(file), getFormat(file.getName(), resourceClass), properties, progressMonitor);
     }
 
-    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull Class<R> resourceClass, IProgressMonitor progressMonitor)
-    {
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull Class<R> resourceClass, IProgressMonitor progressMonitor) {
         return load(resourceLocator, getFormat(resourceLocator.getExtension(), resourceClass), progressMonitor);
     }
 
-    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException {
         return load(resourceLocator, resourceFormat, new Properties(), progressMonitor);
     }
 
-    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Add filters
         IResourceLocator filteredResourceLocator = applyFilters(resourceLocator);
 
         // Configure the format
-        if (resourceFormat.isConfigurable())
-        {
+        if (resourceFormat.isConfigurable()) {
             resourceFormat.configure(filteredResourceLocator, properties, progressMonitor);
         }
 
@@ -162,15 +142,12 @@ public class PersistenceManager implements Serializable
         return resource;
     }
 
-    public <R extends IResource> void store(@NotNull IResourceLocator resourceLocator, @NotNull R resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    public <R extends IResource> void store(@NotNull IResourceLocator resourceLocator, @NotNull R resource, IProgressMonitor progressMonitor) throws PersistenceException {
         store(resourceLocator, resource, (IResourceFormat<R>) getFormat(resourceLocator.getExtension(), resource.getClass()), progressMonitor);
     }
 
-    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        if (resourceFormat == null)
-        {
+    public <R extends IResource> void store(IResourceLocator resourceLocator, R resource, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException {
+        if (resourceFormat == null) {
             resourceFormat = (IResourceFormat<R>) getFormat(resourceLocator.getName(), resource.getClass());
         }
 
@@ -182,11 +159,9 @@ public class PersistenceManager implements Serializable
 
     }
 
-    void registerFormat(@NotNull IResourceFormat resourceFormat)
-    {
+    void registerFormat(@NotNull IResourceFormat resourceFormat) {
 
-        if (!formats.containsKey(resourceFormat.getResourceClass()))
-        {
+        if (!formats.containsKey(resourceFormat.getResourceClass())) {
             formats.put(resourceFormat.getResourceClass(), new HashMap<String, IResourceFormat>());
         }
 
@@ -194,41 +169,32 @@ public class PersistenceManager implements Serializable
         extensions.put(resourceFormat.getExtension(), resourceFormat);
 
         //TODO use filters interface or register at PersistenceInitialization
-        if (resourceFormat instanceof AbstractXmlFormat)
-        {
+        if (resourceFormat instanceof AbstractXmlFormat) {
             registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
-        }
-        else
-        {
+        } else {
             registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + GzResourceFilter.SUFFIX);
         }
     }
 
-    void registerDefaultExtension(Class<? extends IResource> resourceClass, String extension)
-    {
+    void registerDefaultExtension(Class<? extends IResource> resourceClass, String extension) {
         classToDefaultExtension.put(resourceClass, extension);
     }
 
-    void registerResourceFilter(IResourceFilter resourceFilter)
-    {
+    void registerResourceFilter(IResourceFilter resourceFilter) {
         filters.add(resourceFilter);
     }
 
     @NotNull
-    private IResourceLocator applyFilters(@NotNull IResourceLocator resourceLocator)
-    {
-        for (IResourceFilter filter : filters)
-        {
+    private IResourceLocator applyFilters(@NotNull IResourceLocator resourceLocator) {
+        for (IResourceFilter filter : filters) {
             resourceLocator = filter.apply(resourceLocator);
         }
 
         return resourceLocator;
     }
 
-    private String removeFiltersExtensions(String extension)
-    {
-        for (IResourceFilter filter : filters)
-        {
+    private String removeFiltersExtensions(String extension) {
+        for (IResourceFilter filter : filters) {
             extension = filter.removeExtension(extension);
         }
 

@@ -30,8 +30,7 @@ import javax.swing.event.DocumentEvent;
 /**
  * @noinspection ALL
  */
-class DownloadExamplesDialog extends javax.swing.JDialog
-{
+class DownloadExamplesDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -44,8 +43,7 @@ class DownloadExamplesDialog extends javax.swing.JDialog
     /**
      * Creates new form DownloadExamplesDialog
      */
-    public DownloadExamplesDialog(java.awt.Frame parent)
-    {
+    public DownloadExamplesDialog(java.awt.Frame parent) {
         super(parent, true);
 
         initComponents();
@@ -56,11 +54,9 @@ class DownloadExamplesDialog extends javax.swing.JDialog
 
         setLocationByPlatform(true);
 
-        path.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        path.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 updateState();
             }
         });
@@ -68,16 +64,14 @@ class DownloadExamplesDialog extends javax.swing.JDialog
         updateState();
     }
 
-    private void updateState()
-    {
+    private void updateState() {
         okButton.setEnabled(!path.getText().isEmpty());
     }
 
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
@@ -89,8 +83,7 @@ class DownloadExamplesDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -100,28 +93,22 @@ class DownloadExamplesDialog extends javax.swing.JDialog
         path = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("Download");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -138,26 +125,22 @@ class DownloadExamplesDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -175,13 +158,11 @@ class DownloadExamplesDialog extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public String getPath()
-    {
+    public String getPath() {
         return path.getText();
     }
 
-    public void setPath(String path)
-    {
+    public void setPath(String path) {
         this.path.setText(path);
         updateState();
     }

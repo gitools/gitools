@@ -38,8 +38,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OverlappingAnalysis extends Analysis
-{
+public class OverlappingAnalysis extends Analysis {
 
     /**
      * If different from null then replace NaN values by a number
@@ -72,33 +71,27 @@ public class OverlappingAnalysis extends Analysis
      */
     private Double binaryCutoffValue;
 
-    public ResourceReference<IMatrix> getCellResults()
-    {
+    public ResourceReference<IMatrix> getCellResults() {
         return cellResults;
     }
 
-    public void setCellResults(ResourceReference<IMatrix> cellResults)
-    {
+    public void setCellResults(ResourceReference<IMatrix> cellResults) {
         this.cellResults = cellResults;
     }
 
-    public ResourceReference<IMatrix> getFilteredData()
-    {
+    public ResourceReference<IMatrix> getFilteredData() {
         return filteredData;
     }
 
-    public void setFilteredData(ResourceReference<IMatrix> filteredData)
-    {
+    public void setFilteredData(ResourceReference<IMatrix> filteredData) {
         this.filteredData = filteredData;
     }
 
-    public ResourceReference<IMatrix> getSourceData()
-    {
+    public ResourceReference<IMatrix> getSourceData() {
         return sourceData;
     }
 
-    public void setSourceData(ResourceReference<IMatrix> sourceData)
-    {
+    public void setSourceData(ResourceReference<IMatrix> sourceData) {
         this.sourceData = sourceData;
     }
 
@@ -120,68 +113,55 @@ public class OverlappingAnalysis extends Analysis
     @XmlElement
     private ResourceReference<IMatrix> cellResults;
 
-    public OverlappingAnalysis()
-    {
+    public OverlappingAnalysis() {
         this.transposeData = false;
     }
 
-    public Double getReplaceNanValue()
-    {
+    public Double getReplaceNanValue() {
         return replaceNanValue;
     }
 
-    public void setReplaceNanValue(Double replaceNanValue)
-    {
+    public void setReplaceNanValue(Double replaceNanValue) {
         this.replaceNanValue = replaceNanValue;
     }
 
-    public boolean isTransposeData()
-    {
+    public boolean isTransposeData() {
         return transposeData;
     }
 
-    public void setTransposeData(boolean transposeData)
-    {
+    public void setTransposeData(boolean transposeData) {
         this.transposeData = transposeData;
     }
 
-    public String getAttributeName()
-    {
+    public String getAttributeName() {
         return attributeName;
     }
 
-    public void setAttributeName(String attributeName)
-    {
+    public void setAttributeName(String attributeName) {
         this.attributeName = attributeName;
     }
 
-    public boolean isBinaryCutoffEnabled()
-    {
+    public boolean isBinaryCutoffEnabled() {
         return binaryCutoffEnabled;
     }
 
-    public void setBinaryCutoffEnabled(boolean binaryCutoffEnabled)
-    {
+    public void setBinaryCutoffEnabled(boolean binaryCutoffEnabled) {
         this.binaryCutoffEnabled = binaryCutoffEnabled;
     }
 
-    public CutoffCmp getBinaryCutoffCmp()
-    {
+    public CutoffCmp getBinaryCutoffCmp() {
         return binaryCutoffCmp;
     }
 
-    public void setBinaryCutoffCmp(CutoffCmp binaryCutoffCmp)
-    {
+    public void setBinaryCutoffCmp(CutoffCmp binaryCutoffCmp) {
         this.binaryCutoffCmp = binaryCutoffCmp;
     }
 
-    public Double getBinaryCutoffValue()
-    {
+    public Double getBinaryCutoffValue() {
         return binaryCutoffValue;
     }
 
-    public void setBinaryCutoffValue(Double binaryCutoffValue)
-    {
+    public void setBinaryCutoffValue(Double binaryCutoffValue) {
         this.binaryCutoffValue = binaryCutoffValue;
     }
 

@@ -31,13 +31,11 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class ColorChooserLabel extends JLabel implements MouseListener
-{
+public class ColorChooserLabel extends JLabel implements MouseListener {
 
     private static final long serialVersionUID = -2974772763040220614L;
 
-    public static interface ColorChangeListener
-    {
+    public static interface ColorChangeListener {
         public void colorChanged(Color color);
     }
 
@@ -45,8 +43,7 @@ public class ColorChooserLabel extends JLabel implements MouseListener
 
     private final List<ColorChangeListener> listeners;
 
-    public ColorChooserLabel(Color color, String toolTipText)
-    {
+    public ColorChooserLabel(Color color, String toolTipText) {
         this.color = color;
         this.setBackground(color);
         this.setToolTipText(toolTipText);
@@ -65,81 +62,66 @@ public class ColorChooserLabel extends JLabel implements MouseListener
         addMouseListener(this);
     }
 
-    public ColorChooserLabel(Color color)
-    {
+    public ColorChooserLabel(Color color) {
         this(color, null);
     }
 
-    public ColorChooserLabel()
-    {
+    public ColorChooserLabel() {
         this(Color.WHITE, null);
     }
 
-    public Color getColor()
-    {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color)
-    {
+    public void setColor(Color color) {
         Color prevColor = this.color;
         this.color = color;
         setBackground(color);
-        if (!prevColor.equals(color))
-        {
+        if (!prevColor.equals(color)) {
             fireColorChanged(color);
         }
     }
 
-    public void addColorChangeListener(ColorChangeListener listener)
-    {
+    public void addColorChangeListener(ColorChangeListener listener) {
         listeners.add(listener);
     }
 
-    public void removeColorchangeListener(ColorChangeListener listener)
-    {
+    public void removeColorchangeListener(ColorChangeListener listener) {
         listeners.remove(listener);
     }
 
-    private void fireColorChanged(Color color)
-    {
+    private void fireColorChanged(Color color) {
         for (ColorChangeListener listener : listeners)
             listener.colorChanged(color);
     }
 
     @Override
-    public void mouseClicked(MouseEvent e)
-    {
-        if (!isEnabled())
-        {
+    public void mouseClicked(MouseEvent e) {
+        if (!isEnabled()) {
             return;
         }
 
         Color c = JColorChooser.showDialog(this, "Color selection...", color);
 
-        if (c != null)
-        {
+        if (c != null) {
             setColor(c);
         }
     }
 
     @Override
-    public void mouseEntered(MouseEvent e)
-    {
+    public void mouseEntered(MouseEvent e) {
     }
 
     @Override
-    public void mouseExited(MouseEvent e)
-    {
+    public void mouseExited(MouseEvent e) {
     }
 
     @Override
-    public void mousePressed(MouseEvent e)
-    {
+    public void mousePressed(MouseEvent e) {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e)
-    {
+    public void mouseReleased(MouseEvent e) {
     }
 }

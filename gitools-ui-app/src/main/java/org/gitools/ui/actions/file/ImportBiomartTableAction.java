@@ -40,13 +40,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class ImportBiomartTableAction extends BaseAction
-{
+public class ImportBiomartTableAction extends BaseAction {
 
     private static final long serialVersionUID = 4381993756203388654L;
 
-    public ImportBiomartTableAction()
-    {
+    public ImportBiomartTableAction() {
         super("Biomart Table ...");
         setLargeIconFromResource(IconNames.biomart24);
         setSmallIconFromResource(IconNames.biomart16);
@@ -54,34 +52,28 @@ public class ImportBiomartTableAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
 
         final BiomartTableWizard wizard = new BiomartTableWizard();
 
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);
         wdlg.open();
-        if (wdlg.isCancelled())
-        {
+        if (wdlg.isCancelled()) {
             return;
         }
         final File file = wizard.getSelectedFile();
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
 
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Downloading data...", 1);
                 Query query = wizard.getQuery();
                 String format = (String) wizard.getFormat().getExtension();
                 format = (format.endsWith("gz") ? BiomartModulesWizard.FORMAT_COMPRESSED_GZ : BiomartModulesWizard.FORMAT_PLAIN);
                 BiomartService service = wizard.getService();
-                try
-                {
+                try {
                     service.queryTable(query, file, format, wizard.isSkipRowsWithEmptyValuesEnabled(), wizard.emptyValuesReplacement(), monitor);
-                } catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     monitor.exception(ex);
                 }
                 monitor.end();

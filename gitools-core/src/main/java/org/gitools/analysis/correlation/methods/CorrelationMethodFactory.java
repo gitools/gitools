@@ -28,22 +28,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Properties;
 
 
-public class CorrelationMethodFactory
-{
+public class CorrelationMethodFactory {
 
     @NotNull
-    public static CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException
-    {
-        if (PearsonCorrelationMethod.ID.equalsIgnoreCase(methodId))
-        {
+    public static CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException {
+        if (PearsonCorrelationMethod.ID.equalsIgnoreCase(methodId)) {
             return new PearsonCorrelationMethod(methodProperties);
-        }
-        else if (SpearmanCorrelationMethod.ID.equalsIgnoreCase(methodId))
-        {
+        } else if (SpearmanCorrelationMethod.ID.equalsIgnoreCase(methodId)) {
             return new PearsonCorrelationMethod(methodProperties);
-        }
-        else
-        {
+        } else {
             throw new AnalysisException("Unknown correlation method: " + methodId);
         }
     }

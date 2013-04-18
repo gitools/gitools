@@ -39,40 +39,33 @@ import java.awt.event.ActionListener;
 /**
  * @noinspection ALL
  */
-public class OverlappingAnalysisWizardPage extends AbstractWizardPage
-{
+public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     @Nullable
     private IMatrixLayers attrs;
 
-    private static class AttrOption
-    {
+    private static class AttrOption {
         private String name;
         private IMatrixLayer attr;
 
-        public AttrOption(String name)
-        {
+        public AttrOption(String name) {
             this.name = name;
         }
 
-        public AttrOption(IMatrixLayer attr)
-        {
+        public AttrOption(IMatrixLayer attr) {
             this.attr = attr;
         }
 
-        public IMatrixLayer getAttr()
-        {
+        public IMatrixLayer getAttr() {
             return attr;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return attr != null ? attr.getName() : name;
         }
     }
 
-    public OverlappingAnalysisWizardPage()
-    {
+    public OverlappingAnalysisWizardPage() {
         super();
 
         initComponents();
@@ -83,21 +76,17 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
 
         setComplete(true);
 
-        replaceEmptyValuesCheck.addActionListener(new ActionListener()
-        {
+        replaceEmptyValuesCheck.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
             }
         });
-        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
 
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
 
                 boolean valid = isValidNumber(replaceValueField.getText());
 
@@ -105,15 +94,13 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
 
                 setComplete(completed);
 
-                if (!valid)
-                {
+                if (!valid) {
 
                     setStatus(MessageStatus.ERROR);
 
                     setMessage("Invalid replacement for empty values, it should be a real number");
 
-                }
-                else
+                } else
 
                 {
                     setMessage(MessageStatus.INFO, "");
@@ -131,8 +118,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         attributeLabel = new javax.swing.JLabel();
@@ -168,30 +154,24 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    private boolean isValidNumber(String text)
-    {
-        try
-        {
+    private boolean isValidNumber(String text) {
+        try {
             Double.parseDouble(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
     }
 
 
-    public void setAttributes(IMatrixLayers attrs)
-    {
+    public void setAttributes(IMatrixLayers attrs) {
         this.attrs = attrs;
 
-        if (attrs != null)
-        {
+        if (attrs != null) {
             AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
 
             for (int i = 0; i < attrs.size(); i++)
@@ -202,15 +182,12 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
             attributeCb.setEnabled(true);
             attributeCb.setVisible(true);
             attributeLabel.setVisible(true);
-        }
-        else
-        {
+        } else {
             dissableAttrCb();
         }
     }
 
-    private void dissableAttrCb()
-    {
+    private void dissableAttrCb() {
         attributeCb.setModel(new DefaultComboBoxModel());
         attributeCb.setEnabled(false);
         attributeCb.setVisible(false);
@@ -228,38 +205,31 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
 
-    public int getAttributeIndex()
-    {
+    public int getAttributeIndex() {
         return attributeCb.getSelectedIndex();
     }
 
-    public boolean isReplaceNanValuesEnabled()
-    {
+    public boolean isReplaceNanValuesEnabled() {
         return replaceEmptyValuesCheck.isSelected();
     }
 
-    public double getReplaceNanValue()
-    {
+    public double getReplaceNanValue() {
         return Double.parseDouble(replaceValueField.getText());
     }
 
-    public boolean isTransposeEnabled()
-    {
+    public boolean isTransposeEnabled() {
         return applyToRowsRb.isSelected();
     }
 
-    public void setReplaceNanValue(double value)
-    {
+    public void setReplaceNanValue(double value) {
         replaceValueField.setText(Double.toString(value));
     }
 
-    public void setTransposeEnabled(boolean enabled)
-    {
+    public void setTransposeEnabled(boolean enabled) {
         applyToRowsRb.setSelected(enabled);
     }
 
-    public void setReplaceNanValuesEnabled(boolean enabled)
-    {
+    public void setReplaceNanValuesEnabled(boolean enabled) {
         replaceEmptyValuesCheck.setSelected(enabled);
     }
 

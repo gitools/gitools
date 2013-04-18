@@ -37,15 +37,13 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.io.File;
 
-public class AnnotationSourcePage extends AbstractWizardPage
-{
+public class AnnotationSourcePage extends AbstractWizardPage {
 
     private final HeatmapDimension hdim;
     public String infoMessage = "";
     private int[] selectedIndices;
 
-    public AnnotationSourcePage(HeatmapDimension hdim, String infoMessage)
-    {
+    public AnnotationSourcePage(HeatmapDimension hdim, String infoMessage) {
         this.hdim = hdim;
 
         initComponents();
@@ -59,14 +57,12 @@ public class AnnotationSourcePage extends AbstractWizardPage
 
 
     @Override
-    public void updateControls()
-    {
+    public void updateControls() {
         super.updateControls();
 
         IAnnotations am = hdim.getAnnotations();
         int seomvar = annList.getModel().getSize();
-        if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size())
-        {
+        if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size()) {
             DefaultListModel model = new DefaultListModel();
             for (String key : am.getLabels())
                 model.addElement(key);
@@ -76,19 +72,16 @@ public class AnnotationSourcePage extends AbstractWizardPage
     }
 
     @Override
-    public void updateModel()
-    {
+    public void updateModel() {
         super.updateModel();
     }
 
     @NotNull
-    public String getSelectedPattern()
-    {
+    public String getSelectedPattern() {
 
         StringBuilder sb = new StringBuilder();
         Object[] values = annList.getSelectedValues();
-        if (values.length == 0)
-        {
+        if (values.length == 0) {
             return "";
         }
 
@@ -100,14 +93,10 @@ public class AnnotationSourcePage extends AbstractWizardPage
     }
 
     @NotNull
-    public String getSelectedAnnotation()
-    {
-        if (annList.getSelectedIndex() != -1)
-        {
+    public String getSelectedAnnotation() {
+        if (annList.getSelectedIndex() != -1) {
             return (String) annList.getSelectedValue();
-        }
-        else
-        {
+        } else {
             return "";
         }
     }
@@ -149,42 +138,39 @@ public class AnnotationSourcePage extends AbstractWizardPage
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(loadAnnotations))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(loadAnnotations))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(loadAnnotations))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(loadAnnotations))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void annListValueChanged(javax.swing.event.ListSelectionEvent evt)
-    {//GEN-FIRST:event_annListValueChanged
+    private void annListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_annListValueChanged
         boolean complete = annList.getSelectedIndices().length > 0;
         setComplete(complete);
 
-        if (complete)
-        {
+        if (complete) {
             int oldvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
             selectedIndices = annList.getSelectedIndices();
             int newvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
-            if (oldvalue != selectedIndices[0])
-            {
+            if (oldvalue != selectedIndices[0]) {
                 setMessage(MessageStatus.INFO, this.infoMessage);
             }
         }
@@ -199,8 +185,7 @@ public class AnnotationSourcePage extends AbstractWizardPage
                 updateControls();
                 //annFile.setText(file.getName());
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
         }
     }//GEN-LAST:event_loadAnnotationsActionPerformed

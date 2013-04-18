@@ -26,8 +26,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 /**
  * @noinspection ALL
  */
-public interface AnalysisProcessor
-{
+public interface AnalysisProcessor {
 
     void run(IProgressMonitor monitor) throws AnalysisException;
 }

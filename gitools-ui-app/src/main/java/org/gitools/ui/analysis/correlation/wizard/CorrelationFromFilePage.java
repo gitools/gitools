@@ -34,11 +34,9 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CorrelationFromFilePage extends AbstractWizardPage
-{
+public class CorrelationFromFilePage extends AbstractWizardPage {
 
-    public CorrelationFromFilePage()
-    {
+    public CorrelationFromFilePage() {
         super();
 
         initComponents();
@@ -49,31 +47,24 @@ public class CorrelationFromFilePage extends AbstractWizardPage
 
         setComplete(true);
 
-        replaceEmptyValuesCheck.addActionListener(new ActionListener()
-        {
+        replaceEmptyValuesCheck.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
             }
         });
 
-        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener()
-        {
+        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 boolean valid = isValidNumber(replaceValueField.getText());
                 boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
                 setComplete(completed);
 
-                if (!valid)
-                {
+                if (!valid) {
                     setStatus(MessageStatus.ERROR);
                     setMessage("Invalid replacement for empty values, it should be a real number");
-                }
-                else
-                {
+                } else {
                     setMessage(MessageStatus.INFO, "");
                 }
             }
@@ -88,8 +79,7 @@ public class CorrelationFromFilePage extends AbstractWizardPage
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         applyGroup = new javax.swing.ButtonGroup();
         replaceEmptyValuesCheck = new javax.swing.JCheckBox();
@@ -120,18 +110,14 @@ public class CorrelationFromFilePage extends AbstractWizardPage
 
     @NotNull
     @Override
-    public JComponent createControls()
-    {
+    public JComponent createControls() {
         return this;
     }
 
-    private boolean isValidNumber(String text)
-    {
-        try
-        {
+    private boolean isValidNumber(String text) {
+        try {
             Double.parseDouble(text);
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
         return true;
@@ -147,33 +133,27 @@ public class CorrelationFromFilePage extends AbstractWizardPage
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
 
-    public boolean isReplaceNanValuesEnabled()
-    {
+    public boolean isReplaceNanValuesEnabled() {
         return replaceEmptyValuesCheck.isSelected();
     }
 
-    public void setReplaceNanValuesEnabled(boolean enabled)
-    {
+    public void setReplaceNanValuesEnabled(boolean enabled) {
         replaceEmptyValuesCheck.setSelected(enabled);
     }
 
-    public double getReplaceNanValue()
-    {
+    public double getReplaceNanValue() {
         return Double.parseDouble(replaceValueField.getText());
     }
 
-    public void setReplaceNanValue(double value)
-    {
+    public void setReplaceNanValue(double value) {
         replaceValueField.setText(Double.toString(value));
     }
 
-    public boolean isTransposeEnabled()
-    {
+    public boolean isTransposeEnabled() {
         return applyToRowsRb.isSelected();
     }
 
-    public void setTransposeEnabled(boolean enabled)
-    {
+    public void setTransposeEnabled(boolean enabled) {
         applyToRowsRb.setSelected(enabled);
     }
 }

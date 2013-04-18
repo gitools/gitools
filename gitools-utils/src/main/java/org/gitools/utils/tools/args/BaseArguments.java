@@ -28,8 +28,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BaseArguments
-{
+public class BaseArguments {
 
     @Option(name = "-loglevel", aliases = "-ll", metaVar = "<PACKAGE=LEVEL>",
             usage = "Define the log level for the package.")

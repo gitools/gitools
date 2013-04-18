@@ -33,13 +33,11 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public class BiomartAttributeDialog extends javax.swing.JDialog
-{
+public class BiomartAttributeDialog extends javax.swing.JDialog {
 
     private boolean cancelled;
 
-    public BiomartAttributeDialog(java.awt.Frame parent, List<AttributePage> attrPages)
-    {
+    public BiomartAttributeDialog(java.awt.Frame parent, List<AttributePage> attrPages) {
 
         super(parent, true);
 
@@ -49,11 +47,9 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
 
         updateButtons();
 
-        biomartAttrPanel.addAttributeSelectionListener(new AttributeSelectionListener()
-        {
+        biomartAttrPanel.addAttributeSelectionListener(new AttributeSelectionListener() {
             @Override
-            public void selectionChanged()
-            {
+            public void selectionChanged() {
                 updateButtons();
             }
         });
@@ -63,28 +59,23 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
         biomartAttrPanel.setAttributePages(attrPages);
     }
 
-    public void open()
-    {
+    public void open() {
         setVisible(true);
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return cancelled;
     }
 
-    public List<AttributeDescription> getSelectedAttributes()
-    {
+    public List<AttributeDescription> getSelectedAttributes() {
         return biomartAttrPanel.getSelectedAttributes();
     }
 
-    public List<String> getSelectedAttributeNames()
-    {
+    public List<String> getSelectedAttributeNames() {
         return biomartAttrPanel.getSelectedAttributeNames();
     }
 
-    void updateButtons()
-    {
+    void updateButtons() {
         acceptBtn.setEnabled(biomartAttrPanel.getSelectedAttributes().size() > 0);
     }
 
@@ -97,8 +88,7 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
             biomartAttrPanel.setBiomartParameters(port, mart, dataset);
         }
     */
-    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset)
-    {
+    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset) {
 
         biomartAttrPanel.setBiomartParameters(port, mart, dataset);
     }
@@ -111,8 +101,7 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         biomartAttrPanel = new org.gitools.ui.biomart.panel.BiomartAttributePanel();
         cancelBtn = new javax.swing.JButton();
@@ -122,19 +111,15 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelBtnActionPerformed(evt);
             }
         });
 
         acceptBtn.setText("Accept");
-        acceptBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        acceptBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 acceptBtnActionPerformed(evt);
             }
         });
@@ -147,13 +132,11 @@ public class BiomartAttributeDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_acceptBtnActionPerformed
+    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
         setVisible(false);
     }//GEN-LAST:event_acceptBtnActionPerformed
 
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelBtnActionPerformed
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         cancelled = true;
         setVisible(false);
     }//GEN-LAST:event_cancelBtnActionPerformed

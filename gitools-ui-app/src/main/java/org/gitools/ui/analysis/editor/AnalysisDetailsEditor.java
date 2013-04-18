@@ -51,8 +51,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
-{
+public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
     private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
 
@@ -70,8 +69,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
 
     protected FileFormat fileformat;
 
-    protected AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar)
-    {
+    protected AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar) {
         this.analysis = analysis;
         this.template = template;
         this.toolBar = toolBar;
@@ -80,24 +78,19 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
         createComponents();
     }
 
-    private void createComponents()
-    {
-        templatePanel = new TemplatePanel()
-        {
+    private void createComponents() {
+        templatePanel = new TemplatePanel() {
             @Override
-            protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException
-            {
+            protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
                 AnalysisDetailsEditor.this.submitForm(method, action, target, enctype, formInputs);
             }
 
             @Override
-            protected void performUrlAction(String name, Map<String, String> params)
-            {
+            protected void performUrlAction(String name, Map<String, String> params) {
                 AnalysisDetailsEditor.this.performUrlAction(name, params);
             }
         };
-        try
-        {
+        try {
             URL url = getClass().getResource(template);
             templatePanel.setTemplateFromResource(template, url);
 
@@ -108,50 +101,41 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
             prepareContext(context);
 
             templatePanel.render(context);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             LogUtils.logException(e, log);
         }
 
         setLayout(new BorderLayout());
 
-        if (toolBar != null)
-        {
+        if (toolBar != null) {
             add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
         }
 
         add(templatePanel, BorderLayout.CENTER);
     }
 
-    protected void prepareContext(VelocityContext context)
-    {
+    protected void prepareContext(VelocityContext context) {
     }
 
     @Override
-    public Object getModel()
-    {
+    public Object getModel() {
         return analysis;
     }
 
     @Override
-    public void doVisible()
-    {
+    public void doVisible() {
         templatePanel.requestFocusInWindow();
     }
 
-    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs)
-    {
+    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
     }
 
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
+    protected void performUrlAction(String name, Map<String, String> params) {
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor)
-    {
-        if (xmlPersistance == null || fileformat == null)
-        {
+    public void doSave(IProgressMonitor progressMonitor) {
+        if (xmlPersistance == null || fileformat == null) {
             return;
         }
 
@@ -163,8 +147,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wizard);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -173,11 +156,9 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor
         Settings.getDefault().setLastWorkPath(wizard.getFolder());
 
 
-        try
-        {
+        try {
             xmlPersistance.write(new UrlResourceLocator(file), analysis, progressMonitor);
-        } catch (PersistenceException e)
-        {
+        } catch (PersistenceException e) {
             e.printStackTrace();
         }
     }

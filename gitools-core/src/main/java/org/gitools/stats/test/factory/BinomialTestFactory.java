@@ -30,8 +30,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @noinspection ALL
  */
-public class BinomialTestFactory extends TestFactory
-{
+public class BinomialTestFactory extends TestFactory {
 
     public static final String APROXIMATION_PROPERTY = "aproximation";
 
@@ -42,30 +41,20 @@ public class BinomialTestFactory extends TestFactory
 
     private final AproximationMode aproxMode;
 
-    public BinomialTestFactory(@NotNull ToolConfig config)
-    {
+    public BinomialTestFactory(@NotNull ToolConfig config) {
         super(config);
 
         final String aproxModeName = config.getConfiguration().get(APROXIMATION_PROPERTY);
 
-        if ("exact".equalsIgnoreCase(aproxModeName))
-        {
+        if ("exact".equalsIgnoreCase(aproxModeName)) {
             this.aproxMode = AproximationMode.onlyExact;
-        }
-        else if ("normal".equalsIgnoreCase(aproxModeName))
-        {
+        } else if ("normal".equalsIgnoreCase(aproxModeName)) {
             this.aproxMode = AproximationMode.onlyNormal;
-        }
-        else if ("poisson".equalsIgnoreCase(aproxModeName))
-        {
+        } else if ("poisson".equalsIgnoreCase(aproxModeName)) {
             this.aproxMode = AproximationMode.onlyPoisson;
-        }
-        else if ("automatic".equalsIgnoreCase(aproxModeName))
-        {
+        } else if ("automatic".equalsIgnoreCase(aproxModeName)) {
             this.aproxMode = AproximationMode.automatic;
-        }
-        else
-        {
+        } else {
             this.aproxMode = AproximationMode.onlyExact;
         }
     }
@@ -76,8 +65,7 @@ public class BinomialTestFactory extends TestFactory
 
     @NotNull
     @Override
-    public Test create()
-    {
+    public Test create() {
         return new BinomialTest(aproxMode);
     }
 

@@ -26,36 +26,29 @@ import org.gitools.matrix.model.SimpleMatrixLayer;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.EventUtils;
 
-import java.beans.PropertyChangeEvent;
 
-
-public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer
-{
+public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
 
     private Decorator decorator;
 
-    public HeatmapLayer()
-    {
+    public HeatmapLayer() {
         super();
 
         // JAXB requirement
     }
 
-    public HeatmapLayer(String id, Class<?> valueClass, Decorator decorator)
-    {
+    public HeatmapLayer(String id, Class<?> valueClass, Decorator decorator) {
         super(id, valueClass);
 
         this.decorator = decorator;
     }
 
-    public Decorator getDecorator()
-    {
+    public Decorator getDecorator() {
         return decorator;
     }
 
-    public void setDecorator(Decorator decorator)
-    {
+    public void setDecorator(Decorator decorator) {
         Decorator oldValue = this.decorator;
         this.decorator = decorator;
 
@@ -65,8 +58,7 @@ public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return getName();
     }
 }

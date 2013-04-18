@@ -34,12 +34,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 
-public class IdTypeManager
-{
+public class IdTypeManager {
 
     @XmlRootElement(name = "idTypes")
-    private static class Document
-    {
+    private static class Document {
         @NotNull
         @XmlElement(name = "idType")
         public final List<IdType> idTypes = new ArrayList<IdType>(0);
@@ -47,22 +45,18 @@ public class IdTypeManager
 
     private static IdTypeManager instance;
 
-    public static IdTypeManager getDefault()
-    {
-        if (instance == null)
-        {
+    public static IdTypeManager getDefault() {
+        if (instance == null) {
             instance = createDefaultInstance();
         }
         return instance;
     }
 
     @NotNull
-    private static IdTypeManager createDefaultInstance()
-    {
+    private static IdTypeManager createDefaultInstance() {
         List<IdType> idTypes = new ArrayList<IdType>();
         Reader reader = null;
-        try
-        {
+        try {
             JAXBContext context = JAXBContext.newInstance(Document.class);
             Unmarshaller u = context.createUnmarshaller();
 
@@ -70,19 +64,14 @@ public class IdTypeManager
 
             Document doc = (Document) u.unmarshal(reader);
             idTypes.addAll(doc.idTypes);
-        } catch (JAXBException ex)
-        {
+        } catch (JAXBException ex) {
             LoggerFactory.getLogger(IdTypeManager.class).error(ex.toString());
-        } finally
-        {
-            try
-            {
-                if (reader != null)
-                {
+        } finally {
+            try {
+                if (reader != null) {
                     reader.close();
                 }
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
             }
         }
         return new IdTypeManager(idTypes);
@@ -92,8 +81,7 @@ public class IdTypeManager
     private final Map<String, IdType> idTypesMap;
     private IdType defaultIdType;
 
-    private IdTypeManager(@NotNull List<IdType> idTypes)
-    {
+    private IdTypeManager(@NotNull List<IdType> idTypes) {
         this.idTypes = idTypes;
 
         this.idTypesMap = new HashMap<String, IdType>();
@@ -101,38 +89,30 @@ public class IdTypeManager
             idTypesMap.put(type.getKey(), type);
 
         defaultIdType = idTypesMap.get(IdTypeNames.NOT_SPECIFIED_KEY);
-        if (defaultIdType == null)
-        {
+        if (defaultIdType == null) {
             defaultIdType = new IdType(IdTypeNames.NOT_SPECIFIED_KEY, IdTypeNames.NOT_SPECIFIED_TITLE);
             this.idTypes.add(defaultIdType);
             this.idTypesMap.put(defaultIdType.getKey(), defaultIdType);
         }
     }
 
-    public List<IdType> getIdTypes()
-    {
+    public List<IdType> getIdTypes() {
         return Collections.unmodifiableList(idTypes);
     }
 
-    public IdType getIdType(String idTypeKey)
-    {
+    public IdType getIdType(String idTypeKey) {
         return idTypesMap.get(idTypeKey);
     }
 
-    public IdType getDefaultIdType()
-    {
+    public IdType getDefaultIdType() {
         return defaultIdType;
     }
 
-    public List<UrlLink> getLinks(String idTypeKey)
-    {
+    public List<UrlLink> getLinks(String idTypeKey) {
         IdType type = idTypesMap.get(idTypeKey);
-        if (type == null)
-        {
+        if (type == null) {
             return new ArrayList<UrlLink>(0);
-        }
-        else
-        {
+        } else {
             return Collections.unmodifiableList(type.getLinks());
         }
     }

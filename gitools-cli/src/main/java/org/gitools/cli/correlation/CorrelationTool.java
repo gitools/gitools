@@ -48,11 +48,9 @@ import java.util.Properties;
 /**
  * @noinspection ALL
  */
-public class CorrelationTool extends AnalysisTool
-{
+public class CorrelationTool extends AnalysisTool {
 
-    public static class CorrelationArguments extends AnalysisArguments
-    {
+    public static class CorrelationArguments extends AnalysisArguments {
         @Option(name = "-df", aliases = "-data-format", metaVar = "<format>",
                 usage = "Data file format (reference file extension).")
         public String dataFormat;
@@ -95,20 +93,17 @@ public class CorrelationTool extends AnalysisTool
     private Properties methodProperties = new Properties();
 
     @Override
-    public void validate(Object argsObject) throws ToolException
-    {
+    public void validate(Object argsObject) throws ToolException {
 
         super.validate(argsObject);
 
         CorrelationArguments args = (CorrelationArguments) argsObject;
 
-        if (args.dataFile == null)
-        {
+        if (args.dataFile == null) {
             throw new ToolValidationException("Data file should be specified.");
         }
 
-        if (args.method == null)
-        {
+        if (args.method == null) {
             throw new ToolValidationException("The method should be specified.");
         }
 
@@ -116,8 +111,7 @@ public class CorrelationTool extends AnalysisTool
     }
 
     @Override
-    public void run(Object argsObject) throws ToolException
-    {
+    public void run(Object argsObject) throws ToolException {
 
         CorrelationArguments args = (CorrelationArguments) argsObject;
 
@@ -136,21 +130,17 @@ public class CorrelationTool extends AnalysisTool
 
         ThreadManager.setNumThreads(args.maxProcs);
 
-        try
-        {
+        try {
             cmd.run(monitor);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new ToolException(e);
-        } finally
-        {
+        } finally {
             ThreadManager.shutdown(monitor);
         }
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser)
-    {
+    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -162,8 +152,7 @@ public class CorrelationTool extends AnalysisTool
         outputStream.println();
     }
 
-    private void printMethods(@NotNull PrintStream o)
-    {
+    private void printMethods(@NotNull PrintStream o) {
         o.println("Available correlation methods:");
         o.println(String.format(LIST_S_FMT, "pearson", "Pearson's correlation"));
         o.println(String.format(LIST_S_FMT, "spearman", "Spearman's rank correlation"));

@@ -21,25 +21,21 @@
  */
 package org.gitools.kegg.service.domain;
 
-public class KeggOrganism
-{
+public class KeggOrganism {
 
     private final String id;
     private final String description;
 
-    public KeggOrganism(String[] fields)
-    {
+    public KeggOrganism(String[] fields) {
         this.id = fields[1];
         this.description = fields[2];
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 

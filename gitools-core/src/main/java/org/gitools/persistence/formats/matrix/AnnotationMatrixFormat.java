@@ -38,24 +38,20 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix>
-{
+public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
 
 
-    public AnnotationMatrixFormat()
-    {
+    public AnnotationMatrixFormat() {
         super(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
     }
 
     @NotNull
     @Override
-    protected AnnotationMatrix readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected AnnotationMatrix readResource(@NotNull IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         AnnotationMatrix matrix = new AnnotationMatrix();
 
-        try
-        {
+        try {
             InputStream in = resourceLocator.openInputStream();
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
@@ -64,17 +60,14 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
             // Annotations
             String[] fields;
-            while ((fields = parser.readNext()) != null)
-            {
-                for (int i=1; (i < headers.length) && (i < fields.length); i++ )
-                {
+            while ((fields = parser.readNext()) != null) {
+                for (int i = 1; (i < headers.length) && (i < fields.length); i++) {
                     matrix.setAnnotation(fields[0], headers[i], fields[i]);
                 }
             }
 
             in.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
@@ -83,10 +76,8 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, AnnotationMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException
-    {
-        try
-        {
+    protected void writeResource(IResourceLocator resourceLocator, AnnotationMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
+        try {
             OutputStream out = resourceLocator.openOutputStream();
             RawCsvWriter writer = new RawCsvWriter(new OutputStreamWriter(out), '\t', '"');
 
@@ -97,10 +88,8 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
             // Annotations
             String[] annotations = new String[labels.size()];
-            for (String identifier : resource.getIdentifiers())
-            {
-                for (int i=1; i < labels.size(); i++)
-                {
+            for (String identifier : resource.getIdentifiers()) {
+                for (int i = 1; i < labels.size(); i++) {
                     annotations[i] = resource.getAnnotation(identifier, labels.get(i));
                 }
                 writer.writePropertyList(identifier, annotations);
@@ -108,8 +97,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
             writer.close();
             out.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new PersistenceException(e);
         }
     }

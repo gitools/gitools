@@ -41,31 +41,26 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class FilterByLabelAction extends BaseAction
-{
+public class FilterByLabelAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public FilterByLabelAction()
-    {
+    public FilterByLabelAction() {
         super("Filter by label...");
         setDesc("Filter by label");
     }
 
     @Override
-    public boolean isEnabledByModel(Object model)
-    {
+    public boolean isEnabledByModel(Object model) {
         return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap))
-        {
+        if (model == null || !(model instanceof Heatmap)) {
             return;
         }
 
@@ -75,24 +70,20 @@ public class FilterByLabelAction extends BaseAction
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
-        {
+        if (dlg.isCancelled()) {
             return;
         }
 
         final IMatrixView matrixView = hm;
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
                 IAnnotations am = null;
                 FilterDimension dim = page.getFilterDimension();
-                switch (dim)
-                {
+                switch (dim) {
                     case ROWS:
                         am = hm.getRows().getAnnotations();
                         break;

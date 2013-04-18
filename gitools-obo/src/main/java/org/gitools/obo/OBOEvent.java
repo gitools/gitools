@@ -28,8 +28,7 @@ import java.lang.reflect.Field;
 /**
  * @noinspection ALL
  */
-public class OBOEvent implements OBOEventTypes
-{
+public class OBOEvent implements OBOEventTypes {
 
     private final int type;
     private String stanzaName;
@@ -38,29 +37,25 @@ public class OBOEvent implements OBOEventTypes
 
     private final int linePos;
 
-    public OBOEvent(int type, int line)
-    {
+    public OBOEvent(int type, int line) {
         this.type = type;
         this.linePos = line;
     }
 
-    public OBOEvent(int type, int line, String stanzaName)
-    {
+    public OBOEvent(int type, int line, String stanzaName) {
         this.type = type;
         this.linePos = line;
         this.stanzaName = stanzaName;
     }
 
-    public OBOEvent(int type, int line, String stanzaName, String tagName)
-    {
+    public OBOEvent(int type, int line, String stanzaName, String tagName) {
         this.type = type;
         this.linePos = line;
         this.stanzaName = stanzaName;
         this.tagName = tagName;
     }
 
-    public OBOEvent(int type, int line, String stanzaName, String tagName, String tagContents)
-    {
+    public OBOEvent(int type, int line, String stanzaName, String tagName, String tagContents) {
         this.type = type;
         this.linePos = line;
         this.stanzaName = stanzaName;
@@ -68,60 +63,48 @@ public class OBOEvent implements OBOEventTypes
         this.tagContents = tagContents;
     }
 
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 
-    public int getLinePos()
-    {
+    public int getLinePos() {
         return linePos;
     }
 
-    public String getStanzaName()
-    {
+    public String getStanzaName() {
         return stanzaName;
     }
 
-    public String getTagName()
-    {
+    public String getTagName() {
         return tagName;
     }
 
-    public String getTagContents()
-    {
+    public String getTagContents() {
         return tagContents;
     }
 
     @NotNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        try
-        {
-            for (Field f : OBOEventTypes.class.getFields())
-            {
-                if (f.getInt(null) == type)
-                {
+        try {
+            for (Field f : OBOEventTypes.class.getFields()) {
+                if (f.getInt(null) == type) {
                     sb.append(f.getName());
                     break;
                 }
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
         }
 
-        if (sb.length() == 0)
-        {
+        if (sb.length() == 0) {
             sb.append(type);
         }
 
         sb.append(" ");
 
-        switch (type)
-        {
+        switch (type) {
             case STANZA_START:
                 sb.append(stanzaName);
                 break;

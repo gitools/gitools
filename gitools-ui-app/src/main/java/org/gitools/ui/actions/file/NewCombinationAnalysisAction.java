@@ -47,13 +47,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class NewCombinationAnalysisAction extends BaseAction
-{
+public class NewCombinationAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = 4604642713057641252L;
 
-    public NewCombinationAnalysisAction()
-    {
+    public NewCombinationAnalysisAction() {
         super("Combination analysis ...");
 
         setDesc("Run a combination analysis");
@@ -63,16 +61,14 @@ public class NewCombinationAnalysisAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -88,17 +84,13 @@ public class NewCombinationAnalysisAction extends BaseAction
 
         final CombinationCommand cmd = new CombinationCommand(analysis, dataFormat, wizard.getDataFilePage().getFile().getAbsolutePath(), columnSetsFormat, columnSetsPath, wizard.getSaveFilePage().getFolder(), analysisPath);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -106,11 +98,9 @@ public class NewCombinationAnalysisAction extends BaseAction
 
                     editor.setName(PersistenceUtils.getFileName(analysisPath) + "." + HeatmapFormat.EXTENSION);
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -119,8 +109,7 @@ public class NewCombinationAnalysisAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

@@ -35,8 +35,7 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-class IntogenImportDownloadDialog extends javax.swing.JDialog
-{
+class IntogenImportDownloadDialog extends javax.swing.JDialog {
 
     private String overwritenFiles;
 
@@ -52,8 +51,7 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
     /**
      * Creates new form IntogenImportSaveDialog
      */
-    public IntogenImportDownloadDialog(java.awt.Window parent)
-    {
+    public IntogenImportDownloadDialog(java.awt.Window parent) {
         super(parent);
 
         setModal(true);
@@ -71,14 +69,11 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
         namePrefix.requestFocusInWindow();
         folder.setText(Settings.getDefault().getLastExportPath());
 
-        DocumentChangeListener documentListener = new DocumentChangeListener()
-        {
+        DocumentChangeListener documentListener = new DocumentChangeListener() {
             @Override
-            protected void update(DocumentEvent e)
-            {
+            protected void update(DocumentEvent e) {
                 boolean exists = checkFileExists();
-                if (exists)
-                {
+                if (exists) {
                     headerPanel.setMessageStatus(MessageStatus.WARN);
                     headerPanel.setMessage("Files already exist and will be overwriten: " + getOverwritenFiles());
                 }
@@ -89,36 +84,30 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
         folder.getDocument().addDocumentListener(documentListener);
     }
 
-    public DialogHeaderPanel getHeaderPanel()
-    {
+    public DialogHeaderPanel getHeaderPanel() {
         return headerPanel;
     }
 
-    String getOverwritenFiles()
-    {
+    String getOverwritenFiles() {
         return overwritenFiles;
     }
 
-    public void setOverwritenFiles(String overwritenFiles)
-    {
+    public void setOverwritenFiles(String overwritenFiles) {
         this.overwritenFiles = overwritenFiles;
     }
 
-    boolean checkFileExists()
-    {
+    boolean checkFileExists() {
         return false;
     }
 
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
-    public int getReturnStatus()
-    {
+    public int getReturnStatus() {
         return returnStatus;
     }
 
-    public boolean isCancelled()
-    {
+    public boolean isCancelled() {
         return returnStatus == RET_CANCEL;
     }
 
@@ -130,8 +119,7 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
@@ -145,28 +133,22 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
 
         setTitle("Download...");
         setLocationByPlatform(true);
-        addWindowListener(new java.awt.event.WindowAdapter()
-        {
-            public void windowClosing(java.awt.event.WindowEvent evt)
-            {
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);
             }
         });
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -174,10 +156,8 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
         jLabel1.setText("Name prefix");
 
         folderBtn.setText("Browse...");
-        folderBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        folderBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 folderBtnActionPerformed(evt);
             }
         });
@@ -197,37 +177,31 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * Closes the dialog
      */
-    private void closeDialog(java.awt.event.WindowEvent evt)
-    {//GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-    private void folderBtnActionPerformed(java.awt.event.ActionEvent evt)
-    {//GEN-FIRST:event_folderBtnActionPerformed
+    private void folderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_folderBtnActionPerformed
         File selPath = FileChooserUtils.selectPath("Select folder", folder.getText());
 
-        if (selPath != null)
-        {
+        if (selPath != null) {
             folder.setText(selPath.getAbsolutePath());
             Settings.getDefault().setLastExportPath(selPath.getAbsolutePath());
         }
     }//GEN-LAST:event_folderBtnActionPerformed
 
-    private void doClose(int retStatus)
-    {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -247,13 +221,11 @@ class IntogenImportDownloadDialog extends javax.swing.JDialog
 
     private int returnStatus = RET_CANCEL;
 
-    public String getNamePrefix()
-    {
+    public String getNamePrefix() {
         return namePrefix.getText();
     }
 
-    public String getFolder()
-    {
+    public String getFolder() {
         return folder.getText();
     }
 }

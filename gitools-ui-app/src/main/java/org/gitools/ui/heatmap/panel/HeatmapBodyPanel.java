@@ -24,11 +24,9 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapBodyDrawer;
 
-public class HeatmapBodyPanel extends AbstractHeatmapPanel
-{
+public class HeatmapBodyPanel extends AbstractHeatmapPanel {
 
-    public HeatmapBodyPanel(Heatmap heatmap)
-    {
+    public HeatmapBodyPanel(Heatmap heatmap) {
         super(heatmap, new HeatmapBodyDrawer(heatmap));
     }
 }

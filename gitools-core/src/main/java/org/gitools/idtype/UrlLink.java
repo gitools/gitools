@@ -32,8 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UrlLink
-{
+public class UrlLink {
 
     @XmlAttribute
     private String name;
@@ -42,33 +41,27 @@ public class UrlLink
     @XmlJavaTypeAdapter(TextPatternXmlAdapter.class)
     private TextPattern pattern;
 
-    public UrlLink()
-    {
+    public UrlLink() {
     }
 
-    public UrlLink(String name, String pattern)
-    {
+    public UrlLink(String name, String pattern) {
         this.name = name;
         this.pattern = new TextPattern(pattern);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public TextPattern getPattern()
-    {
+    public TextPattern getPattern() {
         return pattern;
     }
 
-    public void setPattern(TextPattern pattern)
-    {
+    public void setPattern(TextPattern pattern) {
         this.pattern = pattern;
     }
 }

@@ -31,8 +31,7 @@ import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 
-public class PValueDecoratorPanel extends DecoratorPanel
-{
+public class PValueDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
     private JTextField minColor;
     private JTextField maxColor;
@@ -42,14 +41,12 @@ public class PValueDecoratorPanel extends DecoratorPanel
     private JCheckBox useCorrection;
     private JSpinner significance;
 
-    public PValueDecoratorPanel()
-    {
+    public PValueDecoratorPanel() {
         super("P-Value scale", new PValueDecorator());
     }
 
     @Override
-    public void bind()
-    {
+    public void bind() {
         Bindings.bind(minColor, "color", model(PValueDecorator.PROPERTY_MIN_COLOR));
         Bindings.bind(maxColor, "color", model(PValueDecorator.PROPERTY_MAX_COLOR));
         Bindings.bind(emptyColor, "color", model(PValueDecorator.PROPERTY_EMPTY_COLOR));
@@ -74,13 +71,11 @@ public class PValueDecoratorPanel extends DecoratorPanel
         );
     }
 
-    public JPanel getRootPanel()
-    {
+    public JPanel getRootPanel() {
         return rootPanel;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         minColor = new MyWebColorChooserField();
         maxColor = new MyWebColorChooserField();
         emptyColor = new MyWebColorChooserField();

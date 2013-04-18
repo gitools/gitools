@@ -30,32 +30,25 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.jetbrains.annotations.Nullable;
 
 @Deprecated // TODO we should find a better place/way to do this
-public class ActionUtils
-{
+public class ActionUtils {
 
-    public static AbstractEditor getSelectedEditor()
-    {
+    public static AbstractEditor getSelectedEditor() {
         return AppFrame.get().getEditorsPanel().getSelectedEditor();
     }
 
     @Nullable
-    public static IMatrixView getMatrixView()
-    {
+    public static IMatrixView getMatrixView() {
         AbstractEditor editor = getSelectedEditor();
-        if (editor == null)
-        {
+        if (editor == null) {
             return null;
         }
 
         IMatrixView matrixView = null;
 
         Object model = editor.getModel();
-        if (model instanceof IMatrixView)
-        {
+        if (model instanceof IMatrixView) {
             matrixView = (IMatrixView) model;
-        }
-        else if (model instanceof Heatmap)
-        {
+        } else if (model instanceof Heatmap) {
             matrixView = ((Heatmap) model);
         }
 
@@ -63,36 +56,29 @@ public class ActionUtils
     }
 
     @Nullable
-    public static IMatrixView getHeatmapMatrixView()
-    {
+    public static IMatrixView getHeatmapMatrixView() {
         IMatrixView matrixView;
         IEditor editor = ActionUtils.getSelectedEditor();
         Object model = editor.getModel();
-        if (model instanceof Heatmap)
-        {
+        if (model instanceof Heatmap) {
             matrixView = new HeatmapAnnotatedMatrixView((Heatmap) model);
-        }
-        else
-        {
+        } else {
             matrixView = getMatrixView();
         }
         return matrixView;
     }
 
     @Nullable
-    public static Heatmap getHeatmap()
-    {
+    public static Heatmap getHeatmap() {
         AbstractEditor editor = getSelectedEditor();
-        if (editor == null)
-        {
+        if (editor == null) {
             return null;
         }
 
         Heatmap figure = null;
 
         Object model = editor.getModel();
-        if (model instanceof Heatmap)
-        {
+        if (model instanceof Heatmap) {
             figure = (Heatmap) model;
         }
 

@@ -21,38 +21,32 @@
  */
 package org.gitools.modules.importer;
 
-public abstract class RefImpl implements Ref
-{
+public abstract class RefImpl implements Ref {
 
     private final String id;
     private final String name;
 
-    protected RefImpl(String id, String name)
-    {
+    protected RefImpl(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
     @Override
-    public String getRef()
-    {
+    public String getRef() {
         return getId();
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
 }

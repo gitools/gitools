@@ -50,36 +50,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnalysis>
-{
+public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnalysis> {
 
-    public OncodriveAnalysisEditor(OncodriveAnalysis analysis)
-    {
+    public OncodriveAnalysisEditor(OncodriveAnalysis analysis) {
         super(analysis, "/vm/analysis/oncodrive/analysis_details.vm", null);
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context)
-    {
+    protected void prepareContext(@NotNull VelocityContext context) {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
         context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         ToolConfig testConfig = analysis.getTestConfig();
-        if (!testConfig.get(TestFactory.TEST_NAME_PROPERTY).equals(""))
-        {
+        if (!testConfig.get(TestFactory.TEST_NAME_PROPERTY).equals("")) {
             context.put("test", WordUtils.capitalize(testConfig.get(TestFactory.TEST_NAME_PROPERTY)));
             HashMap<String, Object> testAttributes = new HashMap<String, Object>();
-            for (String key : testConfig.getConfiguration().keySet())
-            {
-                if (!key.equals(TestFactory.TEST_NAME_PROPERTY))
-                {
+            for (String key : testConfig.getConfiguration().keySet()) {
+                if (!key.equals(TestFactory.TEST_NAME_PROPERTY)) {
                     testAttributes.put(WordUtils.capitalize(key), WordUtils.capitalize(testConfig.get(key)));
                 }
             }
-            if (testAttributes.size() > 0)
-            {
+            if (testAttributes.size() > 0) {
                 context.put("testAttributes", testAttributes);
             }
 
@@ -97,12 +90,9 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         int maxSize = analysis.getMaxModuleSize();
         context.put("moduleMaxSize", maxSize != Integer.MAX_VALUE ? maxSize : "No limit");
 
-        if (analysis.getMtc().equals("bh"))
-        {
+        if (analysis.getMtc().equals("bh")) {
             context.put("mtc", "Benjamini Hochberg FDR");
-        }
-        else if (analysis.getMtc().equals("bonferroni"))
-        {
+        } else if (analysis.getMtc().equals("bonferroni")) {
             context.put("mtc", "Bonferroni");
         }
 
@@ -110,51 +100,39 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
 
         fileRef = analysis.getLocator();
-        if (fileRef != null)
-        {
+        if (fileRef != null) {
             context.put("analysisLocation", fileRef.getURL());
-        }
-        else
-        {
+        } else {
             setSaveAllowed(true);
         }
 
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params)
-    {
-        if ("NewDataHeatmap".equals(name))
-        {
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
-        }
-        else if ("NewResultsHeatmap".equals(name))
-        {
+        } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
         }
     }
 
-    private void newDataHeatmap()
-    {
-        if (analysis.getData() == null)
-        {
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
                 String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
-                if (!testName.equals(TestFactory.ZSCORE_TEST))
-                {
+                if (!testName.equals(TestFactory.ZSCORE_TEST)) {
                     heatmap.getLayers().get(0).setDecorator(new BinaryDecorator());
                 }
                 heatmap.setTitle(analysis.getTitle() + " (data)");
@@ -163,11 +141,9 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
                 editor.setName(editorPanel.deriveName(getName(), OncodriveAnalysisFormat.EXTENSION, "-data", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("New heatmap created.");
                     }
@@ -176,21 +152,17 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         });
     }
 
-    private void newResultsHeatmap()
-    {
-        if (analysis.getResults() == null)
-        {
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
             AppFrame.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
         final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
+            public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
@@ -198,11 +170,9 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
                 editor.setName(editorPanel.deriveName(getName(), OncodriveAnalysisFormat.EXTENSION, "-results", ""));
 
-                SwingUtilities.invokeLater(new Runnable()
-                {
+                SwingUtilities.invokeLater(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         editorPanel.addEditor(editor);
                         AppFrame.get().setStatusText("Heatmap for oncodrive results created.");
                     }
@@ -212,8 +182,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
     }
 
     @NotNull
-    private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis)
-    {
+    private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
@@ -221,8 +190,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
     //TODO
     @NotNull
-    protected static List<BaseAction> createToolBar(@NotNull OncodriveAnalysis analysis)
-    {
+    protected static List<BaseAction> createToolBar(@NotNull OncodriveAnalysis analysis) {
         ViewRelatedDataFromColumnAction action = new ViewRelatedDataFromColumnAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get());
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);

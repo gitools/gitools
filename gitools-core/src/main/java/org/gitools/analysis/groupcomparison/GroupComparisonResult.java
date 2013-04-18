@@ -28,25 +28,21 @@ import org.gitools.stats.test.results.CommonResult;
 /**
  * @noinspection ALL
  */
-public class GroupComparisonResult extends CommonResult
-{
+public class GroupComparisonResult extends CommonResult {
 
     private int N_group1;
     private int N_group2;
 
-    public GroupComparisonResult()
-    {
+    public GroupComparisonResult() {
         super(0, 0.0, 0.0, 0.0);
     }
 
-    public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue)
-    {
+    public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue) {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
     }
 
-    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue)
-    {
+    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue) {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
         this.N_group1 = N_group1;
@@ -54,27 +50,23 @@ public class GroupComparisonResult extends CommonResult
     }
 
     @AttributeDef(id = "N-group1", name = "N Group 1", description = "Number of elements in Group 1")
-    public int getN_group1()
-    {
+    public int getN_group1() {
         return N_group1;
     }
 
-    public void setN_group1(int N_group1)
-    {
+    public void setN_group1(int N_group1) {
         this.N_group1 = N_group1;
     }
 
     @AttributeDef(id = "N-group2", name = "N Group 2", description = "Number of elements in Group 2")
-    public int getN_group2()
-    {
+    public int getN_group2() {
         return N_group2;
     }
 
     /**
      * @noinspection UnusedDeclaration
      */
-    public void setN_group2(int N_group2)
-    {
+    public void setN_group2(int N_group2) {
         this.N_group2 = N_group2;
     }
 

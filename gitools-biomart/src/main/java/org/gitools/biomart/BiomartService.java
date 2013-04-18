@@ -33,8 +33,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-public interface BiomartService
-{
+public interface BiomartService {
 
     List<MartLocation> getRegistry() throws BiomartServiceException;
 

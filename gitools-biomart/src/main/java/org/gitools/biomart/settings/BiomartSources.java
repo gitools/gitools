@@ -30,19 +30,16 @@ import java.util.List;
 
 @XmlRootElement(name = "mart-registry")
 @XmlAccessorType(XmlAccessType.FIELD)
-class BiomartSources
-{
+class BiomartSources {
 
     @XmlElement(name = "mart")
     private List<BiomartSource> sources = new ArrayList<BiomartSource>();
 
-    public List<BiomartSource> getSources()
-    {
+    public List<BiomartSource> getSources() {
         return sources;
     }
 
-    public void setSources(List<BiomartSource> src)
-    {
+    public void setSources(List<BiomartSource> src) {
         this.sources = src;
     }
 }

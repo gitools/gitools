@@ -30,13 +30,13 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class HeatmapColoredLabelsHeader extends HeatmapHeader
-{
+public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
     private static final String THICKNESS_CHANGED = "thickness";
     private static final String SEPARATION_GRID_CHANGED = "separationGrid";
@@ -44,31 +44,25 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
     private static final String CLUSTERS_CHANGED = "clusters";
     private static final String INDICES_CHANGED = "indices";
 
-    /* The thickness of the color band */
+    @XmlElement
     private int thickness;
 
-    /* Separate different clusters with a grid */
+    @XmlElement
     private boolean separationGrid;
 
+    @XmlElement(name = "force-label-color")
     private boolean forceLabelColor;
 
-    /**
-     * The list of clusters in this set
-     */
+    @XmlElement
     private ColoredLabel[] coloredLabels;
 
-    /**
-     * Maps matrix row/column id to cluster index
-     */
-    private Map<String, Integer> dataColoredLabelIndices;
+    private transient Map<String, Integer> dataColoredLabelIndices;
 
-    public HeatmapColoredLabelsHeader()
-    {
+    public HeatmapColoredLabelsHeader() {
         super();
     }
 
-    public HeatmapColoredLabelsHeader(HeatmapDimension hdim)
-    {
+    public HeatmapColoredLabelsHeader(HeatmapDimension hdim) {
         super(hdim);
 
         size = 20;
@@ -84,38 +78,32 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
 
 
         coloredLabels = new ColoredLabel[0];
-        dataColoredLabelIndices = new HashMap<String, Integer>();
     }
 
     @Override
-    protected void updateLargestLabelLength(Component component)
-    {
+    protected void updateLargestLabelLength(Component component) {
         this.largestLabelLength = 0;
     }
 
     /* The thickness of the color band */
-    public int getThickness()
-    {
+    public int getThickness() {
         return thickness;
     }
 
     /* The thickness of the color band */
-    public void setThickness(int thickness)
-    {
+    public void setThickness(int thickness) {
         int old = this.thickness;
         this.thickness = thickness;
         firePropertyChange(THICKNESS_CHANGED, old, thickness);
     }
 
     /* Separate different clusters with a grid */
-    public boolean isSeparationGrid()
-    {
+    public boolean isSeparationGrid() {
         return separationGrid;
     }
 
     /* Separate different clusters with a grid */
-    public void setSeparationGrid(boolean separationGrid)
-    {
+    public void setSeparationGrid(boolean separationGrid) {
         boolean old = this.separationGrid;
         this.separationGrid = separationGrid;
         firePropertyChange(SEPARATION_GRID_CHANGED, old, separationGrid);
@@ -124,16 +112,14 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
     /**
      * The list of clusters in this set
      */
-    public ColoredLabel[] getClusters()
-    {
+    public ColoredLabel[] getClusters() {
         return coloredLabels;
     }
 
     /**
      * The list of clusters in this set
      */
-    public void setClusters(ColoredLabel[] clusters)
-    {
+    public void setClusters(ColoredLabel[] clusters) {
         ColoredLabel[] old = this.coloredLabels;
         this.coloredLabels = clusters;
         firePropertyChange(CLUSTERS_CHANGED, old, clusters);
@@ -143,76 +129,41 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader
      * Return the corresponding matrix row/column cluster. Null if there is not cluster assigned.
      */
     @Nullable
-    public ColoredLabel getAssignedColoredLabel(String id)
-    {
-        Integer index = dataColoredLabelIndices.get(id);
-        if (index == null)
-        {
+    public ColoredLabel getAssignedColoredLabel(String id) {
+        Integer index = getAssignedColoredLabels().get(id);
+        if (index == null) {
             return null;
         }
         return coloredLabels[index];
     }
 
-    public void setAssignedColoredLabels(Map<String, Integer> assigned)
-    {
-        this.dataColoredLabelIndices = new HashMap<String, Integer>(assigned);
-        firePropertyChange(INDICES_CHANGED);
-    }
-
-    public Map<String, Integer> getAssignedColoredLabels()
-    {
+    private Map<String, Integer> getAssignedColoredLabels() {
+        if (dataColoredLabelIndices == null) {
+            dataColoredLabelIndices = new HashMap<String, Integer>(coloredLabels.length);
+            for (int i = 0; i < coloredLabels.length; i++) {
+                dataColoredLabelIndices.put(coloredLabels[i].getDisplayedLabel(), i);
+            }
+        }
         return this.dataColoredLabelIndices;
     }
 
-    /**
-     * Set the corresponding matrix row/column cluster. -1 if there is not cluster assigned.
-     */
-    public void setAssignedColoredLabel(String id, int clusterIndex)
-    {
-        ColoredLabel old = getAssignedColoredLabel(id);
-        if (old != null && clusterIndex == -1)
-        {
-            this.dataColoredLabelIndices.remove(id);
-        }
-        else
-        {
-            this.dataColoredLabelIndices.put(id, clusterIndex);
-        }
-
-        ColoredLabel newCluster = clusterIndex != -1 ? coloredLabels[clusterIndex] : null;
-        firePropertyChange(INDICES_CHANGED, old, newCluster);
-    }
-
-    /**
-     * Clear all assigned clusters
-     */
-    public void clearAssignedColoredLabels()
-    {
-        this.dataColoredLabelIndices.clear();
-        firePropertyChange(INDICES_CHANGED);
-    }
-
-    public boolean isForceLabelColor()
-    {
+    public boolean isForceLabelColor() {
         return forceLabelColor;
     }
 
     /*Use the same color for all labels instead of inverted*/
-    public void setForceLabelColor(boolean forceLabelColor)
-    {
+    public void setForceLabelColor(boolean forceLabelColor) {
         boolean old = this.forceLabelColor;
         this.forceLabelColor = forceLabelColor;
         firePropertyChange(FORCE_LABEL_COLOR, old, forceLabelColor);
     }
 
-    public void updateFromClusterResults(@NotNull ClusteringResults results)
-    {
+    public void updateFromClusterResults(@NotNull ClusteringResults results) {
         ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
 
         String[] clusterTitles = results.getClusterTitles();
         coloredLabels = new ColoredLabel[results.getNumClusters()];
-        for (int i = 0; i < results.getNumClusters(); i++)
-        {
+        for (int i = 0; i < results.getNumClusters(); i++) {
             ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
         }
 

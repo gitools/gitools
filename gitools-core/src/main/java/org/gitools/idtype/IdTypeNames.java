@@ -21,8 +21,7 @@
  */
 package org.gitools.idtype;
 
-class IdTypeNames
-{
+class IdTypeNames {
 
     public static final String NOT_SPECIFIED_KEY = "not_specified";
     public static final String NOT_SPECIFIED_TITLE = "Not specified";

@@ -33,11 +33,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class TextMatrixViewExporter
-{
+public class TextMatrixViewExporter {
 
-    public static void exportMatrix(@NotNull IMatrixView matrixView, int propIndex, File file) throws IOException
-    {
+    public static void exportMatrix(@NotNull IMatrixView matrixView, int propIndex, File file) throws IOException {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
         int rowCount = matrixView.getRows().size();
@@ -55,11 +53,9 @@ public class TextMatrixViewExporter
 
         ValueTranslator vt = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
 
-        for (int r = 0; r < rowCount; r++)
-        {
+        for (int r = 0; r < rowCount; r++) {
             pw.print(matrixView.getRows().getLabel(r).toString());
-            for (int c = 0; c < colCount; c++)
-            {
+            for (int c = 0; c < colCount; c++) {
                 Object value = matrixView.getCellValue(r, c, propIndex);
                 String valueString = vt.valueToString(value);
                 pw.print("\t" + valueString);
@@ -70,8 +66,7 @@ public class TextMatrixViewExporter
         pw.close();
     }
 
-    public static void exportTable(@NotNull IMatrixView matrixView, @NotNull int[] propIndices, File file) throws IOException
-    {
+    public static void exportTable(@NotNull IMatrixView matrixView, @NotNull int[] propIndices, File file) throws IOException {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
         IMatrixLayers attributes = matrixView.getLayers();
@@ -86,8 +81,7 @@ public class TextMatrixViewExporter
         // header
 
         pw.print("column\trow");
-        for (int i = 0; i < propIndices.length; i++)
-        {
+        for (int i = 0; i < propIndices.length; i++) {
             IMatrixLayer attr = attributes.get(propIndices[i]);
 
             vt[i] = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
@@ -98,17 +92,14 @@ public class TextMatrixViewExporter
 
         // body
 
-        for (int i = 0; i < rowCount * colCount; i++)
-        {
+        for (int i = 0; i < rowCount * colCount; i++) {
             final int r = i / colCount;
             final int c = i % colCount;
 
-            if (!matrixView.isEmpty(r, c))
-            {
+            if (!matrixView.isEmpty(r, c)) {
                 pw.print(matrixView.getColumns().getLabel(c));
                 pw.print("\t" + matrixView.getRows().getLabel(r));
-                for (int p = 0; p < propCount; p++)
-                {
+                for (int p = 0; p < propCount; p++) {
                     Object value = matrixView.getCellValue(r, c, propIndices[p]);
                     String valueString = vt[p].valueToString(value);
                     pw.print("\t" + valueString);

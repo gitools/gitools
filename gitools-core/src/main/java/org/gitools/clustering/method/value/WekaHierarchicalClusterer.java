@@ -73,8 +73,7 @@ import java.util.*;
  * @version $Revision: 6587 $
  * @noinspection ALL
  */
-public class WekaHierarchicalClusterer extends AbstractClusterer implements OptionHandler, CapabilitiesHandler, Drawable
-{
+public class WekaHierarchicalClusterer extends AbstractClusterer implements OptionHandler, CapabilitiesHandler, Drawable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -97,13 +96,11 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      */
     private int m_nNumClusters = 2;
 
-    public void setNumClusters(int nClusters)
-    {
+    public void setNumClusters(int nClusters) {
         m_nNumClusters = Math.max(1, nClusters);
     }
 
-    int getNumClusters()
-    {
+    int getNumClusters() {
         return m_nNumClusters;
     }
 
@@ -112,23 +109,19 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      */
     private DistanceFunction m_DistanceFunction = new EuclideanDistance();
 
-    public DistanceFunction getDistanceFunction()
-    {
+    public DistanceFunction getDistanceFunction() {
         return m_DistanceFunction;
     }
 
-    public void setDistanceFunction(DistanceFunction distanceFunction)
-    {
+    public void setDistanceFunction(DistanceFunction distanceFunction) {
         m_DistanceFunction = distanceFunction;
     }
 
     /**
      * used for priority queue for efficient retrieval of pair of clusters to merge*
      */
-    class Tuple
-    {
-        public Tuple(double d, int i, int j, int nSize1, int nSize2)
-        {
+    class Tuple {
+        public Tuple(double d, int i, int j, int nSize1, int nSize2) {
             m_fDist = d;
             m_iCluster1 = i;
             m_iCluster2 = j;
@@ -146,16 +139,11 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * comparator used by priority queue*
      */
-    private class TupleComparator implements Comparator<Tuple>
-    {
-        public int compare(@NotNull Tuple o1, @NotNull Tuple o2)
-        {
-            if (o1.m_fDist < o2.m_fDist)
-            {
+    private class TupleComparator implements Comparator<Tuple> {
+        public int compare(@NotNull Tuple o1, @NotNull Tuple o2) {
+            if (o1.m_fDist < o2.m_fDist) {
                 return -1;
-            }
-            else if (o1.m_fDist == o2.m_fDist)
-            {
+            } else if (o1.m_fDist == o2.m_fDist) {
                 return 0;
             }
             return 1;
@@ -182,35 +170,29 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
     private boolean m_bPrintNewick = true;
 
-    public boolean getPrintNewick()
-    {
+    public boolean getPrintNewick() {
         return m_bPrintNewick;
     }
 
-    public void setPrintNewick(boolean bPrintNewick)
-    {
+    public void setPrintNewick(boolean bPrintNewick) {
         m_bPrintNewick = bPrintNewick;
     }
 
-    public void setLinkType(@NotNull SelectedTag newLinkType)
-    {
-        if (newLinkType.getTags() == TAGS_LINK_TYPE)
-        {
+    public void setLinkType(@NotNull SelectedTag newLinkType) {
+        if (newLinkType.getTags() == TAGS_LINK_TYPE) {
             m_nLinkType = newLinkType.getSelectedTag().getID();
         }
     }
 
     @NotNull
-    public SelectedTag getLinkType()
-    {
+    public SelectedTag getLinkType() {
         return new SelectedTag(m_nLinkType, TAGS_LINK_TYPE);
     }
 
     /**
      * class representing node in cluster hierarchy *
      */
-    class Node implements Serializable
-    {
+    class Node implements Serializable {
         Node m_left;
         Node m_right;
         Node m_parent;
@@ -221,40 +203,29 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         double m_fHeight = 0;
 
         @NotNull
-        public String toString(int attIndex)
-        {
+        public String toString(int attIndex) {
             DecimalFormat myFormatter = new DecimalFormat("#.#####");
 
-            if (m_left == null)
-            {
-                if (m_right == null)
-                {
+            if (m_left == null) {
+                if (m_right == null) {
                     return "(" + m_instances.instance(m_iLeftInstance).stringValue(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
                             m_instances.instance(m_iRightInstance).stringValue(attIndex) + ":" + myFormatter.format(m_fRightLength) + ")";
-                }
-                else
-                {
+                } else {
                     return "(" + m_instances.instance(m_iLeftInstance).stringValue(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
                             m_right.toString(attIndex) + ":" + myFormatter.format(m_fRightLength) + ")";
                 }
-            }
-            else
-            {
-                if (m_right == null)
-                {
+            } else {
+                if (m_right == null) {
                     return "(" + m_left.toString(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," +
                             m_instances.instance(m_iRightInstance).stringValue(attIndex) + ":" + myFormatter.format(m_fRightLength) + ")";
-                }
-                else
-                {
+                } else {
                     return "(" + m_left.toString(attIndex) + ":" + myFormatter.format(m_fLeftLength) + "," + m_right.toString(attIndex) + ":" + myFormatter.format(m_fRightLength) + ")";
                 }
             }
         }
 
         @NotNull
-        public String toString2(int attIndex)
-        {
+        public String toString2(int attIndex) {
 
             Locale locale = Locale.US;
             DecimalFormat myFormatter = new DecimalFormat("#.#####;#");
@@ -262,62 +233,44 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
             NumberFormat f = myFormatter.getNumberInstance(locale);
 
-            if (m_left == null)
-            {
-                if (m_right == null)
-                {
+            if (m_left == null) {
+                if (m_right == null) {
                     return "(" + m_iLeftInstance + ":" + f.format(m_fLeftLength) + "," +
                             m_iRightInstance + ":" + f.format(m_fRightLength) + ")";
-                }
-                else
-                {
+                } else {
                     return "(" + m_iLeftInstance + ":" + f.format(m_fLeftLength) + "," +
                             m_right.toString2(attIndex) + ":" + f.format(m_fRightLength) + ")";
                 }
-            }
-            else
-            {
-                if (m_right == null)
-                {
+            } else {
+                if (m_right == null) {
                     return "(" + m_left.toString2(attIndex) + ":" + f.format(m_fLeftLength) + "," +
                             m_iRightInstance + ":" + f.format(m_fRightLength) + ")";
-                }
-                else
-                {
+                } else {
                     return "(" + m_left.toString2(attIndex) + ":" + f.format(m_fLeftLength) + "," +
                             m_right.toString2(attIndex) + ":" + f.format(m_fRightLength) + ")";
                 }
             }
         }
 
-        void setHeight(double fHeight1, double fHeight2)
-        {
+        void setHeight(double fHeight1, double fHeight2) {
             m_fHeight = fHeight1;
-            if (m_left == null)
-            {
+            if (m_left == null) {
                 m_fLeftLength = fHeight1;
-            }
-            else
-            {
+            } else {
                 m_fLeftLength = fHeight1 - m_left.m_fHeight;
             }
-            if (m_right == null)
-            {
+            if (m_right == null) {
                 m_fRightLength = fHeight2;
-            }
-            else
-            {
+            } else {
                 m_fRightLength = fHeight2 - m_right.m_fHeight;
             }
         }
 
-        void setLength(double fLength1, double fLength2)
-        {
+        void setLength(double fLength1, double fLength2) {
             m_fLeftLength = fLength1;
             m_fRightLength = fLength2;
             m_fHeight = fLength1;
-            if (m_left != null)
-            {
+            if (m_left != null) {
                 m_fHeight += m_left.m_fHeight;
             }
         }
@@ -328,21 +281,18 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
 
     @Override
-    public void buildClusterer(@NotNull Instances data) throws Exception
-    {
+    public void buildClusterer(@NotNull Instances data) throws Exception {
         //		/System.err.println("Method " + m_nLinkType);
         m_instances = data;
         int nInstances = m_instances.numInstances();
-        if (nInstances == 0)
-        {
+        if (nInstances == 0) {
             return;
         }
         m_DistanceFunction.setInstances(m_instances);
         // use array of integer vectors to store cluster indices,
         // starting with one cluster per instance
         Vector<Integer>[] nClusterID = new Vector[data.numInstances()];
-        for (int i = 0; i < data.numInstances(); i++)
-        {
+        for (int i = 0; i < data.numInstances(); i++) {
             nClusterID[i] = new Vector<Integer>();
             nClusterID[i].add(i);
         }
@@ -351,12 +301,9 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
         // used for keeping track of hierarchy
         Node[] clusterNodes = new Node[nInstances];
-        if (m_nLinkType == NEIGHBOR_JOINING)
-        {
+        if (m_nLinkType == NEIGHBOR_JOINING) {
             neighborJoining(nClusters, nClusterID, clusterNodes);
-        }
-        else
-        {
+        } else {
             doLinkClustering(nClusters, nClusterID, clusterNodes);
         }
 
@@ -365,12 +312,9 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         int iCurrent = 0;
         m_clusters = new Node[m_nNumClusters];
         m_nClusterNr = new int[nInstances];
-        for (int i = 0; i < nInstances; i++)
-        {
-            if (nClusterID[i].size() > 0)
-            {
-                for (int j = 0; j < nClusterID[i].size(); j++)
-                {
+        for (int i = 0; i < nInstances; i++) {
+            if (nClusterID[i].size() > 0) {
+                for (int j = 0; j < nClusterID[i].size(); j++) {
                     m_nClusterNr[nClusterID[i].elementAt(j)] = iCurrent;
                 }
                 m_clusters[iCurrent] = clusterNodes[i];
@@ -389,16 +333,13 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @param nClusterID
      * @param clusterNodes
      */
-    void neighborJoining(int nClusters, Vector<Integer>[] nClusterID, Node[] clusterNodes)
-    {
+    void neighborJoining(int nClusters, Vector<Integer>[] nClusterID, Node[] clusterNodes) {
         int n = m_instances.numInstances();
 
         double[][] fDist = new double[nClusters][nClusters];
-        for (int i = 0; i < nClusters; i++)
-        {
+        for (int i = 0; i < nClusters; i++) {
             fDist[i][i] = 0;
-            for (int j = i + 1; j < nClusters; j++)
-            {
+            for (int j = i + 1; j < nClusters; j++) {
                 fDist[i][j] = getDistance0(nClusterID[i], nClusterID[j]);
                 fDist[j][i] = fDist[i][j];
             }
@@ -409,11 +350,9 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         int[] nNextActive = new int[n];
 
         //calculate initial separation rows
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             double fSum = 0;
-            for (int j = 0; j < n; j++)
-            {
+            for (int j = 0; j < n; j++) {
                 fSum += fDist[i][j];
             }
             fSeparationSums[i] = fSum;
@@ -421,29 +360,22 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             nNextActive[i] = i + 1;
         }
 
-        while (nClusters > 2)
-        {
+        while (nClusters > 2) {
             // find minimum
             int iMin1 = -1;
             int iMin2 = -1;
             double fMin = Double.MAX_VALUE;
-            if (m_bDebug)
-            {
-                for (int i = 0; i < n; i++)
-                {
-                    if (nClusterID[i].size() > 0)
-                    {
+            if (m_bDebug) {
+                for (int i = 0; i < n; i++) {
+                    if (nClusterID[i].size() > 0) {
                         double[] fRow = fDist[i];
                         double fSep1 = fSeparations[i];
-                        for (int j = 0; j < n; j++)
-                        {
-                            if (nClusterID[j].size() > 0 && i != j)
-                            {
+                        for (int j = 0; j < n; j++) {
+                            if (nClusterID[j].size() > 0 && i != j) {
                                 double fSep2 = fSeparations[j];
                                 double fVal = fRow[j] - fSep1 - fSep2;
 
-                                if (fVal < fMin)
-                                {
+                                if (fVal < fMin) {
                                     // new minimum
                                     iMin1 = i;
                                     iMin2 = j;
@@ -453,21 +385,16 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 int i = 0;
-                while (i < n)
-                {
+                while (i < n) {
                     double fSep1 = fSeparations[i];
                     double[] fRow = fDist[i];
                     int j = nNextActive[i];
-                    while (j < n)
-                    {
+                    while (j < n) {
                         double fSep2 = fSeparations[j];
                         double fVal = fRow[j] - fSep1 - fSep2;
-                        if (fVal < fMin)
-                        {
+                        if (fVal < fMin) {
                             // new minimum
                             iMin1 = i;
                             iMin2 = j;
@@ -485,21 +412,16 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             double fSep2 = fSeparations[iMin2];
             double fDist1 = (0.5 * fMinDistance) + (0.5 * (fSep1 - fSep2));
             double fDist2 = (0.5 * fMinDistance) + (0.5 * (fSep2 - fSep1));
-            if (nClusters > 2)
-            {
+            if (nClusters > 2) {
                 // update separations  & distance
                 double fNewSeparationSum = 0;
                 double fMutualDistance = fDist[iMin1][iMin2];
                 double[] fRow1 = fDist[iMin1];
                 double[] fRow2 = fDist[iMin2];
-                for (int i = 0; i < n; i++)
-                {
-                    if (i == iMin1 || i == iMin2 || nClusterID[i].size() == 0)
-                    {
+                for (int i = 0; i < n; i++) {
+                    if (i == iMin1 || i == iMin2 || nClusterID[i].size() == 0) {
                         fRow1[i] = 0;
-                    }
-                    else
-                    {
+                    } else {
                         double fVal1 = fRow1[i];
                         double fVal2 = fRow2[i];
                         double fDistance = (fVal1 + fVal2 - fMutualDistance) / 2.0;
@@ -517,38 +439,26 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                 merge(iMin1, iMin2, fDist1, fDist2, nClusterID, clusterNodes);
                 int iPrev = iMin2;
                 // since iMin1 < iMin2 we havenActiveRows[0] >= 0, so the next loop should be save
-                while (nClusterID[iPrev].size() == 0)
-                {
+                while (nClusterID[iPrev].size() == 0) {
                     iPrev--;
                 }
                 nNextActive[iPrev] = nNextActive[iMin2];
-            }
-            else
-            {
+            } else {
                 merge(iMin1, iMin2, fDist1, fDist2, nClusterID, clusterNodes);
                 break;
             }
         }
 
-        for (int i = 0; i < n; i++)
-        {
-            if (nClusterID[i].size() > 0)
-            {
-                for (int j = i + 1; j < n; j++)
-                {
-                    if (nClusterID[j].size() > 0)
-                    {
+        for (int i = 0; i < n; i++) {
+            if (nClusterID[i].size() > 0) {
+                for (int j = i + 1; j < n; j++) {
+                    if (nClusterID[j].size() > 0) {
                         double fDist1 = fDist[i][j];
-                        if (nClusterID[i].size() == 1)
-                        {
+                        if (nClusterID[i].size() == 1) {
                             merge(i, j, fDist1, 0, nClusterID, clusterNodes);
-                        }
-                        else if (nClusterID[j].size() == 1)
-                        {
+                        } else if (nClusterID[j].size() == 1) {
                             merge(i, j, 0, fDist1, nClusterID, clusterNodes);
-                        }
-                        else
-                        {
+                        } else {
                             merge(i, j, fDist1 / 2.0, fDist1 / 2.0, nClusterID, clusterNodes);
                         }
                         break;
@@ -566,58 +476,45 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @param nClusterID
      * @param clusterNodes
      */
-    void doLinkClustering(int nClusters, Vector<Integer>[] nClusterID, Node[] clusterNodes)
-    {
+    void doLinkClustering(int nClusters, Vector<Integer>[] nClusterID, Node[] clusterNodes) {
         int nInstances = m_instances.numInstances();
 
         long size = (long) nClusters * nClusters / 2;
-        if (size > Integer.MAX_VALUE)
-        {
+        if (size > Integer.MAX_VALUE) {
             throw new OutOfMemoryError();
         }
 
         PriorityQueue<Tuple> queue = new PriorityQueue<Tuple>((int) size, new TupleComparator());
         double[][] fDistance0 = new double[nClusters][nClusters];
         double[][] fClusterDistance = null;
-        if (m_bDebug)
-        {
+        if (m_bDebug) {
             fClusterDistance = new double[nClusters][nClusters];
         }
-        for (int i = 0; i < nClusters; i++)
-        {
+        for (int i = 0; i < nClusters; i++) {
             fDistance0[i][i] = 0;
-            for (int j = i + 1; j < nClusters; j++)
-            {
+            for (int j = i + 1; j < nClusters; j++) {
                 fDistance0[i][j] = getDistance0(nClusterID[i], nClusterID[j]);
                 fDistance0[j][i] = fDistance0[i][j];
                 queue.add(new Tuple(fDistance0[i][j], i, j, 1, 1));
-                if (m_bDebug)
-                {
+                if (m_bDebug) {
                     fClusterDistance[i][j] = fDistance0[i][j];
                     fClusterDistance[j][i] = fDistance0[i][j];
                 }
             }
         }
-        while (nClusters > m_nNumClusters)
-        {
+        while (nClusters > m_nNumClusters) {
             int iMin1 = -1;
             int iMin2 = -1;
             // find closest two clusters
-            if (m_bDebug)
-            {
+            if (m_bDebug) {
         /* simple but inefficient implementation */
                 double fMinDistance = Double.MAX_VALUE;
-                for (int i = 0; i < nInstances; i++)
-                {
-                    if (nClusterID[i].size() > 0)
-                    {
-                        for (int j = i + 1; j < nInstances; j++)
-                        {
-                            if (nClusterID[j].size() > 0)
-                            {
+                for (int i = 0; i < nInstances; i++) {
+                    if (nClusterID[i].size() > 0) {
+                        for (int j = i + 1; j < nInstances; j++) {
+                            if (nClusterID[j].size() > 0) {
                                 double fDist = fClusterDistance[i][j];
-                                if (fDist < fMinDistance)
-                                {
+                                if (fDist < fMinDistance) {
                                     fMinDistance = fDist;
                                     iMin1 = i;
                                     iMin2 = j;
@@ -627,13 +524,10 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                     }
                 }
                 merge(iMin1, iMin2, fMinDistance, fMinDistance, nClusterID, clusterNodes);
-            }
-            else
-            {
+            } else {
                 // use priority queue to find next best pair to cluster
                 Tuple t;
-                do
-                {
+                do {
                     t = queue.poll();
                 }
                 while (t != null && (nClusterID[t.m_iCluster1].size() != t.m_nClusterSize1 || nClusterID[t.m_iCluster2].size() != t.m_nClusterSize2));
@@ -644,15 +538,12 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             // merge  clusters
 
             // update distances & queue
-            for (int i = 0; i < nInstances; i++)
-            {
-                if (i != iMin1 && nClusterID[i].size() != 0)
-                {
+            for (int i = 0; i < nInstances; i++) {
+                if (i != iMin1 && nClusterID[i].size() != 0) {
                     int i1 = Math.min(iMin1, i);
                     int i2 = Math.max(iMin1, i);
                     double fDistance = getDistance(fDistance0, nClusterID[i1], nClusterID[i2]);
-                    if (m_bDebug)
-                    {
+                    if (m_bDebug) {
                         fClusterDistance[i1][i2] = fDistance;
                         fClusterDistance[i2][i1] = fDistance;
                     }
@@ -664,14 +555,11 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         }
     } // doLinkClustering
 
-    void merge(int iMin1, int iMin2, double fDist1, double fDist2, Vector<Integer>[] nClusterID, Node[] clusterNodes)
-    {
-        if (m_bDebug)
-        {
+    void merge(int iMin1, int iMin2, double fDist1, double fDist2, Vector<Integer>[] nClusterID, Node[] clusterNodes) {
+        if (m_bDebug) {
             System.err.println("Merging " + iMin1 + " " + iMin2 + " " + fDist1 + " " + fDist2);
         }
-        if (iMin1 > iMin2)
-        {
+        if (iMin1 > iMin2) {
             int h = iMin1;
             iMin1 = iMin2;
             iMin2 = h;
@@ -684,30 +572,21 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
         // track hierarchy
         Node node = new Node();
-        if (clusterNodes[iMin1] == null)
-        {
+        if (clusterNodes[iMin1] == null) {
             node.m_iLeftInstance = iMin1;
-        }
-        else
-        {
+        } else {
             node.m_left = clusterNodes[iMin1];
             clusterNodes[iMin1].m_parent = node;
         }
-        if (clusterNodes[iMin2] == null)
-        {
+        if (clusterNodes[iMin2] == null) {
             node.m_iRightInstance = iMin2;
-        }
-        else
-        {
+        } else {
             node.m_right = clusterNodes[iMin2];
             clusterNodes[iMin2].m_parent = node;
         }
-        if (m_bDistanceIsBranchLength)
-        {
+        if (m_bDistanceIsBranchLength) {
             node.setLength(fDist1, fDist2);
-        }
-        else
-        {
+        } else {
             node.setHeight(fDist1, fDist2);
         }
         clusterNodes[iMin1] = node;
@@ -716,11 +595,9 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * calculate distance the first time when setting up the distance matrix *
      */
-    double getDistance0(@NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2)
-    {
+    double getDistance0(@NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2) {
         double fBestDist = Double.MAX_VALUE;
-        switch (m_nLinkType)
-        {
+        switch (m_nLinkType) {
             case SINGLE:
             case NEIGHBOR_JOINING:
             case CENTROID:
@@ -733,8 +610,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                 Instance instance2 = (Instance) m_instances.instance(cluster2.elementAt(0)).copy();
                 fBestDist = m_DistanceFunction.distance(instance1, instance2);
                 break;
-            case WARD:
-            {
+            case WARD: {
                 // finds the distance of the change in caused by merging the cluster.
                 // The information of a cluster is calculated as the error sum of squares of the
                 // centroids of the cluster and its members.
@@ -758,24 +634,19 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @param cluster2 dito for second cluster
      * @return distance between clusters based on link type
      */
-    double getDistance(double[][] fDistance, @NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2)
-    {
+    double getDistance(double[][] fDistance, @NotNull Vector<Integer> cluster1, @NotNull Vector<Integer> cluster2) {
         double fBestDist = Double.MAX_VALUE;
-        switch (m_nLinkType)
-        {
+        switch (m_nLinkType) {
             case SINGLE:
                 // find single link distance aka minimum link, which is the closest distance between
                 // any item in cluster1 and any item in cluster2
                 fBestDist = Double.MAX_VALUE;
-                for (int i = 0; i < cluster1.size(); i++)
-                {
+                for (int i = 0; i < cluster1.size(); i++) {
                     int i1 = cluster1.elementAt(i);
-                    for (int j = 0; j < cluster2.size(); j++)
-                    {
+                    for (int j = 0; j < cluster2.size(); j++) {
                         int i2 = cluster2.elementAt(j);
                         double fDist = fDistance[i1][i2];
-                        if (fBestDist > fDist)
-                        {
+                        if (fBestDist > fDist) {
                             fBestDist = fDist;
                         }
                     }
@@ -786,47 +657,37 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                 // find complete link distance aka maximum link, which is the largest distance between
                 // any item in cluster1 and any item in cluster2
                 fBestDist = 0;
-                for (int i = 0; i < cluster1.size(); i++)
-                {
+                for (int i = 0; i < cluster1.size(); i++) {
                     int i1 = cluster1.elementAt(i);
-                    for (int j = 0; j < cluster2.size(); j++)
-                    {
+                    for (int j = 0; j < cluster2.size(); j++) {
                         int i2 = cluster2.elementAt(j);
                         double fDist = fDistance[i1][i2];
-                        if (fBestDist < fDist)
-                        {
+                        if (fBestDist < fDist) {
                             fBestDist = fDist;
                         }
                     }
                 }
-                if (m_nLinkType == COMPLETE)
-                {
+                if (m_nLinkType == COMPLETE) {
                     break;
                 }
                 // calculate adjustment, which is the largest within cluster distance
                 double fMaxDist = 0;
-                for (int i = 0; i < cluster1.size(); i++)
-                {
+                for (int i = 0; i < cluster1.size(); i++) {
                     int i1 = cluster1.elementAt(i);
-                    for (int j = i + 1; j < cluster1.size(); j++)
-                    {
+                    for (int j = i + 1; j < cluster1.size(); j++) {
                         int i2 = cluster1.elementAt(j);
                         double fDist = fDistance[i1][i2];
-                        if (fMaxDist < fDist)
-                        {
+                        if (fMaxDist < fDist) {
                             fMaxDist = fDist;
                         }
                     }
                 }
-                for (int i = 0; i < cluster2.size(); i++)
-                {
+                for (int i = 0; i < cluster2.size(); i++) {
                     int i1 = cluster2.elementAt(i);
-                    for (int j = i + 1; j < cluster2.size(); j++)
-                    {
+                    for (int j = i + 1; j < cluster2.size(); j++) {
                         int i2 = cluster2.elementAt(j);
                         double fDist = fDistance[i1][i2];
-                        if (fMaxDist < fDist)
-                        {
+                        if (fMaxDist < fDist) {
                             fMaxDist = fDist;
                         }
                     }
@@ -836,29 +697,24 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             case AVERAGE:
                 // finds average distance between the elements of the two clusters
                 fBestDist = 0;
-                for (int i = 0; i < cluster1.size(); i++)
-                {
+                for (int i = 0; i < cluster1.size(); i++) {
                     int i1 = cluster1.elementAt(i);
-                    for (int j = 0; j < cluster2.size(); j++)
-                    {
+                    for (int j = 0; j < cluster2.size(); j++) {
                         int i2 = cluster2.elementAt(j);
                         fBestDist += fDistance[i1][i2];
                     }
                 }
                 fBestDist /= (cluster1.size() * cluster2.size());
                 break;
-            case MEAN:
-            {
+            case MEAN: {
                 // calculates the mean distance of a merged cluster (akak Group-average agglomerative clustering)
                 Vector<Integer> merged = new Vector<Integer>();
                 merged.addAll(cluster1);
                 merged.addAll(cluster2);
                 fBestDist = 0;
-                for (int i = 0; i < merged.size(); i++)
-                {
+                for (int i = 0; i < merged.size(); i++) {
                     int i1 = merged.elementAt(i);
-                    for (int j = i + 1; j < merged.size(); j++)
-                    {
+                    for (int j = i + 1; j < merged.size(); j++) {
                         int i2 = merged.elementAt(j);
                         fBestDist += fDistance[i1][i2];
                     }
@@ -870,40 +726,33 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
             case CENTROID:
                 // finds the distance of the centroids of the clusters
                 double[] fValues1 = new double[m_instances.numAttributes()];
-                for (int i = 0; i < cluster1.size(); i++)
-                {
+                for (int i = 0; i < cluster1.size(); i++) {
                     Instance instance = m_instances.instance(cluster1.elementAt(i));
-                    for (int j = 0; j < m_instances.numAttributes(); j++)
-                    {
+                    for (int j = 0; j < m_instances.numAttributes(); j++) {
                         fValues1[j] += instance.value(j);
                     }
                 }
                 double[] fValues2 = new double[m_instances.numAttributes()];
-                for (int i = 0; i < cluster2.size(); i++)
-                {
+                for (int i = 0; i < cluster2.size(); i++) {
                     Instance instance = m_instances.instance(cluster2.elementAt(i));
-                    for (int j = 0; j < m_instances.numAttributes(); j++)
-                    {
+                    for (int j = 0; j < m_instances.numAttributes(); j++) {
                         fValues2[j] += instance.value(j);
                     }
                 }
-                for (int j = 0; j < m_instances.numAttributes(); j++)
-                {
+                for (int j = 0; j < m_instances.numAttributes(); j++) {
                     fValues1[j] /= cluster1.size();
                     fValues2[j] /= cluster2.size();
                 }
                 // set up two instances for distance function
                 Instance instance1 = (Instance) m_instances.instance(0).copy();
                 Instance instance2 = (Instance) m_instances.instance(0).copy();
-                for (int j = 0; j < m_instances.numAttributes(); j++)
-                {
+                for (int j = 0; j < m_instances.numAttributes(); j++) {
                     instance1.setValue(j, fValues1[j]);
                     instance2.setValue(j, fValues2[j]);
                 }
                 fBestDist = m_DistanceFunction.distance(instance1, instance2);
                 break;
-            case WARD:
-            {
+            case WARD: {
                 // finds the distance of the change in caused by merging the cluster.
                 // The information of a cluster is calculated as the error sum of squares of the
                 // centroids of the cluster and its members.
@@ -923,30 +772,24 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /**
      * calculated error sum-of-squares for instances wrt centroid *
      */
-    double calcESS(@NotNull Vector<Integer> cluster)
-    {
+    double calcESS(@NotNull Vector<Integer> cluster) {
         double[] fValues1 = new double[m_instances.numAttributes()];
-        for (int i = 0; i < cluster.size(); i++)
-        {
+        for (int i = 0; i < cluster.size(); i++) {
             Instance instance = m_instances.instance(cluster.elementAt(i));
-            for (int j = 0; j < m_instances.numAttributes(); j++)
-            {
+            for (int j = 0; j < m_instances.numAttributes(); j++) {
                 fValues1[j] += instance.value(j);
             }
         }
-        for (int j = 0; j < m_instances.numAttributes(); j++)
-        {
+        for (int j = 0; j < m_instances.numAttributes(); j++) {
             fValues1[j] /= cluster.size();
         }
         // set up two instances for distance function
         Instance centroid = (Instance) m_instances.instance(cluster.elementAt(0)).copy();
-        for (int j = 0; j < m_instances.numAttributes(); j++)
-        {
+        for (int j = 0; j < m_instances.numAttributes(); j++) {
             centroid.setValue(j, fValues1[j]);
         }
         double fESS = 0;
-        for (int i = 0; i < cluster.size(); i++)
-        {
+        for (int i = 0; i < cluster.size(); i++) {
             Instance instance = m_instances.instance(cluster.elementAt(i));
             fESS += m_DistanceFunction.distance(centroid, instance);
         }
@@ -958,19 +801,15 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * with the closest distance to the instance to be clustered. The cluster index of
      * the training data point is taken as the cluster index.
      */
-    public int clusterInstance(Instance instance) throws Exception
-    {
-        if (m_instances.numInstances() == 0)
-        {
+    public int clusterInstance(Instance instance) throws Exception {
+        if (m_instances.numInstances() == 0) {
             return 0;
         }
         double fBestDist = Double.MAX_VALUE;
         int iBestInstance = -1;
-        for (int i = 0; i < m_instances.numInstances(); i++)
-        {
+        for (int i = 0; i < m_instances.numInstances(); i++) {
             double fDist = m_DistanceFunction.distance(instance, m_instances.instance(i));
-            if (fDist < fBestDist)
-            {
+            if (fDist < fBestDist) {
                 fBestDist = fDist;
                 iBestInstance = i;
             }
@@ -983,10 +822,8 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     /** create distribution with all clusters having zero probability, except the
      * cluster the instance is assigned to.
      */
-    public double[] distributionForInstance(Instance instance) throws Exception
-    {
-        if (numberOfClusters() == 0)
-        {
+    public double[] distributionForInstance(Instance instance) throws Exception {
+        if (numberOfClusters() == 0) {
             double[] p = new double[1];
             p[0] = 1;
             return p;
@@ -998,8 +835,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
 
     @NotNull
     @Override
-    public Capabilities getCapabilities()
-    {
+    public Capabilities getCapabilities() {
         Capabilities result = new Capabilities(this);
         result.disableAll();
         result.enable(Capability.NO_CLASS);
@@ -1017,8 +853,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     }
 
     @Override
-    public int numberOfClusters() throws Exception
-    {
+    public int numberOfClusters() throws Exception {
         return Math.min(m_nNumClusters, m_instances.numInstances());
     }
 
@@ -1027,8 +862,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return an enumeration of all the available options.
      */
-    public Enumeration listOptions()
-    {
+    public Enumeration listOptions() {
 
         Vector newVector = new Vector(8);
         newVector.addElement(new Option("\tIf set, classifier is run in debug mode and\n" + "\tmay output additional info to the console", "D", 0, "-D"));
@@ -1052,18 +886,14 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @param options the list of options as an array of strings
      * @throws Exception if an option is not supported
      */
-    public void setOptions(String[] options) throws Exception
-    {
+    public void setOptions(String[] options) throws Exception {
         m_bPrintNewick = Utils.getFlag('P', options);
 
         String optionString = Utils.getOption('N', options);
-        if (optionString.length() != 0)
-        {
+        if (optionString.length() != 0) {
             Integer temp = new Integer(optionString);
             setNumClusters(temp);
-        }
-        else
-        {
+        } else {
             setNumClusters(2);
         }
 
@@ -1073,54 +903,42 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         String sLinkType = Utils.getOption('L', options);
 
 
-        if (sLinkType.compareTo("SINGLE") == 0)
-        {
+        if (sLinkType.compareTo("SINGLE") == 0) {
             setLinkType(new SelectedTag(SINGLE, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("COMPLETE") == 0)
-        {
+        if (sLinkType.compareTo("COMPLETE") == 0) {
             setLinkType(new SelectedTag(COMPLETE, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("AVERAGE") == 0)
-        {
+        if (sLinkType.compareTo("AVERAGE") == 0) {
             setLinkType(new SelectedTag(AVERAGE, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("MEAN") == 0)
-        {
+        if (sLinkType.compareTo("MEAN") == 0) {
             setLinkType(new SelectedTag(MEAN, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("CENTROID") == 0)
-        {
+        if (sLinkType.compareTo("CENTROID") == 0) {
             setLinkType(new SelectedTag(CENTROID, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("WARD") == 0)
-        {
+        if (sLinkType.compareTo("WARD") == 0) {
             setLinkType(new SelectedTag(WARD, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("ADJCOMLPETE") == 0)
-        {
+        if (sLinkType.compareTo("ADJCOMLPETE") == 0) {
             setLinkType(new SelectedTag(ADJCOMLPETE, TAGS_LINK_TYPE));
         }
-        if (sLinkType.compareTo("NEIGHBOR_JOINING") == 0)
-        {
+        if (sLinkType.compareTo("NEIGHBOR_JOINING") == 0) {
             setLinkType(new SelectedTag(NEIGHBOR_JOINING, TAGS_LINK_TYPE));
         }
 
         String nnSearchClass = Utils.getOption('A', options);
-        if (nnSearchClass.length() != 0)
-        {
+        if (nnSearchClass.length() != 0) {
             String nnSearchClassSpec[] = Utils.splitOptions(nnSearchClass);
-            if (nnSearchClassSpec.length == 0)
-            {
+            if (nnSearchClassSpec.length == 0) {
                 throw new Exception("Invalid DistanceFunction specification string.");
             }
             String className = nnSearchClassSpec[0];
             nnSearchClassSpec[0] = "";
 
             setDistanceFunction((DistanceFunction) Utils.forName(DistanceFunction.class, className, nnSearchClassSpec));
-        }
-        else
-        {
+        } else {
             setDistanceFunction(new EuclideanDistance());
         }
 
@@ -1133,8 +951,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return an array of strings suitable for passing to setOptions()
      */
     @NotNull
-    public String[] getOptions()
-    {
+    public String[] getOptions() {
 
         String[] options = new String[14];
         int current = 0;
@@ -1143,8 +960,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         options[current++] = "" + getNumClusters();
 
         options[current++] = "-L";
-        switch (m_nLinkType)
-        {
+        switch (m_nLinkType) {
             case (SINGLE):
                 options[current++] = "SINGLE";
                 break;
@@ -1170,16 +986,13 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
                 options[current++] = "NEIGHBOR_JOINING";
                 break;
         }
-        if (m_bPrintNewick)
-        {
+        if (m_bPrintNewick) {
             options[current++] = "-P";
         }
-        if (getDebug())
-        {
+        if (getDebug()) {
             options[current++] = "-D";
         }
-        if (getDistanceIsBranchLength())
-        {
+        if (getDistanceIsBranchLength()) {
             options[current++] = "-B";
         }
 
@@ -1187,8 +1000,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
         options[current++] = (m_DistanceFunction.getClass().getName() + " " +
                 Utils.joinOptions(m_DistanceFunction.getOptions())).trim();
 
-        while (current < options.length)
-        {
+        while (current < options.length) {
             options[current++] = "";
         }
 
@@ -1196,46 +1008,34 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
     }
 
     @NotNull
-    public String toString()
-    {
+    public String toString() {
         StringBuffer buf = new StringBuffer();
         int attIndex = m_instances.classIndex();
-        if (attIndex < 0)
-        {
+        if (attIndex < 0) {
             // try find a string, or last attribute otherwise
             attIndex = 0;
-            while (attIndex < m_instances.numAttributes() - 1)
-            {
-                if (m_instances.attribute(attIndex).isString())
-                {
+            while (attIndex < m_instances.numAttributes() - 1) {
+                if (m_instances.attribute(attIndex).isString()) {
                     break;
                 }
                 attIndex++;
             }
         }
-        try
-        {
-            if (m_bPrintNewick && (numberOfClusters() > 0))
-            {
-                for (int i = 0; i < m_clusters.length; i++)
-                {
-                    if (m_clusters[i] != null)
-                    {
+        try {
+            if (m_bPrintNewick && (numberOfClusters() > 0)) {
+                for (int i = 0; i < m_clusters.length; i++) {
+                    if (m_clusters[i] != null) {
                         buf.append("Cluster " + i + "\n");
-                        if (m_instances.attribute(attIndex).isString())
-                        {
+                        if (m_instances.attribute(attIndex).isString()) {
                             buf.append(m_clusters[i].toString(attIndex));
-                        }
-                        else
-                        {
+                        } else {
                             buf.append(m_clusters[i].toString2(attIndex));
                         }
                         buf.append("\n\n");
                     }
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return buf.toString();
@@ -1246,8 +1046,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @param debug true if debug output should be printed
      */
-    void setDebug(boolean debug)
-    {
+    void setDebug(boolean debug) {
 
         m_bDebug = debug;
     }
@@ -1257,25 +1056,21 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return true if debugging output is on
      */
-    boolean getDebug()
-    {
+    boolean getDebug() {
 
         return m_bDebug;
     }
 
-    boolean getDistanceIsBranchLength()
-    {
+    boolean getDistanceIsBranchLength() {
         return m_bDistanceIsBranchLength;
     }
 
-    public void setDistanceIsBranchLength(boolean bDistanceIsHeight)
-    {
+    public void setDistanceIsBranchLength(boolean bDistanceIsHeight) {
         m_bDistanceIsBranchLength = bDistanceIsHeight;
     }
 
     @NotNull
-    public String distanceIsBranchLengthTipText()
-    {
+    public String distanceIsBranchLengthTipText() {
         return "If set to false, the distance between clusters is interpreted " +
                 "as the height of the node linking the clusters. This is appropriate for " +
                 "example for single link clustering. However, for neighbor joining, the " +
@@ -1290,8 +1085,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *         displaying in the explorer/experimenter gui
      */
     @NotNull
-    public String debugTipText()
-    {
+    public String debugTipText() {
         return "If set to true, classifier may output additional info to " + "the console.";
     }
 
@@ -1299,8 +1093,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return a string to describe the NumClusters
      */
     @NotNull
-    public String numClustersTipText()
-    {
+    public String numClustersTipText() {
         return "Sets the number of clusters. " + "If a single hierarchy is desired, set this to 1.";
     }
 
@@ -1308,8 +1101,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return a string to describe the print Newick flag
      */
     @NotNull
-    public String printNewickTipText()
-    {
+    public String printNewickTipText() {
         return "Flag to indicate whether the cluster should be print in Newick format." +
                 " This can be useful for display in other programs. However, for large datasets" +
                 " a lot of text may be produced, which may not be a nuisance when the Newick format" +
@@ -1320,8 +1112,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return a string to describe the distance function
      */
     @NotNull
-    public String distanceFunctionTipText()
-    {
+    public String distanceFunctionTipText() {
         return "Sets the distance function, which measures the distance between two individual. " +
                 "instances (or possibly the distance between an instance and the centroid of a cluster" +
                 "depending on the Link type).";
@@ -1332,8 +1123,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @noinspection UnusedDeclaration
      */
     @NotNull
-    public String linkTypeTipText()
-    {
+    public String linkTypeTipText() {
         return "Sets the method used to measure the distance between two clusters.\n" +
                 "SINGLE:\n" +
                 " find single link distance aka minimum link, which is the closest distance between" +
@@ -1363,41 +1153,33 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      * @return The string.
      */
     @NotNull
-    public String globalInfo()
-    {
+    public String globalInfo() {
         return "Hierarchical clustering class.\n" +
                 "Implements a number of classic agglomorative (i.e. bottom up) hierarchical clustering methods" +
                 "based on .";
     }
 
-    public static void main(String[] argv)
-    {
+    public static void main(String[] argv) {
         runClusterer(new WekaHierarchicalClusterer(), argv);
     }
 
     @Override
-    public String graph() throws Exception
-    {
-        if (numberOfClusters() == 0)
-        {
+    public String graph() throws Exception {
+        if (numberOfClusters() == 0) {
             return "";
         }
         int attIndex = m_instances.classIndex();
         String sNewick;
-        if (attIndex < 0)
-        {
+        if (attIndex < 0) {
             sNewick = m_clusters[0].toString2(attIndex);
-        }
-        else
-        {
+        } else {
             sNewick = m_clusters[0].toString(attIndex);
         }
         return sNewick;
     }
 
     @Override
-    public int graphType()
-    {
+    public int graphType() {
         return Drawable.Newick;
     }
 
@@ -1406,8 +1188,7 @@ public class WekaHierarchicalClusterer extends AbstractClusterer implements Opti
      *
      * @return the revision
      */
-    public String getRevision()
-    {
+    public String getRevision() {
         return RevisionUtils.extract("$Revision: 6587 $");
     }
 } // class HierarchicalClusterer

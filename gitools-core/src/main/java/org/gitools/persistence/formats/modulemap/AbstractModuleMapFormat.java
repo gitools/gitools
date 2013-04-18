@@ -32,8 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Properties;
 
 
-public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends AbstractResourceFormat<R>
-{
+public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends AbstractResourceFormat<R> {
 
     public static final String MIN_SIZE = "min_size";
     private static final int DEFAULT_MIN_SIZE = 0;
@@ -51,20 +50,17 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
     private boolean itemNamesFilterEnabled;
     private String[] itemNames;
 
-    AbstractModuleMapFormat(String extension, Class<R> resourceClass)
-    {
+    AbstractModuleMapFormat(String extension, Class<R> resourceClass) {
         super(extension, resourceClass);
     }
 
     @Override
-    public boolean isConfigurable()
-    {
+    public boolean isConfigurable() {
         return true;
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties p, IProgressMonitor progressMonitor) throws PersistenceException
-    {
+    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties p, IProgressMonitor progressMonitor) throws PersistenceException {
 
         this.minSize = defaultValue(p.get(MIN_SIZE), DEFAULT_MIN_SIZE);
         this.maxSize = defaultValue(p.get(MAX_SIZE), DEFAULT_MAX_SIZE);
@@ -74,32 +70,26 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
     }
 
     @Nullable
-    private static <T> T defaultValue(@Nullable Object value, T defaultValue)
-    {
-        if (value == null)
-        {
+    private static <T> T defaultValue(@Nullable Object value, T defaultValue) {
+        if (value == null) {
             return defaultValue;
         }
         return (T) value;
     }
 
-    int getMinSize()
-    {
+    int getMinSize() {
         return minSize;
     }
 
-    int getMaxSize()
-    {
+    int getMaxSize() {
         return maxSize;
     }
 
-    boolean isItemNamesFilterEnabled()
-    {
+    boolean isItemNamesFilterEnabled() {
         return itemNamesFilterEnabled;
     }
 
-    String[] getItemNames()
-    {
+    String[] getItemNames() {
         return itemNames;
     }
 

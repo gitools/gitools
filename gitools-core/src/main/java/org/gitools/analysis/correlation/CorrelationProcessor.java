@@ -36,19 +36,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-public class CorrelationProcessor implements AnalysisProcessor
-{
+public class CorrelationProcessor implements AnalysisProcessor {
 
     private final CorrelationAnalysis analysis;
 
-    public CorrelationProcessor(CorrelationAnalysis analysis)
-    {
+    public CorrelationProcessor(CorrelationAnalysis analysis) {
         this.analysis = analysis;
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException
-    {
+    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
@@ -57,8 +54,7 @@ public class CorrelationProcessor implements AnalysisProcessor
         IMatrix data = analysis.getData().get();
         int attributeIndex = analysis.getAttributeIndex();
 
-        if (analysis.isTransposeData())
-        {
+        if (analysis.isTransposeData()) {
             TransposedMatrixView mt = new TransposedMatrixView();
             mt.setMatrix(data);
             data = mt;
@@ -88,59 +84,49 @@ public class CorrelationProcessor implements AnalysisProcessor
 
         //boolean replaceNanValues = analysis.isReplaceNanValues();
         Double replaceNanValue = analysis.getReplaceNanValue();
-        if (replaceNanValue == null)
-        {
+        if (replaceNanValue == null) {
             replaceNanValue = Double.NaN;
         }
 
         Class<?> valueClass = data.getLayers().get(attributeIndex).getValueClass();
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
-        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++)
-        {
-            for (int row = 0; row < numRows; row++)
-            {
+        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
+            for (int row = 0; row < numRows; row++) {
                 Object value = data.getCellValue(row, i, attributeIndex);
                 Double v = cast.getDoubleValue(value);
-                if (v == null || Double.isNaN(v))
-                {
+                if (v == null || Double.isNaN(v)) {
                     v = replaceNanValue;
                 }
                 x[row] = v;
             }
 
-            for (int j = i; j < numColumns && !monitor.isCancelled(); j++)
-            {
+            for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
                 monitor.info("Correlating " + data.getColumns().getLabel(i) + " with " + data.getColumns().getLabel(j));
 
                 //TODO Parallelize
                 {
                     int numPairs = 0;
-                    for (int row = 0; row < numRows; row++)
-                    {
+                    for (int row = 0; row < numRows; row++) {
                         double v0 = x[row];
 
                         Object value = data.getCellValue(row, j, attributeIndex);
 
                         Double v1 = cast.getDoubleValue(value);
-                        if (v1 == null || Double.isNaN(v1))
-                        {
+                        if (v1 == null || Double.isNaN(v1)) {
                             v1 = replaceNanValue;
                         }
 
-                        if (!Double.isNaN(v0) && !Double.isNaN(v1))
-                        {
+                        if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
                             y[row] = v1;
 
                             indices[numPairs++] = row;
                         }
                     }
 
-                    try
-                    {
+                    try {
                         results.setCell(i, j, method.correlation(x, y, indices, numPairs));
-                    } catch (MethodException ex)
-                    {
+                    } catch (MethodException ex) {
                         throw new AnalysisException(ex);
                     }
                 }

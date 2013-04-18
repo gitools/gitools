@@ -46,8 +46,7 @@ import java.util.Set;
 /**
  * @noinspection ALL
  */
-public class BiomartAttributePanel extends FilteredTreePanel
-{
+public class BiomartAttributePanel extends FilteredTreePanel {
 
     @Nullable
     private BiomartService port;
@@ -63,16 +62,14 @@ public class BiomartAttributePanel extends FilteredTreePanel
     private final List<String> selectedAttrNames;
     private final Set<String> selectedAttrNamesSet;
 
-    public static interface AttributeSelectionListener
-    {
+    public static interface AttributeSelectionListener {
         void selectionChanged();
     }
 
     @NotNull
     private final List<AttributeSelectionListener> attributeSelectionListeners = new ArrayList<AttributeSelectionListener>();
 
-    public BiomartAttributePanel()
-    {
+    public BiomartAttributePanel() {
         super();
 
         this.port = null;
@@ -85,11 +82,9 @@ public class BiomartAttributePanel extends FilteredTreePanel
         this.selectedAttrNamesSet = new HashSet<String>();
 
         tree.setRootVisible(false);
-        tree.addTreeSelectionListener(new TreeSelectionListener()
-        {
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
-            public void valueChanged(@NotNull TreeSelectionEvent e)
-            {
+            public void valueChanged(@NotNull TreeSelectionEvent e) {
                 selectionChanged(e);
             }
         });
@@ -108,8 +103,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
             loadAttributePages();
         }
         */
-    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset)
-    {
+    public void setBiomartParameters(BiomartService port, MartLocation mart, DatasetInfo dataset) {
 
         this.port = port;
         this.mart = mart;
@@ -119,8 +113,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
     }
 
 
-    private void loadAttributePages()
-    {
+    private void loadAttributePages() {
         setControlsEnabled(false);
 
         TreeNode node = new DefaultMutableTreeNode("Loading...");
@@ -129,31 +122,25 @@ public class BiomartAttributePanel extends FilteredTreePanel
 
         //TODO fire loading starts
 
-        new Thread(new Runnable()
-        {
+        new Thread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 loadingThread();
             }
         }).start();
     }
 
-    public List<AttributeDescription> getSelectedAttributes()
-    {
+    public List<AttributeDescription> getSelectedAttributes() {
         return selectedAttr;
     }
 
-    public List<String> getSelectedAttributeNames()
-    {
+    public List<String> getSelectedAttributeNames() {
         return selectedAttrNames;
     }
 
     //FIXME
-    private void loadingThread()
-    {
-        try
-        {
+    private void loadingThread() {
+        try {
 
             List<BiomartSource> lBs = BiomartSourceManager.getDefault().getSources();
             BiomartSource bsrc = lBs.get(0);
@@ -162,11 +149,9 @@ public class BiomartAttributePanel extends FilteredTreePanel
             final List<AttributePage> pages = service.getAttributes(mart, dataset);
             //BiomartCentralPortalSoapService.getDefault().getAttributes(mart, dataset);
 
-            SwingUtilities.invokeAndWait(new Runnable()
-            {
+            SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     setControlsEnabled(true);
 
                     setAttributePages(pages);
@@ -174,40 +159,32 @@ public class BiomartAttributePanel extends FilteredTreePanel
                     //TODO fire loading ends
                 }
             });
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             //TODO fire loading exception
             e.printStackTrace();
         }
     }
 
-    private void selectionChanged(@NotNull TreeSelectionEvent e)
-    {
+    private void selectionChanged(@NotNull TreeSelectionEvent e) {
         TreePath[] paths = e.getPaths();
-        if (paths == null)
-        {
+        if (paths == null) {
             return;
         }
 
         StringBuilder sb = new StringBuilder();
 
-        for (TreePath sel : paths)
-        {
+        for (TreePath sel : paths) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) sel.getLastPathComponent();
             AttributeWrapper attrw = (AttributeWrapper) node.getUserObject();
             AttributeDescription attribute = attrw.getType() == AttributeWrapper.NodeType.ATTRIBUTE ? (AttributeDescription) attrw.getObject() : null;
 
-            if (e.isAddedPath(sel))
-            {
-                if (attribute != null)
-                {
-                    if (!selectedAttrNamesSet.contains(attribute.getInternalName()))
-                    { // xrp: check if internal name instead
+            if (e.isAddedPath(sel)) {
+                if (attribute != null) {
+                    if (!selectedAttrNamesSet.contains(attribute.getInternalName())) { // xrp: check if internal name instead
                         sb.setLength(0);
 
                         Object[] opath = sel.getPath();
-                        if (opath.length > 1)
-                        {
+                        if (opath.length > 1) {
                             sb.append(opath[1].toString());
                             for (int i = 2; i < opath.length; i++)
                                 sb.append(" > ").append(opath[i].toString());
@@ -220,14 +197,10 @@ public class BiomartAttributePanel extends FilteredTreePanel
                         for (AttributeSelectionListener l : attributeSelectionListeners)
                             l.selectionChanged();
                     }
-                }
-                else
-                {
+                } else {
                     tree.getSelectionModel().removeSelectionPath(sel);
                 }
-            }
-            else if (attribute != null)
-            {
+            } else if (attribute != null) {
                 int i = selectedAttr.indexOf(attribute);
                 selectedAttr.remove(i);
                 selectedAttrNames.remove(i);
@@ -239,18 +212,15 @@ public class BiomartAttributePanel extends FilteredTreePanel
         }
     }
 
-    public void addAttributeSelectionListener(AttributeSelectionListener listener)
-    {
+    public void addAttributeSelectionListener(AttributeSelectionListener listener) {
         attributeSelectionListeners.add(listener);
     }
 
-    public void removeAttributeSelectionListener(AttributeSelectionListener listener)
-    {
+    public void removeAttributeSelectionListener(AttributeSelectionListener listener) {
         attributeSelectionListeners.remove(listener);
     }
 
-    private void setControlsEnabled(boolean enabled)
-    {
+    private void setControlsEnabled(boolean enabled) {
         filterField.setEnabled(enabled);
         //expandBtn.setEnabled(enabled);
         //collapseBtn.setEnabled(enabled);
@@ -258,18 +228,15 @@ public class BiomartAttributePanel extends FilteredTreePanel
 
     @Nullable
     @Override
-    protected TreeModel updateModel(String filterText)
-    {
-        if (attrPages == null)
-        {
+    protected TreeModel updateModel(String filterText) {
+        if (attrPages == null) {
             return null;
         }
 
         return new AttributesTreeModel(attrPages, filterText);
     }
 
-    public synchronized void setAttributePages(@Nullable List<AttributePage> attrPages)
-    {
+    public synchronized void setAttributePages(@Nullable List<AttributePage> attrPages) {
         this.attrPages = attrPages;
 
         final AttributesTreeModel model = attrPages == null ? null : new AttributesTreeModel(attrPages);
@@ -279,8 +246,7 @@ public class BiomartAttributePanel extends FilteredTreePanel
     }
 
     @Nullable
-    public synchronized List<AttributePage> getAttributePages()
-    {
+    public synchronized List<AttributePage> getAttributePages() {
         return attrPages;
     }
 }

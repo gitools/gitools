@@ -34,8 +34,7 @@ import java.io.Serializable;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class EnrichmentAnalysis extends HtestAnalysis implements Serializable
-{
+public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 
     private static final long serialVersionUID = -7476200948081644842L;
 
@@ -44,17 +43,14 @@ public class EnrichmentAnalysis extends HtestAnalysis implements Serializable
      */
     private boolean discardNonMappedRows;
 
-    public EnrichmentAnalysis()
-    {
+    public EnrichmentAnalysis() {
     }
 
-    public boolean isDiscardNonMappedRows()
-    {
+    public boolean isDiscardNonMappedRows() {
         return discardNonMappedRows;
     }
 
-    public void setDiscardNonMappedRows(boolean discardNonMappedRows)
-    {
+    public void setDiscardNonMappedRows(boolean discardNonMappedRows) {
         this.discardNonMappedRows = discardNonMappedRows;
     }
 }

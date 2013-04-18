@@ -42,13 +42,11 @@ import java.io.File;
 /**
  * @noinspection ALL
  */
-public class NewOncodriveAnalysisAction extends BaseAction
-{
+public class NewOncodriveAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8592231961109105958L;
 
-    public NewOncodriveAnalysisAction()
-    {
+    public NewOncodriveAnalysisAction() {
         super("OncoDrive analysis ...");
 
         setDesc("Run an oncodrive analysis");
@@ -58,16 +56,14 @@ public class NewOncodriveAnalysisAction extends BaseAction
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
         wizDlg.open();
 
-        if (wizDlg.isCancelled())
-        {
+        if (wizDlg.isCancelled()) {
             return;
         }
 
@@ -78,17 +74,13 @@ public class NewOncodriveAnalysisAction extends BaseAction
 
         final OncodriveCommand cmd = new OncodriveCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), modulesFile != null ? modulesFile.getAbsolutePath() : null, wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable()
-        {
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor)
-            {
-                try
-                {
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
                     cmd.run(monitor);
 
-                    if (monitor.isCancelled())
-                    {
+                    if (monitor.isCancelled()) {
                         return;
                     }
 
@@ -96,11 +88,9 @@ public class NewOncodriveAnalysisAction extends BaseAction
 
                     editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
 
-                    SwingUtilities.invokeLater(new Runnable()
-                    {
+                    SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                             AppFrame.get().getEditorsPanel().addEditor(editor);
                             AppFrame.get().refresh();
                         }
@@ -109,8 +99,7 @@ public class NewOncodriveAnalysisAction extends BaseAction
                     monitor.end();
 
                     AppFrame.get().setStatusText("Done.");
-                } catch (Throwable ex)
-                {
+                } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }

@@ -27,44 +27,37 @@ import org.gitools.matrix.model.matrix.element.AttributeDef;
 /**
  * @noinspection ALL
  */
-public class CorrelationResult
-{
+public class CorrelationResult {
 
     private int n;
     private double score;
     private double pvalue;
     private double standardError;
 
-    public CorrelationResult()
-    {
+    public CorrelationResult() {
     }
 
-    public CorrelationResult(int n, double score, double pvalue, double standardError)
-    {
+    public CorrelationResult(int n, double score, double pvalue, double standardError) {
         this.score = score;
         this.pvalue = pvalue;
         this.standardError = standardError;
     }
 
     @AttributeDef(id = "n", name = "Observations", description = "Number of observations")
-    public int getN()
-    {
+    public int getN() {
         return n;
     }
 
-    public void setN(int n)
-    {
+    public void setN(int n) {
         this.n = n;
     }
 
     @AttributeDef(id = "score", name = "Correlation", description = "Correlation score")
-    public double getScore()
-    {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(double score)
-    {
+    public void setScore(double score) {
         this.score = score;
     }
 
@@ -73,19 +66,16 @@ public class CorrelationResult
 		return pvalue;
 	}*/
 
-    public void setPvalue(double pvalue)
-    {
+    public void setPvalue(double pvalue) {
         this.pvalue = pvalue;
     }
 
     @AttributeDef(id = "se", name = "Standard Error", description = "Standard Error")
-    public double getStandardError()
-    {
+    public double getStandardError() {
         return standardError;
     }
 
-    public void setStandardError(double standardError)
-    {
+    public void setStandardError(double standardError) {
         this.standardError = standardError;
     }
 }

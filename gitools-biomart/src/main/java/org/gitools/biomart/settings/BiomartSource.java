@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BiomartSource
-{
+public class BiomartSource {
 
     private String name;
     private String description;
@@ -42,88 +41,71 @@ public class BiomartSource
     @Deprecated
     private String wsdlPath;
 
-    public BiomartSource()
-    {
+    public BiomartSource() {
     }
 
 
-    public String getPort()
-    {
+    public String getPort() {
         return port;
     }
 
-    public void setPort(String port)
-    {
+    public void setPort(String port) {
         this.port = port;
     }
 
-    public String getHost()
-    {
+    public String getHost() {
         return host;
     }
 
-    public void setHost(String host)
-    {
+    public void setHost(String host) {
         this.host = host;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getRestPath()
-    {
+    public String getRestPath() {
         return restPath;
     }
 
-    public void setRestPath(String restPath)
-    {
+    public void setRestPath(String restPath) {
         this.restPath = restPath;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(String version)
-    {
+    public void setVersion(String version) {
         this.version = version;
     }
 
-    public String getWsdlPath()
-    {
+    public String getWsdlPath() {
         return wsdlPath;
     }
 
-    public void setWsdlPath(String wsdlPath)
-    {
+    public void setWsdlPath(String wsdlPath) {
         this.wsdlPath = wsdlPath;
     }
 
-    public String getRelease()
-    {
+    public String getRelease() {
         return release;
     }
 
-    public void setRelease(String release)
-    {
+    public void setRelease(String release) {
         this.release = release;
     }
 }
