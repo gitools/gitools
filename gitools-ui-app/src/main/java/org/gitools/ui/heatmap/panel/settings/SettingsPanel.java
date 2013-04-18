@@ -36,10 +36,6 @@ import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
 import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.settings.decorators.DecoratorArchive;
-import org.gitools.ui.settings.decorators.DecoratorArchivePersistance;
-import org.gitools.ui.settings.decorators.LoadDecoratorDialog;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
@@ -98,7 +94,9 @@ public class SettingsPanel {
         colorScaleSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                actionSaveScale(heatmap.getLayers().getTopLayer());
+                SaveDecoratorDialog.actionSaveDecorator(
+                        heatmap.getLayers().getTopLayer().getDecorator()
+                );
             }
         });
 
@@ -106,7 +104,19 @@ public class SettingsPanel {
         colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                actionLoadScale(heatmap.getLayers().getTopLayer());
+                SaveDecoratorDialog.actionLoadDecorator(new AbstractValueModel(){
+
+                    @Override
+                    public Object getValue() {
+                        return heatmap.getLayers().getTopLayer().getDecorator();
+                    }
+
+                    @Override
+                    public void setValue(Object newValue) {
+                        heatmap.getLayers().getTopLayer().setDecorator((Decorator) newValue);
+                    }
+                }
+                );
             }
         });
 
@@ -170,46 +180,6 @@ public class SettingsPanel {
         dialog.setLocationRelativeTo(null);
         dialog.pack();
         dialog.setVisible(true);
-    }
-
-    private void actionSaveScale(HeatmapLayer topLayer) {
-
-        Decorator d = topLayer.getDecorator();
-        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
-        DecoratorArchive archive = archivePersistance.load();
-        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
-        dialog.setExistingScaleNames(archive.getDecorators().keySet());
-        dialog.setName(d.getName());
-        dialog.setVisible(true);
-        if (dialog.isCancelled()) {
-            return;
-        }
-
-        d.setName(dialog.getScaleName());
-        archive.add(d);
-        archivePersistance.save(archive);
-    }
-
-    private void actionLoadScale(HeatmapLayer topLayer) {
-
-        DecoratorArchivePersistance archivePersistance =
-                new DecoratorArchivePersistance();
-        DecoratorArchive archive = archivePersistance.load();
-
-        Decorator d = topLayer.getDecorator();
-
-        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
-                AppFrame.get(),
-                archive.getDecorators().values().toArray(),
-                d.getClass());
-        dialog.setVisible(true);
-        if (dialog.isCancelled()) {
-            return;
-        }
-        Decorator loadedDecorator = dialog.getSelectedDecorator();
-
-        topLayer.setDecorator(loadedDecorator);
-
     }
 
     public JPanel getRootPanel() {

@@ -31,6 +31,7 @@ import java.util.Map;
  */
 public class CompressDimension implements IMatrixDimension {
 
+    private String id;
     private String[] labels;
     private Map<String, Integer> labelsToIndex;
 
@@ -39,7 +40,8 @@ public class CompressDimension implements IMatrixDimension {
      *
      * @param labels the identifier labels of this dimension
      */
-    public CompressDimension(String[] labels) {
+    public CompressDimension(String id, String[] labels) {
+        this.id = id;
         this.labels = labels;
         this.labelsToIndex = new HashMap<String, Integer>(labels.length);
 
@@ -47,6 +49,14 @@ public class CompressDimension implements IMatrixDimension {
             this.labelsToIndex.put(labels[i], i);
         }
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

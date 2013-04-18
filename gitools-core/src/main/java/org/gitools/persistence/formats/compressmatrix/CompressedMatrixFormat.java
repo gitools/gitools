@@ -74,8 +74,8 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
 
             in.close();
 
-            CompressDimension rowDim = new CompressDimension(rows);
-            CompressDimension colDim = new CompressDimension(columns);
+            CompressDimension rowDim = new CompressDimension("rows", rows);
+            CompressDimension colDim = new CompressDimension("columns", columns);
             return new CompressMatrix(
                     rowDim, colDim, new CompressElementAdapter(dictionary, headers, values, colDim)
             );

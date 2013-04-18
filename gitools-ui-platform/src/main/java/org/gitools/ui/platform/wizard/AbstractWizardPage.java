@@ -30,9 +30,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private static final long serialVersionUID = -4330234851091328953L;

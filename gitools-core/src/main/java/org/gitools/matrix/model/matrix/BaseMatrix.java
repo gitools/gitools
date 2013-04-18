@@ -185,6 +185,13 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     @Override
     public IMatrixDimension getRows() {
         return new IMatrixDimension() {
+
+
+            @Override
+            public String getId() {
+                return "rows";
+            }
+
             @Override
             public int size() {
                 return BaseMatrix.this.internalRowCount();
@@ -205,6 +212,11 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
     @Override
     public IMatrixDimension getColumns() {
         return new IMatrixDimension() {
+            @Override
+            public String getId() {
+                return "columns";
+            }
+
             @Override
             public int size() {
                 return BaseMatrix.this.internalColumnCount();

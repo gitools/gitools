@@ -22,6 +22,9 @@
 package org.gitools.matrix.model;
 
 public interface IMatrixDimension {
+
+    String getId();
+
     /**
      * Total number of items in this dimension
      *

@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.settings.decorators;
 
+import com.jgoodies.binding.value.ValueModel;
+import org.gitools.model.decorator.Decorator;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -195,5 +198,43 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
 
     public String getScaleName() {
         return name.getText();
+    }
+
+    public static void actionLoadDecorator(ValueModel decoratorModel) {
+
+        DecoratorArchivePersistance archivePersistance =
+                new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+
+        Decorator d = (Decorator) decoratorModel.getValue();
+
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
+                AppFrame.get(),
+                archive.getDecorators().values().toArray(),
+                d.getClass());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+        Decorator loadedDecorator = dialog.getSelectedDecorator();
+
+        decoratorModel.setValue(loadedDecorator);
+
+    }
+
+    public static void actionSaveDecorator(Decorator d) {
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
+        dialog.setExistingScaleNames(archive.getDecorators().keySet());
+        dialog.setName(d.getName());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+
+        d.setName(dialog.getScaleName());
+        archive.add(d);
+        archivePersistance.save(archive);
     }
 }
