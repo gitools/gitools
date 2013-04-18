@@ -65,9 +65,8 @@ public class Heatmap extends Resource implements IMatrixView {
     }
 
     public Heatmap(IMatrix data) {
-
-        this.rows = new HeatmapDimension(this, data.getRows(), "rows");
-        this.columns = new HeatmapDimension(this, data.getColumns(), "columns");
+        this.rows = new HeatmapDimension(this, data.getRows());
+        this.columns = new HeatmapDimension(this, data.getColumns());
         this.layers = new HeatmapLayers(data);
 
         this.data = new ResourceReference<IMatrix>("data", data);

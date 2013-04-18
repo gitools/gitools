@@ -100,9 +100,8 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
         commonInit();
     }
 
-    public HeatmapDimension(Heatmap heatmap, IMatrixDimension matrixDimension, String label) {
+    public HeatmapDimension(Heatmap heatmap, IMatrixDimension matrixDimension) {
         commonInit();
-        this.annotations = new ResourceReference<AnnotationMatrix>(label + "-annotations", new AnnotationMatrix());
         init(heatmap, matrixDimension);
     }
 
@@ -118,6 +117,11 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
     }
 
     public void init(Heatmap heatmap, IMatrixDimension matrixDimension) {
+
+        if (this.annotations == null) {
+            this.annotations = new ResourceReference<AnnotationMatrix>(matrixDimension.getId() + "-annotations", new AnnotationMatrix());
+        }
+
         this.matrixDimension = matrixDimension;
 
         if (visible == null) {
@@ -412,6 +416,11 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
         if (changed) {
             firePropertyChange(PROPERTY_SELECTION_LEAD, null, selectionLead);
         }
+    }
+
+    @Override
+    public String getId() {
+        return matrixDimension.getId();
     }
 
     @Override

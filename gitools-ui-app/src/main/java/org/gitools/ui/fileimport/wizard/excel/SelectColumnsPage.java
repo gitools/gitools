@@ -35,9 +35,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class SelectColumnsPage extends AbstractWizardPage {
 
     private JPanel mainPanel;

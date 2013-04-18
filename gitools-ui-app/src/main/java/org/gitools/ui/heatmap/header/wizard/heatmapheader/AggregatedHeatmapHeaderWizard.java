@@ -72,7 +72,7 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
     // wizard pages
     private AggregationDataSourcePage dataSourceAggregationPage;
     private AnnotationSourcePage dataSourceAnnotationPage;
-    //private ColorScalePage colorScalePage;
+    private NewColorScalePage colorScalePage;
     private HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
@@ -107,8 +107,8 @@ public class AggregatedHeatmapHeaderWizard extends AbstractWizard {
         configPage = new HeatmapHeaderConfigPage(header);
         addPage(configPage);
 
-        //colorScalePage = new ColorScalePage(header);
-        //addPage(colorScalePage);
+        colorScalePage = new NewColorScalePage(header);
+        addPage(colorScalePage);
 
         textConfigPage = new TextLabelsConfigPage(header);
         addPage(textConfigPage);
