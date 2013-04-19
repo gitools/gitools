@@ -39,18 +39,17 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
 public class AddHeaderAction extends BaseAction {
 
-    public enum DimensionEnum {
-        COLUMN, ROW
-    }
 
-    private final DimensionEnum dim;
 
-    public AddHeaderAction(DimensionEnum dim) {
+    private final HeaderEnum.Dimension dim;
+
+    public AddHeaderAction(HeaderEnum.Dimension dim) {
         super("");
         this.dim = dim;
 
@@ -76,7 +75,7 @@ public class AddHeaderAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
 
         Heatmap heatmap = ActionUtils.getHeatmap();
-        HeatmapDimension heatmapDimension = (dim == DimensionEnum.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
+        HeatmapDimension heatmapDimension = (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
 
         AddHeaderPage headerPage = new AddHeaderPage();
         PageDialog tdlg = new PageDialog(AppFrame.get(), headerPage);
@@ -104,7 +103,7 @@ public class AddHeaderAction extends BaseAction {
             if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
                 wizard = new AnnotationDecoratorHeaderWizard(h, heatmapDimension);
             } else {
-                wizard = new AggregationDecoratorHeaderWizard(h, heatmap, heatmapDimension, (dim == DimensionEnum.COLUMN) ? heatmap.getRows() : heatmap.getColumns());
+                wizard = new AggregationDecoratorHeaderWizard(h, heatmap, heatmapDimension, (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getRows() : heatmap.getColumns());
             }
 
         }

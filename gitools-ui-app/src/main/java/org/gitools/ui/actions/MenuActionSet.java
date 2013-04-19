@@ -96,7 +96,7 @@ public class MenuActionSet extends ActionSet {
                                         }),
                                 new ActionSet("Sort",
                                         new BaseAction[]{
-                                                DataActions.sortByLabelAction,
+                                                DataActions.sortByAnnotationAction,
                                                 DataActions.sortByValueAction,
                                                 DataActions.sortByMutualExclusionAction
                                         }),

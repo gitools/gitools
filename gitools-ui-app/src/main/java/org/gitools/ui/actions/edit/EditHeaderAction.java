@@ -27,6 +27,7 @@ import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
@@ -35,13 +36,9 @@ import java.awt.event.ActionEvent;
  */
 public class EditHeaderAction extends BaseAction {
 
-    public enum DimensionEnum {
-        COLUMN, ROW
-    }
+    private final HeaderEnum.Dimension dim;
 
-    private final DimensionEnum dim;
-
-    public EditHeaderAction(DimensionEnum dim) {
+    public EditHeaderAction(HeaderEnum.Dimension dim) {
         super("");
         this.dim = dim;
 
@@ -68,7 +65,7 @@ public class EditHeaderAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
 
         Heatmap heatmap = ActionUtils.getHeatmap();
-        HeatmapDimension heatmapDimension = (dim == DimensionEnum.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
+        HeatmapDimension heatmapDimension = (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
 
 
         HeadersEditPanel dialog = new HeadersEditPanel(heatmap, heatmapDimension);

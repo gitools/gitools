@@ -26,8 +26,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
-import org.gitools.matrix.filter.MatrixViewLabelFilter;
-import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -174,7 +174,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
         IAnnotations am = hm.getColumns().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         int[] visibleCols = hm.getColumns().getVisible();
-        int[] groupCols = MatrixViewLabelFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
+        int[] groupCols = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
         for (int i = 0; i < groupCols.length; i++) {
             groupColIndices[i] = ArrayUtils.indexOf(visibleCols, groupCols[i]);

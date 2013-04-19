@@ -24,11 +24,12 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.data.*;
 import org.gitools.ui.actions.data.HideSelectionAction.ElementType;
 import org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection;
+import org.gitools.ui.utils.HeaderEnum.Dimension;
 import org.gitools.ui.platform.actions.BaseAction;
 
 public final class DataActions {
 
-    public static final BaseAction filterByLabelAction = new FilterByLabelAction();
+    public static final BaseAction filterByLabelAction = new FilterByAnnotations();
 
     public static final BaseAction filterByValueAction = new FilterByValueAction();
 
@@ -40,7 +41,11 @@ public final class DataActions {
 
     public static final BaseAction fastSortRowsAction = new FastSortRowsAction();
 
-    public static final BaseAction sortByLabelAction = new SortByLabelAction();
+    public static final BaseAction sortByAnnotationAction = new SortByAnnotationAction(Dimension.NONE_SPECIFIED);
+
+    public static final BaseAction sortByRowAnnotationAction = new SortByAnnotationAction(Dimension.ROW);
+
+    public static final BaseAction sortByColumnAnnotationAction = new SortByAnnotationAction(Dimension.COLUMN);
 
     public static final BaseAction sortByValueAction = new SortByValueAction();
 

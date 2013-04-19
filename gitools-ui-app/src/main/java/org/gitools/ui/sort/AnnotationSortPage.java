@@ -27,6 +27,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.gitools.ui.utils.HeaderEnum;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,15 +36,22 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LabelSortPage extends AbstractWizardPage {
+public class AnnotationSortPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String rowsPat;
     private String colsPat;
 
-    public LabelSortPage(Heatmap hm) {
-        this.hm = hm;
+
+
+    public AnnotationSortPage(Heatmap hm) {
+        this(hm, HeaderEnum.Dimension.NONE_SPECIFIED);
+    }
+
+    public AnnotationSortPage(Heatmap hm, HeaderEnum.Dimension dim) {
+
+            this.hm = hm;
 
         initComponents();
 
@@ -95,7 +103,19 @@ public class LabelSortPage extends AbstractWizardPage {
 
         colsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-        setTitle("Sort by label");
+        if (dim.equals(HeaderEnum.Dimension.COLUMN))  {
+            colsChk.setSelected(true);
+            rowsChk.setSelected(false);
+            dimChanged();
+            rowsChk.setEnabled(false);
+        } else if(dim.equals(HeaderEnum.Dimension.ROW)) {
+            colsChk.setSelected(false);
+            rowsChk.setSelected(true);
+            dimChanged();
+            colsChk.setEnabled(false);
+        }
+
+        setTitle("Sort by header annotation");
         updateComplete();
     }
 

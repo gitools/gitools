@@ -26,7 +26,7 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.filter.MatrixViewLabelFilter;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
@@ -62,7 +62,7 @@ public abstract class MatrixViewSorter {
         LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, pattern);
         int[] visibleRows = matrixView.getRows().getVisible();
-        int[] selRows = MatrixViewLabelFilter.filterLabels(labelProvider, values, regExChecked, visibleRows);
+        int[] selRows = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, regExChecked, visibleRows);
 
 
         int numRows = selRows.length;

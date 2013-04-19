@@ -50,9 +50,9 @@ public class SortByValueAction extends BaseAction {
     private static final long serialVersionUID = -1582437709508438222L;
 
     public SortByValueAction() {
-        super("Sort by value ...");
+        super("Sort by values ...");
 
-        setDesc("Sort by value ...");
+        setDesc("Sort by heatmap values ...");
     }
 
     @Override

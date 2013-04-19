@@ -41,7 +41,7 @@ public class DataDetailsPage extends AbstractWizardPage {
         initComponents();
         setComplete(false);
 
-        setTitle("Data DimensionEnum Integration");
+        setTitle("Data Dimension Integration");
         this.message = "Choose a name for the new data value dimension";
         setMessage(message);
 

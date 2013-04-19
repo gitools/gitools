@@ -26,7 +26,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
-import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;

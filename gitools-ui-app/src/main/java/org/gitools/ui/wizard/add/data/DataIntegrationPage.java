@@ -81,7 +81,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         initComponents();
         setComplete(false);
 
-        setTitle("Data DimensionEnum Integration");
+        setTitle("Data Dimension Integration");
         setMessage("Choose which data dimensions and what cut-offs" + " to integrate");
 
         IMatrixLayers attributes = hm.getContents().getLayers();

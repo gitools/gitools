@@ -22,11 +22,11 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.filter.MatrixViewLabelFilter;
-import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.IAnnotations;
-import org.gitools.ui.dialog.filter.LabelFilterPage;
+import org.gitools.ui.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
@@ -41,13 +41,13 @@ import java.awt.event.ActionEvent;
 /**
  * @noinspection ALL
  */
-public class FilterByLabelAction extends BaseAction {
+public class FilterByAnnotations extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public FilterByLabelAction() {
-        super("Filter by label...");
-        setDesc("Filter by label");
+    public FilterByAnnotations() {
+        super("Filter by annotations");
+        setDesc("Filter by annotations");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class FilterByLabelAction extends BaseAction {
 
         final Heatmap hm = (Heatmap) model;
 
-        final LabelFilterPage page = new LabelFilterPage(hm);
+        final StringAnnotationsFilterPage page = new StringAnnotationsFilterPage(hm);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
 
@@ -92,12 +92,12 @@ public class FilterByLabelAction extends BaseAction {
                         break;
                 }
 
-                MatrixViewLabelFilter.filter(matrixView, dim, page.getPattern(), am, page.getValues(), page.isUseRegexChecked());
+                MatrixViewAnnotationsFilter.filter(matrixView, dim, page.getPattern(), am, page.getValues(), page.isUseRegexChecked());
 
                 monitor.end();
             }
         });
 
-        AppFrame.get().setStatusText("Filter by label done.");
+        AppFrame.get().setStatusText("Filter by annotations done.");
     }
 }

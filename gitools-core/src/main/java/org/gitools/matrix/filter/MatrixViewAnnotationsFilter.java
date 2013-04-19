@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * @noinspection ALL
  */
-public class MatrixViewLabelFilter {
+public class MatrixViewAnnotationsFilter {
 
     public enum FilterDimension {
         ROWS, COLUMNS
@@ -154,69 +154,4 @@ public class MatrixViewLabelFilter {
 
         return vIndices;
     }
-
-	/*public static void filterRows(
-            IMatrixView matrixView,
-			String pattern,
-			AnnotationMatrix am,
-			List<String> values,
-			boolean useRegex) {
-		
-		List<Integer> rows = new ArrayList<Integer>();
-		if (useRegex)
-			filterByRegex(matrixView, values, rows);
-		else
-			filterByNames(matrixView, values, rows);
-
-		// Change visibility of rows in the table
-		int[] visibleRows = matrixView.getVisibleRows();
-		int[] filterVisibleRows = new int[rows.size()];
-		for (int i = 0; i < rows.size(); i++)
-			filterVisibleRows[i] = visibleRows[rows.get(i)];
-		matrixView.setVisibleRows(filterVisibleRows);
-	}
-
-	public static void filterColumns(IMatrixView matrixView, List<String> values, boolean useRegex) {
-		IMatrixView mv = new TransposedMatrixView(matrixView);
-		filterRows(mv, values, useRegex);
-	}
-
-	private static void filterByNames(IMatrixView mv, List<String> values, List<Integer> rows) {
-
-		int rowCount = mv.getRows().size();
-
-		Map<String, Integer> rowIndexMap = new HashMap<String, Integer>();
-
-		for (int i = 0; i < rowCount; i++) {
-			final String rowName = mv.getRows().getLabel(i);
-			rowIndexMap.put(rowName, i);
-		}
-
-		for (int i = 0; i < values.size(); i++) {
-			final String name = values.get(i);
-			Integer row = rowIndexMap.get(name);
-			if (row != null)
-				rows.add(row);
-		}
-	}
-
-	private static void filterByRegex(IMatrixView mv, List<String> values, List<Integer> rows) {
-		// Compile patterns
-		List<Pattern> patterns = new ArrayList<Pattern>(values.size());
-		for (String name : values)
-			patterns.add(Pattern.compile(name));
-
-		int rowCount = mv.getRows().size();
-
-		// Check patterns
-		for (int i = 0; i < rowCount; i++) {
-			final String rowName = mv.getRows().getLabel(i);
-			for (int j = 0; j < patterns.size(); j++) {
-				if (patterns.get(j).matcher(rowName).matches()) {
-					rows.add(i);
-					break;
-				}
-			}
-		}
-	}*/
 }

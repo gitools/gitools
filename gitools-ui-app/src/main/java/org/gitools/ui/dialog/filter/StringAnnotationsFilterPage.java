@@ -22,7 +22,7 @@
 package org.gitools.ui.dialog.filter;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
+import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -40,14 +40,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LabelFilterPage extends AbstractWizardPage {
+public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
     private final Heatmap hm;
 
     private String rowsPatt;
     private String colsPatt;
 
-    public LabelFilterPage(Heatmap hm) {
+    public StringAnnotationsFilterPage(Heatmap hm) {
         this.hm = hm;
 
         initComponents();
@@ -91,7 +91,7 @@ public class LabelFilterPage extends AbstractWizardPage {
 
         dimChanged();
 
-        setTitle("Filter by label");
+        setTitle("Filter by annotations");
         setComplete(true);
     }
 
@@ -211,7 +211,7 @@ public class LabelFilterPage extends AbstractWizardPage {
         rowsRb = new javax.swing.JRadioButton();
         colsRb = new javax.swing.JRadioButton();
 
-        jLabel1.setText("Labels to include:");
+        jLabel1.setText("Annotations to include:");
 
         useRegexCheck.setText("Use regular expressions");
 
