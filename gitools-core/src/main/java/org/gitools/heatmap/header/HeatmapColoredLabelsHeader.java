@@ -42,7 +42,6 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     private static final String SEPARATION_GRID_CHANGED = "separationGrid";
     private static final String FORCE_LABEL_COLOR = "forceLabelColor";
     private static final String CLUSTERS_CHANGED = "clusters";
-    private static final String INDICES_CHANGED = "indices";
 
     @XmlElement
     private int thickness;

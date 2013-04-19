@@ -26,18 +26,12 @@ import org.gitools.model.Resource;
 import java.util.*;
 
 public class AnnotationMatrix extends Resource implements IAnnotations {
-    private Set<String> labels;
+    private List<String> labels;
     private Map<String, Map<String, String>> annotations;
 
     public AnnotationMatrix() {
-        this.labels = new HashSet<String>();
+        this.labels = new ArrayList<String>();
         this.annotations = new HashMap<String, Map<String, String>>();
-    }
-
-    public AnnotationMatrix(IAnnotations annotations) {
-        this();
-
-        addAnnotations(annotations);
     }
 
     public void addAnnotations(IAnnotations annotations) {
@@ -59,7 +53,7 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     @Override
-    public Collection<String> getLabels() {
+    public List<String> getLabels() {
         return labels;
     }
 

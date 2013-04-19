@@ -68,7 +68,7 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
         );
 
         Bindings.bind(filterByCheckBox, model(ZScoreDecorator.PROPERTY_USE_CORRECTION));
-        Bindings.bind(filterValue, new SelectionInList<HeatmapLayer>(
+        Bindings.bind(filterValue, new SelectionInList<String>(
                 getLayers(),
                 new ValueHolder(),
                 model(ZScoreDecorator.PROPERTY_CORRECTED_VALUE))

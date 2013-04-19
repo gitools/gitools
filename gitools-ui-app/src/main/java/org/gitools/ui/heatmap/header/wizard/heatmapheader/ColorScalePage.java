@@ -25,7 +25,7 @@ import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.AbstractValueModel;
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
@@ -47,7 +47,7 @@ public class ColorScalePage extends AbstractWizardPage {
     private JPanel decoratorPanels;
 
 
-    public ColorScalePage(final HeatmapDataHeatmapHeader header) {
+    public ColorScalePage(final HeatmapDecoratorHeader header) {
         super();
 
         // Bind color scale controls
@@ -66,7 +66,7 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         };
 
-        decoratorsPanels.init(decorators, header.getHeatmap().getLayers().toList(), decoratorModel);
+        decoratorsPanels.init(decorators, header.getHeatmapDim().getAnnotations().getLabels(), decoratorModel);
 
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,

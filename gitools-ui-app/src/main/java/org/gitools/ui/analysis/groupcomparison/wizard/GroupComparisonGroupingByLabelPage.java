@@ -25,7 +25,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
@@ -170,7 +170,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
         }
 
         //conversion to
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
         IAnnotations am = hm.getColumns().getAnnotations();
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
         int[] visibleCols = hm.getColumns().getVisible();
@@ -186,7 +186,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
     @NotNull
     private ArrayList<String> getSelectedColumns() {
         ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }
@@ -210,7 +210,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
     @NotNull
     private ArrayList<String> getUnselectedColumns() {
         ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixColumnsLabelProvider(hm);
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
             labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
         }

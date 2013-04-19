@@ -112,7 +112,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
     }
 
     private void selectFont() {
-        FontChooserDialog dlg = new FontChooserDialog(null, header.getLabelFont());
+        FontChooserDialog dlg = new FontChooserDialog(null, header.getLabelFont(), false);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {

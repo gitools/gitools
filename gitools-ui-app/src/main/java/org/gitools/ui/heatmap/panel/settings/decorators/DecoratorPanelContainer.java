@@ -51,7 +51,7 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         this.currentPanelModel.addValueChangeListener(this);
     }
 
-    public void init(List<DecoratorPanel> panels, List<HeatmapLayer> layers, ValueModel decoratorModel) {
+    public void init(List<DecoratorPanel> panels, List<String> layers, ValueModel decoratorModel) {
         this.decoratorModel = decoratorModel;
         this.panels = panels;
         this.decoratorModel.addValueChangeListener(this);

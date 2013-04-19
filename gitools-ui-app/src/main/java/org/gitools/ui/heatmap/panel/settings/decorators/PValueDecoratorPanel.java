@@ -25,8 +25,6 @@ import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.model.decorator.impl.PValueDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
@@ -55,7 +53,7 @@ public class PValueDecoratorPanel extends DecoratorPanel {
 
         Bindings.bind(useCorrection, model(PValueDecorator.PROPERTY_USE_CORRECTION));
 
-        Bindings.bind(correctedValue, new SelectionInList<HeatmapLayer>(
+        Bindings.bind(correctedValue, new SelectionInList<String>(
                 getLayers(),
                 new ValueHolder(),
                 model(PValueDecorator.PROPERTY_CORRECTED_VALUE)

@@ -252,7 +252,7 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
         firePropertyChange(PROPERTY_GRID_COLOR, old, gridColor);
     }
 
-    public IAnnotations getAnnotations() {
+    public AnnotationMatrix getAnnotations() {
         if (annotations == null) {
             return null;
         }

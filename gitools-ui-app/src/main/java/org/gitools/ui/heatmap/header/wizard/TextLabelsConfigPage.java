@@ -71,7 +71,7 @@ public class TextLabelsConfigPage extends AbstractWizardPage {
     }
 
     private void selectFont() {
-        FontChooserDialog dlg = new FontChooserDialog(null, header.getFont());
+        FontChooserDialog dlg = new FontChooserDialog(null, header.getFont(), false);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {

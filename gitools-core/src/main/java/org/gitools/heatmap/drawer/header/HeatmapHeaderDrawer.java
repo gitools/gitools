@@ -22,11 +22,12 @@
 package org.gitools.heatmap.drawer.header;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.jetbrains.annotations.NotNull;
@@ -37,20 +38,18 @@ import java.util.List;
 
 public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
-    private final boolean horizontal;
+    private HeatmapDimension heatmapDimension;
 
     private List<AbstractHeatmapHeaderDrawer> drawers;
 
-    public HeatmapHeaderDrawer(Heatmap heatmap, boolean horizontal) {
+    public HeatmapHeaderDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension) {
         super(heatmap);
-
-        this.horizontal = horizontal;
-
+        this.heatmapDimension = heatmapDimension;
         update();
     }
 
     public final void update() {
-        List<HeatmapHeader> headers = horizontal ? heatmap.getColumns().getHeaders() : heatmap.getRows().getHeaders();
+        List<HeatmapHeader> headers = heatmapDimension.getHeaders();
 
         drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
 
@@ -62,18 +61,23 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
             AbstractHeatmapHeaderDrawer d = null;
             if (h instanceof HeatmapTextLabelsHeader) {
-                d = new HeatmapTextLabelsDrawer(heatmap, (HeatmapTextLabelsHeader) h, horizontal);
+                d = new HeatmapTextLabelsDrawer(getHeatmap(), heatmapDimension, (HeatmapTextLabelsHeader) h);
             } else if (h instanceof HeatmapColoredLabelsHeader) {
-                d = new HeatmapColoredLabelsDrawer(heatmap, (HeatmapColoredLabelsHeader) h, horizontal);
-            } else if (h instanceof HeatmapDataHeatmapHeader) {
-                d = new HeatmapDataHeatmapDrawer(heatmap, (HeatmapDataHeatmapHeader) h, horizontal);
+                d = new HeatmapColoredLabelsDrawer(getHeatmap(), heatmapDimension, (HeatmapColoredLabelsHeader) h);
+            } else if (h instanceof HeatmapDecoratorHeader) {
+                d = new HeatmapDecoratorHeaderDrawer(getHeatmap(), heatmapDimension, (HeatmapDecoratorHeader) h);
             }
 
             if (d != null) {
-                d.setPictureMode(pictureMode);
+                d.setPictureMode(isPictureMode());
                 drawers.add(d);
             }
         }
+    }
+
+    @Deprecated
+    private boolean isHorizontal() {
+        return getHeatmap().getColumns() == heatmapDimension;
     }
 
     @NotNull
@@ -81,7 +85,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     public Dimension getSize() {
         int w = 0;
         int h = 0;
-        if (horizontal) {
+        if (isHorizontal()) {
             for (AbstractHeatmapDrawer d : drawers) {
                 Dimension sz = d.getSize();
                 if (sz.width > w) {
@@ -107,13 +111,9 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     @Override
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        g.setColor(Color.WHITE);
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
-        if (horizontal) {
+        if (isHorizontal()) {
             int x = box.y;
             int y = box.x;
             int totalSize = box.height;
@@ -143,7 +143,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     public HeatmapPosition getPosition(@NotNull Point p) {
         int x = 0;
         int y = 0;
-        if (horizontal) {
+        if (isHorizontal()) {
             for (AbstractHeatmapDrawer d : drawers) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
@@ -170,7 +170,6 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     @NotNull
     @Override
     public Point getPoint(HeatmapPosition p) {
-        //throw new UnsupportedOperationException("Not supported yet.");
         return new Point(0, 0);
     }
 

@@ -23,7 +23,6 @@ package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.value.AbstractValueModel;
-import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.model.decorator.Decorator;
 
 import javax.swing.*;
@@ -34,7 +33,7 @@ public abstract class DecoratorPanel {
     private Class<? extends Decorator> decoratorClass;
 
     private PresentationModel<Decorator> panelModel;
-    private List<HeatmapLayer> layers;
+    private List<String> layers;
 
     public DecoratorPanel(String name, Decorator defaultDecorator) {
         this.name = name;
@@ -72,11 +71,11 @@ public abstract class DecoratorPanel {
         return getPanelModel().getModel(propertyName);
     }
 
-    public List<HeatmapLayer> getLayers() {
+    public List<String> getLayers() {
         return layers;
     }
 
-    public void setLayers(List<HeatmapLayer> layers) {
+    public void setLayers(List<String> layers) {
         this.layers = layers;
     }
 

@@ -86,8 +86,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     private void createComponents() {
         bodyPanel = new HeatmapBodyPanel(heatmap);
-        columnHeaderPanel = new HeatmapHeaderPanel(heatmap, true);
-        rowHeaderPanel = new HeatmapHeaderPanel(heatmap, false);
+        columnHeaderPanel = new HeatmapHeaderPanel(heatmap, heatmap.getColumns());
+        rowHeaderPanel = new HeatmapHeaderPanel(heatmap, heatmap.getRows());
         headerIntersectPanel = new HeatmapHeaderIntersectionPanel(heatmap, columnHeaderPanel.getHeaderDrawer(), rowHeaderPanel.getHeaderDrawer());
 
         bodyVP = new JViewport();

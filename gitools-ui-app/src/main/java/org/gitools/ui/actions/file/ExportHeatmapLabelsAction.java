@@ -24,8 +24,7 @@ package org.gitools.ui.actions.file;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.IAnnotations;
@@ -102,12 +101,12 @@ public class ExportHeatmapLabelsAction extends BaseAction {
 
                     switch (wiz.getWhichLabels()) {
                         case VISIBLE_ROWS:
-                            labelProvider = new MatrixRowsLabelProvider(matrixView);
+                            labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
                             annMatrix = hm.getRows().getAnnotations();
                             break;
 
                         case VISIBLE_COLUMNS:
-                            labelProvider = new MatrixColumnsLabelProvider(matrixView);
+                            labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
                             annMatrix = hm.getColumns().getAnnotations();
                             break;
 
@@ -161,7 +160,7 @@ public class ExportHeatmapLabelsAction extends BaseAction {
 
         IMatrixView hiddenView = new Heatmap(matrixView);
         hiddenView.getRows().setVisible(hiddenIndices);
-        return new MatrixRowsLabelProvider(hiddenView);
+        return new MatrixDimensionLabelProvider(hiddenView.getRows());
     }
 
     @NotNull
@@ -183,7 +182,7 @@ public class ExportHeatmapLabelsAction extends BaseAction {
 
         IMatrixView hiddenView = new Heatmap(matrixView);
         hiddenView.getColumns().setVisible(hiddenIndices);
-        return new MatrixColumnsLabelProvider(hiddenView);
+        return new MatrixDimensionLabelProvider(hiddenView.getColumns());
     }
 
 	/*@Override

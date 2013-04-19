@@ -24,14 +24,15 @@ package org.gitools.ui.actions.edit;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregatedHeatmapHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregationDecoratorHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.heatmapheader.AnnotationDecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -41,9 +42,6 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class AddHeaderAction extends BaseAction {
 
     public enum DimensionEnum {
@@ -77,7 +75,6 @@ public class AddHeaderAction extends BaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        IMatrixView matrixView = ActionUtils.getMatrixView();
         Heatmap heatmap = ActionUtils.getHeatmap();
         HeatmapDimension heatmapDimension = (dim == DimensionEnum.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
 
@@ -101,17 +98,13 @@ public class AddHeaderAction extends BaseAction {
             HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(heatmapDimension);
             wizard = new ColoredLabelsHeaderWizard(heatmapDimension, h);
             header = h;
-        } else if (cls.equals(HeatmapDataHeatmapHeader.class)) {
-            HeatmapDataHeatmapHeader h = new HeatmapDataHeatmapHeader(heatmapDimension);
-            wizard = new AggregatedHeatmapHeaderWizard(heatmap, h, heatmapDimension == heatmap.getRows());
+        } else if (cls.equals(HeatmapDecoratorHeader.class)) {
+            HeatmapDecoratorHeader h = new HeatmapDecoratorHeader(heatmapDimension);
             header = h;
-
             if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
-                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
-                        AggregatedHeatmapHeaderWizard.DataSourceEnum.annotation);
+                wizard = new AnnotationDecoratorHeaderWizard(h, heatmapDimension);
             } else {
-                ((AggregatedHeatmapHeaderWizard) wizard).setDataSource(
-                        AggregatedHeatmapHeaderWizard.DataSourceEnum.aggregatedData);
+                wizard = new AggregationDecoratorHeaderWizard(h, heatmap, heatmapDimension, (dim == DimensionEnum.COLUMN) ? heatmap.getRows() : heatmap.getColumns());
             }
 
         }

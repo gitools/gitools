@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.header;
 
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
@@ -120,8 +120,8 @@ public class AddHeaderPage extends AbstractWizardPage {
         DefaultListModel model = new DefaultListModel();
         model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
         model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
-        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDataHeatmapHeader.class));
-        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDataHeatmapHeader.class));
+        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDecoratorHeader.class));
+        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDecoratorHeader.class));
         // TODO Colored clusters from a hierarchical clustering
         // TODO Values plot
         // TODO Calculated value

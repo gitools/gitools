@@ -22,7 +22,10 @@
 package org.gitools.heatmap.drawer;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.model.decorator.Decoration;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -30,26 +33,124 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
     protected static final Color highlightingColor = Color.YELLOW;
 
-    protected final HT header;
-    protected final boolean horizontal;
+    private final HT header;
+    private HeatmapDimension heatmapDimension;
 
-    protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HT header, boolean horizontal) {
+    protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HT header) {
         super(heatmap);
 
         this.header = header;
-        this.horizontal = horizontal;
+        this.heatmapDimension = heatmapDimension;
     }
 
-    public HT getHeader() {
+    protected HT getHeader() {
         return header;
     }
 
+    @Override
+    public Point getPoint(HeatmapPosition p) {
+        int index = (isHorizontal() ? p.row : p.column);
+        int point = getHeaderPoint(index);
+        return (isHorizontal() ? new Point(point, 0) : new Point(0, point));
+    }
+
+    protected int getHeaderPoint(int index) {
+
+        HeatmapDimension hdim = getHeatmapDimension();
+        int cellSize = hdim.getCellSize() + hdim.getGridSize();
+        int totalSize = cellSize * hdim.size();
+
+        int point = index >= 0 ? index * cellSize : 0;
+        if (point > totalSize) {
+            point = totalSize;
+        }
+
+        return point;
+    }
+
+    @Override
+    public HeatmapPosition getPosition(Point p) {
+        int point = (isHorizontal() ? p.x : p.y);
+        int index = getHeaderPosition(point);
+        return (isHorizontal() ? new HeatmapPosition(index, -1) : new HeatmapPosition(-1, index));
+    }
+
+    protected int getHeaderPosition(int point) {
+        HeatmapDimension hdim = getHeatmapDimension();
+        int index = -1;
+        int cellSize = hdim.getCellSize() + hdim.getGridSize();
+        int totalSize = cellSize * hdim.size();
+        if (point >= 0 && point < totalSize) {
+            index = point / cellSize;
+        }
+        return index;
+    }
+
+    @NotNull
+    @Override
+    public Dimension getSize() {
+        HeatmapDimension hdim = getHeatmapDimension();
+        int gridSize = hdim.getGridSize();
+        int total = (hdim.getCellSize() + gridSize) * hdim.size();
+        return (isHorizontal()? new Dimension(total, getHeader().getSize()) : new Dimension(getHeader().getSize(), total));
+    }
+
+    @Deprecated
+    public boolean isHorizontal() {
+        return getHeatmap().getColumns() == heatmapDimension;
+    }
 
     public void drawHeaderLegend(Graphics2D g, Rectangle headerIntersection, HeatmapHeader heatmapHeader) {
         return;
     }
 
-    public boolean isHorizontal() {
-        return horizontal;
+    public HeatmapDimension getHeatmapDimension() {
+        return heatmapDimension;
     }
+
+    protected int fullCellSize() {
+        return heatmapDimension.getCellSize() + heatmapDimension.getGridSize();
+    }
+
+    protected boolean isSelected(int index) {
+        return !isPictureMode() &&  heatmapDimension.isSelected(index);
+    }
+
+    protected Color filterColor(Color color, int index) {
+        if (isSelected(index)) {
+            return color.darker();
+        }
+        return color;
+    }
+
+    protected int cellWidth(Rectangle clip) {
+        int maxWidth = clip.width;
+        int width = header.getSize();
+        return width < maxWidth ? maxWidth : width;
+    }
+
+    protected void paintCell(Decoration decoration, int index, Graphics2D g, Rectangle box, Rectangle clip) {
+
+        int y = box.y + index * fullCellSize();
+
+        g.setColor(filterColor(decoration.getBgColor(), index));
+        g.fillRect(box.x, y, cellWidth(clip), heatmapDimension.getCellSize());
+
+        g.setColor(filterColor(heatmapDimension.getGridColor(), index));
+        g.fillRect(box.x, y + heatmapDimension.getCellSize(), cellWidth(clip), heatmapDimension.getGridSize());
+    }
+
+    protected int firstVisibleIndex(Rectangle box, Rectangle clip) {
+        int size = fullCellSize();
+        int clipStart = clip.y - box.y;
+        return ((clipStart - size) / size) + 1;
+    }
+
+    protected int lastVisibleIndex(Rectangle box, Rectangle clip) {
+        int size = fullCellSize();
+        int clipStart = clip.y - box.y;
+        int clipEnd = clipStart + clip.height;
+        return ((clipEnd + size - 1) / size) - 1;
+    }
+
 }

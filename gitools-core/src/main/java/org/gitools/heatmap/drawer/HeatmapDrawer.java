@@ -43,8 +43,8 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         super(heatmap);
 
         body = new HeatmapBodyDrawer(heatmap);
-        rowsHeader = new HeatmapHeaderDrawer(heatmap, false);
-        colsHeader = new HeatmapHeaderDrawer(heatmap, true);
+        rowsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getRows());
+        colsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getColumns());
         headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap, colsHeader, rowsHeader);
     }
 
@@ -60,6 +60,10 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         Rectangle headerIntersectionBounds = new Rectangle(bodySize.width, 0, rowsSize.width, columnsSize.height);
 
         AffineTransform at = new AffineTransform();
+
+        // Clear background
+        g.setColor(Color.WHITE);
+        g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         colsHeader.draw(g, columnsBounds, columnsBounds);
         at.setToIdentity();

@@ -24,6 +24,7 @@ package org.gitools.matrix.model.matrix;
 import org.gitools.persistence.IResource;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface IAnnotations extends IResource {
 
@@ -31,7 +32,7 @@ public interface IAnnotations extends IResource {
 
     Collection<String> getIdentifiers();
 
-    Collection<String> getLabels();
+    List<String> getLabels();
 
     String getAnnotation(String identifier, String annotationLabel);
 

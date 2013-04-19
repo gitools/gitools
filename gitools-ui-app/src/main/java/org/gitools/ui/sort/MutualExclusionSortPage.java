@@ -25,8 +25,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.filter.MatrixViewLabelFilter.FilterDimension;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
@@ -184,7 +183,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private ArrayList<String> getSelected() {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixDimensionLabelProvider(hm.getRows()) : new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
             IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
@@ -201,7 +200,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private ArrayList<String> getUnselected() {
         FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
         ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixRowsLabelProvider(hm) : new MatrixColumnsLabelProvider(hm);
+        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixDimensionLabelProvider(hm.getRows()) : new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
             IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
             labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());

@@ -28,7 +28,7 @@ import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.jetbrains.annotations.NotNull;
@@ -55,8 +55,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
 
     static {
-        headerRelationsMap.put(HeatmapColoredLabelsHeader.class, HeatmapDataHeatmapHeader.class);
-        headerRelationsMap.put(HeatmapTextLabelsHeader.class, HeatmapDataHeatmapHeader.class);
+        headerRelationsMap.put(HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class);
+        headerRelationsMap.put(HeatmapTextLabelsHeader.class, HeatmapDecoratorHeader.class);
     }
 
 
@@ -83,11 +83,11 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 
     public final void updateDrawers(HeatmapDimension evtSrc) {
 
-        if (heatmap.getRows() == evtSrc) {
+        if (getHeatmap().getRows() == evtSrc) {
             rowDrawer.update();
         }
 
-        if (heatmap.getColumns() == evtSrc) {
+        if (getHeatmap().getColumns() == evtSrc) {
             colDrawer.update();
         }
         getHeaderDrawers();
@@ -98,8 +98,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
         YCoordinates = new HashMap<Object, Integer>();
         List<AbstractHeatmapHeaderDrawer> colHeaderDrawers = colDrawer.getDrawers();
         List<AbstractHeatmapHeaderDrawer> rowHeaderDrawers = rowDrawer.getDrawers();
-        List<HeatmapHeader> rowHeaders = heatmap.getRows().getHeaders();
-        List<HeatmapHeader> colHeaders = heatmap.getColumns().getHeaders();
+        List<HeatmapHeader> rowHeaders = getHeatmap().getRows().getHeaders();
+        List<HeatmapHeader> colHeaders = getHeatmap().getColumns().getHeaders();
         headerLegendDrawers = new MultiValueMap();
 
         int XPosition = 0;

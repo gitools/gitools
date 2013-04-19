@@ -21,23 +21,24 @@
  */
 package org.gitools.heatmap.header;
 
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixDimension;
+import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.model.decorator.Decoration;
 import org.gitools.model.decorator.Decorator;
+import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class HeatmapDataHeatmapHeader extends HeatmapHeader {
+public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     public enum LabelPositionEnum {
         leftOf,
@@ -45,17 +46,8 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
         inside
     }
 
-    private static final String HEADER_HEATMAP_CHANGED = "headerHeatmap";
-
     @XmlElement(name = "label-position")
     private LabelPositionEnum labelPosition;
-
-    @XmlTransient
-    private Heatmap heatmap;
-
-    @XmlElement
-    private List<LabelIndex> labelIndices;
-    private transient Map<String, Integer> labelIndexMa;
 
     @XmlElement(name = "force-label-color")
     private boolean forceLabelColor;
@@ -63,47 +55,20 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
     @XmlElement
     private Decorator decorator;
 
-    public HeatmapDataHeatmapHeader() {
+    @XmlElement
+    private List<String> annotationLabels;
+
+    public HeatmapDecoratorHeader() {
         super();
     }
 
-    public HeatmapDataHeatmapHeader(HeatmapDimension hdim) {
-        super(hdim);
+    public HeatmapDecoratorHeader(HeatmapDimension heatmapDimension) {
+        super(heatmapDimension);
 
         size = 80;
         this.labelPosition = LabelPositionEnum.inside;
         labelColor = Color.BLACK;
         forceLabelColor = false;
-
-    }
-
-    public void setHeatmap(Heatmap heatmap) {
-        Heatmap old = this.heatmap;
-        this.heatmap = heatmap;
-        firePropertyChange(HEADER_HEATMAP_CHANGED, old, heatmap);
-    }
-
-    public Heatmap getHeatmap() {
-        return this.heatmap;
-    }
-
-    public Map<String, Integer> getLabelIndexMap() {
-        if (labelIndexMa == null) {
-            labelIndexMa = new HashMap<String, Integer>();
-            for (LabelIndex labelIndex : labelIndices) {
-                labelIndexMa.put(labelIndex.getLabel(), labelIndex.getIndex());
-            }
-        }
-        return labelIndexMa;
-    }
-
-    public void setLabelIndexMap(Map<String, Integer> labelIndexMap) {
-        labelIndices = new ArrayList<LabelIndex>();
-        for (Map.Entry<String, Integer> entry : labelIndexMap.entrySet()) {
-            labelIndices.add(new LabelIndex(entry.getKey(), entry.getValue()));
-        }
-
-        this.labelIndexMa = labelIndexMap;
     }
 
     public LabelPositionEnum getLabelPosition() {
@@ -130,12 +95,78 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
         this.decorator = decorator;
     }
 
+    public List<String> getAnnotationLabels() {
+        return annotationLabels;
+    }
+
+    public void setAnnotationLabels(List<String> annotationLabels) {
+        this.annotationLabels = annotationLabels;
+    }
+
+    public void decorate(Decoration decoration, int index, String annotation) {
+        decorator.decorate(decoration, new MatrixAdapter(annotation), index, 0, 0);
+    }
+
+    private class MatrixAdapter implements IMatrix {
+
+        private String annotation;
+
+        private MatrixAdapter(String annotation) {
+            this.annotation = annotation;
+        }
+
+        @Override
+        public Object getCellValue(int row, int column, int layerIndex) {
+            HeatmapDimension heatmapDimension = getHeatmapDim();
+            IAnnotations annotations = heatmapDimension.getAnnotations();
+            String identifier = heatmapDimension.getLabel(row);
+            return annotations.getAnnotation(identifier, annotation);
+        }
+
+        @Override
+        public IMatrixDimension getRows() {
+            return null;
+        }
+
+        @Override
+        public IMatrixDimension getColumns() {
+            return null;
+        }
+
+        @Override
+        public boolean isEmpty(int row, int column) {
+            return false;
+        }
+
+        @Override
+        public void setCellValue(int row, int column, int layerIndex, Object value) {
+        }
+
+        @Override
+        public IMatrixLayers getLayers() {
+            return null;
+        }
+
+        @Override
+        public void detach() {
+        }
+
+        @Override
+        public IResourceLocator getLocator() {
+            return null;
+        }
+
+        @Override
+        public void setLocator(IResourceLocator locator) {
+        }
+    }
+
+
+
+
     @Override
     public void updateLargestLabelLength(@NotNull Component component) {
         // Get largest label:
-        if (heatmap == null) {
-            return;
-        }
 
         /*TODO
         int rows = heatmap.getRows().size();
@@ -164,28 +195,4 @@ public class HeatmapDataHeatmapHeader extends HeatmapHeader {
         */
     }
 
-    @Override
-    public String[] getAnnotationValues(boolean horizontal) {
-
-        String[] values;
-        if (horizontal) {
-            int size = heatmap.getColumns().size();
-            values = new String[size];
-            for (int i = 0; i < size; i++) {
-                values[i] = heatmap.getColumns().getLabel(i);
-            }
-        } else {
-            int size = heatmap.getRows().size();
-            values = new String[size];
-            for (int i = 0; i < size; i++)
-                values[i] = heatmap.getRows().getLabel(i);
-        }
-
-        return values;
-    }
-
-    @Override
-    public void init(Heatmap heatmap) {
-        this.heatmap = heatmap;
-    }
 }

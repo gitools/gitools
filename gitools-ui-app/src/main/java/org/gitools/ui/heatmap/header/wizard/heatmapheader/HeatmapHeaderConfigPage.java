@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,16 +34,16 @@ import java.awt.*;
  */
 public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
-    private HeatmapDataHeatmapHeader header;
+    private HeatmapDecoratorHeader header;
 
     public HeatmapHeaderConfigPage() {
-        this(new HeatmapDataHeatmapHeader(null));
+        this(new HeatmapDecoratorHeader(null));
     }
 
     /**
      * Creates new form ColoredClustersConfigPage
      */
-    public HeatmapHeaderConfigPage(@NotNull HeatmapDataHeatmapHeader header) {
+    public HeatmapHeaderConfigPage(@NotNull HeatmapDecoratorHeader header) {
         super();
 
         this.header = header;
@@ -95,11 +95,11 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
         if (labelVisibleChk.isSelected()) {
             if (leftOf.isSelected()) {
-                header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.leftOf);
+                header.setLabelPosition(HeatmapDecoratorHeader.LabelPositionEnum.leftOf);
             } else if (rightOf.isSelected()) {
-                header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.rightOf);
+                header.setLabelPosition(HeatmapDecoratorHeader.LabelPositionEnum.rightOf);
             } else if (inside.isSelected()) {
-                header.setLabelPosition(HeatmapDataHeatmapHeader.LabelPositionEnum.inside);
+                header.setLabelPosition(HeatmapDecoratorHeader.LabelPositionEnum.inside);
             }
             setForceLabelColor();
         }
@@ -230,11 +230,11 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
-    public HeatmapDataHeatmapHeader getHeader() {
+    public HeatmapDecoratorHeader getHeader() {
         return header;
     }
 
-    public void setHeader(HeatmapDataHeatmapHeader header) {
+    public void setHeader(HeatmapDecoratorHeader header) {
         this.header = header;
     }
 

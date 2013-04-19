@@ -24,14 +24,11 @@ package org.gitools.heatmap.drawer.header;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.heatmap.drawer.HeatmapPosition;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
@@ -41,23 +38,18 @@ import java.awt.geom.AffineTransform;
 
 public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {
 
-    private int headerTotalSize = 0;
     private static final double radianAngle90 = (90.0 / 180.0) * Math.PI;
 
 
-    public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapColoredLabelsHeader header, boolean horizontal) {
-        super(heatmap, header, horizontal);
+    public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HeatmapColoredLabelsHeader header) {
+        super(heatmap, heatmapDimension, header);
     }
 
     @Override
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
 
-        // Clear background
-        g.setColor(header.getBackgroundColor());
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
-
-        final HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        IMatrixView data = heatmap;
+        HeatmapColoredLabelsHeader header = getHeader();
+        final HeatmapDimension heatmapDimension = getHeatmapDimension();
 
         g.setFont(header.getLabelFont());
         FontMetrics fm = g.getFontMetrics(g.getFont());
@@ -77,38 +69,26 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int clusterYEnd = -1;
         String legend = null;
 
-
-        Color gridColor = hdim.getGridColor();
-        int gridSize = hdim.getGridSize();
+        Color gridColor = heatmapDimension.getGridColor();
+        int gridSize = heatmapDimension.getGridSize();
 
         int maxWidth = clip.width;
         int width = header.getSize();
-        int height = (horizontal ? heatmap.getColumns().getCellSize() : heatmap.getRows().getCellSize()) + gridSize;
+        int height = heatmapDimension.getCellSize() + gridSize;
 
         width = width < maxWidth ? maxWidth : width;
 
-        int clipStart = clip.y - box.y;
-        int clipEnd = clipStart + clip.height;
-        int count = horizontal ? data.getColumns().size() : data.getRows().size();
+        int count = heatmapDimension.size();
 
-        int start = (clipStart - height) / height;
-        int end = (clipEnd + height - 1) / height;
+        int start = firstVisibleIndex(box, clip);
+        int end = lastVisibleIndex(box, clip);
 
         start = start > 0 ? start : 0;
         end = end < count ? end : count;
 
         int fontOffset = ((width - fontHeight) / 2) + fm.getDescent();
 
-        int leadRow = data.getRows().getSelectionLead();
-        int leadColumn = data.getColumns().getSelectionLead();
-
-        LabelProvider labelProvider = null;
-
-        if (horizontal) {
-            labelProvider = new MatrixColumnsLabelProvider(heatmap);
-        } else {
-            labelProvider = new MatrixRowsLabelProvider(heatmap);
-        }
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(heatmapDimension);
 
         ColoredLabel lastCluster = null;
 
@@ -122,19 +102,17 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
             ColoredLabel cluster = header.getAssignedColoredLabel(label);
             Color clusterColor = cluster != null ? cluster.getColor() : bgColor;
 
-            if (hdim.isHighlighted(label)) {
+            if (heatmapDimension.isHighlighted(label)) {
                 bgColor = highlightingColor;
             }
 
-            boolean selected = !pictureMode && (horizontal ? data.getColumns().isSelected(index) : data.getRows().isSelected(index));
-
-            if (selected) {
+            if (isSelected(index)) {
                 bgColor = bgColor.darker();
                 clusterColor = clusterColor.darker();
                 finalGridColor = gridColor.darker();
             }
 
-            boolean lead = !pictureMode && (horizontal ? (leadColumn == index) /*&& (leadRow == -1)*/ : (leadRow == index) /*&& (leadColumn == -1)*/);
+            boolean lead = !isPictureMode() && heatmapDimension.getSelectionLead() == index;
 
             g.setColor(bgColor);
             g.fillRect(x, y, width, height - gridSize);
@@ -194,86 +172,10 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int clusterWidth = clusterYEnd - clusterYStart;
         if (stringWidth < clusterWidth) {
             int fontYOffset = (clusterWidth - stringWidth) / 2;
-            g.setColor(header.isForceLabelColor() ? labelColor : ColorUtils.invert(g.getColor()));
-            g.setFont(header.getLabelFont().deriveFont(fontAT));
+            g.setColor(getHeader().isForceLabelColor() ? labelColor : ColorUtils.invert(g.getColor()));
+            g.setFont(getHeader().getLabelFont().deriveFont(fontAT));
             g.drawString(legend, x + fontOffset, clusterYStart + fontYOffset);
         }
-    }
-
-    @NotNull
-    @Override
-    public Dimension getSize() {
-        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.getGridSize();
-
-        int extBorder = /*2 * 1 - 1*/ 0;
-
-        HeatmapDimension dim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        headerTotalSize = header.getSize();
-
-        if (horizontal) {
-            int cellWidth = heatmap.getColumns().getCellSize() + gridSize;
-            int columnCount = heatmap.getColumns().size();
-            return new Dimension(cellWidth * columnCount + extBorder, headerTotalSize);
-        } else {
-            int cellHeight = heatmap.getRows().getCellSize() + gridSize;
-            int rowCount = heatmap.getRows().size();
-            return new Dimension(headerTotalSize, cellHeight * rowCount + extBorder);
-        }
-    }
-
-    @NotNull
-    @Override
-    public HeatmapPosition getPosition(@NotNull Point p) {
-        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.getGridSize();
-
-        int row = -1;
-        int col = -1;
-
-        if (horizontal) {
-            int cellSize = heatmap.getColumns().getCellSize() + gridSize;
-            int totalSize = cellSize * heatmap.getColumns().size();
-            if (p.x >= 0 && p.x < totalSize) {
-                col = p.x / cellSize;
-            }
-        } else {
-            int cellSize = heatmap.getRows().getCellSize() + gridSize;
-            int totalSize = cellSize * heatmap.getRows().size();
-            if (p.y >= 0 && p.y < totalSize) {
-                row = p.y / cellSize;
-            }
-        }
-
-        return new HeatmapPosition(row, col);
-    }
-
-    @NotNull
-    @Override
-    public Point getPoint(@NotNull HeatmapPosition p) {
-        HeatmapDimension hdim = horizontal ? heatmap.getColumns() : heatmap.getRows();
-        int gridSize = hdim.getGridSize();
-
-        int x = 0;
-        int y = 0;
-
-        if (horizontal) {
-            int cellSize = heatmap.getColumns().getCellSize() + gridSize;
-            int totalSize = cellSize * heatmap.getColumns().size();
-            x = p.column >= 0 ? p.column * cellSize : 0;
-            if (x > totalSize) {
-                x = totalSize;
-            }
-        } else {
-            int cellSize = heatmap.getRows().getCellSize() + gridSize;
-            int totalSize = cellSize * heatmap.getRows().size();
-            y = p.row >= 0 ? p.row * cellSize : 0;
-            if (y > totalSize) {
-                y = totalSize;
-            }
-        }
-
-        return new Point(x, y);
     }
 
     @Override
@@ -284,18 +186,18 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int margin;
         int oppositeMargin;
 
-        int y = horizontal ? rect.y : rect.y + rect.height;
+        int y = isHorizontal() ? rect.y : rect.y + rect.height;
         int x = rect.x;
 
 
-        String[] annValues = oppositeHeatmapHeader.getAnnotationValues(horizontal);
-        ColoredLabel[] clusters = header.getClusters();
+        String[] annValues = oppositeHeatmapHeader.getAnnotationValues(isHorizontal());
+        ColoredLabel[] clusters = getHeader().getClusters();
 
         gridSize = 1;
         oppositeMargin = oppositeHeatmapHeader.getMargin();
-        margin = header.getMargin();
+        margin = getHeader().getMargin();
         height = (oppositeHeatmapHeader.getSize() - oppositeMargin - gridSize * annValues.length) / annValues.length;
-        width = header.getSize() - margin;
+        width = getHeader().getSize() - margin;
 
         for (String v : annValues) {
             for (ColoredLabel cl : clusters) {
@@ -303,7 +205,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                     // paint
                     g.setColor(cl.getColor());
 
-                    if (horizontal) {
+                    if (isHorizontal()) {
 
                         g.fillRect(x + oppositeMargin, y, height, width);
                         x += gridSize + height;

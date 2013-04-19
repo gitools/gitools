@@ -25,9 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public interface ClusteringResults {
 
     /**

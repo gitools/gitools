@@ -23,8 +23,7 @@ package org.gitools.matrix.filter;
 
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.IAnnotations;
 import org.jetbrains.annotations.NotNull;
@@ -94,7 +93,7 @@ public class MatrixViewLabelFilter {
 
         switch (dim) {
             case ROWS:
-                labelProvider = new MatrixRowsLabelProvider(matrixView);
+                labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
                 if (!pattern.equalsIgnoreCase("${id}")) {
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }
@@ -103,7 +102,7 @@ public class MatrixViewLabelFilter {
                 break;
 
             case COLUMNS:
-                labelProvider = new MatrixColumnsLabelProvider(matrixView);
+                labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
                 if (!pattern.equalsIgnoreCase("${id}")) {
                     labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
                 }

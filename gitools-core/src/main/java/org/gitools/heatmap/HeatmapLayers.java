@@ -46,6 +46,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     @XmlElement(name = "layer")
     private List<HeatmapLayer> layers;
     private transient Map<String, Integer> layersIdToIndex;
+    private transient List<String> layerNames;
 
     public HeatmapLayers() {
         this.topLayer = 0;
@@ -60,6 +61,8 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     private void createLayers(IMatrix matrix) {
         IMatrixLayers<? extends IMatrixLayer> matrixLayers = matrix.getLayers();
         this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
+        this.layerNames = null;
+        this.layersIdToIndex = null;
 
         for (int i = 0; i < matrixLayers.size(); i++) {
             IMatrixLayer layer = matrixLayers.get(i);
@@ -71,8 +74,10 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     public void init(IMatrix matrix) {
         IMatrixLayers matrixLayers = matrix.getLayers();
         this.layersIdToIndex = new HashMap<String, Integer>(matrixLayers.size());
+        this.layerNames = new ArrayList<String>(matrixLayers.size());
         for (int i = 0; i < layers.size(); i++) {
             this.layersIdToIndex.put(layers.get(i).getId(), i);
+            this.layerNames.add(layers.get(i).getName());
         }
     }
 
@@ -124,7 +129,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layers.iterator();
     }
 
-    public List<HeatmapLayer> toList() {
-        return layers;
+    public List<String> getLayerNames() {
+        return layerNames;
     }
 }

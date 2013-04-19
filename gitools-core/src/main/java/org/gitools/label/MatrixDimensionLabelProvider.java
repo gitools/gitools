@@ -21,21 +21,25 @@
  */
 package org.gitools.label;
 
-import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.IMatrixDimension;
 
-public class MatrixRowsLabelProvider extends MatrixLabelProvider {
+public class MatrixDimensionLabelProvider implements LabelProvider {
 
-    public MatrixRowsLabelProvider(IMatrix m) {
-        super(m);
+    private IMatrixDimension matrixDimension;
+
+    public MatrixDimensionLabelProvider(IMatrixDimension matrixDimension) {
+        super();
+
+        this.matrixDimension = matrixDimension;
     }
 
     @Override
     public int getCount() {
-        return matrix.getRows().size();
+        return matrixDimension.size();
     }
 
     @Override
     public String getLabel(int index) {
-        return matrix.getRows().getLabel(index);
+        return matrixDimension.getLabel(index);
     }
 }

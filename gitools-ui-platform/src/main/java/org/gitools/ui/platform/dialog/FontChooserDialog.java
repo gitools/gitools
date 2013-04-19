@@ -33,28 +33,24 @@ public class FontChooserDialog extends javax.swing.JDialog {
 
     private static final String[] STYLE_NAMES = new String[]{"Normal", "Bold", "Italic", "Bold Italic"};
 
+    private static final String[] LOGICAL_FONT_FAMILIES = new String[] { "Serif", "SansSerif", "Monospaced", "Dialog", "DialogInput"};
+
     private boolean cancelled = true;
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public FontChooserDialog(@NotNull Font font) {
-        this(null, font);
-    }
-
-    /**
-     * Creates new form FontChooserDialog
-     */
-    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font) {
+    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font, boolean useSystemFonts) {
         super(parent, true);
 
         initComponents();
 
         getRootPane().setDefaultButton(acceptBtn);
 
-        GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        if (useSystemFonts) {
+            GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            fontFamily.setListData(gEnv.getAvailableFontFamilyNames());
+        } else {
+            fontFamily.setListData(LOGICAL_FONT_FAMILIES);
+        }
 
-        fontFamily.setListData(gEnv.getAvailableFontFamilyNames());
         fontFamily.setSelectedValue(font.getFamily(), true);
 
         fontStyle.setModel(new DefaultComboBoxModel(STYLE_NAMES));

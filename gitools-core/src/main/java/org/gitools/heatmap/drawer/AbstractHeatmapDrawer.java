@@ -27,9 +27,9 @@ import java.awt.*;
 
 public abstract class AbstractHeatmapDrawer {
 
-    protected Heatmap heatmap;
+    private Heatmap heatmap;
 
-    protected boolean pictureMode;
+    private boolean pictureMode;
 
     protected AbstractHeatmapDrawer(Heatmap heatmap) {
         this.heatmap = heatmap;
@@ -66,4 +66,9 @@ public abstract class AbstractHeatmapDrawer {
     public abstract HeatmapPosition getPosition(Point p);
 
     public abstract Point getPoint(HeatmapPosition p);
+
+    protected static void paintBackground(Color backgroundColor, Graphics2D g, Rectangle box) {
+        g.setColor(backgroundColor);
+        g.fillRect(box.x, box.y, box.width, box.height);
+    }
 }

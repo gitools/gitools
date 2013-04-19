@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDataHeatmapHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
+@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
 public abstract class HeatmapHeader extends AbstractModel {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_SIZE = "size";

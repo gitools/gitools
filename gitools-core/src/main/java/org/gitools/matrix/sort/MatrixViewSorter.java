@@ -24,8 +24,7 @@ package org.gitools.matrix.sort;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixColumnsLabelProvider;
-import org.gitools.label.MatrixRowsLabelProvider;
+import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.filter.MatrixViewLabelFilter;
 import org.gitools.matrix.model.IMatrixView;
@@ -60,7 +59,7 @@ public abstract class MatrixViewSorter {
 
         int[] selColumns = matrixView.getColumns().getSelected();
 
-        LabelProvider labelProvider = new MatrixRowsLabelProvider(matrixView);
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
         labelProvider = new AnnotationsPatternProvider(labelProvider, am, pattern);
         int[] visibleRows = matrixView.getRows().getVisible();
         int[] selRows = MatrixViewLabelFilter.filterLabels(labelProvider, values, regExChecked, visibleRows);
@@ -319,7 +318,7 @@ public abstract class MatrixViewSorter {
     public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, @NotNull String rowsPattern, IAnnotations rowsAnnMatrix, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, IAnnotations colsAnnMatrix, SortDirection colsDirection, boolean colsNumeric) {
 
         if (sortRows) {
-            LabelProvider labelProvider = new MatrixRowsLabelProvider(matrixView);
+            LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
             if (!rowsPattern.equalsIgnoreCase("${id}")) {
                 labelProvider = new AnnotationsPatternProvider(labelProvider, rowsAnnMatrix, rowsPattern);
             }
@@ -328,7 +327,7 @@ public abstract class MatrixViewSorter {
         }
 
         if (sortCols) {
-            LabelProvider labelProvider = new MatrixColumnsLabelProvider(matrixView);
+            LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
             if (!colsPattern.equalsIgnoreCase("${id}")) {
                 labelProvider = new AnnotationsPatternProvider(labelProvider, colsAnnMatrix, colsPattern);
             }

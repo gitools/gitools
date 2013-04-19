@@ -21,28 +21,23 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class AggregationDataSourcePage extends AbstractWizardPage {
 
     private final IAggregator[] aggregatorsArray;
 
 
-    public AggregationDataSourcePage(@NotNull Heatmap heatmap, boolean applyToRows) {
+    public AggregationDataSourcePage(HeatmapDimension heatmapDimension, List<String> layerNames, int selectedLayer) {
 
-        IMatrixLayers attributes = heatmap.getLayers();
-        String[] cellAttributes = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-            cellAttributes[i] = attributes.get(i).getName();
 
         this.aggregatorsArray = AggregatorFactory.getAggregatorsArray();
         String[] aggregatorNames = new String[aggregatorsArray.length];
@@ -52,11 +47,11 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         initComponents();
         updateModel();
 
-        boolean hasAnnotation = applyToRows ? heatmap.getColumns().getAnnotations() != null : heatmap.getRows().getAnnotations() != null;
+        boolean hasAnnotation = heatmapDimension.getAnnotations() != null;
         separateAggregationCb.setEnabled(hasAnnotation);
 
-        valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
-        valueCb.setSelectedIndex(heatmap.getLayers().getTopLayerIndex());
+        valueCb.setModel(new DefaultComboBoxModel(layerNames.toArray()));
+        valueCb.setSelectedIndex(selectedLayer);
         valueCb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,25 +67,19 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             }
         });
 
-        if (applyToRows) {
-            useAllRb.setText("Use values from all columns");
-            useSelectedRb.setText("Use values from selected columns");
-            separateAggregationCb.setText("aggregate by column annotations groups");
-        } else {
-            useAllRb.setText("Use values from all rows");
-            useSelectedRb.setText("Use values from selected rows");
-            separateAggregationCb.setText("aggregate by row annotations groups");
-        }
+        useAllRb.setText("Use values from all " + heatmapDimension.getId());
+        useSelectedRb.setText("Use values from selected " + heatmapDimension.getId());
+        separateAggregationCb.setText("aggregate by " + heatmapDimension.getId() + " annotations groups");
 
         setTitle("Choose the data source for the header to add");
 
     }
 
-    public IAggregator getDataAggregator() {
+    public IAggregator getAggregator() {
         return aggregatorsArray[aggregatorCb.getSelectedIndex()];
     }
 
-    public int getSelectedDataValueIndex() {
+    public int getAggregationLayer() {
         return valueCb.getSelectedIndex();
     }
 

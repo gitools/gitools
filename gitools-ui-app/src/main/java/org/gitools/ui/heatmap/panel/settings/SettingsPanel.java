@@ -26,6 +26,7 @@ import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.AbstractValueModel;
+import com.jgoodies.binding.value.ValueHolder;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -78,15 +79,16 @@ public class SettingsPanel {
         PresentationModel<HeatmapLayer> topLayer = new PresentationModel<HeatmapLayer>(layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER));
 
         // Layer selector
-        Bindings.bind(layerselector, new SelectionInList<HeatmapLayer>(
-                heatmap.getLayers().toList(),
-                layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER)
+        Bindings.bind(layerselector, new SelectionInList<String>(
+                heatmap.getLayers().getLayerNames(),
+                new ValueHolder(),
+                layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER_INDEX)
         ));
 
         // Bind color scale controls
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
-        decoratorsPanels.init(decorators, heatmap.getLayers().toList(), topLayer.getModel(HeatmapLayer.PROPERTY_DECORATOR));
+        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), topLayer.getModel(HeatmapLayer.PROPERTY_DECORATOR));
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()

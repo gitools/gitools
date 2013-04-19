@@ -22,6 +22,7 @@
 package org.gitools.matrix.model;
 
 public interface IMatrixViewDimension extends IMatrixDimension {
+
     int[] getVisible();
 
     void setVisible(int[] indices);
