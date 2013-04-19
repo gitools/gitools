@@ -164,6 +164,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             g.setColor(bgColor);
             g.fillRect(x, y, width, cellHeight);
 
+
             if (lead) {
                 g.setColor(ColorUtils.invert(bgColor));
                 g.drawRect(x, y, width, cellHeight - 1);

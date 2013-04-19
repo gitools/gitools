@@ -36,7 +36,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
     private final IAggregator[] aggregatorsArray;
 
 
-    public AggregationDataSourcePage(HeatmapDimension heatmapDimension, List<String> layerNames, int selectedLayer) {
+    public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
 
 
         this.aggregatorsArray = AggregatorFactory.getAggregatorsArray();
@@ -47,7 +47,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         initComponents();
         updateModel();
 
-        boolean hasAnnotation = heatmapDimension.getAnnotations() != null;
+        boolean hasAnnotation = headerDimension.getAnnotations() != null;
         separateAggregationCb.setEnabled(hasAnnotation);
 
         valueCb.setModel(new DefaultComboBoxModel(layerNames.toArray()));
@@ -67,9 +67,9 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             }
         });
 
-        useAllRb.setText("Use values from all " + heatmapDimension.getId());
-        useSelectedRb.setText("Use values from selected " + heatmapDimension.getId());
-        separateAggregationCb.setText("aggregate by " + heatmapDimension.getId() + " annotations groups");
+        useAllRb.setText("Use values from all " + headerDimension.getId());
+        useSelectedRb.setText("Use values from selected " + headerDimension.getId());
+        separateAggregationCb.setText("aggregate by " + aggregationDimension.getId() + " annotations groups");
 
         setTitle("Choose the data source for the header to add");
 

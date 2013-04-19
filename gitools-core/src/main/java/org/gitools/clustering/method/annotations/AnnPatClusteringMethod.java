@@ -34,14 +34,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class AnnPatClusteringMethod implements ClusteringMethod {
+
+    private String labelPrefix;
+
+    public AnnPatClusteringMethod(String labelPrefix) {
+        this.labelPrefix = labelPrefix;
+    }
 
     private String pattern;
 
     public AnnPatClusteringMethod() {
+        this.labelPrefix = "";
     }
 
     public String getPattern() {
@@ -65,7 +69,7 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
         for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
             String label = data.getLabel(i);
             dataLabels[i] = label;
-            String clusterName = data.getInstance(i).getTypedValue(0, String.class);
+            String clusterName = labelPrefix + data.getInstance(i).getTypedValue(0, String.class);
             List<Integer> indices = clusters.get(clusterName);
             if (indices == null) {
                 indices = new ArrayList<Integer>();

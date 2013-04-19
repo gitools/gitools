@@ -130,12 +130,18 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         } else {
             int x = box.x;
             int y = box.y;
+
+            Dimension sz = new Dimension(0,0);
             for (AbstractHeatmapDrawer d : drawers) {
-                Dimension sz = d.getSize();
-                Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
+                sz = d.getSize();
+                //Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
+                Rectangle box2 = new Rectangle(x, y, clip.width - x, sz.height);
                 d.draw(g, box2, clip.intersection(box2));
                 x += sz.width;
             }
+
+            //g.setColor(Color.RED);
+            //g.fillRect(x, box.y, clip.width - x, clip.height);
         }
     }
 

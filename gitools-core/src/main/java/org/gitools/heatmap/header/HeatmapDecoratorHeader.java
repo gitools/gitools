@@ -22,13 +22,8 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixDimension;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.matrix.IAnnotations;
 import org.gitools.model.decorator.Decoration;
 import org.gitools.model.decorator.Decorator;
-import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -104,64 +99,19 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     }
 
     public void decorate(Decoration decoration, int index, String annotation) {
-        decorator.decorate(decoration, new MatrixAdapter(annotation), index, 0, 0);
+        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
     }
 
-    private class MatrixAdapter implements IMatrix {
+    private MatrixAdapter matrixAdapter;
 
-        private String annotation;
+    private MatrixAdapter getMatrixAdapter() {
 
-        private MatrixAdapter(String annotation) {
-            this.annotation = annotation;
+        if (matrixAdapter == null) {
+            matrixAdapter = new MatrixAdapter(this);
         }
 
-        @Override
-        public Object getCellValue(int row, int column, int layerIndex) {
-            HeatmapDimension heatmapDimension = getHeatmapDim();
-            IAnnotations annotations = heatmapDimension.getAnnotations();
-            String identifier = heatmapDimension.getLabel(row);
-            return annotations.getAnnotation(identifier, annotation);
-        }
-
-        @Override
-        public IMatrixDimension getRows() {
-            return null;
-        }
-
-        @Override
-        public IMatrixDimension getColumns() {
-            return null;
-        }
-
-        @Override
-        public boolean isEmpty(int row, int column) {
-            return false;
-        }
-
-        @Override
-        public void setCellValue(int row, int column, int layerIndex, Object value) {
-        }
-
-        @Override
-        public IMatrixLayers getLayers() {
-            return null;
-        }
-
-        @Override
-        public void detach() {
-        }
-
-        @Override
-        public IResourceLocator getLocator() {
-            return null;
-        }
-
-        @Override
-        public void setLocator(IResourceLocator locator) {
-        }
+        return matrixAdapter;
     }
-
-
 
 
     @Override

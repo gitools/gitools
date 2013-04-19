@@ -61,7 +61,6 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         super.updateControls();
 
         IAnnotations am = hdim.getAnnotations();
-        int seomvar = annList.getModel().getSize();
         if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size()) {
             DefaultListModel model = new DefaultListModel();
             for (String key : am.getLabels())
@@ -126,9 +125,9 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         });
         jScrollPane1.setViewportView(annList);
 
-        jLabel1.setText("Available annotations");
+        jLabel1.setText("Available " + hdim.getId() + " annotations");
 
-        loadAnnotations.setText("Load file");
+        loadAnnotations.setText("Add annotations from file...");
         loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadAnnotationsActionPerformed(evt);

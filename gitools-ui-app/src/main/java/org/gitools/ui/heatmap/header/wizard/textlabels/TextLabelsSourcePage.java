@@ -172,7 +172,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
         pattText.setText("${id}");
         pattText.setEnabled(false);
 
-        loadAnnotations.setText("Load file");
+        loadAnnotations.setText("Add annotations from file...");
         loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadAnnotationsActionPerformed(evt);

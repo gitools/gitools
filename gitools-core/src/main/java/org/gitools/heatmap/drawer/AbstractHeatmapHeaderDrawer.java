@@ -72,7 +72,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     public HeatmapPosition getPosition(Point p) {
         int point = (isHorizontal() ? p.x : p.y);
         int index = getHeaderPosition(point);
-        return (isHorizontal() ? new HeatmapPosition(index, -1) : new HeatmapPosition(-1, index));
+        return (isHorizontal() ? new HeatmapPosition(-1, index) : new HeatmapPosition(index, -1));
     }
 
     protected int getHeaderPosition(int point) {
@@ -129,15 +129,19 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return width < maxWidth ? maxWidth : width;
     }
 
-    protected void paintCell(Decoration decoration, int index, Graphics2D g, Rectangle box, Rectangle clip) {
+    protected void paintSubCell(Decoration decoration, int index, int offset, int width, Graphics2D g, Rectangle box) {
 
         int y = box.y + index * fullCellSize();
 
         g.setColor(filterColor(decoration.getBgColor(), index));
-        g.fillRect(box.x, y, cellWidth(clip), heatmapDimension.getCellSize());
+        g.fillRect(box.x + offset, y, width, heatmapDimension.getCellSize());
 
         g.setColor(filterColor(heatmapDimension.getGridColor(), index));
-        g.fillRect(box.x, y + heatmapDimension.getCellSize(), cellWidth(clip), heatmapDimension.getGridSize());
+        g.fillRect(box.x + offset, y + heatmapDimension.getCellSize(), width, heatmapDimension.getGridSize());
+    }
+
+    protected void paintCell(Decoration decoration, int index, Graphics2D g, Rectangle box, Rectangle clip) {
+        paintSubCell(decoration, index, 0, cellWidth(clip), g, box);
     }
 
     protected int firstVisibleIndex(Rectangle box, Rectangle clip) {

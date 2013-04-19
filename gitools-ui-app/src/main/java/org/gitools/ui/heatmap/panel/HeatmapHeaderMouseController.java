@@ -33,9 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private final Heatmap heatmap;

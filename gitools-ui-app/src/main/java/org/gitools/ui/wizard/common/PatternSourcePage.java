@@ -227,7 +227,7 @@ public class PatternSourcePage extends AbstractWizardPage {
         optGroup.add(idOpt);
         idOpt.setText("Identifiers");
 
-        loadAnnotations.setText("Load file");
+        loadAnnotations.setText("Add annotations from file...");
         loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadAnnotationsActionPerformed(evt);
