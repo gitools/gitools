@@ -62,105 +62,8 @@ public class TransposedMatrixView implements IMatrixView {
 
     @Override
     public IMatrix getContents() {
-        return mv.getContents(); //FIXME return TransposedMatrix(mv.getContents)
+        return new TransposedMatrix(mv.getContents());
     }
-
-
-    /*
-    @Override
-    public void getRows().move(org.gitools.matrix.model.Direction.DOWN,  int[] indices)
-    {
-        mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  indices);
-    } */
-
-    /*
-    public void getColumns().move(org.gitools.matrix.model.Direction.LEFT,  int[] indices)
-    {
-        //TODO
-    } */
-
-    /*
-    @Override
-    public void getColumns().move(org.gitools.matrix.model.Direction.RIGHT,  int[] indices)
-    {
-        mv.getRows().move(org.gitools.matrix.model.Direction.DOWN,  indices);
-    } */
-
-    /*
-    @Override
-    public void getRows().hide(  int[] indices)
-    {
-        mv.getColumns().hide(  indices);
-    }  */
-
-    /*@Override
-    public void getColumns().hide(  int[] indices)
-    {
-        mv.getRows().hide(  indices);
-    }  */
-
-    /*
-    @Override
-    public int[] getRows().getSelected(  )
-    {
-        return mv.getColumns().getSelected(  );
-    }
-                  */
-
- /*   @Override
-    public void getRows().setSelected(  int[] indices)
-    {
-        mv.getColumns().setSelected(  indices);
-    }*/
-
-    /*
-    @Override
-    public boolean getRows().isSelected(  int index)
-    {
-        return mv.getColumns().isSelected(  index);
-    } */
-    /*
-
-    @Override
-    public int[] getColumns().getSelected(  )
-    {
-        return mv.getRows().getSelected(  );
-    } */
-
-    /*
-    @Override
-    public void getColumns().setSelected(  int[] indices)
-    {
-        mv.getRows().setSelected(  indices);
-    }    */
-
-    /*
-    @Override
-    public boolean getColumns().isSelected(  int index)
-    {
-        return mv.getRows().isSelected(  index);
-    }   */
-
-    /*
-    @Override
-    public int getRows().getSelectionLead(  )
-    {
-        return mv.getColumns().getSelectionLead(  );
-    }   */
-
-    /*
-    @Override
-    public int getColumns().getSelectionLead(  )
-    {
-        return mv.getRows().getSelectionLead(  );
-    }      */
-
-    /*
-    @Override
-    public void strangeprefixsetLeadSelection(int row, int column)
-    {
-        mv.strangeprefixsetLeadSelection(column, row);
-    } */
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -174,17 +77,17 @@ public class TransposedMatrixView implements IMatrixView {
 
     @Override
     public IMatrixViewDimension getRows() {
-        return mv.getRows();
-    }
-
-    @Override
-    public IMatrixViewDimension getColumns() {
         return mv.getColumns();
     }
 
     @Override
+    public IMatrixViewDimension getColumns() {
+        return mv.getRows();
+    }
+
+    @Override
     public boolean isEmpty(int row, int column) {
-        return mv.isEmpty(row, column);
+        return mv.isEmpty(column, row);
     }
 
     @Override
