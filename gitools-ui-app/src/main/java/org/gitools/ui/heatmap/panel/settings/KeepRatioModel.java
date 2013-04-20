@@ -39,7 +39,7 @@ public class KeepRatioModel extends JToggleButton.ToggleButtonModel implements C
 
     public KeepRatioModel(AbstractValueModel first, AbstractValueModel second) {
         super();
-        setSelected(true);
+        setSelected(false);
 
         this.first = first;
         this.second = second;
