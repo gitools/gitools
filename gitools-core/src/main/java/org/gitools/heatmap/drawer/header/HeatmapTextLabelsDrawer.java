@@ -28,7 +28,7 @@ import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 

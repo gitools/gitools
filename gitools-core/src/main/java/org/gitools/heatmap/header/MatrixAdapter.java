@@ -4,7 +4,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.persistence.IResourceLocator;
 
 import java.util.List;
@@ -42,11 +42,6 @@ class MatrixAdapter implements IMatrix {
     @Override
     public IMatrixDimension getColumns() {
         return null;
-    }
-
-    @Override
-    public boolean isEmpty(int row, int column) {
-        return false;
     }
 
     @Override

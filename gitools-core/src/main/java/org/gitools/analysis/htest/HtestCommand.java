@@ -27,13 +27,7 @@ import org.gitools.persistence.IResourceFormat;
 import org.gitools.stats.test.factory.TestFactory;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @noinspection ALL
- */
 public abstract class HtestCommand extends AnalysisCommand {
-
-    protected static final char defaultSep = '\t';
-    protected static final char defaultQuote = '"';
 
     protected HtestAnalysis analysis;
 

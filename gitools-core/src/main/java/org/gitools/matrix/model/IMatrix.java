@@ -29,13 +29,11 @@ public interface IMatrix extends IResource {
 
     IMatrixDimension getColumns();
 
-    boolean isEmpty(int row, int column);
+    IMatrixLayers getLayers();
 
     Object getCellValue(int row, int column, int layerIndex);
 
     void setCellValue(int row, int column, int layerIndex, Object value);
-
-    IMatrixLayers getLayers();
 
     /**
      * This method is called when the matrix is not in use.

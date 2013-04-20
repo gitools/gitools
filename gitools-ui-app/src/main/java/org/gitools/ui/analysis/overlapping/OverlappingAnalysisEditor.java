@@ -25,9 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.matrix.DiagonalMatrixView;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
 import org.gitools.model.decorator.impl.LinearDecorator;
 import org.gitools.persistence.IResourceLocator;
 import org.gitools.persistence.ResourceReference;
@@ -169,8 +167,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
     @Nullable
     private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis) {
-        IMatrixView results = new DiagonalMatrixView(analysis.getCellResults().get());
-        Heatmap heatmap = new Heatmap(results);
+        Heatmap heatmap = new Heatmap(analysis.getCellResults().get(), true);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         for (HeatmapLayer layer : heatmap.getLayers()) {
             LinearDecorator dec = new LinearDecorator();

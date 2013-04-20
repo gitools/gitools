@@ -78,7 +78,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
     @NotNull
     private ColumnGroup[] getGrouping(@NotNull String groupingMethod, @NotNull String groups, @NotNull IMatrix data) throws IOException {
 
-        ColumnGroup[] columnGroups = new ColumnGroup[0];
+        ColumnGroup[] columnGroups;
         String[] groupDefs = groups.split(",");
         columnGroups = new ColumnGroup[groupDefs.length];
 
@@ -91,7 +91,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                     FileReader fileReader = new FileReader(filename);
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
                     HashSet<Integer> colIndices = new HashSet<Integer>();
-                    String line = null;
+                    String line;
                     while ((line = bufferedReader.readLine()) != null) {
                         int i = data.getColumns().getIndex(line);
                         if (i != -1) {
@@ -121,7 +121,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
 
                 String dataDim = "";
                 int dataDimIndex = -1;
-                BinaryCutoff bc = null;
+                BinaryCutoff bc;
 
                 Matcher matcherAbs = dataDimPatternAbs.matcher(groupString);
                 Matcher matcher = dataDimPattern.matcher(groupString);

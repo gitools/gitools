@@ -36,9 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
     private float acuity;
@@ -75,7 +72,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
             monitor.begin("Creating clustering model ...", clusterWekaData.getMatrixView().getSize() + 1);
 
             ClusteringResults results = null;
-            Instance current = null;
+            Instance current;
             int j = 0;
 
             while ((j < clusterWekaData.getMatrixView().getSize()) && !monitor.isCancelled()) {

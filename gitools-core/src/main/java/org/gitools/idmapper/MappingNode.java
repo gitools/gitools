@@ -21,9 +21,6 @@
  */
 package org.gitools.idmapper;
 
-/**
- * @noinspection ALL
- */
 public interface MappingNode {
 
     String getId();

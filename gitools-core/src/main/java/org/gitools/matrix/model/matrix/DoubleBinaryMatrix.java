@@ -58,7 +58,6 @@ public class DoubleBinaryMatrix extends BaseMatrix {
         return cells.rows();
     }
 
-    @Override
     public boolean isEmpty(int row, int column) {
         return getCell(row, column) == null;
     }

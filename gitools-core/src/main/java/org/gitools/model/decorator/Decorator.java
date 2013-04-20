@@ -54,13 +54,6 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     }
 
     protected static double toDouble(IMatrix matrix, int row, int column, int layer) {
-        boolean empty = matrix.isEmpty(row, column);
-
-        if (empty) {
-            return Double.NaN;
-        }
-
-        return MatrixUtils.doubleValue(matrix.getCellValue(row, column, layer)
-        );
+        return MatrixUtils.doubleValue(matrix.getCellValue(row, column, layer));
     }
 }

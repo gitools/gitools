@@ -29,16 +29,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod {
 
     public static final String ID = "pearson";
-
-    public PearsonCorrelationMethod() {
-        this(new Properties());
-    }
 
     public PearsonCorrelationMethod(Properties properties) {
         super(ID, "Pearson's correlation", "Pearson's product-moment correlation", CorrelationResult.class, properties);

@@ -73,8 +73,6 @@ public abstract class AbstractElementAdapter implements Serializable {
         if (index == null) {
             return -1;
         }
-        //throw new RuntimeException("There isn't any property with id: " + id);
-
         return index.intValue();
     }
 

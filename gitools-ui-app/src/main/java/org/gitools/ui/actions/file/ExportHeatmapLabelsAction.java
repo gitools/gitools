@@ -27,7 +27,7 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;

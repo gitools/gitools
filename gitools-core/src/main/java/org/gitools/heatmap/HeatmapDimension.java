@@ -30,7 +30,7 @@ import org.gitools.matrix.model.Direction;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixViewDimension;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;

@@ -22,6 +22,7 @@
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.matrix.MirrorDimension;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
@@ -40,20 +41,25 @@ import java.beans.PropertyChangeListener;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"rows", "columns", "data", "layers"})
+@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
 public class Heatmap extends Resource implements IMatrixView {
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
+
 
     @XmlTransient
     private PropertyChangeListener propertyListener;
 
     private HeatmapDimension rows;
 
+    private transient HeatmapDimension diagonalRows;
+
     private HeatmapDimension columns;
 
     private HeatmapLayers layers;
+
+    private boolean diagonal;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
@@ -62,17 +68,27 @@ public class Heatmap extends Resource implements IMatrixView {
         this.rows = new HeatmapDimension();
         this.columns = new HeatmapDimension();
         this.layers = new HeatmapLayers();
+        this.diagonal = false;
     }
 
     public Heatmap(IMatrix data) {
+        this(data, false);
+    }
+
+    public Heatmap(IMatrix data, boolean diagonal) {
         this.rows = new HeatmapDimension(this, data.getRows());
         this.columns = new HeatmapDimension(this, data.getColumns());
         this.layers = new HeatmapLayers(data);
-
         this.data = new ResourceReference<IMatrix>("data", data);
+        this.diagonal = diagonal;
     }
 
     public HeatmapDimension getRows() {
+
+        if (diagonal) {
+            return diagonalRows;
+        }
+
         return rows;
     }
 
@@ -86,11 +102,6 @@ public class Heatmap extends Resource implements IMatrixView {
 
     public HeatmapDimension getColumns() {
         return columns;
-    }
-
-    @Override
-    public boolean isEmpty(int row, int column) {
-        return getContents().isEmpty(rows.getVisible()[row], columns.getVisible()[column]);
     }
 
     public void setColumns(@NotNull HeatmapDimension columns) {
@@ -130,8 +141,21 @@ public class Heatmap extends Resource implements IMatrixView {
         }
 
         this.layers.init(matrix);
+
+        if (diagonal) {
+            diagonalRows = new MirrorDimension(columns, rows);
+        }
+
         particularInitialization(matrix);
 
+    }
+
+    public boolean isDiagonal() {
+        return diagonal;
+    }
+
+    public void setDiagonal(boolean diagonal) {
+        this.diagonal = diagonal;
     }
 
     // IMatrixView adaptor methods
@@ -150,11 +174,25 @@ public class Heatmap extends Resource implements IMatrixView {
 
     @Override
     public Object getCellValue(int row, int column, int layer) {
+
+        if (diagonal && column < row) {
+            int tmp = column;
+            column = row;
+            row = tmp;
+        }
+
         return getContents().getCellValue(rows.getVisible()[row], columns.getVisible()[column], layer);
     }
 
     @Override
     public void setCellValue(int row, int column, int layer, Object value) {
+
+        if (diagonal && column < row) {
+            int tmp = column;
+            column = row;
+            row = tmp;
+        }
+
         getContents().setCellValue(rows.getVisible()[row], columns.getVisible()[column], layer, value);
     }
 

@@ -26,9 +26,6 @@ import org.gitools.clustering.ClusteringDataInstance;
 import org.gitools.matrix.model.IMatrix;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class MatrixRowClusteringData implements ClusteringData {
 
     public class Instance implements ClusteringDataInstance {

@@ -22,7 +22,6 @@
 package org.gitools.persistence.formats.compressmatrix;
 
 import org.gitools.matrix.model.compressmatrix.CompressDimension;
-import org.gitools.matrix.model.compressmatrix.CompressElementAdapter;
 import org.gitools.matrix.model.compressmatrix.CompressMatrix;
 import org.gitools.matrix.model.compressmatrix.CompressRow;
 import org.gitools.persistence.IResourceLocator;
@@ -76,9 +75,7 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
 
             CompressDimension rowDim = new CompressDimension("rows", rows);
             CompressDimension colDim = new CompressDimension("columns", columns);
-            return new CompressMatrix(
-                    rowDim, colDim, new CompressElementAdapter(dictionary, headers, values, colDim)
-            );
+            return new CompressMatrix(rowDim, colDim, dictionary, headers, values);
 
         } catch (IOException e) {
             throw new PersistenceException(e);

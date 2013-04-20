@@ -49,10 +49,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-/* Notes:
- * 'cond' is an abbreviation for condition.
- */
-
 public class EnrichmentProcessor extends HtestProcessor {
 
     private class RunSlot extends ThreadSlot {

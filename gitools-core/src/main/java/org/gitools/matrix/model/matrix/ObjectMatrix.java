@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 public class ObjectMatrix extends BaseMatrix {
 
     private static final long serialVersionUID = 4077172838934816719L;
-
     ObjectMatrix2D cells;
 
     public ObjectMatrix() {
@@ -39,21 +38,14 @@ public class ObjectMatrix extends BaseMatrix {
     }
 
     public ObjectMatrix(String title, ObjectMatrix1D rows, ObjectMatrix1D columns, ObjectMatrix2D cells, AbstractElementAdapter cellAdapter) {
-
         super(title, rows, columns, cellAdapter);
-
         this.cells = cells;
     }
 
     public ObjectMatrix(String title, @NotNull String[] rowNames, @NotNull String[] columnNames, AbstractElementAdapter cellAdapter) {
-
-
         super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(columnNames), cellAdapter);
-
         makeCells(rowNames.length, columnNames.length);
     }
-
-    // rows and columns
 
     protected int internalColumnCount() {
         return cells.columns();
@@ -61,16 +53,6 @@ public class ObjectMatrix extends BaseMatrix {
 
     protected int internalRowCount() {
         return cells.rows();
-    }
-
-    // cells
-
-    public ObjectMatrix2D getCells() {
-        return cells;
-    }
-
-    public void setCells(ObjectMatrix2D cells) {
-        this.cells = cells;
     }
 
     public Object getObjectCell(int row, int column) {
@@ -115,7 +97,6 @@ public class ObjectMatrix extends BaseMatrix {
         }
     }
 
-    @Override
     public boolean isEmpty(int row, int column) {
         return getObjectCell(row, column) == null;
     }

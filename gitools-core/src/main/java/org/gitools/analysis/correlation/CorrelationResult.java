@@ -24,9 +24,6 @@ package org.gitools.analysis.correlation;
 import org.gitools.matrix.model.matrix.element.AttributeDef;
 
 
-/**
- * @noinspection ALL
- */
 public class CorrelationResult {
 
     private int n;

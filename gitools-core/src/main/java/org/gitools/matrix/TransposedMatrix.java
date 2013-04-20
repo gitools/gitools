@@ -24,11 +24,6 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public boolean isEmpty(int row, int column) {
-        return matrix.isEmpty(column, row);
-    }
-
-    @Override
     public Object getCellValue(int row, int column, int layerIndex) {
         return matrix.getCellValue(column, row, layerIndex);
     }

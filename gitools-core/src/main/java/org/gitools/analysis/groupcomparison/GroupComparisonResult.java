@@ -25,9 +25,6 @@ import org.gitools.matrix.model.matrix.element.AttributeDef;
 import org.gitools.stats.test.results.CommonResult;
 
 
-/**
- * @noinspection ALL
- */
 public class GroupComparisonResult extends CommonResult {
 
     private int N_group1;
@@ -63,9 +60,6 @@ public class GroupComparisonResult extends CommonResult {
         return N_group2;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     public void setN_group2(int N_group2) {
         this.N_group2 = N_group2;
     }

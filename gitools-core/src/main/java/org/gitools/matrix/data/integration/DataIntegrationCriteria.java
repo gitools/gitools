@@ -25,9 +25,6 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class DataIntegrationCriteria {
 
     private String attributeName;

@@ -28,7 +28,7 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

@@ -26,9 +26,6 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.io.Serializable;
 
-/**
- * @noinspection ALL
- */
 public class BinaryCutoff implements DoubleFunction, Serializable {
 
     private static final long serialVersionUID = 5091376519840044515L;

@@ -24,7 +24,7 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.datafilters.BinaryCutoff;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.model.Analysis;
 import org.gitools.model.ToolConfig;
 import org.gitools.persistence.ResourceReference;
@@ -42,9 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis implements Serializable {
@@ -55,7 +52,6 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private boolean transposeData;
 
     private int attributeIndex;
-    //which attribute of the matrix should be taken as value
 
     @NotNull
     public static final String COLUMN_GROUPING_BY_VALUE = "Group by value";
@@ -85,28 +81,17 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     @XmlTransient
     private ColumnGroup group2;
 
-    /**
-     * Test name
-     */
     private ToolConfig testConfig;
+
     private String mtc;
 
-
-    /**
-     * Data
-     */
     private ResourceReference<IMatrix> data;
 
-    /**
-     * Results
-     */
     private ResourceReference<IMatrix> results;
 
     @Nullable
     public MTC getMtc() {
-        MTC mtcObj = MTCFactory.createFromName(mtc);
-        String name = mtcObj.toString();
-        return mtcObj;
+        return MTCFactory.createFromName(mtc);
     }
 
     public void setMtc(String mtc) {

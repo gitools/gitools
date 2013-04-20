@@ -34,8 +34,6 @@ public class CorrelationMethodFactory {
     public static CorrelationMethod createMethod(String methodId, Properties methodProperties) throws AnalysisException {
         if (PearsonCorrelationMethod.ID.equalsIgnoreCase(methodId)) {
             return new PearsonCorrelationMethod(methodProperties);
-        } else if (SpearmanCorrelationMethod.ID.equalsIgnoreCase(methodId)) {
-            return new PearsonCorrelationMethod(methodProperties);
         } else {
             throw new AnalysisException("Unknown correlation method: " + methodId);
         }

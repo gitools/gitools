@@ -77,11 +77,6 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView {
     }
 
     @Override
-    public boolean isEmpty(int row, int column) {
-        return hm.isEmpty(row, column);
-    }
-
-    @Override
     public Object getCellValue(int row, int column, int layer) {
         return hm.getCellValue(row, column, layer);
     }

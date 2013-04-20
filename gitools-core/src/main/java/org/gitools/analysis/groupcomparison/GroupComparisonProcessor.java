@@ -128,8 +128,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-				/* Multiple test correction */
-
+		/* Multiple test correction */
         MTC mtc = analysis.getMtc();
 
         multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
@@ -171,8 +170,6 @@ public class GroupComparisonProcessor extends HtestProcessor {
 
         Integer[] columnIndices = new Integer[columnIndicesList.size()];
         return ArrayUtils.toPrimitive(columnIndicesList.toArray(columnIndices));
-        //return columnIndicesPrimitive;
-
     }
 
 }

@@ -29,9 +29,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {

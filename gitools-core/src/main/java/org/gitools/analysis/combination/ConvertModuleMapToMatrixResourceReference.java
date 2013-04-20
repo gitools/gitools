@@ -41,7 +41,7 @@ public class ConvertModuleMapToMatrixResourceReference extends ResourceReference
     @Override
     protected IMatrix onAfterLoad(@Nullable IResource resource) {
 
-        if (resource != null && resource instanceof ModuleMap) {
+        if (resource instanceof ModuleMap) {
             return MatrixUtils.moduleMapToMatrix((ModuleMap) resource);
         }
 

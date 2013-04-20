@@ -29,9 +29,6 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public abstract class AnalysisCommand {
 
     protected String workdir;
@@ -46,9 +43,6 @@ public abstract class AnalysisCommand {
         this.storeAnalysis = true;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     public String getWorkdir() {
         return workdir;
     }

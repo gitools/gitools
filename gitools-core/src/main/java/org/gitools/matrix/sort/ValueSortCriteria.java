@@ -24,9 +24,6 @@ package org.gitools.matrix.sort;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public final class ValueSortCriteria {
 
     public enum SortDirection {

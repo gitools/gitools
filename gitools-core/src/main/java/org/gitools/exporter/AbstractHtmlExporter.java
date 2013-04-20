@@ -30,9 +30,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-/**
- * @noinspection ALL
- */
 public class AbstractHtmlExporter {
 
     File basePath;
@@ -59,7 +56,6 @@ public class AbstractHtmlExporter {
         this.indexName = indexName;
     }
 
-    // FIXME
     @Nullable
     File getTemplatePath() {
         File templatePath;
@@ -76,7 +72,6 @@ public class AbstractHtmlExporter {
                     return null;
                 }
             }
-            //System.out.println(templatePath.getAbsolutePath());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -88,13 +83,11 @@ public class AbstractHtmlExporter {
             @Override
             public boolean accept(File dir, String name) {
                 return true;
-                //return !name.endsWith(".vm");
             }
         });
 
         for (File file : list) {
             File dstFile = new File(dst, file.getName());
-            //System.out.println(file.getAbsolutePath() + "\n\t-> " + dstFile.getAbsolutePath());
             if (file.isFile()) {
                 copyFile(file, dstFile);
             } else if (file.isDirectory()) {

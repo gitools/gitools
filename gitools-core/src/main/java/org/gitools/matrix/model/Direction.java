@@ -21,9 +21,32 @@
  */
 package org.gitools.matrix.model;
 
+/**
+ * This enum is used to indicate the direction
+ * of a dimension move, up/left and down/right are
+ * equivalent. For example to move the columns left
+ * or the rows up means to move all the items to the
+ * previous position, a shift of -1.
+ */
 public enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    UP(-1),
+    DOWN(1),
+    LEFT(-1),
+    RIGHT(1);
+
+    private int shift;
+
+    private Direction(int shift) {
+        this.shift = shift;
+    }
+
+    /**
+     * Gets shift to apply to the positions.
+     *
+     * @return the shift
+     */
+    public int getShift() {
+        return shift;
+    }
+
 }

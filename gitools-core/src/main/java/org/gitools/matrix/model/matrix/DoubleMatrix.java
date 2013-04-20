@@ -25,7 +25,6 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.ObjectFactory1D;
 import org.gitools.matrix.model.matrix.element.DoubleElementAdapter;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DoubleMatrix extends BaseMatrix {
@@ -45,36 +44,12 @@ public class DoubleMatrix extends BaseMatrix {
         this.cells = cells;
     }
 
-    public DoubleMatrix(String title, @NotNull String[] colNames, @NotNull String[] rowNames) {
-
-        super(title, ObjectFactory1D.dense.make(rowNames), ObjectFactory1D.dense.make(colNames), new DoubleElementAdapter());
-
-        makeCells(rowNames.length, colNames.length);
-    }
-
-    // rows and columns
-
     protected int internalColumnCount() {
         return columns.cardinality();
     }
 
     protected int internalRowCount() {
         return rows.cardinality();
-    }
-
-    // cells
-
-    public final DoubleMatrix2D getCells() {
-        return cells;
-    }
-
-    public final void setCells(DoubleMatrix2D cells) {
-        this.cells = cells;
-    }
-
-    @Override
-    public boolean isEmpty(int row, int column) {
-        return getCell(row, column) == null;
     }
 
     public Object getCell(int row, int column) {
@@ -88,7 +63,6 @@ public class DoubleMatrix extends BaseMatrix {
 
     @Override
     public void setCellValue(int row, int column, int layer, @Nullable Object value) {
-        // FIXME null and NaN are different things
         cells.set(row, column, value != null ? (Double) value : Double.NaN);
     }
 
@@ -96,16 +70,4 @@ public class DoubleMatrix extends BaseMatrix {
     public void makeCells(int rows, int columns) {
         this.cells = DoubleFactory2D.dense.make(rows, columns);
     }
-
-	/*@Override
-    public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append(name).append('\n');
-		sb.append(colNames).append('\n');
-		sb.append(rowNames).append('\n');
-		sb.append(data).append('\n');
-		
-		return sb.toString();
-	}*/
 }

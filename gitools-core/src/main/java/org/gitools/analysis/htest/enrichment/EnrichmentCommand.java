@@ -62,7 +62,6 @@ public class EnrichmentCommand extends HtestCommand {
             final EnrichmentAnalysis enrichAnalysis = (EnrichmentAnalysis) analysis;
 
             // Load data and modules
-
             monitor.begin("Loading ...", 1);
             monitor.info("Data: " + dataPath);
             monitor.info("Modules: " + modulesPath);
@@ -72,7 +71,6 @@ public class EnrichmentCommand extends HtestCommand {
             monitor.end();
 
             // Create and process analysis
-
             EnrichmentProcessor processor = new EnrichmentProcessor(enrichAnalysis);
 
             processor.run(monitor);

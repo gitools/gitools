@@ -27,9 +27,6 @@ import org.gitools.utils.textpatt.TextPatternXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class UrlLink {

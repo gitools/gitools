@@ -86,11 +86,6 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public boolean isEmpty(int row, int column) {
-        return mv.isEmpty(column, row);
-    }
-
-    @Override
     public Object getCellValue(int row, int column, int layer) {
         return mv.getCellValue(column, row, layer);
     }

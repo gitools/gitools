@@ -96,16 +96,15 @@ public class TextMatrixViewExporter {
             final int r = i / colCount;
             final int c = i % colCount;
 
-            if (!matrixView.isEmpty(r, c)) {
-                pw.print(matrixView.getColumns().getLabel(c));
-                pw.print("\t" + matrixView.getRows().getLabel(r));
-                for (int p = 0; p < propCount; p++) {
-                    Object value = matrixView.getCellValue(r, c, propIndices[p]);
-                    String valueString = vt[p].valueToString(value);
-                    pw.print("\t" + valueString);
-                }
-                pw.println();
+            pw.print(matrixView.getColumns().getLabel(c));
+            pw.print("\t" + matrixView.getRows().getLabel(r));
+            for (int p = 0; p < propCount; p++) {
+                Object value = matrixView.getCellValue(r, c, propIndices[p]);
+                String valueString = vt[p].valueToString(value);
+                pw.print("\t" + valueString);
             }
+            pw.println();
+
         }
 
         pw.close();

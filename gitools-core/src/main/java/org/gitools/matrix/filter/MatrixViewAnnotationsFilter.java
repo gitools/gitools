@@ -25,15 +25,12 @@ import org.gitools.label.AnnotationsPatternProvider;
 import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-/**
- * @noinspection ALL
- */
 public class MatrixViewAnnotationsFilter {
 
     public enum FilterDimension {

@@ -21,7 +21,7 @@
  */
 package org.gitools.label;
 
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
 

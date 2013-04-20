@@ -102,8 +102,6 @@ public class CombinationProcessor implements AnalysisProcessor {
 
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
-        /*if (pvalueAttrName == null || pvalueAttrName.isEmpty())
-            pvalueIndex = analysis.getPvalueAttrIndex();*/
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty()) {
             pvalueIndex = data.getLayers().findId(pvalueAttrName);
         }
@@ -130,7 +128,7 @@ public class CombinationProcessor implements AnalysisProcessor {
                 for (int ci = 0; ci < cindices.length; ci++) {
                     int mci = cindices[ci];
 
-                    if (!data.isEmpty(ri, mci)) {
+                    if (data.getCellValue(ri, mci, sizeIndex) != null) {
                         double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(ri, mci, sizeIndex));
 
                         double pvalue = pvalueCast.getDoubleValue(data.getCellValue(ri, mci, pvalueIndex));

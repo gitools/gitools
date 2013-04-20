@@ -33,7 +33,7 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.PersistenceManager;

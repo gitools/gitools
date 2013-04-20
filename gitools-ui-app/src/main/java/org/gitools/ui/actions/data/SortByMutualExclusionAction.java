@@ -24,7 +24,7 @@ package org.gitools.ui.actions.data;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;

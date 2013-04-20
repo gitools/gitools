@@ -47,7 +47,6 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter {
         try {
             copy(new File(templatePath, "media"), basePath);
         } catch (IOException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 
@@ -68,7 +67,6 @@ public class HtmlHeatmapExporter extends AbstractHtmlExporter {
             eng.render(file);
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -36,7 +36,6 @@ import java.io.IOException;
  * This class is an adapter for Weka Instances class
  * and ImatrixView class
  *
- * @noinspection ALL
  */
 class MatrixViewWeka extends Instances {
 
@@ -46,8 +45,6 @@ class MatrixViewWeka extends Instances {
 
     @Nullable
     private int[] indexes; //selected attributes from preprocessing
-
-    private int dimMatrix;//the dimension of the matrix for obtaining the value
 
     private final int initClassIndex;
 
@@ -63,7 +60,6 @@ class MatrixViewWeka extends Instances {
         matrixView = matrix;
     }
 
-    //Adding attributes (rows name)
     @NotNull
     FastVector addAttributes(int numAttributes) {
 

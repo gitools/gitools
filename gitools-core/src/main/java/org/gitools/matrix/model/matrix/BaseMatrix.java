@@ -234,9 +234,6 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
         };
     }
 
-    @Override
-    public abstract boolean isEmpty(int row, int column);
-
     protected abstract int internalRowCount();
 
     protected abstract int internalColumnCount();

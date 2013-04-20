@@ -28,9 +28,6 @@ import org.gitools.clustering.ClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractClusteringValueMethod implements ClusteringMethod {
 
     boolean preprocess;

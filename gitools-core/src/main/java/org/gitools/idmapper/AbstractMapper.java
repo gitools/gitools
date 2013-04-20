@@ -24,9 +24,6 @@ package org.gitools.idmapper;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractMapper implements Mapper {
 
     private final String name;

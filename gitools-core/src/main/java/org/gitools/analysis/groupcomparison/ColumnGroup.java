@@ -24,9 +24,6 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.datafilters.BinaryCutoff;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * @noinspection ALL
- */
 public class ColumnGroup {
 
     private String name = "";

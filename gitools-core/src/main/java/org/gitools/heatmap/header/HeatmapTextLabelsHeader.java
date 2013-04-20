@@ -22,7 +22,7 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;

@@ -21,9 +21,6 @@
  */
 package org.gitools.clustering;
 
-/**
- * @noinspection ALL
- */
 public class ClusteringMethodDescriptor {
 
     private final String title;

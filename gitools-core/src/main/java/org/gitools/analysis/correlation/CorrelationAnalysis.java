@@ -30,9 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement
 public class CorrelationAnalysis extends Analysis {
 
@@ -51,9 +48,6 @@ public class CorrelationAnalysis extends Analysis {
 
     private ResourceReference<IMatrix> results;
 
-    /**
-     *
-     */
     public CorrelationAnalysis() {
         this.method = PearsonCorrelationMethod.ID;
         this.methodProperties = new Properties();
@@ -62,9 +56,6 @@ public class CorrelationAnalysis extends Analysis {
         this.attributeIndex = 0;
     }
 
-    /**
-     * @return
-     */
     public String getMethod() {
         return method;
     }

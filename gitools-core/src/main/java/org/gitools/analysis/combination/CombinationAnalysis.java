@@ -28,9 +28,6 @@ import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- */
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
 
@@ -42,14 +39,8 @@ public class CombinationAnalysis extends Analysis {
 
     private ResourceReference<ModuleMap> groupsMap;
 
-    /**
-     * Data
-     */
     private ResourceReference<IMatrix> data;
 
-    /**
-     * Results
-     */
     private ResourceReference<IMatrix> results;
 
     public CombinationAnalysis() {

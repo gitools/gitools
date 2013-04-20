@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.model.matrix;
+package org.gitools.matrix.model;
 
 import org.gitools.persistence.IResource;
 

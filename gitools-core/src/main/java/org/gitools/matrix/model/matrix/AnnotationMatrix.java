@@ -21,6 +21,7 @@
  */
 package org.gitools.matrix.model.matrix;
 
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.model.Resource;
 
 import java.util.*;

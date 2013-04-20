@@ -82,7 +82,6 @@ public class CorrelationProcessor implements AnalysisProcessor {
         double[] y = new double[numRows];
         int[] indices = new int[numRows];
 
-        //boolean replaceNanValues = analysis.isReplaceNanValues();
         Double replaceNanValue = analysis.getReplaceNanValue();
         if (replaceNanValue == null) {
             replaceNanValue = Double.NaN;

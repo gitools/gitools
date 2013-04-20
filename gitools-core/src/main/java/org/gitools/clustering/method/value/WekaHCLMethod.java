@@ -37,9 +37,6 @@ import weka.core.SelectedTag;
 import java.util.List;
 
 
-/**
- * @noinspection ALL
- */
 public class WekaHCLMethod extends AbstractClusteringValueMethod {
 
     private SelectedTag linkType;
@@ -128,9 +125,6 @@ public class WekaHCLMethod extends AbstractClusteringValueMethod {
         this.linkType = linkType;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     public int getNumClusters() {
         return numClusters;
     }

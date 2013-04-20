@@ -53,16 +53,24 @@ public class MatrixConversion extends AbstractCompressor {
             for (int c = 0; c < columns.size(); c++) {
                 int column = inputMatrix.getColumns().getIndex(columns.getLabel(c));
 
-                if (!inputMatrix.isEmpty(row, column)) {
-                    StringBuilder line = new StringBuilder(totalProperties * 8);
-                    line.append(inputMatrix.getColumns().getLabel(column)).append(SEPARATOR);
-                    line.append(inputMatrix.getRows().getLabel(row)).append(SEPARATOR);
-                    for (int p = 0; p < totalProperties; p++) {
-                        line.append(MatrixUtils.doubleValue(inputMatrix.getCellValue(row, column, p))).append(SEPARATOR);
+                StringBuilder line = new StringBuilder(totalProperties * 8);
+                line.append(inputMatrix.getColumns().getLabel(column)).append(SEPARATOR);
+                line.append(inputMatrix.getRows().getLabel(row)).append(SEPARATOR);
+                boolean allNull = true;
+                for (int p = 0; p < totalProperties; p++) {
+                    Object value = inputMatrix.getCellValue(row, column, p);
+
+                    if (value == null) {
+                        line.append(SEPARATOR);
+                    } else {
+                        line.append(MatrixUtils.doubleValue(value)).append(SEPARATOR);
+                        allNull = false;
                     }
-                    notCompressRow.append(line.toString());
                 }
 
+                if (!allNull) {
+                    notCompressRow.append(line.toString());
+                }
             }
 
             values.put(r, compressRow(notCompressRow));
@@ -75,12 +83,9 @@ public class MatrixConversion extends AbstractCompressor {
         return new CompressMatrix(
                 getRows(),
                 getColumns(),
-                new CompressElementAdapter(
-                        getDictionary(),
-                        getHeader(),
-                        values,
-                        getColumns()
-                )
+                getDictionary(),
+                getHeader(),
+                values
         );
     }
 

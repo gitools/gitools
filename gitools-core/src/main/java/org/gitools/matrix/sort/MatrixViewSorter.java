@@ -28,7 +28,7 @@ import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
 import org.gitools.model.AbstractModel;
@@ -169,10 +169,6 @@ public abstract class MatrixViewSorter {
         }
         int numRows = selRows.length;
 
-        /*final Integer[] indices = new Integer[numRows];
-          for (int i = 0; i < numRows; i++)
-              indices[i] = i;      */
-
         if (selColumns == null || selColumns.length == 0) {
             selColumns = new int[matrixView.getColumns().size()];
             for (int i = 0; i < selColumns.length; i++)
@@ -309,12 +305,7 @@ public abstract class MatrixViewSorter {
         matrixView.getColumns().setVisible(sortedVisibleColumns);
     }
 
-    public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, SortDirection colsDirection, boolean colsNumeric) {
-
-        sortByLabel(matrixView, sortRows, "${id}", null, rowsDirection, rowsNumeric, sortCols, "${id}", null, colsDirection, colsNumeric);
-    }
-
-    //TODO: sort by label with all selected properties!
+    //TODO: sort by label with all selected properties
     public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, @NotNull String rowsPattern, IAnnotations rowsAnnMatrix, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, IAnnotations colsAnnMatrix, SortDirection colsDirection, boolean colsNumeric) {
 
         if (sortRows) {

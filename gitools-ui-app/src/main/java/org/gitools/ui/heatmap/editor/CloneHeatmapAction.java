@@ -22,8 +22,6 @@
 package org.gitools.ui.heatmap.editor;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.DiagonalMatrixView;
-import org.gitools.matrix.model.IMatrixView;
 import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
@@ -63,11 +61,8 @@ public class CloneHeatmapAction extends BaseAction {
 
         Heatmap hm = (Heatmap) currentEditor.getModel();
 
-        IMatrixView mv = hm;
-        if (mv instanceof DiagonalMatrixView) {
-            mv = new DiagonalMatrixView(mv);
-        }
-        Heatmap clone = new Heatmap(mv);
+
+        Heatmap clone = new Heatmap(hm);
         clone.setTitle(hm.getTitle());
         clone.setDescription(hm.getDescription());
         clone.setProperties(SerialClone.xclone(hm.getProperties()));

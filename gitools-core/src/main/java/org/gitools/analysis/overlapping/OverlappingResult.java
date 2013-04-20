@@ -23,9 +23,6 @@ package org.gitools.analysis.overlapping;
 
 import org.gitools.matrix.model.matrix.element.AttributeDef;
 
-/**
- * @noinspection ALL
- */
 public class OverlappingResult {
 
     private int columnCount;

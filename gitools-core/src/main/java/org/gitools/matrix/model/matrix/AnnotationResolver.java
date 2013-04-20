@@ -21,6 +21,7 @@
  */
 package org.gitools.matrix.model.matrix;
 
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

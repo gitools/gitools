@@ -24,9 +24,6 @@ package org.gitools.analysis.combination;
 import org.gitools.matrix.model.matrix.element.AttributeDef;
 
 
-/**
- * @noinspection ALL
- */
 public class CombinationResult {
 
     private int n;

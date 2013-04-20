@@ -73,7 +73,12 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             int x = box.x + colStart * cellWidth;
             boolean rowSelected = heatmap.getRows().isSelected(row);
             for (int col = colStart; col < colEnd; col++) {
-                deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+
+                if (heatmap.isDiagonal() && col < row) {
+                    decoration.setBgColor(Color.WHITE);
+                } else {
+                    deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+                }
 
                 Color color = decoration.getBgColor();
                 Color rowsGridColor = heatmap.getRows().getGridColor();

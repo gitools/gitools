@@ -23,9 +23,6 @@ package org.gitools.analysis;
 
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class AbstractMethod implements Method {
 
     private final String id;

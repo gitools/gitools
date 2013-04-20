@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.matrix.model.matrix.IAnnotations;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.dialog.MessageStatus;
