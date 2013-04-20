@@ -38,10 +38,14 @@ public class VarianceAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
-        int size = data.length;
-        double sum = aggregate(data, Functions.plus, 0);
-        double sumOfSquares = aggregate(data, Functions.plus, Functions.square, 0);
-        return sampleVariance(size, sum, sumOfSquares);
+        double sum = aggregate(data, Functions.plus);
+
+        if (Double.isNaN(sum)) {
+            return Double.NaN;
+        }
+
+        double sumOfSquares = aggregate(data, Functions.plus, Functions.square);
+        return sampleVariance(data.length, sum, sumOfSquares);
     }
 
     @NotNull

@@ -36,8 +36,13 @@ public class MeanAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
-        double sum = aggregate(data, Functions.plus, 0);
-        return sum / data.length; //FIXME should have into account NaN values ???
+        double sum = aggregate(data, Functions.plus);
+
+        if (Double.isNaN(sum)) {
+            return Double.NaN;
+        }
+
+        return sum / data.length;
     }
 
     @NotNull

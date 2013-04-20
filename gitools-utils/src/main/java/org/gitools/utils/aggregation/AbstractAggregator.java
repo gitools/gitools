@@ -27,37 +27,60 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class AbstractAggregator implements IAggregator {
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc, double nanValue) {
-        if (data.length == 0) {
-            return 0;
-        } else if (data.length == 1) {
-            return mapFunc.apply(checkNaN(data[0], nanValue));
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc) {
+
+        // Look for the first non-NaN value
+        int first = 0;
+        while (Double.isNaN(data[first])) {
+            first++;
+
+            if (first == data.length) {
+                return Double.NaN;
+            }
         }
 
-        double value = reduceFunc.apply(mapFunc.apply(checkNaN(data[0], nanValue)), mapFunc.apply(checkNaN(data[1], nanValue)));
+        // Look for the second non-Nan value
+        int second = first;
+        do {
+            second++;
 
-        for (int i = 2; i < data.length; i++)
-            value = reduceFunc.apply(value, mapFunc.apply(checkNaN(data[i], nanValue)));
+            // If there is only one non-Nan return this value mapped
+            if (second == data.length) {
+                return mapFunc.apply(data[first]);
+            }
 
-        return value;
-    }
+        } while (Double.isNaN(data[second]));
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, double nanValue) {
-        if (data.length == 0) {
-            return 0;
-        } else if (data.length == 1) {
-            return checkNaN(data[0], nanValue);
+        // Aggregate first two values
+        double total = reduceFunc.apply(mapFunc.apply(data[first]), mapFunc.apply(data[second]));
+
+        // Aggregate rhe remaining values
+        for (int i = second + 1; i < data.length; i++) {
+
+            // Skip NaN values
+            if (Double.isNaN(data[i])) {
+                continue;
+            }
+
+            total = reduceFunc.apply(total, mapFunc.apply(data[i]));
         }
 
-        double value = reduceFunc.apply(checkNaN(data[0], nanValue), checkNaN(data[1], nanValue));
-
-        for (int i = 2; i < data.length; i++)
-            value = reduceFunc.apply(value, checkNaN(data[i], nanValue));
-
-        return value;
+        return total;
     }
 
-    private double checkNaN(double d, double nanValue) {
-        return Double.isNaN(d) ? nanValue : d;
+    /**
+     * A simple mapping functions that always returns the same input value
+     */
+    private static final DoubleFunction NO_MAPPING = new DoubleFunction() {
+        @Override
+        public double apply(double v) {
+            return v;
+        }
+    };
+
+    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc) {
+         return aggregate(data, reduceFunc, NO_MAPPING);
     }
+
+
 }

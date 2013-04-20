@@ -25,9 +25,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-/**
- * @noinspection ALL
- */
 public class AggregatorFactory {
 
     private static final List<IAggregator> aggregators = new ArrayList<IAggregator>();

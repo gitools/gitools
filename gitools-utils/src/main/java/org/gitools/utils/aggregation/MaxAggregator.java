@@ -36,7 +36,7 @@ public class MaxAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
-        return aggregate(data, Functions.max, Double.MIN_VALUE);
+        return aggregate(data, Functions.max);
     }
 
     @NotNull

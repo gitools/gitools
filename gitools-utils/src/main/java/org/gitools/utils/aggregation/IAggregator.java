@@ -23,5 +23,11 @@ package org.gitools.utils.aggregation;
 
 public interface IAggregator {
 
+    /**
+     * Aggregate all the values. The NaN values are skipped.
+     *
+     * @param data the data vector to aggregate
+     * @return The aggregation. NaN if all are NaNs.
+     */
     double aggregate(double[] data);
 }

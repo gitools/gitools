@@ -36,7 +36,7 @@ public class MultAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(double[] data) {
-        return aggregate(data, Functions.mult, 1);
+        return aggregate(data, Functions.mult);
     }
 
     @NotNull

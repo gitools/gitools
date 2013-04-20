@@ -42,9 +42,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class SortByValueAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;

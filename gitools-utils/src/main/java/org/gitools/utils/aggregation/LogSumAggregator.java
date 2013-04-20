@@ -36,7 +36,7 @@ public class LogSumAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
-        return aggregate(data, Functions.plus, Functions.log, 0);
+        return aggregate(data, Functions.plus, Functions.log);
     }
 
     @NotNull

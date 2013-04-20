@@ -39,9 +39,15 @@ public class StdDevAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
+
+        double sum = aggregate(data, Functions.plus);
+
+        if (Double.isNaN(sum)) {
+            return Double.NaN;
+        }
+
         int size = data.length;
-        double sum = aggregate(data, Functions.plus, 0);
-        double sumOfSquares = aggregate(data, Functions.plus, Functions.square, 0);
+        double sumOfSquares = aggregate(data, Functions.plus, Functions.square);
         double variance = sampleVariance(size, sum, sumOfSquares);
         return standardDeviation(variance);
     }

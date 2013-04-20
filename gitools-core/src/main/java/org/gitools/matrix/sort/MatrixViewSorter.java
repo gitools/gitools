@@ -200,6 +200,18 @@ public abstract class MatrixViewSorter {
                     criteriaIndex++;
                 }
 
+                if (Double.isNaN(aggr1)) {
+                    if (Double.isNaN(aggr2)) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+
+                if (Double.isNaN(aggr2)) {
+                    return -1;
+                }
+
                 int res = (int) Math.signum(aggr1 - aggr2);
                 return res * criteria.getDirection().getFactor();
             }
@@ -273,6 +285,18 @@ public abstract class MatrixViewSorter {
                     aggr2 = aggregateValue(matrixView, selectedRows, idx2, propIndex, aggregator, valueBuffer);
 
                     criteriaIndex++;
+                }
+
+                if (Double.isNaN(aggr1)) {
+                    if (Double.isNaN(aggr2)) {
+                        return 0;
+                    } else {
+                        return 1;
+                    }
+                }
+
+                if (Double.isNaN(aggr2)) {
+                    return -1;
                 }
 
                 int res = (int) Math.signum(aggr1 - aggr2);

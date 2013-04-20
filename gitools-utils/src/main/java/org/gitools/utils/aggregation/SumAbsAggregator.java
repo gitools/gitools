@@ -36,21 +36,12 @@ public class SumAbsAggregator extends AbstractAggregator {
 
     @Override
     public double aggregate(@NotNull double[] data) {
-        int nanValue = 0;
-        if (data.length == 1) {
-            return checkNaN(data[0], nanValue);
-        } else {
-            return aggregate(data, Functions.plusAbs, nanValue);
-        }
+        return aggregate(data, Functions.plusAbs);
     }
 
     @NotNull
     @Override
     public String toString() {
         return "Absolute Sum";
-    }
-
-    private double checkNaN(double d, int nanValue) {
-        return Double.isNaN(d) ? nanValue : Math.abs(d);
     }
 }
