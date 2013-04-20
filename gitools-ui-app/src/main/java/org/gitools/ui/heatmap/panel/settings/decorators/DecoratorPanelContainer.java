@@ -23,11 +23,7 @@ package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.value.ValueHolder;
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.matrix.model.IMatrixLayers;
 import org.gitools.model.decorator.Decorator;
-import org.gitools.utils.EventUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,9 +31,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class DecoratorPanelContainer extends JPanel implements PropertyChangeListener {
+public class DecoratorPanelContainer extends JPanel {
 
-    private IMatrixLayers layers;
     private ValueModel decoratorModel;
     private ValueModel currentPanelModel;
     private List<DecoratorPanel> panels;
@@ -48,13 +43,25 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         setLayout(new CardLayout());
 
         this.currentPanelModel = new ValueHolder();
-        this.currentPanelModel.addValueChangeListener(this);
+        this.currentPanelModel.addValueChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                updateFromPanel();
+                showCurrentPanel();
+            }
+        });
     }
 
     public void init(List<DecoratorPanel> panels, List<String> layers, ValueModel decoratorModel) {
         this.decoratorModel = decoratorModel;
         this.panels = panels;
-        this.decoratorModel.addValueChangeListener(this);
+        this.decoratorModel.addValueChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                updateFromModel();
+                showCurrentPanel();
+            }
+        });
 
         removeAll();
         for (DecoratorPanel panel : panels) {
@@ -121,18 +128,9 @@ public class DecoratorPanelContainer extends JPanel implements PropertyChangeLis
         Decorator currentDecorator = getCurrentDecorator();
 
         if (currentDecorator==null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
-            setCurrentDecorator(getCurrentPanel().newDecorator());
+            Decorator newDecorator = getCurrentPanel().newDecorator();
+            setCurrentDecorator(newDecorator);
+            getCurrentPanel().setValue(newDecorator);
         }
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (EventUtils.isAny(evt, HeatmapLayers.class, HeatmapLayers.PROPERTY_TOP_LAYER) ||
-                EventUtils.isAny(evt, HeatmapLayer.class, HeatmapLayer.PROPERTY_DECORATOR)) {
-            updateFromModel();
-        } else {
-            updateFromPanel();
-        }
-        showCurrentPanel();
     }
 }

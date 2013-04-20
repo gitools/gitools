@@ -45,6 +45,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class SettingsPanel {
 
@@ -88,7 +90,27 @@ public class SettingsPanel {
         // Bind color scale controls
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
-        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), topLayer.getModel(HeatmapLayer.PROPERTY_DECORATOR));
+        final AbstractValueModel decoratorModel = new AbstractValueModel() {
+            @Override
+            public Object getValue() {
+                return heatmap.getLayers().getTopLayer().getDecorator();
+            }
+
+            @Override
+            public void setValue(Object newValue) {
+                heatmap.getLayers().getTopLayer().setDecorator((Decorator) newValue);
+                fireValueChange(null, newValue);
+            }
+        };
+        layers.addBeanPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                decoratorModel.fireValueChange(null, heatmap.getLayers().getTopLayer().getDecorator());
+            }
+        });
+
+
+        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), decoratorModel);
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
@@ -108,19 +130,7 @@ public class SettingsPanel {
         colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SaveDecoratorDialog.actionLoadDecorator(new AbstractValueModel() {
-
-                    @Override
-                    public Object getValue() {
-                        return heatmap.getLayers().getTopLayer().getDecorator();
-                    }
-
-                    @Override
-                    public void setValue(Object newValue) {
-                        heatmap.getLayers().getTopLayer().setDecorator((Decorator) newValue);
-                    }
-                }
-                );
+                SaveDecoratorDialog.actionLoadDecorator(decoratorModel);
             }
         });
 

@@ -161,7 +161,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         firePropertyChange(PROPERTY_RIGHT_MIN_COLOR, old, color);
     }
 
-    @XmlElement(name = "left-max-color")
+    @XmlElement(name = "right-max-color")
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     public Color getRightMaxColor() {
         return getScale().getRightMaxColor();
