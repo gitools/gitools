@@ -54,6 +54,6 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     }
 
     protected static double toDouble(IMatrix matrix, int row, int column, int layer) {
-        return MatrixUtils.doubleValue(matrix.getCellValue(row, column, layer));
+        return MatrixUtils.doubleValue(matrix.getValue(row, column, layer));
     }
 }

@@ -22,8 +22,8 @@
 package org.gitools.matrix.model.matrix.element;
 
 
-import org.gitools.matrix.model.SimpleMatrixLayer;
-import org.gitools.matrix.model.SimpleMatrixLayers;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.MatrixLayers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +37,7 @@ public class ArrayElementAdapter extends AbstractElementAdapter {
 
     private static final long serialVersionUID = 5864596809781257355L;
 
-    private static class ArrayElementProperty extends SimpleMatrixLayer {
+    private static class ArrayElementProperty extends MatrixLayer {
 
         private static final long serialVersionUID = 7803752573190009823L;
 
@@ -54,7 +54,7 @@ public class ArrayElementAdapter extends AbstractElementAdapter {
     public ArrayElementAdapter(@NotNull String[] ids) {
         super(double[].class);
 
-        setProperties(new SimpleMatrixLayers(double.class, ids));
+        setProperties(new MatrixLayers(double.class, ids));
     }
 
     @Nullable

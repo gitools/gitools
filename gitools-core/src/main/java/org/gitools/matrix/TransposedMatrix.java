@@ -24,18 +24,28 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layerIndex) {
-        return matrix.getCellValue(column, row, layerIndex);
+    public Object getValue(int[] position, int layerIndex) {
+        return matrix.getValue(position, layerIndex);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layerIndex, Object value) {
-        matrix.setCellValue(column, row, layerIndex, value);
+    public void setValue(int row, int column, int layer, Object value) {
+        matrix.setValue(row, column, layer, value);
+    }
+
+    @Override
+    public void setValue(int[] position, int layerIndex, Object value) {
+        matrix.setValue(position, layerIndex, value);
     }
 
     @Override
     public IMatrixLayers getLayers() {
         return matrix.getLayers();
+    }
+
+    @Override
+    public Object getValue(int row, int column, int layerIndex) {
+        return matrix.getValue(row, column, layerIndex);
     }
 
     @Override

@@ -151,7 +151,7 @@ public class OncodriveProcessor extends HtestProcessor {
                 int k = 0;
                 for (int i = 0; i < numRows; i++)
                     for (int j = 0; j < numColumns; j++)
-                        population.setQuick(k++, MatrixUtils.doubleValue(dataMatrix.getCellValue(i, columnIndices[j], 0)));
+                        population.setQuick(k++, MatrixUtils.doubleValue(dataMatrix.getValue(i, columnIndices[j], 0)));
 
                 population = population.viewSelection(notNaNProc);
 
@@ -169,7 +169,7 @@ public class OncodriveProcessor extends HtestProcessor {
                     final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 
                     for (int j = 0; j < numColumns; j++)
-                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getCellValue(itemIdx, columnIndices[j], 0)));
+                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getValue(itemIdx, columnIndices[j], 0)));
 
                     final RunSlot slot;
                     try {

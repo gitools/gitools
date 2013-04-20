@@ -162,7 +162,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
             final IMatrixLayer prop = properties.get(index);
             Object value = null;
             if (row != -1 && column != -1) {
-                value = getHeatmap().getCellValue(row, column, index);
+                value = getHeatmap().getValue(row, column, index);
             }
             PropertyItem item = new PropertyItem(prop.getName(), prop.getDescription(), FORMATTER.format(value));
             item.setSelectable(true);

@@ -21,16 +21,12 @@
  */
 package org.gitools.heatmap;
 
-import com.jgoodies.binding.beans.Model;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.idtype.IdType;
 import org.gitools.idtype.IdTypeManager;
 import org.gitools.idtype.IdTypeXmlAdapter;
-import org.gitools.matrix.model.Direction;
-import org.gitools.matrix.model.IMatrixDimension;
-import org.gitools.matrix.model.IMatrixViewDimension;
+import org.gitools.matrix.model.*;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.matrix.model.IAnnotations;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
@@ -44,7 +40,7 @@ import java.util.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class HeatmapDimension extends Model implements IMatrixViewDimension {
+public class HeatmapDimension extends AbstractMatrixDimension implements IMatrixViewDimension {
     public static final String PROPERTY_GRID_COLOR = "gridColor";
     public static final String PROPERTY_GRID_SIZE = "gridSize";
     public static final String PROPERTY_CELL_SIZE = "cellSize";
@@ -97,10 +93,13 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
     private IMatrixDimension matrixDimension;
 
     public HeatmapDimension() {
+        super();
+
         commonInit();
     }
 
     public HeatmapDimension(Heatmap heatmap, IMatrixDimension matrixDimension) {
+        super();
         commonInit();
         init(heatmap, matrixDimension);
     }
@@ -117,6 +116,9 @@ public class HeatmapDimension extends Model implements IMatrixViewDimension {
     }
 
     public void init(Heatmap heatmap, IMatrixDimension matrixDimension) {
+
+        setVectorPosition(matrixDimension.getVectorPosition());
+        setId(matrixDimension.getId());
 
         if (this.annotations == null) {
             this.annotations = new ResourceReference<AnnotationMatrix>(matrixDimension.getId() + "-annotations", new AnnotationMatrix());

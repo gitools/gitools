@@ -97,7 +97,7 @@ public class MtcAction extends BaseAction {
 
                 for (int col = 0; col < columnCount; col++) {
                     for (int row = 0; row < rowCount; row++)
-                        values.setQuick(row, col, MatrixUtils.doubleValue(contents.getCellValue(row, col, propIndex)));
+                        values.setQuick(row, col, MatrixUtils.doubleValue(contents.getValue(row, col, propIndex)));
 
                     monitor.worked(1);
                 }
@@ -116,7 +116,7 @@ public class MtcAction extends BaseAction {
 
                 for (int col = 0; col < columnCount; col++) {
                     for (int row = 0; row < rowCount; row++)
-                        contents.setCellValue(row, col, corrPropIndex, values.getQuick(row, col));
+                        contents.setValue(row, col, corrPropIndex, values.getQuick(row, col));
 
                     monitor.worked(1);
                 }

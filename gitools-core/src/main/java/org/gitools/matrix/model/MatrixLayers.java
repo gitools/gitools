@@ -23,21 +23,21 @@ package org.gitools.matrix.model;
 
 import java.util.*;
 
-public class SimpleMatrixLayers implements IMatrixLayers<SimpleMatrixLayer> {
-    private List<SimpleMatrixLayer> descriptors;
+public class MatrixLayers implements IMatrixLayers<MatrixLayer> {
+    private List<MatrixLayer> descriptors;
     private Map<String, Integer> idToIndex;
 
-    public SimpleMatrixLayers(List<SimpleMatrixLayer> descriptors) {
+    public MatrixLayers(List<MatrixLayer> descriptors) {
         this.descriptors = descriptors;
 
         init();
     }
 
-    public SimpleMatrixLayers(Class<?> valueClass, String... headers) {
-        this.descriptors = new ArrayList<SimpleMatrixLayer>(headers.length);
+    public MatrixLayers(Class<?> valueClass, String... headers) {
+        this.descriptors = new ArrayList<MatrixLayer>(headers.length);
 
         for (String header : headers) {
-            this.descriptors.add(new SimpleMatrixLayer(header, valueClass));
+            this.descriptors.add(new MatrixLayer(header, valueClass));
         }
 
         init();
@@ -51,7 +51,7 @@ public class SimpleMatrixLayers implements IMatrixLayers<SimpleMatrixLayer> {
     }
 
     @Override
-    public SimpleMatrixLayer get(int layerIndex) {
+    public MatrixLayer get(int layerIndex) {
         return descriptors.get(layerIndex);
     }
 
@@ -70,7 +70,7 @@ public class SimpleMatrixLayers implements IMatrixLayers<SimpleMatrixLayer> {
     }
 
     @Override
-    public Iterator<SimpleMatrixLayer> iterator() {
+    public Iterator<MatrixLayer> iterator() {
         return descriptors.iterator();
     }
 }

@@ -31,9 +31,15 @@ public interface IMatrix extends IResource {
 
     IMatrixLayers getLayers();
 
-    Object getCellValue(int row, int column, int layerIndex);
+    @Deprecated
+    Object getValue(int row, int column, int layer);
 
-    void setCellValue(int row, int column, int layerIndex, Object value);
+    Object getValue(int[] position, int layer);
+
+    @Deprecated
+    void setValue(int row, int column, int layer, Object value);
+
+    void setValue(int[] position, int layer, Object value);
 
     /**
      * This method is called when the matrix is not in use.

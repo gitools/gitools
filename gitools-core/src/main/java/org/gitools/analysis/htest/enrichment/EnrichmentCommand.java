@@ -185,8 +185,8 @@ public class EnrichmentCommand extends HtestCommand {
                 int srcRow = rows.get(ri);
                 fmatrix.setRow(ri, dataMatrix.get().internalRowLabel(srcRow));
                 for (int ci = 0; ci < numColumns; ci++) {
-                    Object value = dataMatrix.get().getCellValue(srcRow, ci, 0);
-                    fmatrix.setCellValue(ri, ci, 0, value);
+                    Object value = dataMatrix.get().getValue(srcRow, ci, 0);
+                    fmatrix.setValue(ri, ci, 0, value);
                 }
             }
 

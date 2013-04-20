@@ -1,15 +1,14 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.model.IMatrix;
+import org.gitools.matrix.model.AbstractMatrix;
+import org.gitools.matrix.model.IAnnotations;
 import org.gitools.matrix.model.IMatrixDimension;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.IAnnotations;
-import org.gitools.persistence.IResourceLocator;
 
 import java.util.List;
 
-class MatrixAdapter implements IMatrix {
+class MatrixAdapter extends AbstractMatrix {
 
     private HeatmapDecoratorHeader header;
 
@@ -21,10 +20,10 @@ class MatrixAdapter implements IMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layerIndex) {
+    public Object getValue(int[] position, int layerIndex) {
         HeatmapDimension heatmapDimension = header.getHeatmapDim();
         IAnnotations annotations = heatmapDimension.getAnnotations();
-        String identifier = heatmapDimension.getLabel(row);
+        String identifier = heatmapDimension.getLabel(position[0]);
         String value = annotations.getAnnotation(identifier, annotationLabels.get(layerIndex));
 
         return (value == null) ? null : Double.valueOf(value);
@@ -45,24 +44,11 @@ class MatrixAdapter implements IMatrix {
     }
 
     @Override
-    public void setCellValue(int row, int column, int layerIndex, Object value) {
+    public void setValue(int[] position, int layerIndex, Object value) {
     }
 
     @Override
     public IMatrixLayers getLayers() {
         return null;
-    }
-
-    @Override
-    public void detach() {
-    }
-
-    @Override
-    public IResourceLocator getLocator() {
-        return null;
-    }
-
-    @Override
-    public void setLocator(IResourceLocator locator) {
     }
 }

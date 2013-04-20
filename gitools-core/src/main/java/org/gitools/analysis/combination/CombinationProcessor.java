@@ -128,10 +128,10 @@ public class CombinationProcessor implements AnalysisProcessor {
                 for (int ci = 0; ci < cindices.length; ci++) {
                     int mci = cindices[ci];
 
-                    if (data.getCellValue(ri, mci, sizeIndex) != null) {
-                        double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getCellValue(ri, mci, sizeIndex));
+                    if (data.getValue(ri, mci, sizeIndex) != null) {
+                        double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getValue(ri, mci, sizeIndex));
 
-                        double pvalue = pvalueCast.getDoubleValue(data.getCellValue(ri, mci, pvalueIndex));
+                        double pvalue = pvalueCast.getDoubleValue(data.getValue(ri, mci, pvalueIndex));
 
                         double zscore = pvalueToZscore(pvalue);
 

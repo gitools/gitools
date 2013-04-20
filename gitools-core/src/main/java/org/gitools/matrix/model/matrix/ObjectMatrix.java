@@ -64,13 +64,13 @@ public class ObjectMatrix extends BaseMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
-        return cellAdapter.getValue(getObjectCell(row, column), layer);
+    public Object getValue(int[] position, int layer) {
+        return cellAdapter.getValue(getObjectCell(position[0], position[1]), layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value) {
-        cellAdapter.setValue(getObjectCell(row, column), layer, value);
+    public void setValue(int[] position, int layer, Object value) {
+        cellAdapter.setValue(getObjectCell(position[0], position[1]), layer, value);
     }
 
     public void makeCells() {

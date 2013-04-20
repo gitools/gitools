@@ -26,11 +26,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.datafilters.DoubleTranslator;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixDimension;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.SimpleMatrixLayers;
-import org.gitools.model.Resource;
+import org.gitools.matrix.model.*;
 import org.gitools.persistence.PersistenceException;
 import org.gitools.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.utils.MemoryUtils;
@@ -49,7 +45,7 @@ import java.util.zip.Inflater;
  * This format keep the rows compressed at memory, and has a dynamic cache that can expand or
  * contract depending on the user free memory.
  */
-public class CompressMatrix extends Resource implements IMatrix {
+public class CompressMatrix extends AbstractMatrix {
 
     private static final char SEPARATOR = '\t';
     private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
@@ -58,7 +54,7 @@ public class CompressMatrix extends Resource implements IMatrix {
     private final CompressDimension columns;
     private final byte[] dictionary;
     private final Inflater decompresser = new Inflater();
-    private final SimpleMatrixLayers layers;
+    private final MatrixLayers layers;
     private final Map<Integer, CompressRow> values;
     private final LoadingCache<Integer, Map<Integer, Double[]>> rowsCache;
 
@@ -79,7 +75,7 @@ public class CompressMatrix extends Resource implements IMatrix {
         this.values = values;
 
         // We assume that all the attributes are doubles.
-        this.layers = new SimpleMatrixLayers(double.class, headers);
+        this.layers = new MatrixLayers(double.class, headers);
 
         // Force a garbage collector now
         Runtime.getRuntime().gc();
@@ -174,13 +170,13 @@ public class CompressMatrix extends Resource implements IMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
+    public Object getValue(int[] position, int layer) {
 
         // The cache is who loads the value if it's not already loaded.
-        Map<Integer, Double[]> rowValues = rowsCache.getUnchecked(row);
+        Map<Integer, Double[]> rowValues = rowsCache.getUnchecked(rows.getPosition(position));
 
         if (rowValues != null) {
-            Double[] columnValues = rowValues.get(column);
+            Double[] columnValues = rowValues.get(columns.getPosition(position));
 
             if (columnValues != null) {
                 return columnValues[layer];
@@ -191,7 +187,7 @@ public class CompressMatrix extends Resource implements IMatrix {
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value) {
+    public void setValue(int[] position, int layer, Object value) {
         throw new UnsupportedOperationException("Read only matrix");
     }
 

@@ -59,8 +59,8 @@ public class MatrixConversion implements ConversionDelegate {
             dstMatrix.makeCells(numRows, numCols);
             for (int row = 0; row < numRows; row++) {
                 for (int col = 0; col < numCols; col++) {
-                    Object value = srcMatrix.getCellValue(row, col, 0);
-                    dstMatrix.setCellValue(row, col, 0, value);
+                    Object value = srcMatrix.getValue(row, col, 0);
+                    dstMatrix.setValue(row, col, 0, value);
                 }
 
                 progressMonitor.worked(1);

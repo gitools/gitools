@@ -92,7 +92,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
 
         for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
             for (int row = 0; row < numRows; row++) {
-                Object value = data.getCellValue(row, i, attributeIndex);
+                Object value = data.getValue(row, i, attributeIndex);
                 Double v = cast.getDoubleValue(value);
                 if (v == null || Double.isNaN(v)) {
                     v = replaceNanValue;
@@ -109,7 +109,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
                     for (int row = 0; row < numRows; row++) {
                         double v0 = x[row];
 
-                        Object value = data.getCellValue(row, j, attributeIndex);
+                        Object value = data.getValue(row, j, attributeIndex);
 
                         Double v1 = cast.getDoubleValue(value);
                         if (v1 == null || Double.isNaN(v1)) {

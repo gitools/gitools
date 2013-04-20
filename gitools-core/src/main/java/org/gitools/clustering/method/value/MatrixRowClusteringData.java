@@ -53,7 +53,7 @@ public class MatrixRowClusteringData implements ClusteringData {
 
         @Override
         public Object getValue(int attribute) {
-            return matrix.getCellValue(index, attribute, matrixAttribute);
+            return matrix.getValue(index, attribute, matrixAttribute);
         }
 
         @NotNull
@@ -63,7 +63,7 @@ public class MatrixRowClusteringData implements ClusteringData {
                 throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
             }
 
-            return (T) matrix.getCellValue(index, attribute, matrixAttribute);
+            return (T) matrix.getValue(index, attribute, matrixAttribute);
         }
     }
 

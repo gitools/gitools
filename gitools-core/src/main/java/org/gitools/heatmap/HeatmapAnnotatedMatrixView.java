@@ -77,13 +77,23 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
-        return hm.getCellValue(row, column, layer);
+    public Object getValue(int row, int column, int layer) {
+        return hm.getValue(row, column, layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value) {
-        hm.setCellValue(row, column, layer, value);
+    public Object getValue(int[] position, int layer) {
+        return hm.getValue(position, layer);
+    }
+
+    @Override
+    public void setValue(int row, int column, int layer, Object value) {
+        hm.setValue(row, column, layer, value);
+    }
+
+    @Override
+    public void setValue(int[] position, int layer, Object value) {
+        hm.setValue(position, layer, value);
     }
 
     @Override

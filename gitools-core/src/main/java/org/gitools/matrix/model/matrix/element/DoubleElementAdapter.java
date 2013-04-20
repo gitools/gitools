@@ -21,7 +21,7 @@
  */
 package org.gitools.matrix.model.matrix.element;
 
-import org.gitools.matrix.model.SimpleMatrixLayers;
+import org.gitools.matrix.model.MatrixLayers;
 
 public class DoubleElementAdapter extends AbstractElementAdapter {
 
@@ -29,7 +29,7 @@ public class DoubleElementAdapter extends AbstractElementAdapter {
 
     public DoubleElementAdapter() {
         super(double.class);
-        this.setProperties(new SimpleMatrixLayers(double.class, "value"));
+        this.setProperties(new MatrixLayers(double.class, "value"));
     }
 
     @Override

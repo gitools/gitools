@@ -99,7 +99,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
                 double[] groupVals1 = new double[group1.length];
                 double[] groupVals2 = new double[group2.length];
                 for (int gi = 0; gi < group1.length; gi++) {
-                    Object value = data.getCellValue(row, group1[gi], attrIndex);
+                    Object value = data.getValue(row, group1[gi], attrIndex);
                     Double v = cast.getDoubleValue(value);
                     if (v == null || Double.isNaN(v)) {
                         v = Double.NaN;
@@ -107,7 +107,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
                     groupVals1[gi] = v;
                 }
                 for (int gi = 0; gi < group2.length; gi++) {
-                    Object value = data.getCellValue(row, group2[gi], attrIndex);
+                    Object value = data.getValue(row, group2[gi], attrIndex);
                     Double v = cast.getDoubleValue(value);
                     if (v == null || Double.isNaN(v)) {
                         v = Double.NaN;
@@ -156,7 +156,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
 
         List<Integer> columnIndicesList = new ArrayList<Integer>();
         for (int col = 0; col < data.getColumns().size(); col++) {
-            Object value = data.getCellValue(row, col, attrIndex);
+            Object value = data.getValue(row, col, attrIndex);
             Double v = cast.getDoubleValue(value);
             if (v == null || Double.isNaN(v)) {
                 continue;

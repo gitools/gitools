@@ -212,7 +212,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         boolean useScale = true;
 
         if (useCorrection) {
-            Object corrValue = correctedValueIndex >= 0 ? matrix.getCellValue(row, column, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? matrix.getValue(row, column, correctedValueIndex) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 

@@ -111,7 +111,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
             double backgroundValue = getBackgroundValue();
             for (int row = 0; row < numRows; row++)
                 for (int col = 0; col < numColumns; col++)
-                    matrix.setCellValue(row, col, 0, backgroundValue);
+                    matrix.setValue(row, col, 0, backgroundValue);
 
             // set column names and cell values
 
@@ -123,7 +123,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
                 matrix.setColumn(colIndex, colNameIt.next());
                 int[] rows = colRowsIt.next();
                 for (int row : rows)
-                    matrix.setCellValue(row, colIndex, 0, 1.0);
+                    matrix.setValue(row, colIndex, 0, 1.0);
                 colIndex++;
             }
 
@@ -154,7 +154,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
                 pw.append(matrix.getLabel(ci));
                 pw.append('\t'); // description, but currently not used
                 for (int ri = 0; ri < rowCount; ri++) {
-                    Double value = MatrixUtils.doubleValue(matrix.getCellValue(ri, ci, 0));
+                    Double value = MatrixUtils.doubleValue(matrix.getValue(ri, ci, 0));
                     if (value == 1.0) {
                         pw.append('\t').append(matrix.internalRowLabel(ri));
                     }

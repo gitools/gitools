@@ -71,18 +71,17 @@ public class DoubleBinaryMatrix extends BaseMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
-        return getCell(row, column);
+    public Object getValue(int[] position, int layer) {
+        return getCell(position[0], position[1]);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, @Nullable Object value) {
+    public void setValue(int[] position, int layer, @Nullable Object value) {
         if (value != null) {
-            cells.putQuick(column, row, ((Double) value) == 1.0);
-            cellsNan.putQuick(column, row, Double.isNaN((Double) value));
-        } else // FIXME null and NaN are different things
-        {
-            cellsNan.putQuick(column, row, true);
+            cells.putQuick(position[0], position[1], ((Double) value) == 1.0);
+            cellsNan.putQuick(position[0], position[1], Double.isNaN((Double) value));
+        } else {
+            cellsNan.putQuick(position[0], position[1], true);
         }
     }
 

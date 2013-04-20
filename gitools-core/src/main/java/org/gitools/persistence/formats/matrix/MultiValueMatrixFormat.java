@@ -450,7 +450,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
         for (int propIndex = 0; propIndex < numProperties; propIndex++) {
             out.writeSeparator();
 
-            Object value = resultsMatrix.getCellValue(rowIndex, colIndex, propIndex);
+            Object value = resultsMatrix.getValue(rowIndex, colIndex, propIndex);
             if (value instanceof Double) {
                 Double v = (Double) value;
                 out.write(doubleTrans.valueToString(v));

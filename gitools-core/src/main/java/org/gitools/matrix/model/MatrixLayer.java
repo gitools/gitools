@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SimpleMatrixLayer extends Model implements IMatrixLayer {
+public class MatrixLayer extends Model implements IMatrixLayer {
     private String id;
     private String name;
     private String description;
@@ -36,15 +36,15 @@ public class SimpleMatrixLayer extends Model implements IMatrixLayer {
     @XmlElement(name = "value-type")
     private Class<?> valueClass;
 
-    public SimpleMatrixLayer() {
+    public MatrixLayer() {
         // JAXB requirement
     }
 
-    public SimpleMatrixLayer(String id, Class<?> valueClass) {
+    public MatrixLayer(String id, Class<?> valueClass) {
         this(id, valueClass, null, null);
     }
 
-    public SimpleMatrixLayer(String id, Class<?> valueClass, String name, String description) {
+    public MatrixLayer(String id, Class<?> valueClass, String name, String description) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = name;

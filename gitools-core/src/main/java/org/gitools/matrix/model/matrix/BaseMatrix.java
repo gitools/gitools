@@ -23,17 +23,13 @@ package org.gitools.matrix.model.matrix;
 
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixDimension;
-import org.gitools.matrix.model.IMatrixLayer;
-import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.matrix.model.*;
 import org.gitools.matrix.model.matrix.element.AbstractElementAdapter;
-import org.gitools.model.Resource;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public abstract class BaseMatrix extends Resource implements IMatrix, Serializable {
+public abstract class BaseMatrix extends AbstractMatrix implements Serializable {
 
     private static final long serialVersionUID = 4021765485781500318L;
 
@@ -184,13 +180,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     @Override
     public IMatrixDimension getRows() {
-        return new IMatrixDimension() {
-
-
-            @Override
-            public String getId() {
-                return "rows";
-            }
+        return new AbstractMatrixDimension("rows", 0) {
 
             @Override
             public int size() {
@@ -211,11 +201,7 @@ public abstract class BaseMatrix extends Resource implements IMatrix, Serializab
 
     @Override
     public IMatrixDimension getColumns() {
-        return new IMatrixDimension() {
-            @Override
-            public String getId() {
-                return "columns";
-            }
+        return new AbstractMatrixDimension("columns", 1) {
 
             @Override
             public int size() {

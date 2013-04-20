@@ -73,8 +73,8 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
 
             in.close();
 
-            CompressDimension rowDim = new CompressDimension("rows", rows);
-            CompressDimension colDim = new CompressDimension("columns", columns);
+            CompressDimension rowDim = new CompressDimension("rows", 0, rows);
+            CompressDimension colDim = new CompressDimension("columns", 1, columns);
             return new CompressMatrix(rowDim, colDim, dictionary, headers, values);
 
         } catch (IOException e) {

@@ -56,7 +56,7 @@ public class TextMatrixViewExporter {
         for (int r = 0; r < rowCount; r++) {
             pw.print(matrixView.getRows().getLabel(r).toString());
             for (int c = 0; c < colCount; c++) {
-                Object value = matrixView.getCellValue(r, c, propIndex);
+                Object value = matrixView.getValue(r, c, propIndex);
                 String valueString = vt.valueToString(value);
                 pw.print("\t" + valueString);
             }
@@ -99,7 +99,7 @@ public class TextMatrixViewExporter {
             pw.print(matrixView.getColumns().getLabel(c));
             pw.print("\t" + matrixView.getRows().getLabel(r));
             for (int p = 0; p < propCount; p++) {
-                Object value = matrixView.getCellValue(r, c, propIndices[p]);
+                Object value = matrixView.getValue(r, c, propIndices[p]);
                 String valueString = vt[p].valueToString(value);
                 pw.print("\t" + valueString);
             }

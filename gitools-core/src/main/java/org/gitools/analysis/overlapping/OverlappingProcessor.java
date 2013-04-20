@@ -101,7 +101,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
             int rowCount = 0;
 
             for (int row = 0; row < numRows; row++) {
-                Object value = data.getCellValue(row, i, attrIndex);
+                Object value = data.getValue(row, i, attrIndex);
                 Double v = cast.getDoubleValue(value);
                 v = transformValue(v, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, i);
                 if (v == 1.0) {
@@ -123,7 +123,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
                     for (int row = 0; row < numRows; row++) {
                         double v0 = xna.get(row) ? Double.NaN : (x.get(row) ? 1.0 : 0.0);
 
-                        Object value = data.getCellValue(row, j, attrIndex);
+                        Object value = data.getValue(row, j, attrIndex);
                         Double v1 = cast.getDoubleValue(value);
                         v1 = transformValue(v1, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, j);
 

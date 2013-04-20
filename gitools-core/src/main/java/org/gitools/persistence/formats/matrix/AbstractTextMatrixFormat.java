@@ -213,14 +213,14 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
                         Double value = (Double) valueTranslator.stringToValue(fields[col + 1]);
 
-                        matrix.setCellValue(rowidx, colidx, 0, value);
+                        matrix.setValue(rowidx, colidx, 0, value);
                         col++;
                     }
 
                     // fill the rest of the columns with NaNs
                     while (col < numColumns) {
                         int colidx = columnsOrder != null ? columnsOrder[col] : col;
-                        matrix.setCellValue(rowidx, colidx, 0, Double.NaN);
+                        matrix.setValue(rowidx, colidx, 0, Double.NaN);
                         col++;
                     }
                 }
@@ -232,7 +232,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             Double backgroundValue = getBackgroundValue();
             while (row < numRows) {
                 for (int col = 0; col < numColumns; col++)
-                    matrix.setCellValue(row, col, 0, backgroundValue);
+                    matrix.setValue(row, col, 0, backgroundValue);
 
                 row++;
             }
@@ -304,7 +304,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
                 for (int j = 0; j < numCols; j++) {
                     pw.print('\t');
-                    pw.print(valueTranslator.valueToString(matrix.getCellValue(i, j, 0)));
+                    pw.print(valueTranslator.valueToString(matrix.getValue(i, j, 0)));
                 }
 
                 pw.print('\n');

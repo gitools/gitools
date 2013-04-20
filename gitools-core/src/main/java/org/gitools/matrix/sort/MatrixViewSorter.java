@@ -27,16 +27,15 @@ import org.gitools.label.LabelProvider;
 import org.gitools.label.MatrixDimensionLabelProvider;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
-import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.IAnnotations;
+import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.IMatrixViewDimension;
 import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
-import org.gitools.model.AbstractModel;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -75,7 +74,6 @@ public abstract class MatrixViewSorter {
             for (int i = 0; i < selColumns.length; i++)
                 selColumns[i] = i;
         }
-
 
         final int[] selectedColumns = selColumns;
 
@@ -116,10 +114,6 @@ public abstract class MatrixViewSorter {
 
         monitor.begin("Sorting rows...", numRows);
 
-        if (matrixView instanceof AbstractModel) {
-            ((AbstractModel) matrixView).setQuiet(true);
-        }
-
         for (int i = numRows - 1; i >= 0; i--) {
             monitor.worked(1);
             if (monitor.isCancelled()) {
@@ -128,56 +122,55 @@ public abstract class MatrixViewSorter {
 
             int[] exclusiveRow = new int[1];
             exclusiveRow[0] = i;
-            sortColumnsByValue(matrixView, null, exclusiveRow, criteriaArray);
+            sortByValue(matrixView, matrixView.getColumns(), null, matrixView.getRows(), exclusiveRow, criteriaArray);
         }
-
-        if (matrixView instanceof AbstractModel) {
-            ((AbstractModel) matrixView).setQuiet(false);
-            matrixView.getColumns().setVisible(matrixView.getColumns().getVisible());
-        }
-
 
     }
 
     private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, IAnnotations am, List<String> values, boolean regExChecked, IProgressMonitor monitor) {
-
-
         throw new UnsupportedOperationException("Mutually exclusive sorting for columns is not yet implemented");
     }
 
 
     public static void sortByValue(@NotNull IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
+
+        IMatrixViewDimension rows = matrixView.getRows();
+        IMatrixViewDimension columns = matrixView.getColumns();
+
         if (applyToRows) {
-            sortRowsByValue(matrixView, matrixView.getColumns().getSelected(), matrixView.getRows().getSelected(), criteria);
+            sortByValue(matrixView, rows, rows.getSelected(), columns, columns.getSelected(), criteria);
         }
 
         if (applyToColumns) {
-            sortColumnsByValue(matrixView, matrixView.getColumns().getSelected(), matrixView.getRows().getSelected(), criteria);
+            sortByValue(matrixView, columns, columns.getSelected(), rows, rows.getSelected(), criteria);
         }
     }
 
-    private static void sortRowsByValue(@NotNull final IMatrixView matrixView, @Nullable int[] selColumns, @Nullable int[] selRows, @Nullable final ValueSortCriteria[] criteriaArray) {
+    private static void sortByValue(final IMatrixView matrixView,
+                                    final IMatrixViewDimension sortDimension, int[] sortSelection,
+                                    final IMatrixViewDimension aggregationDimension, int[] aggregationSelection,
+                                    final ValueSortCriteria[] criteriaArray
+    ) {
 
         if (criteriaArray == null || criteriaArray.length == 0) {
             return;
         }
 
-        if (selRows == null || selRows.length == 0) {
-            selRows = new int[matrixView.getRows().size()];
-            for (int i = 0; i < selRows.length; i++)
-                selRows[i] = i;
-        }
-        int numRows = selRows.length;
-
-        if (selColumns == null || selColumns.length == 0) {
-            selColumns = new int[matrixView.getColumns().size()];
-            for (int i = 0; i < selColumns.length; i++)
-                selColumns[i] = i;
+        if (aggregationSelection == null || aggregationSelection.length == 0) {
+            aggregationSelection = new int[aggregationDimension.size()];
+            for (int i = 0; i < aggregationSelection.length; i++)
+                aggregationSelection[i] = i;
         }
 
-        final int[] selectedColumns = selColumns;
-        final Integer[] selectedRows = ArrayUtils.toObject(selRows);
-        final double[] valueBuffer = new double[selectedColumns.length];
+        if (sortSelection == null || sortSelection.length == 0) {
+            sortSelection = new int[sortDimension.size()];
+            for (int i = 0; i < sortSelection.length; i++)
+                sortSelection[i] = i;
+        }
+
+        final int[] aggregatingIndices = aggregationSelection;
+        final Integer[] sortingIndices = ArrayUtils.toObject(sortSelection);
+        final double[] valueBuffer = new double[aggregatingIndices.length];
 
         Comparator<Integer> comparator = new Comparator<Integer>() {
             @Override
@@ -189,13 +182,18 @@ public abstract class MatrixViewSorter {
                 ValueSortCriteria criteria = null;
                 int criteriaIndex = 0;
 
+                int[] position = new int[2];
+
                 while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
                     criteria = criteriaArray[criteriaIndex];
                     IAggregator aggregator = criteria.getAggregator();
                     int propIndex = criteria.getAttributeIndex();
 
-                    aggr1 = aggregateValue(matrixView, selectedColumns, idx1, propIndex, aggregator, valueBuffer);
-                    aggr2 = aggregateValue(matrixView, selectedColumns, idx2, propIndex, aggregator, valueBuffer);
+                    sortDimension.setPosition(position, idx1);
+                    aggr1 = aggregateValue(matrixView, position, propIndex, aggregator, valueBuffer);
+
+                    sortDimension.setPosition(position, idx2);
+                    aggr2 = aggregateValue(matrixView, position, propIndex, aggregator, valueBuffer);
 
                     criteriaIndex++;
                 }
@@ -216,117 +214,28 @@ public abstract class MatrixViewSorter {
                 return res * criteria.getDirection().getFactor();
             }
 
-            private double aggregateValue(@NotNull IMatrixView matrixView, @NotNull int[] selectedColumns, int idx, int propIndex, @NotNull IAggregator aggregator, double[] valueBuffer) {
+            private double aggregateValue(@NotNull IMatrixView matrixView, int[] position, int propIndex, @NotNull IAggregator aggregator, double[] valueBuffer) {
 
-                for (int i = 0; i < selectedColumns.length; i++) {
-                    int col = selectedColumns[i];
-
-                    Object valueObject = matrixView.getCellValue(idx, col, propIndex);
-                    valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
+                for (int i = 0; i < aggregatingIndices.length; i++) {
+                    aggregationDimension.setPosition(position, aggregatingIndices[i]);
+                    valueBuffer[i] = MatrixUtils.doubleValue(matrixView.getValue(position, propIndex));
                 }
 
                 return aggregator.aggregate(valueBuffer);
             }
         };
 
-        Arrays.sort(selectedRows, comparator);
+        Arrays.sort(sortingIndices, comparator);
 
-        final int[] visibleRows = matrixView.getRows().getVisible();
-        final int[] sortedVisibleRows = new int[visibleRows.length];
-        for (int i = 0; i < visibleRows.length; i++)
-            sortedVisibleRows[i] = visibleRows[i];
+        final int[] visibleIndices = sortDimension.getVisible();
+        final int[] sortedVisibleIndices = new int[visibleIndices.length];
+        for (int i = 0; i < visibleIndices.length; i++)
+            sortedVisibleIndices[i] = visibleIndices[i];
 
-        for (int i = 0; i < numRows; i++)
-            sortedVisibleRows[selRows[i]] = visibleRows[selectedRows[i]];
+        for (int i = 0; i < sortSelection.length; i++)
+            sortedVisibleIndices[sortSelection[i]] = visibleIndices[sortingIndices[i]];
 
-        matrixView.getRows().setVisible(sortedVisibleRows);
-    }
-
-    private static void sortColumnsByValue(@NotNull final IMatrixView matrixView, @Nullable int[] selColumns, @Nullable int[] selRows, @Nullable final ValueSortCriteria[] criteriaArray) {
-
-        if (criteriaArray == null || criteriaArray.length == 0) {
-            return;
-        }
-
-        if (selColumns == null || selColumns.length == 0) {
-            selColumns = new int[matrixView.getColumns().size()];
-            for (int i = 0; i < selColumns.length; i++)
-                selColumns[i] = i;
-        }
-
-        int numColumns = selColumns.length;
-
-        if (selRows == null || selRows.length == 0) {
-            selRows = new int[matrixView.getRows().size()];
-            for (int i = 0; i < selRows.length; i++)
-                selRows[i] = i;
-        }
-
-        final int[] selectedRows = selRows;
-        final Integer[] selectedColumns = ArrayUtils.toObject(selColumns);
-        final double[] valueBuffer = new double[selectedRows.length];
-
-        Comparator<Integer> comparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer idx1, Integer idx2) {
-
-                double aggr1 = 0.0;
-                double aggr2 = 0.0;
-
-                ValueSortCriteria criteria = null;
-                int criteriaIndex = 0;
-
-                while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
-                    criteria = criteriaArray[criteriaIndex];
-                    IAggregator aggregator = criteria.getAggregator();
-                    int propIndex = criteria.getAttributeIndex();
-
-                    aggr1 = aggregateValue(matrixView, selectedRows, idx1, propIndex, aggregator, valueBuffer);
-                    aggr2 = aggregateValue(matrixView, selectedRows, idx2, propIndex, aggregator, valueBuffer);
-
-                    criteriaIndex++;
-                }
-
-                if (Double.isNaN(aggr1)) {
-                    if (Double.isNaN(aggr2)) {
-                        return 0;
-                    } else {
-                        return 1;
-                    }
-                }
-
-                if (Double.isNaN(aggr2)) {
-                    return -1;
-                }
-
-                int res = (int) Math.signum(aggr1 - aggr2);
-                return res * criteria.getDirection().getFactor();
-            }
-
-            private double aggregateValue(@NotNull IMatrixView matrixView, @NotNull int[] selectedRows, int idx, int propIndex, @NotNull IAggregator aggregator, double[] valueBuffer) {
-
-                for (int i = 0; i < selectedRows.length; i++) {
-                    int row = selectedRows[i];
-
-                    Object valueObject = matrixView.getCellValue(row, idx, propIndex);
-                    valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
-                }
-
-                return aggregator.aggregate(valueBuffer);
-            }
-        };
-
-        Arrays.sort(selectedColumns, comparator);
-
-        final int[] visibleColumns = matrixView.getColumns().getVisible();
-        final int[] sortedVisibleColumns = new int[visibleColumns.length];
-        for (int i = 0; i < visibleColumns.length; i++)
-            sortedVisibleColumns[i] = visibleColumns[i];
-
-        for (int i = 0; i < numColumns; i++)
-            sortedVisibleColumns[selColumns[i]] = visibleColumns[selectedColumns[i]];
-
-        matrixView.getColumns().setVisible(sortedVisibleColumns);
+        sortDimension.setVisible(sortedVisibleIndices);
     }
 
     //TODO: sort by label with all selected properties

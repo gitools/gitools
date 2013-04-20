@@ -137,7 +137,7 @@ public class EnrichmentProcessor extends HtestProcessor {
             //final DoubleMatrix1D condItems = data.viewRow(condIndex);
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
             for (int i = 0; i < numRows; i++) {
-                double value = MatrixUtils.doubleValue(dataMatrix.getCellValue(i, condIndex, 0));
+                double value = MatrixUtils.doubleValue(dataMatrix.getValue(i, condIndex, 0));
 
                 condItems.setQuick(i, value);
             }

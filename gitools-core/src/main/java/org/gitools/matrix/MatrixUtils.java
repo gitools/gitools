@@ -203,7 +203,7 @@ public class MatrixUtils {
         matrix.makeCells(rows.length, columns.length);
         for (int col = 0; col < mmap.getModuleCount(); col++)
             for (int row : mmap.getItemIndices(col))
-                matrix.setCellValue(row, col, 0, 1.0);
+                matrix.setValue(row, col, 0, 1.0);
         return matrix;
     }
 
@@ -225,7 +225,7 @@ public class MatrixUtils {
         for (int col = 0; col < matrix.getColumns().size(); col++) {
             List<Integer> indexList = new ArrayList<Integer>();
             for (int row = 0; row < matrix.getRows().size(); row++) {
-                double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
+                double value = MatrixUtils.doubleValue(matrix.getValue(row, col, 0));
                 if (value == 1.0) {
                     indexList.add(row);
                 }
@@ -280,7 +280,7 @@ public class MatrixUtils {
         for (int r = 0; r < rowNb; r++) {
             monitor.worked(1);
             for (int c = 0; c < colNb; c++) {
-                Object v = data.getCellValue(r, c, valueDimension);
+                Object v = data.getValue(r, c, valueDimension);
                 if (v == null) {
                     continue;
                 }

@@ -22,12 +22,12 @@
 package org.gitools.heatmap;
 
 import org.gitools.matrix.model.IMatrixLayer;
-import org.gitools.matrix.model.SimpleMatrixLayer;
+import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.utils.EventUtils;
 
 
-public class HeatmapLayer extends SimpleMatrixLayer implements IMatrixLayer {
+public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
 
     private Decorator decorator;

@@ -23,7 +23,19 @@ package org.gitools.matrix.model;
 
 public interface IMatrixDimension {
 
+    /**
+     * Gets the dimension identifier.
+     *
+     * @return the id
+     */
     String getId();
+
+    /**
+     * Gets the index in the matrix position vector of this dimension
+     *
+     * @return the vector position
+     */
+    int getVectorPosition();
 
     /**
      * Total number of items in this dimension
@@ -31,6 +43,29 @@ public interface IMatrixDimension {
      * @return the dimension count
      */
     int size();
+
+
+    /**
+     * Sets index in the matrix position.vector for this dimension
+     *
+     * @param matrixPosition the matrix position
+     * @param index the index
+     * @return the position
+     */
+    void setPosition(int[] matrixPosition, int index);
+
+    int getPosition(int[] matrixPosition);
+
+
+    /**
+     * Increments the index of this dimension in the matrix position. If we are in the
+     * last position it will set it to zero and return -1. Otherwise it returns the new
+     * position index.
+     *
+     * @param matrixPosition the matrix position
+     * @return The next index or -1 if there are no more index.
+     */
+    int next(int[] matrixPosition);
 
     /**
      * Gets the identifier label at the given position
@@ -47,4 +82,5 @@ public interface IMatrixDimension {
      * @return the index
      */
     int getIndex(String label);
+
 }

@@ -86,13 +86,23 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
-        return mv.getCellValue(column, row, layer);
+    public Object getValue(int row, int column, int layer) {
+        return mv.getValue(column, row, layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value) {
-        mv.setCellValue(column, row, layer, value);
+    public Object getValue(int[] position, int layer) {
+        return mv.getValue(position, layer);
+    }
+
+    @Override
+    public void setValue(int row, int column, int layer, Object value) {
+        mv.setValue(column, row, layer, value);
+    }
+
+    @Override
+    public void setValue(int[] position, int layer, Object value) {
+        mv.setValue(position, layer, value);
     }
 
     @Override

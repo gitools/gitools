@@ -57,13 +57,13 @@ public class DoubleMatrix extends BaseMatrix {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
-        return cells.get(row, column);
+    public Object getValue(int[] position, int layer) {
+        return cells.get(position[0], position[1]);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, @Nullable Object value) {
-        cells.set(row, column, value != null ? (Double) value : Double.NaN);
+    public void setValue(int[] position, int layer, @Nullable Object value) {
+        cells.set(position[0], position[1], value != null ? (Double) value : Double.NaN);
     }
 
     @Override

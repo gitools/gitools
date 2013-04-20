@@ -21,7 +21,7 @@
  */
 package org.gitools.matrix.model.matrix.element;
 
-import org.gitools.matrix.model.SimpleMatrixLayer;
+import org.gitools.matrix.model.MatrixLayer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.lang.reflect.Method;
 
-public class BeanElementProperty extends SimpleMatrixLayer {
+public class BeanElementProperty extends MatrixLayer {
 
     private static final long serialVersionUID = 1735870808859461498L;
 

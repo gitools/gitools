@@ -58,7 +58,7 @@ public class MatrixConversion extends AbstractCompressor {
                 line.append(inputMatrix.getRows().getLabel(row)).append(SEPARATOR);
                 boolean allNull = true;
                 for (int p = 0; p < totalProperties; p++) {
-                    Object value = inputMatrix.getCellValue(row, column, p);
+                    Object value = inputMatrix.getValue(row, column, p);
 
                     if (value == null) {
                         line.append(SEPARATOR);
@@ -127,7 +127,7 @@ public class MatrixConversion extends AbstractCompressor {
                 for (int i = 0; i < numProperties; i++) {
                     values[0] = matrix.getColumns().getLabel(col);
                     values[1] = matrix.getRows().getLabel(row);
-                    values[i + 2] = Double.toString(MatrixUtils.doubleValue(matrix.getCellValue(row, col, i)));
+                    values[i + 2] = Double.toString(MatrixUtils.doubleValue(matrix.getValue(row, col, i)));
                 }
                 col++;
             }

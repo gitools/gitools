@@ -164,7 +164,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
                 // Full the buffer with the values in the
                 boolean useRows = (headerDimension == heatmap.getColumns());
                 for (int i = 0; i < indices.length; i++) {
-                    Object value = (useRows ? heatmap.getCellValue(indices[i], index, aggregationLayer) : heatmap.getCellValue(index, indices[i], aggregationLayer));
+                    Object value = (useRows ? heatmap.getValue(indices[i], index, aggregationLayer) : heatmap.getValue(index, indices[i], aggregationLayer));
                     valueBuffer[i] = (value == null ? Double.NaN : doubleCast.getDoubleValue(value));
                 }
 

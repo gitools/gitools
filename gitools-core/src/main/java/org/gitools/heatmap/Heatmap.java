@@ -23,11 +23,11 @@ package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.MirrorDimension;
+import org.gitools.matrix.model.AbstractMatrix;
 import org.gitools.matrix.model.IMatrix;
 import org.gitools.matrix.model.IMatrixView;
 import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
 import org.gitools.matrix.model.matrix.DoubleMatrix;
-import org.gitools.model.Resource;
 import org.gitools.model.decorator.impl.BinaryDecorator;
 import org.gitools.persistence.ResourceReference;
 import org.gitools.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
@@ -42,10 +42,13 @@ import java.beans.PropertyChangeListener;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
-public class Heatmap extends Resource implements IMatrixView {
+public class Heatmap extends AbstractMatrix implements IMatrixView {
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
+
+    public static final int ROW = 0;
+    public static final int COLUMN = 1;
 
 
     @XmlTransient
@@ -173,27 +176,27 @@ public class Heatmap extends Resource implements IMatrixView {
     }
 
     @Override
-    public Object getCellValue(int row, int column, int layer) {
+    public Object getValue(int[] position, int layer) {
 
-        if (diagonal && column < row) {
-            int tmp = column;
-            column = row;
-            row = tmp;
+        if (diagonal && position[COLUMN] < position[ROW]) {
+            int tmp = position[COLUMN];
+            position[COLUMN] = position[ROW];
+            position[ROW] = tmp;
         }
 
-        return getContents().getCellValue(rows.getVisible()[row], columns.getVisible()[column], layer);
+        return getContents().getValue(rows.getVisible()[position[0]], columns.getVisible()[position[1]], layer);
     }
 
     @Override
-    public void setCellValue(int row, int column, int layer, Object value) {
+    public void setValue(int[] position, int layer, Object value) {
 
-        if (diagonal && column < row) {
-            int tmp = column;
-            column = row;
-            row = tmp;
+        if (diagonal && position[1] < position[0]) {
+            int tmp = position[1];
+            position[1] = position[0];
+            position[0] = tmp;
         }
 
-        getContents().setCellValue(rows.getVisible()[row], columns.getVisible()[column], layer, value);
+        getContents().setValue(rows.getVisible()[ROW], columns.getVisible()[COLUMN], layer, value);
     }
 
     @Override

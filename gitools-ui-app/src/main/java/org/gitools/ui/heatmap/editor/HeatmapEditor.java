@@ -289,9 +289,9 @@ public class HeatmapEditor extends AbstractEditor {
             sb.append(colLabel).append(", ").append(rowLabel);
             IMatrixLayers attrs = mv.getLayers();
             if (attrs.size() > 0) {
-                sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getCellValue(row, col, 0));
+                sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getValue(row, col, 0));
                 for (int i = 1; i < attrs.size(); i++)
-                    sb.append(", ").append(attrs.get(i).getName()).append(" = ").append(mv.getCellValue(row, col, i));
+                    sb.append(", ").append(attrs.get(i).getName()).append(" = ").append(mv.getValue(row, col, i));
             }
         }
 

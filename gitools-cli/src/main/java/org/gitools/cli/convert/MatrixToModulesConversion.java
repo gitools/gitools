@@ -53,7 +53,7 @@ public class MatrixToModulesConversion implements ConversionDelegate {
             Set<String> items = new HashSet<String>();
             for (int col = 0; col < numCols; col++) {
                 String colLabel = matrix.getColumns().getLabel(col);
-                Object cellValue = matrix.getCellValue(row, col, attrIndex);
+                Object cellValue = matrix.getValue(row, col, attrIndex);
                 double value = cast.getDoubleValue(cellValue);
                 if (value == 1.0) {
                     items.add(colLabel);

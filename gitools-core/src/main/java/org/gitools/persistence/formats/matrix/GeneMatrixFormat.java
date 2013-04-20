@@ -116,14 +116,14 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             double backgroundValue = getBackgroundValue();
             for (int row = 0; row < numRows; row++)
                 for (int col = 0; col < columnNames.length; col++)
-                    matrix.setCellValue(row, col, 0, backgroundValue);
+                    matrix.setValue(row, col, 0, backgroundValue);
 
             // set cell values
 
             for (int col = 0; col < columnNames.length; col++) {
                 Set<Integer> colIndices = indices.get(col);
                 for (Integer index : colIndices)
-                    matrix.setCellValue(index, col, 0, 1.0);
+                    matrix.setValue(index, col, 0, 1.0);
             }
 
             in.close();
@@ -175,9 +175,9 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
                     int row = positions[col];
                     if (row < numRows) {
-                        double value = MatrixUtils.doubleValue(matrix.getCellValue(row, col, 0));
+                        double value = MatrixUtils.doubleValue(matrix.getValue(row, col, 0));
                         while (value != 1.0 && (row < numRows - 1))
-                            value = MatrixUtils.doubleValue(matrix.getCellValue(++row, col, 0));
+                            value = MatrixUtils.doubleValue(matrix.getValue(++row, col, 0));
 
                         if (value == 1.0) {
                             line.append(matrix.internalRowLabel(row));

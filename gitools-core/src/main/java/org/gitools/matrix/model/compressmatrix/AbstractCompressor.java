@@ -287,8 +287,8 @@ public abstract class AbstractCompressor {
         outBuffer = new byte[2 * (maxLineLength + 1) * columns.size()];
 
         // Initialize rows and columns
-        this.rows = new CompressDimension("rows", rows.toArray(new String[0]));
-        this.columns = new CompressDimension("columns", columns.toArray(new String[0]));
+        this.rows = new CompressDimension("rows", 0, rows.toArray(new String[0]));
+        this.columns = new CompressDimension("columns", 1, columns.toArray(new String[0]));
     }
 
     public interface IMatrixReader {

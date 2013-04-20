@@ -21,6 +21,7 @@
  */
 package org.gitools.model;
 
+import com.jgoodies.binding.beans.Model;
 import org.gitools.persistence.IResource;
 import org.gitools.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"title", "description", "properties"})
-public class Resource extends AbstractModel implements IResource {
+public class Resource extends Model implements IResource {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_PROPERTIES = "properties";
