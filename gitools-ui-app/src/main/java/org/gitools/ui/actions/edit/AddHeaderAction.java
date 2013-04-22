@@ -28,6 +28,7 @@ import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
@@ -52,6 +53,8 @@ public class AddHeaderAction extends BaseAction {
     public AddHeaderAction(HeaderEnum.Dimension dim) {
         super("");
         this.dim = dim;
+
+        setSmallIconFromResource(IconNames.add16);
 
         switch (dim) {
             case COLUMN:
