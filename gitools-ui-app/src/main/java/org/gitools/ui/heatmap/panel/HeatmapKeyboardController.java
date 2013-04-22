@@ -381,6 +381,14 @@ class HeatmapKeyboardController extends KeyAdapter {
     }
 
     private void switchLeadRowSelection(@NotNull KeyEvent e) {
+
+        int modifiers = e.getModifiers();
+        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
+        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        if (shiftDown || ctrlDown) {
+            return;
+        }
+
         IMatrixView mv = hm;
         IMatrixViewDimension dim = mv.getRows();
         int leadIndex = dim.getSelectionLead();
@@ -391,6 +399,14 @@ class HeatmapKeyboardController extends KeyAdapter {
     }
 
     private void switchLeadColSelection(@NotNull KeyEvent e) {
+
+        int modifiers = e.getModifiers();
+        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
+        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        if (shiftDown || ctrlDown) {
+            return;
+        }
+
         IMatrixView mv = hm;
         IMatrixViewDimension dim = mv.getColumns();
         int leadIndex = dim.getSelectionLead();
@@ -405,7 +421,6 @@ class HeatmapKeyboardController extends KeyAdapter {
         }
 
         int[] sel;
-
 
         if (ArrayUtils.contains(prevSel, leadIndex)) {
             int posInArray = ArrayUtils.indexOf(prevSel, leadIndex);
