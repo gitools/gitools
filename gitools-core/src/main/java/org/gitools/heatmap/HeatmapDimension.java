@@ -22,9 +22,6 @@
 package org.gitools.heatmap;
 
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.idtype.IdType;
-import org.gitools.idtype.IdTypeManager;
-import org.gitools.idtype.IdTypeXmlAdapter;
 import org.gitools.matrix.model.*;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.model.xml.IndexArrayXmlAdapter;
@@ -44,7 +41,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     public static final String PROPERTY_GRID_COLOR = "gridColor";
     public static final String PROPERTY_GRID_SIZE = "gridSize";
     public static final String PROPERTY_CELL_SIZE = "cellSize";
-    public static final String PROPERTY_ID_TYPE = "idType";
     public static final String PROPERTY_SELECTION_LEAD = "selectionLead";
     public static final String PROPERTY_SELECTED = "selected";
     public static final String PROPERTY_VISIBLE = "visible";
@@ -52,10 +48,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     public static final String PROPERTY_HIGHLIGHTED_LABELS = "highlightedLabels";
 
     private static final int INT_BIT_SIZE = 32;
-
-    @XmlJavaTypeAdapter(IdTypeXmlAdapter.class)
-    @XmlElement(name = "identifier-type")
-    private IdType idType;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<AnnotationMatrix> annotations;
@@ -105,7 +97,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     private void commonInit() {
-        this.idType = IdTypeManager.getDefault().getDefaultIdType();
         this.headers = new LinkedList<HeatmapHeader>();
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
@@ -189,16 +180,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         int bindex = index / INT_BIT_SIZE;
         int bit = 1 << (index % INT_BIT_SIZE);
         return (bitmap[bindex] & bit) != 0;
-    }
-
-    public IdType getIdType() {
-        return idType;
-    }
-
-    public void setIdType(IdType idType) {
-        IdType old = this.idType;
-        this.idType = idType;
-        firePropertyChange(PROPERTY_ID_TYPE, old, idType);
     }
 
     public int getCellSize() {

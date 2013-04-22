@@ -3,7 +3,6 @@ package org.gitools.matrix;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.idtype.IdType;
 import org.gitools.matrix.model.Direction;
 import org.gitools.matrix.model.IAnnotations;
 import org.gitools.matrix.model.IMatrixDimension;
@@ -11,8 +10,8 @@ import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.Set;
 
 
 public class MirrorDimension extends HeatmapDimension {
@@ -78,11 +77,6 @@ public class MirrorDimension extends HeatmapDimension {
     @Override
     public String getId() {
         return mirror.getId();
-    }
-
-    @Override
-    public IdType getIdType() {
-        return main.getIdType();
     }
 
     @Override
@@ -163,11 +157,6 @@ public class MirrorDimension extends HeatmapDimension {
     @Override
     public void setHighlightedLabels(Set<String> highlightedLabels) {
         main.setHighlightedLabels(highlightedLabels);
-    }
-
-    @Override
-    public void setIdType(IdType idType) {
-        main.setIdType(idType);
     }
 
     @Override

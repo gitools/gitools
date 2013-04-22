@@ -28,12 +28,8 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.idtype.IdType;
-import org.gitools.idtype.IdTypeManager;
-import org.gitools.idtype.UrlLink;
 import org.gitools.matrix.model.IMatrixLayer;
 import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.matrix.AnnotationResolver;
 import org.gitools.model.decorator.Decorator;
 import org.gitools.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
@@ -41,7 +37,6 @@ import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.GenericFormatter;
-import org.gitools.utils.textpatt.TextPattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -197,17 +192,7 @@ public abstract class AbstractDetailsPanel extends WebPanel implements PropertyC
 
     @Nullable
     private String getLink(String value, @NotNull HeatmapDimension dim) {
-        IdType idType = dim.getIdType();
-        if (idType != null) {
-            String idTypeKey = idType.getKey();
-            List<UrlLink> tlinks = IdTypeManager.getDefault().getLinks(idTypeKey);
-            AnnotationResolver resolver = new AnnotationResolver(dim.getAnnotations(), value);
-            for (UrlLink link : tlinks) {
-                TextPattern pat = link.getPattern();
-                return pat.generate(resolver);
-            }
-        }
-
+        //TODO
         return null;
     }
 
