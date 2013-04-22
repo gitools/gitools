@@ -170,6 +170,31 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         return new HeatmapPosition(-1, -1);
     }
 
+    public HeatmapHeader getHeader(Point p) {
+        int x = 0;
+        int y = 0;
+        if (isHorizontal()) {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
+                Dimension sz = d.getSize();
+                Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
+                if (box2.contains(p)) {
+                    return d.getHeader();
+                }
+                y += sz.height;
+            }
+        } else {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
+                Dimension sz = d.getSize();
+                Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
+                if (box2.contains(p)) {
+                    return d.getHeader();
+                }
+                x += sz.width;
+            }
+        }
+        return null;
+    }
+
     @NotNull
     @Override
     public Point getPoint(HeatmapPosition p) {

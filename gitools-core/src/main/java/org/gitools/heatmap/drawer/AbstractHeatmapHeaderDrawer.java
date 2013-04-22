@@ -43,7 +43,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         this.heatmapDimension = heatmapDimension;
     }
 
-    protected HT getHeader() {
+    public HT getHeader() {
         return header;
     }
 

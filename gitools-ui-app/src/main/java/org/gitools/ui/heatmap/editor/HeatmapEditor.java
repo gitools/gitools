@@ -296,12 +296,11 @@ public class HeatmapEditor extends AbstractEditor {
         }
 
         if (sb.length() > 0) {
-            AppFrame.get().setStatusText(sb.toString());
+            //TODO AppFrame.get().setStatusText(sb.toString());
         }
     }
 
     void mouseClicked(int row, int col, MouseEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

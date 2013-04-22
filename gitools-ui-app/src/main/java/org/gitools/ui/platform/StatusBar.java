@@ -32,9 +32,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * @noinspection ALL
- */
 public class StatusBar extends WebStatusBar {
 
     private static final long serialVersionUID = -8072022883069269170L;

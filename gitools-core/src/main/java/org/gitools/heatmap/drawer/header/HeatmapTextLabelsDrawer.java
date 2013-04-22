@@ -136,7 +136,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         int x = box.x;
         int y = box.y + start * height;
-        int padding = 2;
+        int padding = 5;
         for (int index = start; index < end; index++) {
             Color bgColor = header.getBackgroundColor();
             Color fgColor = header.getLabelColor();

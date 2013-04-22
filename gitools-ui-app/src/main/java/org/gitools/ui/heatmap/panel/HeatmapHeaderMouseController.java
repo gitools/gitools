@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.drawer.HeatmapPosition;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.IMatrixView;
 import org.jetbrains.annotations.NotNull;
 
@@ -210,7 +211,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     @Override
     public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
-        int rotation = e.getWheelRotation();
+        int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
@@ -220,23 +221,24 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             HeatmapPosition pos = panel.getScrollPosition();
 
             if (horizontal) {
-                panel.setScrollColumnPosition(pos.column + rotation);
+                panel.setScrollColumnPosition(pos.column + unitsToScroll);
             } else {
-                panel.setScrollRowPosition(pos.row + rotation);
+                panel.setScrollRowPosition(pos.row + unitsToScroll);
             }
         } else {
-            int width = heatmap.getColumns().getCellSize() + rotation * -1;
-            if (width < 1) {
-                width = 1;
-            }
 
-            int height = heatmap.getRows().getCellSize() + rotation * -1;
-            if (height < 1) {
-                height = 1;
-            }
+            point = e.getPoint();
+            Point viewPosition = viewPort.getViewPosition();
+            point.translate(viewPosition.x, viewPosition.y);
 
-            heatmap.getColumns().setCellSize(width);
-            heatmap.getRows().setCellSize(height);
+            HeatmapHeader header = headerPanel.getHeaderDrawer().getHeader(point);
+
+            int size = header.getSize() + unitsToScroll * -2;
+            if (size < 5) {
+                size = 5;
+            }
+            header.setSize(size);
+            header.getHeatmapDimension().updateHeaders();
         }
     }
 
@@ -302,7 +304,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
         IMatrixView mv = heatmap;
 
-        int[] sel = null;
+        int[] sel;
 
         if (!dragging && !shiftDown && !ctrlDown) {
             selStart = selEnd = index;
@@ -347,14 +349,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
 
         if (horizontal) {
-            if (mv.getRows().getSelected().length != 0) {
-                mv.getRows().setSelected(new int[0]);
-            }
             mv.getColumns().setSelected(sel);
         } else {
-            if (mv.getColumns().getSelected().length != 0) {
-                mv.getColumns().setSelected(new int[0]);
-            }
             mv.getRows().setSelected(sel);
         }
 

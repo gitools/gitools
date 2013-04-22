@@ -45,7 +45,7 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         selStart = selEnd = selLast = -1;
 
-        panel.addKeyListener(this);
+        //panel.addKeyListener(this);
     }
 
     @Override

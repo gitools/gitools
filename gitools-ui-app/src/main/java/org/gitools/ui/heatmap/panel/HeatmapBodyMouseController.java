@@ -32,10 +32,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
     private enum Mode {
         none, selecting, moving
@@ -54,6 +51,10 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private Point startPoint;
     private Point startScrollValue;
 
+    private int keyPressed;
+
+    private HeatmapKeyboardController keyboardController;
+
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
@@ -66,7 +67,9 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         viewPort.addMouseListener(this);
         viewPort.addMouseMotionListener(this);
         viewPort.addMouseWheelListener(this);
-        //viewPort.addKeyListener(this);
+
+        panel.addKeyListener(this);
+        keyboardController = new HeatmapKeyboardController(panel);
 
         this.mode = Mode.none;
     }
@@ -119,17 +122,14 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //System.out.println("entered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        //System.out.println("exited");
     }
 
     @Override
     public void mouseDragged(@NotNull MouseEvent e) {
-        //System.out.println("dragged");
         switch (mode) {
             case selecting:
                 updateSelection(e);
@@ -142,8 +142,6 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseMoved(@NotNull MouseEvent e) {
-        //System.out.println("moved");
-
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
@@ -155,7 +153,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
-        int rotation = e.getWheelRotation();
+        int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
@@ -163,20 +161,24 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
         if (!shiftDown && !ctrlDown) {
             HeatmapPosition pos = panel.getScrollPosition();
-            panel.setScrollRowPosition(pos.row + rotation);
+            panel.setScrollRowPosition(pos.row + unitsToScroll);
         } else {
-            int width = heatmap.getColumns().getCellSize() + rotation * -1;
-            if (width < 1) {
-                width = 1;
+
+            if (keyPressed != KeyEvent.VK_R) {
+                int width = heatmap.getColumns().getCellSize() + unitsToScroll * -1;
+                if (width < 1) {
+                    width = 1;
+                }
+                heatmap.getColumns().setCellSize(width);
             }
 
-            int height = heatmap.getRows().getCellSize() + rotation * -1;
-            if (height < 1) {
-                height = 1;
+            if (keyPressed != KeyEvent.VK_C) {
+                int height = heatmap.getRows().getCellSize() + unitsToScroll * -1;
+                if (height < 1) {
+                    height = 1;
+                }
+                heatmap.getRows().setCellSize(height);
             }
-
-            heatmap.getColumns().setCellSize(width);
-            heatmap.getRows().setCellSize(height);
         }
     }
 
@@ -191,8 +193,6 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         mv.getColumns().setSelectionLead(coord.column);
         mv.getRows().setSelected(new int[0]);
         mv.getColumns().setSelected(new int[0]);
-
-        //System.out.println(mode + " " + point + " -> " + coord);
     }
 
     private void updateScroll(@NotNull MouseEvent e, boolean dragging) {
@@ -209,4 +209,22 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
             panel.setScrollRowValue(startScrollValue.y - heightOffset);
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        keyboardController.keyTyped(e);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        keyPressed = e.getKeyCode();
+        keyboardController.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        keyPressed = -1;
+        keyboardController.keyReleased(e);
+    }
 }
+

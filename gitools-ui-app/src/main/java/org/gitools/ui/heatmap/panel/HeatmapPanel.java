@@ -155,7 +155,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             }
         });
 
-        new HeatmapKeyboardController(this);
+        //new HeatmapKeyboardController(this);
 
         addMouseListener(new MouseAdapter() {
             @Override

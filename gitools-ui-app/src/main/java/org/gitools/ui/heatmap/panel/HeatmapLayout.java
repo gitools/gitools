@@ -96,6 +96,8 @@ class HeatmapLayout implements LayoutManager {
             widthRowHeader = XRightEnd - XRowHeader;
         }
 
+
+
         int YTop = insets.top;
         int YBody = YTop + colHeaderSize.height;
         int YBottom = size.height - insets.bottom;
