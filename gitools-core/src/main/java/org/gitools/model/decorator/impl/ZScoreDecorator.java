@@ -55,7 +55,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     private boolean useCorrection;
     private double significanceLevel;
 
-    private final static GenericFormatter fmt = new GenericFormatter("<");
+    private final static GenericFormatter fmt = new GenericFormatter();
 
     private ZScoreColorScale scale;
 
@@ -201,11 +201,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
         decoration.reset();
 
-        double v = toDouble(matrix, row, column, layer);
+        Object value = matrix.getValue(row, column, layer);
+        double v = toDouble(value);
 
         if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
-            decoration.setToolTip("Empty cell");
             return;
         }
 
@@ -222,6 +222,8 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         final Color color = useScale ? getScale().valueColor(v) : ColorConstants.nonSignificantColor;
 
         decoration.setBgColor(color);
-        decoration.setToolTip(fmt.pvalue(v));
+        if (isShowValue()) {
+            decoration.setText(fmt.format(value));
+        }
     }
 }

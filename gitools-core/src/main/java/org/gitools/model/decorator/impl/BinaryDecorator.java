@@ -38,7 +38,7 @@ import java.awt.*;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "binary")
 public class BinaryDecorator extends Decorator<BinaryColorScale> {
-    private final static GenericFormatter fmt = new GenericFormatter("<");
+    private final static GenericFormatter fmt = new GenericFormatter();
     public static final String PROPERTY_COMPARATOR = "comparator";
     public static final String PROPERTY_CUTOFF = "cutoff";
     public static final String PROPERTY_COLOR = "color";
@@ -127,18 +127,21 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
 
         decoration.reset();
 
-        double v = toDouble(matrix, row, column, layer);
+        Object value = matrix.getValue(row, column, layer);
+        double v = toDouble(value);
 
         if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
-            decoration.setToolTip("Empty cell");
             return;
         }
 
         final Color c = getScale().valueColor(v);
 
         decoration.setBgColor(c);
-        decoration.setToolTip(fmt.format(v));
+        if (isShowValue()) {
+            decoration.setText(fmt.format(value));
+        }
+
     }
 
 }

@@ -46,7 +46,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     public static final String PROPERTY_MAX_VALUE = "maxValue";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
 
-    private final static GenericFormatter fmt = new GenericFormatter("<");
+    private final static GenericFormatter fmt = new GenericFormatter();
 
     private LinearTwoSidedColorScale scale;
 
@@ -151,18 +151,23 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
         decoration.reset();
 
-        double v = toDouble(matrix, row, column, layer);
+        Object value = matrix.getValue(row, column, layer);
+
+        double v = toDouble(value);
 
         if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
-            decoration.setToolTip("Empty cell");
             return;
         }
 
         final Color color = getScale().valueColor(v);
 
         decoration.setBgColor(color);
-        decoration.setToolTip(fmt.pvalue(v));
+
+        if (isShowValue()) {
+            decoration.setText(fmt.format(value));
+        }
+
     }
 
 }

@@ -37,6 +37,7 @@ public class BinaryDecoratorPanel extends DecoratorPanel {
     private JFormattedTextField value;
     private JTextField falseColor;
     private JTextField emptyColor;
+    private JCheckBox showValueCheckBox;
 
     public BinaryDecoratorPanel() {
         super("Binary scale", new BinaryDecorator());
@@ -50,6 +51,7 @@ public class BinaryDecoratorPanel extends DecoratorPanel {
         Bindings.bind(trueColor, "color", model(BinaryDecorator.PROPERTY_COLOR));
         Bindings.bind(falseColor, "color", model(BinaryDecorator.PROPERTY_NON_SIGNIFICANT_COLOR));
         Bindings.bind(emptyColor, "color", model(BinaryDecorator.PROPERTY_EMPTY_COLOR));
+        Bindings.bind(showValueCheckBox, model(BinaryDecorator.PROPERTY_SHOW_VALUE));
     }
 
     @Override

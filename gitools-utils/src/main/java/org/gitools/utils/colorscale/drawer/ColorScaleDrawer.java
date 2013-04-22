@@ -167,7 +167,6 @@ public class ColorScaleDrawer {
                 int legendYTop = scaleYBottom + legendPadding;
                 int ye = legendYTop + fontHeight;
                 GenericFormatter gf = new GenericFormatter();
-                gf.addCustomFormatter(Double.class, this.legendFormat);
                 g.setColor(legendPointColor);
 
 

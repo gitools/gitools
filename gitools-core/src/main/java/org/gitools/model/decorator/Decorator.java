@@ -33,9 +33,14 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class, PValueDecorator.class, ZScoreDecorator.class, CorrelationDecorator.class, CategoricalDecorator.class})
 public abstract class Decorator<C extends IColorScale> extends Model {
+
+    public static final String PROPERTY_SHOW_VALUE = "showValue";
+
     @XmlAttribute
     private String name;
 
+    @XmlElement(name = "show-value")
+    private boolean showValue = false;
 
     public Decorator() {
         super();
@@ -53,7 +58,17 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         this.name = name;
     }
 
-    protected static double toDouble(IMatrix matrix, int row, int column, int layer) {
-        return MatrixUtils.doubleValue(matrix.getValue(row, column, layer));
+    public boolean isShowValue() {
+        return showValue;
+    }
+
+    public void setShowValue(boolean showValue) {
+        boolean oldValue = this.showValue;
+        this.showValue = showValue;
+        firePropertyChange(PROPERTY_SHOW_VALUE, oldValue, showValue);
+    }
+
+    protected static double toDouble(Object value) {
+        return MatrixUtils.doubleValue(value);
     }
 }

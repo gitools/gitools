@@ -38,7 +38,10 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
     @Override
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
 
+
         Heatmap heatmap = getHeatmap();
+
+        calculateFontSize(g, heatmap.getRows().getCellSize(), 8);
 
         int rowsGridSize = heatmap.getRows().getGridSize();
         int columnsGridSize = heatmap.getColumns().getGridSize();
@@ -47,17 +50,13 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        //IMatrixView data = heatmap;
-
         int cellWidth = heatmap.getColumns().getCellSize() + columnsGridSize;
         int cellHeight = heatmap.getRows().getCellSize() + rowsGridSize;
 
-        //TODO take into account extBorderSize
         int rowStart = (clip.y - box.y) / cellHeight;
         int rowEnd = (clip.y - box.y + clip.height + cellHeight - 1) / cellHeight;
         rowEnd = rowEnd < heatmap.getRows().size() ? rowEnd : heatmap.getRows().size();
 
-        //TODO take into account extBorderSize
         int colStart = (clip.x - box.x) / cellWidth;
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < heatmap.getColumns().size() ? colEnd : heatmap.getColumns().size();
@@ -86,6 +85,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
                 boolean selected = !isPictureMode() && (rowSelected || heatmap.getColumns().isSelected(col));
 
+                paintCell(decoration, selected, rowsGridColor, rowsGridSize, x - box.x, y - box.y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
+
+                /*
                 if (selected) {
                     color = color.darker();
                     rowsGridColor = rowsGridColor.darker();
@@ -103,6 +105,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                 g.setColor(columnsGridColor);
 
                 g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
+                */
 
                 if (!isPictureMode()) {
                     if (row == leadRow && col == leadColumn) {

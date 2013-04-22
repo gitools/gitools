@@ -49,7 +49,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     private boolean useCorrection;
     private double significanceLevel;
 
-    private final static GenericFormatter fmt = new GenericFormatter("<");
+    private final static GenericFormatter fmt = new GenericFormatter();
 
     private PValueColorScale scale;
 
@@ -157,18 +157,19 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
 
         decoration.reset();
 
-        double v = toDouble(matrix, row, column, layer);
+        Object value = matrix.getValue(row, column, layer);
+        double v = toDouble(value);
 
         if (Double.isNaN(v)) {
             decoration.setBgColor(getScale().getEmptyColor());
-            decoration.setToolTip("Empty cell");
             return;
         }
 
         boolean isSig = v <= significanceLevel;
 
         if (useCorrection && correctedValueIndex != -1) {
-            double cv = toDouble(matrix, row, column, correctedValueIndex);
+            Object cvalue = matrix.getValue(row, column, correctedValueIndex);
+            double cv = toDouble(cvalue);
 
             isSig = cv <= significanceLevel;
         }
@@ -176,7 +177,9 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
         final Color color = isSig ? getScale().valueColor(v) : getScale().getNonSignificantColor();
 
         decoration.setBgColor(color);
-        decoration.setToolTip(fmt.pvalue(v));
+        if (isShowValue()) {
+            decoration.setText(fmt.format(value));
+        }
     }
 
 

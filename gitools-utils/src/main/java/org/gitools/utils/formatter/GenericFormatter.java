@@ -26,94 +26,46 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Formatter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GenericFormatter implements Serializable {
-
-    private static final long oneMicrosecond = 1000;
-    private static final long oneMilisecond = 1000 * oneMicrosecond;
-    private static final long oneSecond = 1000 * oneMilisecond;
-    private static final long oneMinute = 60 * oneSecond;
-    private static final long oneHour = 60 * oneMinute;
-    private static final long oneDay = 24 * oneHour;
-
-    @NotNull
-    private static final Map<Class<?>, String> defaultGenericFormatMap = new HashMap<Class<?>, String>();
-
-    @NotNull
-    private final Map<Class<?>, String> customFormatMap = new HashMap<Class<?>, String>();
-
-    static {
-        defaultGenericFormatMap.put(Float.class, "%.3g");
-        defaultGenericFormatMap.put(Double.class, "%.3g");
-    }
-
-    private final String ltString;
-    private final Map<Class<?>, String> genericFormatMap;
 
     private final StringBuilder sb;
     private final Formatter fmt;
 
-    public GenericFormatter(String ltString) {
-        this.ltString = ltString;
-        genericFormatMap = defaultGenericFormatMap;
+    public GenericFormatter() {
         sb = new StringBuilder(12);
         fmt = new Formatter(sb);
     }
 
-    public GenericFormatter() {
-        this("&lt;");
-    }
-
-    public void addCustomFormatter(Class<?> c, String s) {
-        customFormatMap.put(c, s);
-    }
-
     @NotNull
-    public String pvalue(double value) {
-        if (value < 1e-16) {
-            return ltString + "1.0e-16";
+    private String decimal(double value) {
+
+        if (value!=0 && value < 1e-16) {
+            return "~0.00";
         }
 
         sb.setLength(0);
-        fmt.format("%.3g", value);
-        return sb.toString();
-    }
-
-    @NotNull
-    public String percentage(double value) {
-        return format("%.2g%%", value * 100.0);
-    }
-
-    @NotNull
-    public String elapsedTime(Long elapsedTime) {
-        return elapsedTime + " ns";
-    }
-
-    @NotNull
-    String format(String format, Object... args) {
-        sb.setLength(0);
-        fmt.format(format, args);
+        fmt.format("%.2g", value);
         return sb.toString();
     }
 
     @NotNull
     public String format(@Nullable Object value) {
+
         if (value == null) {
             return "None";
         }
 
-        String format = customFormatMap.get(value.getClass());
-        if (format == null) {
-            format = genericFormatMap.get(value.getClass());
+        if (value instanceof Double) {
+            return decimal(((Double) value).doubleValue());
         }
-        if (format == null) {
-            format = "%s";
+
+        if (value instanceof Float) {
+            return decimal(((Float) value).doubleValue());
         }
 
         sb.setLength(0);
-        fmt.format(format, value);
+        fmt.format("%s", value);
         return sb.toString();
     }
 }

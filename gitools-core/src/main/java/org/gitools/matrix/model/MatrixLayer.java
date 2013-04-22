@@ -29,6 +29,12 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixLayer extends Model implements IMatrixLayer {
+
+    public static final String PROPERTY_ID = "id";
+    public static final String PROPERTY_NAME = "name";
+    public static final String PROPERTY_DESCRIPTION = "description";
+    public static final String PROPERTY_VALUE_CLASS = "valueClass";
+
     private String id;
     private String name;
     private String description;
@@ -77,5 +83,29 @@ public class MatrixLayer extends Model implements IMatrixLayer {
     @Override
     public Class<?> getValueClass() {
         return valueClass;
+    }
+
+    public void setDescription(String description) {
+        String oldValue = this.description;
+        this.description = description;
+        firePropertyChange(PROPERTY_DESCRIPTION, oldValue, description);
+    }
+
+    public void setId(String id) {
+        String old = this.id;
+        this.id = id;
+        firePropertyChange(PROPERTY_ID, old, id);
+    }
+
+    public void setName(String name) {
+        String old = this.name;
+        this.name = name;
+        firePropertyChange(PROPERTY_NAME, old, name);
+    }
+
+    public void setValueClass(Class<?> valueClass) {
+        Class old = this.valueClass;
+        this.valueClass = valueClass;
+        firePropertyChange(PROPERTY_VALUE_CLASS, old, valueClass);
     }
 }

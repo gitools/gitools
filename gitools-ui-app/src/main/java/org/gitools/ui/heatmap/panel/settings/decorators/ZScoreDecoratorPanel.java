@@ -25,7 +25,6 @@ import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
-import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.model.decorator.impl.ZScoreDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
@@ -42,6 +41,7 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JSpinner significance;
     private JCheckBox filterByCheckBox;
     private JComboBox filterValue;
+    private JCheckBox showValueCheckBox;
 
     public ZScoreDecoratorPanel() {
         super("Z-Score scale", new ZScoreDecorator());
@@ -73,6 +73,8 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
                 new ValueHolder(),
                 model(ZScoreDecorator.PROPERTY_CORRECTED_VALUE))
         );
+
+        Bindings.bind(showValueCheckBox, model(ZScoreDecorator.PROPERTY_SHOW_VALUE));
     }
 
     @Override

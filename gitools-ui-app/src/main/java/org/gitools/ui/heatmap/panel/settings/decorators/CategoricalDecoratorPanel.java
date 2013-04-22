@@ -43,6 +43,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
     private JButton editButton;
     private JLabel totalCategories;
     private JTextField emptyColor;
+    private JCheckBox showValueCheckBox;
 
     public CategoricalDecoratorPanel() {
         super("Categorical scale", new CategoricalDecorator());
@@ -53,6 +54,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
                 editCategoricalColorScale();
             }
         });
+
     }
 
     private CategoricalDecorator getDecorator() {
@@ -104,6 +106,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
         });
         totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
         Bindings.bind(emptyColor, "color", model(CategoricalDecorator.PROPERTY_EMPTY_COLOR));
+        Bindings.bind(showValueCheckBox, model(CategoricalDecorator.PROPERTY_SHOW_VALUE));
     }
 
 

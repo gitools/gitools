@@ -37,6 +37,7 @@ public class LinearDecoratorPanel extends DecoratorPanel {
     private JFormattedTextField maxValue;
     private JTextField maxColor;
     private JTextField emptyColor;
+    private JCheckBox showValueCheckBox;
 
     public LinearDecoratorPanel(String name, Decorator defaultDecorator) {
         super(name, defaultDecorator);
@@ -52,6 +53,7 @@ public class LinearDecoratorPanel extends DecoratorPanel {
         Bindings.bind(midColor, "color", model(LinearDecorator.PROPERTY_MID_COLOR));
         Bindings.bind(maxColor, "color", model(LinearDecorator.PROPERTY_MAX_COLOR));
         Bindings.bind(emptyColor, "color", model(LinearDecorator.PROPERTY_EMPTY_COLOR));
+        Bindings.bind(showValueCheckBox, model(LinearDecorator.PROPERTY_SHOW_VALUE));
     }
 
     @Override

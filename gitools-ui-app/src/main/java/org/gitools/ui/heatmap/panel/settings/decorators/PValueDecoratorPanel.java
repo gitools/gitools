@@ -39,6 +39,7 @@ public class PValueDecoratorPanel extends DecoratorPanel {
     private JComboBox correctedValue;
     private JCheckBox useCorrection;
     private JSpinner significance;
+    private JCheckBox showValueCheckBox;
 
     public PValueDecoratorPanel() {
         super("P-Value scale", new PValueDecorator());
@@ -68,6 +69,8 @@ public class PValueDecoratorPanel extends DecoratorPanel {
                         Double.valueOf(0.01)
                 )
         );
+
+        Bindings.bind(showValueCheckBox, model(PValueDecorator.PROPERTY_SHOW_VALUE));
     }
 
     public JPanel getRootPanel() {

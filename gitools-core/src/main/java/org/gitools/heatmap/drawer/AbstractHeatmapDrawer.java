@@ -21,7 +21,10 @@
  */
 package org.gitools.heatmap.drawer;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.model.decorator.Decoration;
+import org.gitools.utils.color.utils.ColorUtils;
 
 import java.awt.*;
 
@@ -67,6 +70,13 @@ public abstract class AbstractHeatmapDrawer {
 
     public abstract Point getPoint(HeatmapPosition p);
 
+    /**
+     * Paint background.
+     *
+     * @param backgroundColor the background color
+     * @param g the g
+     * @param box the box
+     */
     protected static void paintBackground(Color backgroundColor, Graphics2D g, Rectangle box) {
         g.setColor(backgroundColor);
         g.fillRect(box.x, box.y, box.width, box.height);
@@ -93,4 +103,54 @@ public abstract class AbstractHeatmapDrawer {
 
         return fontHeight <= (cellHeight - 2);
     }
+
+    /**
+     * Selection color.
+     *
+     * @param color the color
+     * @param selected the selected
+     * @return the color
+     */
+    protected static Color selectionColor(Color color, boolean selected) {
+        if (selected) {
+            return color.darker();
+        }
+        return color;
+    }
+
+    protected static void paintCell(Decoration decoration, boolean selected, Color gridColor, int gridSize, int offsetX, int offsetY, int width, int height, Graphics2D g, Rectangle box) {
+
+        int y = box.y + offsetY;
+        int x = box.x + offsetX;
+
+        g.setColor(selectionColor(decoration.getBgColor(), selected));
+        g.fillRect(x, y, width, height);
+
+        g.setColor(selectionColor(gridColor, selected));
+        g.fillRect(x, y + height, width, gridSize);
+
+        String text = decoration.getText();
+        if (!StringUtils.isEmpty(text)) {
+
+            int fontHeight = (int) g.getFont().getLineMetrics(text, g.getFontRenderContext()).getHeight();
+
+            if (fontHeight <= height) {
+                int textWidth = g.getFontMetrics().stringWidth(text);
+
+                if (textWidth > width) {
+                    text = "...";
+                    fontHeight = 2;
+                    textWidth = g.getFontMetrics().stringWidth(text);
+                }
+
+
+                int leftMargin = ((width - textWidth) / 2) + 1;
+                int bottomMargin = ((height - fontHeight) / 2) + 1;
+                g.setColor(selectionColor(ColorUtils.bestForegroundColor(decoration.getBgColor()), selected));
+                g.drawString(text, x + leftMargin, y + height - bottomMargin);
+            }
+        }
+
+    }
+
 }

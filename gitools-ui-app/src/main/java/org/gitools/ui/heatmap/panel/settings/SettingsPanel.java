@@ -90,7 +90,7 @@ public class SettingsPanel {
         // Bind color scale controls
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
-        final AbstractValueModel decoratorModel = new AbstractValueModel() {
+        final AbstractValueModel decoratorValueModel = new AbstractValueModel() {
             @Override
             public Object getValue() {
                 return heatmap.getLayers().getTopLayer().getDecorator();
@@ -105,12 +105,12 @@ public class SettingsPanel {
         layers.addBeanPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                decoratorModel.fireValueChange(null, heatmap.getLayers().getTopLayer().getDecorator());
+                decoratorValueModel.fireValueChange(null, heatmap.getLayers().getTopLayer().getDecorator());
             }
         });
 
 
-        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), decoratorModel);
+        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), decoratorValueModel);
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
@@ -130,7 +130,7 @@ public class SettingsPanel {
         colorScaleOpen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SaveDecoratorDialog.actionLoadDecorator(decoratorModel);
+                SaveDecoratorDialog.actionLoadDecorator(decoratorValueModel);
             }
         });
 

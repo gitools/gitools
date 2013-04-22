@@ -24,7 +24,6 @@ package org.gitools.heatmap.header;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.model.decorator.Decoration;
 import org.gitools.model.decorator.Decorator;
-import org.gitools.utils.formatter.GenericFormatter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -99,16 +98,8 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         this.annotationLabels = annotationLabels;
     }
 
-    private GenericFormatter gf = new GenericFormatter();
     public void decorate(Decoration decoration, int index, String annotation) {
-
         decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
-
-        if (isLabelVisible()) {
-            String identifier = getHeatmapDimension().getLabel(index);
-            String valueLabel = gf.format(getHeatmapDimension().getAnnotations().getAnnotation(identifier, annotation));
-            decoration.setText(valueLabel);
-        }
     }
 
     private MatrixAdapter matrixAdapter;
