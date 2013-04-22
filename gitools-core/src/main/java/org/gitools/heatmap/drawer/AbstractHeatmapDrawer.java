@@ -71,4 +71,26 @@ public abstract class AbstractHeatmapDrawer {
         g.setColor(backgroundColor);
         g.fillRect(box.x, box.y, box.width, box.height);
     }
+
+    /**
+     * Automatically change the font size to fit in the cell height.
+     *
+     * @param g the Graphics2D object
+     * @param cellHeight the cell height
+     * @param minFontSize the min font size
+     * @return Returns true if the new font size fits in the cell height, false if it doesn't fit.
+     */
+    protected static boolean calculateFontSize(Graphics2D g, int cellHeight, int minFontSize) {
+
+        float fontHeight = g.getFontMetrics().getHeight();
+
+        float fontSize = g.getFont().getSize();
+        while (fontHeight > (cellHeight - 2) && fontSize > minFontSize) {
+            fontSize--;
+            g.setFont(g.getFont().deriveFont(fontSize));
+            fontHeight = g.getFontMetrics().getHeight();
+        }
+
+        return fontHeight <= (cellHeight - 2);
+    }
 }

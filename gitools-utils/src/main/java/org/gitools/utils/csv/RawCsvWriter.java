@@ -44,10 +44,20 @@ public class RawCsvWriter {
     }
 
     public void writeValue(String value) {
+
+        if (value == null) {
+            return;
+        }
+
         out.print(value);
     }
 
     public void writeQuotedValue(String value) {
+
+        if (value == null) {
+            return;
+        }
+
         out.print(quote);
         out.print(value);
         out.print(quote);
@@ -87,6 +97,11 @@ public class RawCsvWriter {
     }
 
     public void write(String raw) {
+
+        if (raw == null) {
+            return;
+        }
+
         out.print(raw);
     }
 

@@ -69,41 +69,32 @@ public class ColorUtils {
         return new Color(r, g, b);
     }
 
-	/*public static Color getColorForIndex(int index) {
-        return Color.WHITE;*/
+    /**
+     * Best foreground color. Returns WHITE or BLACK color depending on the 'backgroundColor' luminescence level.
+     *
+     * @param backgroundColor the background color
+     * @return the color
+     */
+    public static Color bestForegroundColor(Color backgroundColor) {
+        if (luminescenceLevel(backgroundColor) >= 128) {
+            return Color.BLACK;
+        } else {
+            return Color.WHITE;
+        }
+    }
 
-		/*
-        // calculate a color with the hsl color wheel
-		// imagine 10 equally distributed points on the color wheel
-		// with a given saturation and lightness. They will be
-		// generated 5 and 5 at a time, and after 10 colors
-		// saturation and lightness are adjusted
-
-
-		if (index >= 40)
-		return Color.WHITE;
-
-		float rotation1 =  ((int) (index / 5) % 2) * 0.1f;
-		float rotation2 = (float) ((index % 5) / 5.0f);
-		float hue = rotation1 + rotation2;
-
-		float[] saturations = new float[]{1.0f,0.5f,0.45f,0.35f};
-		float[] lightnesses = new float[]{0.5f,0.45f,0.4f,0.4f};
-		int step = index / 10;
-
-		float lightness =  lightnesses[step];
-		float saturation = saturations[step];
-
-
-
-		float[] hls = new float[]{hue, lightness, saturation};
-
-		ColorSpace csHLS = new HLSColorSpace();
-		float[] rgb = csHLS.toRGB(hls);
-		Color color = new Color(rgb[0],rgb[1],rgb[2]);
-
-		return color;*/
-    //}
+    /**
+     * Luminescence level between 0 and 255
+     *
+     * @param color the color
+     * @return the luminescence level
+     */
+    public static double luminescenceLevel(Color color) {
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+        return .299 * r + .587 * g + .114 * b;
+    }
 
 
 }

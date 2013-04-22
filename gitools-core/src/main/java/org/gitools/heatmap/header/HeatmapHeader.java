@@ -21,7 +21,6 @@
  */
 package org.gitools.heatmap.header;
 
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.model.AbstractModel;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -89,8 +88,8 @@ public abstract class HeatmapHeader extends AbstractModel {
 
     }
 
-    HeatmapHeader(HeatmapDimension dim) {
-        this.dim = dim;
+    HeatmapHeader(HeatmapDimension heatmapDimension) {
+        this.heatmapDimension = heatmapDimension;
         this.title = "";
         this.size = 100;
         this.visible = true;
@@ -105,14 +104,14 @@ public abstract class HeatmapHeader extends AbstractModel {
     }
 
     @XmlTransient
-    private HeatmapDimension dim;
+    private HeatmapDimension heatmapDimension;
 
-    public HeatmapDimension getHeatmapDim() {
-        return dim;
+    public HeatmapDimension getHeatmapDimension() {
+        return heatmapDimension;
     }
 
-    public void setHeatmapDim(HeatmapDimension dim) {
-        this.dim = dim;
+    public void setHeatmapDimension(HeatmapDimension dim) {
+        this.heatmapDimension = dim;
     }
 
     /**
@@ -283,7 +282,8 @@ public abstract class HeatmapHeader extends AbstractModel {
 
     abstract protected void updateLargestLabelLength(Component component);
 
-    public void init(Heatmap heatmap) {
+    public void init(HeatmapDimension heatmapDimension) {
+        this.setHeatmapDimension(heatmapDimension);
 
     }
 

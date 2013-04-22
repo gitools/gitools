@@ -136,7 +136,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         selectedBitmap = newSelectionBitmap(size());
 
         for (HeatmapHeader header : headers) {
-            header.init(heatmap);
+            header.init(this);
         }
     }
 
@@ -220,8 +220,8 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     public void addHeader(@NotNull HeatmapHeader header) {
-        if (header.getHeatmapDim() == null) {
-            header.setHeatmapDim(this);
+        if (header.getHeatmapDimension() == null) {
+            header.setHeatmapDimension(this);
         }
         headers.addFirst(header);
         firePropertyChange(PROPERTY_HEADERS, null, headers);

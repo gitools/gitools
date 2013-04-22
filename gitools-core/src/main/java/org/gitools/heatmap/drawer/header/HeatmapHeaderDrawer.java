@@ -110,6 +110,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
     @Override
     public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
@@ -131,17 +132,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             int x = box.x;
             int y = box.y;
 
-            Dimension sz = new Dimension(0,0);
+            Dimension sz;
             for (AbstractHeatmapDrawer d : drawers) {
                 sz = d.getSize();
-                //Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 Rectangle box2 = new Rectangle(x, y, clip.width - x, sz.height);
                 d.draw(g, box2, clip.intersection(box2));
                 x += sz.width;
             }
-
-            //g.setColor(Color.RED);
-            //g.fillRect(x, box.y, clip.width - x, clip.height);
         }
     }
 

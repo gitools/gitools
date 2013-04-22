@@ -37,9 +37,9 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
-        HeatmapDecoratorHeader header = getHeader();
+        prepareDraw(g, box);
 
-        paintBackground(header.getBackgroundColor(), g, box);
+        HeatmapDecoratorHeader header = getHeader();
 
         int firstIndex = firstVisibleIndex(box, clip);
         int lastIndex = lastVisibleIndex(box, clip);

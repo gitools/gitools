@@ -16,17 +16,24 @@ class MatrixAdapter extends AbstractMatrix {
 
     public MatrixAdapter(HeatmapDecoratorHeader header) {
         this.header = header;
-        this.annotationLabels = header.getHeatmapDim().getAnnotations().getLabels();
+        this.annotationLabels = header.getHeatmapDimension().getAnnotations().getLabels();
     }
 
     @Override
     public Object getValue(int[] position, int layerIndex) {
-        HeatmapDimension heatmapDimension = header.getHeatmapDim();
+        HeatmapDimension heatmapDimension = header.getHeatmapDimension();
         IAnnotations annotations = heatmapDimension.getAnnotations();
         String identifier = heatmapDimension.getLabel(position[0]);
         String value = annotations.getAnnotation(identifier, annotationLabels.get(layerIndex));
 
-        return (value == null) ? null : Double.valueOf(value);
+        Double number;
+        try {
+            number = (value == null) ? null : Double.valueOf(value);
+        } catch (Exception e) {
+            number = null;
+        }
+
+        return number;
     }
 
     public int indexOf(String label) {

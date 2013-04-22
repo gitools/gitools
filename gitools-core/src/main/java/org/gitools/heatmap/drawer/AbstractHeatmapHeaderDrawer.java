@@ -21,10 +21,12 @@
  */
 package org.gitools.heatmap.drawer;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.model.decorator.Decoration;
+import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -123,6 +125,11 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return color;
     }
 
+    protected void prepareDraw(Graphics2D g, Rectangle box) {
+        paintBackground(header.getBackgroundColor(), g, box);
+        calculateFontSize(g, header.getHeatmapDimension().getCellSize(), 8);
+    }
+
     protected int cellWidth(Rectangle clip) {
         int maxWidth = clip.width;
         int width = header.getSize();
@@ -132,12 +139,37 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected void paintSubCell(Decoration decoration, int index, int offset, int width, Graphics2D g, Rectangle box) {
 
         int y = box.y + index * fullCellSize();
+        int cellHeight = heatmapDimension.getCellSize();
+        int gridSize = heatmapDimension.getGridSize();
 
         g.setColor(filterColor(decoration.getBgColor(), index));
-        g.fillRect(box.x + offset, y, width, heatmapDimension.getCellSize());
+        g.fillRect(box.x + offset, y, width, cellHeight);
 
         g.setColor(filterColor(heatmapDimension.getGridColor(), index));
-        g.fillRect(box.x + offset, y + heatmapDimension.getCellSize(), width, heatmapDimension.getGridSize());
+        g.fillRect(box.x + offset, y + cellHeight, width, gridSize);
+
+        String text = decoration.getText();
+        if (!StringUtils.isEmpty(text)) {
+
+            int fontHeight = (int) g.getFont().getLineMetrics(text, g.getFontRenderContext()).getHeight();
+
+            if (fontHeight <= cellHeight) {
+                int textWidth = g.getFontMetrics().stringWidth(text);
+
+                if (textWidth > width) {
+                    text = "...";
+                    fontHeight = 2;
+                    textWidth = g.getFontMetrics().stringWidth(text);
+                }
+
+
+                int leftMargin = ((width - textWidth) / 2) + 1;
+                int bottomMargin = ((cellHeight - fontHeight) / 2) + 1;
+                g.setColor(filterColor(ColorUtils.bestForegroundColor(decoration.getBgColor()), index));
+                g.drawString(text, box.x + offset + leftMargin, y + cellHeight - bottomMargin);
+            }
+        }
+
     }
 
     protected void paintCell(Decoration decoration, int index, Graphics2D g, Rectangle box, Rectangle clip) {

@@ -22,7 +22,6 @@
 package org.gitools.heatmap.header;
 
 import org.gitools.clustering.HierarchicalClusteringResults;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -68,7 +67,8 @@ public class HeatmapHierarchicalColoredLabelsHeader extends HeatmapColoredLabels
     }
 
     @Override
-    public void init(Heatmap heatmap) {
+    public void init(HeatmapDimension heatmapDimension) {
+        super.init(heatmapDimension);
         clusteringResults.init();
     }
 }

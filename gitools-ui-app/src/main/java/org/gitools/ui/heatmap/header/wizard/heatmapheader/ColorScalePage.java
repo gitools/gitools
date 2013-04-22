@@ -66,7 +66,7 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         };
 
-        decoratorsPanels.init(decorators, header.getHeatmapDim().getAnnotations().getLabels(), decoratorModel);
+        decoratorsPanels.init(decorators, header.getHeatmapDimension().getAnnotations().getLabels(), decoratorModel);
 
         Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
                 decorators,
