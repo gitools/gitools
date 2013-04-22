@@ -21,8 +21,10 @@
  */
 package org.gitools.ui.heatmap.panel;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.IMatrixView;
+import org.gitools.matrix.model.IMatrixViewDimension;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.InputEvent;
@@ -78,11 +80,28 @@ class HeatmapKeyboardController extends KeyAdapter {
         } else {
             switch (key) {
                 case KeyEvent.VK_DELETE:
-                    hideLead(e);
+                    hideSelection(e);
+                    break;
+
+                case KeyEvent.VK_BACK_SPACE:
+                    hideSelection(e);
                     break;
 
                 case KeyEvent.VK_SPACE:
                     selectLead(e);
+                    break;
+
+                case KeyEvent.VK_R:
+                    switchLeadRowSelection(e);
+                    break;
+
+                case KeyEvent.VK_C:
+                    switchLeadColSelection(e);
+                    break;
+
+                case KeyEvent.VK_B:
+                    switchLeadColSelection(e);
+                    switchLeadRowSelection(e);
                     break;
             }
         }
@@ -176,7 +195,7 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         // update selection
 
-        boolean clearSelection = true;
+        boolean clearSelection = false;
 
         boolean onRow = row != -1 && col == -1;
         boolean onBody = row != -1 && col != -1;
@@ -221,17 +240,17 @@ class HeatmapKeyboardController extends KeyAdapter {
         }
     }
 
-    private void hideLead(KeyEvent e) {
+    private void hideSelection(KeyEvent e) {
         IMatrixView mv = hm;
-        int row = mv.getRows().getSelectionLead();
-        int col = mv.getColumns().getSelectionLead();
+        int[] rows = mv.getRows().getSelected();
+        int[] cols = mv.getColumns().getSelected();
 
-        if (row != -1) {
-            mv.getRows().hide(mv.getRows().getSelected());
+        if (rows.length > 0) {
+            mv.getRows().hide(rows);
         }
 
-        if (col != -1) {
-            mv.getColumns().hide(mv.getColumns().getSelected());
+        if (cols.length > 0) {
+            mv.getColumns().hide(cols);
         }
     }
 
@@ -359,5 +378,44 @@ class HeatmapKeyboardController extends KeyAdapter {
             }
             mv.getRows().setSelected(sel);
         }
+    }
+
+    private void switchLeadRowSelection(@NotNull KeyEvent e) {
+        IMatrixView mv = hm;
+        IMatrixViewDimension dim = mv.getRows();
+        int leadIndex = dim.getSelectionLead();
+        int[] prevSel = dim.getSelected();
+
+        siwtchLeadSelection(dim, leadIndex, prevSel);
+
+    }
+
+    private void switchLeadColSelection(@NotNull KeyEvent e) {
+        IMatrixView mv = hm;
+        IMatrixViewDimension dim = mv.getColumns();
+        int leadIndex = dim.getSelectionLead();
+        int[] prevSel = dim.getSelected();
+
+        siwtchLeadSelection(dim, leadIndex, prevSel);
+    }
+
+    private void siwtchLeadSelection(IMatrixViewDimension dim, int leadIndex, int[] prevSel) {
+        if (leadIndex == -1) {
+            return;
+        }
+
+        int[] sel;
+
+
+        if (ArrayUtils.contains(prevSel, leadIndex)) {
+            int posInArray = ArrayUtils.indexOf(prevSel, leadIndex);
+            sel = ArrayUtils.remove(prevSel, posInArray);
+        } else {
+            sel = new int[prevSel.length + 1];
+            System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
+            sel[sel.length - 1] = leadIndex;
+            Arrays.sort(sel);
+        }
+        dim.setSelected(sel);
     }
 }

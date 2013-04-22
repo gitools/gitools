@@ -1,0 +1,134 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            font-family: sans-serif;
+            padding: 8px;
+            margin: 0px;
+        }
+
+        A:link, A:visited {
+            text-decoration: none;
+        }
+
+        A:hover {
+            color: #f43a01;
+        }
+
+        thead {
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        table {
+            font-size: 9px;
+            border-bottom-width: 1px;
+            border-color: black;
+        }
+
+        td {
+            margin: 3px;
+        }
+
+        td.subtitle {
+            font-weight: bold;
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+
+        td.shortcut {
+            color: blue;
+            font-weight: bold;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<h3>$appName Shortcuts</h3>
+<table>
+    <thead>
+    <tr>
+        <td>Key combination</td>
+        <td>Action</td>
+        <td>Applies if</td>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <tr>
+        <td class="subtitle" colspan="3">Heatmap editing</td>
+    </tr>
+    <tr>
+        <td class="shortcut">C/R/B</td>
+        <td>Switch selection of column/row/both</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">Backspace or Delete</td>
+        <td>Hiding rows/columns</td>
+        <td>Selected rows/columns</td>
+    </tr>
+
+
+    <tr>
+        <td class="subtitle" colspan="3">Navigation</td>
+    </tr>
+    <tr>
+        <td class="shortcut">&uarr;/&darr;/&larr;/&rarr;</td>
+        <td>Moving lead cell by cell</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Page Up/Down</td>
+        <td>Lead jumps up/down</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Page Up/Down + Shift</td>
+        <td>Lead jumps left/right</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Wheel</td>
+        <td>Scrolling heatmap up/down</td>
+        <td>Mouse over row headers</td>
+    </tr>
+    <tr>
+        <td class="shortcut">Wheel</td>
+        <td>Scrolling heatmap left/right</td>
+        <td>Mouse over column headers</td>
+    </tr>
+
+
+    <tr>
+        <td class="subtitle" colspan="3">Sizes</td>
+    </tr>
+    <tr>
+        <td class="shortcut">SHIFT + T + wheel</td>
+        <td>Changes font size</td>
+        <td>Mouse over any element</td>
+    </tr>
+    <tr>
+        <td class="shortcut">SHIFT + wheel</td>
+        <td>Changes size of header</td>
+        <td>Mouse over header</td>
+    </tr>
+    <tr>
+        <td class="shortcut">SHIFT + R + wheel</td>
+        <td>Changes height of rows</td>
+        <td>Mouse over heatmap body</td>
+    </tr>
+    <tr>
+        <td class="shortcut">SHIFT + C + wheel</td>
+        <td>Changes width of columns</td>
+        <td>Mouse over heatmap body</td>
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>
