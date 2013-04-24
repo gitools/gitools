@@ -19,22 +19,31 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.actions;
+package org.gitools.ui.actions.help;
 
-import org.gitools.ui.actions.help.AboutAction;
-import org.gitools.ui.actions.help.ShortcutsAction;
-import org.gitools.ui.actions.help.ShowTipsAction;
-import org.gitools.ui.actions.help.WelcomeAction;
+import org.gitools.ui.dialog.ShortcutsDialog;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 
-final class HelpActions {
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
-    public static final BaseAction aboutAction = new AboutAction();
 
-    public static final BaseAction showTipsAction = new ShowTipsAction();
+/**
+ * @noinspection ALL
+ */
+public class ShortcutsAction extends BaseAction {
 
-    public static final BaseAction welcomeAction = new WelcomeAction();
+    public ShortcutsAction() {
+        super("Show shortuts");
+        setDesc("See all the shortcuts for Gitools");
+        setMnemonic(KeyEvent.VK_A);
+        setDefaultEnabled(true);
+    }
 
-    public static final BaseAction shortcutsAction = new ShortcutsAction();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        new ShortcutsDialog(AppFrame.get()).setVisible(true);
+    }
 
 }

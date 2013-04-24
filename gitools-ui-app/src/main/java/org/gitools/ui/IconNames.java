@@ -51,6 +51,10 @@ public class IconNames {
     public static final String openMatrix16 = "/img/OpenMatrix16.png";
     public static final String openMatrix24 = "/img/OpenMatrix24.png";
 
+    public static final String edit16 = "/img/edit16.png";
+
+    public static final String add16 = "/img/add16.png";
+
     public static final String close16 = "/img/Close16.gif";
     public static final String close24 = "/img/Close24.gif";
 

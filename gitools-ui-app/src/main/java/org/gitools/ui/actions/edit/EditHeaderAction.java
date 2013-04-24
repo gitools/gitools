@@ -24,6 +24,7 @@ package org.gitools.ui.actions.edit;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -31,9 +32,6 @@ import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class EditHeaderAction extends BaseAction {
 
     private final HeaderEnum.Dimension dim;
@@ -41,6 +39,8 @@ public class EditHeaderAction extends BaseAction {
     public EditHeaderAction(HeaderEnum.Dimension dim) {
         super("");
         this.dim = dim;
+
+        setSmallIconFromResource(IconNames.edit16);
 
         switch (dim) {
             case COLUMN:

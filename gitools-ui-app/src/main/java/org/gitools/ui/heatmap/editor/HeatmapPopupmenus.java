@@ -42,7 +42,8 @@ public class HeatmapPopupmenus {
             BaseAction.separator,
             HeatmapActions.searchRowsAction,
             BaseAction.separator,
-            EditActions.editRowHeader
+            EditActions.editRowHeader,
+            EditActions.addRowHeader
     });
 
     public static final ActionSet COLUMNS = new ActionSet(new BaseAction[]{
@@ -58,6 +59,7 @@ public class HeatmapPopupmenus {
             BaseAction.separator,
             HeatmapActions.searchColumnsAction,
             BaseAction.separator,
-            EditActions.editColumnHeader
+            EditActions.editColumnHeader,
+            EditActions.addColumnHeader
     });
 }

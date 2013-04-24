@@ -22,6 +22,7 @@
 package org.gitools.ui.welcome;
 
 import org.gitools.ui.actions.file.*;
+import org.gitools.ui.actions.help.ShortcutsAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -127,6 +128,9 @@ public class WelcomeEditor extends HtmlEditor {
                 new OpenAction().actionPerformed(new ActionEvent(this, 0, name));
             } else if (ref.equals("DataHeatmapGS")) {
                 new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
+            } else if (ref.equals("Shortcuts")) {
+                new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
+                ;
             }
         } else if (name.equals("example")) {
             LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);

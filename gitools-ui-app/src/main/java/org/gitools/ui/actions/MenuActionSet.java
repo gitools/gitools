@@ -132,6 +132,7 @@ public class MenuActionSet extends ActionSet {
                         new BaseAction[]{
                                 HelpActions.welcomeAction,
                                 BaseAction.separator,
+                                HelpActions.shortcutsAction,
                                 HelpActions.showTipsAction,
                                 HelpActions.aboutAction
                         })
