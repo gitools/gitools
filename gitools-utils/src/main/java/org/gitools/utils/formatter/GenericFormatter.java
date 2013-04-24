@@ -40,7 +40,7 @@ public class GenericFormatter implements Serializable {
     @NotNull
     private String decimal(double value) {
 
-        if (value!=0 && value < 1e-16) {
+        if (value!=0 && value < 1e-16 && value > -1e-16) {
             return "~0.00";
         }
 
