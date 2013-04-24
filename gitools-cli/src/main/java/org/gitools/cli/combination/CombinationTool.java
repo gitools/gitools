@@ -21,17 +21,17 @@
  */
 package org.gitools.cli.combination;
 
-import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.analysis.combination.CombinationCommand;
+import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.matrix.DoubleMatrix;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.threads.ThreadManager;
+import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.core.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;

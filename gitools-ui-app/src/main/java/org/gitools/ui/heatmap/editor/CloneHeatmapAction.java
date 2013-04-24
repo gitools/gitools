@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.heatmap.editor;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.utils.SerialClone;
+import org.gitools.core.utils.CloneUtils;
 
 import java.awt.event.ActionEvent;
 
@@ -65,9 +65,9 @@ public class CloneHeatmapAction extends BaseAction {
         Heatmap clone = new Heatmap(hm);
         clone.setTitle(hm.getTitle());
         clone.setDescription(hm.getDescription());
-        clone.setProperties(SerialClone.xclone(hm.getProperties()));
-        clone.setColumns(SerialClone.xclone(hm.getColumns()));
-        clone.setRows(SerialClone.xclone(hm.getRows()));
+        clone.setProperties(CloneUtils.clone(hm.getProperties()));
+        clone.setColumns(CloneUtils.clone(hm.getColumns()));
+        clone.setRows(CloneUtils.clone(hm.getRows()));
 
         HeatmapEditor editor = new HeatmapEditor(clone);
 

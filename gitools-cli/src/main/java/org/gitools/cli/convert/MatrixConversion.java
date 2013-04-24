@@ -21,10 +21,10 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.matrix.model.matrix.BaseMatrix;
-import org.gitools.matrix.model.matrix.DoubleBinaryMatrix;
-import org.gitools.matrix.model.matrix.DoubleMatrix;
-import org.gitools.persistence._DEPRECATED.MimeTypes;
+import org.gitools.core.matrix.model.matrix.BaseMatrix;
+import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.persistence._DEPRECATED.MimeTypes;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

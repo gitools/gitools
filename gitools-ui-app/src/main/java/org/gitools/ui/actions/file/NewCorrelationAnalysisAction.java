@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.correlation.CorrelationCommand;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.HeatmapFormat;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.core.analysis.correlation.CorrelationCommand;
+import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -83,7 +83,7 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 
                     final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
+                    editor.setName(FilenameUtils.getName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
 
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override

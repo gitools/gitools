@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.analysis.htest.oncozet.OncodriveCommand;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.core.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.OncodriveAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -86,7 +86,7 @@ public class NewOncodriveAnalysisAction extends BaseAction {
 
                     final OncodriveAnalysisEditor editor = new OncodriveAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
+                    editor.setName(FilenameUtils.getBaseName(wizard.getFileName()));
 
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override

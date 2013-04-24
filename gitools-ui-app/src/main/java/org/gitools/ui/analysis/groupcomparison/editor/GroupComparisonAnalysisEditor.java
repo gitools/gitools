@@ -22,12 +22,12 @@
 package org.gitools.ui.analysis.groupcomparison.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -36,7 +36,7 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.SerialClone;
+import org.gitools.core.utils.CloneUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -136,7 +136,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
     private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers) {
         for (HeatmapHeader hh : headers) {
-            dim.addHeader(SerialClone.xclone(hh));
+            dim.addHeader(CloneUtils.clone(hh));
         }
     }
 
@@ -158,12 +158,12 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 if (analysis.getRowHeaders() != null) {
                     if (analysis.getRowAnnotations() != null) {
-                        heatmap.getRows().addAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
+                        heatmap.getRows().addAnnotations(CloneUtils.clone(analysis.getRowAnnotations()));
                     }
 
                     heatmap.getRows().getHeaders().remove(0);
                     for (HeatmapHeader hh : analysis.getRowHeaders()) {
-                        heatmap.getRows().addHeader(SerialClone.xclone(hh));
+                        heatmap.getRows().addHeader(CloneUtils.clone(hh));
                     }
                 }
 

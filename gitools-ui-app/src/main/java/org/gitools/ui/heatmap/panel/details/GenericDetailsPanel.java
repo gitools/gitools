@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.panel.details;
 
-import org.gitools.heatmap.Heatmap;
+import org.gitools.core.heatmap.Heatmap;
 import org.gitools.ui.heatmap.panel.details.boxes.Cell;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertiesBox;
 import org.gitools.ui.heatmap.panel.details.boxes.PropertyItem;

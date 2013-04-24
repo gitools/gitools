@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.datafilters.BinaryCutoff;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.model.Property;
-import org.gitools.model.ToolConfig;
-import org.gitools.stats.test.factory.TestFactory;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.datafilters.BinaryCutoff;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.model.Property;
+import org.gitools.core.model.ToolConfig;
+import org.gitools.core.stats.test.factory.TestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;

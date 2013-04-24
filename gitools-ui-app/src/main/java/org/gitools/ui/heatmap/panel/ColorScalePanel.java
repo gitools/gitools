@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.HeatmapLayers;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
 import org.jetbrains.annotations.NotNull;

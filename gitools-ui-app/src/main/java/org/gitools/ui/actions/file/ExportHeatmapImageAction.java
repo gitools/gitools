@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.drawer.HeatmapDrawer;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.drawer.HeatmapDrawer;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -77,7 +77,7 @@ public class ExportHeatmapImageAction extends BaseAction {
             return;
         }
 
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", PersistenceUtils.getFileName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);

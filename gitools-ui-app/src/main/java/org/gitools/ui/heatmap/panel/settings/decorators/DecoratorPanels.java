@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.heatmap.panel.settings.decorators;
 
-import org.gitools.model.decorator.impl.CorrelationDecorator;
-import org.gitools.model.decorator.impl.LinearDecorator;
+import org.gitools.core.model.decorator.impl.CorrelationDecorator;
+import org.gitools.core.model.decorator.impl.LinearDecorator;
 
 import java.util.ArrayList;
 

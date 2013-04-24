@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;

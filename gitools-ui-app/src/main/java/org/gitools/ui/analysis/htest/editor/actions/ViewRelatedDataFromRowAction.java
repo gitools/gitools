@@ -21,18 +21,18 @@
  */
 package org.gitools.ui.analysis.htest.editor.actions;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.utils.SerialClone;
+import org.gitools.core.utils.CloneUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -118,7 +118,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
         heatmap.getRows().setVisible(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
-        heatmap.setColumns(SerialClone.xclone(srcHeatmap.getColumns()));
+        heatmap.setColumns(CloneUtils.clone(srcHeatmap.getColumns()));
 
 
         // Create editor

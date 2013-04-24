@@ -21,16 +21,16 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.clustering.ClusteringMethod;
-import org.gitools.clustering.ClusteringResults;
-import org.gitools.clustering.HierarchicalClusteringResults;
-import org.gitools.clustering.method.value.ClusterUtils;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
-import org.gitools.matrix.TransposedMatrixView;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.clustering.ClusteringMethod;
+import org.gitools.core.clustering.ClusteringResults;
+import org.gitools.core.clustering.HierarchicalClusteringResults;
+import org.gitools.core.clustering.method.value.ClusterUtils;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
+import org.gitools.core.matrix.TransposedMatrixView;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.clustering.values.ClusteringValueWizard;
 import org.gitools.ui.platform.AppFrame;

@@ -23,8 +23,8 @@ package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.model.decorator.impl.CategoricalDecorator;
+import org.gitools.core.heatmap.header.ColoredLabel;
+import org.gitools.core.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.dialog.EditCategoricalScaleDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.AbstractDialog;

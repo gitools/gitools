@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.utils.EventUtils;
+import org.gitools.core.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

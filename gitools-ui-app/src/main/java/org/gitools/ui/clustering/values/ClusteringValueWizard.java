@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.clustering.values;
 
-import org.gitools.clustering.ClusteringData;
-import org.gitools.clustering.ClusteringMethod;
-import org.gitools.clustering.ClusteringMethodDescriptor;
-import org.gitools.clustering.method.value.*;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.clustering.ClusteringData;
+import org.gitools.core.clustering.ClusteringMethod;
+import org.gitools.core.clustering.ClusteringMethodDescriptor;
+import org.gitools.core.clustering.method.value.*;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;

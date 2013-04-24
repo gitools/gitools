@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.analysis.htest.wizard;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;

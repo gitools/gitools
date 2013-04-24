@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.model.Property;
+import org.gitools.core.model.Property;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

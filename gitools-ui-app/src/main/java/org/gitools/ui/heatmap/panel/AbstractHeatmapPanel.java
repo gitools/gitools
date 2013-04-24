@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.heatmap.drawer.header.HeatmapHeaderDrawer;
-import org.gitools.model.decorator.Decorator;
-import org.gitools.utils.EventUtils;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayers;
+import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

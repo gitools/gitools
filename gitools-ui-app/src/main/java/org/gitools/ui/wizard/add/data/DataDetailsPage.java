@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixLayer;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;

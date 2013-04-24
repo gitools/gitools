@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

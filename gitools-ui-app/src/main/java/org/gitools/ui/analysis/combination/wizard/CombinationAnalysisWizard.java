@@ -22,16 +22,16 @@
 package org.gitools.ui.analysis.combination.wizard;
 
 
-import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.matrix.model.IMatrixLayer;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.persistence.IResource;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;

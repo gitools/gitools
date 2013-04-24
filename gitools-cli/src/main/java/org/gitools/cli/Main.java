@@ -21,7 +21,7 @@
  */
 package org.gitools.cli;
 
-import org.gitools.persistence.PersistenceInitialization;
+import org.gitools.core.persistence.PersistenceInitialization;
 import org.gitools.utils.tools.ToolManager;
 import org.gitools.utils.tools.ToolSet;
 import org.gitools.utils.tools.XmlToolSetResource;

@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.clustering.values;
 
-import org.gitools.clustering.ClusteringMethodDescriptor;
-import org.gitools.clustering.ClusteringMethodFactory;
-import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
-import org.gitools.clustering.method.value.WekaKmeansMethod;
+import org.gitools.core.clustering.ClusteringMethodDescriptor;
+import org.gitools.core.clustering.ClusteringMethodFactory;
+import org.gitools.core.clustering.method.value.AbstractClusteringValueMethod;
+import org.gitools.core.clustering.method.value.WekaKmeansMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.Nullable;
 import weka.core.EuclideanDistance;

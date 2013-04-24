@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;

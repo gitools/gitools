@@ -23,7 +23,7 @@ package org.gitools.kegg.modules;
 
 
 import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.modules.importer.Version;
+import org.gitools.core.modules.importer.Version;
 
 public class EnsemblKeggVersion implements Version {
 

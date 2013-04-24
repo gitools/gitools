@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.correlation.wizard;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.core.analysis.correlation.CorrelationAnalysis;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;

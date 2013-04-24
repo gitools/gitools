@@ -27,7 +27,7 @@ import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.queryhandler.TsvFileQueryHandler;
 import org.gitools.biomart.restful.model.*;
 import org.gitools.biomart.settings.BiomartSource;
-import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.utils.benchmark.TimeCounter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;

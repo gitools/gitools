@@ -22,12 +22,12 @@
 package org.gitools.ui.analysis.correlation.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.model.decorator.impl.CorrelationDecorator;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.model.decorator.impl.CorrelationDecorator;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;

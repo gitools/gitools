@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.heatmap.panel.search;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.IAnnotations;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

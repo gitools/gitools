@@ -21,16 +21,16 @@
  */
 package org.gitools.cli.overlapping;
 
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.analysis.overlapping.OverlappingCommand;
+import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.core.analysis.overlapping.OverlappingCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
-import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.threads.ThreadManager;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.threads.ThreadManager;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;

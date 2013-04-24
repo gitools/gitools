@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.clustering.HierarchicalClusteringResults;
-import org.gitools.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
-import org.gitools.newick.NewickTree;
+import org.gitools.core.clustering.HierarchicalClusteringResults;
+import org.gitools.core.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
+import org.gitools.core.newick.NewickTree;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 

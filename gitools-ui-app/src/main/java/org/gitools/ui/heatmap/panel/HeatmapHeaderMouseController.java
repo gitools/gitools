@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -260,11 +260,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             if (indexDiff > 0) {
                 if (horizontal) {
                     for (int i = 0; i < indexDiff; i++) {
-                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
+                        matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
                     }
                 } else {
                     for (int i = 0; i < indexDiff; i++) {
-                        matrixView.getRows().move(org.gitools.matrix.model.Direction.UP, matrixView.getRows().getSelected());
+                        matrixView.getRows().move(org.gitools.core.matrix.model.Direction.UP, matrixView.getRows().getSelected());
                     }
                 }
             }
@@ -272,11 +272,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             if (indexDiff < 0) {
                 if (horizontal) {
                     for (int i = 0; i > indexDiff; i--) {
-                        matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
+                        matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
                     }
                 } else {
                     for (int i = 0; i > indexDiff; i--) {
-                        matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
+                        matrixView.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
                     }
                 }
             }

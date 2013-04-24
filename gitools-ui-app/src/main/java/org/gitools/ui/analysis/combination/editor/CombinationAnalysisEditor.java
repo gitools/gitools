@@ -22,11 +22,11 @@
 package org.gitools.ui.analysis.combination.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;

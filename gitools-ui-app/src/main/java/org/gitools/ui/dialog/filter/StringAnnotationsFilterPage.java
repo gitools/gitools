@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.dialog.filter;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

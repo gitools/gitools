@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.clustering.values;
 
-import org.gitools.clustering.ClusteringMethodDescriptor;
-import org.gitools.clustering.method.value.AbstractClusteringValueMethod;
+import org.gitools.core.clustering.ClusteringMethodDescriptor;
+import org.gitools.core.clustering.method.value.AbstractClusteringValueMethod;
 
 /**
  * @noinspection ALL

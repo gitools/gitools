@@ -22,9 +22,9 @@
 package org.gitools.ui.modules.wizard;
 
 import org.gitools.biomart.idmapper.EnsemblIds;
-import org.gitools.modules.importer.FeatureCategory;
-import org.gitools.modules.importer.ModulesImporter;
-import org.gitools.modules.importer.Organism;
+import org.gitools.core.modules.importer.FeatureCategory;
+import org.gitools.core.modules.importer.ModulesImporter;
+import org.gitools.core.modules.importer.Organism;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;

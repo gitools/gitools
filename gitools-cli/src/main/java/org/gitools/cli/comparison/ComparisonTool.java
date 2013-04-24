@@ -21,19 +21,19 @@
  */
 package org.gitools.cli.comparison;
 
-import org.gitools.analysis.correlation.GroupComparisonCommand;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.analysis.correlation.GroupComparisonCommand;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.matrix.model.matrix.DoubleMatrix;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.persistence.formats.matrix.MultiValueMatrixFormat;
-import org.gitools.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.stats.test.Test;
-import org.gitools.stats.test.factory.TestFactory;
-import org.gitools.threads.ThreadManager;
+import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.core.stats.test.Test;
+import org.gitools.core.stats.test.factory.TestFactory;
+import org.gitools.core.threads.ThreadManager;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;

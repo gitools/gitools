@@ -21,9 +21,9 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.model.ModuleMap;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.model.ModuleMap;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 

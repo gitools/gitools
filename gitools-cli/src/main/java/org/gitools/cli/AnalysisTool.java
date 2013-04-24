@@ -22,14 +22,14 @@
 package org.gitools.cli;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.model.Analysis;
-import org.gitools.model.KeyValue;
-import org.gitools.model.Property;
-import org.gitools.persistence.IResource;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.model.Analysis;
+import org.gitools.core.model.KeyValue;
+import org.gitools.core.model.Property;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;

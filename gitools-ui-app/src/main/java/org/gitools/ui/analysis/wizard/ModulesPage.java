@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;

@@ -21,7 +21,7 @@
  */
 package org.gitools.kegg.idmapper;
 
-import org.gitools.idmapper.AbstractMapper;
+import org.gitools.core.idmapper.AbstractMapper;
 import org.gitools.kegg.service.KeggService;
 
 abstract class AbstractKeggMapper extends AbstractMapper {

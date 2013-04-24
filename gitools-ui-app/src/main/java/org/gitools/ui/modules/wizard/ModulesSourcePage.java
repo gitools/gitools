@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.modules.importer.ModuleCategory;
-import org.gitools.modules.importer.ModulesImporter;
-import org.gitools.modules.importer.Version;
+import org.gitools.core.modules.importer.ModuleCategory;
+import org.gitools.core.modules.importer.ModulesImporter;
+import org.gitools.core.modules.importer.Version;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 

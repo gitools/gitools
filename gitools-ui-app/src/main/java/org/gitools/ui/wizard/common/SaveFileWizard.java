@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.wizard.common;
 
-import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.jetbrains.annotations.NotNull;
 

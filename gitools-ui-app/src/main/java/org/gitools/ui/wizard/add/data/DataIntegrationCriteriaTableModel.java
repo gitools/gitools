@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.matrix.data.integration.DataIntegrationCriteria;
+import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 import org.jetbrains.annotations.NotNull;

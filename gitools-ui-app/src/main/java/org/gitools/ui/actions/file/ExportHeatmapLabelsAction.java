@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.label.AnnotationsPatternProvider;
-import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixDimensionLabelProvider;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.IAnnotations;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.label.AnnotationsPatternProvider;
+import org.gitools.core.label.LabelProvider;
+import org.gitools.core.label.MatrixDimensionLabelProvider;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;

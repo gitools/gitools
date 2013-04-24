@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.core.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -85,7 +85,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
                     final EnrichmentAnalysisEditor editor = new EnrichmentAnalysisEditor(analysis);
 
-                    editor.setName(PersistenceUtils.getBaseName(wizard.getFileName()));
+                    editor.setName(FilenameUtils.getBaseName(wizard.getFileName()));
 
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override

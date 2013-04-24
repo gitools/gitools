@@ -21,8 +21,8 @@
  */
 package org.gitools.kegg.modules;
 
-import org.gitools.modules.importer.Category;
-import org.gitools.modules.importer.FeatureCategory;
+import org.gitools.core.modules.importer.Category;
+import org.gitools.core.modules.importer.FeatureCategory;
 
 class EnsemblKeggFeatureCategory extends Category implements FeatureCategory {
 

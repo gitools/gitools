@@ -22,7 +22,7 @@
 package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
-import org.gitools.persistence.PersistenceInitialization;
+import org.gitools.core.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
@@ -32,7 +32,7 @@ import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.os.OSXProperties;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.OperatingSystemDetector;
+import org.gitools.core.utils.OperatingSystemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
@@ -58,7 +58,7 @@ public class Main {
 
         OSProperties osProperties = null;
         // Load OS specific things
-        if (OperatingSystemDetector.isMac()) {
+        if (OperatingSystemUtils.isMac()) {
             osProperties = new OSXProperties(IconUtils.getImageResource(IconNames.logoNoText));
         }
 

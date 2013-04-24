@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -96,16 +96,16 @@ public class MoveSelectionAction extends BaseAction {
 
         switch (dir) {
             case ROW_UP:
-                matrixView.getRows().move(org.gitools.matrix.model.Direction.UP, matrixView.getRows().getSelected());
+                matrixView.getRows().move(org.gitools.core.matrix.model.Direction.UP, matrixView.getRows().getSelected());
                 break;
             case ROW_DOWN:
-                matrixView.getRows().move(org.gitools.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
+                matrixView.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
                 break;
             case COL_LEFT:
-                matrixView.getColumns().move(org.gitools.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
+                matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
                 break;
             case COL_RIGHT:
-                matrixView.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
+                matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
                 break;
         }
     }

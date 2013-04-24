@@ -21,15 +21,15 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.correlation.CorrelationProcessor;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.core.analysis.correlation.CorrelationProcessor;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
@@ -113,7 +113,7 @@ public class CorrelationsAction extends BaseAction {
 
                     final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
 
-                    String ext = PersistenceUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals("")) {

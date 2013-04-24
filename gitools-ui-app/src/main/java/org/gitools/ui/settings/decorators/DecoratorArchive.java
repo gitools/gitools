@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.settings.decorators;
 
-import org.gitools.model.decorator.Decorator;
-import org.gitools.model.decorator.DecoratorDescriptor;
-import org.gitools.model.decorator.DecoratorFactory;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.model.decorator.DecoratorDescriptor;
+import org.gitools.core.model.decorator.DecoratorFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

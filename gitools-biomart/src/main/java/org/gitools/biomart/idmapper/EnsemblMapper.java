@@ -26,7 +26,7 @@ import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.restful.model.Attribute;
 import org.gitools.biomart.restful.model.Dataset;
 import org.gitools.biomart.restful.model.Query;
-import org.gitools.idmapper.*;
+import org.gitools.core.idmapper.*;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 

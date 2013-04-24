@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.sort.ValueSortCriteria.SortDirection;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;

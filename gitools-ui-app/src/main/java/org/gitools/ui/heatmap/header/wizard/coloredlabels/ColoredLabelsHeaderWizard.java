@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.clustering.ClusteringData;
-import org.gitools.clustering.ClusteringResults;
-import org.gitools.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.matrix.model.IAnnotations;
+import org.gitools.core.clustering.ClusteringData;
+import org.gitools.core.clustering.ClusteringResults;
+import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
+import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.ColoredLabel;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;

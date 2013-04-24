@@ -21,16 +21,16 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.apache.commons.io.FilenameUtils;
 import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.matrix.BaseMatrix;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileSuffixes;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.matrix.model.matrix.BaseMatrix;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.go.wizard.GoModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -91,7 +91,7 @@ public class ImportGoModulesAction extends BaseAction {
                         }
 
                         //TODO Use PersistenceManager to save this file
-                        String prefix = PersistenceUtils.getFileName(resourceLocator.getName());
+                        String prefix = FilenameUtils.getName(resourceLocator.getName());
                         File annotations = new File(file.getParentFile(), prefix + "_annotations.tsv");
                         monitor.begin("Saving module annotations ...", mmap.getModuleCount());
                         PrintWriter pw = new PrintWriter(file);

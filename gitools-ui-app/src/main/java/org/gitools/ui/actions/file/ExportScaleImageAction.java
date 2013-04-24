@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.model.decorator.Decorator;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence._DEPRECATED.FileFormats;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormats;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -96,7 +96,7 @@ public class ExportScaleImageAction extends BaseAction {
 
         final ScaleExportWizard wz = new ScaleExportWizard();
         wz.setTitle("Export scale to image ...");
-        wz.getSavePage().setFileNameWithoutExtension(PersistenceUtils.getFileName(editor.getName()) + "-scale");
+        wz.getSavePage().setFileNameWithoutExtension(FilenameUtils.getName(editor.getName()) + "-scale");
         wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
         wz.getSavePage().setFormats(new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
         wz.setScale(scale);

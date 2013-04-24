@@ -24,7 +24,7 @@ package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.list.SelectionInList;
-import org.gitools.model.decorator.impl.BinaryDecorator;
+import org.gitools.core.model.decorator.impl.BinaryDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 

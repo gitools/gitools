@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.actions;
 
-import org.gitools.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.stats.mtc.Bonferroni;
+import org.gitools.core.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.core.stats.mtc.Bonferroni;
 import org.gitools.ui.actions.analysis.*;
 import org.gitools.ui.platform.actions.BaseAction;
 

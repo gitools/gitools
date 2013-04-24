@@ -23,7 +23,7 @@ package org.gitools.ui.biomart.wizard;
 
 import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.*;
-import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;

@@ -22,7 +22,7 @@
 package org.gitools.ui.settings.decorators;
 
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.model.decorator.Decorator;
+import org.gitools.core.model.decorator.Decorator;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;

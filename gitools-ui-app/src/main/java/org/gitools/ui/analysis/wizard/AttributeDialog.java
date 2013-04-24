@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.model.Property;
+import org.gitools.core.model.Property;
 import org.jetbrains.annotations.NotNull;
 
 class AttributeDialog extends javax.swing.JDialog {

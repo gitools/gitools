@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.data.integration.DataIntegrationCriteria;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 import java.util.ArrayList;

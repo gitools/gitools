@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.matrix.model.IMatrixLayer;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.stats.mtc.Bonferroni;
-import org.gitools.stats.mtc.MTC;
-import org.gitools.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.stats.test.Test;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.core.stats.mtc.Bonferroni;
+import org.gitools.core.stats.mtc.MTC;
+import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.core.stats.test.Test;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

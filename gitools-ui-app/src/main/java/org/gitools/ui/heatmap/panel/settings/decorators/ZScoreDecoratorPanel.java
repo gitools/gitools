@@ -25,7 +25,7 @@ import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.ValueHolder;
-import org.gitools.model.decorator.impl.ZScoreDecorator;
+import org.gitools.core.model.decorator.impl.ZScoreDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;

@@ -22,8 +22,8 @@
 package org.gitools.ui.heatmap.panel.settings.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
-import org.gitools.model.decorator.Decorator;
-import org.gitools.model.decorator.impl.LinearDecorator;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.model.decorator.impl.LinearDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;

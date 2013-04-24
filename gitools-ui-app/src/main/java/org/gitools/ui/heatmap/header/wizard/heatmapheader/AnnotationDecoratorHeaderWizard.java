@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 

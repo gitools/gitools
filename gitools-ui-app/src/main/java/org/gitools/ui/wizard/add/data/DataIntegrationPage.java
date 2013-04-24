@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.data.integration.DataIntegrationCriteria;
-import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
+import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;

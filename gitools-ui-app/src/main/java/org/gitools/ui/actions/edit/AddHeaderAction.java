@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;

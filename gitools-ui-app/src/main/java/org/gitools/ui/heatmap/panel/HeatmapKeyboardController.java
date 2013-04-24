@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.InputEvent;
@@ -243,22 +243,22 @@ class HeatmapKeyboardController extends KeyAdapter {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
                 if (row >= 0 && row < mv.getRows().size() - 1) {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN, new int[]{row});
+                    mv.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, new int[]{row});
                 }
                 break;
             case KeyEvent.VK_UP:
                 if (row > 0 && row < mv.getRows().size()) {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.UP, new int[]{row});
+                    mv.getRows().move(org.gitools.core.matrix.model.Direction.UP, new int[]{row});
                 }
                 break;
             case KeyEvent.VK_RIGHT:
                 if (col >= 0 && col < mv.getColumns().size() - 1) {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, new int[]{col});
+                    mv.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, new int[]{col});
                 }
                 break;
             case KeyEvent.VK_LEFT:
                 if (col > 0 && col < mv.getColumns().size()) {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT, new int[]{col});
+                    mv.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, new int[]{col});
                 }
                 break;
         }
@@ -279,22 +279,22 @@ class HeatmapKeyboardController extends KeyAdapter {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
                 if (row >= 0 && row < mv.getRows().size() - 1) {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.DOWN, sel);
+                    mv.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, sel);
                 }
                 break;
             case KeyEvent.VK_UP:
                 if (row > 0 && row < mv.getRows().size()) {
-                    mv.getRows().move(org.gitools.matrix.model.Direction.UP, sel);
+                    mv.getRows().move(org.gitools.core.matrix.model.Direction.UP, sel);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
                 if (col >= 0 && col < mv.getColumns().size() - 1) {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.RIGHT, sel);
+                    mv.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, sel);
                 }
                 break;
             case KeyEvent.VK_LEFT:
                 if (col > 0 && col < mv.getColumns().size()) {
-                    mv.getColumns().move(org.gitools.matrix.model.Direction.LEFT, sel);
+                    mv.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, sel);
                 }
                 break;
         }

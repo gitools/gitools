@@ -21,10 +21,10 @@
  */
 package org.gitools.kegg.idmapper;
 
-import org.gitools.idmapper.MappingContext;
-import org.gitools.idmapper.MappingData;
-import org.gitools.idmapper.MappingException;
-import org.gitools.idmapper.MappingNode;
+import org.gitools.core.idmapper.MappingContext;
+import org.gitools.core.idmapper.MappingData;
+import org.gitools.core.idmapper.MappingException;
+import org.gitools.core.idmapper.MappingNode;
 import org.gitools.kegg.service.KeggService;
 import org.gitools.kegg.service.domain.IdConversion;
 import org.gitools.utils.progressmonitor.IProgressMonitor;

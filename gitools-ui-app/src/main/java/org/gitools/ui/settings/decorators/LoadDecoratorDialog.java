@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.settings.decorators;
 
-import org.gitools.model.decorator.Decorator;
+import org.gitools.core.model.decorator.Decorator;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;

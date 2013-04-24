@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.heatmap.header.wizard.textlabels;
 
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.heatmap.header.wizard.TextLabelsConfigPage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 

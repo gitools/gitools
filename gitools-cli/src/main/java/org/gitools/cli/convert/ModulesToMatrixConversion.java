@@ -21,8 +21,8 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.model.ModuleMap;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.model.ModuleMap;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 

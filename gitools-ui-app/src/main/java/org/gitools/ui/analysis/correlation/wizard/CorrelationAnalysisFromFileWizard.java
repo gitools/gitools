@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.analysis.correlation.wizard;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;

@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 

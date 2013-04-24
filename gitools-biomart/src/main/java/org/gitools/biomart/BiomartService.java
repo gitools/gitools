@@ -23,7 +23,7 @@ package org.gitools.biomart;
 
 import org.gitools.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.biomart.restful.model.*;
-import org.gitools.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.File;

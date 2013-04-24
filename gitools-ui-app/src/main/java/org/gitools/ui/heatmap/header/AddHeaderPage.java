@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.heatmap.header;
 
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

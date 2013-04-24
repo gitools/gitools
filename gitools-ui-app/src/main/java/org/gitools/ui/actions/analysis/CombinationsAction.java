@@ -21,16 +21,16 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.analysis.combination.CombinationCommand;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.model.ModuleMap;
-import org.gitools.persistence.IResourceFormat;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.analysis.combination.CombinationCommand;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
@@ -108,7 +108,7 @@ public class CombinationsAction extends BaseAction {
 
                     final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
 
-                    String ext = PersistenceUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals("")) {

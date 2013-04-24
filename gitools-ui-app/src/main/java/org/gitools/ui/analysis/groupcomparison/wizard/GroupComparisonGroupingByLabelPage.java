@@ -22,13 +22,13 @@
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.label.AnnotationsPatternProvider;
-import org.gitools.label.LabelProvider;
-import org.gitools.label.MatrixDimensionLabelProvider;
-import org.gitools.matrix.filter.MatrixViewAnnotationsFilter;
-import org.gitools.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.matrix.model.IAnnotations;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.label.AnnotationsPatternProvider;
+import org.gitools.core.label.LabelProvider;
+import org.gitools.core.label.MatrixDimensionLabelProvider;
+import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter;
+import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
+import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

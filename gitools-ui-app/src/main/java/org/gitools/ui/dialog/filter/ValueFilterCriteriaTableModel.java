@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.dialog.filter;
 
-import org.gitools.matrix.filter.ValueFilterCriteria;
+import org.gitools.core.matrix.filter.ValueFilterCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

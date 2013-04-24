@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.filter.MatrixViewValueFilter;
-import org.gitools.matrix.filter.ValueFilterCriteria;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.filter.MatrixViewValueFilter;
+import org.gitools.core.matrix.filter.ValueFilterCriteria;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.dialog.filter.ValueFilterDialog;
 import org.gitools.ui.platform.AppFrame;

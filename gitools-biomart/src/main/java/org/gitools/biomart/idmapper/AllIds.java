@@ -21,7 +21,7 @@
  */
 package org.gitools.biomart.idmapper;
 
-import org.gitools.idmapper.Ids;
+import org.gitools.core.idmapper.Ids;
 
 /**
  *

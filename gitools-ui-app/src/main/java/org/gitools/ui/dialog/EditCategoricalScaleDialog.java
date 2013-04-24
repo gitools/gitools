@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.dialog;
 
-import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;

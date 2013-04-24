@@ -21,18 +21,18 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.clustering.ClusteringData;
-import org.gitools.clustering.ClusteringException;
-import org.gitools.clustering.ClusteringMethod;
-import org.gitools.clustering.ClusteringResults;
-import org.gitools.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.core.clustering.ClusteringData;
+import org.gitools.core.clustering.ClusteringException;
+import org.gitools.core.clustering.ClusteringMethod;
+import org.gitools.core.clustering.ClusteringResults;
+import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
+import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayers;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.aggregation.IAggregator;

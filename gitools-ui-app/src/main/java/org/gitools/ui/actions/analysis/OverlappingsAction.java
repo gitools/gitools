@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.analysis.overlapping.OverlappingProcessor;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.core.analysis.overlapping.OverlappingProcessor;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
@@ -113,7 +113,7 @@ public class OverlappingsAction extends BaseAction {
 
                     final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
-                    String ext = PersistenceUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(currentEditor.getName());
 
                     String analysisTitle = analysis.getTitle();
 

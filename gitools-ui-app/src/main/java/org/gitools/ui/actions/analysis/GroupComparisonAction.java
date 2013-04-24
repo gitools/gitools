@@ -21,15 +21,15 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.matrix.model.IMatrixLayers;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence._DEPRECATED.PersistenceUtils;
-import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonProcessor;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
@@ -102,7 +102,7 @@ public class GroupComparisonAction extends BaseAction {
                     final AnalysisDetailsEditor editor = new GroupComparisonAnalysisEditor(analysis);
                     //TODO: adapt to group comparison analysis
 
-                    String ext = PersistenceUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(currentEditor.getName());
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals("")) {

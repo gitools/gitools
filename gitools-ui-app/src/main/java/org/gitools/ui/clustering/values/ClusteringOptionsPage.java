@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.clustering.values;
 
-import org.gitools.matrix.model.IMatrixLayer;
-import org.gitools.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

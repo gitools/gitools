@@ -22,14 +22,14 @@
 package org.gitools.ui.analysis.overlapping;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.matrix.model.IMatrix;
-import org.gitools.model.decorator.impl.LinearDecorator;
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.ResourceReference;
-import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.model.decorator.impl.LinearDecorator;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;

@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.matrix.model.IMatrixView;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

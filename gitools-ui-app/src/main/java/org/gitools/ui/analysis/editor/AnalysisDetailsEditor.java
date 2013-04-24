@@ -22,12 +22,12 @@
 package org.gitools.ui.analysis.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.model.Analysis;
-import org.gitools.persistence.IResource;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence._DEPRECATED.FileFormat;
-import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.core.model.Analysis;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;

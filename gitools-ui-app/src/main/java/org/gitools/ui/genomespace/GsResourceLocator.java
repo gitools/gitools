@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.genomespace;
 
-import org.gitools.persistence.IResourceLocator;
-import org.gitools.persistence.PersistenceException;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceException;
 import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

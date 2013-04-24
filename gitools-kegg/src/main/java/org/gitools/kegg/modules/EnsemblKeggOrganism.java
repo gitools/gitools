@@ -23,8 +23,8 @@ package org.gitools.kegg.modules;
 
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.kegg.service.domain.KeggOrganism;
-import org.gitools.modules.importer.Organism;
-import org.gitools.modules.importer.RefImpl;
+import org.gitools.core.modules.importer.Organism;
+import org.gitools.core.modules.importer.RefImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class EnsemblKeggOrganism extends RefImpl implements Organism {

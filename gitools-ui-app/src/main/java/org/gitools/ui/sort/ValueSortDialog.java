@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.matrix.sort.ValueSortCriteria;
+import org.gitools.core.matrix.sort.ValueSortCriteria;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
