@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -145,7 +146,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
 
         this.layers.init(matrix);
 
-        if (diagonal) {
+        if (isDiagonal()) {
             diagonalRows = new MirrorDimension(columns, rows);
         }
 
@@ -177,25 +178,25 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     @Override
     public Object getValue(int[] position, int layer) {
 
-        if (diagonal && position[COLUMN] < position[ROW]) {
-            int tmp = position[COLUMN];
-            position[COLUMN] = position[ROW];
-            position[ROW] = tmp;
-        }
+        int[] p = Arrays.copyOf(position, position.length);
 
-        return getContents().getValue(rows.getVisible()[position[0]], columns.getVisible()[position[1]], layer);
+        applyDiagonal(p);
+        applyVisible(p);
+        applyDiagonal(p);
+
+        return getContents().getValue(p, layer);
     }
 
     @Override
     public void setValue(int[] position, int layer, Object value) {
 
-        if (diagonal && position[1] < position[0]) {
-            int tmp = position[1];
-            position[1] = position[0];
-            position[0] = tmp;
-        }
+        int[] p = Arrays.copyOf(position, position.length);
 
-        getContents().setValue(rows.getVisible()[ROW], columns.getVisible()[COLUMN], layer, value);
+        applyDiagonal(p);
+        applyVisible(p);
+        applyDiagonal(p);
+
+        getContents().setValue(p, layer, value);
     }
 
     @Override
@@ -219,6 +220,19 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
         }
+    }
+
+    private void applyDiagonal(int[] position) {
+        if (isDiagonal() && position[COLUMN] < position[ROW]) {
+            int tmp = position[COLUMN];
+            position[COLUMN] = position[ROW];
+            position[ROW] = tmp;
+        }
+    }
+
+    private void applyVisible(int[] position) {
+        position[ROW] = getRows().getVisible()[position[ROW]];
+        position[COLUMN] = getColumns().getVisible()[position[COLUMN]];
     }
 
 }
