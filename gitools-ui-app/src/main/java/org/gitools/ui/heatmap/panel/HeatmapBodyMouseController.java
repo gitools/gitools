@@ -35,7 +35,7 @@ import java.util.List;
 public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
     private enum Mode {
-        none, selecting, moving
+        none, selecting, moving, zooming, scrolling
     }
 
     private final Heatmap heatmap;
@@ -159,10 +159,15 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
         boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
 
-        if (!shiftDown && !ctrlDown) {
+        mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
+
+        if (mode == Mode.scrolling && !shiftDown) {
             HeatmapPosition pos = panel.getScrollPosition();
             panel.setScrollRowPosition(pos.row + unitsToScroll);
-        } else {
+        } else if(mode == Mode.scrolling && shiftDown) {
+            HeatmapPosition pos = panel.getScrollPosition();
+            panel.setScrollColumnPosition(pos.column + unitsToScroll);
+        } else if (mode == Mode.zooming){
 
             if (keyPressed != KeyEvent.VK_R) {
                 int width = heatmap.getColumns().getCellSize() + unitsToScroll * -1;
