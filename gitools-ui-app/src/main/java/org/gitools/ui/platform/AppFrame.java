@@ -26,6 +26,7 @@ import org.gitools.ui.actions.Actions;
 import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.welcome.WelcomeEditor;
 
@@ -43,6 +44,7 @@ public class AppFrame extends JFrame {
     private static final long serialVersionUID = -6899584212813749990L;
     private static final String appName;
     private static String appVersion;
+    private static OSProperties osProperties;
 
     static {
         appName = "Gitools";
@@ -93,6 +95,14 @@ public class AppFrame extends JFrame {
 
     public static String getAppVersion() {
         return appVersion;
+    }
+
+    public static OSProperties getOsProperties() {
+        return osProperties;
+    }
+
+    public static void setOsProperties(OSProperties osProperties) {
+        AppFrame.osProperties = osProperties;
     }
 
     private void createComponents() {

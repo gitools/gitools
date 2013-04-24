@@ -23,16 +23,17 @@ package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
 import org.gitools.core.persistence.PersistenceInitialization;
+import org.gitools.core.utils.OperatingSystemUtils;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
+import org.gitools.ui.platform.os.GenericOSProperties;
 import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.os.OSXProperties;
 import org.gitools.ui.settings.Settings;
-import org.gitools.core.utils.OperatingSystemUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
@@ -60,6 +61,8 @@ public class Main {
         // Load OS specific things
         if (OperatingSystemUtils.isMac()) {
             osProperties = new OSXProperties(IconUtils.getImageResource(IconNames.logoNoText));
+        } else {
+            osProperties = new GenericOSProperties();
         }
 
 
@@ -91,11 +94,10 @@ public class Main {
 
         // Launch frame
         AppFrame.get().start();
+        AppFrame.setOsProperties(osProperties);
 
         if (args.length > 0) {
             cmdExecutor.execute(args, new PrintWriter(System.err));
         }
-
-
     }
 }

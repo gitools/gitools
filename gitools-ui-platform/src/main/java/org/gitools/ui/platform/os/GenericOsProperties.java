@@ -21,8 +21,17 @@
  */
 package org.gitools.ui.platform.os;
 
+public class GenericOSProperties implements OSProperties {
 
-public interface OSProperties {
 
-    String getCTRLKey();
+    String ctrlKey = "CTRL";
+
+    public GenericOSProperties() {
+
+    }
+
+    @Override
+    public String getCTRLKey() {
+        return ctrlKey;
+    }
 }

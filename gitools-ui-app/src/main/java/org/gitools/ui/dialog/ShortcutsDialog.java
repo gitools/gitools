@@ -42,12 +42,14 @@ public class ShortcutsDialog extends JDialog {
 
     private final String appName;
     private final String appVersion;
+    private final String ctrlKey;
 
     public ShortcutsDialog(JFrame owner) {
         super(owner);
 
         appName = AppFrame.getAppName();
         appVersion = AppFrame.getAppVersion();
+        ctrlKey = AppFrame.getOsProperties().getCTRLKey();
 
         setModal(true);
         setTitle(appName + " shortcuts");
@@ -72,6 +74,7 @@ public class ShortcutsDialog extends JDialog {
             VelocityContext context = new VelocityContext();
             context.put("appName", appName);
             context.put("appVersion", appVersion);
+            context.put("ctrlKey", ctrlKey);
             creditsPane.setContext(context);
             creditsPane.render();
         } catch (Exception ex) {

@@ -27,9 +27,17 @@ import java.awt.*;
 
 public class OSXProperties implements OSProperties {
 
+
+    String ctrlKey = "⌘";
+
     public OSXProperties(Image dockLogo) {
 
         Application osxApp = Application.getApplication();
         osxApp.setDockIconImage(dockLogo);
+    }
+
+    @Override
+    public String getCTRLKey() {
+        return ctrlKey;
     }
 }
