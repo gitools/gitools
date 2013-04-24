@@ -161,7 +161,6 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         this.diagonal = diagonal;
     }
 
-    // IMatrixView adaptor methods
     @Override
     public IMatrix getContents() {
         return getData().get();

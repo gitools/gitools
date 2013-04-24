@@ -72,7 +72,7 @@ public class MirrorDimension extends HeatmapDimension {
 
     @Override
     public int getCellSize() {
-        return main.getCellSize();
+        return mirror.getCellSize();
     }
 
     @Override
