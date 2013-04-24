@@ -26,9 +26,10 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IMatrixViewDimension;
+import org.gitools.core.utils.EventUtils;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.core.utils.EventUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -63,6 +64,10 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @NotNull
     private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
+
+
+    private int rowSelStart;
+    private int colSelStart;
 
     public HeatmapPanel(Heatmap heatmap) {
         this.heatmap = heatmap;
@@ -369,4 +374,41 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             repaint();
         }
     }
+
+    public void shiftSelStart(IMatrixViewDimension dimension, int size) {
+        if (dimension == heatmap.getColumns()) {
+            this.setColSelStart(this.colSelStart + size);
+        } else {
+            this.setRowSelStart(this.rowSelStart + size);
+        }
+    }
+
+    public void setRowSelStart(int rowSelStart) {
+        if (rowSelStart > -1 && rowSelStart < heatmap.getColumns().size()) {
+            this.rowSelStart = rowSelStart;
+        } else if (rowSelStart >= heatmap.getRows().size()) {
+            this.rowSelStart = heatmap.getRows().size() - 1;
+        } else {
+            this.rowSelStart = 0;
+        }
+    }
+
+    public void setColSelStart(int colSelStart) {
+        if (colSelStart > -1 && colSelStart < heatmap.getColumns().size()) {
+            this.colSelStart = colSelStart;
+        } else if (colSelStart >= heatmap.getColumns().size()) {
+            this.colSelStart = heatmap.getColumns().size() - 1;
+        } else {
+            this.colSelStart = 0;
+        }
+    }
+
+    public int getRowSelStart() {
+        return rowSelStart;
+    }
+
+    public int getColSelStart() {
+        return colSelStart;
+    }
+
 }
