@@ -169,7 +169,9 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
                 }
 
                 double aggregatedValue = aggregator.aggregate(valueBuffer);
-                annotations.setAnnotation(headerDimension.getLabel(index), annotationLabel, Double.toString(aggregatedValue));
+                if (!Double.isNaN(aggregatedValue)) {
+                    annotations.setAnnotation(headerDimension.getLabel(index), annotationLabel, Double.toString(aggregatedValue));
+                }
             }
         }
 

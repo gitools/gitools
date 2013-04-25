@@ -125,7 +125,6 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
         paintCell(
                 decoration,
-                isSelected(index),
                 heatmapDimension.getGridColor(),
                 heatmapDimension.getGridSize(),
                 offset, index*(heatmapDimension.getCellSize() + heatmapDimension.getGridSize()),
@@ -140,14 +139,18 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected int firstVisibleIndex(Rectangle box, Rectangle clip) {
         int size = fullCellSize();
         int clipStart = clip.y - box.y;
-        return ((clipStart - size) / size) + 1;
+        int index = ((clipStart - size) / size);
+        index = (index < 0 ? 0 : index);
+        return index;
     }
 
     protected int lastVisibleIndex(Rectangle box, Rectangle clip) {
         int size = fullCellSize();
         int clipStart = clip.y - box.y;
         int clipEnd = clipStart + clip.height;
-        return ((clipEnd + size - 1) / size) - 1;
+        int index = ((clipEnd + size - 1) / size);
+        index = ((index + 1) > heatmapDimension.size() ? heatmapDimension.size() : index);
+        return index;
     }
 
 }

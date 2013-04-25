@@ -21,11 +21,10 @@
  */
 package org.gitools.core.matrix.filter;
 
+import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -84,29 +83,14 @@ public class MatrixViewAnnotationsFilter {
         }
     }
 
-    public static void filter(@NotNull IMatrixView matrixView, @NotNull FilterDimension dim, @NotNull String pattern, IAnnotations annMatrix, @NotNull List<String> values, boolean useRegex) {
+    public static void filter(HeatmapDimension heatmapDimension, @NotNull String pattern, @NotNull List<String> values, boolean useRegex) {
 
-        LabelProvider labelProvider = null;
-
-        switch (dim) {
-            case ROWS:
-                labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
-                if (!pattern.equalsIgnoreCase("${id}")) {
-                    labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
-                }
-
-                matrixView.getRows().setVisible(filterLabels(labelProvider, values, useRegex, matrixView.getRows().getVisible()));
-                break;
-
-            case COLUMNS:
-                labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
-                if (!pattern.equalsIgnoreCase("${id}")) {
-                    labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
-                }
-
-                matrixView.getColumns().setVisible(filterLabels(labelProvider, values, useRegex, matrixView.getColumns().getVisible()));
-                break;
+        LabelProvider labelProvider = new MatrixDimensionLabelProvider(heatmapDimension);
+        if (!pattern.equalsIgnoreCase("${id}")) {
+            labelProvider = new AnnotationsPatternProvider(heatmapDimension, pattern);
         }
+
+        heatmapDimension.setVisible(filterLabels(labelProvider, values, useRegex, heatmapDimension.getVisible()));
     }
 
     @NotNull

@@ -22,10 +22,10 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -81,18 +81,15 @@ public class FilterByAnnotations extends BaseAction {
             public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
-                IAnnotations am = null;
+                HeatmapDimension heatmapDimension;
                 FilterDimension dim = page.getFilterDimension();
-                switch (dim) {
-                    case ROWS:
-                        am = hm.getRows().getAnnotations();
-                        break;
-                    case COLUMNS:
-                        am = hm.getColumns().getAnnotations();
-                        break;
+                if (dim == FilterDimension.ROWS) {
+                    heatmapDimension = hm.getRows();
+                } else {
+                    heatmapDimension = hm.getColumns();
                 }
 
-                MatrixViewAnnotationsFilter.filter(matrixView, dim, page.getPattern(), am, page.getValues(), page.isUseRegexChecked());
+                MatrixViewAnnotationsFilter.filter(heatmapDimension, page.getPattern(), page.getValues(), page.isUseRegexChecked());
 
                 monitor.end();
             }

@@ -25,6 +25,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.core.heatmap.drawer.HeatmapBodyDrawer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
@@ -139,6 +140,25 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 d.draw(g, box2, clip.intersection(box2));
                 x += sz.width;
             }
+        }
+
+        if (!isPictureMode()) {
+
+            // Draw selected
+            g.setColor(HeatmapBodyDrawer.SELECTED_COLOR);
+            int cellSize = heatmapDimension.getCellSize() + heatmapDimension.getGridSize();
+            for (int s : heatmapDimension.getSelected()) {
+                g.fillRect(box.x, box.y + (s * cellSize), box.width, cellSize);
+            }
+
+            // Draw row lead
+            g.setColor(Color.DARK_GRAY);
+            int lead = heatmapDimension.getSelectionLead();
+            if (lead != -1) {
+                g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
+                g.fillRect(box.x, box.y + ((lead+1) * cellSize) - 1, box.width, 1);
+            }
+
         }
     }
 

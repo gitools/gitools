@@ -24,12 +24,13 @@ package org.gitools.core.heatmap.drawer;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
 public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
+
+    public static final Color SELECTED_COLOR = new Color(0,0,128,100);
 
     public HeatmapBodyDrawer(Heatmap heatmap) {
         super(heatmap);
@@ -83,17 +84,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                 Color rowsGridColor = heatmap.getRows().getGridColor();
                 Color columnsGridColor = heatmap.getColumns().getGridColor();
 
-                boolean selected = !isPictureMode() && (rowSelected || heatmap.getColumns().isSelected(col));
-
-                paintCell(decoration, selected, rowsGridColor, rowsGridSize, x - box.x, y - box.y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
+                paintCell(decoration, rowsGridColor, rowsGridSize, x - box.x, y - box.y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
 
                 /*
-                if (selected) {
-                    color = color.darker();
-                    rowsGridColor = rowsGridColor.darker();
-                    columnsGridColor = columnsGridColor.darker();
-                }
-
                 g.setColor(color);
 
                 g.fillRect(x, y, cellWidth - columnsGridSize, cellHeight - rowsGridSize);
@@ -107,29 +100,48 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                 g.fillRect(x + cellWidth - columnsGridSize, y, columnsGridSize, cellWidth - columnsGridSize);
                 */
 
-                if (!isPictureMode()) {
-                    if (row == leadRow && col == leadColumn) {
-                        g.setColor(ColorUtils.invert(color));
-                        g.drawRect(x, y, cellWidth - columnsGridSize - 1, cellHeight - rowsGridSize - 1);
-                    } else if (row == leadRow && col != leadColumn) {
-                        g.setColor(ColorUtils.invert(color));
-                        int x2 = x + cellWidth - columnsGridSize - 1;
-                        int y2 = y + cellHeight - rowsGridSize - 1;
-                        g.drawLine(x, y, x2, y);
-                        g.drawLine(x, y2, x2, y2);
-                    } else if (row != leadRow && col == leadColumn) {
-                        g.setColor(ColorUtils.invert(color));
-                        int x2 = x + cellWidth - columnsGridSize - 1;
-                        int y2 = y + cellHeight - rowsGridSize - 1;
-                        g.drawLine(x, y, x, y2);
-                        g.drawLine(x2, y, x2, y2);
-                    }
-                }
 
                 x += cellWidth;
             }
             y += cellHeight;
         }
+
+
+        if (!isPictureMode()) {
+
+
+
+            // Draw selected rows
+            g.setColor(SELECTED_COLOR);
+            int cellSize = heatmap.getRows().getCellSize() + heatmap.getRows().getGridSize();
+            for (int s : heatmap.getRows().getSelected()) {
+                g.fillRect(box.x, box.y + (s * cellSize), box.width, cellSize);
+            }
+
+            // Draw row lead
+            g.setColor(Color.DARK_GRAY);
+            int lead = heatmap.getRows().getSelectionLead();
+            if (lead != -1) {
+                g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
+                g.fillRect(box.x, box.y + ((lead+1) * cellSize) - 1, box.width, 1);
+            }
+
+            // Draw selected columns
+            g.setColor(SELECTED_COLOR);
+            cellSize = heatmap.getColumns().getCellSize() + heatmap.getColumns().getGridSize();
+            for (int s : heatmap.getColumns().getSelected()) {
+                g.fillRect(box.x  + (s * cellSize), box.y, cellSize, box.height);
+            }
+
+            // Draw column lead
+            g.setColor(Color.DARK_GRAY);
+            lead = heatmap.getColumns().getSelectionLead();
+            if (lead != -1) {
+                g.fillRect(box.x + (lead * cellSize) - 1, box.y, 1, box.height);
+                g.fillRect(box.x + ((lead+1) * cellSize) - 1, box.y, 1, box.height);
+            }
+        }
+
     }
 
     @NotNull

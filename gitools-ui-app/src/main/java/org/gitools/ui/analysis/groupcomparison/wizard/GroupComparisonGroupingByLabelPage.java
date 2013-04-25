@@ -28,7 +28,6 @@ import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -170,9 +169,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
         }
 
         //conversion to
-        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
-        IAnnotations am = hm.getColumns().getAnnotations();
-        labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
+        LabelProvider labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
         int[] visibleCols = hm.getColumns().getVisible();
         int[] groupCols = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
@@ -188,7 +185,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
         ArrayList<String> selected = new ArrayList<String>();
         LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
-            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
+            labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
         }
 
         int[] selectedIndices = hm.getColumns().getSelected();
@@ -212,7 +209,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
         ArrayList<String> unselected = new ArrayList<String>();
         LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
         if (!getPattern().equalsIgnoreCase("${id}")) {
-            labelProvider = new AnnotationsPatternProvider(labelProvider, hm.getColumns().getAnnotations(), getPattern());
+            labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
         }
 
         int[] selectedIndices = hm.getColumns().getSelected();

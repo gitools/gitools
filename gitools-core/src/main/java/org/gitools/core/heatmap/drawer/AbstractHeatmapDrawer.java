@@ -104,49 +104,46 @@ public abstract class AbstractHeatmapDrawer {
         return fontHeight <= (cellHeight - 2);
     }
 
-    /**
-     * Selection color.
-     *
-     * @param color the color
-     * @param selected the selected
-     * @return the color
-     */
-    protected static Color selectionColor(Color color, boolean selected) {
-        if (selected) {
-            return color.darker();
-        }
-        return color;
-    }
-
-    protected static void paintCell(Decoration decoration, boolean selected, Color gridColor, int gridSize, int offsetX, int offsetY, int width, int height, Graphics2D g, Rectangle box) {
+    protected static void paintCell(Decoration decoration, Color gridColor, int gridSize, int offsetX, int offsetY, int width, int height, Graphics2D g, Rectangle box) {
 
         int y = box.y + offsetY;
         int x = box.x + offsetX;
 
-        g.setColor(selectionColor(decoration.getBgColor(), selected));
+        g.setColor(decoration.getBgColor());
         g.fillRect(x, y, width, height);
 
-        g.setColor(selectionColor(gridColor, selected));
+        g.setColor(gridColor);
         g.fillRect(x, y + height, width, gridSize);
 
         String text = decoration.getText();
         if (!StringUtils.isEmpty(text)) {
 
-            int fontHeight = (int) g.getFont().getLineMetrics(text, g.getFontRenderContext()).getHeight();
+            Font font = g.getFont();
 
-            if (fontHeight <= height) {
-                int textWidth = g.getFontMetrics().stringWidth(text);
+            boolean isRotated = !font.getTransform().isIdentity();
 
-                if (textWidth > width) {
+            int fontHeight = (int) font.getSize2D();
+
+            if (fontHeight <= (isRotated ? width : height)) {
+
+                int textWidth = (int) g.getFontMetrics().getStringBounds(text, g).getWidth();
+
+                if (textWidth > (isRotated ? height : width)) {
                     text = "...";
                     fontHeight = 2;
-                    textWidth = g.getFontMetrics().stringWidth(text);
+                    textWidth = (int) g.getFontMetrics().getStringBounds(text, g).getWidth();
                 }
 
 
                 int leftMargin = ((width - textWidth) / 2) + 1;
                 int bottomMargin = ((height - fontHeight) / 2) + 1;
-                g.setColor(selectionColor(ColorUtils.bestForegroundColor(decoration.getBgColor()), selected));
+
+                if (isRotated) {
+                    leftMargin = ((width - fontHeight) / 2) + 1;
+                    bottomMargin = height - (((height - textWidth) / 2));
+                }
+
+                g.setColor(ColorUtils.bestForegroundColor(decoration.getBgColor()));
                 g.drawString(text, x + leftMargin, y + height - bottomMargin);
             }
         }

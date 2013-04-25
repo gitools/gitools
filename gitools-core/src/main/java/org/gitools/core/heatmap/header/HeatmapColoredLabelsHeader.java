@@ -75,7 +75,6 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         forceLabelColor = true;
         labelColor = Color.black;
 
-
         coloredLabels = new ColoredLabel[0];
     }
 
@@ -140,7 +139,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         if (dataColoredLabelIndices == null) {
             dataColoredLabelIndices = new HashMap<String, Integer>(coloredLabels.length);
             for (int i = 0; i < coloredLabels.length; i++) {
-                dataColoredLabelIndices.put(coloredLabels[i].getDisplayedLabel(), i);
+                dataColoredLabelIndices.put(coloredLabels[i].getValue(), i);
             }
         }
         return this.dataColoredLabelIndices;
@@ -166,8 +165,5 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
             ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
         }
 
-        dataColoredLabelIndices = new HashMap<String, Integer>();
-        for (String label : results.getDataLabels())
-            dataColoredLabelIndices.put(label, results.getClusterIndex(label));
     }
 }

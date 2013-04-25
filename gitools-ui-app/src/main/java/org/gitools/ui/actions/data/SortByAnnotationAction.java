@@ -94,14 +94,13 @@ public class SortByAnnotationAction extends BaseAction {
             return;
         }
 
-        final IMatrixView matrixView = hm;
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByLabel(matrixView, page.isApplyToRowsSelected(), page.getRowsPattern(), hm.getRows().getAnnotations(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), hm.getColumns().getAnnotations(), page.getColumnsDirection(), page.getColumnsNumeric());
+                MatrixViewSorter.sortByLabel(hm, page.isApplyToRowsSelected(), page.getRowsPattern(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), page.getColumnsDirection(), page.getColumnsNumeric());
 
                 monitor.end();
             }

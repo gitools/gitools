@@ -33,19 +33,21 @@ class MatrixAdapter extends AbstractMatrix {
 
     private HeatmapDecoratorHeader header;
 
-    private List<String> annotationLabels;
-
     public MatrixAdapter(HeatmapDecoratorHeader header) {
         this.header = header;
-        this.annotationLabels = header.getHeatmapDimension().getAnnotations().getLabels();
     }
 
     @Override
     public Object getValue(int[] position, int layerIndex) {
+
+        if (layerIndex == -1) {
+            return null;
+        }
+
         HeatmapDimension heatmapDimension = header.getHeatmapDimension();
         IAnnotations annotations = heatmapDimension.getAnnotations();
         String identifier = heatmapDimension.getLabel(position[0]);
-        String value = annotations.getAnnotation(identifier, annotationLabels.get(layerIndex));
+        String value = annotations.getAnnotation(identifier, getLabels().get(layerIndex));
 
         Double number;
         try {
@@ -58,7 +60,11 @@ class MatrixAdapter extends AbstractMatrix {
     }
 
     public int indexOf(String label) {
-        return annotationLabels.indexOf(label);
+        return getLabels().indexOf(label);
+    }
+
+    private List<String> getLabels() {
+        return header.getHeatmapDimension().getAnnotations().getLabels();
     }
 
     @Override

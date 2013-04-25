@@ -26,6 +26,7 @@ import com.jgoodies.binding.beans.Model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixLayer extends Model implements IMatrixLayer {
@@ -40,6 +41,7 @@ public class MatrixLayer extends Model implements IMatrixLayer {
     private String description;
 
     @XmlElement(name = "value-type")
+    @XmlJavaTypeAdapter(ClassXmlAdapter.class)
     private Class<?> valueClass;
 
     public MatrixLayer() {

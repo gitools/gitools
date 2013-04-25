@@ -35,7 +35,7 @@ import java.awt.event.KeyEvent;
 public class ShortcutsAction extends BaseAction {
 
     public ShortcutsAction() {
-        super("Show shortuts");
+        super("Show shortcuts");
         setDesc("See all the shortcuts for Gitools");
         setMnemonic(KeyEvent.VK_A);
         setDefaultEnabled(true);

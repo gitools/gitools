@@ -26,7 +26,10 @@ import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.utils.EventUtils;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
 

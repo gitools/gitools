@@ -27,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class BeanElementAdapter extends AbstractElementAdapter {
@@ -85,6 +87,13 @@ public class BeanElementAdapter extends AbstractElementAdapter {
                 properties.add(prop);
             }
         }
+
+        Collections.sort(properties, new Comparator<MatrixLayer>() {
+            @Override
+            public int compare(MatrixLayer o1, MatrixLayer o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
 
         setProperties(new MatrixLayers(properties));
     }

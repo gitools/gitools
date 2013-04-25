@@ -23,8 +23,8 @@ package org.gitools.ui.actions.data;
 
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -93,9 +93,6 @@ public class SortByMutualExclusionAction extends BaseAction {
                 aggrIndex = i;
             }
 
-
-        final IMatrixView matrixView = hm;
-
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
@@ -112,7 +109,7 @@ public class SortByMutualExclusionAction extends BaseAction {
                         break;
                 }
 
-                MatrixViewSorter.sortByMutualExclusion(matrixView, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS), monitor);
+                MatrixViewSorter.sortByMutualExclusion(hm, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS), monitor);
 
                 monitor.end();
             }

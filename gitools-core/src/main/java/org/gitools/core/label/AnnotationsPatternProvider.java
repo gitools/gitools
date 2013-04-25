@@ -21,19 +21,24 @@
  */
 package org.gitools.core.label;
 
+import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 
 public class AnnotationsPatternProvider implements LabelProvider {
 
     private final LabelProvider labelProvider;
-    private final TextPattern pat;
+    private final TextPattern pattern;
     private final AnnotationsResolver resolver;
 
-    public AnnotationsPatternProvider(LabelProvider labelProvider, IAnnotations am, String pattern) {
+    public AnnotationsPatternProvider(HeatmapDimension heatmapDimension, String pattern) {
+        this(new MatrixDimensionLabelProvider(heatmapDimension), heatmapDimension.getAnnotations(), pattern);
+    }
+
+    public AnnotationsPatternProvider(LabelProvider labelProvider, IAnnotations annMatrix, String pattern) {
         this.labelProvider = labelProvider;
-        this.pat = new TextPattern(pattern);
-        this.resolver = new AnnotationsResolver(labelProvider, am);
+        this.resolver = new AnnotationsResolver(labelProvider, annMatrix);
+        this.pattern = new TextPattern(pattern);
     }
 
     @Override
@@ -44,6 +49,6 @@ public class AnnotationsPatternProvider implements LabelProvider {
     @Override
     public String getLabel(int index) {
         resolver.setIndex(index);
-        return pat.generate(resolver);
+        return pattern.generate(resolver);
     }
 }

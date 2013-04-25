@@ -89,7 +89,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
             // Annotations
             String[] annotations = new String[labels.size()];
             for (String identifier : resource.getIdentifiers()) {
-                for (int i = 1; i < labels.size(); i++) {
+                for (int i = 0; i < labels.size(); i++) {
                     annotations[i] = resource.getAnnotation(identifier, labels.get(i));
                 }
                 writer.writePropertyList(identifier, annotations);

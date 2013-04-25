@@ -25,11 +25,10 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.label.AnnotationProvider;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.utils.color.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -37,41 +36,6 @@ import java.awt.font.LineMetrics;
 
 
 public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapTextLabelsHeader> {
-
-    protected static class AnnotationProvider implements LabelProvider {
-
-        private final LabelProvider labelProvider;
-        private final IAnnotations am;
-        private final String name;
-
-        public AnnotationProvider(LabelProvider labelProvider, IAnnotations am, String name) {
-            this.labelProvider = labelProvider;
-            this.am = am;
-            this.name = name;
-        }
-
-        @Override
-        public int getCount() {
-            return labelProvider.getCount();
-        }
-
-
-        @Override
-        public String getLabel(int index) {
-            if (am == null) {
-                return name;
-            }
-
-            String label = labelProvider.getLabel(index);
-            String annotation = am.getAnnotation(label, name);
-
-            if (annotation == null) {
-                return "";
-            }
-
-            return annotation;
-        }
-    }
 
     public HeatmapTextLabelsDrawer(Heatmap heatmap, HeatmapDimension dimension, HeatmapTextLabelsHeader header) {
         super(heatmap, dimension, header);
@@ -127,10 +91,10 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 labelProvider = matrixLabelProvider;
                 break;
             case ANNOTATION:
-                labelProvider = new AnnotationProvider(matrixLabelProvider, heatmapDimension.getAnnotations(), header.getLabelAnnotation());
+                labelProvider = new AnnotationProvider(heatmapDimension, header.getLabelAnnotation());
                 break;
             case PATTERN:
-                labelProvider = new AnnotationsPatternProvider(matrixLabelProvider, heatmapDimension.getAnnotations(), header.getLabelPattern());
+                labelProvider = new AnnotationsPatternProvider(heatmapDimension, header.getLabelPattern());
                 break;
         }
 
@@ -148,27 +112,11 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
                 bgColor = highlightingColor;
             }
 
-            boolean selected = !isPictureMode() && heatmapDimension.isSelected(index);
-
-            if (selected) {
-                bgColor = bgColor.darker();
-                fgColor = fgColor.darker();
-                gColor = gridColor.darker();
-            }
-
-            boolean lead = !isPictureMode() && (heatmapDimension.getSelectionLead() == index);
-
             g.setColor(gColor);
             g.fillRect(x, y + cellHeight, width, gridSize);
 
             g.setColor(bgColor);
             g.fillRect(x, y, width, cellHeight);
-
-
-            if (lead) {
-                g.setColor(ColorUtils.invert(bgColor));
-                g.drawRect(x, y, width, cellHeight - 1);
-            }
 
             g.setColor(fgColor);
             g.drawString(label, x + padding, y + fontOffset);

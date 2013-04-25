@@ -27,13 +27,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class AnnotationsResolver implements TextPattern.VariableValueResolver {
 
-    private final LabelProvider labelProvider;
-    private final IAnnotations am;
+    private LabelProvider labelProvider;
+    private IAnnotations am;
     private int index;
 
-    public AnnotationsResolver(LabelProvider labelProvider, IAnnotations am) {
+    public AnnotationsResolver(LabelProvider labelProvider, IAnnotations annotations) {
         this.labelProvider = labelProvider;
-        this.am = am;
+        this.am = annotations;
     }
 
     public void setIndex(int index) {

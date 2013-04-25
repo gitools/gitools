@@ -22,6 +22,7 @@
 package org.gitools.core.matrix.sort;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
@@ -44,23 +45,22 @@ import java.util.List;
 public abstract class MatrixViewSorter {
 
 
-    public static void sortByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor) {
+    public static void sortByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor) {
         if (applyToRows) {
-            sortRowsByMutualExclusion(matrixView, pattern, am, values, regExChecked, monitor);
+            sortRowsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor);
         }
 
         if (applyToColumns) {
-            sortColumnsByMutualExclusion(matrixView, pattern, am, values, regExChecked, monitor);
+            sortColumnsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor);
         }
     }
 
-    private static void sortRowsByMutualExclusion(@NotNull final IMatrixView matrixView, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor) {
+    private static void sortRowsByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor) {
 
-        int[] selColumns = matrixView.getColumns().getSelected();
+        int[] selColumns = heatmap.getColumns().getSelected();
 
-        LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
-        labelProvider = new AnnotationsPatternProvider(labelProvider, am, pattern);
-        int[] visibleRows = matrixView.getRows().getVisible();
+        LabelProvider labelProvider = new AnnotationsPatternProvider(heatmap.getRows(), pattern);
+        int[] visibleRows = heatmap.getRows().getVisible();
         int[] selRows = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, regExChecked, visibleRows);
 
 
@@ -70,14 +70,14 @@ public abstract class MatrixViewSorter {
             indices[i] = ArrayUtils.indexOf(visibleRows, selRows[i]);
 
         if (selColumns == null || selColumns.length == 0) {
-            selColumns = new int[matrixView.getColumns().size()];
+            selColumns = new int[heatmap.getColumns().size()];
             for (int i = 0; i < selColumns.length; i++)
                 selColumns[i] = i;
         }
 
         final int[] selectedColumns = selColumns;
 
-        Comparator<Integer> comparator = new MutualExclusionComparator(matrixView, numRows, selectedColumns, monitor);
+        Comparator<Integer> comparator = new MutualExclusionComparator(heatmap, numRows, selectedColumns, monitor);
 
         if (monitor.isCancelled()) {
             return;
@@ -106,10 +106,10 @@ public abstract class MatrixViewSorter {
         final int[] sortedVisibleRows = visibleRows;
 
 
-        matrixView.getRows().setVisible(sortedVisibleRows);
+        heatmap.getRows().setVisible(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
-        int index = matrixView.getLayers().getTopLayerIndex();
+        int index = heatmap.getLayers().getTopLayerIndex();
         criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
         monitor.begin("Sorting rows...", numRows);
@@ -122,7 +122,7 @@ public abstract class MatrixViewSorter {
 
             int[] exclusiveRow = new int[1];
             exclusiveRow[0] = i;
-            sortByValue(matrixView, matrixView.getColumns(), null, matrixView.getRows(), exclusiveRow, criteriaArray);
+            sortByValue(heatmap, heatmap.getColumns(), null, heatmap.getRows(), exclusiveRow, criteriaArray);
         }
 
     }
@@ -239,24 +239,24 @@ public abstract class MatrixViewSorter {
     }
 
     //TODO: sort by label with all selected properties
-    public static void sortByLabel(@NotNull IMatrixView matrixView, boolean sortRows, @NotNull String rowsPattern, IAnnotations rowsAnnMatrix, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, IAnnotations colsAnnMatrix, SortDirection colsDirection, boolean colsNumeric) {
+    public static void sortByLabel(@NotNull Heatmap heatmap, boolean sortRows, @NotNull String rowsPattern, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, SortDirection colsDirection, boolean colsNumeric) {
 
         if (sortRows) {
-            LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
+            LabelProvider labelProvider = new MatrixDimensionLabelProvider(heatmap.getRows());
             if (!rowsPattern.equalsIgnoreCase("${id}")) {
-                labelProvider = new AnnotationsPatternProvider(labelProvider, rowsAnnMatrix, rowsPattern);
+                labelProvider = new AnnotationsPatternProvider(heatmap.getRows(), rowsPattern);
             }
 
-            matrixView.getRows().setVisible(sortLabels(labelProvider, rowsDirection, matrixView.getRows().getVisible(), rowsNumeric));
+            heatmap.getRows().setVisible(sortLabels(labelProvider, rowsDirection, heatmap.getRows().getVisible(), rowsNumeric));
         }
 
         if (sortCols) {
-            LabelProvider labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
+            LabelProvider labelProvider = new MatrixDimensionLabelProvider(heatmap.getColumns());
             if (!colsPattern.equalsIgnoreCase("${id}")) {
-                labelProvider = new AnnotationsPatternProvider(labelProvider, colsAnnMatrix, colsPattern);
+                labelProvider = new AnnotationsPatternProvider(heatmap.getColumns(), colsPattern);
             }
 
-            matrixView.getColumns().setVisible(sortLabels(labelProvider, colsDirection, matrixView.getColumns().getVisible(), colsNumeric));
+            heatmap.getColumns().setVisible(sortLabels(labelProvider, colsDirection, heatmap.getColumns().getVisible(), colsNumeric));
         }
     }
 

@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.platform.os;
 
-public class GenericOSProperties implements OSProperties {
+public class GenericOsProperties implements OSProperties {
 
 
     String ctrlKey = "CTRL";
 
-    public GenericOSProperties() {
+    public GenericOsProperties() {
 
     }
 
