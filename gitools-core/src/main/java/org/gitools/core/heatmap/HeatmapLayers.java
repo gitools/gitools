@@ -86,7 +86,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     public void setTopLayer(HeatmapLayer topLayer) {
-        setTopLayerIndex(layers.indexOf(topLayer));
+        setTopLayerByIndex(layers.indexOf(topLayer));
     }
 
     @Override
@@ -94,8 +94,16 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return topLayer;
     }
 
+    public void setTopLayerById(String id) {
+        int layer = findId(id);
+
+        if (layer != -1) {
+            setTopLayerByIndex(layer);
+        }
+    }
+
     @Override
-    public void setTopLayerIndex(int layerIndex) {
+    public void setTopLayerByIndex(int layerIndex) {
         int old = this.topLayer;
         this.topLayer = layerIndex;
 
@@ -116,7 +124,13 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     @Override
     public int findId(String id) {
-        return layersIdToIndex.get(id);
+        Integer layer = layersIdToIndex.get(id);
+
+        if (layer == null) {
+            return -1;
+        }
+
+        return layer;
     }
 
     @Override

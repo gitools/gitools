@@ -36,7 +36,6 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Jim Robinson
  * @date 9/22/11
- * @noinspection ALL
  */
 public class HttpUtils {
 

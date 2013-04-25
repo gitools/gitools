@@ -60,7 +60,7 @@ public class GenericDetailsPanel extends AbstractDetailsPanel {
         add(new PropertiesBox(size.width, properties) {
             @Override
             protected void onMouseClick(PropertyItem propertyItem) {
-                getHeatmap().getLayers().setTopLayerIndex(propertyItem.getIndex());
+                getHeatmap().getLayers().setTopLayerByIndex(propertyItem.getIndex());
             }
         });
 

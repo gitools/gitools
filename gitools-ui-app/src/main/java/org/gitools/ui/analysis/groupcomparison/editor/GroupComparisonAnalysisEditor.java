@@ -26,8 +26,10 @@ import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.core.utils.CloneUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -36,7 +38,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.core.utils.CloneUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -154,6 +155,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
+                heatmap.getLayers().setTopLayerById("two-tail-p-value");
+                heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
+
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
                 if (analysis.getRowHeaders() != null) {

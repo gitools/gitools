@@ -24,6 +24,7 @@ package org.gitools.core.persistence;
 import org.gitools.core.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.core.persistence.locators.filters.IResourceFilter;
+import org.gitools.core.persistence.locators.filters.cache.CacheResourceManager;
 import org.gitools.core.persistence.locators.filters.gz.GzResourceFilter;
 import org.gitools.core.persistence.locators.filters.zip.ZipResourceFilter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -127,6 +128,9 @@ public class PersistenceManager implements Serializable {
 
         // Add filters
         IResourceLocator filteredResourceLocator = applyFilters(resourceLocator);
+
+        // Use cached locator if exists
+        filteredResourceLocator = CacheResourceManager.get().getCacheResourceLocator(filteredResourceLocator);
 
         // Configure the format
         if (resourceFormat.isConfigurable()) {

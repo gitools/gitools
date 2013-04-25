@@ -35,6 +35,8 @@ import java.util.regex.Pattern;
 
 public class UrlResourceLocator implements IResourceLocator {
 
+
+
     private static final Pattern ABSOLUTE_FILE_PATH = Pattern.compile("^(\\/.*|[a-zA-Z]\\:\\\\)");
     private static final Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+:\\/\\/.*");
     private URL url;
@@ -144,7 +146,7 @@ public class UrlResourceLocator implements IResourceLocator {
     public InputStream openInputStream() throws IOException {
 
         if (file == null) {
-            return url.openStream();
+            return getURL().openStream();
         }
 
         return new FileInputStream(file);

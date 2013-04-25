@@ -26,5 +26,5 @@ public interface IMatrixViewLayers<L extends IMatrixLayer> extends IMatrixLayers
 
     int getTopLayerIndex();
 
-    void setTopLayerIndex(int index);
+    void setTopLayerByIndex(int index);
 }

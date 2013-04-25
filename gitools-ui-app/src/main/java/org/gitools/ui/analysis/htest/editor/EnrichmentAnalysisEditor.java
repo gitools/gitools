@@ -27,6 +27,8 @@ import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.model.decorator.impl.BinaryDecorator;
+import org.gitools.core.model.decorator.impl.PValueDecorator;
+import org.gitools.core.model.decorator.impl.ZScoreDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.core.stats.test.factory.TestFactory;
@@ -190,6 +192,16 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     private static Heatmap createHeatmap(@NotNull EnrichmentAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
+
+        String testName = analysis.getTestConfig().get(TestFactory.TEST_NAME_PROPERTY);
+        if (TestFactory.ZSCORE_TEST.equals(testName)) {
+            heatmap.getLayers().setTopLayerById("z-score");
+            heatmap.getLayers().getTopLayer().setDecorator(new ZScoreDecorator());
+        } else {
+            heatmap.getLayers().setTopLayerById("right-p-value");
+            heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
+        }
+
         return heatmap;
     }
 

@@ -25,6 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.combination.CombinationAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.IconNames;
@@ -156,6 +157,8 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
                 try {
                     Heatmap heatmap = new Heatmap(analysis.getResults().get());
+                    heatmap.getLayers().setTopLayerById("right-p-value");
+                    heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
                     heatmap.setTitle(analysis.getTitle() + " (results)");
 
                     final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
