@@ -24,6 +24,7 @@ package org.gitools.core.heatmap;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.core.model.xml.IndexArrayXmlAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
@@ -501,5 +502,14 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     @Override
     public int getIndex(String label) {
         return matrixDimension.getIndex(label);
+    }
+
+    public void populateDetails(List<DetailsDecoration> details) {
+        details.add(new DetailsDecoration("Size", Integer.toString(size())));
+        for (HeatmapHeader header : headers) {
+            if (header.isVisible()) {
+                header.populateDetails(details, getSelectionLead());
+            }
+        }
     }
 }

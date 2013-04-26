@@ -44,8 +44,7 @@ import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
-import org.gitools.ui.heatmap.panel.details.AbstractDetailsPanel;
-import org.gitools.ui.heatmap.panel.details.GenericDetailsPanel;
+import org.gitools.ui.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.heatmap.panel.settings.SettingsPanel;
 import org.gitools.ui.platform.AppFrame;
@@ -71,7 +70,7 @@ public class HeatmapEditor extends AbstractEditor {
     private HeatmapPanel heatmapPanel;
     private ColorScalePanel colorScalePanel;
     private HeatmapSearchPanel searchPanel;
-    private AbstractDetailsPanel detailsView;
+    private DetailsPanel detailsPanel;
     private int lastMouseRow = -1;
     private int lastMouseCol = -1;
 
@@ -98,12 +97,12 @@ public class HeatmapEditor extends AbstractEditor {
         leftPanel.setAnimate(true);
         leftPanel.setUndecorated(true);
 
-        detailsView = new GenericDetailsPanel(heatmap);
+        detailsPanel = new DetailsPanel(heatmap);
         colorScalePanel = new ColorScalePanel(heatmap);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
-        GroupPanel details = new GroupPanel(GroupingType.fillMiddle, false, detailsView, emptyPanel, colorScalePanel);
+        GroupPanel details = new GroupPanel(GroupingType.fillMiddle, false, detailsPanel, emptyPanel, colorScalePanel);
         details.setUndecorated(true);
         details.setBackground(Color.WHITE);
         leftPanel.addPane("Details", details);

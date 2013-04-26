@@ -23,6 +23,10 @@ package org.gitools.core.heatmap.header;
 
 import org.gitools.core.clustering.ClusteringResults;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.label.AnnotationsPatternProvider;
+import org.gitools.core.label.LabelProvider;
+import org.gitools.core.model.decorator.Decoration;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +36,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapColoredLabelsHeader extends HeatmapHeader {
@@ -164,6 +168,46 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         for (int i = 0; i < results.getNumClusters(); i++) {
             ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
         }
+    }
 
+    @Override
+    public void populateDetails(List<DetailsDecoration> details, int index) {
+
+        DetailsDecoration decoration = new DetailsDecoration(getTitle(), "None");
+
+        if (index != -1) {
+            decorate(decoration, getColoredLabel(index));
+        }
+
+        details.add(decoration);
+    }
+
+    public ColoredLabel getColoredLabel(int index) {
+        ColoredLabel label = getAssignedColoredLabel(getLabelProvider().getLabel(index));
+
+        if (label == null) {
+            label = new ColoredLabel();
+        }
+
+        return label;
+    }
+
+    public void decorate(Decoration decoration, ColoredLabel cluster) {
+
+        Color clusterColor = cluster != null ? cluster.getColor() : getBackgroundColor();
+        decoration.setBgColor(clusterColor);
+        if (isLabelVisible()) {
+            decoration.setValue(cluster.getDisplayedLabel());
+        }
+
+    }
+
+    private transient LabelProvider labelProvider;
+    private LabelProvider getLabelProvider() {
+        if (labelProvider == null) {
+            labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getAnnotationPattern());
+        }
+
+        return labelProvider;
     }
 }

@@ -23,6 +23,7 @@ package org.gitools.core.heatmap.header;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
@@ -285,6 +287,9 @@ public abstract class HeatmapHeader extends Model {
     public void init(HeatmapDimension heatmapDimension) {
         this.setHeatmapDimension(heatmapDimension);
 
+    }
+
+    public void populateDetails(List<DetailsDecoration> details, int index) {
     }
 
 }

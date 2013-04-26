@@ -115,7 +115,7 @@ public abstract class AbstractHeatmapDrawer {
         g.setColor(gridColor);
         g.fillRect(x, y + height, width, gridSize);
 
-        String text = decoration.getText();
+        String text = decoration.getValue();
         if (!StringUtils.isEmpty(text)) {
 
             Font font = g.getFont();

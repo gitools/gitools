@@ -54,10 +54,11 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
             // Paint border
             decoration.setBgColor(Color.WHITE);
-            decoration.setText(null);
+            decoration.setValue(null);
             paintCell(decoration, index, 0, offset, g, box);
 
             for (String annotation : header.getAnnotationLabels()) {
+                decoration.reset();
                 header.decorate(decoration, index, annotation);
                 paintCell(decoration, index, offset, annotationWidth, g, box);
                 offset += annotationWidth + 1;

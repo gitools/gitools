@@ -55,7 +55,7 @@ public class AnnotationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         if (page == this.dataSourceAnnotationPage) {
 
             getHeader().setAnnotationLabels(Arrays.asList(dataSourceAnnotationPage.getSelectedAnnotation()));
-            getHeader().setTitle("Data: " + dataSourceAnnotationPage.getSelectedAnnotation());
+            getHeader().setTitle(dataSourceAnnotationPage.getSelectedAnnotation());
             getHeader().setSize(headerDimension.getCellSize());
 
             dataSourceAnnotationPage.setMessage(MessageStatus.INFO, dataSourceAnnotationPage.infoMessage);

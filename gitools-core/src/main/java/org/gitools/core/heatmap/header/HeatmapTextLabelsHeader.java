@@ -22,13 +22,19 @@
 package org.gitools.core.heatmap.header;
 
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.label.AnnotationProvider;
+import org.gitools.core.label.AnnotationsPatternProvider;
+import org.gitools.core.label.LabelProvider;
+import org.gitools.core.label.MatrixDimensionLabelProvider;
 import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import java.awt.*;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapTextLabelsHeader extends HeatmapHeader {
@@ -75,7 +81,6 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
     @Override
     public String getTitle() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Text: ");
         switch (labelSource) {
             case ID:
                 sb.append("ID");
@@ -129,6 +134,29 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
         String old = this.labelPattern;
         this.labelPattern = pattern;
         firePropertyChange(LABEL_PATTERN_CHANGED, old, pattern);
+    }
+
+    @Override
+    public void populateDetails(List<DetailsDecoration> details, int index) {
+        details.add(new DetailsDecoration(getTitle(), (index == -1 ? "None" : getLabelProvider().getLabel(index))));
+    }
+
+    private transient LabelProvider labelProvider;
+    public LabelProvider getLabelProvider() {
+
+        if (labelProvider == null) {
+            labelProvider = new MatrixDimensionLabelProvider(getHeatmapDimension());
+            switch (getLabelSource()) {
+                case ANNOTATION:
+                    labelProvider = new AnnotationProvider(getHeatmapDimension(), getLabelAnnotation());
+                    break;
+                case PATTERN:
+                    labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getLabelPattern());
+                    break;
+            }
+        }
+
+        return labelProvider;
     }
 
 }

@@ -177,7 +177,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
         getHeader().setAnnotationLabels(aggregationAnnotationLabels);
         getHeader().setSize(headerDimension.getCellSize() * aggregationAnnotationLabels.size());
-        getHeader().setTitle("Data: " + dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName());
+        getHeader().setTitle(dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName());
     }
 
 

@@ -199,7 +199,6 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
 
     @Override
     public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
-        decoration.reset();
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -223,7 +222,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
 
         decoration.setBgColor(color);
         if (isShowValue()) {
-            decoration.setText(fmt.format(value));
+            decoration.setValue(fmt.format(value));
         }
     }
 }

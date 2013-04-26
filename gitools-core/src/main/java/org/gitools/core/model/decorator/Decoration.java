@@ -28,58 +28,29 @@ public class Decoration implements Serializable {
 
     private static final long serialVersionUID = 5204451046972665249L;
 
-    public enum TextAlignment {
-        left, right, center
-    }
-
-    private String text;
-    private TextAlignment textAlign;
-    private String toolTip;
-    private Color fgColor;
+    private String value;
     private Color bgColor;
+
+    public Decoration(String value, Color bgColor) {
+        this.value = value;
+        this.bgColor = bgColor;
+    }
 
     public Decoration() {
         reset();
     }
 
     public void reset() {
-        this.text = "";
-        this.textAlign = TextAlignment.left;
-        this.toolTip = "";
-        this.fgColor = Color.BLACK;
+        this.value = "";
         this.bgColor = Color.WHITE;
     }
 
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public TextAlignment getTextAlign() {
-        return textAlign;
-    }
-
-    public void setTextAlign(TextAlignment textAlign) {
-        this.textAlign = textAlign;
-    }
-
-    public String getToolTip() {
-        return toolTip;
-    }
-
-    public void setToolTip(String toolTip) {
-        this.toolTip = toolTip;
-    }
-
-    public Color getFgColor() {
-        return fgColor;
-    }
-
-    public void setFgColor(Color fgColor) {
-        this.fgColor = fgColor;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public Color getBgColor() {

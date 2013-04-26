@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.heatmap.panel.details.boxes;
+package org.gitools.core.model.decorator;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,12 +29,11 @@ import java.io.Serializable;
 /**
  * The type Property item.
  */
-public class PropertyItem implements Serializable {
-    private final String name;
+public class DetailsDecoration extends Decoration implements Serializable {
+
     private final String description;
-    private final String value;
+    private final String name;
     private final String link;
-    private Color color;
 
     private int index;
     private boolean selectable = false;
@@ -46,7 +45,7 @@ public class PropertyItem implements Serializable {
      * @param name  the name
      * @param value the value
      */
-    public PropertyItem(@NotNull String name, @NotNull String value) {
+    public DetailsDecoration(@NotNull String name, @NotNull String value) {
         this(name, null, value);
     }
 
@@ -57,7 +56,7 @@ public class PropertyItem implements Serializable {
      * @param description the description
      * @param value       the value
      */
-    public PropertyItem(@NotNull String name, String description, @NotNull String value) {
+    public DetailsDecoration(@NotNull String name, String description, @NotNull String value) {
         this(name, description, value, null);
     }
 
@@ -69,10 +68,11 @@ public class PropertyItem implements Serializable {
      * @param value       the value
      * @param valueLink   the value link
      */
-    public PropertyItem(@NotNull String name, String description, @NotNull String value, String valueLink) {
-        this.name = name;
+    public DetailsDecoration(@NotNull String name, String description, @NotNull String value, String valueLink) {
+        super(value, Color.WHITE);
+
         this.description = description;
-        this.value = value;
+        this.name = name;
         this.link = valueLink;
     }
 
@@ -95,37 +95,12 @@ public class PropertyItem implements Serializable {
     }
 
     /**
-     * Gets value.
-     *
-     * @return the value
-     */
-    public String getValue() {
-        return value;
-    }
-
-    /**
      * Gets value link.
      *
      * @return the link
      */
     public String getLink() {
         return link;
-    }
-
-    /**
-     * Gets value color.
-     *
-     * @return the color
-     */
-    public Color getColor() {
-        return color;
-    }
-
-    @NotNull
-    public PropertyItem setColor(Color color) {
-        this.color = color;
-
-        return this;
     }
 
     /**

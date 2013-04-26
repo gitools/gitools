@@ -24,62 +24,59 @@ package org.gitools.ui.heatmap.panel.details.boxes;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.SwingUtils;
 import info.clearthought.layout.TableLayout;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.core.model.decorator.DetailsDecoration;
+import org.jdesktop.swingx.JXTaskPane;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Create a property table panel
  */
-public class PropertiesBox extends WebPanel {
+public class DetailsBox extends JXTaskPane {
     private static final int DEFAULT_MARGIN = 20;
-    private static final int MINIMUM_VALUE_LENGTH = 6;
+    private static final int MINIMUM_VALUE_LENGTH = 12;
 
-    private int nextProperty = 1;
-    private final int totalProperties;
-    private int maxValueLength;
+    private WebPanel container;
 
     /**
-     * @param maxWidth   Maximum width of the panel
-     * @param properties Properties to draw
+     * @param title     Optional title of the details table
      */
-    public PropertiesBox(int maxWidth, @NotNull Collection<PropertyItem> properties) {
-        this(maxWidth, properties.toArray(new PropertyItem[properties.size()]));
+    public DetailsBox(String title) {
+        super();
+        setTitle(title);
+        setSpecial(true);
+
+        this.getContentPane().setBackground(Color.WHITE);
+
+        this.container = new WebPanel();
+        getContentPane().setBackground(Color.white);
+        getContentPane().add(new WebScrollPane(container, false, false));
+        container.setBackground(Color.WHITE);
+        container.setBorder(null);
     }
 
-    /**
-     * @param maxWidth   Maximum width of the panel
-     * @param properties Properties to draw
-     */
-    private PropertiesBox(int maxWidth, PropertyItem... properties) {
-        this(maxWidth, null, properties);
-    }
+    public void draw(List<DetailsDecoration> details) {
 
-    /**
-     * @param maxWidth   Maximum width of the panel
-     * @param title      Optional title of the properties table
-     * @param properties Properties to draw
-     */
-    private PropertiesBox(int maxWidth, @Nullable String title, @NotNull PropertyItem... properties) {
-        maxValueLength = convertToCharacters(maxWidth) - maxValueLength(properties);
+        container.removeAll();
+
+        int maxValueLength = convertToCharacters(getWidth()) - maxValueLength(details);
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
-        this.totalProperties = properties.length;
-        setBackground(Color.WHITE);
 
         double columns[] = {5, TableLayout.PREFERRED, 10, TableLayout.FILL, 5};
-        double rows[] = new double[3 + totalProperties * 2];
-        rows[0] = (title == null) ? 2 : DEFAULT_MARGIN;
+        double rows[] = new double[3 + details.size() * 2];
+        rows[0] = 2;
         rows[1] = 2;
         for (int i = 2; i < rows.length - 1; i += 2) {
             rows[i] = TableLayout.PREFERRED;
@@ -88,37 +85,30 @@ public class PropertiesBox extends WebPanel {
         rows[rows.length - 1] = DEFAULT_MARGIN;
 
         TableLayout boxLayout = new TableLayout(new double[][]{columns, rows});
+
         boxLayout.setHGap(4);
         boxLayout.setVGap(4);
-        setLayout(boxLayout);
 
-        if (title != null) {
-            add(createNameLabel(new PropertyItem(title, null, null)), "0,0,3,0,C,B");
+        container.setLayout(boxLayout);
+        container.validate();
+
+        container.add(createVerticalSeparator(), "2,1,2," + (rows.length - 2));
+
+        int nextDetail = 1;
+        for (DetailsDecoration detail : details) {
+            int nextRow = nextDetail * 2;
+            container.add(createHorizontalSeparator(), "0," + (nextRow - 1) + ",4," + (nextRow - 1));
+            container.add(createNameLabel(detail), "1," + nextRow);
+            container.add(createValueLabel(detail, maxValueLength), "3," + nextRow);
+            nextDetail++;
+
+            if (nextDetail > details.size()) {
+                container.add(createHorizontalSeparator(), "0," + (nextRow + 1) + ",4," + (nextRow + 1));
+            }
         }
 
-        add(createVerticalSeparator(), "2,1,2," + (rows.length - 2));
+        container.repaint();
 
-        for (PropertyItem property : properties) {
-            addProperty(property);
-        }
-
-    }
-
-    /**
-     * Add a property to the table
-     *
-     * @param property The property to add
-     */
-    final void addProperty(@NotNull PropertyItem property) {
-        int nextRow = nextProperty * 2;
-        add(createHorizontalSeparator(), "0," + (nextRow - 1) + ",4," + (nextRow - 1));
-        add(createNameLabel(property), "1," + nextRow);
-        add(createValueLabel(property, maxValueLength), "3," + nextRow);
-        nextProperty++;
-
-        if (nextProperty > totalProperties) {
-            add(createHorizontalSeparator(), "0," + (nextRow + 1) + ",4," + (nextRow + 1));
-        }
     }
 
     @NotNull
@@ -136,7 +126,7 @@ public class PropertiesBox extends WebPanel {
     }
 
     @NotNull
-    private WebLabel createNameLabel(@NotNull PropertyItem property) {
+    private WebLabel createNameLabel(@NotNull DetailsDecoration property) {
         WebLabel label = new WebLabel(StringUtils.capitalize(property.getName()), JLabel.TRAILING);
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
@@ -158,7 +148,7 @@ public class PropertiesBox extends WebPanel {
         return label;
     }
 
-    private WebLabel createValueLabel(@NotNull PropertyItem property, int maxLength) {
+    private WebLabel createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
 
         String value = property.getValue();
 
@@ -187,9 +177,9 @@ public class PropertiesBox extends WebPanel {
             TooltipManager.setTooltip(label, value, TooltipWay.down, 0);
         }
 
-        if (property.getColor() != null) {
+        if (property.getBgColor() != null) {
             label.setDrawShade(true);
-            label.setShadeColor(property.getColor());
+            label.setShadeColor(property.getBgColor());
         }
 
         if (property.isSelectable()) {
@@ -204,11 +194,11 @@ public class PropertiesBox extends WebPanel {
         return Math.round(pixels / 7);
     }
 
-    private static int maxValueLength(@NotNull PropertyItem... properties) {
+    private static int maxValueLength(List<DetailsDecoration> details) {
         int max = MINIMUM_VALUE_LENGTH;
 
-        for (PropertyItem property : properties) {
-            int length = property.getName().length();
+        for (DetailsDecoration property : details) {
+            int length = property.getValue().length();
 
             if (length > max) {
                 max = length;
@@ -219,9 +209,9 @@ public class PropertiesBox extends WebPanel {
     }
 
     private class PropertyMouseListener extends MouseAdapter {
-        private PropertyItem item;
+        private DetailsDecoration item;
 
-        private PropertyMouseListener(PropertyItem item) {
+        private PropertyMouseListener(DetailsDecoration item) {
             this.item = item;
         }
 
@@ -231,7 +221,7 @@ public class PropertiesBox extends WebPanel {
         }
     }
 
-    protected void onMouseClick(PropertyItem propertyItem) {
+    protected void onMouseClick(DetailsDecoration propertyItem) {
         // Override
     }
 

@@ -108,7 +108,7 @@ public class ClusteringByValueAction extends BaseAction {
 
                         HeatmapColoredLabelsHeader header = hcl ? new HeatmapHierarchicalColoredLabelsHeader(hdim) : new HeatmapColoredLabelsHeader(hdim);
 
-                        header.setTitle("Clustering: " + wiz.getMethodName());
+                        header.setTitle(wiz.getMethodName());
 
                         if (hcl) {
                             HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;

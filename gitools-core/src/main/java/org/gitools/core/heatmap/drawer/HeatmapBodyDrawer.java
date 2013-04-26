@@ -77,6 +77,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                 if (heatmap.isDiagonal() && col < row) {
                     decoration.setBgColor(Color.WHITE);
                 } else {
+                    decoration.reset();
                     deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
                 }
 

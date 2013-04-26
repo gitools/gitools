@@ -28,6 +28,7 @@ import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixViewLayers;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DecoratorFactory;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.core.utils.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -145,5 +146,16 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public List<String> getLayerNames() {
         return layerNames;
+    }
+
+    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column) {
+
+        int i=0;
+        for (HeatmapLayer layer : layers) {
+            layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
+            i++;
+        }
+
+
     }
 }

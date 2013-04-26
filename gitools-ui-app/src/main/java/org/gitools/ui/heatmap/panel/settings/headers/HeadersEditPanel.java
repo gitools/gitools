@@ -210,7 +210,7 @@ public class HeadersEditPanel extends JDialog {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex > 1;
+            return columnIndex > 0;
         }
 
         @Override

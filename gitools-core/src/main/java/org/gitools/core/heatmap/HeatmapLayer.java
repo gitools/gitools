@@ -21,13 +21,16 @@
  */
 package org.gitools.core.heatmap;
 
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.core.utils.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
@@ -63,5 +66,21 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column, int layerIndex, boolean isSelected) {
+        DetailsDecoration decoration = new DetailsDecoration(getName(), "None");
+        decoration.setIndex(layerIndex);
+        decoration.setSelectable(true);
+        if (isSelected) {
+            decoration.setSelected(true);
+        }
+        if (row != -1 && column != -1) {
+            boolean previousShowValue = getDecorator().isShowValue();
+            getDecorator().setShowValue(true);
+            getDecorator().decorate(decoration, matrix, row, column, layerIndex);
+            getDecorator().setShowValue(previousShowValue);
+        }
+        details.add(decoration);
     }
 }

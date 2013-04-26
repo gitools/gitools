@@ -27,8 +27,6 @@ import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
 import org.gitools.core.model.decorator.Decoration;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,13 +61,13 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
         while (startGroupIndex < lastIndex) {
 
-            ColoredLabel groupLabel = getColoredLabel(startGroupIndex);
+            ColoredLabel groupLabel = header.getColoredLabel(startGroupIndex);
 
-            while (endGroupIndex + 1 < lastIndex && groupLabel.equals(getColoredLabel(endGroupIndex + 1))) {
+            while (endGroupIndex + 1 < lastIndex && groupLabel.equals(header.getColoredLabel(endGroupIndex + 1))) {
                 endGroupIndex++;
             }
 
-            decorate(decoration, groupLabel);
+            header.decorate(decoration, groupLabel);
 
             int fullSize = getHeatmapDimension().getCellSize() + getHeatmapDimension().getGridSize();
 
@@ -88,36 +86,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
 
         g.setFont(previousFont);
-    }
-
-    private ColoredLabel getColoredLabel(int index) {
-        ColoredLabel label = getHeader().getAssignedColoredLabel(getLabelProvider().getLabel(index));
-
-        if (label == null) {
-            label = new ColoredLabel();
-        }
-
-        return label;
-    }
-
-    private void decorate(Decoration decoration, ColoredLabel cluster) {
-
-        Color clusterColor = cluster != null ? cluster.getColor() : getHeader().getBackgroundColor();
-        decoration.setBgColor(clusterColor);
-        if (getHeader().isLabelVisible()) {
-            decoration.setText(cluster.getDisplayedLabel());
-        }
-
-    }
-
-    private transient LabelProvider labelProvider;
-
-    private LabelProvider getLabelProvider() {
-        if (labelProvider == null) {
-            labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getHeader().getAnnotationPattern());
-        }
-
-        return labelProvider;
     }
 
     private Font rotateFont(Graphics2D g) {

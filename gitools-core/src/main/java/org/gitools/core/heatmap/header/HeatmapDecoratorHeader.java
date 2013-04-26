@@ -24,7 +24,7 @@ package org.gitools.core.heatmap.header;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.core.model.decorator.DetailsDecoration;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -113,36 +113,31 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         return matrixAdapter;
     }
 
-
     @Override
-    public void updateLargestLabelLength(@NotNull Component component) {
-        // Get largest label:
+    public void populateDetails(List<DetailsDecoration> details, int index) {
 
-        /*TODO
-        int rows = heatmap.getRows().size();
-        int cols = heatmap.getColumns().size();
-        IMatrixView data = heatmap;
+        for (String annotation : getAnnotationLabels()) {
+            int equal = annotation.indexOf('=');
 
-        // Formatter for value labels
-        GenericFormatter gf = new GenericFormatter();
-        FontMetrics fm = component.getFontMetrics(this.font);
+            String label = "";
 
-        int largestLabelLenght = 0;
-        for (int row = 0; row < rows; row++)
-        {
-            for (int col = 0; col < cols; col++)
-            {
-                Double element = (Double) data.getCellValue(row, col, data.getLayers().getTopLayerIndex());
-                String valueLabel = gf.format(element);
-                int length = fm.stringWidth(valueLabel);
-                if (length > largestLabelLenght)
-                {
-                    largestLabelLenght = length;
-                }
+            if (equal != -1) {
+                label = " (" + annotation.substring(equal+1).trim() + ")";
             }
+
+            DetailsDecoration decoration = new DetailsDecoration(getTitle() + label, "None");
+
+            if (index != -1) {
+                decorate(decoration, index, annotation);
+            }
+
+            details.add(decoration);
         }
-        setLargestLabelLength(largestLabelLenght);
-        */
+
     }
 
+    @Override
+    protected void updateLargestLabelLength(Component component) {
+
+    }
 }
