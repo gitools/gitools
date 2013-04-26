@@ -100,21 +100,54 @@ class HeatmapKeyboardController extends KeyAdapter {
 
                 case KeyEvent.VK_R:
                     ip.savePressedState(e);
-                    switchLeadRowSelection(e);
+                    if (ip.isKeyPressed(KeyEvent.VK_U)) {
+                        unselectRows();
+                    } else {
+                        switchLeadRowSelection(e);
+                    }
                     break;
 
                 case KeyEvent.VK_C:
                     ip.savePressedState(e);
-                    switchLeadColSelection(e);
+                    if (ip.isKeyPressed(KeyEvent.VK_U)) {
+                        unselectColumns();
+                    } else {
+                        switchLeadColSelection(e);
+                    }
                     break;
 
                 case KeyEvent.VK_B:
                     ip.savePressedState(e);
-                    switchLeadColSelection(e);
-                    switchLeadRowSelection(e);
+                    if (ip.isKeyPressed(KeyEvent.VK_U)) {
+                        unselectColumns();
+                        unselectRows();
+                    } else {
+                        switchLeadColSelection(e);
+                        switchLeadRowSelection(e);
+                    }
+                    break;
+
+                case KeyEvent.VK_U:
+                    ip.savePressedState(e);
+                    break;
+
+                case KeyEvent.VK_A:
+                    ip.savePressedState(e);
+                    if (ip.isKeyPressed(KeyEvent.VK_U)) {
+                        unselectColumns();
+                        unselectRows();
+                    }
                     break;
             }
         }
+    }
+
+    private void unselectRows() {
+        mv.getRows().setSelected(new int[]{});
+    }
+
+    private void unselectColumns() {
+        mv.getColumns().setSelected(new int[]{});
     }
 
     private void moveLead(KeyEvent e) {

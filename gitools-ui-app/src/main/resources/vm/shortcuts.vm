@@ -77,6 +77,16 @@
         <td>Lead in heatmap</td>
     </tr>
     <tr>
+        <td class="shortcut">U + C/R/B</td>
+        <td>Unselect either all columns/rows/both</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">U + A</td>
+        <td>Unselect all</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
         <td class="shortcut">Backspace or Delete</td>
         <td>Hide rows/columns</td>
         <td>Rows/Columns selected</td>
@@ -96,7 +106,11 @@
         <td>Move selected columns/rows</td>
         <td>Lead in heatmap</td>
     </tr>
-
+    <tr>
+        <td class="shortcut">$shiftKey + click on cell</td>
+        <td>Select square</td>
+        <td>Lead in heatmap</td>
+    </tr>
 
     <tr>
         <td class="subtitle" colspan="3">Navigation</td>
