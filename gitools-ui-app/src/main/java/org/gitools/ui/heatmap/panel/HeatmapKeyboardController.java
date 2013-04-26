@@ -27,9 +27,9 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.Direction;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
+import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
@@ -38,6 +38,10 @@ class HeatmapKeyboardController extends KeyAdapter {
 
     final HeatmapPanel panel;
     private final Heatmap hm;
+    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
+    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
+    private int altMask = AppFrame.getOsProperties().getAltMask();
+    private int metaMask = AppFrame.getOsProperties().getMetaMask();
 
 
     //alphanumerics used as shortcuts
@@ -81,9 +85,9 @@ class HeatmapKeyboardController extends KeyAdapter {
         int key = e.getKeyCode();
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
-        boolean altDown = ((modifiers & InputEvent.ALT_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
+        boolean altDown = ((modifiers & altMask) != 0);
 
         if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN) {
 
@@ -149,8 +153,8 @@ class HeatmapKeyboardController extends KeyAdapter {
     private void moveLead(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
         IMatrixView mv = hm;
         int row = mv.getRows().getSelectionLead();
@@ -332,8 +336,8 @@ class HeatmapKeyboardController extends KeyAdapter {
         }
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
         boolean horizontal = (row == -1 && col >= 0);
 
@@ -383,8 +387,8 @@ class HeatmapKeyboardController extends KeyAdapter {
     private void switchLeadRowSelection(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
         if (ctrlDown) {
             return;
         }
@@ -414,8 +418,8 @@ class HeatmapKeyboardController extends KeyAdapter {
     private void switchLeadColSelection(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
         if (ctrlDown) {
             return;
         }

@@ -24,6 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -54,6 +55,11 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private int keyPressed;
 
     private HeatmapKeyboardController keyboardController;
+
+    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
+    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
+    private int altMask = AppFrame.getOsProperties().getAltMask();
+    private int metaMask = AppFrame.getOsProperties().getMetaMask();
 
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
@@ -98,8 +104,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     @Override
     public void mousePressed(@NotNull MouseEvent e) {
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
         mode = shiftDown || ctrlDown ? Mode.moving : Mode.selecting;
         switch (mode) {
@@ -156,18 +162,18 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
         mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
 
         if (mode == Mode.scrolling && !shiftDown) {
             HeatmapPosition pos = panel.getScrollPosition();
             panel.setScrollRowPosition(pos.row + unitsToScroll);
-        } else if(mode == Mode.scrolling && shiftDown) {
+        } else if (mode == Mode.scrolling && shiftDown) {
             HeatmapPosition pos = panel.getScrollPosition();
             panel.setScrollColumnPosition(pos.column + unitsToScroll);
-        } else if (mode == Mode.zooming){
+        } else if (mode == Mode.zooming) {
 
             if (keyPressed != KeyEvent.VK_R) {
                 int width = heatmap.getColumns().getCellSize() + unitsToScroll * -1;

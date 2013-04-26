@@ -30,7 +30,6 @@ import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
-import org.gitools.ui.platform.os.GenericOsProperties;
 import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.os.OSXProperties;
 import org.gitools.ui.settings.Settings;
@@ -62,7 +61,7 @@ public class Main {
         if (OperatingSystemUtils.isMac()) {
             osProperties = new OSXProperties(IconUtils.getImageResource(IconNames.logoNoText));
         } else {
-            osProperties = new GenericOsProperties();
+            osProperties = new OSProperties();
         }
 
 

@@ -25,19 +25,41 @@ import com.apple.eawt.Application;
 
 import java.awt.*;
 
-public class OSXProperties implements OSProperties {
-
-
-    String ctrlKey = "⌘";
+public class OSXProperties extends OSProperties {
 
     public OSXProperties(Image dockLogo) {
-
+        super();
         Application osxApp = Application.getApplication();
         osxApp.setDockIconImage(dockLogo);
+
+        metaKey = "⌘";
+        altKey = "⌥";
+    }
+
+
+    @Override
+    public int getCtrlMask() {
+        //fix mapping of OSX keyboard
+        return metaMask;
     }
 
     @Override
-    public String getCTRLKey() {
+    public String getCtrlKey() {
+        //fix mapping of OSX keyboard
+        return metaKey;
+    }
+
+    @Override
+    public String getMetaKey() {
+        //fix mapping of OSX keyboard
         return ctrlKey;
     }
+
+    @Override
+    public int getMetaMask() {
+        //fix mapping of OSX keyboard
+        return ctrlMask;
+    }
+
+
 }

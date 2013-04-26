@@ -21,8 +21,55 @@
  */
 package org.gitools.ui.platform.os;
 
+import java.awt.event.InputEvent;
 
-public interface OSProperties {
+public class OSProperties {
 
-    String getCTRLKey();
+    String ctrlKey = "CTRL";
+    String shiftKey = "⇧";
+    String altKey = "ALT";
+    String metaKey = "META";
+    protected int ctrlMask = InputEvent.CTRL_MASK;
+    protected int shiftMask = InputEvent.SHIFT_MASK;
+    protected int metaMask = InputEvent.META_MASK;
+    protected int altMask = InputEvent.ALT_MASK;
+
+
+    public OSProperties() {
+
+    }
+
+
+    public String getShiftKey() {
+        return shiftKey;
+    }
+
+    public String getAltKey() {
+        return altKey;
+    }
+
+    public String getMetaKey() {
+        return metaKey;
+    }
+
+
+    public String getCtrlKey() {
+        return ctrlKey;
+    }
+
+    public int getCtrlMask() {
+        return ctrlMask;
+    }
+
+    public int getShiftMask() {
+        return shiftMask;
+    }
+
+    public int getAltMask() {
+        return altMask;
+    }
+
+    public int getMetaMask() {
+        return metaMask;
+    }
 }

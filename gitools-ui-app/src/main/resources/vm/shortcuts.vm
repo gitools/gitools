@@ -72,7 +72,7 @@
         <td>Lead in heatmap</td>
     </tr>
     <tr>
-        <td class="shortcut">SHIFT + C/R</td>
+        <td class="shortcut">$shiftKey + C/R</td>
         <td>Add to selection columns/rows from last selection on</td>
         <td>Lead in heatmap</td>
     </tr>
@@ -97,7 +97,7 @@
         <td></td>
     </tr>
     <tr>
-        <td class="shortcut">Page Up/Down + Shift</td>
+        <td class="shortcut">Page Up/Down + $shiftKey</td>
         <td>Lead jumps left/right</td>
         <td></td>
     </tr>

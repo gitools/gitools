@@ -25,6 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.panel.TemplatePanel;
 
 import javax.swing.*;
@@ -42,14 +43,14 @@ public class ShortcutsDialog extends JDialog {
 
     private final String appName;
     private final String appVersion;
-    private final String ctrlKey;
+    final OSProperties osProperties = AppFrame.getOsProperties();
+
 
     public ShortcutsDialog(JFrame owner) {
         super(owner);
 
         appName = AppFrame.getAppName();
         appVersion = AppFrame.getAppVersion();
-        ctrlKey = AppFrame.getOsProperties().getCTRLKey();
 
         setModal(true);
         setTitle(appName + " shortcuts");
@@ -74,7 +75,10 @@ public class ShortcutsDialog extends JDialog {
             VelocityContext context = new VelocityContext();
             context.put("appName", appName);
             context.put("appVersion", appVersion);
-            context.put("ctrlKey", ctrlKey);
+            context.put("ctrlKey", osProperties.getCtrlKey());
+            context.put("altKey", osProperties.getAltKey());
+            context.put("metaKey", osProperties.getMetaKey());
+            context.put("shiftKey", osProperties.getShiftKey());
             creditsPane.setContext(context);
             creditsPane.render();
         } catch (Exception ex) {
