@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import com.google.common.primitives.Ints;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IMatrixViewDimension;
+import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -36,7 +36,6 @@ import java.util.List;
 
 public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
-    private final Heatmap heatmap;
     private final JViewport viewPort;
     private final HeatmapHeaderPanel headerPanel;
     @NotNull
@@ -48,22 +47,33 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int selLast;
     private Point startPoint;
     private Point startScrollValue;
+    private final IMatrixViewDimension dimension;
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
 
-    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel, boolean horizontal) {
-        this.heatmap = panel.getHeatmap();
+    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
+    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
+    private int altMask = AppFrame.getOsProperties().getAltMask();
+    private int metaMask = AppFrame.getOsProperties().getMetaMask();
+
+    private HeatmapPanelInputProcessor ip;
+
+    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel,
+                                        HeatmapPanelInputProcessor inputProcessor,
+                                        boolean horizontal) {
         this.viewPort = horizontal ? panel.getColumnViewPort() : panel.getRowViewPort();
         this.headerPanel = horizontal ? panel.getColumnPanel() : panel.getRowPanel();
         this.panel = panel;
         this.horizontal = horizontal;
+        this.dimension = horizontal ? panel.getHeatmap().getColumns() : panel.getHeatmap().getRows();
 
         viewPort.addMouseListener(this);
         viewPort.addMouseMotionListener(this);
         viewPort.addMouseWheelListener(this);
 
         this.mode = Mode.none;
+        this.ip = inputProcessor;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -114,8 +124,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             mode = Mode.movingSelected;
         } else {
             int modifiers = e.getModifiers();
-            boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-            boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+            boolean shiftDown = ((modifiers & shiftMask) != 0);
+            boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
             mode = shiftDown && ctrlDown ? Mode.moving : Mode.selecting;
         }
@@ -140,14 +150,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         if (!isValidIndex(index)) {
             return false;
         }
-
-        IMatrixView matrixView = heatmap;
-        if (horizontal) {
-            return matrixView.getColumns().isSelected(index);
-        }
-
-        return matrixView.getRows().isSelected(index);
-
+        return dimension.isSelected(index);
     }
 
     @Override
@@ -161,14 +164,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private void setLeading(@NotNull MouseEvent e) {
         int index = convertToIndex(e);
         if (isValidIndex(index)) {
-            IMatrixView matrixView = heatmap;
-            if (horizontal) {
-                matrixView.getColumns().setSelectionLead(index);
-                panel.setColSelStart(index);
-            } else {
-                matrixView.getRows().setSelectionLead(index);
-                panel.setRowSelStart(index);
-            }
+            dimension.setSelectionLead(index);
+            //horizontal ? ip.setColSelStart(index) : ip.setRowSelStart(index);
         }
     }
 
@@ -214,10 +211,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-        if (!shiftDown && !ctrlDown) {
+        mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
+
+        if (mode == Mode.scrolling) {
             HeatmapPosition pos = panel.getScrollPosition();
 
             if (horizontal) {
@@ -227,18 +226,26 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             }
         } else {
 
-            point = e.getPoint();
-            Point viewPosition = viewPort.getViewPosition();
-            point.translate(viewPosition.x, viewPosition.y);
+            if (ip.isKeyPressed(KeyEvent.VK_C) ||
+                    ip.isKeyPressed(KeyEvent.VK_R)) {
+                ip.zoomHeatmap(unitsToScroll);
+            }  else {
 
-            HeatmapHeader header = headerPanel.getHeaderDrawer().getHeader(point);
+                point = e.getPoint();
+                Point viewPosition = viewPort.getViewPosition();
+                point.translate(viewPosition.x, viewPosition.y);
 
-            int size = header.getSize() + unitsToScroll * -2;
-            if (size < 5) {
-                size = 5;
+                HeatmapHeader header = headerPanel.getHeaderDrawer().getHeader(point);
+
+                int size = header.getSize() + unitsToScroll * -2;
+                if (size < 10) {
+                    size = 10;
+                }
+                header.setSize(size);
+                header.getHeatmapDimension().updateHeaders();
+
             }
-            header.setSize(size);
-            header.getHeatmapDimension().updateHeaders();
+
         }
     }
 
@@ -256,17 +263,16 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             int indexDiff = selectionMoveLastIndex - index;
             selectionMoveLastIndex = index;
 
-            IMatrixView matrixView = heatmap;
             if (indexDiff > 0) {
                 if (horizontal) {
                     for (int i = 0; i < indexDiff; i++) {
-                        matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
-                        panel.shiftSelStart(matrixView.getColumns(), -1);
+                        dimension.move(org.gitools.core.matrix.model.Direction.LEFT, dimension.getSelected());
+                        ip.shiftSelStart(dimension, -1);
                     }
                 } else {
                     for (int i = 0; i < indexDiff; i++) {
-                        matrixView.getRows().move(org.gitools.core.matrix.model.Direction.UP, matrixView.getRows().getSelected());
-                        panel.shiftSelStart(matrixView.getRows(), -1);
+                        dimension.move(org.gitools.core.matrix.model.Direction.UP, dimension.getSelected());
+                        ip.shiftSelStart(dimension, -1);
                     }
                 }
             }
@@ -274,13 +280,13 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             if (indexDiff < 0) {
                 if (horizontal) {
                     for (int i = 0; i > indexDiff; i--) {
-                        matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
-                        panel.shiftSelStart(matrixView.getColumns(), 1);
+                        dimension.move(org.gitools.core.matrix.model.Direction.RIGHT, dimension.getSelected());
+                        ip.shiftSelStart(dimension, 1);
                     }
                 } else {
                     for (int i = 0; i > indexDiff; i--) {
-                        matrixView.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
-                        panel.shiftSelStart(matrixView.getRows(), 1);
+                        dimension.move(org.gitools.core.matrix.model.Direction.DOWN, dimension.getSelected());
+                        ip.shiftSelStart(dimension, 1);
                     }
                 }
             }
@@ -301,16 +307,15 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
         boolean indexChanged = (selLast != index);
         if (indexChanged) {
-            selStart = horizontal ? panel.getColSelStart() : panel.getRowSelStart();
+            selStart = horizontal ? ip.getColSelStart() : ip.getRowSelStart();
             setLeading(e);
         }
         selLast = index;
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-        boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-        IMatrixView mv = heatmap;
 
         int[] sel = new int[0];
 
@@ -318,9 +323,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             selStart = selEnd = index;
             sel = new int[]{index};
         } else if (ctrlDown) {
-            boolean selected = horizontal ? mv.getColumns().isSelected(index) : mv.getRows().isSelected(index);
+            boolean selected = dimension.isSelected(index);
 
-            int[] prevSel = horizontal ? mv.getColumns().getSelected() : mv.getRows().getSelected();
+            int[] prevSel = dimension.getSelected();
 
             if (dragging && !indexChanged) {
                 sel = prevSel;
@@ -344,8 +349,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             }
         } else if (dragging) {
 
-            int[] prevSel = horizontal ? heatmap.getColumns().getSelected() :
-                    heatmap.getRows().getSelected();
+            int[] prevSel = dimension.getSelected();
             selStart = prevSel[0];
             selEnd = prevSel[prevSel.length - 1];
 
@@ -359,45 +363,28 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 sel[i - start] = i;
 
         } else if (shiftDown) {
-            selEnd = index;
-            //selStart = horizontal ? panel.getColSelStart() : panel.getRowSelStart();
-            int[] prevSel = horizontal ? heatmap.getColumns().getSelected() :
-                    heatmap.getRows().getSelected();
 
-            if (selEnd < selStart) {
-                int temp = selEnd;
-                selEnd = selStart;
-                selStart = temp;
-            }
-            Set<Integer> newSet = new HashSet<Integer>();
-            for (int i = 0; i < prevSel.length; i++) {
-                newSet.add(prevSel[i]);
-            }
-            for (int i = selStart; i <= selEnd; i++) {
-                newSet.add(i);
-            }
-
-            sel = Ints.toArray(newSet);
+            ip.addToSelected(selStart,index,dimension);
+            return;
 
         }
 
         if (horizontal) {
-            mv.getColumns().setSelected(sel);
+            dimension.setSelected(sel);
         } else {
-            mv.getRows().setSelected(sel);
+            dimension.setSelected(sel);
         }
 
     }
 
     private int getIndexCount() {
-        return horizontal ? heatmap.getColumns().size() : heatmap.getRows().size();
+        return dimension.size();
     }
 
     private boolean isValidIndex(int index) {
         if (index < 0 || index >= getIndexCount()) {
             return false;
         }
-
         return true;
     }
 
@@ -419,7 +406,4 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
     }
 
-    private enum Mode {
-        none, selecting, moving, movingSelected
-    }
 }

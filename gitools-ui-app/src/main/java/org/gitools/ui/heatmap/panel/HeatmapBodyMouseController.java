@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
+import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,17 +35,13 @@ import java.util.List;
 
 public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
-    private enum Mode {
-        none, selecting, moving, zooming, scrolling
-    }
-
-    private final Heatmap heatmap;
+    private final IMatrixView heatmap;
     private final JViewport viewPort;
     @NotNull
     private final HeatmapPanel panel;
     private final HeatmapBodyPanel bodyPanel;
 
-    private Mode mode;
+    private HeatmapPanelInputProcessor.Mode mode;
     private Point point;
     private HeatmapPosition coord;
 
@@ -55,6 +51,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private int keyPressed;
 
     private HeatmapKeyboardController keyboardController;
+    private HeatmapPanelInputProcessor ip;
 
     private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
     private int shiftMask = AppFrame.getOsProperties().getShiftMask();
@@ -64,7 +61,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
-    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel) {
+    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel, @NotNull HeatmapPanelInputProcessor inputProcessor) {
         this.heatmap = panel.getHeatmap();
         this.viewPort = panel.getBodyViewPort();
         this.bodyPanel = panel.getBodyPanel();
@@ -75,7 +72,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         viewPort.addMouseWheelListener(this);
 
         panel.addKeyListener(this);
-        keyboardController = new HeatmapKeyboardController(panel);
+        this.ip = inputProcessor;
+        keyboardController = new HeatmapKeyboardController(heatmap, inputProcessor);
 
         this.mode = Mode.none;
     }
@@ -167,31 +165,15 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
         mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
 
-        if (mode == Mode.scrolling && !shiftDown) {
-            HeatmapPosition pos = panel.getScrollPosition();
-            panel.setScrollRowPosition(pos.row + unitsToScroll);
-        } else if (mode == Mode.scrolling && shiftDown) {
-            HeatmapPosition pos = panel.getScrollPosition();
-            panel.setScrollColumnPosition(pos.column + unitsToScroll);
+        if (mode == Mode.scrolling) {
+            ip.scroll(unitsToScroll, shiftDown);
+
         } else if (mode == Mode.zooming) {
 
-            if (keyPressed != KeyEvent.VK_R) {
-                int width = heatmap.getColumns().getCellSize() + unitsToScroll * -1;
-                if (width < 1) {
-                    width = 1;
-                }
-                heatmap.getColumns().setCellSize(width);
-            }
-
-            if (keyPressed != KeyEvent.VK_C) {
-                int height = heatmap.getRows().getCellSize() + unitsToScroll * -1;
-                if (height < 1) {
-                    height = 1;
-                }
-                heatmap.getRows().setCellSize(height);
-            }
+            ip.zoomHeatmap(unitsToScroll);
         }
     }
+
 
     private void updateSelection(@NotNull MouseEvent e) {
         point = e.getPoint();
@@ -199,11 +181,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         point.translate(viewPosition.x, viewPosition.y);
         coord = bodyPanel.getDrawer().getPosition(point);
 
-        IMatrixView mv = heatmap;
-        mv.getRows().setSelectionLead(coord.row);
-        mv.getColumns().setSelectionLead(coord.column);
-        mv.getRows().setSelected(new int[0]);
-        mv.getColumns().setSelected(new int[0]);
+        ip.setLead(coord.row,coord.column);
     }
 
     private void updateScroll(@NotNull MouseEvent e, boolean dragging) {

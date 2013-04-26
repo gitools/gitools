@@ -78,8 +78,23 @@
     </tr>
     <tr>
         <td class="shortcut">Backspace or Delete</td>
-        <td>Hiding rows/columns</td>
-        <td>Selected rows/columns</td>
+        <td>Hide rows/columns</td>
+        <td>Rows/Columns selected</td>
+    </tr>
+    <tr>
+        <td class="shortcut">C + Backspace or Delete</td>
+        <td>Hide columns</td>
+        <td>Columns selected</td>
+    </tr>
+    <tr>
+        <td class="shortcut">R + Backspace or Delete</td>
+        <td>Hide rows</td>
+        <td>Rows selected</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$altKey + &uarr;/&darr;/&larr;/&rarr;</td>
+        <td>Move selected columns/rows</td>
+        <td>Lead in heatmap</td>
     </tr>
 
 
@@ -107,7 +122,7 @@
         <td>Mouse over row headers</td>
     </tr>
     <tr>
-        <td class="shortcut">Wheel</td>
+        <td class="shortcut">$shiftKey + Wheel</td>
         <td>Scrolling heatmap left/right</td>
         <td>Mouse over column headers</td>
     </tr>
@@ -119,22 +134,22 @@
     <tr>
         <td class="shortcut">$ctrlKey + T + wheel</td>
         <td>Changes font size</td>
-        <td>Mouse hovering</td>
+        <td>Mouse hovering text</td>
     </tr>
     <tr>
         <td class="shortcut">$ctrlKey + wheel</td>
         <td>Changes size of underlying element</td>
-        <td>Mouse hovering</td>
+        <td>Mouse in heatmap panel</td>
     </tr>
     <tr>
         <td class="shortcut">$ctrlKey + R + wheel</td>
         <td>Changes height of rows</td>
-        <td>Mouse over heatmap body</td>
+        <td>Mouse in heatmap panel</td>
     </tr>
     <tr>
         <td class="shortcut">$ctrlKey + C + wheel</td>
         <td>Changes width of columns</td>
-        <td>Mouse over heatmap body</td>
+        <td>Mouse in heatmap panel</td>
     </tr>
 
     </tbody>

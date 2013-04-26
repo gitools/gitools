@@ -51,6 +51,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     private HeatmapHeaderPanel rowHeaderPanel;
     private HeatmapHeaderIntersectionPanel headerIntersectPanel;
 
+    private HeatmapPanelInputProcessor inputProcessor;
+
     private JPopupMenu popupMenuRows;
     private JPopupMenu popupMenuColumns;
 
@@ -61,13 +63,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     private JScrollBar colSB;
     private JScrollBar rowSB;
-
-    @NotNull
-    private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
-
-
-    private int rowSelStart;
-    private int colSelStart;
 
     public HeatmapPanel(Heatmap heatmap) {
         this.heatmap = heatmap;
@@ -98,28 +93,9 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         bodyVP = new JViewport();
         bodyVP.setView(bodyPanel);
 
-        HeatmapMouseListener mouseListenerProxy = new HeatmapMouseListener() {
-            @Override
-            public void mouseMoved(int row, int col, MouseEvent e) {
-                for (HeatmapMouseListener l : mouseListeners)
-                    l.mouseMoved(row, col, e);
-            }
-
-            @Override
-            public void mouseClicked(int row, int col, MouseEvent e) {
-                for (HeatmapMouseListener l : mouseListeners)
-                    l.mouseClicked(row, col, e);
-            }
-        };
-
-        HeatmapBodyMouseController bodyController = new HeatmapBodyMouseController(this);
-        bodyController.addHeatmapMouseListener(mouseListenerProxy);
-
         colVP = new JViewport();
         colVP.setView(columnHeaderPanel);
 
-        HeatmapHeaderMouseController colMouseCtrl = new HeatmapHeaderMouseController(this, true);
-        colMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
         rowVP = new JViewport();
         rowVP.setView(rowHeaderPanel);
@@ -127,8 +103,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         intersectVP = new JViewport();
         intersectVP.setView(headerIntersectPanel);
 
-        HeatmapHeaderMouseController rowMouseCtrl = new HeatmapHeaderMouseController(this, false);
-        rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
+        inputProcessor = new HeatmapPanelInputProcessor(this);
 
         colSB = new JScrollBar(JScrollBar.HORIZONTAL);
         colSB.addAdjustmentListener(new AdjustmentListener() {
@@ -330,7 +305,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
-        mouseListeners.add(listener);
+        inputProcessor.addHeatmapMouseListener(listener);
     }
 
     public void mouseReleased(@NotNull MouseEvent e) {
@@ -375,40 +350,5 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         }
     }
 
-    public void shiftSelStart(IMatrixViewDimension dimension, int size) {
-        if (dimension == heatmap.getColumns()) {
-            this.setColSelStart(this.colSelStart + size);
-        } else {
-            this.setRowSelStart(this.rowSelStart + size);
-        }
-    }
-
-    public void setRowSelStart(int rowSelStart) {
-        if (rowSelStart > -1 && rowSelStart < heatmap.getColumns().size()) {
-            this.rowSelStart = rowSelStart;
-        } else if (rowSelStart >= heatmap.getRows().size()) {
-            this.rowSelStart = heatmap.getRows().size() - 1;
-        } else {
-            this.rowSelStart = 0;
-        }
-    }
-
-    public void setColSelStart(int colSelStart) {
-        if (colSelStart > -1 && colSelStart < heatmap.getColumns().size()) {
-            this.colSelStart = colSelStart;
-        } else if (colSelStart >= heatmap.getColumns().size()) {
-            this.colSelStart = heatmap.getColumns().size() - 1;
-        } else {
-            this.colSelStart = 0;
-        }
-    }
-
-    public int getRowSelStart() {
-        return rowSelStart;
-    }
-
-    public int getColSelStart() {
-        return colSelStart;
-    }
 
 }
