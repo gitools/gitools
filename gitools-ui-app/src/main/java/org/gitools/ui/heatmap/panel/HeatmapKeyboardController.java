@@ -40,37 +40,26 @@ class HeatmapKeyboardController extends KeyAdapter {
     final HeatmapPanelInputProcessor ip;
 
 
-
-
     HeatmapKeyboardController(@NotNull IMatrixView matrixView, HeatmapPanelInputProcessor inputProcessor) {
         this.mv = matrixView;
         this.ip = inputProcessor;
     }
 
 
-
-
     @Override
     public void keyTyped(@NotNull KeyEvent e) {
-        System.out.println("type " + e.getKeyChar());
-
         return;
-
     }
 
     @Override
     public void keyReleased(@NotNull KeyEvent e) {
-        System.out.println("rel " + e.getKeyChar());
-
-        ip.saveReleasedState(e);
+        ip.clearPressedStates(e);
     }
 
     @Override
     public void keyPressed(@NotNull KeyEvent e) {
 
         IMatrixView mv = this.mv;
-
-        System.out.println("press " + e.getKeyChar());
 
         int row = mv.getRows().getSelectionLead();
         int col = mv.getColumns().getSelectionLead();
@@ -148,95 +137,95 @@ class HeatmapKeyboardController extends KeyAdapter {
                 ip.setLeadRow(++row);
                 if (selectingRows) {
                     ip.addToSelected(row, mv.getRows());
-                    ip.setRowSelStart(row);
+                    ip.setLastSelectedRow(row);
                 }
                 break;
             case KeyEvent.VK_UP:
                 ip.setLeadRow(--row);
                 if (selectingRows) {
                     ip.addToSelected(row, mv.getRows());
-                    ip.setRowSelStart(row);
+                    ip.setLastSelectedRow(row);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
                 ip.setLeadColumn(++col);
                 if (selectingColumns) {
                     ip.addToSelected(col, mv.getColumns());
-                    ip.setColSelStart(col);
+                    ip.setLastSelectedCol(col);
                 }
                 break;
             case KeyEvent.VK_LEFT:
                 ip.setLeadColumn(--col);
                 if (selectingColumns) {
                     ip.addToSelected(col, mv.getColumns());
-                    ip.setColSelStart(col);
+                    ip.setLastSelectedCol(col);
                 }
                 break;
             case KeyEvent.VK_PAGE_UP:
-                if(shiftDown) {
+                if (shiftDown) {
                     col -= colPageSize;
                     ip.setLeadColumn(++col);
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
-                        ip.setColSelStart(col);
+                        ip.setLastSelectedCol(col);
                     }
                 } else {
                     row -= rowPageSize;
                     ip.setLeadRow(row);
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
-                        ip.setRowSelStart(row);
+                        ip.setLastSelectedRow(row);
                     }
                 }
                 break;
             case KeyEvent.VK_PAGE_DOWN:
-                if(shiftDown) {
+                if (shiftDown) {
                     col += colPageSize;
                     ip.setLeadColumn(++col);
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
-                        ip.setColSelStart(col);
+                        ip.setLastSelectedCol(col);
                     }
                 } else {
                     row += rowPageSize;
                     ip.setLeadRow(row);
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
-                        ip.setRowSelStart(row);
+                        ip.setLastSelectedRow(row);
                     }
                 }
                 break;
             case KeyEvent.VK_HOME:
-                if(shiftDown) {
+                if (shiftDown) {
                     col = 0;
                     ip.setLeadColumn(++col);
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
-                        ip.setColSelStart(col);
+                        ip.setLastSelectedCol(col);
                     }
                 } else {
                     row = 0;
                     ip.setLeadRow(row);
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
-                        ip.setRowSelStart(row);
+                        ip.setLastSelectedRow(row);
                     }
                 }
                 break;
             case KeyEvent.VK_END:
-                if(shiftDown) {
+                if (shiftDown) {
                     col = ip.getColumnMax();
                     ip.setLeadColumn(++col);
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
-                        ip.setColSelStart(col);
+                        ip.setLastSelectedCol(col);
                     }
                 } else {
                     row = ip.getRowMax();
                     ip.setLeadRow(row);
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
-                        ip.setRowSelStart(row);
+                        ip.setLastSelectedRow(row);
                     }
                 }
         }
@@ -264,11 +253,11 @@ class HeatmapKeyboardController extends KeyAdapter {
             ip.removeFromSelected(leadIndex, dim);
         } else {
             if (shiftDown) {
-                ip.addToSelected(ip.getRowSelStart(), leadIndex, dim);
+                ip.addToSelected(ip.getLastSelectedRow(), leadIndex, dim);
             } else {
                 ip.addToSelected(leadIndex, dim);
             }
-            ip.setRowSelStart(leadIndex);
+            ip.setLastSelectedRow(leadIndex);
         }
     }
 
@@ -295,11 +284,11 @@ class HeatmapKeyboardController extends KeyAdapter {
         } else {
             if (shiftDown) {
                 //select all columns in between
-                ip.addToSelected(ip.getColSelStart(), leadIndex, dim);
+                ip.addToSelected(ip.getLastSelectedCol(), leadIndex, dim);
             } else {
                 ip.addToSelected(leadIndex, dim);
             }
-            ip.setColSelStart(leadIndex);
+            ip.setLastSelectedCol(leadIndex);
         }
     }
 

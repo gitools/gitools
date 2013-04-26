@@ -50,12 +50,6 @@ public class HeatmapPanelInputProcessor {
         this.mv = heatmapPanel.getHeatmap();
         this.heatmap = heatmapPanel.getHeatmap();
 
-        pressedAlphaNumerics.put(KeyEvent.VK_B, false);
-        pressedAlphaNumerics.put(KeyEvent.VK_C, false);
-        pressedAlphaNumerics.put(KeyEvent.VK_R, false);
-        pressedAlphaNumerics.put(KeyEvent.VK_S, false);
-        pressedAlphaNumerics.put(KeyEvent.VK_U, false);
-
         HeatmapMouseListener mouseListenerProxy = new HeatmapMouseListener() {
             @Override
             public void mouseMoved(int row, int col, MouseEvent e) {
@@ -83,16 +77,14 @@ public class HeatmapPanelInputProcessor {
         rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
 
-
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
         mouseListeners.add(listener);
     }
 
-    private int rowSelStart;
-    private int colSelStart;
-
+    private int lastSelectedRow;
+    private int lastSelectedCol;
 
 
     //alphanumerics used as shortcuts
@@ -102,10 +94,8 @@ public class HeatmapPanelInputProcessor {
         pressedAlphaNumerics.put(e.getKeyCode(), true);
     }
 
-    public void saveReleasedState(KeyEvent e) {
-        if (pressedAlphaNumerics.containsKey(e.getKeyCode())) {
-            pressedAlphaNumerics.put(e.getKeyCode(), false);
-        }
+    public void clearPressedStates(KeyEvent e) {
+        pressedAlphaNumerics.clear();
     }
 
     public boolean isKeyPressed(int charCode) {
@@ -118,19 +108,19 @@ public class HeatmapPanelInputProcessor {
 
     public void shiftSelStart(IMatrixViewDimension dimension, int size) {
         if (dimension == mv.getColumns()) {
-            this.setColSelStart(this.colSelStart + size);
+            this.setLastSelectedCol(this.lastSelectedCol + size);
         } else {
-            this.setRowSelStart(this.rowSelStart + size);
+            this.setLastSelectedRow(this.lastSelectedRow + size);
         }
     }
 
-    public void setRowSelStart(int rowSelStart) {
-        if (rowSelStart > -1 && rowSelStart < mv.getColumns().size()) {
-            this.rowSelStart = rowSelStart;
-        } else if (rowSelStart >= mv.getRows().size()) {
-            this.rowSelStart = mv.getRows().size() - 1;
+    public void setLastSelectedRow(int lastSelectedRow) {
+        if (lastSelectedRow > -1 && lastSelectedRow < mv.getColumns().size()) {
+            this.lastSelectedRow = lastSelectedRow;
+        } else if (lastSelectedRow >= mv.getRows().size()) {
+            this.lastSelectedRow = mv.getRows().size() - 1;
         } else {
-            this.rowSelStart = 0;
+            this.lastSelectedRow = 0;
         }
     }
 
@@ -165,22 +155,22 @@ public class HeatmapPanelInputProcessor {
         }
     }
 
-    public void setColSelStart(int colSelStart) {
-        if (colSelStart > -1 && colSelStart < mv.getColumns().size()) {
-            this.colSelStart = colSelStart;
-        } else if (colSelStart >= mv.getColumns().size()) {
-            this.colSelStart = mv.getColumns().size() - 1;
+    public void setLastSelectedCol(int lastSelectedCol) {
+        if (lastSelectedCol > -1 && lastSelectedCol < mv.getColumns().size()) {
+            this.lastSelectedCol = lastSelectedCol;
+        } else if (lastSelectedCol >= mv.getColumns().size()) {
+            this.lastSelectedCol = mv.getColumns().size() - 1;
         } else {
-            this.colSelStart = 0;
+            this.lastSelectedCol = 0;
         }
     }
 
-    public int getRowSelStart() {
-        return rowSelStart;
+    public int getLastSelectedRow() {
+        return lastSelectedRow;
     }
 
-    public int getColSelStart() {
-        return colSelStart;
+    public int getLastSelectedCol() {
+        return lastSelectedCol;
     }
 
 
@@ -188,7 +178,7 @@ public class HeatmapPanelInputProcessor {
 
         int[] prevSel = dim.getSelected();
         if (ArrayUtils.contains(prevSel, toAdd) ||
-                dim.size() < toAdd+1 ||
+                dim.size() < toAdd + 1 ||
                 toAdd < 0) {
             return;
         }
@@ -217,7 +207,7 @@ public class HeatmapPanelInputProcessor {
             start = 0;
         }
         if (end >= dim.size()) {
-            end = dim.size()-1;
+            end = dim.size() - 1;
         }
 
         Set<Integer> newSet = new HashSet<Integer>();
@@ -226,7 +216,7 @@ public class HeatmapPanelInputProcessor {
                 newSet.add(i);
             }
         }
-         addToSelected(Ints.toArray(newSet), dim);
+        addToSelected(Ints.toArray(newSet), dim);
     }
 
     private void addToSelected(int[] toAdd, IMatrixViewDimension dim) {
@@ -263,18 +253,36 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLeadRow(int i) {
-        if (i < mv.getRows().size() - 1) {
+        if (i >= getRowMax()) {
+            mv.getRows().setSelectionLead(getRowMax());
+        } else if (i < 0) {
+            mv.getRows().setSelectionLead(0);
+        } else {
             mv.getRows().setSelectionLead(i);
         }
     }
 
     public void setLeadColumn(int i) {
-        mv.getColumns().setSelectionLead(i);
+        if (i >= getColumnMax()) {
+            mv.getColumns().setSelectionLead(getColumnMax());
+        } else if (i < 0) {
+            mv.getRows().setSelectionLead(0);
+        } else {
+            mv.getColumns().setSelectionLead(i);
+        }
     }
 
     public void setLead(int row, int col) {
         setLeadRow(row);
         setLeadColumn(col);
+    }
+
+    public int getLeadRow() {
+        return mv.getRows().getSelectionLead();
+    }
+
+    public int getLeadColumn() {
+        return mv.getColumns().getSelectionLead();
     }
 
     void hideSelected(int[] rows, int[] cols) {
@@ -341,14 +349,22 @@ public class HeatmapPanelInputProcessor {
     }
 
     int getRowMax() {
-        return mv.getRows().size()-1;
+        return mv.getRows().size() - 1;
     }
 
     int getColumnMax() {
-        return mv.getColumns().size()-1;
+        return mv.getColumns().size() - 1;
+    }
+
+    public void setLastSelected(int index, boolean horizontal) {
+        if (horizontal) {
+            setLastSelectedCol(index);
+        } else {
+            setLastSelectedRow(index);
+        }
     }
 
     enum Mode {
-        none, selecting, moving, zooming, scrolling, movingSelected
+        none, selectingLead, selectingRowsAndCols, dragging, moving, zooming, scrolling, movingSelected
     }
 }

@@ -23,9 +23,9 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
-import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,20 +103,20 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     public void mousePressed(@NotNull MouseEvent e) {
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
-        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-        mode = shiftDown || ctrlDown ? Mode.moving : Mode.selecting;
+        mode = shiftDown ? Mode.selectingRowsAndCols : Mode.dragging;
         switch (mode) {
-            case selecting:
-                updateSelection(e);
+            case dragging:
+                updateLeadSelection(e);
+                dragHeatmap(e, true);
                 break;
-            case moving:
-                updateScroll(e, false);
+            case selectingRowsAndCols:
+                selectRowsAndCols(e);
                 break;
         }
-
         panel.requestFocusInWindow();
     }
+
 
     @Override
     public void mouseReleased(@NotNull MouseEvent e) {
@@ -134,14 +134,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     @Override
     public void mouseDragged(@NotNull MouseEvent e) {
-        switch (mode) {
-            case selecting:
-                updateSelection(e);
-                break;
-            case moving:
-                updateScroll(e, true);
-                break;
-        }
+        dragHeatmap(e, false);
     }
 
     @Override
@@ -175,19 +168,34 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
 
-    private void updateSelection(@NotNull MouseEvent e) {
+    private void updateLeadSelection(@NotNull MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
         coord = bodyPanel.getDrawer().getPosition(point);
 
-        ip.setLead(coord.row,coord.column);
+        ip.setLead(coord.row, coord.column);
     }
 
-    private void updateScroll(@NotNull MouseEvent e, boolean dragging) {
+    private void selectRowsAndCols(MouseEvent e) {
+        int corner1Row = ip.getLeadRow();
+        int corner1Col = ip.getLeadColumn();
+
+        point = e.getPoint();
+        Point viewPosition = viewPort.getViewPosition();
+        point.translate(viewPosition.x, viewPosition.y);
+        coord = bodyPanel.getDrawer().getPosition(point);
+
+        ip.addToSelected(corner1Col, coord.column, heatmap.getColumns());
+        ip.addToSelected(corner1Row, coord.row, heatmap.getRows());
+        ip.setLastSelectedCol(coord.column);
+        ip.setLastSelectedRow(coord.row);
+    }
+
+    private void dragHeatmap(@NotNull MouseEvent e, boolean initStartPoint) {
         point = e.getPoint();
 
-        if (!dragging) {
+        if (initStartPoint) {
             startPoint = point;
             startScrollValue = panel.getScrollValue();
         } else {
