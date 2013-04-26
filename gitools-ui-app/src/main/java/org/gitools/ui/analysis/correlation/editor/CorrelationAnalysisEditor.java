@@ -166,7 +166,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             layer.setDecorator(new CorrelationDecorator());
         }
 
-        heatmap.getLayers().setTopLayerByIndex(heatmap.getLayers().findId("score"));
+        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("score"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;

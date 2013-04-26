@@ -183,7 +183,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
             layer.setDecorator(dec);
         }
 
-        heatmap.getLayers().setTopLayerByIndex(heatmap.getLayers().findId("jaccard-index"));
+        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("jaccard-index"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;

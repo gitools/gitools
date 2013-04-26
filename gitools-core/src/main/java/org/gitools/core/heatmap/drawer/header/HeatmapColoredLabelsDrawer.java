@@ -103,9 +103,10 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     private void decorate(Decoration decoration, ColoredLabel cluster) {
 
         Color clusterColor = cluster != null ? cluster.getColor() : getHeader().getBackgroundColor();
-
         decoration.setBgColor(clusterColor);
-        decoration.setText(cluster.getDisplayedLabel());
+        if (getHeader().isLabelVisible()) {
+            decoration.setText(cluster.getDisplayedLabel());
+        }
 
     }
 
