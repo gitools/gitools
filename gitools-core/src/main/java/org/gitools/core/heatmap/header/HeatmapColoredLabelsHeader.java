@@ -36,8 +36,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class HeatmapColoredLabelsHeader extends HeatmapHeader {
@@ -196,13 +197,16 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
         Color clusterColor = cluster != null ? cluster.getColor() : getBackgroundColor();
         decoration.setBgColor(clusterColor);
-        if (isLabelVisible()) {
-            decoration.setValue(cluster.getDisplayedLabel());
+        if (isLabelVisible() || forceLabelColor) {
+            if (!cluster.getDisplayedLabel().equals("")) {
+                decoration.setValue(cluster.getDisplayedLabel());
+            }
         }
 
     }
 
     private transient LabelProvider labelProvider;
+
     private LabelProvider getLabelProvider() {
         if (labelProvider == null) {
             labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getAnnotationPattern());
