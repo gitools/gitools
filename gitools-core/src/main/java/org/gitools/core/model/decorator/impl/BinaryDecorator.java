@@ -123,7 +123,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -136,7 +136,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
         final Color c = getScale().valueColor(v);
 
         decoration.setBgColor(c);
-        if (isShowValue()) {
+        if (isShowValue() || forceShowLabel) {
             decoration.setValue(fmt.format(value));
         }
 

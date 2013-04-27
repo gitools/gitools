@@ -22,10 +22,10 @@
 package org.gitools.core.model.decorator.impl;
 
 import cern.jet.stat.Probability;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.GenericFormatter;
@@ -198,7 +198,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -221,7 +221,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         final Color color = useScale ? getScale().valueColor(v) : ColorConstants.nonSignificantColor;
 
         decoration.setBgColor(color);
-        if (isShowValue()) {
+        if (isShowValue() || forceShowLabel) {
             decoration.setValue(fmt.format(value));
         }
     }

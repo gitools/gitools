@@ -98,8 +98,8 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         this.annotationLabels = annotationLabels;
     }
 
-    public void decorate(Decoration decoration, int index, String annotation) {
-        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
+    public void decorate(Decoration decoration, int index, String annotation, boolean forceShowLabel) {
+        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation), forceShowLabel);
     }
 
     private MatrixAdapter matrixAdapter;
@@ -122,13 +122,13 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
             String label = "";
 
             if (equal != -1) {
-                label = " (" + annotation.substring(equal+1).trim() + ")";
+                label = " (" + annotation.substring(equal + 1).trim() + ")";
             }
 
             DetailsDecoration decoration = new DetailsDecoration(getTitle() + label, "None");
 
             if (index != -1) {
-                decorate(decoration, index, annotation);
+                decorate(decoration, index, annotation, true);
             }
 
             details.add(decoration);

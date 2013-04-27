@@ -59,7 +59,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
             for (String annotation : header.getAnnotationLabels()) {
                 decoration.reset();
-                header.decorate(decoration, index, annotation);
+                header.decorate(decoration, index, annotation, false);
                 paintCell(decoration, index, offset, annotationWidth, g, box);
                 offset += annotationWidth + 1;
             }

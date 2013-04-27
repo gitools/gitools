@@ -30,7 +30,7 @@ import java.awt.*;
 
 public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
-    public static final Color SELECTED_COLOR = new Color(0,0,128,100);
+    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 100);
 
     public HeatmapBodyDrawer(Heatmap heatmap) {
         super(heatmap);
@@ -78,7 +78,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                     decoration.setBgColor(Color.WHITE);
                 } else {
                     decoration.reset();
-                    deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+                    deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex(), false);
                 }
 
                 Color color = decoration.getBgColor();
@@ -111,7 +111,6 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         if (!isPictureMode()) {
 
 
-
             // Draw selected rows
             g.setColor(SELECTED_COLOR);
             int cellSize = heatmap.getRows().getCellSize() + heatmap.getRows().getGridSize();
@@ -124,14 +123,14 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             int lead = heatmap.getRows().getSelectionLead();
             if (lead != -1) {
                 g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
-                g.fillRect(box.x, box.y + ((lead+1) * cellSize) - 1, box.width, 1);
+                g.fillRect(box.x, box.y + ((lead + 1) * cellSize) - 1, box.width, 1);
             }
 
             // Draw selected columns
             g.setColor(SELECTED_COLOR);
             cellSize = heatmap.getColumns().getCellSize() + heatmap.getColumns().getGridSize();
             for (int s : heatmap.getColumns().getSelected()) {
-                g.fillRect(box.x  + (s * cellSize), box.y, cellSize, box.height);
+                g.fillRect(box.x + (s * cellSize), box.y, cellSize, box.height);
             }
 
             // Draw column lead
@@ -139,7 +138,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             lead = heatmap.getColumns().getSelectionLead();
             if (lead != -1) {
                 g.fillRect(box.x + (lead * cellSize) - 1, box.y, 1, box.height);
-                g.fillRect(box.x + ((lead+1) * cellSize) - 1, box.y, 1, box.height);
+                g.fillRect(box.x + ((lead + 1) * cellSize) - 1, box.y, 1, box.height);
             }
         }
 

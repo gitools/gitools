@@ -148,7 +148,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel) {
         Object value = matrix.getValue(row, column, layer);
 
         double v = toDouble(value);
@@ -162,7 +162,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
 
         decoration.setBgColor(color);
 
-        if (isShowValue()) {
+        if (isShowValue() || forceShowLabel) {
             decoration.setValue(fmt.format(value));
         }
 
