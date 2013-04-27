@@ -67,7 +67,7 @@ public class ShortcutsDialog extends JDialog {
 
         TemplatePanel creditsPane = new TemplatePanel();
         creditsPane.setFocusable(false);
-        Dimension dim = new Dimension(550, 374);
+        Dimension dim = new Dimension(600, 500);
         creditsPane.setPreferredSize(dim);
         creditsPane.setMaximumSize(dim);
         try {

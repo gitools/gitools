@@ -64,7 +64,7 @@ public class AboutDialog extends JDialog {
 
         TemplatePanel creditsPane = new TemplatePanel();
         creditsPane.setFocusable(false);
-        Dimension dim = new Dimension(550, 374);
+        Dimension dim = new Dimension(450, 400);
         creditsPane.setPreferredSize(dim);
         creditsPane.setMaximumSize(dim);
         try {
