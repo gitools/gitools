@@ -135,9 +135,4 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         }
 
     }
-
-    @Override
-    protected void updateLargestLabelLength(Component component) {
-
-    }
 }

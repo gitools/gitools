@@ -76,12 +76,6 @@ public abstract class HeatmapHeader extends Model {
     @XmlElement(name = "annotation-pattern")
     private String annotationPattern;
 
-    @XmlElement(name = "annotation-values")
-    private String[] annotationValues;
-
-    @XmlElement(name = "largest-label")
-    protected int largestLabelLength;
-
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     @XmlElement(name = "label-color")
     protected Color labelColor;
@@ -102,7 +96,6 @@ public abstract class HeatmapHeader extends Model {
         labelVisible = false;
         labelColor = Color.GRAY;
         annotationPattern = null;
-        annotationValues = new String[0];
     }
 
     @XmlTransient
@@ -217,7 +210,6 @@ public abstract class HeatmapHeader extends Model {
     public void setLabelFont(Font font) {
         Font old = this.font;
         this.font = font;
-        updateLargestLabelLength(null);
         firePropertyChange(PROPERTY_FONT, old, font);
     }
 
@@ -255,16 +247,6 @@ public abstract class HeatmapHeader extends Model {
         firePropertyChange(PROPERTY_LABEL_COLOR, old, labelColor);
     }
 
-    public int getLargestLabelLength() {
-        return largestLabelLength;
-    }
-
-    void setLargestLabelLength(int largestLabelLength) {
-        int old = this.largestLabelLength;
-        this.largestLabelLength = largestLabelLength;
-        firePropertyChange(PROPERTY_LARGEST_LABEL_LENGTH, old, largestLabelLength);
-    }
-
     @Nullable
     public String getAnnotationPattern() {
         return annotationPattern;
@@ -273,16 +255,6 @@ public abstract class HeatmapHeader extends Model {
     public void setAnnotationPattern(String annotationPattern) {
         this.annotationPattern = annotationPattern;
     }
-
-    public String[] getAnnotationValues(boolean horizontal) {
-        return annotationValues;
-    }
-
-    public void setAnnotationValues(String[] annotationValues) {
-        this.annotationValues = annotationValues;
-    }
-
-    abstract protected void updateLargestLabelLength(Component component);
 
     public void init(HeatmapDimension heatmapDimension) {
         this.setHeatmapDimension(heatmapDimension);

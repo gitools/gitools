@@ -38,9 +38,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class Html4Panel extends JPanel {
 
     public static class LinkVetoException extends Exception {
@@ -93,7 +90,6 @@ public class Html4Panel extends JPanel {
         @Override
         public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
             try {
-                //System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
                 Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
                 super.submitForm(method, action, target, enctype, formInputs);
             } catch (LinkVetoException ex) {

@@ -144,6 +144,10 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     @Override
     public void draw(Graphics2D g, @NotNull Rectangle box, Rectangle clip) {
 
+        // Clear background
+        g.setColor(Color.WHITE);
+        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+
         Dimension d = getSize();
 
         int width = d.width < box.width ? d.width : box.width;
@@ -170,6 +174,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 
 
     void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection) {
+
+
 
         getHeaderDrawers();
 

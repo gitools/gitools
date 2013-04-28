@@ -22,6 +22,8 @@
 package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.gitools.core.persistence.PersistenceInitialization;
 import org.gitools.core.utils.OperatingSystemUtils;
 import org.gitools.ui.actions.Actions;
@@ -36,8 +38,6 @@ import org.gitools.ui.settings.Settings;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Main {
 
@@ -54,7 +54,7 @@ public class Main {
         WebLookAndFeel.install();
 
         // Initialize loggers
-        Logger.getLogger("org.lobobrowser").setLevel(Level.WARNING);
+        Logger.getLogger("org.lobobrowser").setLevel(Level.ERROR);
 
         OSProperties osProperties = null;
         // Load OS specific things

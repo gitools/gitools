@@ -83,11 +83,6 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         coloredLabels = new ColoredLabel[0];
     }
 
-    @Override
-    protected void updateLargestLabelLength(Component component) {
-        this.largestLabelLength = 0;
-    }
-
     /* The thickness of the color band */
     public int getThickness() {
         return thickness;

@@ -105,11 +105,6 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
         firePropertyChange(PROPERTY_FONT, old, font);
     }
 
-    @Override
-    protected void updateLargestLabelLength(Component component) {
-        this.largestLabelLength = 0;
-    }
-
     public LabelSource getLabelSource() {
         return labelSource;
     }
