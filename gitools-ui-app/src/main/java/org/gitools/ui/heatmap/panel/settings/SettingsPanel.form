@@ -14,7 +14,7 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="257" height="652"/>
+      <xy x="20" y="20" width="257" height="744"/>
     </constraints>
     <properties>
       <background color="-65794"/>
@@ -218,7 +218,9 @@
             </constraints>
             <properties>
               <font style="2"/>
+              <lineWrap value="true"/>
               <text value="Title"/>
+              <wrapStyleWord value="true"/>
             </properties>
             <clientProperties>
               <caretAspectRatio class="java.lang.Float" value="0.04"/>
@@ -233,7 +235,9 @@
             </constraints>
             <properties>
               <font style="2"/>
+              <lineWrap value="true"/>
               <text value="description"/>
+              <wrapStyleWord value="true"/>
             </properties>
             <clientProperties>
               <caretAspectRatio class="java.lang.Float" value="0.04"/>
