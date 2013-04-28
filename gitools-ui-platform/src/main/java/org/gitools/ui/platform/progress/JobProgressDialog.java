@@ -21,12 +21,21 @@
  */
 package org.gitools.ui.platform.progress;
 
+import org.gitools.ui.platform.help.GitoolsTips;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class JobProgressDialog extends javax.swing.JDialog {
+
+    public void setTipsLabel(JLabel tipsLabel) {
+        this.tipsLabel = tipsLabel;
+    }
 
     public interface CancelListener {
         void cancelled();
@@ -38,7 +47,7 @@ class JobProgressDialog extends javax.swing.JDialog {
     /**
      * Creates new form ProgressDialog
      */
-    public JobProgressDialog(java.awt.Window parent, boolean modal) {
+    public JobProgressDialog(Window parent, boolean modal, boolean showGitoolsTips) {
         super(parent);
         setModal(modal);
 
@@ -47,9 +56,28 @@ class JobProgressDialog extends javax.swing.JDialog {
         msgLabel.setText("");
         infoLabel.setText("");
 
+        if (showGitoolsTips) {
+            tips = new GitoolsTips();
+            setTimerLoop();
+        }
+
         progressBar.setMinimum(0);
         progressBar.setIndeterminate(true);
+
     }
+
+    private void setTimerLoop() {
+        timer = new Timer();
+        timer.schedule(new ShowNewTip(), 0, //initial delay
+                1 * 6000); //subsequent rate
+    }
+
+    class ShowNewTip extends TimerTask {
+        public void run() {
+            tipsLabel.setText(tips.getRandomTip());
+        }
+    }
+
 
     public void addCancelListener(CancelListener listener) {
         listeners.add(listener);
@@ -69,6 +97,7 @@ class JobProgressDialog extends javax.swing.JDialog {
         progressBar = new javax.swing.JProgressBar();
         cancelBtn = new javax.swing.JButton();
         infoLabel = new javax.swing.JLabel();
+        tipsLabel = new JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setLocationByPlatform(true);
@@ -84,11 +113,27 @@ class JobProgressDialog extends javax.swing.JDialog {
         });
 
         infoLabel.setText("info");
+        tipsLabel.setText("tips");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE).addComponent(msgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cancelBtn, javax.swing.GroupLayout.Alignment.TRAILING)).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(msgLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(infoLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(cancelBtn).addContainerGap()));
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).
+                addGroup(layout.createSequentialGroup().addContainerGap().
+                        addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).
+                                addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE).
+                                addComponent(msgLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE).
+                                addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE).
+                                addComponent(tipsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE).
+                                addComponent(cancelBtn, javax.swing.GroupLayout.Alignment.TRAILING)).addContainerGap()));
+
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).
+                addGroup(
+                        layout.createSequentialGroup().addContainerGap()
+                                .addComponent(msgLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(infoLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tipsLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cancelBtn).addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -102,6 +147,9 @@ class JobProgressDialog extends javax.swing.JDialog {
     private javax.swing.JButton cancelBtn;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel msgLabel;
+    private javax.swing.JLabel tipsLabel;
+    private GitoolsTips tips;
+    Timer timer;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 

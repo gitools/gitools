@@ -22,39 +22,25 @@
 package org.gitools.ui.dialog;
 
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.help.GitoolsTips;
 import org.gitools.ui.settings.Settings;
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.tips.TipLoader;
 import org.jdesktop.swingx.tips.TipOfTheDayModel;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 import java.util.Random;
 
 public class TipsDialog {
+    private final GitoolsTips gitoolsTips = new GitoolsTips();
+
     public TipsDialog() {
     }
 
 
     public void show(boolean forceShow) {
 
-        Properties tipProperties = new Properties();
-        InputStream inputStream = this.getClass().getResourceAsStream("/help/gitooltips.properties");
-        try {
-            tipProperties.load(inputStream);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        String leadingHTML = "<html><body style='margin: 5px; font-size= 14px;'>";
-        String closingHTML = "</body></html>";
-
-        for (String propKey : tipProperties.stringPropertyNames()) {
-            String tipProp = tipProperties.getProperty(propKey);
-
-            tipProperties.put(propKey, leadingHTML.concat(tipProp).concat(closingHTML));
-        }
+        Properties tipProperties = gitoolsTips.getTips();
 
         TipOfTheDayModel loadedTips = TipLoader.load(tipProperties);
 
@@ -80,7 +66,6 @@ public class TipsDialog {
 
         }, forceShow);
     }
-
 
     public void show() {
         show(false);

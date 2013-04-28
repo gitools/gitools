@@ -86,7 +86,7 @@ public class JobThread implements JobRunnable {
 
     private synchronized JobProgressDialog getDlg() {
         if (dlg == null) {
-            dlg = new JobProgressDialog(parent, false);
+            dlg = new JobProgressDialog(parent, false, true);
             dlg.addCancelListener(new JobProgressDialog.CancelListener() {
                 @Override
                 public void cancelled() {
