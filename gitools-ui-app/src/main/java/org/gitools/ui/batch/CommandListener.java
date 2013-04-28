@@ -22,6 +22,7 @@
 package org.gitools.ui.batch;
 
 import org.apache.log4j.Logger;
+import org.gitools.ui.batch.tools.VersionTool;
 import org.gitools.ui.platform.AppFrame;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +60,7 @@ public class CommandListener implements Runnable {
 
     public static synchronized void start(int port, @Nullable String[] args) {
         if (args != null && args.length > 0) {
-            if (!available(port)) {
+            if (checkSameVersion(port)) {
 
                 // Pass the arguments to the other gitools instance
                 Socket socket = null;
@@ -243,7 +244,7 @@ public class CommandListener implements Runnable {
     private static final String CONTENT_TYPE_TEXT_HTML = "text/html";
     private static final String CONNECTION_CLOSE = "Connection: close";
 
-    private void sendHTTPResponse(@NotNull PrintWriter out, @Nullable String result) {
+    private static void sendHTTPResponse(@NotNull PrintWriter out, @Nullable String result) {
 
         out.println(result == null ? HTTP_NO_RESPONSE : HTTP_RESPONSE);
         if (result != null) {
@@ -360,28 +361,50 @@ public class CommandListener implements Runnable {
     }
 
     /**
-     * Checks to see if a specific port is available.
+     * Check if the current open instance is the same version
      *
-     * @param port the port to check for availability
+     * @return True if there are the same version, false if not the same version or if there is no other instance running.
      */
-    private static boolean available(int port) {
-        Socket s = null;
+    private static boolean checkSameVersion(int port) {
+
+        Socket socket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+
         try {
-            s = new Socket("localhost", port);
+            socket = new Socket("localhost", port);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            VersionTool version = new VersionTool();
+
+            out.println(version.getName());
+            String otherInstanceVersion = in.readLine();
+
+            in.close();
+            out.close();
+
+            if (otherInstanceVersion != null && otherInstanceVersion.equals(version.getVersion())) {
+                return true;
+            }
+
             return false;
+
         } catch (IOException e) {
-            return true;
+
+            return false;
+
         } finally {
-            if (s != null) {
+
+            if (socket != null) {
                 try {
-                    s.close();
+                    socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                     System.exit(1);
                 }
             }
         }
+
     }
-
-
 }
