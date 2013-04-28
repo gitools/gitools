@@ -380,7 +380,7 @@ public class HeatmapPanelInputProcessor {
             }
         } else {
             addToSelected(index, dim);
-            setLastSelectedCol(index);
+            setLastSelected(index, dim == mv.getColumns());
         }
     }
 
