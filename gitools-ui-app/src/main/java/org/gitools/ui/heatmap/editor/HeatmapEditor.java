@@ -65,7 +65,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class HeatmapEditor extends AbstractEditor {
-    private static final int DEFAULT_ACCORDION_WIDTH = 290;
+    private static final int DEFAULT_ACCORDION_WIDTH = 320;
     protected final Heatmap heatmap;
     private HeatmapPanel heatmapPanel;
     private ColorScalePanel colorScalePanel;
