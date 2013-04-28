@@ -34,9 +34,6 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.DataFormatException;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends AbstractMatrixFormat<R> {
 
     private final int skipLines;
@@ -91,7 +88,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
         try {
 
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             if (skipLines > 0) {
@@ -179,7 +176,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
         final Set<String> popLabelsSet = populationLabels != null ? new HashSet<String>(Arrays.asList(populationLabels)) : null;
 
         try {
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             if (skipLines > 0) {

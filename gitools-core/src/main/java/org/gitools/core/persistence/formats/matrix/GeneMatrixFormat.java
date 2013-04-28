@@ -49,7 +49,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
         try {
 
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             // read column names

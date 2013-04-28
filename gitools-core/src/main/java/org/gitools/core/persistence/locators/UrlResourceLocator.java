@@ -24,6 +24,8 @@ package org.gitools.core.persistence.locators;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.utils.HttpUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,8 +36,6 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 public class UrlResourceLocator implements IResourceLocator {
-
-
 
     private static final Pattern ABSOLUTE_FILE_PATH = Pattern.compile("^(\\/.*|[a-zA-Z]\\:\\\\)");
     private static final Pattern ABSOLUTE_REMOTE_URL = Pattern.compile("[a-zA-Z]+:\\/\\/.*");
@@ -106,6 +106,17 @@ public class UrlResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public long getContentLength() {
+
+        if (file != null) {
+            long value = file.length();
+            return (value!=0L? value : -1);
+        }
+
+        return HttpUtils.getContentLength(url);
+    }
+
+    @Override
     public String getExtension() {
         String name = getName();
         return name.substring(name.indexOf(".") + 1);
@@ -143,13 +154,13 @@ public class UrlResourceLocator implements IResourceLocator {
 
     @Nullable
     @Override
-    public InputStream openInputStream() throws IOException {
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
         if (file == null) {
-            return getURL().openStream();
+            return new ProgressMonitorInputStream(progressMonitor, getURL().openStream());
         }
 
-        return new FileInputStream(file);
+        return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(file));
     }
 
     @Nullable

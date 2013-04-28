@@ -26,9 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 
-/**
- * @noinspection ALL
- */
 public class StreamProgressMonitor extends DefaultProgressMonitor {
 
     private static final String indentString = "  ";
@@ -61,7 +58,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     }
 
     @Override
-    public void begin(String title, int totalWork) {
+    public void begin(String title, long totalWork) {
         super.begin(title, totalWork);
         flag = false;
         showingbar = false;
@@ -77,7 +74,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     }
 
     @Override
-    public void worked(int workInc) {
+    public void worked(long workInc) {
         super.worked(workInc);
         double progress = ((double) getWorked() / (double) totalWork);
 

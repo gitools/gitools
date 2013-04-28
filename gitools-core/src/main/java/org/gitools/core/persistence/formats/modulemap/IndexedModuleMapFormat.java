@@ -43,13 +43,12 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
     @Override
     protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
-        progressMonitor.begin("Loading modules...", 1);
-
+        progressMonitor.begin("Loading modules...", resourceLocator.getContentLength());
 
         ModuleMap moduleMap = new ModuleMap();
 
         try {
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             loadItemNames(moduleMap, progressMonitor, parser);

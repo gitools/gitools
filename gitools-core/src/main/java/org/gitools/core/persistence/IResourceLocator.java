@@ -21,6 +21,8 @@
  */
 package org.gitools.core.persistence;
 
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,11 +41,18 @@ public interface IResourceLocator {
 
     String getName();
 
+    /**
+     * Returns, if known, the length in bytes of the content.
+     *
+     * @return the total length or -1 if it's unknown.
+     */
+    long getContentLength();
+
     IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException;
 
     boolean isWritable();
 
-    InputStream openInputStream() throws IOException;
+    InputStream openInputStream(IProgressMonitor monitor) throws IOException;
 
     OutputStream openOutputStream() throws IOException;
 }

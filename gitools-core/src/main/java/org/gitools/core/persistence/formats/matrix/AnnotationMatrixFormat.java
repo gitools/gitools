@@ -52,7 +52,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
         AnnotationMatrix matrix = new AnnotationMatrix();
 
         try {
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             // Header

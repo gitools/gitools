@@ -23,14 +23,11 @@ package org.gitools.utils.progressmonitor;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class DefaultProgressMonitor implements IProgressMonitor {
 
     String title;
-    protected int totalWork;
-    private int worked;
+    protected long totalWork;
+    private long worked;
     protected int level;
     private boolean cancelled;
 
@@ -49,7 +46,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
     }
 
     @Override
-    public void begin(String title, int totalWork) {
+    public void begin(String title, long totalWork) {
         this.title = title;
         this.totalWork = totalWork;
         this.worked = 0;
@@ -62,7 +59,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
     }
 
     @Override
-    public void worked(int workInc) {
+    public void worked(long workInc) {
         worked += workInc;
         if (worked > totalWork) {
             worked = totalWork;
@@ -71,7 +68,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 
     @Override
     public boolean isCancelled() {
-        return cancelled;
+        return (parent != null && parent.isCancelled()) || cancelled;
     }
 
     @Override
@@ -94,12 +91,11 @@ public class DefaultProgressMonitor implements IProgressMonitor {
         this.level = level;
     }
 
-    //@Override
-    protected int getWorked() {
+    protected long getWorked() {
         return worked;
     }
 
-    protected int getTotalWork() {
+    protected long getTotalWork() {
         return totalWork;
     }
 

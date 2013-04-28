@@ -22,8 +22,9 @@
 package org.gitools.core.persistence.locators.filters.gz;
 
 import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.locators.filters.AbstractResourceLocatorAdaptor;
+import org.gitools.core.persistence.locators.filters.FilterResourceLocator;
 import org.gitools.core.persistence.locators.filters.IResourceFilter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class GzResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
+public class GzResourceLocatorAdaptor extends FilterResourceLocator {
 
     public GzResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator) {
         super(filter, resourceLocator);
@@ -40,8 +41,8 @@ public class GzResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
 
     @NotNull
     @Override
-    public InputStream openInputStream() throws IOException {
-        return new GZIPInputStream(getResourceLocator().openInputStream());
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
+        return new GZIPInputStream(getResourceLocator().openInputStream(progressMonitor));
     }
 
     @NotNull

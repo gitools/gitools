@@ -23,8 +23,9 @@ package org.gitools.core.persistence.locators.filters.zip;
 
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.locators.filters.AbstractResourceLocatorAdaptor;
+import org.gitools.core.persistence.locators.filters.FilterResourceLocator;
 import org.gitools.core.persistence.locators.filters.IResourceFilter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
+public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
     private final String entryName;
 
     public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator) {
@@ -68,8 +69,8 @@ public class ZipResourceLocatorAdaptor extends AbstractResourceLocatorAdaptor {
 
     @NotNull
     @Override
-    public InputStream openInputStream() throws IOException {
-        ZipInputStream in = new ZipInputStream(getResourceLocator().openInputStream());
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
+        ZipInputStream in = new ZipInputStream(getResourceLocator().openInputStream(progressMonitor));
 
         ZipEntry entry;
         while ((entry = in.getNextEntry()) != null) {

@@ -24,6 +24,8 @@ package org.gitools.core.persistence.locators.filters.cache;
 import org.apache.commons.io.input.TeeInputStream;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.locators.ProgressMonitorInputStream;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.*;
 import java.net.URL;
@@ -61,6 +63,15 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public long getContentLength() {
+        if (cached) {
+            return cachedFile.length();
+        }
+
+        return originalLocator.getContentLength();
+    }
+
+    @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return originalLocator.getReferenceLocator(referenceName);
     }
@@ -71,13 +82,13 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
-    public InputStream openInputStream() throws IOException {
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
         if (cached) {
-            return new FileInputStream(cachedFile);
+            return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(cachedFile));
         }
 
-        return new TeeInputStream(originalLocator.openInputStream(), new FileOutputStream(cachedFile));
+        return new TeeInputStream(originalLocator.openInputStream(progressMonitor), new FileOutputStream(cachedFile));
     }
 
     @Override

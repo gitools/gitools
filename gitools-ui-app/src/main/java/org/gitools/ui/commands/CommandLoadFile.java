@@ -51,6 +51,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.UserCancelledException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -79,15 +80,19 @@ public class CommandLoadFile extends AbstractCommand {
     @Override
     public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
-        monitor.begin("Loading ...", 1);
 
         IResourceLocator resourceLocator;
         final IResource resource;
         try {
             resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
+            monitor.begin("Loading ...", 1);
             resource = PersistenceManager.get().load(resourceLocator, IResource.class, monitor);
         } catch (Exception e) {
-            MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
+
+            if (!(e.getCause() instanceof UserCancelledException)) {
+               MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
+            }
+
             return;
         }
 

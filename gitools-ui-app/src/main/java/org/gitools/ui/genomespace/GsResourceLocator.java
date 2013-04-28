@@ -23,7 +23,9 @@ package org.gitools.ui.genomespace;
 
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.locators.ProgressMonitorInputStream;
 import org.gitools.ui.genomespace.dm.HttpUtils;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,6 +63,21 @@ public class GsResourceLocator implements IResourceLocator {
         return resourceLocator.getName();
     }
 
+    @Override
+    public long getContentLength() {
+
+        if (!getURL().getProtocol().equals("file")) {
+            try {
+                return HttpUtils.getInstance().getContentLength(getURL());
+            } catch (IOException e) {
+                return -1;
+            }
+        }
+
+        return resourceLocator.getContentLength();
+
+    }
+
     @NotNull
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
@@ -74,13 +91,13 @@ public class GsResourceLocator implements IResourceLocator {
 
     @Nullable
     @Override
-    public InputStream openInputStream() throws IOException {
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
         if (!getURL().getProtocol().equals("file")) {
-            return HttpUtils.getInstance().openConnectionStream(getURL());
+            return new ProgressMonitorInputStream(progressMonitor, HttpUtils.getInstance().openConnectionStream(getURL()));
         }
 
-        return resourceLocator.openInputStream();
+        return resourceLocator.openInputStream(progressMonitor);
     }
 
     @Override

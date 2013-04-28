@@ -50,7 +50,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
 
         try {
 
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             String[] fields;

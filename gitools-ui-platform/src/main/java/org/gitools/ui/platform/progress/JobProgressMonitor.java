@@ -32,6 +32,10 @@ public class JobProgressMonitor extends StreamProgressMonitor {
 
     private final JobProgressDialog dlg;
 
+    private static int TOTAL_WORK = 1000;
+
+    private double correction;
+
     public JobProgressMonitor(JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
         super(out, verbose, debug);
 
@@ -39,14 +43,13 @@ public class JobProgressMonitor extends StreamProgressMonitor {
     }
 
     private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
-
         super(parentMonitor, out, verbose, debug);
 
         this.dlg = dlg;
     }
 
     @Override
-    public void begin(final String title, final int totalWork) {
+    public void begin(final String title, final long totalWork) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -54,10 +57,12 @@ public class JobProgressMonitor extends StreamProgressMonitor {
                     dlg.setVisible(true);
                 }
                 dlg.setMessage(title);
-                dlg.setWork(totalWork);
+                dlg.setWork(TOTAL_WORK);
                 dlg.setProgress(0);
             }
         });
+
+        this.correction = (double) TOTAL_WORK / (double) totalWork;
 
         super.begin(title, totalWork);
     }
@@ -75,12 +80,12 @@ public class JobProgressMonitor extends StreamProgressMonitor {
     }
 
     @Override
-    public void worked(int workInc) {
+    public void worked(long workInc) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                dlg.setWork(totalWork);
-                dlg.setProgress(getWorked());
+                dlg.setWork(TOTAL_WORK);
+                dlg.setProgress((int) (correction * getWorked()));
             }
         });
 
@@ -92,8 +97,8 @@ public class JobProgressMonitor extends StreamProgressMonitor {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                dlg.setWork(totalWork);
-                dlg.setProgress(getTotalWork());
+                dlg.setWork(TOTAL_WORK);
+                dlg.setProgress(TOTAL_WORK);
                 if (level == 0) {
                     dlg.dispose();
                 }
@@ -118,14 +123,11 @@ public class JobProgressMonitor extends StreamProgressMonitor {
     @Override
     protected void print(String text) {
         super.print(text);
-
-        //TODO dlg.append(text);
     }
 
     @NotNull
     @Override
     protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
-
         return new JobProgressMonitor(parentMonitor, dlg, out, verbose, debug);
     }
 }

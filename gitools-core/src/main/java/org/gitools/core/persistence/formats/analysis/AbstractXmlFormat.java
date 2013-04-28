@@ -85,8 +85,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
-
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
 
             beforeRead(in, resourceLocator, unmarshaller, progressMonitor);
             entity = (R) unmarshaller.unmarshal(in);

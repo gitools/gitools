@@ -43,6 +43,7 @@ import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.UserCancelledException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -121,7 +122,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
 
         meta = new HashMap<String, String>();
         try {
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
             boolean done = false;
             String cl;
@@ -148,14 +149,12 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
 
     @NotNull
     @Override
-    protected ObjectMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor monitor) throws PersistenceException {
+    protected ObjectMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
 
         ObjectMatrix resultsMatrix = new ObjectMatrix();
 
-        monitor.begin("Loading results ...", 1);
-
         try {
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             String[] populationLabels = getPopulationLabels();
@@ -238,6 +237,11 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
             List<Object[]> list = new ArrayList<Object[]>();
 
             while ((line = parser.readNext()) != null) {
+
+                if (progressMonitor.isCancelled()) {
+                    throw new UserCancelledException();
+                }
+
                 final String columnName = line[0];
                 final String rowName = line[1];
 
@@ -327,8 +331,6 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
-
-        monitor.end();
 
         return resultsMatrix;
     }

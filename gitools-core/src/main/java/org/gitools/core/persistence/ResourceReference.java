@@ -30,9 +30,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
 public class ResourceReference<R extends IResource> {
 

@@ -26,9 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 class JobProgressDialog extends javax.swing.JDialog {
 
     public interface CancelListener {

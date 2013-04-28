@@ -27,9 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
-/**
- * @noinspection ALL
- */
 public class LoadTool extends AbstractTool {
 
     @Argument(index = 0, metaVar = "<matrix-file>", required = true,

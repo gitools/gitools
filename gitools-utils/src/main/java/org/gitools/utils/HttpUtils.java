@@ -19,15 +19,17 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence.locators.filters.cache;
+package org.gitools.utils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class HttpUtils {
 
-    public void downloadFile(InputStream is, @NotNull File outputFile) throws IOException {
+    public static void downloadFile(InputStream is, @NotNull File outputFile) throws IOException {
 
 
         OutputStream out = null;
@@ -49,5 +51,30 @@ public class HttpUtils {
                 out.close();
             }
         }
+    }
+
+    public static long getContentLength(URL url) {
+
+        if (url == null) {
+            return -1;
+        }
+
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("HEAD");
+        } catch (IOException e) {
+            return -1;
+        }
+
+        String contentLengthString = conn.getHeaderField("Content-Length");
+        conn.disconnect();
+
+        if (contentLengthString == null) {
+            return -1;
+        } else {
+            return Long.parseLong(contentLengthString);
+        }
+
     }
 }

@@ -23,16 +23,13 @@ package org.gitools.utils.progressmonitor;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public interface IProgressMonitor {
 
-    public void begin(String title, int totalWork);
+    public void begin(String title, long totalWork);
 
     public void title(String title);
 
-    public void worked(int workInc);
+    public void worked(long workInc);
 
     public void cancel();
 
@@ -43,8 +40,6 @@ public interface IProgressMonitor {
     public int getLevel();
 
     public void setLevel(int level);
-
-    //public int getWorked();
 
     @NotNull
     public IProgressMonitor subtask();

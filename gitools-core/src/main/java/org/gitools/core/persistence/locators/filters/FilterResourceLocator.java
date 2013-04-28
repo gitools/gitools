@@ -23,24 +23,25 @@ package org.gitools.core.persistence.locators.filters;
 
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-public abstract class AbstractResourceLocatorAdaptor implements IResourceLocator {
+public abstract class FilterResourceLocator implements IResourceLocator {
 
     private final String name;
     private String baseName;
     private final String extension;
     private final IResourceLocator resourceLocator;
 
-    protected AbstractResourceLocatorAdaptor(IResourceFilter filter, IResourceLocator resourceLocator) {
+    protected FilterResourceLocator(IResourceFilter filter, IResourceLocator resourceLocator) {
         this(filter.removeExtension(resourceLocator.getName()), filter.removeExtension(resourceLocator.getExtension()), resourceLocator);
     }
 
-    protected AbstractResourceLocatorAdaptor(String name, String extension, IResourceLocator resourceLocator) {
+    protected FilterResourceLocator(String name, String extension, IResourceLocator resourceLocator) {
         this.name = name;
         this.extension = extension;
         this.resourceLocator = resourceLocator;
@@ -78,13 +79,18 @@ public abstract class AbstractResourceLocatorAdaptor implements IResourceLocator
     }
 
     @Override
+    public long getContentLength() {
+        return getResourceLocator().getContentLength();
+    }
+
+    @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return getResourceLocator().getReferenceLocator(referenceName);
     }
 
     @Override
-    public InputStream openInputStream() throws IOException {
-        return getResourceLocator().openInputStream();
+    public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
+        return getResourceLocator().openInputStream(progressMonitor);
     }
 
     @Override

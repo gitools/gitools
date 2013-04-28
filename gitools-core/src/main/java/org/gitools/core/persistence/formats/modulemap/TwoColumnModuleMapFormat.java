@@ -71,9 +71,9 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         // read mappings
 
         try {
-            progressMonitor.begin("Reading modules ...", 1);
+            progressMonitor.begin("Reading modules ...", resourceLocator.getContentLength());
 
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             readModuleMappings(parser, isItemNamesFilterEnabled(), itemNameToRowMapping, moduleItemsMap);

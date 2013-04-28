@@ -48,7 +48,7 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
     protected CompressMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         try {
-            DataInputStream in = new DataInputStream(resourceLocator.openInputStream());
+            DataInputStream in = new DataInputStream(resourceLocator.openInputStream(progressMonitor));
 
             // Dictionary
             byte[] dictionary = readBuffer(in);

@@ -23,6 +23,7 @@ package org.gitools.core.persistence.locators.filters.cache;
 
 
 import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.locators.filters.FilterResourceLocator;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +45,10 @@ public class CacheResourceManager {
     }
 
     public IResourceLocator getCacheResourceLocator(IResourceLocator locator) {
+
+        if (locator instanceof FilterResourceLocator) {
+            return locator;
+        }
 
         URL remoteURL = locator.getURL();
 

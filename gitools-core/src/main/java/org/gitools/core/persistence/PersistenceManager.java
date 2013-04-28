@@ -126,11 +126,11 @@ public class PersistenceManager implements Serializable {
 
     public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        // Add filters
-        IResourceLocator filteredResourceLocator = applyFilters(resourceLocator);
-
         // Use cached locator if exists
-        filteredResourceLocator = CacheResourceManager.get().getCacheResourceLocator(filteredResourceLocator);
+        IResourceLocator filteredResourceLocator = CacheResourceManager.get().getCacheResourceLocator(resourceLocator);
+
+        // Add filters
+        filteredResourceLocator = applyFilters(filteredResourceLocator);
 
         // Configure the format
         if (resourceFormat.isConfigurable()) {
@@ -138,7 +138,10 @@ public class PersistenceManager implements Serializable {
         }
 
         // Build the resource
-        R resource = resourceFormat.read(filteredResourceLocator, progressMonitor);
+        IProgressMonitor subTask = progressMonitor.subtask();
+        subTask.begin("Reading " + filteredResourceLocator.getName(), filteredResourceLocator.getContentLength());
+        R resource = resourceFormat.read(filteredResourceLocator, subTask);
+        subTask.end();
 
         // Set the original locator without the filters.
         resource.setLocator(resourceLocator);

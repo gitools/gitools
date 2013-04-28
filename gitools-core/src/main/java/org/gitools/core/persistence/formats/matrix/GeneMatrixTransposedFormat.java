@@ -50,7 +50,7 @@ public class GeneMatrixTransposedFormat extends AbstractMatrixFormat<DoubleBinar
 
         try {
 
-            InputStream in = resourceLocator.openInputStream();
+            InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             String[] fields;

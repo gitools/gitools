@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public class NullProgressMonitor implements IProgressMonitor {
 
     @Override
-    public void begin(String title, int totalWork) {
+    public void begin(String title, long totalWork) {
     }
 
     @Override
@@ -62,7 +62,7 @@ public class NullProgressMonitor implements IProgressMonitor {
     }
 
     @Override
-    public void worked(int workInc) {
+    public void worked(long workInc) {
     }
 
     @Override
