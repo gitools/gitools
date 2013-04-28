@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.ui.platform.AppFrame;
@@ -89,6 +88,9 @@ class HeatmapKeyboardController extends KeyAdapter {
 
 
         } else {
+
+            boolean selectingRange = shiftDown ? true : false;
+
             switch (key) {
                 case KeyEvent.VK_DELETE:
                     ip.hideSelected();
@@ -102,6 +104,8 @@ class HeatmapKeyboardController extends KeyAdapter {
                     ip.savePressedState(e);
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectRows();
+                    } else if (selectingRange) {
+                        ip.selectRange(mv.getColumns().getSelectionLead(), false);
                     } else {
                         switchLeadRowSelection(e);
                     }
@@ -111,6 +115,8 @@ class HeatmapKeyboardController extends KeyAdapter {
                     ip.savePressedState(e);
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectColumns();
+                    } else if (selectingRange) {
+                        ip.selectRange(mv.getColumns().getSelectionLead(), true);
                     } else {
                         switchLeadColSelection(e);
                     }
@@ -121,6 +127,9 @@ class HeatmapKeyboardController extends KeyAdapter {
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectColumns();
                         unselectRows();
+                    } else if (selectingRange) {
+                        ip.selectRange(mv.getColumns().getSelectionLead(), true);
+                        ip.selectRange(mv.getRows().getSelectionLead(), false);
                     } else {
                         switchLeadColSelection(e);
                         switchLeadRowSelection(e);
@@ -267,8 +276,8 @@ class HeatmapKeyboardController extends KeyAdapter {
     private void switchLeadRowSelection(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & shiftMask) != 0);
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
+        boolean altDown = ((modifiers & altMask) != 0);
         if (ctrlDown) {
             return;
         }
@@ -276,29 +285,19 @@ class HeatmapKeyboardController extends KeyAdapter {
         IMatrixView mv = this.mv;
         IMatrixViewDimension dim = mv.getRows();
         int leadIndex = dim.getSelectionLead();
-        int[] prevSel = dim.getSelected();
 
         if (leadIndex == -1) {
             return;
         }
 
-        if (ArrayUtils.contains(prevSel, leadIndex)) {
-            ip.removeFromSelected(leadIndex, dim);
-        } else {
-            if (shiftDown) {
-                ip.addToSelected(ip.getLastSelectedRow(), leadIndex, dim);
-            } else {
-                ip.addToSelected(leadIndex, dim);
-            }
-            ip.setLastSelectedRow(leadIndex);
-        }
+        ip.switchSelection(dim, leadIndex, altDown);
     }
 
     private void switchLeadColSelection(@NotNull KeyEvent e) {
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & shiftMask) != 0);
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
+        boolean altDown = ((modifiers & altMask) != 0);
         if (ctrlDown) {
             return;
         }
@@ -306,23 +305,11 @@ class HeatmapKeyboardController extends KeyAdapter {
         IMatrixView mv = this.mv;
         IMatrixViewDimension dim = mv.getColumns();
         int leadIndex = dim.getSelectionLead();
-        int[] prevSel = dim.getSelected();
         if (leadIndex == -1) {
             return;
         }
 
-        int[] sel;
-        if (ArrayUtils.contains(prevSel, leadIndex)) {
-            ip.removeFromSelected(leadIndex, dim);
-        } else {
-            if (shiftDown) {
-                //select all columns in between
-                ip.addToSelected(ip.getLastSelectedCol(), leadIndex, dim);
-            } else {
-                ip.addToSelected(leadIndex, dim);
-            }
-            ip.setLastSelectedCol(leadIndex);
-        }
+        ip.switchSelection(dim, leadIndex, altDown);
     }
 
 

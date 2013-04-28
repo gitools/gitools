@@ -62,7 +62,7 @@
         <td class="subtitle" colspan="3">Select and Edit</td>
     </tr>
     <tr>
-        <td class="shortcut">C/R/B</td>
+        <td class="shortcut">C/R/B or click</td>
         <td><b>Switch selection</b> of column/row/both</td>
         <td>Lead in heatmap</td>
     </tr>
@@ -74,6 +74,11 @@
     <tr>
         <td class="shortcut">$shiftKey + C/R</td>
         <td><b>Add to selection</b> columns/rows from last selection on</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$altKey + C/R or click</td>
+        <td><b>Unselect</b> a group columns/rows</td>
         <td>Lead in heatmap</td>
     </tr>
     <tr>

@@ -364,6 +364,60 @@ public class HeatmapPanelInputProcessor {
         }
     }
 
+    public void selectRange(int end, boolean horizontal) {
+        IMatrixViewDimension dim = horizontal ? mv.getColumns() : mv.getRows();
+        int start = horizontal ? getLastSelectedCol() : getLastSelectedRow();
+        addToSelected(start, end, dim);
+    }
+
+    void switchSelection(IMatrixViewDimension dim, int index, boolean groupSelection) {
+        if (ArrayUtils.contains(dim.getSelected(), index)) {
+            if (groupSelection) {
+                int[] selectedNeighbours = getSelectedNeighbours(dim.getSelected(), index);
+                removeFromSelected(selectedNeighbours, dim);
+            } else {
+                removeFromSelected(index, dim);
+            }
+        } else {
+            addToSelected(index, dim);
+            setLastSelectedCol(index);
+        }
+    }
+
+    private int[] getSelectedNeighbours(int[] selected, int index) {
+        int rightNeighbour = index;
+        int leftNeighbour = index;
+        boolean isRightNeighbour = true;
+        boolean isLeftNeighbour = true;
+        Set<Integer> neighbours = new HashSet<Integer>();
+
+        while (isLeftNeighbour) {
+            --leftNeighbour;
+            if (ArrayUtils.contains(selected, leftNeighbour)) {
+                neighbours.add(leftNeighbour);
+            } else {
+                isLeftNeighbour = false;
+                break;
+            }
+        }
+
+        neighbours.add(index);
+
+        while (isRightNeighbour) {
+            ++rightNeighbour;
+            if (ArrayUtils.contains(selected, rightNeighbour)) {
+                neighbours.add(rightNeighbour);
+            } else {
+                isRightNeighbour = false;
+                break;
+            }
+        }
+        return Ints.toArray(neighbours);
+
+
+    }
+
+
     enum Mode {
         none, selectingLead, selectingRowsAndCols, dragging, moving, zooming, scrolling, movingSelected
     }

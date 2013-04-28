@@ -51,6 +51,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
+    private boolean selectionHasMoved = false;
 
     private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
     private int shiftMask = AppFrame.getOsProperties().getShiftMask();
@@ -124,7 +125,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             mode = Mode.movingSelected;
         } else {
             mode = Mode.selectingRowsAndCols;
-
         }
 
 
@@ -133,6 +133,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 updateSelection(e, false);
                 break;
             case movingSelected:
+                selectionHasMoved = false;
                 updateSelectionMove(e, false);
                 break;
         }
@@ -150,6 +151,18 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     @Override
     public void mouseReleased(@NotNull MouseEvent e) {
         panel.mouseReleased(e);
+        int modifiers = e.getModifiers();
+        boolean altDown = ((modifiers & altMask) != 0);
+
+        int index = convertToIndex(e);
+        if (mode == Mode.movingSelected) {
+            if (!selectionHasMoved) {
+                //There was no dragging, user wanted to unselect the selection
+                ip.switchSelection(dimension, index, altDown);
+            } else {
+                selectionHasMoved = false;
+            }
+        }
 
         setLeading(e);
         mode = Mode.none;
@@ -205,7 +218,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
-        boolean shiftDown = ((modifiers & shiftMask) != 0);
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
         mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
@@ -258,6 +270,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             selectionMoveLastIndex = index;
 
             if (indexDiff > 0) {
+                selectionHasMoved = true;
                 if (horizontal) {
                     for (int i = 0; i < indexDiff; i++) {
                         dimension.move(org.gitools.core.matrix.model.Direction.LEFT, dimension.getSelected());
@@ -272,6 +285,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             }
 
             if (indexDiff < 0) {
+                selectionHasMoved = true;
                 if (horizontal) {
                     for (int i = 0; i > indexDiff; i--) {
                         dimension.move(org.gitools.core.matrix.model.Direction.RIGHT, dimension.getSelected());
@@ -301,7 +315,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
         boolean indexChanged = (selLast != index);
         if (indexChanged) {
-            selStart = horizontal ? ip.getLastSelectedCol() : ip.getLastSelectedRow();
             setLeading(e);
         }
         selLast = index;
@@ -309,12 +322,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
-
-        int[] sel = new int[0];
-
         if (!dragging && !shiftDown) {
-            ip.addToSelected(index, dimension);
-            ip.setLastSelected(index, horizontal);
+            ip.switchSelection(dimension, index, false);
         } else if (shiftDown) {
 
             int lastSelected = horizontal ? ip.getLastSelectedCol() : ip.getLastSelectedRow();
@@ -332,7 +341,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
             int size = end - start + 1;
 
-            sel = new int[size];
+            int[] sel = new int[size];
             for (int i = start; i <= end; i++)
                 sel[i - start] = i;
 
