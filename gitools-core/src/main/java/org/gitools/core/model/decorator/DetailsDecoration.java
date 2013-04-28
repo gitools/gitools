@@ -31,9 +31,10 @@ import java.io.Serializable;
  */
 public class DetailsDecoration extends Decoration implements Serializable {
 
-    private final String description;
     private final String name;
-    private final String link;
+    private final String description;
+    private final String descriptionLink;
+    private final String valueLink;
 
     private int index;
     private boolean selectable = false;
@@ -57,7 +58,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
      * @param value       the value
      */
     public DetailsDecoration(@NotNull String name, String description, @NotNull String value) {
-        this(name, description, value, null);
+        this(name, description, null, value, null);
     }
 
     /**
@@ -68,12 +69,13 @@ public class DetailsDecoration extends Decoration implements Serializable {
      * @param value       the value
      * @param valueLink   the value link
      */
-    public DetailsDecoration(@NotNull String name, String description, @NotNull String value, String valueLink) {
+    public DetailsDecoration(@NotNull String name, String description, String descriptionLink, String value, String valueLink) {
         super(value, Color.WHITE);
 
         this.description = description;
+        this.descriptionLink = descriptionLink;
         this.name = name;
-        this.link = valueLink;
+        this.valueLink = valueLink;
     }
 
     /**
@@ -99,8 +101,24 @@ public class DetailsDecoration extends Decoration implements Serializable {
      *
      * @return the link
      */
-    public String getLink() {
-        return link;
+    public String getValueLink() {
+
+        String value = getValue();
+
+        if (valueLink == null || value == null) {
+            return null;
+        }
+
+        return valueLink.replace("${value}", value);
+    }
+
+    /**
+     * Gets description link.
+     *
+     * @return the description link
+     */
+    public String getDescriptionLink() {
+        return descriptionLink;
     }
 
     /**

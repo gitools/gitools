@@ -69,7 +69,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     }
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column, int layerIndex, boolean isSelected) {
-        DetailsDecoration decoration = new DetailsDecoration(getName(), "None");
+        DetailsDecoration decoration = new DetailsDecoration(getName(), getDescription(), getDescriptionUrl(), null, getValueUrl());
         decoration.setIndex(layerIndex);
         decoration.setSelectable(true);
         if (isSelected) {

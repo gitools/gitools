@@ -28,6 +28,8 @@ public class Decoration implements Serializable {
 
     private static final long serialVersionUID = 5204451046972665249L;
 
+    public static final String NONE = "None";
+
     private String value;
     private Color bgColor;
 
@@ -46,6 +48,13 @@ public class Decoration implements Serializable {
     }
 
     public String getValue() {
+        return value;
+    }
+
+    public String getFormatedValue() {
+        if (value == null) {
+            return NONE;
+        }
         return value;
     }
 

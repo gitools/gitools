@@ -169,7 +169,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     @Override
     public void populateDetails(List<DetailsDecoration> details, int index) {
 
-        DetailsDecoration decoration = new DetailsDecoration(getTitle(), "None");
+        DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
 
         if (index != -1) {
             decorate(decoration, getColoredLabel(index));

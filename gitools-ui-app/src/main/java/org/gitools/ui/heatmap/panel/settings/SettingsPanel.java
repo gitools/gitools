@@ -70,6 +70,9 @@ public class SettingsPanel {
     private JLabel colorScaleSave;
     private JLabel colorScaleOpen;
     private JComboBox layerselector;
+    private JTextArea layerDescription;
+    private JTextField layerDescriptionLink;
+    private JTextField layerValueLink;
 
     public SettingsPanel(final Heatmap heatmap) {
         PresentationModel<Heatmap> model = new PresentationModel<Heatmap>(heatmap);
@@ -172,6 +175,11 @@ public class SettingsPanel {
         Bindings.bind(gridColumnsColor, "color", columns.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
         gridRowsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(rows.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
         gridColumnsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(columns.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
+
+        // Bind value controls
+        Bindings.bind(layerDescription, topLayer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
+        Bindings.bind(layerDescriptionLink, topLayer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
+        Bindings.bind(layerValueLink, topLayer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
 
         // Bind document controls
         Bindings.bind(documentTitle, model.getModel(Resource.PROPERTY_TITLE));

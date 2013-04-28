@@ -35,10 +35,18 @@ public class MatrixLayer extends Model implements IMatrixLayer {
     public static final String PROPERTY_NAME = "name";
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_VALUE_CLASS = "valueClass";
+    public static final String PROPERTY_DESCRIPTION_URL = "descriptionUrl";
+    public static final String PROPERTY_VALUE_URL = "valueUrl";
 
     private String id;
     private String name;
     private String description;
+
+    @XmlElement(name = "description-link")
+    private String descriptionUrl;
+
+    @XmlElement(name = "value-link")
+    private String valueUrl;
 
     @XmlElement(name = "value-type")
     @XmlJavaTypeAdapter(ClassXmlAdapter.class)
@@ -109,5 +117,25 @@ public class MatrixLayer extends Model implements IMatrixLayer {
         Class old = this.valueClass;
         this.valueClass = valueClass;
         firePropertyChange(PROPERTY_VALUE_CLASS, old, valueClass);
+    }
+
+    public String getDescriptionUrl() {
+        return descriptionUrl;
+    }
+
+    public void setDescriptionUrl(String descriptionUrl) {
+        String old = this.descriptionUrl;
+        this.descriptionUrl = descriptionUrl;
+        firePropertyChange(PROPERTY_DESCRIPTION_URL, old, descriptionUrl);
+    }
+
+    public String getValueUrl() {
+        return valueUrl;
+    }
+
+    public void setValueUrl(String valueUrl) {
+        String old = this.valueUrl;
+        this.valueUrl = valueUrl;
+        firePropertyChange(PROPERTY_VALUE_URL, old, valueUrl);
     }
 }

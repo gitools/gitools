@@ -45,10 +45,21 @@ public abstract class HeatmapHeader extends Model {
     public static final String PROPERTY_FONT = "labelFont";
     public static final String PROPERTY_LABEL_ROTATED = "labelRotated";
     public static final String PROPERTY_LABEL_COLOR = "labelColor";
-    public static final String PROPERTY_LARGEST_LABEL_LENGTH = "largestLabelLength";
+    public static final String PROPERTY_DESCRIPTION = "description";
+    public static final String PROPERTY_DESCRIPTION_URL = "descriptionUrl";
+    public static final String PROPERTY_VALUE_URL = "valueUrl";
 
     @XmlElement
     private String title;
+
+    @XmlElement
+    private String description;
+
+    @XmlElement(name = "description-link")
+    private String descriptionUrl;
+
+    @XmlElement(name = "value-link")
+    private String valueUrl;
 
     @XmlElement
     protected int size;
@@ -254,6 +265,36 @@ public abstract class HeatmapHeader extends Model {
 
     public void setAnnotationPattern(String annotationPattern) {
         this.annotationPattern = annotationPattern;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        String old = this.description;
+        this.description = description;
+        firePropertyChange(PROPERTY_DESCRIPTION, old, description);
+    }
+
+    public String getDescriptionUrl() {
+        return descriptionUrl;
+    }
+
+    public void setDescriptionUrl(String descriptionUrl) {
+        String old = this.descriptionUrl;
+        this.descriptionUrl = descriptionUrl;
+        firePropertyChange(PROPERTY_DESCRIPTION_URL, old, descriptionUrl);
+    }
+
+    public String getValueUrl() {
+        return valueUrl;
+    }
+
+    public void setValueUrl(String valueUrl) {
+        String old = this.valueUrl;
+        this.valueUrl = valueUrl;
+        firePropertyChange(PROPERTY_VALUE_URL, old, valueUrl);
     }
 
     public void init(HeatmapDimension heatmapDimension) {

@@ -125,7 +125,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
                 label = " (" + annotation.substring(equal + 1).trim() + ")";
             }
 
-            DetailsDecoration decoration = new DetailsDecoration(getTitle() + label, "None");
+            DetailsDecoration decoration = new DetailsDecoration(getTitle() + label, getDescription(), getDescriptionUrl(), null, getValueUrl());
 
             if (index != -1) {
                 decorate(decoration, index, annotation, true);

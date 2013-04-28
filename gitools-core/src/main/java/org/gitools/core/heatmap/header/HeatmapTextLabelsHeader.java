@@ -133,7 +133,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 
     @Override
     public void populateDetails(List<DetailsDecoration> details, int index) {
-        details.add(new DetailsDecoration(getTitle(), (index == -1 ? "None" : getLabelProvider().getLabel(index))));
+        details.add(new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), (index == -1 ? null : getLabelProvider().getLabel(index)), getValueUrl()));
     }
 
     private transient LabelProvider labelProvider;

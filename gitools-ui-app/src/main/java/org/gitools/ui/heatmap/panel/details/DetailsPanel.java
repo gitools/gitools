@@ -22,9 +22,6 @@
 package org.gitools.ui.heatmap.panel.details;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
 import org.jdesktop.swingx.JXTaskPaneContainer;
@@ -72,32 +69,29 @@ public class DetailsPanel extends JXTaskPaneContainer {
         setBackground(Color.WHITE);
 
         // Changes to track
-        heatmap.getRows().addPropertyChangeListener(HeatmapDimension.PROPERTY_SELECTION_LEAD, new PropertyChangeListener() {
+        heatmap.getRows().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 updateRows();
                 updateLayers();
             }
         });
-        heatmap.getColumns().addPropertyChangeListener(HeatmapDimension.PROPERTY_SELECTION_LEAD, new PropertyChangeListener() {
+
+        heatmap.getColumns().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 updateColumns();
                 updateLayers();
             }
         });
-        heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, new PropertyChangeListener() {
+        PropertyChangeListener updateLayers = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 updateLayers();
             }
-        });
-        heatmap.getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateLayers();
-            }
-        });
+        };
+        heatmap.getLayers().addPropertyChangeListener(updateLayers);
+        heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
 
         add(columnsBox = new DetailsBox("Columns"));
         columnsBox.setCollapsed(true);

@@ -22,6 +22,8 @@
 package org.gitools.ui.heatmap.panel.details.boxes;
 
 import com.alee.extended.label.WebLinkLabel;
+import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.panel.GroupingType;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
@@ -32,6 +34,7 @@ import com.alee.utils.SwingUtils;
 import info.clearthought.layout.TableLayout;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.model.decorator.DetailsDecoration;
+import org.gitools.ui.IconNames;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jetbrains.annotations.NotNull;
 
@@ -126,23 +129,31 @@ public class DetailsBox extends JXTaskPane {
     }
 
     @NotNull
-    private WebLabel createNameLabel(@NotNull DetailsDecoration property) {
-        WebLabel label = new WebLabel(StringUtils.capitalize(property.getName()), JLabel.TRAILING);
+    private Component createNameLabel(@NotNull DetailsDecoration detail) {
+
+        WebLabel label = new WebLabel(StringUtils.capitalize(detail.getName()), JLabel.TRAILING);;
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
 
 
-        if (StringUtils.isNotEmpty(property.getDescription())) {
-            TooltipManager.setTooltip(label, property.getDescription(), TooltipWay.down, 0);
+        if (StringUtils.isNotEmpty(detail.getDescription())) {
+            TooltipManager.setTooltip(label, detail.getDescription(), TooltipWay.down, 0);
         }
 
-        if (property.isSelected()) {
+        if (detail.isSelected()) {
             SwingUtils.setBoldFont(label);
         }
 
-        if (property.isSelectable()) {
+        if (detail.isSelectable()) {
             label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            label.addMouseListener(new PropertyMouseListener(property));
+            label.addMouseListener(new PropertyMouseListener(detail));
+        }
+
+        if (!StringUtils.isEmpty(detail.getDescriptionLink())) {
+            WebLinkLabel webLabel = new WebLinkLabel("", JLabel.TRAILING);
+            webLabel.setIcon(IconNames.INFO_ICON);
+            webLabel.setLink(detail.getDescriptionLink(), false);
+            return new GroupPanel(GroupingType.fillFirst, 5, webLabel, label);
         }
 
         return label;
@@ -150,7 +161,7 @@ public class DetailsBox extends JXTaskPane {
 
     private WebLabel createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
 
-        String value = property.getValue();
+        String value = property.getFormatedValue();
 
         boolean abbreviate = (value.length() > maxLength);
 
@@ -162,12 +173,12 @@ public class DetailsBox extends JXTaskPane {
         }
 
         WebLabel label;
-        if (StringUtils.isEmpty(property.getLink())) {
+        if (StringUtils.isEmpty(property.getValueLink())) {
             label = new WebLabel(abbreviatedValue);
         } else {
             WebLinkLabel webLabel = new WebLinkLabel(abbreviatedValue);
             webLabel.setIcon(WebLinkLabel.LINK_ICON);
-            webLabel.setLink(property.getLink(), false);
+            webLabel.setLink(property.getValueLink(), false);
             label = webLabel;
         }
 
@@ -198,7 +209,7 @@ public class DetailsBox extends JXTaskPane {
         int max = MINIMUM_VALUE_LENGTH;
 
         for (DetailsDecoration property : details) {
-            int length = property.getValue().length();
+            int length = property.getFormatedValue().length();
 
             if (length > max) {
                 max = length;

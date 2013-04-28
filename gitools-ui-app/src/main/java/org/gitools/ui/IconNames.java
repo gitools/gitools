@@ -21,6 +21,8 @@
  */
 package org.gitools.ui;
 
+import javax.swing.*;
+
 /**
  * @noinspection ALL
  */
@@ -194,4 +196,6 @@ public class IconNames {
     public static final String SEARCH24 = "/img/Search24.png";
 
     public static final String drag = "/img/drag.png";
+
+    public static final ImageIcon INFO_ICON = new ImageIcon(IconNames.class.getResource("/img/info.png"));
 }

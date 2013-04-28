@@ -43,8 +43,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class HeadersEditPanel extends JDialog {
-    private static final String[] COLUMN_NAMES = {"", "Title", "Size", "Color", "Background", "Visible", "", ""};
-    private static final Class[] COLUMN_CLASS = {Icon.class, String.class, Integer.class, Color.class, Color.class, Boolean.class, String.class, String.class};
+    private static final String[] COLUMN_NAMES = {"", "Title", "Description", "General link", "Value link", "Size", "Color", "Background", "Visible", "", ""};
+    private static final Class[] COLUMN_CLASS = {Icon.class, String.class, String.class, String.class, String.class, Integer.class, Color.class, Color.class, Boolean.class, String.class, String.class};
     private static final Icon DRAG_AND_DROP_ICON = new ImageIcon(HeadersEditPanel.class.getResource(IconNames.drag));
 
     private JPanel contentPane;
@@ -64,7 +64,7 @@ public class HeadersEditPanel extends JDialog {
         this.heatmap = heatmap;
         this.dimension = dimension;
 
-        headersTable.setPreferredScrollableViewportSize(new Dimension(600, 300));
+        headersTable.setPreferredScrollableViewportSize(new Dimension(800, 400));
         headersTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         headersTable.setDragEnabled(true);
         headersTable.setDropMode(DropMode.INSERT_ROWS);
@@ -76,7 +76,7 @@ public class HeadersEditPanel extends JDialog {
         );
         headersTable.setDefaultEditor(Color.class, new ColorCellEditor());
         headersTable.setDefaultRenderer(Color.class, new ColorCellRenderer());
-        TableColumn spinner = headersTable.getColumnModel().getColumn(2);
+        TableColumn spinner = headersTable.getColumnModel().getColumn(5);
         spinner.setCellEditor(new SpinnerCellEditor(new SpinnerNumberModel(0, 0, 400, 1)));
 
         Action delete = new AbstractAction() {
@@ -167,16 +167,22 @@ public class HeadersEditPanel extends JDialog {
                 case 1:
                     return header.getTitle();
                 case 2:
-                    return header.getSize();
+                    return header.getDescription();
                 case 3:
-                    return header.getLabelColor();
+                    return header.getDescriptionUrl();
                 case 4:
-                    return header.getBackgroundColor();
+                    return header.getValueUrl();
                 case 5:
-                    return header.isVisible();
+                    return header.getSize();
                 case 6:
-                    return "Delete";
+                    return header.getLabelColor();
                 case 7:
+                    return header.getBackgroundColor();
+                case 8:
+                    return header.isVisible();
+                case 9:
+                    return "Delete";
+                case 10:
                     return "Edit";
                 default:
                     return header.toString();
@@ -192,15 +198,24 @@ public class HeadersEditPanel extends JDialog {
                     header.setTitle((String) aValue);
                     break;
                 case 2:
-                    header.setSize((Integer) aValue);
+                    header.setDescription((String) aValue);
                     break;
                 case 3:
-                    header.setLabelColor((Color) aValue);
+                    header.setDescriptionUrl((String) aValue);
                     break;
                 case 4:
-                    header.setBackgroundColor((Color) aValue);
+                    header.setValueUrl((String) aValue);
                     break;
                 case 5:
+                    header.setSize((Integer) aValue);
+                    break;
+                case 6:
+                    header.setLabelColor((Color) aValue);
+                    break;
+                case 7:
+                    header.setBackgroundColor((Color) aValue);
+                    break;
+                case 8:
                     header.setVisible((Boolean) aValue);
                     break;
             }
