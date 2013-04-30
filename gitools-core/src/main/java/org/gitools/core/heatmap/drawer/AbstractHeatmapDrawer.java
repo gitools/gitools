@@ -128,23 +128,20 @@ public abstract class AbstractHeatmapDrawer {
 
                 int textWidth = (int) g.getFontMetrics().getStringBounds(text, g).getWidth();
 
-                if (textWidth > (isRotated ? height : width)) {
-                    text = "...";
-                    fontHeight = 2;
-                    textWidth = (int) g.getFontMetrics().getStringBounds(text, g).getWidth();
+                if (textWidth < (isRotated ? height : width)) {
+
+                    int leftMargin = ((width - textWidth) / 2) + 1;
+                    int bottomMargin = ((height - fontHeight) / 2) + 1;
+
+                    if (isRotated) {
+                        leftMargin = ((width - fontHeight) / 2) + 1;
+                        bottomMargin = height - (((height - textWidth) / 2));
+                    }
+
+                    g.setColor(ColorUtils.bestForegroundColor(decoration.getBgColor()));
+                    g.drawString(text, x + leftMargin, y + height - bottomMargin);
+
                 }
-
-
-                int leftMargin = ((width - textWidth) / 2) + 1;
-                int bottomMargin = ((height - fontHeight) / 2) + 1;
-
-                if (isRotated) {
-                    leftMargin = ((width - fontHeight) / 2) + 1;
-                    bottomMargin = height - (((height - textWidth) / 2));
-                }
-
-                g.setColor(ColorUtils.bestForegroundColor(decoration.getBgColor()));
-                g.drawString(text, x + leftMargin, y + height - bottomMargin);
             }
         }
 

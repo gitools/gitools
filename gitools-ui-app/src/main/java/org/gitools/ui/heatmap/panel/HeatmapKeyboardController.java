@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.os.OSProperties;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyAdapter;
@@ -32,10 +32,10 @@ import java.awt.event.KeyEvent;
 class HeatmapKeyboardController extends KeyAdapter {
 
     private final IMatrixView mv;
-    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
-    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
-    private int altMask = AppFrame.getOsProperties().getAltMask();
-    private int metaMask = AppFrame.getOsProperties().getMetaMask();
+    private int ctrlMask = OSProperties.get().getCtrlMask();
+    private int shiftMask = OSProperties.get().getShiftMask();
+    private int altMask = OSProperties.get().getAltMask();
+    private int metaMask = OSProperties.get().getMetaMask();
     final HeatmapPanelInputProcessor ip;
 
 

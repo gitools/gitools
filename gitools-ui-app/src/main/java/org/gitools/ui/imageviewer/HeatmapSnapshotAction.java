@@ -19,46 +19,40 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.actions.file;
+package org.gitools.ui.imageviewer;
 
-import org.apache.commons.io.FilenameUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapDrawer;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
-import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.settings.Settings;
-import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
-public class ExportHeatmapImageAction extends BaseAction {
+public class HeatmapSnapshotAction extends BaseAction {
 
-    private static final long serialVersionUID = -7288045475037410310L;
+    public HeatmapSnapshotAction() {
+        super("Snapshot heatmap");
 
-    public ExportHeatmapImageAction() {
-        super("Export heatmap as an image ...");
-
-        setDesc("Export the heatmap as an image file");
-        setMnemonic(KeyEvent.VK_I);
+        setDesc("Snapshot heatmap");
+        setLargeIcon(IconNames.SNAPSHOT_LARGE_ICON);
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap;
+    public boolean updateEnabledByEditor(IEditor editor) {
+        setEnabled(editor instanceof HeatmapEditor);
+        return isEnabled();
     }
 
     @Override
@@ -69,35 +63,28 @@ public class ExportHeatmapImageAction extends BaseAction {
             return;
         }
 
-        final Object model = editor.getModel();
+        Object model = editor.getModel();
         if (!(model instanceof Heatmap)) {
             return;
         }
 
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
+        final Heatmap heatmap = (Heatmap) model;
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
-        dlg.setVisible(true);
-        if (dlg.isCancelled()) {
+        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a snapshot title", editor.getName() + " (snapshot)");
+
+        // The user canceled the snapshot
+        if (title == null) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(saveWiz.getFolder());
-
-        final File file = saveWiz.getPathAsFile();
-
-        final String formatExtension = saveWiz.getFormat().getExtension();
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting heatmap to image ...", 1);
-                    monitor.info("File: " + file.getName());
 
-                    Heatmap hm = (Heatmap) model;
-
-                    HeatmapDrawer drawer = new HeatmapDrawer(hm);
+                    HeatmapDrawer drawer = new HeatmapDrawer(heatmap);
                     drawer.setPictureMode(true);
 
                     Dimension heatmapSize = drawer.getSize();
@@ -110,7 +97,16 @@ public class ExportHeatmapImageAction extends BaseAction {
                     g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
                     drawer.draw(g, new Rectangle(new Point(), heatmapSize), new Rectangle(new Point(), heatmapSize));
 
-                    ImageIO.write(bi, formatExtension, file);
+                    final SnapshotViewer viewer = new SnapshotViewer(bi);
+                    viewer.setName(title);
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppFrame.get().getEditorsPanel().addEditor(viewer);
+                            AppFrame.get().refresh();
+                        }
+                    });
 
                     monitor.end();
                 } catch (Exception ex) {
@@ -119,8 +115,5 @@ public class ExportHeatmapImageAction extends BaseAction {
             }
         });
 
-        AppFrame.get().setStatusText("Image created.");
     }
-
-
 }

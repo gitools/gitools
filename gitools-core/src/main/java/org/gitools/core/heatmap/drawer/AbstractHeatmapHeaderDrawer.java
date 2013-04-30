@@ -149,7 +149,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         int clipStart = clip.y - box.y;
         int clipEnd = clipStart + clip.height;
         int index = ((clipEnd + size - 1) / size);
-        index = ((index + 1) > heatmapDimension.size() ? heatmapDimension.size() : index);
+        index = ((index + 1) > heatmapDimension.size() ? heatmapDimension.size() - 1 : index);
         return index;
     }
 

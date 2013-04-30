@@ -23,9 +23,6 @@ package org.gitools.ui;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public class IconNames {
 
     public static final String info = "/img/info.png";
@@ -38,9 +35,6 @@ public class IconNames {
     public static final String open16 = "/img/Open16.png";
     public static final String open24 = "/img/Open24.png";
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     public static final String openAnalysis16 = "/img/OpenAnalysis16.png";
     public static final String openAnalysis24 = "/img/OpenAnalysis24.png";
 
@@ -198,4 +192,8 @@ public class IconNames {
     public static final String drag = "/img/drag.png";
 
     public static final ImageIcon INFO_ICON = new ImageIcon(IconNames.class.getResource("/img/info.png"));
+
+    public static final ImageIcon SNAPSHOT_LARGE_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot24.png"));
+
+    public static final ImageIcon SNAPSHOT_SMALL_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot16.png"));
 }

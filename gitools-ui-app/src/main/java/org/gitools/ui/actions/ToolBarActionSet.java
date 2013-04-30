@@ -35,7 +35,13 @@ public final class ToolBarActionSet extends ActionSet {
     private static final long serialVersionUID = 6924230823891805344L;
 
     public ToolBarActionSet() {
-        super(new BaseAction[]{FileActions.openAction, FileActions.saveAction, BaseAction.separator, FileActions.openGenomeSpaceAction, FileActions.openIntegrativeGenomicViewerAction, HeatmapActions.cloneAction});
+        super(new BaseAction[]{
+                FileActions.openAction,
+                FileActions.saveAction,
+                BaseAction.separator,
+                FileActions.openGenomeSpaceAction,
+                FileActions.openIntegrativeGenomicViewerAction,
+                HeatmapActions.snapshotAction});
     }
 
     public JToolBar createToolBar() {

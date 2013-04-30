@@ -34,16 +34,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-/**
- * @noinspection ALL
- */
 public class ShortcutsDialog extends JDialog {
 
     private static final long serialVersionUID = -5869809986725283792L;
 
     private final String appName;
     private final String appVersion;
-    final OSProperties osProperties = AppFrame.getOsProperties();
+    final OSProperties osProperties = OSProperties.get();
 
 
     public ShortcutsDialog(JFrame owner) {

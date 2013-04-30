@@ -25,7 +25,7 @@ import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.os.OSProperties;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -53,10 +53,10 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int selectionMoveLastIndex;
     private boolean selectionHasMoved = false;
 
-    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
-    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
-    private int altMask = AppFrame.getOsProperties().getAltMask();
-    private int metaMask = AppFrame.getOsProperties().getMetaMask();
+    private int ctrlMask = OSProperties.get().getCtrlMask();
+    private int shiftMask = OSProperties.get().getShiftMask();
+    private int altMask = OSProperties.get().getAltMask();
+    private int metaMask = OSProperties.get().getMetaMask();
 
     private HeatmapPanelInputProcessor ip;
 

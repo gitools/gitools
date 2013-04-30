@@ -33,9 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-/**
- * @noinspection ALL
- */
 public class AboutDialog extends JDialog {
 
     private static final long serialVersionUID = -5869809986725283792L;

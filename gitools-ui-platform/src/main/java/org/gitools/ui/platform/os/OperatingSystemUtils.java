@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.utils;
+package org.gitools.ui.platform.os;
 
 
 public class OperatingSystemUtils {

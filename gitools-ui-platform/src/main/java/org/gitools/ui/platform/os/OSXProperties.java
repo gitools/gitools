@@ -27,10 +27,8 @@ import java.awt.*;
 
 public class OSXProperties extends OSProperties {
 
-    public OSXProperties(Image dockLogo) {
+    public OSXProperties() {
         super();
-        Application osxApp = Application.getApplication();
-        osxApp.setDockIconImage(dockLogo);
 
         metaKey = "⌘";
         altKey = "⌥";

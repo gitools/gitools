@@ -40,12 +40,6 @@
         </dependency>
 
         <dependency>
-            <groupId>hu.kazocsaba</groupId>
-            <artifactId>image-viewer</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.gitools</groupId>
             <artifactId>gitools-intogen</artifactId>
         </dependency>

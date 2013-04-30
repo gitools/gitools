@@ -22,10 +22,11 @@
 package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
+import com.apple.eawt.Application;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.gitools.core.persistence.PersistenceInitialization;
-import org.gitools.core.utils.OperatingSystemUtils;
+import org.gitools.ui.platform.os.OperatingSystemUtils;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
@@ -33,8 +34,6 @@ import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
-import org.gitools.ui.platform.os.OSProperties;
-import org.gitools.ui.platform.os.OSXProperties;
 import org.gitools.ui.settings.Settings;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,14 +56,11 @@ public class Main {
         // Initialize loggers
         Logger.getLogger("org.lobobrowser").setLevel(Level.ERROR);
 
-        OSProperties osProperties = null;
         // Load OS specific things
         if (OperatingSystemUtils.isMac()) {
-            osProperties = new OSXProperties(IconUtils.getImageResource(IconNames.logoNoText));
-        } else {
-            osProperties = new OSProperties();
+            Application osxApp = Application.getApplication();
+            osxApp.setDockIconImage(IconUtils.getImageResource(IconNames.logoNoText));
         }
-
 
         // Initialize help system
         try {
@@ -94,7 +90,6 @@ public class Main {
 
         // Launch frame
         AppFrame.get().start();
-        AppFrame.setOsProperties(osProperties);
 
         // Execute arguments
         if (args.length > 0) {

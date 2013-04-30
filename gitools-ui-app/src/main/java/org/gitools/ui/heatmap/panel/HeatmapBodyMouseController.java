@@ -24,7 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.os.OSProperties;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -53,10 +53,10 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private HeatmapKeyboardController keyboardController;
     private HeatmapPanelInputProcessor ip;
 
-    private int ctrlMask = AppFrame.getOsProperties().getCtrlMask();
-    private int shiftMask = AppFrame.getOsProperties().getShiftMask();
-    private int altMask = AppFrame.getOsProperties().getAltMask();
-    private int metaMask = AppFrame.getOsProperties().getMetaMask();
+    private int shiftMask = OSProperties.get().getShiftMask();
+    private int ctrlMask = OSProperties.get().getCtrlMask();
+    private int altMask = OSProperties.get().getAltMask();
+    private int metaMask = OSProperties.get().getMetaMask();
 
     @NotNull
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);

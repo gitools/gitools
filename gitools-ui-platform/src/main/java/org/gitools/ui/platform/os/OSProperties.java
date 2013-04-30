@@ -25,6 +25,21 @@ import java.awt.event.InputEvent;
 
 public class OSProperties {
 
+    private static OSProperties INSTANCE;
+
+    static {
+        // Load OS specific properties
+        if (OperatingSystemUtils.isMac()) {
+            INSTANCE = new OSXProperties();
+        } else {
+            INSTANCE = new OSProperties();
+        }
+    }
+
+    public static OSProperties get() {
+        return INSTANCE;
+    }
+
     String ctrlKey = "CTRL";
     String shiftKey = "⇧";
     String altKey = "ALT";

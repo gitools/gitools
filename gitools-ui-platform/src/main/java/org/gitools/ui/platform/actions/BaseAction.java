@@ -129,7 +129,7 @@ public abstract class BaseAction extends AbstractAction {
         return (ImageIcon) getValue(LARGE_ICON_KEY);
     }
 
-    void setLargeIcon(ImageIcon icon) {
+    protected void setLargeIcon(ImageIcon icon) {
         putValue(LARGE_ICON_KEY, icon);
     }
 
