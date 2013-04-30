@@ -54,7 +54,6 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.UserCancelledException;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -96,16 +95,12 @@ public class CommandLoadFile extends AbstractCommand {
             return;
         }
 
+        monitor.begin("Initializing editor ...", 1);
         final AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(resourceLocator.getBaseName());
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                AppFrame.get().getEditorsPanel().addEditor(editor);
-                AppFrame.get().refresh();
-            }
-        });
+        AppFrame.get().getEditorsPanel().addEditor(editor);
+        AppFrame.get().refresh();
 
         // Force a GC to release free memory
         System.gc();

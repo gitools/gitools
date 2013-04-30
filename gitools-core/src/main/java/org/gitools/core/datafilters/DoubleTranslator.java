@@ -22,8 +22,12 @@
 package org.gitools.core.datafilters;
 
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DoubleTranslator implements ValueTranslator<Double> {
+
+    private static final Logger log = LoggerFactory.getLogger(DoubleTranslator.class);
 
     @Nullable
     @Override
@@ -43,6 +47,7 @@ public class DoubleTranslator implements ValueTranslator<Double> {
         try {
             value = Double.parseDouble(str);
         } catch (NumberFormatException e) {
+            log.error("Malformed number '" + str +"'");
         }
         return value;
     }

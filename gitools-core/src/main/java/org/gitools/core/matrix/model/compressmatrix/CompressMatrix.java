@@ -25,15 +25,15 @@ package org.gitools.core.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.gitools.core.datafilters.DoubleTranslator;
-import org.gitools.core.matrix.model.*;
+import org.gitools.core.matrix.model.AbstractMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.core.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,14 +49,13 @@ public class CompressMatrix extends AbstractMatrix {
 
     private static final char SEPARATOR = '\t';
     private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
-    private static DoubleTranslator TRANSLATOR = new DoubleTranslator();
     private final CompressDimension rows;
     private final CompressDimension columns;
     private final byte[] dictionary;
     private final Inflater decompresser = new Inflater();
     private final MatrixLayers layers;
     private final Map<Integer, CompressRow> values;
-    private final LoadingCache<Integer, Map<Integer, Double[]>> rowsCache;
+    private final LoadingCache<Integer, double[][]> rowsCache;
 
     /**
      * Instantiates a new Compress matrix.
@@ -92,18 +91,33 @@ public class CompressMatrix extends AbstractMatrix {
         // Calculate rows cache size
         double fact = (double) availableMemory / (double) matrixSize;
         int cacheSize = (int) ((double) values.size() * fact);
-        cacheSize = (cacheSize > values.size() ? values.size() : cacheSize);
+        cacheSize = (cacheSize > values.size() ? values.size() + (values.size()/2) : cacheSize);
         cacheSize = (cacheSize < 40 ? 40 : cacheSize);
 
         // Create the rows cache
         rowsCache = CacheBuilder.newBuilder()
                 .maximumSize(cacheSize)
                 .build(
-                        new CacheLoader<Integer, Map<Integer, Double[]>>() {
-                            public Map<Integer, Double[]> load(Integer row) {
+                        new CacheLoader<Integer, double[][]>() {
+                            public double[][] load(Integer row) {
                                 return uncompress(CompressMatrix.this.values.get(row));
                             }
                         });
+
+        // Fill the cache in background
+        final int max = Math.min(values.size(), cacheSize);
+        Runnable fillCache = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < max; i++) {
+                    rowsCache.getUnchecked(i);
+                    System.out.println("Loaded " + i);
+                }
+                System.out.println("End loading");
+            }
+        };
+        (new Thread(fillCache, "LoadingCache")).start();
+
 
         // Create a timer that watches every 5 seconds the available memory
         // and evict all the cache if it is below a minimum threshold.
@@ -121,44 +135,6 @@ public class CompressMatrix extends AbstractMatrix {
 
     }
 
-    /**
-     * @param values A string with all values
-     * @param index  The target attribute identifier
-     * @return Double value
-     */
-    private static Double toDouble(String values, int index) {
-
-        if (values == null) {
-            return null;
-        }
-
-        String value = parseField(values, index);
-        return TRANSLATOR.stringToValue(value);
-    }
-
-    /**
-     * Fast field split
-     *
-     * @param str The string to split using SEPARATOR
-     * @param num The position to return
-     * @return The string at 'num' position using 'SEPARATOR' in 'str' string.
-     */
-    private static String parseField(String str, int num) {
-        int start = -1;
-        for (int i = 0; i < num; i++) {
-            start = str.indexOf(SEPARATOR, start + 1);
-            if (start == -1)
-                return null;
-        }
-
-        int end = str.indexOf(SEPARATOR, start + 1);
-        if (end == -1)
-            end = str.length();
-
-        String result = str.substring(start + 1, end);
-        return result.replace('"', ' ').trim();
-    }
-
     @Override
     public IMatrixDimension getColumns() {
         return columns;
@@ -173,13 +149,13 @@ public class CompressMatrix extends AbstractMatrix {
     public Object getValue(int[] position, int layer) {
 
         // The cache is who loads the value if it's not already loaded.
-        Map<Integer, Double[]> rowValues = rowsCache.getUnchecked(rows.getPosition(position));
+        double[][] rowValues = rowsCache.getUnchecked(rows.getPosition(position));
 
         if (rowValues != null) {
-            Double[] columnValues = rowValues.get(columns.getPosition(position));
+            int column = columns.getPosition(position);
 
-            if (columnValues != null) {
-                return columnValues[layer];
+            if (column != -1) {
+                return rowValues[column][layer];
             }
         }
 
@@ -202,9 +178,16 @@ public class CompressMatrix extends AbstractMatrix {
      * @param compressRow The compressed row
      * @return A map from column to an array of strings with the values
      */
-    private synchronized Map<Integer, Double[]> uncompress(CompressRow compressRow) {
+    private synchronized double[][] uncompress(CompressRow compressRow) {
 
-        Map<Integer, Double[]> values = new HashMap<Integer, Double[]>(columns.size() / 4);
+        double[][] values = new double[columns.size()][layers.size()];
+
+        // Initialize all to NaN
+        for (int i = 0; i < columns.size(); i++) {
+            for (int j = 0; j < layers.size(); j++) {
+                values[i][j] = Double.NaN;
+            }
+        }
 
         try {
             byte[] result = new byte[compressRow.getNotCompressedLength()];
@@ -219,16 +202,12 @@ public class CompressMatrix extends AbstractMatrix {
             // Read all the columns
             // [column position int],[values length int],[values byte buffer]
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(result));
+
             while (in.available() > 0) {
                 int column = in.readInt();
-
-                String line = new String(CompressedMatrixFormat.readBuffer(in), "UTF-8");
-                Double properties[] = new Double[layers.size()];
-                for (int i = 0; i < properties.length; i++) {
-                    properties[i] = toDouble(line, i);
+                for (int i = 0; i < layers.size(); i++) {
+                    values[column][i] = in.readDouble();
                 }
-
-                values.put(column, properties);
             }
             in.close();
 

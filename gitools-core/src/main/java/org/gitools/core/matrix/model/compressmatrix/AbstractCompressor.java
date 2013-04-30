@@ -21,14 +21,19 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.zip.Deflater;
 
 public abstract class AbstractCompressor {
+    private static final Logger log = LoggerFactory.getLogger(AbstractCompressor.class);
     protected static final char SEPARATOR = '\t';
 
     private static final int MAX_LINES_TO_DICTIONARY = 5000000;
@@ -91,15 +96,29 @@ public abstract class AbstractCompressor {
      * This class contains all the values of an uncompressed row
      */
     protected static class NotCompressRow {
+
+        private int row;
+        private int totalLayers;
         private List<String> values;
         private CompressDimension columns;
 
         /**
          * @param columns The columns dimension
          */
-        public NotCompressRow(CompressDimension columns) {
-            this.values = new ArrayList<String>(columns.size());
+        public NotCompressRow(int row, int totalLayers, CompressDimension columns) {
+            this.row = row;
+            this.totalLayers = totalLayers;
+            this.values = new ArrayList<>(columns.size());
             this.columns = columns;
+        }
+
+        /**
+         * Gets row position.
+         *
+         * @return the row
+         */
+        public int getRow() {
+            return row;
         }
 
         /**
@@ -118,17 +137,20 @@ public abstract class AbstractCompressor {
          * @throws java.io.IOException
          */
         public byte[] toByteArray() throws IOException {
+
             // Write the buffer
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream(values.size() * (columns.size() - 2) * 8);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream(4 + (values.size() * (columns.size() * (8 * totalLayers) + 4)));
             DataOutputStream out = new DataOutputStream(bytes);
+
             for (String value : values) {
+
                 // Column position
                 int column = columns.getIndex(parseField(value, 0));
                 out.writeInt(column);
 
                 // Column values
-                byte[] line = createColumnLine(value);
-                out.writeInt(line.length);
+                double[] values = parseDoubles(value);
+                byte[] line = createColumnLine(values);
                 out.write(line);
             }
             out.close();
@@ -136,17 +158,41 @@ public abstract class AbstractCompressor {
             return bytes.toByteArray();
         }
 
+        private double[] parseDoubles(String fields) {
+
+            double values[] = new double[totalLayers];
+
+            for (int i = 0; i < totalLayers; i++) {
+                String value = parseField(fields, i+2);
+                values[i] = Double.NaN;
+                if (value != null) {
+                    if (value.charAt(0) != '-') {
+                        try {
+                            values[i] = Double.parseDouble(value);
+                        } catch (NumberFormatException e) {
+                            log.error("Malformed number '"+value+"'");
+                        }
+                    }
+                }
+            }
+
+            return values;
+        }
+
         /**
          * Returns a byte array with all the fields except the two first that are the row and the column.
          *
-         * @param fields
+         * @param values
          * @return
          * @throws UnsupportedEncodingException
          */
-        private byte[] createColumnLine(String fields) throws UnsupportedEncodingException {
-            int firstTab = fields.indexOf(SEPARATOR);
-            int secondTab = fields.indexOf(SEPARATOR, firstTab + 1);
-            return fields.substring(secondTab + 1).getBytes("UTF-8");
+        private byte[] createColumnLine(double[] values) throws UnsupportedEncodingException {
+            byte[] bytes = new byte[8*values.length];
+            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+            for (double value : values) {
+                buffer.putDouble(value);
+            }
+            return bytes;
         }
     }
 
@@ -236,7 +282,7 @@ public abstract class AbstractCompressor {
             }
 
             // Update frequencies
-            if (fileLinesCount > MAX_LINES_TO_DICTIONARY) {
+            if (fileLinesCount < MAX_LINES_TO_DICTIONARY) {
                 int length = 0;
                 for (int i = 2; i < fields.length; i++) {
                     length += fields[i].length() + 1;

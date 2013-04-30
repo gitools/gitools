@@ -24,44 +24,44 @@ package org.gitools.core.model.xml;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class IndexArrayXmlAdapter extends XmlAdapter<String, int[]> {
+public class StringArrayXmlAdapter extends XmlAdapter<String, List<String>> {
 
     private static final String elemSeparator = ",";
 
     @NotNull
     @Override
-    public String marshal(@NotNull int[] v) throws Exception {
+    public String marshal(@NotNull List<String> v) throws Exception {
 
         StringBuilder output = new StringBuilder();
 
-        if (v.length > 0) {
+        if (v.size() > 0) {
 
             int i = 0;
 
-            while (i < v.length - 1) {
-                output.append(Integer.toString(v[i])).append(elemSeparator);
+            while (i < v.size() - 1) {
+                output.append(v.get(i).replace(",", "\\c")).append(elemSeparator);
                 i++;
             }
-            output.append(Integer.toString(v[i]));
+            output.append(v.get(i));
         }
         return output.toString();
     }
 
     @NotNull
     @Override
-    public int[] unmarshal(@NotNull String v) throws Exception {
+    public List<String> unmarshal(@NotNull String v) throws Exception {
 
-        String[] elems = v.split(elemSeparator);
+        String values[] = v.split(elemSeparator);
+        List<String> result = new ArrayList<>(values.length);
 
-        int elemsSize = elems.length;
+        for (String value : values) {
+            result.add(value.replace("\\c", ",").trim());
+        }
 
-        int[] output = new int[elemsSize];
-
-        for (int i = 0; i < elemsSize; i++)
-            output[i] = Integer.parseInt(elems[i]);
-
-        return output;
+        return result;
     }
 
 }

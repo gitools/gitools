@@ -78,46 +78,44 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long estimatedMemoryUsage = (long) ((getAverageLineLength() * getColumns().size()) + 32);
+            long estimatedMemoryUsage = ((getAverageLineLength() * getColumns().size()) + 32);
 
             progressMonitor.debug("Average line length " + getAverageLineLength());
             progressMonitor.debug("Columns " + getColumns().size());
 
-            long range = (long) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);
+            int range = (int) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);
 
-            long count = 0;
-            long from = 0;
-            long to = (from + range > getRows().size()) ? getRows().size() : from + range;
+            int count = 0;
+            int from = 0;
+            int to = (from + range > getRows().size()) ? getRows().size() : from + range;
 
             estimatedMemoryUsage = estimatedMemoryUsage * to;
             progressMonitor.debug("Estimated memory usage " + estimatedMemoryUsage);
 
             List<String> rowsList = Arrays.asList(getRows().getLabels());
+            NotCompressRow[] notCompressRows = new NotCompressRow[range];
 
             // Start the 'group by' row process
             while (from < rowsList.size()) {
                 progressMonitor.begin("> Computing rows between " + from + " to " + to + " of " + getRows().size(), 1);
 
-                Set<String> someRows = new HashSet<String>(rowsList.subList((int) from, (int) to));
+                Set<String> someRows = new HashSet<>(rowsList.subList(from, to));
 
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));
                 String line;
 
-                // Prepare group buffers
-                Map<String, NotCompressRow> groups = new HashMap<String, NotCompressRow>();
+                // Prepare not compress rows
+                for (int i = from; i < to; i++) {
+                    notCompressRows[i - from] = new NotCompressRow(i, getHeader().length, getColumns());
+                }
                 System.gc();
 
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
                 long memoryBefore = MemoryUtils.getAvailableMemory();
 
-                progressMonitor.begin("Initializing buffers...", 1);
-                for (String row : someRows) {
-                    groups.put(row, new NotCompressRow(getColumns()));
-                }
-
                 // Skip the file header
-                line = reader.readLine();
+                reader.readLine();
 
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
@@ -130,8 +128,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
 
                     String row = parseField(line, 1);
                     if (someRows.contains(row)) {
-                        NotCompressRow group = groups.get(row);
-                        group.append(line);
+                        notCompressRows[getRows().getIndex(row) - from].append(line);
                     }
                 }
                 reader.close();
@@ -143,15 +140,14 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
                 progressMonitor.debug("Real memory usage: " + (memoryBefore - memoryAfter) + " (estimated " + estimatedMemoryUsage + " - over estimation " + 100 * ((double) (memoryBefore - memoryAfter - estimatedMemoryUsage) / (double) (-memoryBefore + memoryAfter)) + "%)");
 
                 // Compress the row and write to disk
-                progressMonitor.begin("Compressing...", groups.size());
-                for (Map.Entry<String, NotCompressRow> group : groups.entrySet()) {
+                progressMonitor.begin("Compressing...", to - from);
+                for (int i = from; i < to; i++) {
                     progressMonitor.worked(1);
 
-                    // The row position
-                    out.writeInt(getRows().getIndex(group.getKey()));
+                    NotCompressRow row = notCompressRows[i - from];
 
-                    // Row to compress
-                    NotCompressRow row = group.getValue();
+                    // The row position
+                    out.writeInt(row.getRow());
 
                     // Compress the row
                     CompressRow compressRow = compressRow(row);

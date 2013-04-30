@@ -43,7 +43,7 @@ public class CompressDimension extends AbstractMatrixDimension {
         super(id, vectorPosition);
 
         this.labels = labels;
-        this.labelsToIndex = new HashMap<String, Integer>(labels.length);
+        this.labelsToIndex = new HashMap<>(labels.length);
 
         for (int i = 0; i < labels.length; i++) {
             this.labelsToIndex.put(labels[i], i);

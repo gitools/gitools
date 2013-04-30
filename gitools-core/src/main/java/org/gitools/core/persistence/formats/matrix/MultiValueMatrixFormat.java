@@ -120,7 +120,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
     protected void configureResource(@NotNull IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
         super.configureResource(resourceLocator, properties, progressMonitor);
 
-        meta = new HashMap<String, String>();
+        meta = new HashMap<>();
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             BufferedReader r = new BufferedReader(new InputStreamReader(in));

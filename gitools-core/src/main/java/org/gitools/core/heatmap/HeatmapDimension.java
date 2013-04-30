@@ -26,6 +26,7 @@ import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.core.model.xml.IndexArrayXmlAdapter;
+import org.gitools.core.model.xml.StringArrayXmlAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -70,6 +71,10 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
     private int[] visible;
 
+    @XmlElement
+    @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
+    private List<String> identifiers;
+
     @XmlTransient
     private Set<String> highlightedLabels;
 
@@ -84,6 +89,9 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
 
     @XmlTransient
     private IMatrixDimension matrixDimension;
+
+    @XmlTransient
+    private boolean remapped = false;
 
     public HeatmapDimension() {
         super();
@@ -117,6 +125,23 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         }
 
         this.matrixDimension = matrixDimension;
+
+        if (this.identifiers == null) {
+            this.identifiers = new ArrayList<>(matrixDimension.size());
+            for (int i = 0; i < matrixDimension.size(); i++) {
+                this.identifiers.add(matrixDimension.getLabel(i));
+            }
+        } else {
+            // Remap visible
+            if (visible != null && !remapped) {
+                for (int i = 0; i < visible.length; i++) {
+                    String label = identifiers.get(visible[i]);
+                    int newIndex = matrixDimension.getIndex(label);
+                    visible[i] = newIndex;
+                }
+                remapped = true;
+            }
+        }
 
         if (visible == null) {
             visible = new int[matrixDimension.size()];
