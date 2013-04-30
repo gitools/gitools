@@ -80,7 +80,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     }
 
     @Override
-    public void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel) {
+    public void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -93,7 +93,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
         final Color color = getScale().valueColor(v);
 
         decoration.setBgColor(color);
-        if (isShowValue() || forceShowLabel) {
+        if (isShowValue()) {
             String category = scale.getColorScalePoint(v).getName();
             decoration.setValue(
                     category.equals("") ? fmt.format(value) : category

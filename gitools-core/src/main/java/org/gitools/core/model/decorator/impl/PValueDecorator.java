@@ -153,7 +153,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel) {
+    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -175,7 +175,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
         final Color color = isSig ? getScale().valueColor(v) : getScale().getNonSignificantColor();
 
         decoration.setBgColor(color);
-        if (isShowValue() || forceShowLabel) {
+        if (isShowValue()) {
             decoration.setValue(fmt.format(value));
         }
     }

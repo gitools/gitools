@@ -172,7 +172,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
 
         if (index != -1) {
-            decorate(decoration, getColoredLabel(index));
+            decorate(decoration, getColoredLabel(index), true);
         }
 
         details.add(decoration);
@@ -188,16 +188,15 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         return label;
     }
 
-    public void decorate(Decoration decoration, ColoredLabel cluster) {
+    public void decorate(Decoration decoration, ColoredLabel cluster, boolean forceShowLabel) {
 
         Color clusterColor = cluster != null ? cluster.getColor() : getBackgroundColor();
         decoration.setBgColor(clusterColor);
-        if (isLabelVisible() || forceLabelColor) {
+        if (isLabelVisible() || forceShowLabel) {
             if (!cluster.getDisplayedLabel().equals("")) {
                 decoration.setValue(cluster.getDisplayedLabel());
             }
         }
-
     }
 
     private transient LabelProvider labelProvider;

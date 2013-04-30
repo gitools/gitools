@@ -78,7 +78,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         if (row != -1 && column != -1) {
             boolean previousShowValue = getDecorator().isShowValue();
             getDecorator().setShowValue(true);
-            getDecorator().decorate(decoration, matrix, row, column, layerIndex, true);
+            getDecorator().decorate(decoration, matrix, row, column, layerIndex);
             getDecorator().setShowValue(previousShowValue);
         }
         details.add(decoration);

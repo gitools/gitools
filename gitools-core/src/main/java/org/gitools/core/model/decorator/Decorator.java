@@ -46,7 +46,7 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         super();
     }
 
-    public abstract void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer, boolean forceShowLabel);
+    public abstract void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer);
 
     public abstract C getScale();
 

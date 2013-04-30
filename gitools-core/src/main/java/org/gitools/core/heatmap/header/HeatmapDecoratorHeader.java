@@ -99,7 +99,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     }
 
     public void decorate(Decoration decoration, int index, String annotation, boolean forceShowLabel) {
-        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation), forceShowLabel);
+        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
     }
 
     private MatrixAdapter matrixAdapter;
