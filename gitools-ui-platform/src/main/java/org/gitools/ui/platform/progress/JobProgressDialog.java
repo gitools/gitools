@@ -115,7 +115,7 @@ class JobProgressDialog extends javax.swing.JDialog {
         });
 
         infoLabel.setText("info");
-        tipsLabel.setText("tips");
+        tipsLabel.setText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
