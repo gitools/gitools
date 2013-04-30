@@ -150,7 +150,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
             }
         }
 
-        selectedBitmap = newSelectionBitmap(size());
+        selectedBitmap = newSelectionBitmap(matrixDimension.size());
 
         for (HeatmapHeader header : headers) {
             header.init(this);
@@ -203,9 +203,16 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     private boolean checkSelectionBitmap(int[] bitmap, int index) {
-        int bindex = index / INT_BIT_SIZE;
-        int bit = 1 << (index % INT_BIT_SIZE);
+        int bindex = (index / INT_BIT_SIZE);
+        int mod = (index % INT_BIT_SIZE);
+        int bit = 1 << mod;
         return (bitmap[bindex] & bit) != 0;
+    }
+
+    private int[] newSelectionBitmap(int size) {
+        int[] a = new int[((size + INT_BIT_SIZE - 1) / INT_BIT_SIZE)];
+        Arrays.fill(a, 0);
+        return a;
     }
 
     public int getCellSize() {
@@ -446,12 +453,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
             newview[i] = view[sel[i]];
 
         setVisible(newview);
-    }
-
-    private int[] newSelectionBitmap(int size) {
-        int[] a = new int[(size + INT_BIT_SIZE - 1) / INT_BIT_SIZE];
-        Arrays.fill(a, 0);
-        return a;
     }
 
     private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection) {
