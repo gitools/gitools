@@ -67,6 +67,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                 endGroupIndex++;
             }
 
+            decoration.reset();
             header.decorate(decoration, groupLabel);
 
             int fullSize = getHeatmapDimension().getCellSize() + getHeatmapDimension().getGridSize();
@@ -75,7 +76,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                     decoration,
                     getHeatmapDimension().getGridColor(),
                     getHeatmapDimension().getGridSize(),
-                    0, startGroupIndex*fullSize,
+                    0, startGroupIndex * fullSize,
                     cellWidth,
                     (fullSize * (endGroupIndex - startGroupIndex + 1)) - getHeatmapDimension().getGridSize(),
                     g,
