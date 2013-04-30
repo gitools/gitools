@@ -68,13 +68,15 @@ class JobProgressDialog extends javax.swing.JDialog {
 
     private void setTimerLoop() {
         timer = new Timer();
-        timer.schedule(new ShowNewTip(), 0, //initial delay
-                1 * 6000); //subsequent rate
+        timer.schedule(new ShowNewTip(), 3000, //initial delay
+                1 * 10000); //subsequent rate
     }
 
     class ShowNewTip extends TimerTask {
         public void run() {
-            tipsLabel.setText(tips.getRandomTip());
+            if (infoLabel.getText().equals("")) {
+                tipsLabel.setText(tips.getRandomTip());
+            }
         }
     }
 
@@ -164,6 +166,7 @@ class JobProgressDialog extends javax.swing.JDialog {
     }
 
     public void setInfo(String info) {
+        tipsLabel.setText("");
         infoLabel.setText(info);
     }
 
