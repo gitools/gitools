@@ -227,7 +227,7 @@ public class WizardDialog extends AbstractDialog {
 
         if (context != null) {
             try {
-                Help.getDefault().showHelp(context);
+                Help.get().showHelp(context);
             } catch (HelpException ex) {
                 ExceptionDialog dlg = new ExceptionDialog(this, ex);
                 dlg.setVisible(true);

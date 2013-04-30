@@ -70,7 +70,7 @@ public abstract class Help {
         this.urlMap = urlMap;
     }
 
-    public static Help getDefault() {
+    public static Help get() {
         if (instance == null) {
             instance = new DesktopNavigatorHelp();
         }
@@ -115,7 +115,6 @@ public abstract class Help {
                 for (int i = 0; i < matcher.groupCount(); i++)
                     p.setProperty("" + i, matcher.group(i));
                 urlStr = expandPattern(properties, map.getUrl());
-                //System.out.println(map.getPattern().pattern() + " -> " + urlStr + " (" + map.getUrl() + ")");
                 break;
             }
         }

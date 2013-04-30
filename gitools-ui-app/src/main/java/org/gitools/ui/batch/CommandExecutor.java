@@ -30,9 +30,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class CommandExecutor {
 
     private final static Map<String, ITool> TOOLS = new HashMap<String, ITool>();

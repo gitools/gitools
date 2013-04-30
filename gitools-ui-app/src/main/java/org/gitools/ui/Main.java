@@ -29,6 +29,7 @@ import org.gitools.core.utils.OperatingSystemUtils;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
+import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
@@ -67,8 +68,8 @@ public class Main {
 
         // Initialize help system
         try {
-            Help.getDefault().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));
-            Help.getDefault().loadUrlMap(Main.class.getResourceAsStream("/help/help.mappings"));
+            Help.get().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));
+            Help.get().loadUrlMap(Main.class.getResourceAsStream("/help/help.mappings"));
         } catch (Exception ex) {
             System.err.println("Error loading help system:");
             ex.printStackTrace();
@@ -95,8 +96,13 @@ public class Main {
         AppFrame.get().start();
         AppFrame.setOsProperties(osProperties);
 
+        // Execute arguments
         if (args.length > 0) {
             cmdExecutor.execute(args, new PrintWriter(System.err));
         }
+
+        // Show tips dialog
+        TipsDialog tipsDialog = new TipsDialog();
+        tipsDialog.show();
     }
 }

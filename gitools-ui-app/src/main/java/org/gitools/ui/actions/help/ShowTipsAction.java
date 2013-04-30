@@ -29,9 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-/**
- * @noinspection ALL
- */
 public class ShowTipsAction extends BaseAction {
 
     private final TipsDialog tipsDialog = new TipsDialog();

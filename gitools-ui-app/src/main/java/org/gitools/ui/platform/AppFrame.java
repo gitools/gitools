@@ -23,7 +23,6 @@ package org.gitools.ui.platform;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.os.OSProperties;
@@ -85,7 +84,7 @@ public class AppFrame extends JFrame {
         setTitle(appName + " " + appVersion);
         setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(980, 750));
+        setPreferredSize(new Dimension(1200, 750));
         pack();
     }
 
@@ -153,10 +152,6 @@ public class AppFrame extends JFrame {
 
         Thread t = new Thread(runnable);
         t.start();
-
-        TipsDialog tipsDialog = new TipsDialog();
-        tipsDialog.show();
-
 
     }
 
