@@ -137,7 +137,8 @@ public class DetailsBox extends JXTaskPane {
 
 
         if (StringUtils.isNotEmpty(detail.getDescription())) {
-            TooltipManager.setTooltip(label, detail.getDescription(), TooltipWay.down, 0);
+            String description = "<html><body width=\"300px\">" +  detail.getDescription() + "</body></html>";
+            TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
         }
 
         if (detail.isSelected()) {
