@@ -111,9 +111,7 @@ public class CompressMatrix extends AbstractMatrix {
             public void run() {
                 for (int i = 0; i < max; i++) {
                     rowsCache.getUnchecked(i);
-                    System.out.println("Loaded " + i);
                 }
-                System.out.println("End loading");
             }
         };
         (new Thread(fillCache, "LoadingCache")).start();

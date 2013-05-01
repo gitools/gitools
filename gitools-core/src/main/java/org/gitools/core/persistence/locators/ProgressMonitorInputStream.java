@@ -23,6 +23,7 @@ package org.gitools.core.persistence.locators;
 
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
+import java.io.BufferedInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,7 @@ public class ProgressMonitorInputStream extends FilterInputStream {
     private IProgressMonitor progressMonitor;
 
     public ProgressMonitorInputStream(IProgressMonitor progressMonitor, InputStream inputStream) {
-        super(inputStream);
+        super(new BufferedInputStream(inputStream));
         this.progressMonitor = progressMonitor;
     }
 

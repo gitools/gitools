@@ -21,6 +21,7 @@
  */
 package org.gitools.core.persistence.formats.compressmatrix;
 
+import org.apache.commons.io.IOUtils;
 import org.gitools.core.matrix.model.compressmatrix.CompressDimension;
 import org.gitools.core.matrix.model.compressmatrix.CompressMatrix;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
@@ -92,14 +93,8 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
      * @throws IOException
      */
     public static byte[] readBuffer(DataInputStream in) throws IOException {
-
         int length = in.readInt();
-        byte[] buffer = new byte[length];
-        if (in.read(buffer) != length) {
-            throw new PersistenceException("Incorrect buffer length");
-        }
-
-        return buffer;
+        return IOUtils.toByteArray(in, length);
     }
 
     private static Pattern TAB = Pattern.compile("\t");

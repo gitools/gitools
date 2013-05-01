@@ -139,7 +139,7 @@ public abstract class AbstractCompressor {
         public byte[] toByteArray() throws IOException {
 
             // Write the buffer
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream(4 + (values.size() * (columns.size() * (8 * totalLayers) + 4)));
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream(4 + (values.size() * (8 * totalLayers) + 4));
             DataOutputStream out = new DataOutputStream(bytes);
 
             for (String value : values) {

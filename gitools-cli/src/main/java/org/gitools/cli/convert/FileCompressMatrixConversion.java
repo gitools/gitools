@@ -21,6 +21,7 @@
  */
 package org.gitools.cli.convert;
 
+import org.apache.commons.io.FilenameUtils;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
 import org.gitools.core.utils.MemoryUtils;
@@ -30,7 +31,11 @@ import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.exception.ToolException;
 
 import java.io.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Converts a 'tdm' file into a compressed 'cmatrix' direct from the file.
@@ -53,7 +58,10 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             // Build the compression dictionary calculating the
             // frequencies of all the words in the file
             progressMonitor.begin("Building dictionary...", 1);
-            initialize(new FileMatrixReader(new CSVReader(new FileReader(inputFile))));
+
+            InputStream in = openStream(inputFile);
+
+            initialize(new FileMatrixReader(new CSVReader(new InputStreamReader(in))));
 
             progressMonitor.begin("Writing dictionary...", 1);
             out.writeInt(getDictionary().length);
@@ -101,7 +109,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
 
                 Set<String> someRows = new HashSet<>(rowsList.subList(from, to));
 
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(openStream(inputFile)));
                 String line;
 
                 // Prepare not compress rows
@@ -175,6 +183,14 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             throw new ToolException(e);
         }
 
+    }
+
+    private InputStream openStream(String inputFile) throws IOException {
+        InputStream in = new FileInputStream(inputFile);
+        if (FilenameUtils.getExtension(inputFile).endsWith("gz")) {
+            in = new GZIPInputStream(in);
+        }
+        return in;
     }
 
 
