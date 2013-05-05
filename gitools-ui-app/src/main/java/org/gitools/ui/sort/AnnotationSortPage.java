@@ -44,14 +44,13 @@ public class AnnotationSortPage extends AbstractWizardPage {
     private String colsPat;
 
 
-
     public AnnotationSortPage(Heatmap hm) {
         this(hm, HeaderEnum.Dimension.NONE_SPECIFIED);
     }
 
     public AnnotationSortPage(Heatmap hm, HeaderEnum.Dimension dim) {
 
-            this.hm = hm;
+        this.hm = hm;
 
         initComponents();
 
@@ -103,12 +102,12 @@ public class AnnotationSortPage extends AbstractWizardPage {
 
         colsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-        if (dim.equals(HeaderEnum.Dimension.COLUMN))  {
+        if (dim.equals(HeaderEnum.Dimension.COLUMN)) {
             colsChk.setSelected(true);
             rowsChk.setSelected(false);
             dimChanged();
             rowsChk.setEnabled(false);
-        } else if(dim.equals(HeaderEnum.Dimension.ROW)) {
+        } else if (dim.equals(HeaderEnum.Dimension.ROW)) {
             colsChk.setSelected(false);
             rowsChk.setSelected(true);
             dimChanged();

@@ -27,11 +27,12 @@ import org.gitools.core.matrix.filter.ValueFilterCriteria;
 import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.dialog.filter.ValueFilterDialog;
+import org.gitools.ui.dialog.filter.ValueFilterPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
@@ -66,27 +67,26 @@ public class FilterByValueAction extends BaseAction {
 
         IMatrixLayers attributes = matrixView.getContents().getLayers();
 
-        int pvalueIndex = -1;
+
         String[] attrNames = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++) {
             attrNames[i] = attributes.get(i).getName();
-            if (pvalueIndex == -1 && attrNames[i].contains("p-value")) {
-                pvalueIndex = i;
-            }
         }
-        if (pvalueIndex == -1) {
-            pvalueIndex = 0;
-        }
+        int selectedLayer = matrixView.getLayers().getTopLayerIndex();
+
 
         ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<ValueFilterCriteria>(1);
-        initialCriteria.add(new ValueFilterCriteria(attrNames[pvalueIndex], pvalueIndex, CutoffCmp.LT, 0.05));
+        initialCriteria.add(new ValueFilterCriteria(attrNames[selectedLayer], selectedLayer, CutoffCmp.LT, 0.05));
 
-        final ValueFilterDialog dlg = new ValueFilterDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, initialCriteria);
-
+        final ValueFilterPage page = new ValueFilterPage(AppFrame.get(),
+                attrNames,
+                CutoffCmp.comparators,
+                initialCriteria,
+                selectedLayer);
+        PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
 
-        if (dlg.getReturnStatus() != ValueFilterDialog.RET_OK) {
-            AppFrame.get().setStatusText("Filter cancelled.");
+        if (dlg.isCancelled()) {
             return;
         }
 
@@ -95,7 +95,12 @@ public class FilterByValueAction extends BaseAction {
             public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
-                MatrixViewValueFilter.filter(matrixView, dlg.getCriteriaList(), dlg.isAllCriteriaChecked(), dlg.isAllElementsChecked(), dlg.isInvertCriteriaChecked(), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
+                MatrixViewValueFilter.filter(matrixView, page.getCriteriaList(),
+                        page.isAllCriteriaMatch(),
+                        page.isAllElementsMatch(),
+                        page.isHideMatching(),
+                        page.isApplyToRows(),
+                        page.isApplyToColumns());
             }
         });
 
