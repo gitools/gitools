@@ -134,12 +134,38 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         } else {
             // Remap visible
             if (visible != null && !remapped) {
+                Set<Integer> toRemove = new HashSet<>();
                 for (int i = 0; i < visible.length; i++) {
                     String label = identifiers.get(visible[i]);
                     int newIndex = matrixDimension.getIndex(label);
+
+                    // This item has been removed from the data matrix
+                    if (newIndex == -1) {
+                        identifiers.remove(visible[i]);
+                        toRemove.add(i);
+                    }
+
                     visible[i] = newIndex;
                 }
                 remapped = true;
+
+                // Remove
+                if (!toRemove.isEmpty()) {
+                    int result[] = new int[visible.length - toRemove.size()];
+
+                    int i = 0;
+                    for (int p = 0; p < visible.length; p++) {
+                        if (toRemove.contains(p)) {
+                            continue;
+                        } else {
+                            result[i] = visible[p];
+                            i++;
+                        }
+                    }
+
+                    visible = result;
+                }
+
             }
         }
 
