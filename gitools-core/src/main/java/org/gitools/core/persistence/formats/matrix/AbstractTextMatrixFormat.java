@@ -308,7 +308,7 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
 
                 monitor.worked(1);
             }
-
+            pw.close();
             out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
