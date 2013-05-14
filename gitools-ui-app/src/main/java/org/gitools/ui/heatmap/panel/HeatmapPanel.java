@@ -26,7 +26,6 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.core.utils.EventUtils;
 import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
 import org.gitools.ui.platform.actions.ActionSetUtils;
@@ -37,8 +36,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -164,11 +161,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         Point leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
 
-        HeatmapDimension rowDim = heatmap.getRows();
-        HeatmapDimension colDim = heatmap.getColumns();
-
-        int leadPointXEnd = leadPoint.x + heatmap.getColumns().getCellSize() + colDim.getGridSize();
-        int leadPointYEnd = leadPoint.y + heatmap.getRows().getCellSize() + rowDim.getGridSize();
+        int leadPointXEnd = leadPoint.x + heatmap.getColumns().getFullSize();
+        int leadPointYEnd = leadPoint.y + heatmap.getRows().getFullSize();
 
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);

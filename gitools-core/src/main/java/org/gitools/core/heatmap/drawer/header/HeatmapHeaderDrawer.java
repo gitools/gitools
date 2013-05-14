@@ -151,7 +151,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
             // Draw selected
             g.setColor(HeatmapBodyDrawer.SELECTED_COLOR);
-            int cellSize = heatmapDimension.getCellSize() + heatmapDimension.getGridSize();
+            int cellSize = heatmapDimension.getFullSize();
             for (int s : heatmapDimension.getSelected()) {
                 g.fillRect(box.x, box.y + (s * cellSize), box.width, cellSize);
             }

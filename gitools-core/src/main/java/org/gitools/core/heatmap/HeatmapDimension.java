@@ -288,6 +288,21 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         return gridColor;
     }
 
+    public boolean showGrid() {
+        if (getCellSize() > 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getFullSize() {
+        if (showGrid()) {
+            return getCellSize() + getGridSize();
+        }
+
+        return getCellSize();
+    }
+
     public void setGridColor(Color gridColor) {
         Color old = this.gridColor;
         this.gridColor = gridColor;

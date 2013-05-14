@@ -57,7 +57,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected int getHeaderPoint(int index) {
 
         HeatmapDimension hdim = getHeatmapDimension();
-        int cellSize = hdim.getCellSize() + hdim.getGridSize();
+        int cellSize = hdim.getFullSize();
         int totalSize = cellSize * hdim.size();
 
         int point = index >= 0 ? index * cellSize : 0;
@@ -78,7 +78,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected int getHeaderPosition(int point) {
         HeatmapDimension hdim = getHeatmapDimension();
         int index = -1;
-        int cellSize = hdim.getCellSize() + hdim.getGridSize();
+        int cellSize = hdim.getFullSize();
         int totalSize = cellSize * hdim.size();
         if (point >= 0 && point < totalSize) {
             index = point / cellSize;
@@ -90,8 +90,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     @Override
     public Dimension getSize() {
         HeatmapDimension hdim = getHeatmapDimension();
-        int gridSize = hdim.getGridSize();
-        int total = (hdim.getCellSize() + gridSize) * hdim.size();
+        int total = (hdim.getFullSize()) * hdim.size();
         return (isHorizontal()? new Dimension(total, getHeader().getSize()) : new Dimension(getHeader().getSize(), total));
     }
 
@@ -109,7 +108,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     }
 
     protected int fullCellSize() {
-        return heatmapDimension.getCellSize() + heatmapDimension.getGridSize();
+        return heatmapDimension.getFullSize();
     }
 
     protected boolean isSelected(int index) {
@@ -123,11 +122,13 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
     protected void paintCell(Decoration decoration, int index, int offset, int width, Graphics2D g, Rectangle box) {
 
+        int gridSize = (heatmapDimension.showGrid() ? heatmapDimension.getGridSize() : 0);
+
         paintCell(
                 decoration,
                 heatmapDimension.getGridColor(),
-                heatmapDimension.getGridSize(),
-                offset, index*(heatmapDimension.getCellSize() + heatmapDimension.getGridSize()),
+                gridSize,
+                offset, index*(heatmapDimension.getFullSize()),
                 width,
                 heatmapDimension.getCellSize(),
                 g,
