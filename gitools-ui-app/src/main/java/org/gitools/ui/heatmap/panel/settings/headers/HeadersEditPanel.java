@@ -36,11 +36,12 @@ import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.collections.ReverseList;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class HeadersEditPanel extends JDialog {
     private static final String[] COLUMN_NAMES = {"", "Title", "Description", "General link", "Value link", "Size", "Color", "Background", "Visible", "", ""};
@@ -64,6 +65,13 @@ public class HeadersEditPanel extends JDialog {
         this.heatmap = heatmap;
         this.dimension = dimension;
 
+        List<HeatmapHeader> headers;
+        if (dimension == heatmap.getColumns()) {
+            headers = new ReverseList<>(dimension.getHeaders());
+        } else {
+            headers = dimension.getHeaders();
+        }
+
         headersTable.setPreferredScrollableViewportSize(new Dimension(800, 400));
         headersTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         headersTable.setDragEnabled(true);
@@ -71,13 +79,11 @@ public class HeadersEditPanel extends JDialog {
         headersTable.setTransferHandler(new TableDragAndDropHandler(headersTable));
         headersTable.setModel(
                 new HeadersTableModel(
-                        new SelectionInList<HeatmapHeader>(dimension.getHeaders())
+                        new SelectionInList<>(headers)
                 )
         );
         headersTable.setDefaultEditor(Color.class, new ColorCellEditor());
         headersTable.setDefaultRenderer(Color.class, new ColorCellRenderer());
-        TableColumn spinner = headersTable.getColumnModel().getColumn(5);
-        spinner.setCellEditor(new SpinnerCellEditor(new SpinnerNumberModel(0, 0, 400, 1)));
 
         Action delete = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -86,7 +92,7 @@ public class HeadersEditPanel extends JDialog {
                 ((HeadersTableModel) table.getModel()).removeRow(modelRow);
             }
         };
-        ButtonColumn deleteColumn = new ButtonColumn(headersTable, delete, 6);
+        ButtonColumn deleteColumn = new ButtonColumn(headersTable, delete, 9);
 
         Action edit = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -98,7 +104,7 @@ public class HeadersEditPanel extends JDialog {
                 HeadersEditPanel.this.setVisible(true);
             }
         };
-        ButtonColumn editColumn = new ButtonColumn(headersTable, edit, 7);
+        ButtonColumn editColumn = new ButtonColumn(headersTable, edit, 10);
 
 
         // Custom editor
@@ -230,16 +236,15 @@ public class HeadersEditPanel extends JDialog {
 
         @Override
         public void reorder(int fromIndex, int toIndex) {
-            if (toIndex == listModel.getList().size()) {
-                toIndex = listModel.getList().size() - 1;
-            }
 
             HeatmapHeader from = getRow(fromIndex);
-            HeatmapHeader to = getRow(toIndex);
+            listModel.getList().add(toIndex, from);
 
-            listModel.getList().set(toIndex, from);
-            listModel.getList().set(fromIndex, to);
-
+            int removeIndex = fromIndex;
+            if (toIndex < fromIndex) {
+                removeIndex++;
+            }
+            listModel.getList().remove(removeIndex);
             dimension.updateHeaders();
         }
 
