@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.newick;
+package org.gitools.utils.collections;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,11 +27,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-class ReverseListIterator<T> implements Iterable<T>, Iterator<T> {
+public class ReverseListIterator<T> implements Iterable<T>, Iterator<T> {
 
-    private final ListIterator<T> iterator;
+    private final ListIterator<? extends T> iterator;
 
-    public ReverseListIterator(@NotNull List<T> list) {
+    public ReverseListIterator(@NotNull List<? extends T> list) {
         this.iterator = list.listIterator(list.size());
     }
 

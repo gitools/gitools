@@ -31,6 +31,7 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.utils.collections.ReverseListIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -171,7 +172,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         int x = 0;
         int y = 0;
         if (isHorizontal()) {
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapDrawer d : new ReverseListIterator<>(drawers)) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
@@ -198,7 +199,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         int x = 0;
         int y = 0;
         if (isHorizontal()) {
-            for (AbstractHeatmapHeaderDrawer d : drawers) {
+
+            for (AbstractHeatmapHeaderDrawer d : new ReverseListIterator<>(drawers)) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {

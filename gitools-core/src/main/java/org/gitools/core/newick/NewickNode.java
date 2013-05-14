@@ -21,6 +21,7 @@
  */
 package org.gitools.core.newick;
 
+import org.gitools.utils.collections.ReverseListIterator;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -118,7 +119,7 @@ public class NewickNode<VT> {
                     iterable = children;
                     break;
                 case POST_ORDER:
-                    iterable = new ReverseListIterator<NewickNode>(children);
+                    iterable = new ReverseListIterator<>(children);
                     break;
             }
             for (NewickNode node : iterable)
