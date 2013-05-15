@@ -22,17 +22,17 @@
 package org.gitools.ui.actions.edit;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
-public class InvertSelectionAction extends BaseAction {
+public class InvertSelectionAction extends BaseAction implements IHeatmapDimensionAction {
 
     private static final long serialVersionUID = 3124483059501436713L;
 
@@ -60,4 +60,10 @@ public class InvertSelectionAction extends BaseAction {
         AppFrame.get().setStatusText("Selection inverted");
     }
 
+    @Override
+    public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
+
+        // Enable only if there is at least one item selected
+        setEnabled(dimension.getSelected().length > 0);
+    }
 }

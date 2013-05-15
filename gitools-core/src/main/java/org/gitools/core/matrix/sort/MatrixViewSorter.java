@@ -261,7 +261,7 @@ public abstract class MatrixViewSorter {
     }
 
     @NotNull
-    private static int[] sortLabels(@NotNull final LabelProvider labelProvider, SortDirection direction, int[] visibleIndices, boolean numeric) {
+    public static int[] sortLabels(@NotNull final LabelProvider labelProvider, SortDirection direction, int[] visibleIndices, boolean numeric) {
 
         int count = labelProvider.getCount();
         Integer[] indices = new Integer[count];

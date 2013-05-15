@@ -201,7 +201,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
     private transient LabelProvider labelProvider;
 
-    private LabelProvider getLabelProvider() {
+    public LabelProvider getLabelProvider() {
         if (labelProvider == null) {
             labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getAnnotationPattern());
         }

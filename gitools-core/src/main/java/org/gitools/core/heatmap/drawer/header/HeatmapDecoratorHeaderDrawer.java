@@ -24,6 +24,7 @@ package org.gitools.core.heatmap.drawer.header;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.model.decorator.Decoration;
 
@@ -41,12 +42,12 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         HeatmapDecoratorHeader header = getHeader();
 
+        int annotationWidth = getAnnotationWidth();
+
         int firstIndex = firstVisibleIndex(box, clip);
         int lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
-        int totalWidth = header.getSize();
-        int annotationWidth = (totalWidth / header.getAnnotationLabels().size()) - 1;
 
         for (int index = firstIndex; index <= lastIndex; index++) {
 
@@ -66,4 +67,30 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
         }
     }
 
+    private int getAnnotationWidth() {
+        int totalWidth = getHeader().getSize();
+        return  (totalWidth / getHeader().getAnnotationLabels().size()) - 1;
+    }
+
+    @Override
+    public HeatmapPosition getPosition(Point p) {
+        HeatmapPosition position = super.getPosition(p);
+
+        int annotationWidth = getAnnotationWidth() + 1;
+        int offset = (isHorizontal() ? p.y : p.x);
+
+        int index = offset / annotationWidth;
+
+        if (index < 0) {
+            index = 0;
+        }
+
+        if (index >= getHeader().getAnnotationLabels().size()) {
+            index = getHeader().getAnnotationLabels().size() - 1;
+        }
+
+        String label = getHeader().getAnnotationLabels().get(index);
+        position.headerLabel = label;
+        return position;
+    }
 }

@@ -23,25 +23,29 @@ package org.gitools.core.heatmap.drawer;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class HeatmapPosition {
 
     public int row;
     public int column;
+    public String headerLabel;
 
     public HeatmapPosition() {
     }
 
     public HeatmapPosition(int row, int column) {
+        this(row, column, null);
+    }
+
+    public HeatmapPosition(int row, int column, String headerLabel) {
         this.row = row;
         this.column = column;
+        this.headerLabel = headerLabel;
     }
 
     HeatmapPosition(@NotNull HeatmapPosition pos) {
         this.row = pos.row;
         this.column = pos.column;
+        this.headerLabel = pos.headerLabel;
     }
 
     public int getRow() {
@@ -50,5 +54,9 @@ public class HeatmapPosition {
 
     public int getColumn() {
         return column;
+    }
+
+    public String getHeaderLabel() {
+        return headerLabel;
     }
 }

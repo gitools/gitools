@@ -23,6 +23,7 @@ package org.gitools.core.heatmap.header;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.label.LabelProvider;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
@@ -90,6 +91,9 @@ public abstract class HeatmapHeader extends Model {
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     @XmlElement(name = "label-color")
     protected Color labelColor;
+
+    @XmlTransient
+    private boolean sortAscending = true;
 
     public HeatmapHeader() {
 
@@ -305,4 +309,23 @@ public abstract class HeatmapHeader extends Model {
     public void populateDetails(List<DetailsDecoration> details, int index) {
     }
 
+    public abstract LabelProvider getLabelProvider();
+
+    /**
+     * Override this method if you want that the sort by label related to this header
+     * uses numeric sort.
+     *
+     * @return  If the header contains numbers.
+     */
+    public boolean isNumeric() {
+        return false;
+    }
+
+    public boolean isSortAscending() {
+        return sortAscending;
+    }
+
+    public void setSortAscending(boolean ascending) {
+        this.sortAscending = ascending;
+    }
 }

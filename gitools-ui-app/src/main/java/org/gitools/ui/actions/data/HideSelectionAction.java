@@ -22,9 +22,12 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.jetbrains.annotations.NotNull;
@@ -32,10 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
-public class HideSelectionAction extends BaseAction {
+public class HideSelectionAction extends BaseAction implements IHeatmapDimensionAction {
 
     private static final long serialVersionUID = 1453040322414160605L;
 
@@ -86,36 +86,20 @@ public class HideSelectionAction extends BaseAction {
             case ROWS:
                 msg = "Selected rows hidden.";
                 matrixView.getRows().hide(matrixView.getRows().getSelected());
-            /*matrixView.setVisibleRows(arrayRemove(
-                    matrixView.getVisibleRows(),
-					matrixView.getSelectedRows()));*/
                 break;
             case COLUMNS:
                 msg = "Selected columns hidden.";
                 matrixView.getColumns().hide(matrixView.getColumns().getSelected());
-            /*matrixView.setVisibleColumns(arrayRemove(
-                    matrixView.getVisibleColumns(),
-					matrixView.getSelectedColumns()));*/
                 break;
         }
 
         AppFrame.get().setStatusText(msg);
     }
 
-	/*private int[] arrayRemove(int[] array, int[] indices) {
-		int j = 0;
-		int lastIndex = 0;
-		int[] newIndices = new int[array.length - indices.length];
-		
-		Arrays.sort(indices);
-		for (int i = 0; i < indices.length; i++) {
-			int len = indices[i] - lastIndex;
-			System.arraycopy(array, lastIndex, newIndices, j, len);
-			lastIndex = indices[i] + 1;
-			j += len;
-		}
-		System.arraycopy(array, lastIndex, newIndices, j, array.length - lastIndex);
-		
-		return newIndices;
-	}*/
+    @Override
+    public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
+
+        // Enable only if there is at least one item selected
+        setEnabled(dimension.getSelected().length > 0);
+    }
 }

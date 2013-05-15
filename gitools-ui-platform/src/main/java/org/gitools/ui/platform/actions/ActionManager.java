@@ -27,9 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * @noinspection ALL
- */
 public class ActionManager {
 
     private static ActionManager defaultActionManager;

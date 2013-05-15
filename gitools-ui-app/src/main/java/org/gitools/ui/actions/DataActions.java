@@ -47,11 +47,15 @@ public final class DataActions {
 
     public static final BaseAction sortByColumnAnnotationAction = new SortByAnnotationAction(Dimension.COLUMN);
 
+    public static final BaseAction sortByHeader = new SortByHeaderAction();
+
     public static final BaseAction sortByValueAction = new SortByValueAction();
 
     public static final BaseAction sortByMutualExclusionAction = new SortByMutualExclusionAction();
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
+
+    public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 
     public static final BaseAction moveRowsUpAction = new MoveSelectionAction(MoveDirection.ROW_UP);
 

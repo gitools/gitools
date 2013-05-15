@@ -25,9 +25,13 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.utils.EventUtils;
-import org.gitools.ui.heatmap.editor.HeatmapPopupmenus;
+import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -132,8 +136,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             }
         });
 
-        //new HeatmapKeyboardController(this);
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -144,8 +146,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             }
         });
 
-        popupMenuRows = ActionSetUtils.createPopupMenu(HeatmapPopupmenus.ROWS);
-        popupMenuColumns = ActionSetUtils.createPopupMenu(HeatmapPopupmenus.COLUMNS);
+        popupMenuRows = ActionSetUtils.createPopupMenu(PopupMenuActions.ROWS);
+        popupMenuColumns = ActionSetUtils.createPopupMenu(PopupMenuActions.COLUMNS);
     }
 
     private void updateScrolls() {
@@ -309,11 +311,26 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     private void showPopup(@NotNull MouseEvent e) {
+
         if (e.getComponent() == this.rowVP) {
+
+            HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            HeatmapPosition headerPostion = rowHeaderPanel.getHeaderDrawer().getPosition(e.getPoint());
+
+            DynamicActionsManager.updatePopupMenu(popupMenuRows, IHeatmapDimensionAction.class, heatmap.getRows(), headerPostion);
+            DynamicActionsManager.updatePopupMenu(popupMenuRows, IHeatmapHeaderAction.class, header, headerPostion);
+
             popupMenuRows.show(e.getComponent(), e.getX(), e.getY());
         }
 
         if (e.getComponent() == this.colVP) {
+
+            HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            HeatmapPosition headerPostion = columnHeaderPanel.getHeaderDrawer().getPosition(e.getPoint());
+
+            DynamicActionsManager.updatePopupMenu(popupMenuColumns, IHeatmapDimensionAction.class, heatmap.getColumns(), headerPostion);
+            DynamicActionsManager.updatePopupMenu(popupMenuColumns, IHeatmapHeaderAction.class, header, headerPostion);
+
             popupMenuColumns.show(e.getComponent(), e.getX(), e.getY());
         }
     }

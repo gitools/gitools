@@ -22,6 +22,8 @@
 package org.gitools.core.heatmap.header;
 
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.label.AnnotationProvider;
+import org.gitools.core.label.LabelProvider;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
@@ -29,6 +31,7 @@ import org.gitools.core.model.decorator.DetailsDecoration;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.awt.*;
 import java.util.List;
 
@@ -52,6 +55,9 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     @XmlElement
     private List<String> annotationLabels;
+
+    @XmlTransient
+    private String sortLabel;
 
     public HeatmapDecoratorHeader() {
         super();
@@ -134,5 +140,25 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
             details.add(decoration);
         }
 
+    }
+
+    @Override
+    public LabelProvider getLabelProvider() {
+        return new AnnotationProvider(getHeatmapDimension(), sortLabel);
+    }
+
+    public void setSortLabel(String label) {
+
+        if (annotationLabels.contains(label)) {
+            sortLabel = label;
+        } else {
+            sortLabel = annotationLabels.get(0);
+        }
+
+    }
+
+    @Override
+    public boolean isNumeric() {
+        return true;
     }
 }

@@ -24,6 +24,7 @@ package org.gitools.core.heatmap.drawer.header;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
@@ -88,6 +89,15 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
 
         g.setFont(previousFont);
+    }
+
+    @Override
+    public HeatmapPosition getPosition(Point p) {
+        int point = (isHorizontal() ? p.x : p.y);
+        int index = getHeaderPosition(point);
+        String label = getHeader().getColoredLabel(index).getValue();
+
+        return (isHorizontal() ? new HeatmapPosition(-1, index, label) : new HeatmapPosition(index, -1, label));
     }
 
     private Font rotateFont(Graphics2D g) {

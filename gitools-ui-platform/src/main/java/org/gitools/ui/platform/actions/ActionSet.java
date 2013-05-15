@@ -29,14 +29,8 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ActionSet extends BaseAction {
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     private static final long serialVersionUID = -1441656907811177103L;
 
     private final List<BaseAction> actions;

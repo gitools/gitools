@@ -29,9 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.net.URL;
 
-/**
- * @noinspection ALL
- */
 public abstract class BaseAction extends AbstractAction {
 
     private static final long serialVersionUID = 8312774908067146251L;

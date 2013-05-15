@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.heatmap.editor;
+package org.gitools.ui.heatmap.popupmenus;
 
 import org.gitools.ui.actions.DataActions;
 import org.gitools.ui.actions.EditActions;
@@ -27,7 +27,7 @@ import org.gitools.ui.actions.HeatmapActions;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
 
-public class HeatmapPopupmenus {
+public class PopupMenuActions {
 
     public static final ActionSet ROWS = new ActionSet(new BaseAction[]{
             EditActions.selectAllAction,
@@ -36,9 +36,10 @@ public class HeatmapPopupmenus {
             BaseAction.separator,
             DataActions.hideSelectedRowsAction,
             DataActions.showAllRowsAction,
+            DataActions.showOnlyHeaderAction,
             BaseAction.separator,
             DataActions.fastSortRowsAction,
-            DataActions.sortByRowAnnotationAction,
+            DataActions.sortByHeader,
             BaseAction.separator,
             HeatmapActions.searchRowsAction,
             BaseAction.separator,
@@ -53,9 +54,9 @@ public class HeatmapPopupmenus {
             BaseAction.separator,
             DataActions.hideSelectedColumnsAction,
             DataActions.showAllColumnsAction,
+            DataActions.showOnlyHeaderAction,
             BaseAction.separator,
-            //not valid! DataActions.fastSortRowsAction,
-            DataActions.sortByColumnAnnotationAction,
+            DataActions.sortByHeader,
             BaseAction.separator,
             HeatmapActions.searchColumnsAction,
             BaseAction.separator,

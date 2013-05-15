@@ -39,9 +39,6 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
 public class FastSortRowsAction extends BaseAction {
 
     private static final long serialVersionUID = -582380114189586206L;
@@ -57,8 +54,6 @@ public class FastSortRowsAction extends BaseAction {
         updateIcon();
 
         setMnemonic(KeyEvent.VK_S);
-
-
     }
 
     private void updateIcon() {
