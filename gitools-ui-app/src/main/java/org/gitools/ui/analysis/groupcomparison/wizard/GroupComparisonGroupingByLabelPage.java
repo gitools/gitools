@@ -170,7 +170,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
         //conversion to
         LabelProvider labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
-        int[] visibleCols = hm.getColumns().getVisible();
+        int[] visibleCols = hm.getColumns().getVisibleIndices();
         int[] groupCols = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
         int[] groupColIndices = new int[groupCols.length];
         for (int i = 0; i < groupCols.length; i++) {

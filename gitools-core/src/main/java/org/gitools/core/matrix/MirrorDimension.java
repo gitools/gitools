@@ -121,8 +121,8 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public int[] getVisible() {
-        return main.getVisible();
+    public int[] getVisibleIndices() {
+        return main.getVisibleIndices();
     }
 
     @Override
@@ -191,8 +191,8 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public void setVisible(int[] indices) {
-        main.setVisible(indices);
+    public void setVisibleIndices(int[] indices) {
+        main.setVisibleIndices(indices);
     }
 
     @Override

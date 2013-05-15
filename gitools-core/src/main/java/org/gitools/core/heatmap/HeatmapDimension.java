@@ -21,16 +21,18 @@
  */
 package org.gitools.core.heatmap;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.model.xml.IndexArrayXmlAdapter;
 import org.gitools.core.model.xml.StringArrayXmlAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -40,6 +42,7 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapDimension extends AbstractMatrixDimension implements IMatrixViewDimension {
+    private static final Logger log = LoggerFactory.getLogger(HeatmapDimension.class);
     public static final String PROPERTY_GRID_COLOR = "gridColor";
     public static final String PROPERTY_GRID_SIZE = "gridSize";
     public static final String PROPERTY_CELL_SIZE = "cellSize";
@@ -68,12 +71,10 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     @XmlElement(name = "cell-size")
     private int cellSize;
 
-    @XmlJavaTypeAdapter(IndexArrayXmlAdapter.class)
-    private int[] visible;
-
-    @XmlElement
+    @XmlElement(name = "visible")
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
-    private List<String> identifiers;
+    private List<String> visibleLabels;
+    private transient int[] visibleIndices;
 
     @XmlTransient
     private Set<String> highlightedLabels;
@@ -90,9 +91,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     @XmlTransient
     private IMatrixDimension matrixDimension;
 
-    @XmlTransient
-    private boolean remapped = false;
-
     public HeatmapDimension() {
         super();
 
@@ -106,11 +104,11 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     private void commonInit() {
-        this.headers = new LinkedList<HeatmapHeader>();
+        this.headers = new LinkedList<>();
         this.gridSize = 1;
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
-        this.highlightedLabels = new HashSet<String>();
+        this.highlightedLabels = new HashSet<>();
         selected = new int[0];
         selectionLead = -1;
     }
@@ -121,59 +119,42 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         setId(matrixDimension.getId());
 
         if (this.annotations == null) {
-            this.annotations = new ResourceReference<AnnotationMatrix>(matrixDimension.getId() + "-annotations", new AnnotationMatrix());
+            this.annotations = new ResourceReference<>(matrixDimension.getId() + "-annotations", new AnnotationMatrix());
         }
 
         this.matrixDimension = matrixDimension;
 
-        if (this.identifiers == null) {
-            this.identifiers = new ArrayList<>(matrixDimension.size());
-            for (int i = 0; i < matrixDimension.size(); i++) {
-                this.identifiers.add(matrixDimension.getLabel(i));
+        if (visibleLabels == null) {
+            visibleIndices = new int[matrixDimension.size()];
+            for (int i = 0; i < size(); i++) {
+                visibleIndices[i] = i;
             }
         } else {
-            // Remap visible
-            if (visible != null && !remapped) {
-                Set<Integer> toRemove = new HashSet<>();
-                for (int i = 0; i < visible.length; i++) {
-                    String label = identifiers.get(visible[i]);
-                    int newIndex = matrixDimension.getIndex(label);
 
-                    // This item has been removed from the data matrix
-                    if (newIndex == -1) {
-                        identifiers.remove(visible[i]);
-                        toRemove.add(i);
-                    }
+            // Convert visible labels to indices
+            List<Integer> indices = new ArrayList<>(visibleLabels.size());
+            for (String label : visibleLabels) {
+                int index = getIndex(label);
 
-                    visible[i] = newIndex;
+                if (index != -1) {
+                    indices.add(index);
                 }
-                remapped = true;
+            }
 
-                // Remove
-                if (!toRemove.isEmpty()) {
-                    int result[] = new int[visible.length - toRemove.size()];
-
-                    int i = 0;
-                    for (int p = 0; p < visible.length; p++) {
-                        if (toRemove.contains(p)) {
-                            continue;
-                        } else {
-                            result[i] = visible[p];
-                            i++;
-                        }
+            // Deprecated format uses the index instead of the label
+            if (indices.isEmpty()) {
+                log.warn("Deprecated heatmap xml format. Converting index to identifiers.");
+                for (String label : visibleLabels) {
+                    try {
+                        Integer index = Integer.valueOf(label);
+                        indices.add(index);
+                    } catch (NumberFormatException e) {
                     }
-
-                    visible = result;
                 }
-
             }
-        }
 
-        if (visible == null) {
-            visible = new int[matrixDimension.size()];
-            for (int i = 0; i < size(); i++) {
-                visible[i] = i;
-            }
+            this.visibleIndices = ArrayUtils.toPrimitive(indices.toArray(new Integer[indices.size()]));
+            updateVisibleLabels();
         }
 
         selectedBitmap = newSelectionBitmap(matrixDimension.size());
@@ -183,11 +164,26 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         }
     }
 
-    public int[] getVisible() {
-        return visible;
+    private void updateVisibleLabels() {
+        visibleLabels = new ArrayList<>(visibleIndices.length);
+        for (int index : visibleIndices) {
+            visibleLabels.add(matrixDimension.getLabel(index));
+        }
     }
 
-    public void setVisible(int[] indices) {
+    public List<String> getVisibleLabels() {
+        return visibleLabels;
+    }
+
+    public void setVisibleLabels(List<String> visibleLabels) {
+        this.visibleLabels = visibleLabels;
+    }
+
+    public int[] getVisibleIndices() {
+        return visibleIndices;
+    }
+
+    public void setVisibleIndices(int[] indices) {
         setVisible(indices, true);
     }
 
@@ -196,7 +192,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         int[] selection = selectionFromVisible(selectedBitmap, indices);
 
         int nextLeadRow = -1;
-        final int leadRow = selectionLead >= 0 ? visible[selectionLead] : -1;
+        final int leadRow = selectionLead >= 0 ? visibleIndices[selectionLead] : -1;
 
         if (updateLead) {
             for (int i = 0; i < indices.length && nextLeadRow == -1; i++)
@@ -205,7 +201,9 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
                 }
         }
 
-        this.visible = indices;
+        this.visibleIndices = indices;
+        updateVisibleLabels();
+
         firePropertyChange(PROPERTY_VISIBLE, null, indices);
 
         setSelected(selection);
@@ -355,8 +353,8 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
             }
         }
 
-        arrayMoveLeft(visible, indices, selected);
-        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+        arrayMoveLeft(visibleIndices, indices, selected);
+        firePropertyChange(PROPERTY_VISIBLE, null, visibleIndices);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
@@ -368,13 +366,13 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
             }
         }
 
-        arrayMoveRight(visible, indices, selected);
-        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+        arrayMoveRight(visibleIndices, indices, selected);
+        firePropertyChange(PROPERTY_VISIBLE, null, visibleIndices);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public void hide(int[] indices) {
-        int[] rows = visible;
+        int[] rows = visibleIndices;
 
         int[] sel = indices;
         if (sel == null || sel.length == 0) {
@@ -425,15 +423,15 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
 
     public void setSelected(int[] indices) {
         this.selected = indices;
-        updateSelectionBitmap(selectedBitmap, indices, visible);
+        updateSelectionBitmap(selectedBitmap, indices, visibleIndices);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public boolean isSelected(int index) {
-        if (index >= visible.length) {
+        if (index >= visibleIndices.length) {
             return false;
         } else {
-            return checkSelectionBitmap(selectedBitmap, visible[index]);
+            return checkSelectionBitmap(selectedBitmap, visibleIndices[index]);
         }
     }
 
@@ -482,18 +480,18 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
 
     @Override
     public int size() {
-        return visible.length;
+        return visibleIndices.length;
     }
 
     public void visibleFromSelection() {
         int[] sel = selected;
-        int[] view = visible;
+        int[] view = visibleIndices;
         int[] newview = new int[sel.length];
 
         for (int i = 0; i < newview.length; i++)
             newview[i] = view[sel[i]];
 
-        setVisible(newview);
+        setVisibleIndices(newview);
     }
 
     private void arrayMoveLeft(int[] array, @NotNull int[] indices, @NotNull int[] selection) {
@@ -563,7 +561,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
 
     @Override
     public String getLabel(int index) {
-        return matrixDimension.getLabel(visible[index]);
+        return matrixDimension.getLabel(visibleIndices[index]);
     }
 
     @Override

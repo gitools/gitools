@@ -79,7 +79,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
         }
 
         // Retrieve elements
-        int[] view = srcMatrixView.getRows().getVisible();
+        int[] view = srcMatrixView.getRows().getVisibleIndices();
 
         Set<Integer> elements = new HashSet<Integer>();
 
@@ -115,7 +115,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
 
         // Create heatmap
         Heatmap heatmap = new Heatmap(matrix);
-        heatmap.getRows().setVisible(newView);
+        heatmap.getRows().setVisibleIndices(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
         heatmap.setColumns(CloneUtils.clone(srcHeatmap.getColumns()));

@@ -21,11 +21,15 @@
  */
 package org.gitools.core.matrix.model;
 
+import java.util.List;
+
 public interface IMatrixViewDimension extends IMatrixDimension {
 
-    int[] getVisible();
+    List<String> getVisibleLabels();
 
-    void setVisible(int[] indices);
+    int[] getVisibleIndices();
+
+    void setVisibleIndices(int[] indices);
 
     public void move(Direction direction, int[] indices);
 

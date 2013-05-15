@@ -79,7 +79,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction {
         }
 
         // Retrieve elements
-        int[] view = srcMatrixView.getColumns().getVisible();
+        int[] view = srcMatrixView.getColumns().getVisibleIndices();
 
         Set<Integer> elements = new HashSet<Integer>();
 
@@ -114,7 +114,7 @@ public class ViewRelatedDataFromColumnAction extends BaseAction {
             newView[i++] = index;
 
         Heatmap heatmap = new Heatmap(matrix);
-        heatmap.getColumns().setVisible(newView);
+        heatmap.getColumns().setVisibleIndices(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for column sets: " + moduleNames.toString());
 

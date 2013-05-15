@@ -60,7 +60,7 @@ public abstract class MatrixViewSorter {
         int[] selColumns = heatmap.getColumns().getSelected();
 
         LabelProvider labelProvider = new AnnotationsPatternProvider(heatmap.getRows(), pattern);
-        int[] visibleRows = heatmap.getRows().getVisible();
+        int[] visibleRows = heatmap.getRows().getVisibleIndices();
         int[] selRows = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, regExChecked, visibleRows);
 
 
@@ -106,7 +106,7 @@ public abstract class MatrixViewSorter {
         final int[] sortedVisibleRows = visibleRows;
 
 
-        heatmap.getRows().setVisible(sortedVisibleRows);
+        heatmap.getRows().setVisibleIndices(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
         int index = heatmap.getLayers().getTopLayerIndex();
@@ -227,7 +227,7 @@ public abstract class MatrixViewSorter {
 
         Arrays.sort(sortingIndices, comparator);
 
-        final int[] visibleIndices = sortDimension.getVisible();
+        final int[] visibleIndices = sortDimension.getVisibleIndices();
         final int[] sortedVisibleIndices = new int[visibleIndices.length];
         for (int i = 0; i < visibleIndices.length; i++)
             sortedVisibleIndices[i] = visibleIndices[i];
@@ -235,7 +235,7 @@ public abstract class MatrixViewSorter {
         for (int i = 0; i < sortSelection.length; i++)
             sortedVisibleIndices[sortSelection[i]] = visibleIndices[sortingIndices[i]];
 
-        sortDimension.setVisible(sortedVisibleIndices);
+        sortDimension.setVisibleIndices(sortedVisibleIndices);
     }
 
     //TODO: sort by label with all selected properties
@@ -247,7 +247,7 @@ public abstract class MatrixViewSorter {
                 labelProvider = new AnnotationsPatternProvider(heatmap.getRows(), rowsPattern);
             }
 
-            heatmap.getRows().setVisible(sortLabels(labelProvider, rowsDirection, heatmap.getRows().getVisible(), rowsNumeric));
+            heatmap.getRows().setVisibleIndices(sortLabels(labelProvider, rowsDirection, heatmap.getRows().getVisibleIndices(), rowsNumeric));
         }
 
         if (sortCols) {
@@ -256,7 +256,7 @@ public abstract class MatrixViewSorter {
                 labelProvider = new AnnotationsPatternProvider(heatmap.getColumns(), colsPattern);
             }
 
-            heatmap.getColumns().setVisible(sortLabels(labelProvider, colsDirection, heatmap.getColumns().getVisible(), colsNumeric));
+            heatmap.getColumns().setVisibleIndices(sortLabels(labelProvider, colsDirection, heatmap.getColumns().getVisibleIndices(), colsNumeric));
         }
     }
 

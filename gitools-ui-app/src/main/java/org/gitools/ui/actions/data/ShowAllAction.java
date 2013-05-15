@@ -88,7 +88,7 @@ public class ShowAllAction extends BaseAction {
             for (int i = 0; i < rowCount; i++)
                 visibleRows[i] = i;
 
-            matrixView.getRows().setVisible(visibleRows);
+            matrixView.getRows().setVisibleIndices(visibleRows);
 
             AppFrame.get().setStatusText(visibleRows.length + " rows");
         } else if (type == ElementType.COLUMNS) {
@@ -99,7 +99,7 @@ public class ShowAllAction extends BaseAction {
             for (int i = 0; i < columnCount; i++)
                 visibleColumns[i] = i;
 
-            matrixView.getColumns().setVisible(visibleColumns);
+            matrixView.getColumns().setVisibleIndices(visibleColumns);
 
             AppFrame.get().setStatusText(visibleColumns.length + " columns");
         }

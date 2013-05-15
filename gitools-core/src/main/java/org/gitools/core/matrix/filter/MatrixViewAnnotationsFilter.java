@@ -90,7 +90,7 @@ public class MatrixViewAnnotationsFilter {
             labelProvider = new AnnotationsPatternProvider(heatmapDimension, pattern);
         }
 
-        heatmapDimension.setVisible(filterLabels(labelProvider, values, useRegex, heatmapDimension.getVisible()));
+        heatmapDimension.setVisibleIndices(filterLabels(labelProvider, values, useRegex, heatmapDimension.getVisibleIndices()));
     }
 
     @NotNull

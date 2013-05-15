@@ -143,7 +143,7 @@ public class ExportHeatmapLabelsAction extends BaseAction {
 
     @NotNull
     private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView) {
-        int[] visibleIndices = matrixView.getRows().getVisible();
+        int[] visibleIndices = matrixView.getRows().getVisibleIndices();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
             visibleSet.add(visibleIndices[i]);
@@ -159,13 +159,13 @@ public class ExportHeatmapLabelsAction extends BaseAction {
             }
 
         IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.getRows().setVisible(hiddenIndices);
+        hiddenView.getRows().setVisibleIndices(hiddenIndices);
         return new MatrixDimensionLabelProvider(hiddenView.getRows());
     }
 
     @NotNull
     private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView) {
-        int[] visibleIndices = matrixView.getColumns().getVisible();
+        int[] visibleIndices = matrixView.getColumns().getVisibleIndices();
         Set<Integer> visibleSet = new HashSet<Integer>();
         for (int i = 0; i < visibleIndices.length; i++)
             visibleSet.add(visibleIndices[i]);
@@ -181,7 +181,7 @@ public class ExportHeatmapLabelsAction extends BaseAction {
             }
 
         IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.getColumns().setVisible(hiddenIndices);
+        hiddenView.getColumns().setVisibleIndices(hiddenIndices);
         return new MatrixDimensionLabelProvider(hiddenView.getColumns());
     }
 

@@ -231,8 +231,8 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     }
 
     private void applyVisible(int[] position) {
-        position[ROW] = getRows().getVisible()[position[ROW]];
-        position[COLUMN] = getColumns().getVisible()[position[COLUMN]];
+        position[ROW] = getRows().getVisibleIndices()[position[ROW]];
+        position[COLUMN] = getColumns().getVisibleIndices()[position[COLUMN]];
     }
 
 }
