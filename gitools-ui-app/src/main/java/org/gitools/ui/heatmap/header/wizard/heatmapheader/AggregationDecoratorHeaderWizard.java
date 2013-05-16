@@ -31,8 +31,8 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.aggregation.IAggregator;
@@ -175,11 +175,13 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
             }
         }
 
+        int maxSize = 160;
+        int preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
+
         getHeader().setAnnotationLabels(aggregationAnnotationLabels);
-        getHeader().setSize(headerDimension.getCellSize() * aggregationAnnotationLabels.size());
+        getHeader().setSize(preferredSize > maxSize ? maxSize : preferredSize);
         getHeader().setTitle(dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName());
     }
-
 
 
 }
