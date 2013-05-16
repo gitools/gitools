@@ -22,6 +22,8 @@
 package org.gitools.ui.heatmap.panel.details;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.model.decorator.Decoration;
+import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
 import org.jdesktop.swingx.JXTaskPaneContainer;
@@ -93,10 +95,10 @@ public class DetailsPanel extends JXTaskPaneContainer {
         heatmap.getLayers().addPropertyChangeListener(updateLayers);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
 
-        add(columnsBox = new DetailsBox("Columns"));
+        add(columnsBox = new DetailsBox("Column"));
         columnsBox.setCollapsed(true);
 
-        add(rowsBox = new DetailsBox("Rows"));
+        add(rowsBox = new DetailsBox("Row"));
         rowsBox.setCollapsed(true);
 
         add(layersBox = new DetailsBox("Values") {
@@ -112,18 +114,48 @@ public class DetailsPanel extends JXTaskPaneContainer {
     }
 
     private void updateRows() {
+
+        int lead = heatmap.getRows().getSelectionLead();
+        if (lead != -1) {
+            rowsBox.setTitle("Row: " + heatmap.getRows().getLabel(lead) + " [" + (lead + 1) + "]");
+        } else {
+            rowsBox.setTitle("Row");
+        }
         List<DetailsDecoration> rowsDetails = new ArrayList<DetailsDecoration>();
         heatmap.getRows().populateDetails(rowsDetails);
         rowsBox.draw(rowsDetails);
     }
 
     private void updateColumns() {
+        int lead = heatmap.getColumns().getSelectionLead();
+        if (lead != -1) {
+            columnsBox.setTitle("Column: " + heatmap.getColumns().getLabel(lead) + " [" + (lead+1) + "]");
+        } else {
+            columnsBox.setTitle("Column");
+        }
         List<DetailsDecoration> columnsDetails = new ArrayList<DetailsDecoration>();
         heatmap.getColumns().populateDetails(columnsDetails);
         columnsBox.draw(columnsDetails);
     }
 
     private void updateLayers() {
+        int col = heatmap.getColumns().getSelectionLead();
+        int row = heatmap.getRows().getSelectionLead();
+
+        if (col != -1 && row != -1) {
+
+            Decorator decorator = heatmap.getLayers().getTopLayer().getDecorator();
+            Decoration decoration = new Decoration();
+            boolean showValue = decorator.isShowValue();
+            decorator.setShowValue(true);
+            decorator.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+            decorator.setShowValue(showValue);
+
+            layersBox.setTitle("Values: " + decoration.getFormatedValue());
+        } else {
+            layersBox.setTitle("Values");
+        }
+
         List<DetailsDecoration> layersDetails = new ArrayList<DetailsDecoration>();
         heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getSelectionLead(), heatmap.getColumns().getSelectionLead());
         layersBox.draw(layersDetails);
