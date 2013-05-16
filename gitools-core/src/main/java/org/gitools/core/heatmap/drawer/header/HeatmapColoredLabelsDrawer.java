@@ -60,11 +60,11 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int startGroupIndex = firstIndex;
         int endGroupIndex = firstIndex;
 
-        while (startGroupIndex < lastIndex) {
+        while (startGroupIndex <= lastIndex) {
 
             ColoredLabel groupLabel = header.getColoredLabel(startGroupIndex);
 
-            while (endGroupIndex + 1 < lastIndex && groupLabel.equals(header.getColoredLabel(endGroupIndex + 1))) {
+            while (endGroupIndex < lastIndex && groupLabel.equals(header.getColoredLabel(endGroupIndex + 1))) {
                 endGroupIndex++;
             }
 
@@ -86,6 +86,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
             );
 
             startGroupIndex = endGroupIndex + 1;
+            endGroupIndex = startGroupIndex;
         }
 
         g.setFont(previousFont);
