@@ -41,6 +41,8 @@ public class AggregatorFactory {
         put(VarianceAggregator.INSTANCE);
         put(MinAggregator.INSTANCE);
         put(MaxAggregator.INSTANCE);
+        put(NonZeroPercentageAggregator.INSTANCE);
+
     }
 
     private static void put(@NotNull IAggregator aggregator) {
