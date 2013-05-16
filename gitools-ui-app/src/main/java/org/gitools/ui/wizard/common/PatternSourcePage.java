@@ -23,7 +23,9 @@ package org.gitools.ui.wizard.common;
 
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
@@ -300,7 +302,7 @@ public class PatternSourcePage extends AbstractWizardPage {
             File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN);
 
             if (file != null) {
-                hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), AnnotationMatrix.class).get());
+                hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class)).get());
                 updateControls();
                 //annFile.setText(file.getName());
             }
