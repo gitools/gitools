@@ -21,31 +21,31 @@
  */
 package org.gitools.core.heatmap.drawer;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.core.model.decorator.Decoration;
 
 public class HeatmapPosition {
 
     public int row;
     public int column;
-    public String headerLabel;
+    public String headerAnnotation;
+    public Decoration headerDecoration;
 
     public HeatmapPosition() {
     }
 
     public HeatmapPosition(int row, int column) {
-        this(row, column, null);
+        this(row, column, null, null);
     }
 
-    public HeatmapPosition(int row, int column, String headerLabel) {
+    public HeatmapPosition(int row, int column, String headerAnnotation) {
+        this(row, column, headerAnnotation, null);
+    }
+
+    public HeatmapPosition(int row, int column, String headerAnnotation, Decoration headerDecoration) {
         this.row = row;
         this.column = column;
-        this.headerLabel = headerLabel;
-    }
-
-    HeatmapPosition(@NotNull HeatmapPosition pos) {
-        this.row = pos.row;
-        this.column = pos.column;
-        this.headerLabel = pos.headerLabel;
+        this.headerAnnotation = headerAnnotation;
+        this.headerDecoration = headerDecoration;
     }
 
     public int getRow() {
@@ -56,7 +56,8 @@ public class HeatmapPosition {
         return column;
     }
 
-    public String getHeaderLabel() {
-        return headerLabel;
+    public String getHeaderAnnotation() {
+        return headerAnnotation;
     }
+
 }

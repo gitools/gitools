@@ -21,29 +21,27 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.label.LabelProvider;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class CopyToClipboardSelectedLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
 
-    private String annotationValue;
-    private HeatmapColoredLabelsHeader coloredHeader;
+    private HeatmapHeader header;
 
-    public ShowOnlyLabelHeaderAction() {
-        super("Show only label header");
+    public CopyToClipboardSelectedLabelHeaderAction() {
+        super("Copy selected labels to clipboard");
     }
 
     @Override
@@ -54,38 +52,29 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (annotationValue == null) {
+        if (header == null) {
             return;
         }
 
-        List<Integer> toHide = new ArrayList<>();
-        HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        for (int i=0; i < dimension.size(); i++) {
-            String value = coloredHeader.getColoredLabel(i).getValue();
+        LabelProvider labelProvider = header.getLabelProvider();
+        StringBuilder content = new StringBuilder();
+        for (int i : header.getHeatmapDimension().getSelected()) {
+            String label = labelProvider.getLabel(i);
 
-            if (value == null || !value.equals(annotationValue)) {
-                toHide.add(i);
+            if (label != null && !label.isEmpty()) {
+                content.append(label).append('\n');
             }
         }
 
-        if (toHide.size() < dimension.size()) {
-            dimension.hide(ArrayUtils.toPrimitive(toHide.toArray(new Integer[toHide.size()])));
-        }
+        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard ();
+        clipBoard.setContents(new StringSelection(content.toString()), null);
+
+
     }
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
-        setEnabled(header instanceof HeatmapColoredLabelsHeader);
-
-        if (header instanceof HeatmapColoredLabelsHeader) {
-
-            coloredHeader = (HeatmapColoredLabelsHeader) header;
-            annotationValue = position.getHeaderAnnotation();
-
-            ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
-
-            setName("Show only '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
-        }
-
+        setEnabled(header instanceof HeatmapTextLabelsHeader);
+        this.header = header;
     }
 }

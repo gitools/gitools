@@ -37,13 +37,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideThisLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
 
     private String annotationValue;
     private HeatmapColoredLabelsHeader coloredHeader;
 
-    public ShowOnlyLabelHeaderAction() {
-        super("Show only label header");
+    public HideThisLabelHeaderAction() {
+        super("Hide this label");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
         for (int i=0; i < dimension.size(); i++) {
             String value = coloredHeader.getColoredLabel(i).getValue();
 
-            if (value == null || !value.equals(annotationValue)) {
+            if (value != null && value.equals(annotationValue)) {
                 toHide.add(i);
             }
         }
@@ -84,7 +84,7 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
 
-            setName("Show only '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
+            setName("Hide all '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
         }
 
     }

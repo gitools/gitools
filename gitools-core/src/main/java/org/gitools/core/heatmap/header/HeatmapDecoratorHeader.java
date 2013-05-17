@@ -105,7 +105,13 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     }
 
     public void decorate(Decoration decoration, int index, String annotation, boolean forceShowLabel) {
+
+        boolean showValue = decorator.isShowValue();
+        if (forceShowLabel) {
+            decorator.setShowValue(true);
+        }
         decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
+        decorator.setShowValue(showValue);
     }
 
     private MatrixAdapter matrixAdapter;
@@ -145,6 +151,10 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     @Override
     public LabelProvider getLabelProvider() {
         return new AnnotationProvider(getHeatmapDimension(), sortLabel);
+    }
+
+    public String getSortLabel() {
+        return sortLabel;
     }
 
     public void setSortLabel(String label) {

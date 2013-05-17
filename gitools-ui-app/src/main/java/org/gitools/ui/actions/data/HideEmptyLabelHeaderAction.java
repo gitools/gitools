@@ -25,9 +25,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.label.LabelProvider;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -37,13 +36,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideEmptyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
 
-    private String annotationValue;
-    private HeatmapColoredLabelsHeader coloredHeader;
+    private HeatmapHeader header;
 
-    public ShowOnlyLabelHeaderAction() {
-        super("Show only label header");
+    public HideEmptyLabelHeaderAction() {
+        super("Hide empty values in header");
     }
 
     @Override
@@ -54,16 +52,12 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (annotationValue == null) {
-            return;
-        }
-
         List<Integer> toHide = new ArrayList<>();
-        HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
+        HeatmapDimension dimension = header.getHeatmapDimension();
+        LabelProvider labelProvider = header.getLabelProvider();
         for (int i=0; i < dimension.size(); i++) {
-            String value = coloredHeader.getColoredLabel(i).getValue();
-
-            if (value == null || !value.equals(annotationValue)) {
+            String value = labelProvider.getLabel(i);
+            if (value == null || value.isEmpty()) {
                 toHide.add(i);
             }
         }
@@ -75,17 +69,7 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
-        setEnabled(header instanceof HeatmapColoredLabelsHeader);
-
-        if (header instanceof HeatmapColoredLabelsHeader) {
-
-            coloredHeader = (HeatmapColoredLabelsHeader) header;
-            annotationValue = position.getHeaderAnnotation();
-
-            ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
-
-            setName("Show only '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
-        }
-
+        setName("Hide empty values in '" + header.getTitle() + "'");
+        this.header = header;
     }
 }

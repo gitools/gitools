@@ -25,8 +25,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
@@ -37,13 +36,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeaderAction {
 
-    private String annotationValue;
-    private HeatmapColoredLabelsHeader coloredHeader;
+    private boolean greater;
+    private String title;
 
-    public ShowOnlyLabelHeaderAction() {
-        super("Show only label header");
+    private double thresholdValue;
+    private HeatmapDecoratorHeader header;
+
+    public HideNumericHeaderAction(boolean greater, String title) {
+        super(title);
+        this.greater = greater;
+        this.title = title;
     }
 
     @Override
@@ -54,38 +58,63 @@ public class ShowOnlyLabelHeaderAction extends BaseAction implements IHeatmapHea
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (annotationValue == null) {
+        if (header == null) {
             return;
         }
 
+        HeatmapDimension dimension = header.getHeatmapDimension();
         List<Integer> toHide = new ArrayList<>();
-        HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        for (int i=0; i < dimension.size(); i++) {
-            String value = coloredHeader.getColoredLabel(i).getValue();
+        for (int i = 0; i < dimension.size(); i++) {
+            String value = getAnnotationValue(i);
 
-            if (value == null || !value.equals(annotationValue)) {
-                toHide.add(i);
+            try {
+                double numericValue = Double.parseDouble(value);
+
+                if ((greater && numericValue > thresholdValue) || (!greater && numericValue < thresholdValue)) {
+                    toHide.add(i);
+                }
+
+            } catch (NumberFormatException ex) {
             }
+
         }
 
         if (toHide.size() < dimension.size()) {
             dimension.hide(ArrayUtils.toPrimitive(toHide.toArray(new Integer[toHide.size()])));
         }
+
     }
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
-        setEnabled(header instanceof HeatmapColoredLabelsHeader);
 
-        if (header instanceof HeatmapColoredLabelsHeader) {
-
-            coloredHeader = (HeatmapColoredLabelsHeader) header;
-            annotationValue = position.getHeaderAnnotation();
-
-            ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
-
-            setName("Show only '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
+        if (!(header instanceof HeatmapDecoratorHeader)) {
+            setEnabled(false);
+            return;
         }
 
+        setEnabled(true);
+
+        this.header = (HeatmapDecoratorHeader) header;
+        this.header.setSortLabel(position.getHeaderAnnotation());
+
+        try {
+            this.thresholdValue = Double.parseDouble(position.headerDecoration.getValue());
+        } catch (NumberFormatException e) {
+            setEnabled(false);
+        }
+
+        setName("Hide " + title + " than '" + position.headerDecoration.getFormatedValue() + "'");
+    }
+
+    private String getAnnotationValue(int index) {
+        HeatmapDimension dimension = header.getHeatmapDimension();
+
+        if (index < 0 || index >= dimension.size()) {
+            return "NA";
+        }
+
+        String identifier = dimension.getLabel(index);
+        return header.getHeatmapDimension().getAnnotations().getAnnotation(identifier, header.getSortLabel());
     }
 }

@@ -32,6 +32,9 @@ import java.awt.*;
 
 public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<HeatmapDecoratorHeader> {
 
+    private int firstIndex;
+    private int lastIndex;
+
     public HeatmapDecoratorHeaderDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HeatmapDecoratorHeader header) {
         super(heatmap, heatmapDimension, header);
     }
@@ -44,8 +47,8 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         int annotationWidth = getAnnotationWidth();
 
-        int firstIndex = firstVisibleIndex(box, clip);
-        int lastIndex = lastVisibleIndex(box, clip);
+        firstIndex = firstVisibleIndex(box, clip);
+        lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
 
@@ -74,23 +77,31 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
     @Override
     public HeatmapPosition getPosition(Point p) {
-        HeatmapPosition position = super.getPosition(p);
+
+        int point = (isHorizontal() ? p.x : p.y);
+        int index = getHeaderPosition(point);
+        HeatmapPosition position = (isHorizontal() ? new HeatmapPosition(-1, index) : new HeatmapPosition(index, -1));
 
         int annotationWidth = getAnnotationWidth() + 1;
         int offset = (isHorizontal() ? p.y : p.x);
 
-        int index = offset / annotationWidth;
+        int annotationIndex = offset / annotationWidth;
 
-        if (index < 0) {
-            index = 0;
+        if (annotationIndex < 0) {
+            annotationIndex = 0;
         }
 
-        if (index >= getHeader().getAnnotationLabels().size()) {
-            index = getHeader().getAnnotationLabels().size() - 1;
+        if (annotationIndex >= getHeader().getAnnotationLabels().size()) {
+            annotationIndex = getHeader().getAnnotationLabels().size() - 1;
         }
 
-        String label = getHeader().getAnnotationLabels().get(index);
-        position.headerLabel = label;
+        String annotation = getHeader().getAnnotationLabels().get(annotationIndex);
+        position.headerAnnotation = annotation;
+
+        Decoration decoration = new Decoration();
+        getHeader().decorate(decoration, index + firstIndex, annotation, true);
+        position.headerDecoration = decoration;
+
         return position;
     }
 }

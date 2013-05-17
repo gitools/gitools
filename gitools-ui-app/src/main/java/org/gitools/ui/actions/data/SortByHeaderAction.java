@@ -88,7 +88,7 @@ public class SortByHeaderAction extends BaseAction implements IHeatmapHeaderActi
         this.header = header;
 
         if (header instanceof HeatmapDecoratorHeader) {
-            ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderLabel());
+            ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
         }
 
         setName("Sort " + (header.isSortAscending()?"ascending":"descending") + " by '" + header.getTitle() + "'");

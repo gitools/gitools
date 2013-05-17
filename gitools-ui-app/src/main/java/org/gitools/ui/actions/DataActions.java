@@ -29,6 +29,8 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 public final class DataActions {
 
+    public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
+
     public static final BaseAction filterByLabelAction = new FilterByAnnotations();
 
     public static final BaseAction filterByValueAction = new FilterByValueAction();
@@ -38,6 +40,12 @@ public final class DataActions {
     public static final BaseAction showAllColumnsAction = new ShowAllAction(ShowAllAction.ElementType.COLUMNS);
 
     public static final BaseAction hideSelectedColumnsAction = new HideSelectionAction(ElementType.COLUMNS);
+
+    public static final BaseAction hideThisLabelHeaderAction = new HideThisLabelHeaderAction();
+
+    public static final BaseAction hideGreaterThanHeaderAction = new HideNumericHeaderAction(true, "greater");
+
+    public static final BaseAction hideSmallerThanHeaderAction = new HideNumericHeaderAction(false, "smaller");
 
     public static final BaseAction fastSortRowsAction = new FastSortRowsAction();
 
@@ -54,6 +62,8 @@ public final class DataActions {
     public static final BaseAction sortByMutualExclusionAction = new SortByMutualExclusionAction();
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
+
+    public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 

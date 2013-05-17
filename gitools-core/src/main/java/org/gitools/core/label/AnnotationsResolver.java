@@ -54,7 +54,7 @@ public class AnnotationsResolver implements TextPattern.VariableValueResolver {
         }
 
         if (annotation == null) {
-            return "${" + variableName + "}";
+            return "";
         }
 
         return annotation;
