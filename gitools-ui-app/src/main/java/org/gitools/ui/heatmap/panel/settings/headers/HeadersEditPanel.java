@@ -255,7 +255,7 @@ public class HeadersEditPanel extends JDialog {
         }
 
         public void editRow(int modelRow) {
-            actionHeaderEdit(heatmap, dimension, dimension.getHeaders().get(modelRow));
+            actionHeaderEdit(heatmap, dimension, listModel.getList().get(modelRow));
             fireTableDataChanged();
         }
 

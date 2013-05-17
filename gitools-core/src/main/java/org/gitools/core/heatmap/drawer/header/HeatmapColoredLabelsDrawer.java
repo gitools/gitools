@@ -27,12 +27,14 @@ import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.Decoration;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {
 
@@ -42,7 +44,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HeatmapColoredLabelsHeader header) {
         super(heatmap, heatmapDimension, header);
     }
-
 
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
@@ -116,44 +117,55 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     @Override
     public void drawHeaderLegend(@NotNull Graphics2D g, @NotNull Rectangle rect, @NotNull HeatmapHeader oppositeHeatmapHeader) {
 
-        /*TODO
-        int gridSize;
-        int height;
-        int width;
-        int margin;
-        int oppositeMargin;
 
-        int y = isHorizontal() ? rect.y : rect.y + rect.height;
-        int x = rect.x;
+        if (oppositeHeatmapHeader instanceof HeatmapDecoratorHeader) {
+
+            HeatmapDecoratorHeader decoratorHeader = (HeatmapDecoratorHeader) oppositeHeatmapHeader;
+
+            int gridSize;
+            int height;
+            int width;
+            int margin;
+            int oppositeMargin;
+
+            int y = isHorizontal() ? rect.y : rect.y + rect.height;
+            int x = rect.x;
 
 
-        String[] annValues = oppositeHeatmapHeader.getAnnotationValues(isHorizontal());
-        ColoredLabel[] clusters = getHeader().getClusters();
+            List<String> annValues = decoratorHeader.getAnnotationLabels();
+            ColoredLabel[] clusters = getHeader().getClusters();
 
-        gridSize = 1;
-        oppositeMargin = oppositeHeatmapHeader.getMargin();
-        margin = getHeader().getMargin();
-        height = (oppositeHeatmapHeader.getSize() - oppositeMargin - gridSize * annValues.length) / annValues.length;
-        width = getHeader().getSize() - margin;
+            gridSize = 1;
+            oppositeMargin = decoratorHeader.getMargin();
+            margin = getHeader().getMargin();
+            height = (oppositeHeatmapHeader.getSize() - oppositeMargin - gridSize * annValues.size()) / annValues.size();
+            width = getHeader().getSize() - margin;
 
-        for (String v : annValues) {
-            for (ColoredLabel cl : clusters) {
-                if (cl.getValue().equals(v)) {
-                    // paint
-                    g.setColor(cl.getColor());
+            for (String v : annValues) {
 
-                    if (isHorizontal()) {
+                int equal = v.indexOf("=");
+                if (equal != -1) {
+                    v = v.substring(equal+1).trim();
+                }
 
-                        g.fillRect(x + oppositeMargin, y, height, width);
-                        x += gridSize + height;
-                    } else {
-                        y -= height;
-                        g.fillRect(x, y - oppositeMargin, width, height);
-                        y -= gridSize;
+                for (ColoredLabel cl : clusters) {
+                    if (cl.getValue().equals(v)) {
+                        // paint
+                        g.setColor(cl.getColor());
+
+                        if (isHorizontal()) {
+                            g.fillRect(x + oppositeMargin, y, height, width);
+                            x += gridSize + height;
+                        } else {
+                            y -= height;
+                            g.fillRect(x, y - oppositeMargin, width, height);
+                            y -= gridSize;
+                        }
                     }
                 }
             }
+
         }
-        */
+
     }
 }

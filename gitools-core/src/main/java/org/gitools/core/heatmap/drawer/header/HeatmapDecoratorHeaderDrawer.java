@@ -51,7 +51,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         for (int index = firstIndex; index <= lastIndex; index++) {
 
-            int offset = 5;
+            int offset = getHeader().getMargin();
 
             // Paint border
             decoration.setBgColor(Color.WHITE);
@@ -68,7 +68,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
     }
 
     private int getAnnotationWidth() {
-        int totalWidth = getHeader().getSize();
+        int totalWidth = getHeader().getSize() - getHeader().getMargin();
         return  (totalWidth / getHeader().getAnnotationLabels().size()) - 1;
     }
 

@@ -179,7 +179,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
 
         jLabel3.setText("Margin");
 
-        marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(0), null, Integer.valueOf(1)));
+        marginSpin.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(5), Integer.valueOf(0), null, Integer.valueOf(1)));
 
         labelColor.setColor(new java.awt.Color(1, 1, 1));
         labelColor.setPreferredSize(new java.awt.Dimension(28, 28));
