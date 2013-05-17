@@ -182,7 +182,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         ColoredLabel label = getAssignedColoredLabel(getLabelProvider().getLabel(index));
 
         if (label == null) {
-            label = new ColoredLabel();
+            label = new ColoredLabel("", getBackgroundColor());
         }
 
         return label;

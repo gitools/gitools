@@ -63,7 +63,7 @@ public class AnnotationResolver implements VariableValueResolver {
         }
 
         if (annotation == null) {
-            return "${" + variableName + "}";
+            return na;
         }
 
         return annotation;

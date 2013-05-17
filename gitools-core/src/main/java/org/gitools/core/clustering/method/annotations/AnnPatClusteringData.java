@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class AnnPatClusteringData implements ClusteringData {
 
+    public final static String NA = "N/A";
+
     public class Instance implements ClusteringDataInstance {
 
         private final VariableValueResolver resolver;
@@ -93,6 +95,6 @@ public class AnnPatClusteringData implements ClusteringData {
     @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index) {
-        return new Instance(new AnnotationResolver(dimension.getAnnotations(), dimension.getLabel(index), "N/A"));
+        return new Instance(new AnnotationResolver(dimension.getAnnotations(), dimension.getLabel(index), NA));
     }
 }

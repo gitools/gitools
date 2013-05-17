@@ -69,7 +69,16 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
         for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
             String label = data.getLabel(i);
             dataLabels[i] = label;
-            String clusterName = labelPrefix + data.getInstance(i).getTypedValue(0, String.class);
+
+            String clusterName = data.getInstance(i).getTypedValue(0, String.class);
+
+            if (AnnPatClusteringData.NA.equals(clusterName)) {
+                monitor.worked(1);
+                continue;
+            }
+
+            clusterName = labelPrefix + clusterName;
+
             List<Integer> indices = clusters.get(clusterName);
             if (indices == null) {
                 indices = new ArrayList<Integer>();
