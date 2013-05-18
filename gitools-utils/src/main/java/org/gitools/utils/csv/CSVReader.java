@@ -167,7 +167,7 @@ public class CSVReader implements Closeable {
      * @param strictQuotes            sets if characters outside the quotes are ignored
      * @param ignoreLeadingWhiteSpace it true, parser should ignore white space before a quote in a field
      */
-    private CSVReader(Reader reader, char separator, char quotechar, char escape, char commentchar, int line, boolean strictQuotes, boolean ignoreLeadingWhiteSpace) {
+    public CSVReader(Reader reader, char separator, char quotechar, char escape, char commentchar, int line, boolean strictQuotes, boolean ignoreLeadingWhiteSpace) {
         this.br = new BufferedReader(reader);
         this.parser = new CSVParser(separator, quotechar, escape, strictQuotes, ignoreLeadingWhiteSpace);
         this.skipLines = line;
@@ -270,4 +270,7 @@ public class CSVReader implements Closeable {
     public int getLineNumber() {
         return lineNumber;
     }
+
+
+
 }

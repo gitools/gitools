@@ -86,8 +86,10 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
         IAnnotations am = hdim.getAnnotations();
         if (am != null && !am.getLabels().isEmpty()) {
             DefaultListModel model = new DefaultListModel();
-            for (String annotationKey : am.getLabels()) {
-                model.addElement(annotationKey);
+            for (String key : am.getLabels()) {
+                String description = am.getAnnotationMetadata("description", key);
+                String text = key + (description == null? "" : " - " +description);
+                model.addElement(text);
             }
 
             annList.setModel(model);
@@ -107,6 +109,15 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
         header.setLabelSource(getLabelSource());
         header.setLabelAnnotation(getAnnotation());
         header.setLabelPattern(getPattern());
+
+        header.setDescription(getAnnotationMetadata("description"));
+        header.setDescriptionUrl(getAnnotationMetadata("description-url"));
+        header.setValueUrl(getAnnotationMetadata("value-url"));
+
+    }
+
+    public String getAnnotationMetadata(String key) {
+        return hdim.getAnnotations().getAnnotationMetadata(key, getAnnotation());
     }
 
     @NotNull
@@ -129,7 +140,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
     @NotNull
     String getAnnotation() {
         if (annList.getSelectedIndex() != -1) {
-            return (String) annList.getSelectedValue();
+            return hdim.getAnnotations().getLabels().get(annList.getSelectedIndex());
         } else {
             return "";
         }

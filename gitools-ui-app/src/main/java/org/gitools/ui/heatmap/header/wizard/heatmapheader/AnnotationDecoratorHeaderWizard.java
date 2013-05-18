@@ -56,6 +56,9 @@ public class AnnotationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
             getHeader().setAnnotationLabels(Arrays.asList(dataSourceAnnotationPage.getSelectedAnnotation()));
             getHeader().setTitle(dataSourceAnnotationPage.getSelectedAnnotation());
+            getHeader().setDescription(dataSourceAnnotationPage.getAnnotationMetadata("description"));
+            getHeader().setValueUrl(dataSourceAnnotationPage.getAnnotationMetadata("value-url"));
+            getHeader().setDescriptionUrl(dataSourceAnnotationPage.getAnnotationMetadata("description-url"));
             getHeader().setSize(headerDimension.getCellSize());
 
             dataSourceAnnotationPage.setMessage(MessageStatus.INFO, dataSourceAnnotationPage.infoMessage);

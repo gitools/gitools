@@ -28,11 +28,14 @@ import java.util.*;
 
 public class AnnotationMatrix extends Resource implements IAnnotations {
     private List<String> labels;
+
     private Map<String, Map<String, String>> annotations;
+    private Map<String, Map<String, String>> annotationsMetadata;
 
     public AnnotationMatrix() {
         this.labels = new ArrayList<>();
         this.annotations = new HashMap<>();
+        this.annotationsMetadata = new HashMap<>();
     }
 
     public void addAnnotations(IAnnotations annotations) {
@@ -51,6 +54,11 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     @Override
     public Collection<String> getIdentifiers() {
         return annotations.keySet();
+    }
+
+    @Override
+    public Collection<String> getMetadataKeys() {
+        return annotationsMetadata.keySet();
     }
 
     @Override
@@ -85,5 +93,30 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
         }
 
         identifierAnnotations.put(annotationLabel, value);
+    }
+
+    @Override
+    public String getAnnotationMetadata(String key, String annotationLabel) {
+        if (!annotationsMetadata.containsKey(key)) {
+            return null;
+        }
+
+        return annotationsMetadata.get(key).get(annotationLabel);
+    }
+
+    public void setAnnotationMetadata(String key, String annotationLabel, String value) {
+
+        if (value == null || value.isEmpty()) {
+            return;
+        }
+
+        Map<String, String> ketMetadata = annotationsMetadata.get(key);
+
+        if (ketMetadata == null) {
+            ketMetadata = new HashMap<>();
+            annotationsMetadata.put(key, ketMetadata);
+        }
+
+        ketMetadata.put(annotationLabel, value);
     }
 }

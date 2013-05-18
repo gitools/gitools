@@ -31,7 +31,7 @@ import java.util.List;
  * @author Rainer Pruy
  * @noinspection ALL
  */
-class CSVParser {
+public class CSVParser {
 
     private final char separator;
 

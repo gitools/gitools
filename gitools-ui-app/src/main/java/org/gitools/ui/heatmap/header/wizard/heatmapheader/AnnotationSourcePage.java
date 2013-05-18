@@ -65,8 +65,11 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         IAnnotations am = hdim.getAnnotations();
         if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size()) {
             DefaultListModel model = new DefaultListModel();
-            for (String key : am.getLabels())
-                model.addElement(key);
+            for (String key : am.getLabels()) {
+                String description = am.getAnnotationMetadata("description", key);
+                String text = key + (description == null? "" : " - " +description);
+                model.addElement(text);
+            }
             annList.setModel(model);
         }
         annList.setSelectedIndices(selectedIndices);
@@ -81,13 +84,13 @@ public class AnnotationSourcePage extends AbstractWizardPage {
     public String getSelectedPattern() {
 
         StringBuilder sb = new StringBuilder();
-        Object[] values = annList.getSelectedValues();
+        int[] values = annList.getSelectedIndices();
         if (values.length == 0) {
             return "";
         }
 
         sb.append("${");
-        sb.append(values[0]);
+        sb.append(getSelectedAnnotation());
         sb.append("}");
 
         return sb.toString();
@@ -96,10 +99,14 @@ public class AnnotationSourcePage extends AbstractWizardPage {
     @NotNull
     public String getSelectedAnnotation() {
         if (annList.getSelectedIndex() != -1) {
-            return (String) annList.getSelectedValue();
+            return hdim.getAnnotations().getLabels().get(annList.getSelectedIndex());
         } else {
             return "";
         }
+    }
+
+    public String getAnnotationMetadata(String key) {
+        return hdim.getAnnotations().getAnnotationMetadata(key, getSelectedAnnotation());
     }
 
 

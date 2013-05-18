@@ -26,6 +26,7 @@ import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
+import org.gitools.utils.csv.CSVParser;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -53,16 +54,39 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
-            CSVReader parser = new CSVReader(new InputStreamReader(in));
+
+            // A reader that don't skip the comments.
+            CSVReader parser = new CSVReader(
+                    new InputStreamReader(in),
+                    CSVParser.DEFAULT_SEPARATOR,
+                    CSVParser.DEFAULT_QUOTE_CHARACTER,
+                    CSVParser.DEFAULT_ESCAPE_CHARACTER,
+                    '\n',
+                    0,
+                    CSVParser.DEFAULT_STRICT_QUOTES,
+                    CSVParser.DEFAULT_IGNORE_LEADING_WHITESPACE
+            );
 
             // Header
             String[] headers = parser.readNext();
+            while (headers[0].charAt(0) == '#') {
+                headers = parser.readNext();
+            }
 
             // Annotations
             String[] fields;
             while ((fields = parser.readNext()) != null) {
-                for (int i = 1; (i < headers.length) && (i < fields.length); i++) {
-                    matrix.setAnnotation(fields[0], headers[i], fields[i]);
+
+                // Annotation metadata
+                if (fields[0].charAt(0) == '#') {
+                    for (int i = 1; (i < headers.length) && (i < fields.length); i++) {
+                        String key = fields[0].substring(1).trim();
+                        matrix.setAnnotationMetadata(key, headers[i], fields[i]);
+                    }
+                } else {
+                    for (int i = 1; (i < headers.length) && (i < fields.length); i++) {
+                        matrix.setAnnotation(fields[0], headers[i], fields[i]);
+                    }
                 }
             }
 
@@ -82,12 +106,20 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
             RawCsvWriter writer = new RawCsvWriter(new OutputStreamWriter(out), '\t', '"');
 
             // Header
-            List<String> labels = new ArrayList<String>();
+            List<String> labels = new ArrayList<>();
             labels.addAll(resource.getLabels());
             writer.writePropertyList("identifier", labels);
 
-            // Annotations
+            // Annotation metadata
             String[] annotations = new String[labels.size()];
+            for (String key : resource.getMetadataKeys()) {
+                for (int i = 0; i < labels.size(); i++) {
+                    annotations[i] = resource.getAnnotationMetadata(key, labels.get(i));
+                }
+                writer.writePropertyList('#' + key, annotations);
+            }
+
+            // Annotations
             for (String identifier : resource.getIdentifiers()) {
                 for (int i = 0; i < labels.size(); i++) {
                     annotations[i] = resource.getAnnotation(identifier, labels.get(i));

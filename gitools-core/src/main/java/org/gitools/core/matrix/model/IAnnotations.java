@@ -32,9 +32,12 @@ public interface IAnnotations extends IResource {
 
     Collection<String> getIdentifiers();
 
+    Collection<String> getMetadataKeys();
+
     List<String> getLabels();
 
     String getAnnotation(String identifier, String annotationLabel);
 
+    String getAnnotationMetadata(String key, String annotationLabel);
 
 }

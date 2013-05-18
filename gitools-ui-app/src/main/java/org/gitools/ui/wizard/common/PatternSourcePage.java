@@ -96,8 +96,12 @@ public class PatternSourcePage extends AbstractWizardPage {
             if (idOptVisible) {
                 model.addElement("id");
             }
-            for (String key : hdim.getAnnotations().getLabels())
-                model.addElement(key);
+            for (String key : hdim.getAnnotations().getLabels()) {
+                String description = hdim.getAnnotations().getAnnotationMetadata("description", key);
+                String text = key + (description == null? "" : " - " +description);
+                model.addElement(text);
+            }
+
             annList.setModel(model);
             annList.setSelectedIndex(0);
         } else {
@@ -135,7 +139,7 @@ public class PatternSourcePage extends AbstractWizardPage {
         }
 
         StringBuilder sb = new StringBuilder();
-        Object[] values = annList.getSelectedValues();
+        String[] values = getSelectedValues();
         if (values.length == 0) {
             return "";
         }
@@ -161,7 +165,7 @@ public class PatternSourcePage extends AbstractWizardPage {
         }
 
         StringBuilder sb = new StringBuilder();
-        Object[] values = annList.getSelectedValues();
+        String[] values = getSelectedValues();
 
         sb.append(values[0]);
         for (int i = 1; i < values.length; i++) {
@@ -170,6 +174,22 @@ public class PatternSourcePage extends AbstractWizardPage {
         }
 
         return sb.toString();
+    }
+
+    public String getAnnotationMetadata(String key) {
+        String[] values = getSelectedValues();
+        return hdim.getAnnotations().getAnnotationMetadata(key, values[0]);
+    }
+
+    String[] getSelectedValues() {
+        int[] indices = annList.getSelectedIndices();
+        String[] values = new String[indices.length];
+
+        for (int i = 0; i < indices.length; i++) {
+            values[i] = hdim.getAnnotations().getLabels().get(indices[i]);
+        }
+
+        return values;
     }
 
     public void setHeatmapDimension(HeatmapDimension heatmapDimension) {

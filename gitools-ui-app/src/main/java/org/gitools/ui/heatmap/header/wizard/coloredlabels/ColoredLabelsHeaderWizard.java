@@ -103,6 +103,9 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
         final ClusteringData data = new AnnPatClusteringData(hdim, pattern);
 
         header.setTitle(sourcePage.getPatternTitle());
+        header.setDescription(sourcePage.getAnnotationMetadata("description"));
+        header.setValueUrl(sourcePage.getAnnotationMetadata("value-url"));
+        header.setDescriptionUrl(sourcePage.getAnnotationMetadata("description-url"));
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
