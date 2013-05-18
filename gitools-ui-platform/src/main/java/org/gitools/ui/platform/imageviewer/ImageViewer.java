@@ -113,6 +113,7 @@ public final class ImageViewer {
 		theImage=new ImageComponent(this, propertyChangeSupport);
 		view=new LayeredImageView(theImage);
 		scroller.setViewportView(view.getComponent());
+        scroller.setWheelScrollingEnabled(true);
 		theImage.setImage(image);
 		
 		panel.add(scroller, BorderLayout.CENTER);
@@ -162,6 +163,8 @@ public final class ImageViewer {
                     zoom = (zoom > 10 ? 10 : zoom);
                     setResizeStrategy(ResizeStrategy.CUSTOM_ZOOM);
                     setZoomFactor(zoom);
+                } else {
+                    scroller.dispatchEvent(e);
                 }
             }
         });
