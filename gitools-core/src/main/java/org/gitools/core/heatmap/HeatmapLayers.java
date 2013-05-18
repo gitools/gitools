@@ -74,12 +74,38 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public void init(IMatrix matrix) {
         IMatrixLayers matrixLayers = matrix.getLayers();
-        this.layersIdToIndex = new HashMap<String, Integer>(matrixLayers.size());
-        this.layerNames = new ArrayList<String>(matrixLayers.size());
+        this.layersIdToIndex = new HashMap<>(matrixLayers.size());
+        this.layerNames = new ArrayList<>(matrixLayers.size());
+
+        // Reorder layers
+        List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
+        for (int i=0; i < matrixLayers.size(); i++) {
+            IMatrixLayer layer = matrixLayers.get(i);
+            HeatmapLayer orderedLayer = null;
+            for (HeatmapLayer heatmapLayer : this.layers) {
+                if (heatmapLayer.getId().equals(layer.getId())) {
+                    orderedLayer = heatmapLayer;
+                    break;
+                }
+            }
+
+            // This is a new layer
+            if (orderedLayer == null) {
+                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
+                orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
+            }
+
+            orderedLayers.add(orderedLayer);
+        }
+        this.layers = orderedLayers;
+
+
+        // Init transient parameters
         for (int i = 0; i < layers.size(); i++) {
             this.layersIdToIndex.put(layers.get(i).getId(), i);
             this.layerNames.add(layers.get(i).getName());
         }
+
     }
 
     public HeatmapLayer getTopLayer() {
