@@ -156,9 +156,10 @@ public final class ImageViewer {
 
                 if (ctrlDown) {
                     double zoom = theImage.getCurrentZoom();
-                    double factor = (zoom / 20.0) * (double) unitsToScroll;
+                    double factor = (zoom / 20.0) * (double) -unitsToScroll;
                     zoom = zoom + factor;
-                    zoom = (zoom < 0 ? 0 : zoom);
+                    zoom = (zoom < 0.1 ? 0.1 : zoom);
+                    zoom = (zoom > 10 ? 10 : zoom);
                     setResizeStrategy(ResizeStrategy.CUSTOM_ZOOM);
                     setZoomFactor(zoom);
                 }
