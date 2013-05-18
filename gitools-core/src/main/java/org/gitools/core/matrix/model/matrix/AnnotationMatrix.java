@@ -31,8 +31,8 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     private Map<String, Map<String, String>> annotations;
 
     public AnnotationMatrix() {
-        this.labels = new ArrayList<String>();
-        this.annotations = new HashMap<String, Map<String, String>>();
+        this.labels = new ArrayList<>();
+        this.annotations = new HashMap<>();
     }
 
     public void addAnnotations(IAnnotations annotations) {
@@ -68,6 +68,11 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     public void setAnnotation(String identifier, String annotationLabel, String value) {
+
+        if (value == null || value.isEmpty()) {
+            return;
+        }
+
         if (!labels.contains(annotationLabel)) {
             labels.add(annotationLabel);
         }
@@ -75,7 +80,7 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
         Map<String, String> identifierAnnotations = annotations.get(identifier);
 
         if (identifierAnnotations == null) {
-            identifierAnnotations = new HashMap<String, String>(labels.size());
+            identifierAnnotations = new HashMap<>(labels.size());
             annotations.put(identifier, identifierAnnotations);
         }
 
