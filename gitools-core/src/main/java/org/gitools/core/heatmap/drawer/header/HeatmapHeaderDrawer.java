@@ -53,7 +53,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     public final void update() {
         List<HeatmapHeader> headers = heatmapDimension.getHeaders();
 
-        drawers = new ArrayList<AbstractHeatmapHeaderDrawer>(headers.size());
+        drawers = new ArrayList<>(headers.size());
 
         for (int i = 0; i < headers.size(); i++) {
             HeatmapHeader h = headers.get(i);
@@ -229,6 +229,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
 
     @Override
     public void setPictureMode(boolean pictureMode) {
+        super.setPictureMode(pictureMode);
+
         for (AbstractHeatmapDrawer d : drawers)
             d.setPictureMode(pictureMode);
     }

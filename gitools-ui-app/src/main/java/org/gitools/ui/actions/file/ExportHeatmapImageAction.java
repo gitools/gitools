@@ -74,7 +74,7 @@ public class ExportHeatmapImageAction extends BaseAction {
             return;
         }
 
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG});
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);
@@ -102,9 +102,7 @@ public class ExportHeatmapImageAction extends BaseAction {
 
                     Dimension heatmapSize = drawer.getSize();
 
-                    int type = BufferedImage.TYPE_INT_RGB;
-
-                    final BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, type);
+                    final BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, BufferedImage.TYPE_INT_RGB);
                     Graphics2D g = bi.createGraphics();
                     g.setColor(Color.WHITE);
                     g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
@@ -121,6 +119,7 @@ public class ExportHeatmapImageAction extends BaseAction {
 
         AppFrame.get().setStatusText("Image created.");
     }
+
 
 
 }
