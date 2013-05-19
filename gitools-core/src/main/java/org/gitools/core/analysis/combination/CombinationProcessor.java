@@ -66,13 +66,13 @@ public class CombinationProcessor implements AnalysisProcessor {
         String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
         // Prepare columns map
-        ModuleMap cmap = analysis.getGroupsMap().get();
+        ModuleMap cmap = (analysis.getGroupsMap()==null? null : analysis.getGroupsMap().get());
         if (cmap != null) {
             cmap = cmap.remap(labels);
         } else {
             cmap = new ModuleMap("All data " + combOf, labels);
         }
-        analysis.setGroupsMap(new ResourceReference<ModuleMap>("modules", cmap));
+        analysis.setGroupsMap(new ResourceReference<>("modules", cmap));
 
         // Prepare results matrix
         final ObjectMatrix results = new ObjectMatrix();
