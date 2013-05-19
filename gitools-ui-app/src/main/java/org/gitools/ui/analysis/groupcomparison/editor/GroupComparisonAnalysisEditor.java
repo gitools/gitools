@@ -29,7 +29,6 @@ import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.core.utils.CloneUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -137,7 +136,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
     private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers) {
         for (HeatmapHeader hh : headers) {
-            dim.addHeader(CloneUtils.clone(hh));
+            dim.addHeader(hh);
         }
     }
 
@@ -162,12 +161,11 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 if (analysis.getRowHeaders() != null) {
                     if (analysis.getRowAnnotations() != null) {
-                        heatmap.getRows().addAnnotations(CloneUtils.clone(analysis.getRowAnnotations()));
+                        heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
                     }
 
-                    heatmap.getRows().getHeaders().remove(0);
                     for (HeatmapHeader hh : analysis.getRowHeaders()) {
-                        heatmap.getRows().addHeader(CloneUtils.clone(hh));
+                        heatmap.getRows().addHeader(hh);
                     }
                 }
 

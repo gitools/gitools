@@ -32,7 +32,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.core.utils.CloneUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -118,7 +117,7 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
         heatmap.getRows().setVisibleIndices(newView);
         heatmap.setTitle(title);
         heatmap.setDescription("Annotated elements for modules: " + moduleNames.toString());
-        heatmap.setColumns(CloneUtils.clone(srcHeatmap.getColumns()));
+        heatmap.setColumns(srcHeatmap.getColumns());
 
 
         // Create editor

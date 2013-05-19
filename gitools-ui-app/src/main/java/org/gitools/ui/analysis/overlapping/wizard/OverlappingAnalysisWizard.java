@@ -49,9 +49,6 @@ import javax.swing.*;
 import java.io.File;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class OverlappingAnalysisWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisFormat.EXTENSION;
@@ -225,7 +222,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
         a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
 
-        //Verify: a.setAttributeIndex(overlappingPage.getAttributeIndex());
+        a.setAttributeName(attributes.get(overlappingPage.getAttributeIndex()).getId());
         a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ? overlappingPage.getReplaceNanValue() : null);
         a.setTransposeData(overlappingPage.isTransposeEnabled());
 

@@ -41,9 +41,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class MtcAction extends BaseAction {
 
     private static final long serialVersionUID = 991170566166881702L;
@@ -71,8 +68,6 @@ public class MtcAction extends BaseAction {
         if (matrixView == null) {
             return;
         }
-
-        //IElementAdapter cellAdapter = matrixView.getCellAdapter();
 
         final int propIndex = matrixView.getLayers().getTopLayerIndex();
         final int corrPropIndex = MatrixUtils.correctedValueIndex(matrixView.getLayers(), matrixView.getLayers().get(propIndex));

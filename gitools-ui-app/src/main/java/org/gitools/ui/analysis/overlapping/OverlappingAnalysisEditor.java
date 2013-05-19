@@ -59,7 +59,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
 
         ResourceReference<IMatrix> resourceRef = analysis.getFilteredData();
-        context.put("filteredDataFile", (resourceRef != null ? resourceRef.getLocator().getURL() : "Not defined"));
+        context.put("filteredDataFile", ((resourceRef != null && resourceRef.getLocator() != null) ? resourceRef.getLocator().getURL() : "Not defined"));
 
         String appliedTo = analysis.isTransposeData() ? "rows" : "columns";
         context.put("appliedTo", appliedTo);
@@ -69,7 +69,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
         context.put("filterDesc", filterDesc);
 
         resourceRef = analysis.getCellResults();
-        context.put("resultsFile", resourceRef != null ? resourceRef.getLocator().getURL() : "Not defined");
+        context.put("resultsFile", (resourceRef != null && resourceRef.getLocator() != null) ? resourceRef.getLocator().getURL() : "Not defined");
 
         IResourceLocator analysisLocator = analysis.getLocator();
 
