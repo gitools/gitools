@@ -156,6 +156,10 @@ public class ClusteringValueWizard extends AbstractWizard {
         return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, attr) : new MatrixColumnClusteringData(mv, attr);
     }
 
+    public int getDataAttribute() {
+        return optionsPage.getDataAttribute();
+    }
+
     public boolean isHeaderSelected() {
         return optionsPage.isHeaderSelected();
     }

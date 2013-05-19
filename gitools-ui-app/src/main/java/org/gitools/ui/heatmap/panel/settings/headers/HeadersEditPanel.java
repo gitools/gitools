@@ -30,7 +30,6 @@ import org.gitools.core.heatmap.header.*;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.coloredlabels.HierarchicalColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.DecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -282,9 +281,6 @@ public class HeadersEditPanel extends JDialog {
             ColoredLabelsHeaderWizard wiz = new ColoredLabelsHeaderWizard(hdim, (HeatmapColoredLabelsHeader) h);
             wiz.setEditionMode(true);
             wizard = wiz;
-        } else if (HeatmapHierarchicalColoredLabelsHeader.class.equals(cls)) {
-            wizard = new HierarchicalColoredLabelsHeaderWizard(
-                    hm, hdim, (HeatmapHierarchicalColoredLabelsHeader) h);
         } else if (HeatmapDecoratorHeader.class.equals(cls)) {
             DecoratorHeaderWizard wiz = new DecoratorHeaderWizard((HeatmapDecoratorHeader) h);
             wizard = wiz;

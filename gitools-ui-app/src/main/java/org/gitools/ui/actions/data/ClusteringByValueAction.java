@@ -28,9 +28,8 @@ import org.gitools.core.clustering.method.value.ClusterUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.heatmap.header.HeatmapHierarchicalColoredLabelsHeader;
-import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.clustering.values.ClusteringValueWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -82,17 +81,48 @@ public class ClusteringByValueAction extends BaseAction {
                 try {
                     monitor.begin("Clustering  ...", 1);
 
+                    // Cluster data
                     ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
-                    if (wiz.isSortDataSelected()) {
-                        if (wiz.isApplyToRows()) {
-                            TransposedMatrixView transposedMatrix = new TransposedMatrixView(heatmap);
-                            ClusterUtils.updateVisibility(transposedMatrix, results.getDataIndicesByClusterTitle());
-                        } else {
-                            ClusterUtils.updateVisibility(heatmap, results.getDataIndicesByClusterTitle());
+                    // Target dimension
+                    HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
+                    boolean hcl = results instanceof HierarchicalClusteringResults;
+
+                    // Save results as an annotation
+                    String annotationLabel = wiz.getMethodName() + " " + heatmap.getLayers().get(wiz.getDataAttribute()).getId();
+
+
+                    AnnotationMatrix annotationMatrix = hdim.getAnnotations();
+                    if (hcl) {
+                        HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
+                        for (int l = 0; l < hresults.getTree().getDepth(); l++) {
+                            hresults.setLevel(l);
+                            String[] clusterTitles = results.getClusterTitles();
+                            for (int c=0; c < clusterTitles.length; c++) {
+                                int[] indices = results.getDataIndices(c);
+                                for (int i : indices) {
+                                    String identifier = hdim.getLabel(i);
+                                    annotationMatrix.setAnnotation(identifier, annotationLabel + " level " + l, clusterTitles[c]);
+                                }
+                            }
+                        }
+                    } else {
+                        String[] clusterTitles = results.getClusterTitles();
+                        for (int c=0; c < clusterTitles.length; c++) {
+                            int[] indices = results.getDataIndices(c);
+                            for (int i : indices) {
+                                String identifier = hdim.getLabel(i);
+                                annotationMatrix.setAnnotation(identifier, annotationLabel, clusterTitles[c]);
+                            }
                         }
                     }
 
+                    // Sort the matrix
+                    if (wiz.isSortDataSelected()) {
+                        ClusterUtils.updateVisibility(hdim, results.getDataIndicesByClusterTitle());
+                    }
+
+                    // Export newick file
                     if (wiz.isNewickExportSelected()) {
                         File path = wiz.getSaveFilePage().getPathAsFile();
                         BufferedWriter out = new BufferedWriter(new FileWriter(path));
@@ -101,31 +131,30 @@ public class ClusteringByValueAction extends BaseAction {
                         out.close();
                     }
 
+                    // Add header
                     if (wiz.isHeaderSelected()) {
-                        boolean hcl = results instanceof HierarchicalClusteringResults;
-
-                        HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
-
-                        HeatmapColoredLabelsHeader header = hcl ? new HeatmapHierarchicalColoredLabelsHeader(hdim) : new HeatmapColoredLabelsHeader(hdim);
-
-                        header.setTitle(wiz.getMethodName());
 
                         if (hcl) {
-                            HeatmapHierarchicalColoredLabelsHeader hclHeader = (HeatmapHierarchicalColoredLabelsHeader) header;
-                            HierarchicalClusteringResults hclResults = (HierarchicalClusteringResults) results;
-
-                            hclHeader.setClusteringResults(hclResults);
-                            int level = hclResults.getTree().getDepth() / 2;
-                            hclHeader.setTreeLevel(level);
-                        }
-
-                        header.updateFromClusterResults(results);
-
-                        if (wiz.isApplyToRows()) {
-                            heatmap.getRows().addHeader(header);
+                            HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
+                            int depth = hresults.getTree().getDepth();
+                            depth = (depth > 10 ? 10 : depth);
+                            for (int l = 0; l < depth; l++) {
+                                hresults.setLevel(l);
+                                HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
+                                header.updateFromClusterResults(hresults);
+                                header.setTitle(annotationLabel + " level " + l);
+                                header.setSize(4);
+                                header.setAnnotationPattern("${" + annotationLabel + " level " + l +"}");
+                                hdim.addHeader(header);
+                            }
                         } else {
-                            heatmap.getColumns().addHeader(header);
+                            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
+                            header.updateFromClusterResults(results);
+                            header.setTitle(annotationLabel);
+                            header.setAnnotationPattern("${"+annotationLabel+"}");
+                            hdim.addHeader(header);
                         }
+
                     }
 
                     monitor.end();

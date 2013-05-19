@@ -35,7 +35,7 @@ import java.awt.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapHierarchicalColoredLabelsHeader.class, HeatmapTextLabelsHeader.class})
+@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapTextLabelsHeader.class})
 public abstract class HeatmapHeader extends Model {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_SIZE = "size";

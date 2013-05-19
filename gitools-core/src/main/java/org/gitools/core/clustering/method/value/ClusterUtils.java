@@ -22,7 +22,7 @@
 package org.gitools.core.clustering.method.value;
 
 import org.gitools.core.clustering.ClusteringData;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import weka.attributeSelection.AttributeSelection;
@@ -114,14 +114,14 @@ public class ClusterUtils {
     /**
      * Update visibility of the matrixView
      *
-     * @param matrixView
+     * @param dimension
      * @param clusterResults
      */
-    public static void updateVisibility(@NotNull IMatrixView matrixView, @NotNull Map<String, int[]> clusterResults) {
+    public static void updateVisibility(@NotNull IMatrixViewDimension dimension, @NotNull Map<String, int[]> clusterResults) {
 
-        int[] visibleData = matrixView.getColumns().getVisibleIndices();
+        int[] visibleData = dimension.getVisibleIndices();
 
-        final int[] sortedVisibleData = new int[matrixView.getColumns().getVisibleIndices().length];
+        final int[] sortedVisibleData = new int[dimension.getVisibleIndices().length];
 
         int index = 0;
 
@@ -134,7 +134,7 @@ public class ClusterUtils {
             for (Integer val : clusterResults.get(i))
                 sortedVisibleData[index++] = visibleData[val];
 
-        matrixView.getColumns().setVisibleIndices(sortedVisibleData);
+        dimension.setVisibleIndices(sortedVisibleData);
 
     }
 
