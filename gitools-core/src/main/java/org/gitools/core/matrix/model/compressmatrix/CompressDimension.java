@@ -80,7 +80,13 @@ public class CompressDimension extends AbstractMatrixDimension {
      */
     @Override
     public int getIndex(String label) {
-        return labelsToIndex.get(label);
+        Integer value = labelsToIndex.get(label);
+
+        if (value == null) {
+            return -1;
+        }
+
+        return value.intValue();
     }
 
     /**
