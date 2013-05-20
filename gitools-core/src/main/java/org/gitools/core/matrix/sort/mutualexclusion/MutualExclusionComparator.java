@@ -44,7 +44,7 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         this.selectedColumns = selectedColumns;
         this.valueBuffer = new double[selectedColumns.length];
 
-        this.aggregationCache = new HashMap<Integer, Double>(numRows);
+        this.aggregationCache = new HashMap<>(numRows);
 
         monitor.begin("Aggregating values...", numRows);
         for (int i = 0; i < numRows; i++) {
@@ -62,15 +62,18 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         Double value2 = aggregationCache.get(idx2);
 
         int res;
-        if (value1 == null) {
-            res = -1;
-        } else if (value2 == null) {
-            res = 1;
+        int factor = ValueSortCriteria.SortDirection.DESCENDING.getFactor();
+        if (Double.isNaN(value1) && Double.isNaN(value2)) {
+            res = 0;
+        } else if (Double.isNaN(value1)) {
+            res = factor;
+        } else if (Double.isNaN(value2)) {
+            res = -factor;
         } else {
-            res = (int) Math.signum(value1 - value2);
+            res = value1.compareTo(value2);
         }
 
-        return res * ValueSortCriteria.SortDirection.DESCENDING.getFactor();
+        return res * factor;
     }
 
     private double aggregateValue(int idx) {
