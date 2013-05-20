@@ -27,9 +27,10 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.ObjectFactory1D;
 import cern.colt.matrix.ObjectMatrix1D;
 import cern.jet.math.Functions;
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
-import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.matrix.ObjectMatrix;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
@@ -43,11 +44,12 @@ import org.gitools.core.stats.test.results.CommonResult;
 import org.gitools.core.threads.ThreadManager;
 import org.gitools.core.threads.ThreadQueue;
 import org.gitools.core.threads.ThreadSlot;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Date;
+import java.util.*;
 
 public class EnrichmentProcessor extends HtestProcessor {
 
@@ -79,6 +81,26 @@ public class EnrichmentProcessor extends HtestProcessor {
         TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
 
         IMatrix dataMatrix = analysis.getData().get();
+
+        if (analysis.isDiscardNonMappedRows()) {
+
+            Heatmap heatmap = new Heatmap(dataMatrix);
+            List<Integer> rowsToHide = new ArrayList<>();
+            String[] names = analysis.getModuleMap().get().getItemNames();
+            Set<String> backgroundNames = new HashSet<>();
+            backgroundNames.addAll(Arrays.asList(names));
+
+            for (int i = 0; i < dataMatrix.getRows().size(); i++) {
+                if (!backgroundNames.contains(dataMatrix.getRows().getLabel(i))) {
+                    rowsToHide.add(i);
+                }
+            }
+
+            if (!rowsToHide.isEmpty()) {
+                heatmap.getRows().hide(ArrayUtils.toPrimitive(rowsToHide.toArray(new Integer[rowsToHide.size()])));
+                dataMatrix = heatmap;
+            }
+        }
 
         final int numConditions = dataMatrix.getColumns().size();
         final int numRows = dataMatrix.getRows().size();

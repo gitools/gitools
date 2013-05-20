@@ -542,4 +542,30 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
         }
         return meta;
     }
+
+    @Nullable
+    public static String[] readHeader(File file) throws PersistenceException {
+
+        String[] matrixHeaders = null;
+        try {
+            Reader reader = IOUtils.openReader(file);
+
+            CSVReader parser = new CSVReader(reader);
+
+            String[] line = parser.readNext();
+
+            // read header
+            if (line.length < 3) {
+                throw new DataFormatException("At least 3 columns expected.");
+            }
+
+            int numAttributes = line.length - 2;
+            matrixHeaders = new String[numAttributes];
+            System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
+        return matrixHeaders;
+    }
+
 }

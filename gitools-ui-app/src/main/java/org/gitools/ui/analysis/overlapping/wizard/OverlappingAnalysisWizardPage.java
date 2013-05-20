@@ -36,9 +36,6 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * @noinspection ALL
- */
 public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     @Nullable
     private IMatrixLayers attrs;
@@ -205,8 +202,11 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
 
-    public int getAttributeIndex() {
-        return attributeCb.getSelectedIndex();
+    public String getAttributeName() {
+        if (attrs != null) {
+            attrs.get(attributeCb.getSelectedIndex()).getId();
+        }
+        return null;
     }
 
     public boolean isReplaceNanValuesEnabled() {

@@ -54,7 +54,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
 
-    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
+    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.COMPRESSED_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     private ExamplePage examplePage;
     private DataFilePage dataPage;
@@ -194,10 +194,6 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         this.dataFromMemory = dataFromMemory;
     }
 
-    public IMatrixLayers getAttributes() {
-        return attributes;
-    }
-
     public void setAttributes(IMatrixLayers attributes) {
         this.attributes = attributes;
     }
@@ -222,7 +218,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
         a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
 
-        a.setAttributeName(attributes.get(overlappingPage.getAttributeIndex()).getId());
+        a.setAttributeName(overlappingPage.getAttributeName());
         a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ? overlappingPage.getReplaceNanValue() : null);
         a.setTransposeData(overlappingPage.isTransposeEnabled());
 

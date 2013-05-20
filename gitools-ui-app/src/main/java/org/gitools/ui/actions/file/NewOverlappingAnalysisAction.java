@@ -42,9 +42,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
 public class NewOverlappingAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8917512377366424724L;

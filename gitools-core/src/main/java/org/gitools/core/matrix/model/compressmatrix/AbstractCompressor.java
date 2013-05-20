@@ -84,7 +84,7 @@ public abstract class AbstractCompressor {
      * @throws java.io.UnsupportedEncodingException
      *
      */
-    protected static byte[] stringToByteArray(String[] values) throws UnsupportedEncodingException {
+    public static byte[] stringToByteArray(String[] values) throws UnsupportedEncodingException {
         StringBuilder buffer = new StringBuilder(values.length * 10);
         for (String value : values) {
             buffer.append(value).append('\t');

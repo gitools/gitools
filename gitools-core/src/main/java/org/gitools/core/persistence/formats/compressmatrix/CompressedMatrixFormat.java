@@ -22,6 +22,7 @@
 package org.gitools.core.persistence.formats.compressmatrix;
 
 import org.apache.commons.io.IOUtils;
+import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressDimension;
 import org.gitools.core.matrix.model.compressmatrix.CompressMatrix;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
@@ -30,9 +31,7 @@ import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -85,6 +84,66 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
 
     }
 
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, CompressMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        try {
+
+            DataOutputStream out = new DataOutputStream(resourceLocator.openOutputStream());
+
+            progressMonitor.begin("Writing dictionary...", 1);
+            byte[] dictionary = resource.getDictionary();
+            out.writeInt(dictionary.length);
+            out.write(dictionary);
+
+            progressMonitor.begin("Writing columns...", 1);
+            byte[] buffer = AbstractCompressor.stringToByteArray(resource.getColumns().getLabels());
+            out.writeInt(buffer.length);
+            out.write(buffer);
+
+            progressMonitor.begin("Writing rows...", 1);
+            buffer = AbstractCompressor.stringToByteArray(resource.getRows().getLabels());
+            out.writeInt(buffer.length);
+            out.write(buffer);
+
+            progressMonitor.begin("Writing headers...", 1);
+            String[] headers = new String[resource.getLayers().size()];
+            for (int i = 0; i < resource.getLayers().size(); i++) {
+                headers[i] = resource.getLayers().get(i).getId();
+            }
+            buffer = AbstractCompressor.stringToByteArray(headers);
+            out.writeInt(buffer.length);
+            out.write(buffer);
+
+
+            Map<Integer, CompressRow> compressRowMap = resource.getCompressRows();
+            progressMonitor.begin("Writing values...", compressRowMap.size());
+            for (Map.Entry<Integer, CompressRow> value : compressRowMap.entrySet()) {
+                progressMonitor.worked(1);
+
+                // The row position
+                out.writeInt(value.getKey());
+
+                // Compress the row
+                CompressRow compressRow = value.getValue();
+
+                // Write the length of the buffer before compression
+                out.writeInt(compressRow.getNotCompressedLength());
+
+                // The length of the compressed buffer with the columns
+                out.writeInt(compressRow.getContent().length);
+
+                // The buffer with all the columns
+                out.write(compressRow.getContent());
+            }
+
+            out.close();
+
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
     /**
      * Read a byte array that starts with an integer that contains the buffer length to read.
      *
@@ -102,5 +161,33 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
     private static String[] splitBuffer(byte[] buffer) throws UnsupportedEncodingException {
         String line = new String(buffer, "UTF-8");
         return TAB.split(line);
+    }
+
+    public static String[] readHeader(File file) {
+
+        try {
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+            // Dictionary
+            byte[] dictionary = readBuffer(in);
+
+            // Columns
+            String[] columns = splitBuffer(readBuffer(in));
+
+            // Rows
+            String[] rows = splitBuffer(readBuffer(in));
+
+            // Headers
+            String[] headers = splitBuffer(readBuffer(in));
+
+            in.close();
+
+            return headers;
+
+        } catch (IOException e) {
+            throw new PersistenceException(e);
+        }
+
+
     }
 }

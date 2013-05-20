@@ -17,7 +17,6 @@
 					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
 				#end
 				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
-				<tr><td class="name"><div>Elapsed time</div></td><td>$fmt.elapsedTime($analysis.elapsedTime)</td></tr>
 				#if( $analysis.attributes && $analysis.attributes.size() > 0 )
 					#foreach($attr in $analysis.attributes)
 						#if ($attr.name)

@@ -17,8 +17,7 @@
 					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
 				#end
 				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
-				<tr><td class="name"><div>Elapsed time</div></td><td>$fmt.elapsedTime($analysis.elapsedTime)</td></tr>
-                <tr><td class="name"><div>Test</div></td><td>$test</td></tr>
+				<tr><td class="name"><div>Test</div></td><td>$test</td></tr>
 				#if( $testAttributes && $testAttributes.size() > 0 )
 					#foreach($mapEntry in $testAttributes.entrySet())
 						<tr><td class="name"><div>$mapEntry.key</div></td><td>$mapEntry.value</td></tr>

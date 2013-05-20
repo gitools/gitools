@@ -24,13 +24,13 @@ package org.gitools.ui.analysis.combination.wizard;
 
 import org.gitools.core.analysis.combination.CombinationAnalysis;
 import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.core.persistence._DEPRECATED.FileFormats;
 import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
@@ -55,16 +55,13 @@ import javax.swing.*;
 import java.io.File;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class CombinationAnalysisWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisFormat.EXTENSION;
     private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
     private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
 
-    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
+    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.COMPRESSED_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     private static final FileFormat[] columnSetsFormats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
@@ -78,7 +75,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
     private boolean examplePageEnabled;
     private boolean dataFromMemory;
     @Nullable
-    private IMatrixLayers attributes;
+    private String[] attributes;
     private boolean saveFilePageEnabled;
 
     private File dataFile;
@@ -161,7 +158,9 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
                             IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
                             if (dataFormat instanceof MultiValueMatrixFormat) {
-                                attributes = MultiValueMatrixFormat.readMetaAttributes(dataFile, monitor);
+                                attributes = MultiValueMatrixFormat.readHeader(dataFile);
+                            } else if (dataFormat instanceof CompressedMatrixFormat){
+                                attributes = CompressedMatrixFormat.readHeader(dataFile);
                             } else {
                                 attributes = null;
                             }
@@ -243,12 +242,8 @@ public class CombinationAnalysisWizard extends AbstractWizard {
         this.dataFromMemory = dataFromMemory;
     }
 
-    @Nullable
-    public IMatrixLayers getAttributes() {
-        return attributes;
-    }
 
-    public void setAttributes(IMatrixLayers attributes) {
+    public void setAttributes(String[] attributes) {
         this.attributes = attributes;
     }
 

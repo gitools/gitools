@@ -22,7 +22,6 @@
 package org.gitools.ui.analysis.combination.wizard;
 
 import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -33,7 +32,7 @@ import javax.swing.*;
 public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 
     @Nullable
-    private IMatrixLayers attrs;
+    private String[] attrs;
 
     private static class AttrOption {
         private String name;
@@ -80,26 +79,25 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable IMatrixLayers<? extends IMatrixLayer> attrs) {
+    public void setAttributes(@Nullable String[] attrs) {
         this.attrs = attrs;
 
         if (attrs != null) {
-            AttrOption[] sizeAttrs = new AttrOption[attrs.size() + 1];
+            AttrOption[] sizeAttrs = new AttrOption[attrs.length + 1];
             sizeAttrs[0] = new AttrOption("All columns with the same weight");
-            for (int i = 0; i < attrs.size(); i++)
-                sizeAttrs[i + 1] = new AttrOption(attrs.get(i));
+            for (int i = 0; i < attrs.length; i++)
+                sizeAttrs[i + 1] = new AttrOption(attrs[(i)]);
             sizeAttrCb.setModel(new DefaultComboBoxModel(sizeAttrs));
 
-            AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
-            for (int i = 0; i < attrs.size(); i++)
-                pvalueAttrs[i] = new AttrOption(attrs.get(i));
+            AttrOption[] pvalueAttrs = new AttrOption[attrs.length];
+            for (int i = 0; i < attrs.length; i++)
+                pvalueAttrs[i] = new AttrOption(attrs[i]);
             pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
 
             int sizeIndex = -1;
             int pvalueIndex = -1;
             int i = 0;
-            for (IMatrixLayer a : attrs) {
-                String aid = a.getId();
+            for (String aid : attrs) {
                 if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$"))) {
                     sizeIndex = i;
                 }

@@ -24,23 +24,17 @@ package org.gitools.ui.analysis.wizard;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence._DEPRECATED.FileFormat;
 import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.fileutils.IOUtils;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.io.Reader;
-import java.util.zip.DataFormatException;
 
 
 public class DataFilePage extends SelectFilePage {
 
-    private static final FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
+    private static final FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.COMPRESSED_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
     public DataFilePage() {
         this(formats);
@@ -60,47 +54,40 @@ public class DataFilePage extends SelectFilePage {
         FileFormat ff = getFileFormat();
         super.updateState();
 
-        if (isComplete() == true & ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension())) {
+        if (isComplete() == true && (ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))) {
             activateValueSelection();
 
-            MultiValueMatrixFormat obp = new MultiValueMatrixFormat();
             String[] headers = new String[0];
             try {
-                headers = readHeader(getFile());
+                headers = MultiValueMatrixFormat.readHeader(getFile());
             } catch (PersistenceException e) {
                 setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
                 setComplete(false);
                 deactivateValueSelection();
             }
             setValues(headers);
-        } else {
-            deactivateValueSelection();
+
+            return;
         }
-    }
 
-    @Nullable
-    private static String[] readHeader(File file) throws PersistenceException {
+        if (isComplete() == true && (ff.getExtension().equals(FileFormats.COMPRESSED_MATRIX.getExtension()))) {
+            activateValueSelection();
 
-        String[] matrixHeaders = null;
-        try {
-            Reader reader = IOUtils.openReader(file);
-
-            CSVReader parser = new CSVReader(reader);
-
-            String[] line = parser.readNext();
-
-            // read header
-            if (line.length < 3) {
-                throw new DataFormatException("At least 3 columns expected.");
+            String[] headers = new String[0];
+            try {
+                headers = CompressedMatrixFormat.readHeader(getFile());
+            } catch (PersistenceException e) {
+                setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
+                setComplete(false);
+                deactivateValueSelection();
             }
+            setValues(headers);
 
-            int numAttributes = line.length - 2;
-            matrixHeaders = new String[numAttributes];
-            System.arraycopy(line, 2, matrixHeaders, 0, numAttributes);
-        } catch (Exception e) {
-            throw new PersistenceException(e);
+            return;
         }
-        return matrixHeaders;
+
+        deactivateValueSelection();
+
     }
 
     @Override

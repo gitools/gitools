@@ -26,6 +26,7 @@ import org.gitools.core.analysis.combination.CombinationAnalysis;
 import org.gitools.core.analysis.combination.CombinationCommand;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
@@ -75,7 +76,15 @@ public class CombinationsAction extends BaseAction {
         final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
         wizard.setExamplePageEnabled(false);
         wizard.setDataFromMemory(true);
-        wizard.setAttributes(matrixView.getLayers());
+
+        IMatrixLayers layers = matrixView.getLayers();
+        String[] attributes = new String[layers.size()];
+
+        for (int i = 0; i < layers.size(); i++) {
+            attributes[i] = layers.get(i).getId();
+        }
+
+        wizard.setAttributes(attributes);
         wizard.setSaveFilePageEnabled(false);
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);

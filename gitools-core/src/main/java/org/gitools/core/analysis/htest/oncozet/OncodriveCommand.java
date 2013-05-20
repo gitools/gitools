@@ -25,7 +25,6 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestCommand;
 import org.gitools.core.datafilters.ValueTranslator;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
 import org.gitools.core.model.GeneSet;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.*;
@@ -114,7 +113,7 @@ public class OncodriveCommand extends HtestCommand {
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
 
-        ResourceReference<BaseMatrix> dataMatrix = new ResourceReference<BaseMatrix>(dataLocator, dataFormat);
+        ResourceReference<IMatrix> dataMatrix = new ResourceReference<IMatrix>(dataLocator, dataFormat);
         dataMatrix.setProperties(dataProps);
         dataMatrix.load(progressMonitor);
         analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
@@ -126,7 +125,7 @@ public class OncodriveCommand extends HtestCommand {
 
             Properties modProps = new Properties();
             modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-            modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.get().getColumnStrings());
+            modProps.put(AbstractModuleMapFormat.ITEM_NAMES, getItemName(dataMatrix.get().getColumns()));
             modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
             modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
 
@@ -134,7 +133,7 @@ public class OncodriveCommand extends HtestCommand {
             moduleMap.setProperties(modProps);
             moduleMap.load(progressMonitor);
 
-            analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", moduleMap.get()));
+            analysis.setModuleMap(new ResourceReference<>("modules", moduleMap.get()));
         }
     }
 

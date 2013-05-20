@@ -25,7 +25,6 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestCommand;
 import org.gitools.core.datafilters.ValueTranslator;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
 import org.gitools.core.model.GeneSet;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.*;
@@ -40,7 +39,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class EnrichmentCommand extends HtestCommand {
 
@@ -136,7 +137,7 @@ public class EnrichmentCommand extends HtestCommand {
             dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
 
-        ResourceReference<BaseMatrix> dataMatrix = new ResourceReference<BaseMatrix>(dataLocator, this.dataFormat);
+        ResourceReference<IMatrix> dataMatrix = new ResourceReference<IMatrix>(dataLocator, this.dataFormat);
         dataMatrix.setProperties(dataProps);
         dataMatrix.load(monitor);
 
@@ -145,7 +146,7 @@ public class EnrichmentCommand extends HtestCommand {
 
         Properties modProps = new Properties();
         modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-        modProps.put(AbstractModuleMapFormat.ITEM_NAMES, dataMatrix.get().getRowStrings());
+        modProps.put(AbstractModuleMapFormat.ITEM_NAMES, getItemName(dataMatrix.get().getRows()));
         modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
         modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
 
@@ -153,48 +154,9 @@ public class EnrichmentCommand extends HtestCommand {
         moduleMap.setProperties(modProps);
         moduleMap.load(monitor);
 
-        // Filter rows if DiscardNonMappedRows is enabled
-        if (analysis.isDiscardNonMappedRows()) {
+        analysis.setData(new ResourceReference<>("data", dataMatrix.get()));
 
-            BaseMatrix fmatrix = null;
-            try {
-                fmatrix = dataMatrix.get().getClass().newInstance();
-                fmatrix.setObjectCellAdapter(dataMatrix.get().getObjectCellAdapter());
-            } catch (Exception ex) {
-                throw new PersistenceException("Error filtering data matrix.", ex);
-            }
-
-            List<Integer> rows = new ArrayList<Integer>();
-
-            String[] names = moduleMap.get().getItemNames();
-            Set<String> backgroundNames = new HashSet<String>();
-            backgroundNames.addAll(Arrays.asList(names));
-
-            for (int i = 0; i < dataMatrix.get().getRows().size(); i++)
-                if (backgroundNames.contains(dataMatrix.get().internalRowLabel(i))) {
-                    rows.add(i);
-                }
-
-            int numRows = rows.size();
-            int numColumns = dataMatrix.get().getColumns().size();
-
-            fmatrix.make(numRows, numColumns);
-            fmatrix.setColumns(dataMatrix.get().getInternalColumns());
-
-            for (int ri = 0; ri < numRows; ri++) {
-                int srcRow = rows.get(ri);
-                fmatrix.setRow(ri, dataMatrix.get().internalRowLabel(srcRow));
-                for (int ci = 0; ci < numColumns; ci++) {
-                    Object value = dataMatrix.get().getValue(srcRow, ci, 0);
-                    fmatrix.setValue(ri, ci, 0, value);
-                }
-            }
-
-            analysis.setData(new ResourceReference<IMatrix>("data", fmatrix));
-        } else {
-            analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
-        }
-
-        analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", moduleMap.get()));
+        analysis.setModuleMap(new ResourceReference<>("modules", moduleMap.get()));
     }
+
 }

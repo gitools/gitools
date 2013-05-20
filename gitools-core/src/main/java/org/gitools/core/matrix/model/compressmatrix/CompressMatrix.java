@@ -26,7 +26,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.persistence.PersistenceException;
@@ -134,12 +133,12 @@ public class CompressMatrix extends AbstractMatrix {
     }
 
     @Override
-    public IMatrixDimension getColumns() {
+    public CompressDimension getColumns() {
         return columns;
     }
 
     @Override
-    public IMatrixDimension getRows() {
+    public CompressDimension getRows() {
         return rows;
     }
 
@@ -221,4 +220,11 @@ public class CompressMatrix extends AbstractMatrix {
         System.gc();
     }
 
+    public byte[] getDictionary() {
+        return dictionary;
+    }
+
+    public Map<Integer, CompressRow> getCompressRows() {
+        return values;
+    }
 }
