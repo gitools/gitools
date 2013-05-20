@@ -33,9 +33,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-/**
- * @noinspection ALL
- */
 public class IOUtils {
 
     @Nullable

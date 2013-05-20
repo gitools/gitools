@@ -35,6 +35,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatrix> {
 
@@ -166,7 +167,13 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
     public static String[] readHeader(File file) {
 
         try {
-            DataInputStream in = new DataInputStream(new FileInputStream(file));
+
+            DataInputStream in;
+            if (file.getName().endsWith(".gz")) {
+                in = new DataInputStream(new GZIPInputStream(new FileInputStream(file)));
+            } else {
+                in = new DataInputStream(new FileInputStream(file));
+            }
 
             // Dictionary
             byte[] dictionary = readBuffer(in);
