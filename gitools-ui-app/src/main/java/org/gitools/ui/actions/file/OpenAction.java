@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
-import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.core.persistence.formats.FileFormats;
 import org.gitools.core.persistence.formats.analysis.*;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;

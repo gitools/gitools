@@ -35,7 +35,7 @@ import org.gitools.core.matrix.model.matrix.ObjectMatrix;
 import org.gitools.core.matrix.model.matrix.element.*;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.stats.test.results.BinomialResult;
 import org.gitools.core.stats.test.results.FisherResult;
 import org.gitools.core.stats.test.results.ZScoreResult;

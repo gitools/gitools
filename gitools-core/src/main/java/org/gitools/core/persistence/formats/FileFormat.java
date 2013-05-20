@@ -19,30 +19,35 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence._DEPRECATED;
+package org.gitools.core.persistence.formats;
 
 import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
 import org.jetbrains.annotations.NotNull;
 
-@Deprecated
 public class FileFormat {
 
     private final String title;
     private final String extension;
     private final boolean titleWithExtension;
     private final boolean allowGzExtension;
+    private final boolean allowZipExtension;
 
     public FileFormat(String title, String extension) {
         this(title, extension, true, true);
     }
 
     public FileFormat(String title, String extension, boolean titleWithExtension, boolean allowGzExtension) {
+        this(title, extension, titleWithExtension, allowGzExtension, false);
+    }
+
+    public FileFormat(String title, String extension, boolean titleWithExtension, boolean allowGzExtension, boolean allowZipExtension) {
         this.title = title;
         this.extension = extension;
         this.titleWithExtension = titleWithExtension;
         this.allowGzExtension = allowGzExtension;
+        this.allowZipExtension = allowZipExtension;
     }
 
     public String getTitle() {
@@ -56,6 +61,9 @@ public class FileFormat {
         if (allowGzExtension) {
             sb.append(", ").append(extension).append(".gz");
         }
+        if (allowZipExtension) {
+            sb.append(", ").append(extension).append(".zip");
+        }
         sb.append(")");
         return sb.toString();
     }
@@ -67,7 +75,7 @@ public class FileFormat {
     public boolean checkExtension(String fileName) {
         fileName = fileName.toLowerCase();
         String ext = extension.toLowerCase();
-        return fileName.endsWith(ext) || (allowGzExtension && fileName.endsWith(ext + ".gz"));
+        return fileName.endsWith(ext) || (allowGzExtension && fileName.endsWith(ext + ".gz")) || (allowZipExtension && fileName.endsWith(ext + ".zip"));
     }
 
     public <R extends IResource> IResourceFormat<? extends R> getFormat(@NotNull Class<R> resourceClass) {

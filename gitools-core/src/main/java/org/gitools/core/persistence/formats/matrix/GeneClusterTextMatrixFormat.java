@@ -21,7 +21,7 @@
  */
 package org.gitools.core.persistence.formats.matrix;
 
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 
 public class GeneClusterTextMatrixFormat extends DoubleMatrixFormat {
 

@@ -37,7 +37,7 @@ import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;

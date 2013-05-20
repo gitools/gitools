@@ -19,9 +19,8 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence._DEPRECATED;
+package org.gitools.core.persistence.formats;
 
-@Deprecated
 public class FileSuffixes {
     public static final String GENE_SET = "grp";
     public static final String GENE_MATRIX = "gmx";

@@ -29,7 +29,7 @@ import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.go.wizard.GoModulesImportWizard;

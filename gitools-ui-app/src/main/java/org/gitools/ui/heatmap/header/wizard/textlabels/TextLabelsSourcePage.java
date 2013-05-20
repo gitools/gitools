@@ -27,7 +27,7 @@ import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;

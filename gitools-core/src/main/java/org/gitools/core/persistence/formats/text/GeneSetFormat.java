@@ -24,7 +24,7 @@ package org.gitools.core.persistence.formats.text;
 import org.gitools.core.model.GeneSet;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;

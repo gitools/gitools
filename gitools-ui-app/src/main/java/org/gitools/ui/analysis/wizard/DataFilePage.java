@@ -22,8 +22,8 @@
 package org.gitools.ui.analysis.wizard;
 
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
-import org.gitools.core.persistence._DEPRECATED.FileFormats;
+import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.core.persistence.formats.FileFormats;
 import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
 import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
 import org.gitools.ui.IconNames;

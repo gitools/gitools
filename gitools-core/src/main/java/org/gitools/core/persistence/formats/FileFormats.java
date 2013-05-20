@@ -19,12 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence._DEPRECATED;
+package org.gitools.core.persistence.formats;
 
 import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
 
-@Deprecated
 public class FileFormats {
+
     // Data
     public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", FileSuffixes.GENE_MATRIX);
 

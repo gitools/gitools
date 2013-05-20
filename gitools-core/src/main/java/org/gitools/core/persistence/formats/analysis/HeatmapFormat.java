@@ -24,7 +24,7 @@ package org.gitools.core.persistence.formats.analysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import javax.xml.bind.Unmarshaller;
@@ -34,7 +34,7 @@ public class HeatmapFormat extends AbstractXmlFormat<Heatmap> {
 
     public static final String EXTENSION = "heatmap";
     private static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
-    public static final FileFormat FILE_FORMAT = new FileFormat("Heatmap", EXTENSION);
+    public static final FileFormat FILE_FORMAT = new FileFormat("Heatmap", EXTENSION, true, false, true);
 
 
     public HeatmapFormat() {

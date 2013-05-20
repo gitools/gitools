@@ -22,13 +22,13 @@
 package org.gitools.core.persistence.formats.analysis;
 
 import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 
 public class EnrichmentAnalysisFormat extends AbstractXmlFormat<EnrichmentAnalysis> {
 
     public static final String EXTENSION = "enrichment";
     private static final Class<EnrichmentAnalysis> RESOURCE_CLASS = EnrichmentAnalysis.class;
-    public static final FileFormat FILE_FORMAT = new FileFormat("Enrichment analysis", EXTENSION);
+    public static final FileFormat FILE_FORMAT = new FileFormat("Enrichment analysis", EXTENSION, true, false, true);
 
     public EnrichmentAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);

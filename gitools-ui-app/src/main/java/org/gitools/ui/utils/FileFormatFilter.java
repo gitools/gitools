@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.utils;
 
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.filechooser.FileFilter;

@@ -25,7 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;

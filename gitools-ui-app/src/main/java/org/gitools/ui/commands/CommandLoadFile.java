@@ -37,7 +37,7 @@ import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;

@@ -25,7 +25,7 @@ import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence._DEPRECATED.FileFormat;
+import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;

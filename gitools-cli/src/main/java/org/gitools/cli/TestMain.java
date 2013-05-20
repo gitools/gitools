@@ -21,7 +21,7 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.persistence._DEPRECATED.FileSuffixes;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.utils.tools.exception.ToolException;
 import org.jetbrains.annotations.NotNull;
 
