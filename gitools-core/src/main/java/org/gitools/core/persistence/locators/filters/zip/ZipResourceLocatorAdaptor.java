@@ -36,6 +36,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
+
     private final String entryName;
 
     public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator) {
@@ -91,11 +92,17 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
     }
 
     private ZipOutputStream out;
-
     protected ZipOutputStream getZipOutputStream() throws IOException {
 
         if (this.out == null) {
-            this.out = new ZipOutputStream(getResourceLocator().openOutputStream());
+            this.out = new ZipOutputStream(getResourceLocator().openOutputStream())
+            {
+                @Override
+                public void close() throws IOException {
+                    super.close();
+                    ZipResourceLocatorAdaptor.this.out = null;
+                }
+            };
         }
 
         return out;

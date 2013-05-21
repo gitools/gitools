@@ -34,6 +34,8 @@ import java.util.Properties;
 public class ResourceReference<R extends IResource> {
 
     private transient boolean loaded = false;
+    private transient boolean changed = true;
+
     @Nullable
     private transient R resource;
 
@@ -156,4 +158,11 @@ public class ResourceReference<R extends IResource> {
         return null;
     }
 
+    public boolean isChanged() {
+        return changed;
+    }
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
 }

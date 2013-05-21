@@ -307,6 +307,14 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         firePropertyChange(PROPERTY_GRID_COLOR, old, gridColor);
     }
 
+    public ResourceReference<AnnotationMatrix> getAnnotationsReference() {
+        return annotations;
+    }
+
+    public void setAnnotationsReference(ResourceReference<AnnotationMatrix> annotationsReference) {
+        this.annotations = annotationsReference;
+    }
+
     public AnnotationMatrix getAnnotations() {
         if (annotations == null) {
             return null;

@@ -29,14 +29,10 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
@@ -62,7 +58,11 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class HeatmapEditor extends AbstractEditor {
     private static final int DEFAULT_ACCORDION_WIDTH = 320;
@@ -76,6 +76,17 @@ public class HeatmapEditor extends AbstractEditor {
 
     public HeatmapEditor(@NotNull Heatmap heatmap) {
 
+        IResourceLocator locator = heatmap.getLocator();
+        URL url = locator.getURL();
+        if (url.getProtocol().equals("file")) {
+            try {
+                File file = new File(url.toURI());
+                setFile(file);
+            } catch (URISyntaxException e) {
+            }
+        }
+
+
         // Initialize and create heatmap model
         heatmap.init();
         this.heatmap = heatmap;
@@ -87,6 +98,21 @@ public class HeatmapEditor extends AbstractEditor {
         setSaveAllowed(true);
         setSaveAsAllowed(true);
         setBackground(Color.WHITE);
+
+
+        // Add change listeners
+        PropertyChangeListener dirtyListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                HeatmapEditor.this.setDirty(true);
+            }
+        };
+        heatmap.addPropertyChangeListener(dirtyListener);
+        heatmap.getRows().addPropertyChangeListener(dirtyListener);
+        heatmap.getColumns().addPropertyChangeListener(dirtyListener);
+        heatmap.getLayers().addPropertyChangeListener(dirtyListener);
+        heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
+
     }
 
 
@@ -142,7 +168,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     @Override
-    public IResource getModel() {
+    public Heatmap getModel() {
         return heatmap;
     }
 
@@ -156,32 +182,62 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     @Override
+    public void doSaveAs(IProgressMonitor monitor) {
+
+        File file = getFile();
+        if (file != null) {
+            Settings.getDefault().setLastPath(file.getParent());
+        }
+
+        String name = getName();
+        int heatmapExt = name.indexOf(".heatmap");
+        if (heatmapExt != -1) {
+            name = name.substring(0, heatmapExt);
+        }
+        name = name.replaceAll("\\.", "_");
+
+        SaveFileWizard wiz = SaveFileWizard.createSimple(
+                "Save heatmap",
+                name,
+                Settings.getDefault().getLastPath(),
+                new FileFormat[]{
+                        new FileFormat("Multiple files heatmap (*.heatmap)", HeatmapFormat.EXTENSION, false, false),
+                        new FileFormat("Single file heatmap (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false)
+                }
+        );
+
+        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
+
+        Settings.getDefault().setLastPath(wiz.getFolder());
+        file = wiz.getPathAsFile();
+        setFile(file);
+
+        heatmap.setLocator(new UrlResourceLocator(file));
+        heatmap.setData(new ResourceReference<>("data", heatmap.getData().get()));
+        HeatmapDimension rows = heatmap.getRows();
+        HeatmapDimension columns = heatmap.getColumns();
+        rows.setAnnotationsReference(new ResourceReference<>(rows.getId() + "-annotations", rows.getAnnotations()));
+        columns.setAnnotationsReference(new ResourceReference<>(columns.getId() + "-annotations", columns.getAnnotations()));
+
+        doSave(monitor);
+
+    }
+
+    @Override
     public void doSave(@NotNull IProgressMonitor monitor) {
+
         File file = getFile();
         if (file == null) {
-            SaveFileWizard wiz = SaveFileWizard.createSimple(
-                    "Save heatmap",
-                    getName(),
-                    Settings.getDefault().getLastPath(),
-                    new FileFormat[]{
-                            new FileFormat("Heatmap", HeatmapFormat.EXTENSION)
-                    }
-            );
-
-            WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
-            dlg.setVisible(true);
-            if (dlg.isCancelled()) {
-                return;
-            }
-
-            Settings.getDefault().setLastPath(wiz.getFolder());
-
-            file = wiz.getPathAsFile();
-            setFile(file);
+            doSaveAs(monitor);
+            return;
         }
 
         try {
-            PersistenceManager.get().store(new UrlResourceLocator(file), getModel(), monitor);
+            PersistenceManager.get().store(heatmap.getLocator(), heatmap, monitor);
         } catch (PersistenceException ex) {
             monitor.exception(ex);
         }
@@ -231,6 +287,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     void mouseMoved(int row, int col, MouseEvent e) {
+        /*
         if (lastMouseRow == row && lastMouseCol == col) {
             return;
         }
@@ -295,8 +352,9 @@ public class HeatmapEditor extends AbstractEditor {
         }
 
         if (sb.length() > 0) {
-            //TODO AppFrame.get().setStatusText(sb.toString());
+            AppFrame.get().setStatusText(sb.toString());
         }
+        */
     }
 
     void mouseClicked(int row, int col, MouseEvent e) {

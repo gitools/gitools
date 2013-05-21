@@ -21,8 +21,14 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -38,13 +44,29 @@ public class SaveAsAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByEditor(IEditor editor) {
-        return false;
-        //return editor != null && editor.isSaveAsAllowed();
+    public boolean isEnabledByEditor(@Nullable IEditor editor) {
+
+        if (editor == null) {
+            return false;
+        }
+
+        EditorsPanel editorPanel;
+        editorPanel = AppFrame.get().getEditorsPanel();
+
+        return editorPanel.getSelectedEditor().isSaveAsAllowed();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO
+        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+
+        final IEditor currentEditor = editorPanel.getSelectedEditor();
+
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
+                currentEditor.doSaveAs(monitor);
+            }
+        });
     }
 }

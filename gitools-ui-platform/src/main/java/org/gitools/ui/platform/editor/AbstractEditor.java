@@ -71,12 +71,14 @@ public abstract class AbstractEditor extends AbstractView implements IEditor {
         return file;
     }
 
-    protected void setFile(@NotNull File file) {
+    public void setFile(File file) {
         if (this.file != file || !this.file.equals(file)) {
             this.file = file;
             for (EditorListener l : listeners)
                 l.fileChanged(this);
-            setName(file.getName());
+            if (file != null) {
+                setName(file.getName());
+            }
         }
     }
 

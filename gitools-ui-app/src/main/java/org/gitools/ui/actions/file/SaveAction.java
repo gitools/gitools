@@ -57,7 +57,7 @@ public class SaveAction extends BaseAction {
         EditorsPanel editorPanel;
         editorPanel = AppFrame.get().getEditorsPanel();
 
-        return editorPanel.getSelectedEditor().isSaveAllowed();
+        return editorPanel.getSelectedEditor().isSaveAllowed() && editorPanel.getSelectedEditor().isDirty();
     }
 
     @Override

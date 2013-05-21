@@ -38,9 +38,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class SaveFilePage extends AbstractWizardPage {
 
     private FileFormat[] formats;

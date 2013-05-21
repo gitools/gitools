@@ -23,6 +23,7 @@ package org.gitools.core.persistence.formats.analysis.adapter;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.persistence.*;
+import org.gitools.core.persistence.locators.filters.zip.ZipResourceLocatorAdaptor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
@@ -67,14 +68,24 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
 
         PersistenceManager pm = PersistenceManager.get();
 
-        // It's a memory instance. Change the resource locator.
         if (resourceReference.getLocator() == null) {
+
+            // It's a memory instance. Set the resource locator.
             String parentName = resourceLocator.getBaseName();
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
             resourceReference.setLocator(resourceLocator.getReferenceLocator(parentName + "-" + resourceReference.getBaseName() + "." + extension));
+            resourceReference.setChanged(true);
+        } else if (resourceLocator instanceof ZipResourceLocatorAdaptor) {
+
+            // It's a ZIP container. Set the resource locator.
+            String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
+            resourceReference.setLocator(resourceLocator.getReferenceLocator(resourceReference.getBaseName() + "." + extension));
+            resourceReference.setChanged(true);
         }
 
-        dependencies.add(resourceReference);
+        if (resourceReference.isChanged()) {
+            dependencies.add(resourceReference);
+        }
 
         IResourceLocator referenceLocator = resourceReference.getLocator();
         return new ResourceReferenceXmlElement(null, referenceLocator.getName());

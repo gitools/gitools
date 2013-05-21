@@ -28,9 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 
-/**
- * @noinspection ALL
- */
 public class SaveFileWizard extends AbstractWizard {
 
     private SaveFilePage page;
