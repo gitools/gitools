@@ -62,7 +62,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class HeatmapEditor extends AbstractEditor {
     private static final int DEFAULT_ACCORDION_WIDTH = 320;
@@ -77,10 +76,9 @@ public class HeatmapEditor extends AbstractEditor {
     public HeatmapEditor(@NotNull Heatmap heatmap) {
 
         IResourceLocator locator = heatmap.getLocator();
-        URL url = locator.getURL();
-        if (url.getProtocol().equals("file")) {
+        if (locator != null && locator.getURL().getProtocol().equals("file")) {
             try {
-                File file = new File(url.toURI());
+                File file = new File(locator.getURL().toURI());
                 setFile(file);
             } catch (URISyntaxException e) {
             }
