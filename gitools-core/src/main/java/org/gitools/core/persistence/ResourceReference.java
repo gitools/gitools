@@ -63,7 +63,9 @@ public class ResourceReference<R extends IResource> {
 
     public ResourceReference(IResourceLocator locator, IResourceFormat<? extends R> resourceFormat) {
         this.loaded = false;
-
+        this.baseName = locator.getBaseName();
+        this.resourceClass = resourceFormat.getResourceClass();
+        this.resource = null;
         this.locator = locator;
         this.resourceFormat = resourceFormat;
     }
@@ -73,6 +75,8 @@ public class ResourceReference<R extends IResource> {
         this.baseName = baseName;
         this.resourceClass = resourceClass;
         this.resource = resource;
+        this.locator = null;
+        this.resourceFormat = null;
     }
 
 
