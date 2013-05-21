@@ -24,11 +24,7 @@ package org.gitools.core.matrix.model.compressmatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.zip.Deflater;
 
@@ -90,110 +86,6 @@ public abstract class AbstractCompressor {
             buffer.append(value).append('\t');
         }
         return buffer.toString().getBytes("UTF-8");
-    }
-
-    /**
-     * This class contains all the values of an uncompressed row
-     */
-    protected static class NotCompressRow {
-
-        private int row;
-        private int totalLayers;
-        private List<String> values;
-        private CompressDimension columns;
-
-        /**
-         * @param columns The columns dimension
-         */
-        public NotCompressRow(int row, int totalLayers, CompressDimension columns) {
-            this.row = row;
-            this.totalLayers = totalLayers;
-            this.values = new ArrayList<>(columns.size());
-            this.columns = columns;
-        }
-
-        /**
-         * Gets row position.
-         *
-         * @return the row
-         */
-        public int getRow() {
-            return row;
-        }
-
-        /**
-         * Append a new column fields.
-         *
-         * @param columnFields the fields
-         */
-        public void append(String columnFields) {
-            values.add(columnFields);
-        }
-
-        /**
-         * Converts the content of the row into a sequence of [column position int],[values length int],[values byte buffer]
-         *
-         * @return
-         * @throws java.io.IOException
-         */
-        public byte[] toByteArray() throws IOException {
-
-            // Write the buffer
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream(4 + (values.size() * (8 * totalLayers) + 4));
-            DataOutputStream out = new DataOutputStream(bytes);
-
-            for (String value : values) {
-
-                // Column position
-                int column = columns.getIndex(parseField(value, 0));
-                out.writeInt(column);
-
-                // Column values
-                double[] values = parseDoubles(value);
-                byte[] line = createColumnLine(values);
-                out.write(line);
-            }
-            out.close();
-            bytes.close();
-            return bytes.toByteArray();
-        }
-
-        private double[] parseDoubles(String fields) {
-
-            double values[] = new double[totalLayers];
-
-            for (int i = 0; i < totalLayers; i++) {
-                String value = parseField(fields, i+2);
-                values[i] = Double.NaN;
-                if (value != null) {
-                    if (!value.equals("-")) {
-                        try {
-                            values[i] = Double.parseDouble(value);
-                        } catch (NumberFormatException e) {
-                            log.error("Malformed number '"+value+"'");
-                        }
-                    }
-                }
-            }
-
-            return values;
-        }
-
-        /**
-         * Returns a byte array with all the fields except the two first that are the row and the column.
-         *
-         * @param values
-         * @return
-         * @throws UnsupportedEncodingException
-         */
-        private byte[] createColumnLine(double[] values) throws UnsupportedEncodingException {
-            byte[] bytes = new byte[8*values.length];
-            ByteBuffer buffer = ByteBuffer.wrap(bytes);
-            for (double value : values) {
-                buffer.putDouble(value);
-            }
-            return bytes;
-        }
     }
 
     /**

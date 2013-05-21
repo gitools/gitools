@@ -24,6 +24,7 @@ package org.gitools.cli.convert;
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
+import org.gitools.core.matrix.model.compressmatrix.NotCompressRow;
 import org.gitools.core.utils.MemoryUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -89,12 +90,12 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long estimatedMemoryUsage = ((getMaxLineLength() * getColumns().size()) + 32);
+            long estimatedMemoryUsage = (((1 + 8*getHeader().length) * getColumns().size()) + 32) * 7 / 5;
 
             progressMonitor.debug("Max line length " + getMaxLineLength());
             progressMonitor.debug("Columns " + getColumns().size());
 
-            int range = (int) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);
+            int range = (int) (((double) MemoryUtils.getAvailableMemory() * 0.7) / (double) estimatedMemoryUsage);
 
             int count = 0;
             int from = 0;
@@ -115,22 +116,38 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(openStream(inputFile)));
                 String line;
 
-                // Prepare not compress rows
-                for (int i = from; i < to; i++) {
-                    notCompressRows[i - from] = new NotCompressRow(i, getHeader().length, getColumns());
-                }
                 System.gc();
 
+                long memoryBefore = MemoryUtils.getAvailableMemory();
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
-                long memoryBefore = MemoryUtils.getAvailableMemory();
+                // Prepare not compress rows
+                progressMonitor.begin("Initialize memory...", (to - from));
+                for (int i = from; i < to; i++) {
+                    try {
+                        notCompressRows[i - from] = new NotCompressRow(i, getHeader().length, getColumns());
+                    } catch (OutOfMemoryError e) {
+                        progressMonitor.info("Out of memory. Decreasing the rows to process in one pass.");
+
+                        // Free some memory. Last 20 rows
+                        for (int f = 1; f < 21; f++) {
+                            notCompressRows[i - f - from] = null;
+                        }
+                        System.gc();
+                        to = i - 20;
+                        someRows = new HashSet<>(rowsList.subList(from, to));
+                        break;
+
+                    }
+                    progressMonitor.worked(1);
+                }
 
                 // Skip the file header
                 reader.readLine();
 
                 progressMonitor.debug("Free memory: " + MemoryUtils.getAvailableMemory());
 
-                progressMonitor.begin("Start group by row...", (int) (getTotalLines() / 2000));
+                progressMonitor.begin("Reading and parsing...", (int) (getTotalLines() / 2000));
                 while ((line = reader.readLine()) != null) {
                     if ((count % 2000) == 0) {
                         progressMonitor.worked(1);
