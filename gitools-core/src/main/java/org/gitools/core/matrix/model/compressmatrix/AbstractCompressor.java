@@ -47,7 +47,7 @@ public abstract class AbstractCompressor {
     private byte[] outBuffer;
     private Deflater deflater = new Deflater();
     private long fileLinesCount;
-    private long averageLineLength;
+    private long maxLineLength;
 
     public AbstractCompressor() {
     }
@@ -68,8 +68,8 @@ public abstract class AbstractCompressor {
         return dictionary;
     }
 
-    protected long getAverageLineLength() {
-        return averageLineLength;
+    protected long getMaxLineLength() {
+        return maxLineLength;
     }
 
     protected long getTotalLines() {
@@ -268,7 +268,6 @@ public abstract class AbstractCompressor {
         header = Arrays.copyOfRange(headers, 2, headers.length);
 
         int maxLineLength = 0;
-        long totalLineLength = 0;
         fileLinesCount = 0;
         while ((fields = reader.readNext()) != null) {
             fileLinesCount++;
@@ -290,14 +289,14 @@ public abstract class AbstractCompressor {
                     freq = (freq == null) ? 1 : freq + 1;
                     frequencies.put(fields[i], freq);
                 }
-                totalLineLength += (length + fields[0].length() + fields[1].length());
+
                 if (length > maxLineLength) {
                     maxLineLength = length;
                 }
             }
         }
 
-        averageLineLength = totalLineLength / (fileLinesCount < MAX_LINES_TO_DICTIONARY ? fileLinesCount : MAX_LINES_TO_DICTIONARY);
+        this.maxLineLength = maxLineLength;
         reader.close();
 
         // Filter entries with frequency = 1

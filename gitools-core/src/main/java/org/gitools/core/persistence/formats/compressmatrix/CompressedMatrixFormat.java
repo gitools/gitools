@@ -51,6 +51,9 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
         try {
             DataInputStream in = new DataInputStream(resourceLocator.openInputStream(progressMonitor));
 
+            // Format version
+            int formatVersion = in.readInt();
+
             // Dictionary
             byte[] dictionary = readBuffer(in);
 
@@ -91,6 +94,9 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
         try {
 
             DataOutputStream out = new DataOutputStream(resourceLocator.openOutputStream());
+
+            int formatVersion = 0;
+            out.writeInt(0);
 
             progressMonitor.begin("Writing dictionary...", 1);
             byte[] dictionary = resource.getDictionary();
@@ -174,6 +180,9 @@ public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatri
             } else {
                 in = new DataInputStream(new FileInputStream(file));
             }
+
+            // Format version
+            int version = in.readInt();
 
             // Dictionary
             byte[] dictionary = readBuffer(in);

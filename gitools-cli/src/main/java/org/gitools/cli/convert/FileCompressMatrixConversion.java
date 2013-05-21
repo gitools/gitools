@@ -63,6 +63,9 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
 
             initialize(new FileMatrixReader(new CSVReader(new InputStreamReader(in))));
 
+            // Format version
+            out.writeInt(0);
+
             progressMonitor.begin("Writing dictionary...", 1);
             out.writeInt(getDictionary().length);
             out.write(getDictionary());
@@ -86,9 +89,9 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long estimatedMemoryUsage = ((getAverageLineLength() * getColumns().size()) + 32);
+            long estimatedMemoryUsage = ((getMaxLineLength() * getColumns().size()) + 32);
 
-            progressMonitor.debug("Average line length " + getAverageLineLength());
+            progressMonitor.debug("Average line length " + getMaxLineLength());
             progressMonitor.debug("Columns " + getColumns().size());
 
             int range = (int) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);
@@ -185,7 +188,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
 
     }
 
-    private InputStream openStream(String inputFile) throws IOException {
+    private static InputStream openStream(String inputFile) throws IOException {
         InputStream in = new FileInputStream(inputFile);
         if (FilenameUtils.getExtension(inputFile).endsWith("gz")) {
             in = new GZIPInputStream(in);
