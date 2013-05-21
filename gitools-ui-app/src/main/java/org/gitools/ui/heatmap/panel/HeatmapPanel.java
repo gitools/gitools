@@ -201,19 +201,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         rowSB.setValueIsAdjusting(false);
     }
 
-    private long lastUpdateViewPorts = -1;
-
     private void updateViewPorts() {
-        // Maximum of 20 updates per second
-        if (lastUpdateViewPorts != -1) {
-            long interval = System.currentTimeMillis() - lastUpdateViewPorts;
-
-            if (interval < 50) {
-                return;
-            }
-        }
-
-        lastUpdateViewPorts = System.currentTimeMillis();
 
         Dimension totalSize = bodyVP.getViewSize();
         Dimension visibleSize = bodyVP.getSize();
@@ -233,7 +221,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         bodyVP.setViewPosition(new Point(colValue, rowValue));
         intersectVP.setViewPosition(new Point(0, 0));
 
-        lastUpdateViewPorts = System.currentTimeMillis();
     }
 
     public JViewport getBodyViewPort() {
