@@ -91,7 +91,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             System.gc();
             long estimatedMemoryUsage = ((getMaxLineLength() * getColumns().size()) + 32);
 
-            progressMonitor.debug("Average line length " + getMaxLineLength());
+            progressMonitor.debug("Max line length " + getMaxLineLength());
             progressMonitor.debug("Columns " + getColumns().size());
 
             int range = (int) (((double) MemoryUtils.getAvailableMemory() * 0.8) / (double) estimatedMemoryUsage);

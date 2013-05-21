@@ -166,7 +166,7 @@ public abstract class AbstractCompressor {
                 String value = parseField(fields, i+2);
                 values[i] = Double.NaN;
                 if (value != null) {
-                    if (value.charAt(0) != '-') {
+                    if (!value.equals("-")) {
                         try {
                             values[i] = Double.parseDouble(value);
                         } catch (NumberFormatException e) {
