@@ -55,7 +55,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         DocumentChangeListener docCompleteListener = new DocumentChangeListener() {
             @Override
             protected void update(DocumentEvent e) {
-                updateState(e);
+                updateState();
             }
         };
 
@@ -71,6 +71,9 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         cutoffValueGroup1.setText("1.5");
         cutoffValueGroup2.getDocument().addDocumentListener(docCompleteListener);
         cutoffValueGroup2.setText("1.5");
+
+        noneConversionText.setText("0");
+        noneConversionText.getDocument().addDocumentListener(docCompleteListener);
 
     }
 
@@ -105,10 +108,14 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         return true;
     }
 
-    private void updateState(DocumentEvent e) {
+    private void updateState() {
         boolean complete = false;
 
-        complete = (isValidNumber(cutoffValueGroup1.getText()) && isValidNumber(cutoffValueGroup2.getText()));
+        complete = (isValidNumber(cutoffValueGroup1.getText()) &&
+                isValidNumber(cutoffValueGroup2.getText()) &&
+                ((!includeNoneCb.isSelected()) ||
+                        isValidNumber(noneConversionText.getText()) && includeNoneCb.isSelected())
+        );
 
         if (complete) {
             setMessage(MessageStatus.INFO, "Define the two groups by cutoff-values");
@@ -154,6 +161,9 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         cutoffValueGroup2 = new javax.swing.JTextField();
         attributeLabel1 = new javax.swing.JLabel();
         attributeLabel2 = new javax.swing.JLabel();
+        includeNoneCb = new javax.swing.JCheckBox();
+        noneConversionText = new javax.swing.JTextField();
+        attributeLabel5 = new javax.swing.JLabel();
 
         cutoffValueGroup1.setColumns(6);
 
@@ -169,19 +179,93 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
 
         attributeLabel2.setText("Values that are");
 
+        includeNoneCb.setText("set None-values to");
+        includeNoneCb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateState();
+            }
+        });
+
+        noneConversionText.setColumns(6);
+
+        attributeLabel5.setText("Include 'None' values");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(attributeLabel).addGap(54, 54, 54).addComponent(cutoffAttributeSelect, 0, 424, Short.MAX_VALUE)).addComponent(attributeLabel3).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addGroup(layout.createSequentialGroup().addComponent(attributeLabel4).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 602, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(attributeLabel1).addComponent(attributeLabel2)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(cutoffCmpGroup1Cb, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cutoffValueGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(cutoffCmpGroup2Cb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cutoffValueGroup2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(attributeLabel).addComponent(cutoffAttributeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(attributeLabel3).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cutoffCmpGroup1Cb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cutoffValueGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(attributeLabel2)).addGap(18, 18, 18).addComponent(attributeLabel4).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cutoffCmpGroup2Cb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cutoffValueGroup2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(attributeLabel1)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(attributeLabel)
+                                                .addGap(54, 54, 54)
+                                                .addComponent(cutoffAttributeSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(attributeLabel4)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 602, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addComponent(attributeLabel1)
+                                                                .addComponent(attributeLabel2)
+                                                                .addComponent(attributeLabel3)
+                                                                .addComponent(attributeLabel5))
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                        .addComponent(includeNoneCb)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(noneConversionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                        .addComponent(cutoffCmpGroup1Cb, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(cutoffValueGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                        .addComponent(cutoffCmpGroup2Cb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(cutoffValueGroup2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(attributeLabel)
+                                        .addComponent(cutoffAttributeSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(attributeLabel3)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cutoffCmpGroup1Cb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cutoffValueGroup1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(attributeLabel2))
+                                .addGap(18, 18, 18)
+                                .addComponent(attributeLabel4)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cutoffCmpGroup2Cb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cutoffValueGroup2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(attributeLabel1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(includeNoneCb)
+                                        .addComponent(noneConversionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(attributeLabel5))
+                                .addContainerGap(48, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField noneConversionText;
     private javax.swing.JLabel attributeLabel;
     private javax.swing.JLabel attributeLabel1;
     private javax.swing.JLabel attributeLabel2;
     private javax.swing.JLabel attributeLabel3;
     private javax.swing.JLabel attributeLabel4;
+    private javax.swing.JLabel attributeLabel5;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox cutoffAttributeSelect;
@@ -189,6 +273,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
     private javax.swing.JComboBox cutoffCmpGroup2Cb;
     private javax.swing.JTextField cutoffValueGroup1;
     private javax.swing.JTextField cutoffValueGroup2;
+    private javax.swing.JCheckBox includeNoneCb;
     // End of variables declaration//GEN-END:variables
 
 
@@ -204,6 +289,14 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
     @NotNull
     public double[] getGroupCutoffValues() {
         return new double[]{Double.parseDouble(cutoffValueGroup1.getText()), Double.parseDouble(cutoffValueGroup2.getText())};
+    }
+
+    public boolean isIncludeNone() {
+        return includeNoneCb.isSelected();
+    }
+
+    public double getNoneConversion() {
+        return Double.parseDouble(noneConversionText.getText());
     }
 
     public void setAttributes(@Nullable IMatrixLayers attrs) {

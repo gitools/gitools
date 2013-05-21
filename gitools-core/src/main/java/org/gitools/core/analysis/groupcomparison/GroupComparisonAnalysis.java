@@ -23,8 +23,8 @@ package org.gitools.core.analysis.groupcomparison;
 
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.ResourceReference;
@@ -88,6 +88,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private ResourceReference<IMatrix> data;
 
     private ResourceReference<IMatrix> results;
+    private double noneConversion;
 
     @Nullable
     public MTC getMtc() {
@@ -111,6 +112,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.transposeData = false;
         group1 = new ColumnGroup("Group 1");
         group2 = new ColumnGroup("Group 2");
+        this.noneConversion = Double.NaN;
     }
 
     public String getSizeAttrName() {
@@ -240,5 +242,13 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public void setColumnHeaders(List<HeatmapHeader> columnHeaders) {
         this.columnHeaders = columnHeaders;
+    }
+
+    public double getNoneConversion() {
+        return noneConversion;
+    }
+
+    public void setNoneConversion(double noneConversion) {
+        this.noneConversion = noneConversion;
     }
 }

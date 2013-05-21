@@ -25,7 +25,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.datafilters.BinaryCutoff;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.matrix.ObjectMatrix;
@@ -33,6 +32,7 @@ import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -150,13 +150,18 @@ public class GroupComparisonProcessor extends HtestProcessor {
 
         BinaryCutoff binaryCutoff = group.getBinaryCutoff();
 
+        double noneConversion = analysis.getNoneConversion();
         List<Integer> columnIndicesList = new ArrayList<Integer>();
         for (int col = 0; col < data.getColumns().size(); col++) {
             Object value = data.getValue(row, col, attrIndex);
             Double v = cast.getDoubleValue(value);
+
             if (v == null || Double.isNaN(v)) {
-                continue;
-            } else {
+                if (!Double.isNaN(noneConversion)) {
+                    v = noneConversion;
+                }
+            }
+            if (v != null) {
                 double compliesCutoff = binaryCutoff.apply(v);
                 if (compliesCutoff == 1.0) {
                     columnIndicesList.add(col);

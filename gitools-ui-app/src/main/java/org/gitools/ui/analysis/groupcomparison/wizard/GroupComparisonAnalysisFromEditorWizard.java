@@ -161,6 +161,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         } else if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
             a.setGroup1(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex());
             a.setGroup2(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex());
+            a.setNoneConversion(groupByValuePage.getNoneConversion());
         }
         return a;
     }
@@ -181,6 +182,11 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
                         groupCutoffCmps[i].getLongName() + " " +
                         String.valueOf(groupCutoffValues[i]);
                 analysisAttributes.add(new Property(group, name));
+            }
+            if (groupByValuePage.isIncludeNone()) {
+                analysisAttributes.add(new Property("NoneConvertedTo",
+                        String.valueOf(groupByValuePage.getNoneConversion())))
+                ;
             }
         }
         analysisDetailsPage.setAnalysisAttributes(analysisAttributes);
