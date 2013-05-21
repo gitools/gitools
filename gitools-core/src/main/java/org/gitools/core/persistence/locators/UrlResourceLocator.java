@@ -87,7 +87,7 @@ public class UrlResourceLocator implements IResourceLocator {
         if (baseName == null) {
             String name = getName();
             String extension = PersistenceManager.get().getFormatExtension(name);
-            int startExtension = name.indexOf(extension);
+            int startExtension = name.lastIndexOf(extension);
             baseName = name.substring(0, startExtension - 1);
         }
 
