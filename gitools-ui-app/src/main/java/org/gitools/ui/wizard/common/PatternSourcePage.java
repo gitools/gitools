@@ -186,7 +186,12 @@ public class PatternSourcePage extends AbstractWizardPage {
         String[] values = new String[indices.length];
 
         for (int i = 0; i < indices.length; i++) {
-            values[i] = hdim.getAnnotations().getLabels().get(indices[i]);
+            int index = indices[i];
+            if (index == 0) {
+                values[i] = "id";
+            } else {
+                values[i] = hdim.getAnnotations().getLabels().get(index - 1);
+            }
         }
 
         return values;
