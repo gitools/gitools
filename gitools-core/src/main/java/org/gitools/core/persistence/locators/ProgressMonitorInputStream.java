@@ -27,6 +27,7 @@ import java.io.BufferedInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.CancellationException;
 
 public class ProgressMonitorInputStream extends FilterInputStream {
 
@@ -40,12 +41,18 @@ public class ProgressMonitorInputStream extends FilterInputStream {
     @Override
     public int read() throws IOException {
         progressMonitor.worked(1);
+        if (progressMonitor.isCancelled()) {
+            throw new CancellationException();
+        }
         return in.read();
     }
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         progressMonitor.worked(len);
+        if (progressMonitor.isCancelled()) {
+            throw new CancellationException();
+        }
         return in.read(b, off, len);
     }
 
