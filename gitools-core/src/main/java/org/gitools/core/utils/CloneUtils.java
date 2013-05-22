@@ -21,13 +21,38 @@
  */
 package org.gitools.core.utils;
 
-import com.thoughtworks.xstream.XStream;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 public class CloneUtils {
 
     public static <T> T clone(T x) {
-        XStream xstream = new XStream();
-        String xml = xstream.toXML(x);
-        return (T) xstream.fromXML(xml);
+
+        if (x == null) {
+            return null;
+        }
+
+        JAXBContext context = null;
+        try {
+            context = JAXBContext.newInstance(x.getClass());
+
+            Marshaller marshaller = context.createMarshaller();
+            StringWriter xml = new StringWriter();
+            marshaller.marshal(x, xml);
+
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            StringReader reader = new StringReader(xml.toString());
+            return (T) unmarshaller.unmarshal(reader);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 }

@@ -166,6 +166,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                     for (HeatmapHeader hh : analysis.getRowHeaders()) {
                         heatmap.getRows().addHeader(hh);
+                        hh.init(heatmap.getRows());
                     }
                 }
 

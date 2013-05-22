@@ -83,7 +83,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         this.rows = new HeatmapDimension(this, data.getRows());
         this.columns = new HeatmapDimension(this, data.getColumns());
         this.layers = new HeatmapLayers(data);
-        this.data = new ResourceReference<IMatrix>("data", data);
+        this.data = new ResourceReference<>("data", data);
         this.diagonal = diagonal;
     }
 

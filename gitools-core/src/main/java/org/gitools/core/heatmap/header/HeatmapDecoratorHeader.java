@@ -28,14 +28,12 @@ import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.awt.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
 public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     public enum LabelPositionEnum {

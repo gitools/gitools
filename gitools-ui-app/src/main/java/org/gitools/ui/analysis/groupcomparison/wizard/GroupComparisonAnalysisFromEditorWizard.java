@@ -24,9 +24,11 @@ package org.gitools.ui.analysis.groupcomparison.wizard;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.Property;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.stats.test.factory.TestFactory;
+import org.gitools.core.utils.CloneUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
@@ -151,9 +153,29 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         a.setToolConfig(toolConfig);
         a.setMtc(attrSelectPage.getMtc().getShortName());
         a.setRowAnnotations(heatmap.getRows().getAnnotations());
-        a.setRowHeaders(heatmap.getRows().getHeaders());
+
+        List<HeatmapHeader> rowHeaders = new ArrayList<>();
+        for (HeatmapHeader header : heatmap.getRows().getHeaders()) {
+            try {
+                HeatmapHeader headerClone = CloneUtils.clone(header);
+                rowHeaders.add(headerClone);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        a.setRowHeaders(rowHeaders);
         a.setColumnAnnotations(heatmap.getColumns().getAnnotations());
-        a.setColumnHeaders(heatmap.getColumns().getHeaders());
+
+        List<HeatmapHeader> columnHeaders = new ArrayList<>();
+        for (HeatmapHeader header : heatmap.getColumns().getHeaders()) {
+            try {
+                HeatmapHeader headerClone = CloneUtils.clone(header);
+                columnHeaders.add(headerClone);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        a.setColumnHeaders(columnHeaders);
 
         if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
             a.setGroup1(groupByLabelPage.getGroup1());
