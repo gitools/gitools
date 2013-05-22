@@ -25,6 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
@@ -154,8 +155,14 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
+
+                for (HeatmapLayer heatmapLayer : heatmap.getLayers()) {
+                    if (heatmapLayer.getId().contains("p-value")) {
+                        heatmapLayer.setDecorator(new PValueDecorator());
+                    }
+                }
+
                 heatmap.getLayers().setTopLayerById("two-tail-p-value");
-                heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
 
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
