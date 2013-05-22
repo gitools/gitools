@@ -143,6 +143,17 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             }
         });
 
+        closeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (searchRows()) {
+                    HeatmapSearchPanel.this.hm.getRows().clearHighlightedLabels();
+                } else {
+                    HeatmapSearchPanel.this.hm.getColumns().clearHighlightedLabels();
+                }
+            }
+        });
+
         setNotFound(false);
 
     }
@@ -179,7 +190,12 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
         boolean found = false;
         for (String annotation : am.getLabels()) {
-            found = searchPat.matcher(am.getAnnotation(label, annotation)).find();
+            String value = am.getAnnotation(label, annotation);
+            if (value == null) {
+                continue;
+            }
+
+            found = searchPat.matcher(value).find();
 
             if (found) {
                 break;
@@ -402,6 +418,13 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         return rowsOrColumns.isSelected(rowsButton.getModel());
     }
 
+    public void searchOnColumns(boolean searchColumns) {
+        rowsOrColumns.clearSelection();
+        rowsOrColumns.setSelected(columnsButton.getModel(), searchColumns);
+        rowsOrColumns.setSelected(rowsButton.getModel(), !searchColumns);
+
+    }
+
     /**
      * This method is called from within the constructor to
      * initialize the form.
@@ -498,12 +521,5 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup rowsOrColumns;
     private javax.swing.JTextField searchText;
     private javax.swing.JLabel textNotFoundLabel;
-
-    public void searchOnColumns(boolean searchColumns) {
-        rowsOrColumns.clearSelection();
-        rowsOrColumns.setSelected(columnsButton.getModel(), searchColumns);
-        rowsOrColumns.setSelected(rowsButton.getModel(), !searchColumns);
-
-    }
     // End of variables declaration//GEN-END:variables
 }
