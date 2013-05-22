@@ -38,7 +38,7 @@ public class DoubleTranslator implements ValueTranslator<Double> {
     @Nullable
     public Double stringToValue(@Nullable String str, boolean allowNull) {
         if (allowNull) {
-            if (str == null || str.isEmpty()) {
+            if (str == null || str.isEmpty() || str.equals("-")) {
                 return null;
             }
         }
