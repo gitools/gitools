@@ -47,7 +47,9 @@ public final class DataActions {
 
     public static final BaseAction hideSmallerThanHeaderAction = new HideNumericHeaderAction(false, "smaller");
 
-    public static final BaseAction fastSortRowsAction = new FastSortRowsAction();
+    public static final BaseAction fastSortRowsAction = new FastSortValueAction(Dimension.ROW);
+
+    public static final BaseAction fastSortColumnsAction = new FastSortValueAction(Dimension.COLUMN);
 
     public static final BaseAction sortByAnnotationAction = new SortByAnnotationAction(Dimension.NONE_SPECIFIED);
 

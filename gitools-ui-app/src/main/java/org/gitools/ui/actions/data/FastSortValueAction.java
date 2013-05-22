@@ -31,6 +31,7 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.utils.HeaderEnum;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -39,16 +40,21 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class FastSortRowsAction extends BaseAction {
+public class FastSortValueAction extends BaseAction {
 
     private static final long serialVersionUID = -582380114189586206L;
 
     private ValueSortCriteria.SortDirection currentSort;
+    private boolean applyToRows;
 
-    public FastSortRowsAction() {
-        super("Sort rows");
+    public FastSortValueAction(HeaderEnum.Dimension dimension) {
+        super("Sort");
 
-        setDesc("Sort rows");
+        applyToRows = (dimension == HeaderEnum.Dimension.ROW);
+
+        String title = "Sort " + (applyToRows ? "rows" : "columns");
+        setName(title);
+        setDesc(title);
 
         currentSort = ValueSortCriteria.SortDirection.ASCENDING;
         updateIcon();
@@ -105,7 +111,7 @@ public class FastSortRowsAction extends BaseAction {
 
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByValue(matrixView, criteriaArray, true, false);
+                MatrixViewSorter.sortByValue(matrixView, criteriaArray, applyToRows, !applyToRows);
 
                 monitor.end();
             }

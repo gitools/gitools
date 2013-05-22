@@ -66,6 +66,7 @@ public class PopupMenuActions {
             DataActions.hideGreaterThanHeaderAction,
             DataActions.hideSmallerThanHeaderAction,
             BaseAction.separator,
+            DataActions.fastSortColumnsAction,
             DataActions.sortByHeader,
             BaseAction.separator,
             HeatmapActions.searchColumnsAction,
