@@ -21,6 +21,7 @@
  */
 package org.gitools.core.matrix.model.matrix;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.model.Resource;
 
@@ -39,11 +40,24 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     public void addAnnotations(IAnnotations annotations) {
+
+        // Copy all the annotations
         for (String identifier : annotations.getIdentifiers()) {
             for (String label : annotations.getLabels()) {
                 setAnnotation(identifier, label, annotations.getAnnotation(identifier, label));
             }
         }
+
+        // Copy annotations metadata
+        for (String label : annotations.getLabels()) {
+            for (String key : annotations.getMetadataKeys()) {
+                String metadata = annotations.getAnnotationMetadata(key, label);
+                if (!StringUtils.isEmpty(metadata)) {
+                    setAnnotationMetadata(key, label, metadata);
+                }
+            }
+        }
+
     }
 
     @Override
