@@ -23,6 +23,7 @@ package org.gitools.core.matrix.sort;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
@@ -38,6 +39,7 @@ import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -104,8 +106,6 @@ public abstract class MatrixViewSorter {
 
 
         final int[] sortedVisibleRows = visibleRows;
-
-
         heatmap.getRows().setVisibleIndices(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
@@ -113,6 +113,12 @@ public abstract class MatrixViewSorter {
         criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
         monitor.begin("Sorting rows...", numRows);
+
+        HeatmapDimension sortDimension = heatmap.getColumns();
+        PropertyChangeListener[] listeners = sortDimension.getPropertyChangeListeners();
+        for (PropertyChangeListener listener : listeners) {
+            sortDimension.removePropertyChangeListener(listener);
+        }
 
         for (int i = numRows - 1; i >= 0; i--) {
             monitor.worked(1);
@@ -122,8 +128,16 @@ public abstract class MatrixViewSorter {
 
             int[] exclusiveRow = new int[1];
             exclusiveRow[0] = i;
-            sortByValue(heatmap, heatmap.getColumns(), null, heatmap.getRows(), exclusiveRow, criteriaArray);
+
+            sortByValue(heatmap, sortDimension, null, heatmap.getRows(), exclusiveRow, criteriaArray);
         }
+
+        for (PropertyChangeListener listener : listeners) {
+            sortDimension.addPropertyChangeListener(listener);
+        }
+
+        // Force to fire the events
+        sortDimension.setVisibleIndices(sortDimension.getVisibleIndices());
 
     }
 
