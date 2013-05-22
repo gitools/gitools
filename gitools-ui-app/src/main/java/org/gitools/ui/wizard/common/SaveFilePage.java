@@ -144,8 +144,7 @@ public class SaveFilePage extends AbstractWizardPage {
         sb.append(name);
         File file = new File(name);
 
-        String ext = FileChooserUtils.getExtension(file);
-        if (!name.isEmpty() && (ext == null) && format.getSelectedIndex() >= 0) {
+        if (!name.isEmpty() && format.getSelectedIndex() >= 0) {
             FileFormat fmt = (FileFormat) format.getSelectedItem();
             if (!name.endsWith(".")) {
                 sb.append('.');
