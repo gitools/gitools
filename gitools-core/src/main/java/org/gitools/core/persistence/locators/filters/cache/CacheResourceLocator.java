@@ -88,6 +88,7 @@ public class CacheResourceLocator implements IResourceLocator {
             return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(cachedFile));
         }
 
+        cached = true;
         return new TeeInputStream(originalLocator.openInputStream(progressMonitor), new FileOutputStream(cachedFile));
     }
 
