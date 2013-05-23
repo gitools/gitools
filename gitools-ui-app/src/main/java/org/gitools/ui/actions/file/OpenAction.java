@@ -125,11 +125,13 @@ public class OpenAction extends BaseAction {
         Settings.getDefault().save();
 
         IResourceFormat format = null;
-        if (fileChoose.getFilter().getDescription().startsWith(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle())) {
-            format = PersistenceManager.get().getFormat(FileSuffixes.OBJECT_MATRIX, IMatrix.class);
-        }
-        if (fileChoose.getFilter().getDescription().startsWith(FileFormats.DOUBLE_MATRIX.getTitle())) {
-            format = PersistenceManager.get().getFormat(FileSuffixes.DOUBLE_MATRIX, IMatrix.class);
+        if (fileChoose.getFilter() != null) {
+            if (fileChoose.getFilter().getDescription().startsWith(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle())) {
+                format = PersistenceManager.get().getFormat(FileSuffixes.OBJECT_MATRIX, IMatrix.class);
+            }
+            if (fileChoose.getFilter().getDescription().startsWith(FileFormats.DOUBLE_MATRIX.getTitle())) {
+                format = PersistenceManager.get().getFormat(FileSuffixes.DOUBLE_MATRIX, IMatrix.class);
+            }
         }
 
         JobRunnable loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);

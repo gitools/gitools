@@ -117,7 +117,13 @@ public class FileChooserUtils {
         }
 
         if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
-            return new FileChoose(fileChooser.getSelectedFile(), ((VFSFileFilterAdaptor)fileChooser.getFileFilter()).getFilter());
+
+            FileFormatFilter formatFilter = null;
+            if (fileChooser.getFileFilter() instanceof VFSFileFilterAdaptor) {
+                formatFilter = ((VFSFileFilterAdaptor) fileChooser.getFileFilter()).getFilter();
+            }
+
+            return new FileChoose(fileChooser.getSelectedFile(), formatFilter);
         }
 
         return null;
