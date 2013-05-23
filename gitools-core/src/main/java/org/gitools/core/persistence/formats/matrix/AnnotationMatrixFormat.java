@@ -21,11 +21,12 @@
  */
 package org.gitools.core.persistence.formats.matrix;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.utils.csv.CSVParser;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
@@ -69,13 +70,17 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
 
             // Header
             String[] headers = parser.readNext();
-            while (headers[0].charAt(0) == '#') {
+            while (headers[0].length() > 0 && headers[0].charAt(0) == '#') {
                 headers = parser.readNext();
             }
 
             // Annotations
             String[] fields;
             while ((fields = parser.readNext()) != null) {
+
+                if (StringUtils.isEmpty(fields[0])) {
+                    continue;
+                }
 
                 // Annotation metadata
                 if (fields[0].charAt(0) == '#') {
