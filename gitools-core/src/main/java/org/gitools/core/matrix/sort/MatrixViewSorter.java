@@ -289,7 +289,19 @@ public abstract class MatrixViewSorter {
             public int compare(Integer idx1, Integer idx2) {
                 String label1 = labelProvider.getLabel(idx1);
                 String label2 = labelProvider.getLabel(idx2);
-                return label1.compareTo(label2) * dirSign;
+
+                int res;
+                if (label1 == null && label2 == null) {
+                    res = 0;
+                } else if (label1 == null) {
+                    res = dirSign;
+                } else if (label2 == null) {
+                    res = -dirSign;
+                } else {
+                    res = label1.compareTo(label2);
+                }
+
+                return res * dirSign;
             }
         };
 

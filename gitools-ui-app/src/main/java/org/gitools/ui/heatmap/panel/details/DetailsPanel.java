@@ -133,7 +133,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         } else {
             columnsBox.setTitle("Column");
         }
-        List<DetailsDecoration> columnsDetails = new ArrayList<DetailsDecoration>();
+        List<DetailsDecoration> columnsDetails = new ArrayList<>();
         heatmap.getColumns().populateDetails(columnsDetails);
         columnsBox.draw(columnsDetails);
     }

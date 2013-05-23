@@ -204,12 +204,13 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         this.visibleIndices = indices;
         updateVisibleLabels();
 
-        firePropertyChange(PROPERTY_VISIBLE, null, indices);
-
-        setSelected(selection);
         if (updateLead) {
             setSelectionLead(nextLeadRow);
         }
+
+        setSelected(selection);
+
+        firePropertyChange(PROPERTY_VISIBLE, null, indices);
     }
 
     @NotNull
