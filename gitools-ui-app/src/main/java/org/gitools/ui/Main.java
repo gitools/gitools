@@ -23,10 +23,7 @@ package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
 import com.apple.eawt.Application;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.gitools.core.persistence.PersistenceInitialization;
-import org.gitools.ui.platform.os.OperatingSystemUtils;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
@@ -34,10 +31,14 @@ import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
+import org.gitools.ui.platform.os.OperatingSystemUtils;
 import org.gitools.ui.settings.Settings;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.LogManager;
 
 public class Main {
 
@@ -53,8 +54,11 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
 
-        // Initialize loggers
-        Logger.getLogger("org.lobobrowser").setLevel(Level.ERROR);
+        // Force silence lobobrowser loggers
+        try {
+            LogManager.getLogManager().readConfiguration(new ByteArrayInputStream("org.lobobrowser.level=OFF".getBytes("UTF-8")));
+        } catch (IOException e) {
+        }
 
         // Load OS specific things
         if (OperatingSystemUtils.isMac()) {
