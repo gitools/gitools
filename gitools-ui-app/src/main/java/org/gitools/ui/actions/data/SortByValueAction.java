@@ -119,7 +119,7 @@ public class SortByValueAction extends BaseAction {
 
                 ValueSortCriteria[] criteriaArray = new ValueSortCriteria[criteriaList.size()];
 
-                MatrixViewSorter.sortByValue(matrixView, criteriaList.toArray(criteriaArray), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked());
+                MatrixViewSorter.sortByValue(matrixView, criteriaList.toArray(criteriaArray), dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked(), monitor);
 
                 monitor.end();
             }

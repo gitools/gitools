@@ -111,7 +111,7 @@ public class FastSortValueAction extends BaseAction {
 
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByValue(matrixView, criteriaArray, applyToRows, !applyToRows);
+                MatrixViewSorter.sortByValue(matrixView, criteriaArray, applyToRows, !applyToRows, monitor);
 
                 monitor.end();
             }

@@ -27,22 +27,22 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
 import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.core.matrix.sort.ValueSortCriteria.SortDirection;
 import org.gitools.core.matrix.sort.mutualexclusion.MutualExclusionComparator;
-import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 public abstract class MatrixViewSorter {
 
@@ -120,6 +120,7 @@ public abstract class MatrixViewSorter {
             sortDimension.removePropertyChangeListener(listener);
         }
 
+        IProgressMonitor nullProgress = new NullProgressMonitor();
         for (int i = numRows - 1; i >= 0; i--) {
             monitor.worked(1);
             if (monitor.isCancelled()) {
@@ -129,7 +130,7 @@ public abstract class MatrixViewSorter {
             int[] exclusiveRow = new int[1];
             exclusiveRow[0] = i;
 
-            sortByValue(heatmap, sortDimension, null, heatmap.getRows(), exclusiveRow, criteriaArray);
+            sortByValue(heatmap, sortDimension, null, heatmap.getRows(), exclusiveRow, criteriaArray, nullProgress);
         }
 
         for (PropertyChangeListener listener : listeners) {
@@ -146,25 +147,31 @@ public abstract class MatrixViewSorter {
     }
 
 
-    public static void sortByValue(@NotNull IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns) {
+    public static void sortByValue(@NotNull IMatrixView matrixView, ValueSortCriteria[] criteria, boolean applyToRows, boolean applyToColumns, IProgressMonitor progressMonitor) {
 
         IMatrixViewDimension rows = matrixView.getRows();
         IMatrixViewDimension columns = matrixView.getColumns();
 
+        if (progressMonitor == null) {
+            progressMonitor = new NullProgressMonitor();
+        }
+
         if (applyToRows) {
-            sortByValue(matrixView, rows, rows.getSelected(), columns, columns.getSelected(), criteria);
+            sortByValue(matrixView, rows, rows.getSelected(), columns, columns.getSelected(), criteria, progressMonitor);
         }
 
         if (applyToColumns) {
-            sortByValue(matrixView, columns, columns.getSelected(), rows, rows.getSelected(), criteria);
+            sortByValue(matrixView, columns, columns.getSelected(), rows, rows.getSelected(), criteria, progressMonitor);
         }
     }
 
     private static void sortByValue(final IMatrixView matrixView,
                                     final IMatrixViewDimension sortDimension, int[] sortSelection,
                                     final IMatrixViewDimension aggregationDimension, int[] aggregationSelection,
-                                    final ValueSortCriteria[] criteriaArray
+                                    final ValueSortCriteria[] criteriaArray,
+                                    final IProgressMonitor progressMonitor
     ) {
+
 
         if (criteriaArray == null || criteriaArray.length == 0) {
             return;
@@ -184,62 +191,15 @@ public abstract class MatrixViewSorter {
 
         final int[] aggregatingIndices = aggregationSelection;
         final Integer[] sortingIndices = ArrayUtils.toObject(sortSelection);
-        final double[] valueBuffer = new double[aggregatingIndices.length];
 
-        Comparator<Integer> comparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer idx1, Integer idx2) {
+        Comparator<Integer> comparator = new SortByValueComparator(sortDimension, criteriaArray, aggregationDimension, aggregatingIndices, matrixView, progressMonitor, sortSelection.length);
 
-                double aggr1 = 0.0;
-                double aggr2 = 0.0;
-
-                ValueSortCriteria criteria = null;
-                int criteriaIndex = 0;
-
-                int[] position = new int[2];
-
-                while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
-                    criteria = criteriaArray[criteriaIndex];
-                    IAggregator aggregator = criteria.getAggregator();
-                    int propIndex = criteria.getAttributeIndex();
-
-                    sortDimension.setPosition(position, idx1);
-                    aggr1 = aggregateValue(matrixView, position, propIndex, aggregator, valueBuffer);
-
-                    sortDimension.setPosition(position, idx2);
-                    aggr2 = aggregateValue(matrixView, position, propIndex, aggregator, valueBuffer);
-
-                    criteriaIndex++;
-                }
-
-                if (Double.isNaN(aggr1)) {
-                    if (Double.isNaN(aggr2)) {
-                        return 0;
-                    } else {
-                        return 1;
-                    }
-                }
-
-                if (Double.isNaN(aggr2)) {
-                    return -1;
-                }
-
-                int res = (int) Math.signum(aggr1 - aggr2);
-                return res * criteria.getDirection().getFactor();
-            }
-
-            private double aggregateValue(@NotNull IMatrixView matrixView, int[] position, int propIndex, @NotNull IAggregator aggregator, double[] valueBuffer) {
-
-                for (int i = 0; i < aggregatingIndices.length; i++) {
-                    aggregationDimension.setPosition(position, aggregatingIndices[i]);
-                    valueBuffer[i] = MatrixUtils.doubleValue(matrixView.getValue(position, propIndex));
-                }
-
-                return aggregator.aggregate(valueBuffer);
-            }
-        };
-
-        Arrays.sort(sortingIndices, comparator);
+        try {
+            Arrays.sort(sortingIndices, comparator);
+        } catch (CancellationException e) {
+            // Cancelled by the user
+            return;
+        }
 
         final int[] visibleIndices = sortDimension.getVisibleIndices();
         final int[] sortedVisibleIndices = new int[visibleIndices.length];
@@ -252,7 +212,6 @@ public abstract class MatrixViewSorter {
         sortDimension.setVisibleIndices(sortedVisibleIndices);
     }
 
-    //TODO: sort by label with all selected properties
     public static void sortByLabel(@NotNull Heatmap heatmap, boolean sortRows, @NotNull String rowsPattern, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, @NotNull String colsPattern, SortDirection colsDirection, boolean colsNumeric) {
 
         if (sortRows) {
