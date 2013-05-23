@@ -175,8 +175,6 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 
     void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection) {
 
-
-
         getHeaderDrawers();
 
         if (headerLegendDrawers == null || headerLegendDrawers.size() == 0) {
@@ -189,6 +187,11 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
             Collection headers = headerLegendDrawers.getCollection(d);
             for (Object h : headers) {
                 HeatmapHeader header = (HeatmapHeader) h;
+
+                if (!header.isVisible()) {
+                    continue;
+                }
+
                 int x;
                 int y;
                 int width;
