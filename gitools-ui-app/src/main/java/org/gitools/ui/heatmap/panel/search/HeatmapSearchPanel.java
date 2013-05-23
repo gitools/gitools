@@ -243,6 +243,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
         if (searchRows) {
 
+            hm.getColumns().clearHighlightedLabels();
+
             // Search rows
             if (highlightAllChk.isSelected()) {
                 IAnnotations am = hm.getRows().getAnnotations();
@@ -260,6 +262,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             }
 
         } else {
+
+            hm.getRows().clearHighlightedLabels();
 
             // Column search
             if (highlightAllChk.isSelected()) {
