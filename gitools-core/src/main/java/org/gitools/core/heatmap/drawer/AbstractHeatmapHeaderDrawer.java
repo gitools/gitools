@@ -36,6 +36,8 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     private final HT header;
     private HeatmapDimension heatmapDimension;
 
+    private int firstIndex = -1;
+
     protected AbstractHeatmapHeaderDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HT header) {
         super(heatmap);
 
@@ -83,7 +85,15 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         if (point >= 0 && point < totalSize) {
             index = point / cellSize;
         }
-        return index;
+        return index + getFirstIndex() + 1;
+    }
+
+    protected int getFirstIndex() {
+        return firstIndex;
+    }
+
+    protected void setFirstIndex(int firstIndex) {
+        this.firstIndex = firstIndex;
     }
 
     @NotNull

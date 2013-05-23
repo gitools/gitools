@@ -38,9 +38,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class FilterByAnnotations extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;

@@ -104,8 +104,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private int convertToIndex(@NotNull MouseEvent e) {
         point = e.getPoint();
-        Point viewPosition = viewPort.getViewPosition();
-        point.translate(viewPosition.x, viewPosition.y);
+        //Point viewPosition = viewPort.getViewPosition();
+        //point.translate(viewPosition.x, viewPosition.y);
         position = headerPanel.getDrawer().getPosition(point);
 
         return horizontal ? position.column : position.row;
