@@ -151,7 +151,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     private void updateScrolls() {
-        Dimension totalSize = bodyVP.getViewSize();
+        Dimension totalSize = bodyPanel.getDrawer().getSize();
         Dimension visibleSize = bodyVP.getSize();
 
         int scrollWidth = totalSize.width - visibleSize.width;
