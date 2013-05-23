@@ -33,10 +33,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.compressmatrix.MatrixConversion;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.*;
 import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
@@ -64,11 +61,17 @@ import java.net.URL;
 public class CommandLoadFile extends AbstractCommand {
 
     private final String file;
+    private IResourceFormat format = null;
     private final String rowsAnnotations;
     private final String columnsAnnotations;
 
     public CommandLoadFile(String file) {
         this(file, null, null);
+    }
+
+    public CommandLoadFile(String file, IResourceFormat resourceFormat) {
+        this(file);
+        this.format = resourceFormat;
     }
 
     public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations) {
@@ -86,7 +89,12 @@ public class CommandLoadFile extends AbstractCommand {
         try {
             resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
             monitor.begin("Loading ...", 1);
-            resource = PersistenceManager.get().load(resourceLocator, IResource.class, monitor);
+
+            if (format == null) {
+                format = PersistenceManager.get().getFormat(resourceLocator.getName(), IResource.class);
+            }
+
+            resource = PersistenceManager.get().load(resourceLocator, format, monitor);
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof UserCancelledException)) {

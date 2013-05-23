@@ -91,7 +91,7 @@ public class ExportMatrixAction extends BaseAction {
 
         final int propIndex = index;
 
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;

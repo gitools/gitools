@@ -192,7 +192,7 @@ public class SelectFilePage extends AbstractWizardPage {
                 filters[i + 2] = new FileFormatFilter(formats[i]);
         }
 
-        File selPath = FileChooserUtils.selectFile("Select file", getLastPath(), FileChooserUtils.MODE_OPEN, filters);
+        File selPath = FileChooserUtils.selectFile("Select file", getLastPath(), FileChooserUtils.MODE_OPEN, filters).getFile();
 
         if (selPath != null) {
             setFile(selPath);

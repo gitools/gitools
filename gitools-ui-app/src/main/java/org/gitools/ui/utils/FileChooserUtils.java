@@ -46,17 +46,17 @@ public class FileChooserUtils {
     private final static String png = "png";
 
     @Nullable
-    public static File selectFile(String title, int mode) {
+    public static FileChoose selectFile(String title, int mode) {
         return selectFile(title, Settings.getDefault().getLastPath(), mode);
     }
 
     @Nullable
-    public static File selectFile(String title, String currentPath, int mode) {
+    public static FileChoose selectFile(String title, String currentPath, int mode) {
         return selectFile(title, currentPath, mode, null);
     }
 
     @Nullable
-    public static File selectFile(String title, int mode, FileFormatFilter[] filters) {
+    public static FileChoose selectFile(String title, int mode, FileFormatFilter[] filters) {
         return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
     }
 
@@ -69,13 +69,13 @@ public class FileChooserUtils {
      * @param filters
      * @return {file, filter}
      */
-    public static File selectFile(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
+    public static FileChoose selectFile(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
         return selectFileVFS(title, currentPath, mode, filters);
     }
 
 
     @Nullable
-    private static File selectFileVFS(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
+    private static FileChoose selectFileVFS(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
         /*TODO
         try
         {
@@ -117,7 +117,7 @@ public class FileChooserUtils {
         }
 
         if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
-            return fileChooser.getSelectedFile();
+            return new FileChoose(fileChooser.getSelectedFile(), ((VFSFileFilterAdaptor)fileChooser.getFileFilter()).getFilter());
         }
 
         return null;

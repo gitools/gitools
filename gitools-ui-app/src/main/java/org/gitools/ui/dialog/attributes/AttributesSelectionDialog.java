@@ -268,7 +268,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
         List<Integer> indices = new ArrayList<Integer>();
 
         try {
-            File file = FileChooserUtils.selectFile("Select file ...", Settings.getDefault().getLastPath(), FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Select file ...", Settings.getDefault().getLastPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;
@@ -301,7 +301,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
         Object[] attributes = listModel.getAttributes();
 
         try {
-            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
 
             if (file == null) {
                 return;

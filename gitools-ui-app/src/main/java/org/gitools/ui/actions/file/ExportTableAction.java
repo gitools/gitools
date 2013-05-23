@@ -82,7 +82,7 @@ public class ExportTableAction extends BaseAction {
             return;
         }
 
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE);
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;

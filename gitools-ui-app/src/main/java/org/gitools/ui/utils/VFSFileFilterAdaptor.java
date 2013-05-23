@@ -61,4 +61,8 @@ public class VFSFileFilterAdaptor extends AbstractVFSFileFilter {
 
         return result;
     }
+
+    public FileFormatFilter getFilter() {
+        return filter;
+    }
 }

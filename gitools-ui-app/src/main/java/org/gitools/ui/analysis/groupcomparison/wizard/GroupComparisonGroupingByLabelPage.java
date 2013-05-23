@@ -355,7 +355,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
     private void loadBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtn1ActionPerformed
 
         try {
-            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;
@@ -373,7 +373,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
     private void saveBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtn1ActionPerformed
         try {
-            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE);
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
 
             if (file == null) {
                 return;
@@ -403,7 +403,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
     private void loadBtn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtn2ActionPerformed
 
         try {
-            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN);
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;

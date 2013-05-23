@@ -111,7 +111,7 @@ public class FilterTextComponent extends FilterComponent {
 
     private void selectFileAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectFileAction
 
-        File selPath = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN);
+        File selPath = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN).getFile();
 
         if (selPath != null) {
 

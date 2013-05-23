@@ -196,7 +196,7 @@ public class DataFilterPage extends AbstractWizardPage {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populationFileBrowserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populationFileBrowserBtnActionPerformed
-        File selPath = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastDataPath(), FileChooserUtils.MODE_OPEN);
+        File selPath = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastDataPath(), FileChooserUtils.MODE_OPEN).getFile();
 
         if (selPath != null) {
             populationFilePath.setText(selPath.getAbsolutePath());

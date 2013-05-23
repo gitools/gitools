@@ -21,8 +21,12 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.formats.analysis.*;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
@@ -31,16 +35,13 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChoose;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class OpenAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
@@ -114,16 +115,24 @@ public class OpenAction extends BaseAction {
                 new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
         };
 
-        final File file = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
+        final FileChoose fileChoose = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
 
-        if (file == null) {
+        if (fileChoose == null) {
             return;
         }
 
-        Settings.getDefault().setLastPath(file.getParent());
+        Settings.getDefault().setLastPath(fileChoose.getFile().getParent());
         Settings.getDefault().save();
 
-        JobRunnable loadFile = new CommandLoadFile(file.getAbsolutePath());
+        IResourceFormat format = null;
+        if (fileChoose.getFilter().getDescription().startsWith(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle())) {
+            format = PersistenceManager.get().getFormat(FileSuffixes.OBJECT_MATRIX, IMatrix.class);
+        }
+        if (fileChoose.getFilter().getDescription().startsWith(FileFormats.DOUBLE_MATRIX.getTitle())) {
+            format = PersistenceManager.get().getFormat(FileSuffixes.DOUBLE_MATRIX, IMatrix.class);
+        }
+
+        JobRunnable loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
         JobThread.execute(AppFrame.get(), loadFile);
 
         AppFrame.get().setStatusText("Done.");
