@@ -21,6 +21,7 @@
  */
 package org.gitools.core.matrix.filter;
 
+import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +31,18 @@ public class ValueFilterCriteria {
     private int attributeIndex;
     private CutoffCmp comparator;
     private double value;
+    private IAggregator aggregator;
 
     public ValueFilterCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double value) {
+        this.attributeName = attributeName;
+        this.attributeIndex = attributeIndex;
+        this.comparator = comparator;
+        this.value = value;
+        this.aggregator = null;
+    }
+
+    public ValueFilterCriteria(String attributeName, int attributeIndex, IAggregator aggregator, CutoffCmp comparator, double value) {
+        this.aggregator = aggregator;
         this.attributeName = attributeName;
         this.attributeIndex = attributeIndex;
         this.comparator = comparator;

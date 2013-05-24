@@ -77,7 +77,7 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
                 continue;
             }
 
-            clusterName = labelPrefix + clusterName;
+            clusterName = labelPrefix + " (" + clusterName + ")";
 
             List<Integer> indices = clusters.get(clusterName);
             if (indices == null) {

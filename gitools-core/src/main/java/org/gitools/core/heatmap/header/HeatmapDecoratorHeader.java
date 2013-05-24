@@ -127,15 +127,8 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     public void populateDetails(List<DetailsDecoration> details, int index) {
 
         for (String annotation : getAnnotationLabels()) {
-            int equal = annotation.indexOf('=');
 
-            String label = "";
-
-            if (equal != -1) {
-                label = " (" + annotation.substring(equal + 1).trim() + ")";
-            }
-
-            DetailsDecoration decoration = new DetailsDecoration(getTitle() + label, getDescription(), getDescriptionUrl(), null, getValueUrl());
+            DetailsDecoration decoration = new DetailsDecoration(getTitle() + annotation, getDescription(), getDescriptionUrl(), null, getValueUrl());
 
             if (index != -1) {
                 decorate(decoration, index, annotation, true);
