@@ -63,6 +63,8 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int startGroupIndex = firstIndex;
         int endGroupIndex = firstIndex;
 
+        int margin = header.getMargin();
+
         while (startGroupIndex <= lastIndex) {
 
             ColoredLabel groupLabel = header.getColoredLabel(startGroupIndex);
@@ -81,8 +83,8 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                     decoration,
                     getHeatmapDimension().getGridColor(),
                     gridSize,
-                    0, startGroupIndex * fullSize,
-                    cellWidth,
+                    margin, (startGroupIndex * fullSize),
+                    cellWidth - margin,
                     (fullSize * (endGroupIndex - startGroupIndex + 1)) - gridSize,
                     g,
                     box
