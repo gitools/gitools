@@ -115,7 +115,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         getHeader().setAnnotationPattern(pattern);
         final ClusteringData data = new AnnPatClusteringData(aggregationDimension, pattern);
 
-        String annotationLabelPrefix = dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName();
+        String annotationLabelPrefix = dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName() + ": ";
         ClusteringMethod clusteringMethod = new AnnPatClusteringMethod(annotationLabelPrefix);
         ClusteringResults results = clusteringMethod.cluster(data, ProgressMonitor.get());
         aggregationAnnotationLabels = Arrays.asList(results.getClusterTitles());
@@ -128,13 +128,11 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
         int[] indicesToAggregate;
         if (dataSourceAggregationPage.useAllColumnsOrRows()) {
-            annotationLabel += "all";
             indicesToAggregate = new int[aggregationDimension.size()];
             for (int i = 0; i < aggregationDimension.size(); i++)
                 indicesToAggregate[i] = i;
         } else {
             indicesToAggregate = aggregationDimension.getSelected();
-            annotationLabel += indicesToAggregate.length;
         }
 
         annotationLabel += " " + dataSourceAggregationPage.getSelectedDataValueName();

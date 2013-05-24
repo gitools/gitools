@@ -126,9 +126,26 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     @Override
     public void populateDetails(List<DetailsDecoration> details, int index) {
 
+        String intersection = null;
+
+        for (String annotation : getAnnotationLabels()) {
+            if (intersection == null) {
+                intersection = annotation;
+            } else {
+
+                intersection = getIntersectionAtBeginning(intersection, annotation);
+
+            }
+        }
+
         for (String annotation : getAnnotationLabels()) {
 
-            DetailsDecoration decoration = new DetailsDecoration(getTitle() + annotation, getDescription(), getDescriptionUrl(), null, getValueUrl());
+            String trimmed = annotation.replaceFirst(intersection, "");
+            if (trimmed.length() > 0) {
+                trimmed = " (" + trimmed + ")";
+            }
+
+            DetailsDecoration decoration = new DetailsDecoration(getTitle() + trimmed, getDescription(), getDescriptionUrl(), null, getValueUrl());
 
             if (index != -1) {
                 decorate(decoration, index, annotation, true);
@@ -137,6 +154,22 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
             details.add(decoration);
         }
 
+    }
+
+    private String getIntersectionAtBeginning(String s1, String s2) {
+        int max = s1.length() > s2.length() ?
+                s2.length() : s1.length();
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+        boolean equal = true;
+        while (i < max && equal) {
+            equal = s1.charAt(i) == s2.charAt(i);
+            if (equal) {
+                sb.append(s2.charAt(i));
+            }
+            i++;
+        }
+        return sb.toString();
     }
 
     @Override
