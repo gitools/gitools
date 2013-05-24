@@ -21,7 +21,7 @@
  */
 package org.gitools.core.persistence.locators.filters.cache;
 
-import org.apache.commons.io.input.TeeInputStream;
+import org.apache.commons.io.IOUtils;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.locators.ProgressMonitorInputStream;
@@ -84,12 +84,14 @@ public class CacheResourceLocator implements IResourceLocator {
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
-        if (cached) {
-            return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(cachedFile));
+        if (!cached) {
+            progressMonitor.begin("Downloading...", originalLocator.getContentLength());
+            IOUtils.copy(originalLocator.openInputStream(progressMonitor), new FileOutputStream(cachedFile));
+            cached = true;
+            progressMonitor.begin("Reading " + getName(), getContentLength());
         }
 
-        cached = true;
-        return new TeeInputStream(originalLocator.openInputStream(progressMonitor), new FileOutputStream(cachedFile));
+        return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(cachedFile));
     }
 
     @Override
