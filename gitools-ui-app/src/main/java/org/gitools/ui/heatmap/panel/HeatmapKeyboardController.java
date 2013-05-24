@@ -69,9 +69,9 @@ class HeatmapKeyboardController extends KeyAdapter {
         boolean shiftDown = ((modifiers & shiftMask) != 0);
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
         boolean altDown = ((modifiers & altMask) != 0);
+
         if (ctrlDown) {
             e.consume();
-
         }
 
         if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_HOME || key == KeyEvent.VK_END || key == KeyEvent.VK_PAGE_UP || key == KeyEvent.VK_PAGE_DOWN) {

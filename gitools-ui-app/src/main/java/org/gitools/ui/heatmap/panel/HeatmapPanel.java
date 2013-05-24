@@ -26,7 +26,6 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.utils.EventUtils;
 import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
@@ -157,14 +156,15 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         int scrollWidth = totalSize.width - visibleSize.width;
         int scrollHeight = totalSize.height - visibleSize.height;
 
-        IMatrixView mv = heatmap;
-        int row = mv.getRows().getSelectionLead();
-        int col = mv.getColumns().getSelectionLead();
+        HeatmapPosition wheelPosition = HeatmapBodyMouseController.wheelPosition;
+        Point wheelPoint = HeatmapBodyMouseController.wheelPoint;
 
-        Point leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
-
-        int leadPointXEnd = leadPoint.x + heatmap.getColumns().getFullSize();
-        int leadPointYEnd = leadPoint.y + heatmap.getRows().getFullSize();
+        int colValue = 0, rowValue = 0;
+        if (wheelPoint != null) {
+            Point targetPoint = bodyPanel.getDrawer().getPoint(wheelPosition);
+            colValue = (targetPoint.x - wheelPoint.x);
+            rowValue = (targetPoint.y - wheelPoint.y);
+        }
 
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
@@ -174,10 +174,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             colSB.setValue(scrollWidth);
         }
 
-        if (leadPoint.x < colSB.getValue()) {
-            colSB.setValue(leadPoint.x);
-        } else if (leadPointXEnd > colSB.getValue() + visibleSize.width) {
-            colSB.setValue(leadPointXEnd - visibleSize.width);
+        if (wheelPoint != null) {
+            colSB.setValue(colValue);
         }
 
         colSB.setVisibleAmount(visibleSize.width);
@@ -191,10 +189,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             rowSB.setValue(scrollHeight);
         }
 
-        if (leadPoint.y < rowSB.getValue()) {
-            rowSB.setValue(leadPoint.y);
-        } else if (leadPointYEnd > rowSB.getValue() + visibleSize.height) {
-            rowSB.setValue(leadPointYEnd - visibleSize.height);
+        if (wheelPoint != null) {
+            rowSB.setValue(rowValue);
         }
 
         rowSB.setVisibleAmount(visibleSize.height);
@@ -249,7 +245,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     public HeatmapPosition getScrollPosition() {
         Point pos = new Point(colSB.getValue(), rowSB.getValue());
-
         return bodyPanel.getDrawer().getPosition(pos);
     }
 
@@ -301,8 +296,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (e.getComponent() == this.rowVP) {
 
-            HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
-            HeatmapPosition headerPostion = rowHeaderPanel.getHeaderDrawer().getPosition(e.getPoint());
+            Point point = e.getPoint();
+            HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(point);
+            Point viewPosition = rowVP.getViewPosition();
+            point.translate(viewPosition.x, viewPosition.y);
+            HeatmapPosition headerPostion = rowHeaderPanel.getHeaderDrawer().getPosition(point);
 
             DynamicActionsManager.updatePopupMenu(popupMenuRows, IHeatmapDimensionAction.class, heatmap.getRows(), headerPostion);
             DynamicActionsManager.updatePopupMenu(popupMenuRows, IHeatmapHeaderAction.class, header, headerPostion);
@@ -312,8 +310,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (e.getComponent() == this.colVP) {
 
-            HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
-            HeatmapPosition headerPostion = columnHeaderPanel.getHeaderDrawer().getPosition(e.getPoint());
+            Point point = e.getPoint();
+            HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(point);
+            Point viewPosition = rowVP.getViewPosition();
+            point.translate(viewPosition.x, viewPosition.y);
+            HeatmapPosition headerPostion = columnHeaderPanel.getHeaderDrawer().getPosition(point);
 
             DynamicActionsManager.updatePopupMenu(popupMenuColumns, IHeatmapDimensionAction.class, heatmap.getColumns(), headerPostion);
             DynamicActionsManager.updatePopupMenu(popupMenuColumns, IHeatmapHeaderAction.class, header, headerPostion);

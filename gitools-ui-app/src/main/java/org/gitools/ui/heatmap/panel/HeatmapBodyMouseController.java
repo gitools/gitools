@@ -148,6 +148,9 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
             l.mouseMoved(coord.row, coord.column, e);
     }
 
+    public static HeatmapPosition wheelPosition;
+    public static Point wheelPoint;
+
     @Override
     public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
         int unitsToScroll = e.getUnitsToScroll();
@@ -155,6 +158,20 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
+
+        if (ctrlDown) {
+            if (wheelPoint == null && wheelPosition == null) {
+                wheelPoint = e.getPoint();
+                Point viewPosition = viewPort.getViewPosition();
+                Point absPoint = new Point(wheelPoint);
+                absPoint.translate(viewPosition.x, viewPosition.y);
+                wheelPosition = bodyPanel.getDrawer().getPosition(absPoint);
+            }
+            wheelPoint = e.getPoint();
+        } else {
+            wheelPoint = null;
+            wheelPosition = null;
+        }
 
         mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
 
@@ -220,6 +237,12 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        if (wheelPoint != null) {
+            wheelPoint = null;
+            wheelPosition = null;
+        }
+
         keyPressed = -1;
         keyboardController.keyReleased(e);
     }

@@ -62,7 +62,6 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         int count = heatmapDimension.size();
 
         int start = (clipStart - height) / height;
-        setFirstIndex(start);
 
         int end = (clipEnd + height - 1) / height;
 

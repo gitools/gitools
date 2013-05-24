@@ -53,7 +53,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         HeatmapColoredLabelsHeader header = getHeader();
 
         int firstIndex = firstVisibleIndex(box, clip);
-        setFirstIndex(firstIndex);
 
         int lastIndex = lastVisibleIndex(box, clip);
 

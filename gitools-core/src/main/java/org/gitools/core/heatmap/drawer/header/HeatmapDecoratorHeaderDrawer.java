@@ -46,7 +46,6 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
         int annotationWidth = getAnnotationWidth();
 
         int firstIndex = firstVisibleIndex(box, clip);
-        setFirstIndex(firstIndex);
 
         int lastIndex = lastVisibleIndex(box, clip);
 
