@@ -130,7 +130,7 @@ public class HeatmapEditor extends AbstractEditor {
         details.setUndecorated(true);
         details.setBackground(Color.WHITE);
         leftPanel.addPane("Details", details);
-        leftPanel.addPane("Settings", new JScrollPane(new SettingsPanel(heatmap).getRootPanel()));
+        leftPanel.addPane("Settings", new JScrollPane(new SettingsPanel(heatmap).getRootPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
