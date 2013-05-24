@@ -23,8 +23,8 @@ package org.gitools.ui.heatmap.header.wizard.textlabels;
 
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.FileSuffixes;
@@ -33,6 +33,7 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.LogUtils;
+import org.gitools.ui.wizard.common.AnnotationOption;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +41,16 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class TextLabelsSourcePage extends AbstractWizardPage {
 
     private final HeatmapDimension hdim;
     private final HeatmapTextLabelsHeader header;
+    private List<AnnotationOption> annotationOptions;
 
     public TextLabelsSourcePage(HeatmapDimension hdim, HeatmapTextLabelsHeader header) {
         this.hdim = hdim;
@@ -85,11 +91,23 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
 
         IAnnotations am = hdim.getAnnotations();
         if (am != null && !am.getLabels().isEmpty()) {
-            DefaultListModel model = new DefaultListModel();
+            DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
+
+            annotationOptions = new ArrayList<>(am.getLabels().size());
             for (String key : am.getLabels()) {
-                String description = am.getAnnotationMetadata("description", key);
-                String text = key + (description == null? "" : " - " +description);
-                model.addElement(text);
+                String description = hdim.getAnnotations().getAnnotationMetadata("description", key);
+                annotationOptions.add(new AnnotationOption(key, description));
+            }
+
+            Collections.sort(annotationOptions, new Comparator<AnnotationOption>() {
+                @Override
+                public int compare(AnnotationOption o1, AnnotationOption o2) {
+                    return o1.toString().toUpperCase().compareTo(o2.toString().toUpperCase());
+                }
+            });
+
+            for (AnnotationOption annotationOption : annotationOptions) {
+                model.addElement(annotationOption);
             }
 
             annList.setModel(model);
@@ -140,7 +158,7 @@ public class TextLabelsSourcePage extends AbstractWizardPage {
     @NotNull
     String getAnnotation() {
         if (annList.getSelectedIndex() != -1) {
-            return hdim.getAnnotations().getLabels().get(annList.getSelectedIndex());
+            return annotationOptions.get(annList.getSelectedIndex()).getKey();
         } else {
             return "";
         }

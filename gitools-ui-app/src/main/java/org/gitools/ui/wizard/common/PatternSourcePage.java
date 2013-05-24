@@ -37,12 +37,18 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class PatternSourcePage extends AbstractWizardPage {
 
     private HeatmapDimension hdim;
 
     private boolean idOptVisible;
+
+    private List<AnnotationOption> annotationOptions;
 
     public PatternSourcePage(boolean idOptVisible) {
         this(null, idOptVisible);
@@ -92,14 +98,26 @@ public class PatternSourcePage extends AbstractWizardPage {
 
         if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty()) {
             annOpt.setSelected(true);
-            DefaultListModel model = new DefaultListModel();
+            DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
             if (idOptVisible) {
-                model.addElement("id");
+                model.addElement(new AnnotationOption("id"));
             }
+
+            annotationOptions = new ArrayList<>(hdim.getAnnotations().getLabels().size());
             for (String key : hdim.getAnnotations().getLabels()) {
                 String description = hdim.getAnnotations().getAnnotationMetadata("description", key);
-                String text = key + (description == null? "" : " - " +description);
-                model.addElement(text);
+                annotationOptions.add(new AnnotationOption(key, description));
+            }
+
+            Collections.sort(annotationOptions, new Comparator<AnnotationOption>() {
+                @Override
+                public int compare(AnnotationOption o1, AnnotationOption o2) {
+                    return o1.toString().toUpperCase().compareTo(o2.toString().toUpperCase());
+                }
+            });
+
+            for (AnnotationOption annotationOption : annotationOptions) {
+                model.addElement(annotationOption);
             }
 
             annList.setModel(model);
@@ -190,7 +208,7 @@ public class PatternSourcePage extends AbstractWizardPage {
             if (index == 0) {
                 values[i] = "id";
             } else {
-                values[i] = hdim.getAnnotations().getLabels().get(index - 1);
+                values[i] = annotationOptions.get(index - 1).getKey();
             }
         }
 
