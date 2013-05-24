@@ -49,7 +49,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.UserCancelledException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -57,6 +56,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.concurrent.CancellationException;
 
 public class CommandLoadFile extends AbstractCommand {
 
@@ -97,7 +97,7 @@ public class CommandLoadFile extends AbstractCommand {
             resource = PersistenceManager.get().load(resourceLocator, format, monitor);
         } catch (Exception e) {
 
-            if (!(e.getCause() instanceof UserCancelledException)) {
+            if (!(e.getCause() instanceof CancellationException)) {
                MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
             }
 

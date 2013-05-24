@@ -43,12 +43,12 @@ import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.UserCancelledException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CancellationException;
 import java.util.zip.DataFormatException;
 
 public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
@@ -239,7 +239,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
             while ((line = parser.readNext()) != null) {
 
                 if (progressMonitor.isCancelled()) {
-                    throw new UserCancelledException();
+                    throw new CancellationException();
                 }
 
                 final String columnName = line[0];
