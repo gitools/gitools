@@ -34,14 +34,15 @@ public class AggregatorFactory {
     static {
         put(MultAggregator.INSTANCE);
         put(SumAggregator.INSTANCE);
+        put(SumAbsAggregator.INSTANCE);
         put(MeanAggregator.INSTANCE);
         put(LogSumAggregator.INSTANCE);
-        put(SumAbsAggregator.INSTANCE);
         put(StdDevAggregator.INSTANCE);
         put(VarianceAggregator.INSTANCE);
+        put(FrequencyAggregator.INSTANCE);
+        put(NonZeroCountAggregator.INSTANCE);
         put(MinAggregator.INSTANCE);
         put(MaxAggregator.INSTANCE);
-        put(NonZeroPercentageAggregator.INSTANCE);
 
     }
 

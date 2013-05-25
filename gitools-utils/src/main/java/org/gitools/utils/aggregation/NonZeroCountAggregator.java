@@ -26,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Multiplication
  */
-public class NonZeroPercentageAggregator extends AbstractAggregator {
+public class NonZeroCountAggregator extends AbstractAggregator {
 
-    public final static IAggregator INSTANCE = new NonZeroPercentageAggregator();
+    public final static IAggregator INSTANCE = new NonZeroCountAggregator();
 
-    private NonZeroPercentageAggregator() {
+    private NonZeroCountAggregator() {
     }
 
     @Override
@@ -45,17 +45,12 @@ public class NonZeroPercentageAggregator extends AbstractAggregator {
                 events += 1;
             }
         }
-
-        if (events == 0.0 || length == 0.0) {
-            return 0.0;
-        } else {
-            return events / length;
-        }
+        return events;
     }
 
     @NotNull
     @Override
     public String toString() {
-        return "% Non-Zero";
+        return "Count (Non-zero)";
     }
 }
