@@ -29,7 +29,11 @@ public final class EditActions {
 
     public static final BaseAction selectAllAction = new SelectAllAction();
 
-    public static final BaseAction invertSelectionAction = new InvertSelectionAction();
+    public static final BaseAction invertSelectionAction = new InvertSelectionAction(Dimension.NONE_SPECIFIED);
+
+    public static final BaseAction invertRowSelectionAction = new InvertSelectionAction(Dimension.ROW);
+
+    public static final BaseAction invertColumnSelectionAction = new InvertSelectionAction(Dimension.COLUMN);
 
     public static final BaseAction unselectAllAction = new UnselectAllAction();
 

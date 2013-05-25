@@ -29,17 +29,33 @@ import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
 public class InvertSelectionAction extends BaseAction implements IHeatmapDimensionAction {
 
     private static final long serialVersionUID = 3124483059501436713L;
+    private final HeaderEnum.Dimension dim;
 
-    public InvertSelectionAction() {
+
+    public InvertSelectionAction(HeaderEnum.Dimension dimension) {
         super("Invert selection");
 
         setDesc("Invert selection");
+        this.dim = dimension;
+
+        switch (dim) {
+            case COLUMN:
+                setName("Invert column selection");
+                setDesc("Invert column selection");
+                break;
+            case ROW:
+                setName("Invert row selection");
+                setDesc("Invert row selection");
+                break;
+        }
+
     }
 
     @Override
@@ -53,8 +69,13 @@ public class InvertSelectionAction extends BaseAction implements IHeatmapDimensi
 
 
         if (matrixView != null) {
-            matrixView.getRows().invertSelection();
-            matrixView.getColumns().invertSelection();
+            if (this.dim != HeaderEnum.Dimension.COLUMN) {
+                matrixView.getRows().invertSelection();
+            }
+
+            if (this.dim != HeaderEnum.Dimension.ROW) {
+                matrixView.getColumns().invertSelection();
+            }
         }
 
         AppFrame.get().setStatusText("Selection inverted");

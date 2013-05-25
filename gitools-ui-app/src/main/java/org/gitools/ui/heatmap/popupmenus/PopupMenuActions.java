@@ -32,7 +32,7 @@ public class PopupMenuActions {
     public static final ActionSet ROWS = new ActionSet(new BaseAction[]{
             EditActions.selectAllAction,
             EditActions.unselectAllAction,
-            EditActions.invertSelectionAction,
+            EditActions.invertRowSelectionAction,
             DataActions.copyToClipboardSelectedLabelHeader,
             BaseAction.separator,
             DataActions.showAllRowsAction,
@@ -55,7 +55,7 @@ public class PopupMenuActions {
     public static final ActionSet COLUMNS = new ActionSet(new BaseAction[]{
             EditActions.selectAllAction,
             EditActions.unselectAllAction,
-            EditActions.invertSelectionAction,
+            EditActions.invertColumnSelectionAction,
             DataActions.copyToClipboardSelectedLabelHeader,
             BaseAction.separator,
             DataActions.showAllColumnsAction,
