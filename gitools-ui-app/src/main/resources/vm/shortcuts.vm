@@ -152,7 +152,7 @@
     </tr>
     <tr>
         <td class="shortcut">$ctrlKey + R + wheel</td>
-        <td><b>Zoom> rows only</td>
+        <td><b>Zoom</b> rows only</td>
         <td>Mouse in heatmap panel</td>
     </tr>
     <tr>
@@ -160,11 +160,11 @@
         <td><b>Zoom</b> columns only</td>
         <td>Mouse in heatmap panel</td>
     </tr>
-    <tr>
+    <!--tr>
         <td class="shortcut">$ctrlKey + T + wheel</td>
         <td><b>Increase/Decrease</b> font size</td>
         <td>Mouse hovering text</td>
-    </tr>
+    </tr-->
 
     </tbody>
 </table>
