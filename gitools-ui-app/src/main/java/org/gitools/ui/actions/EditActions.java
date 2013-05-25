@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.actions;
 
+import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.edit.*;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.utils.HeaderEnum.Dimension;
@@ -30,6 +31,10 @@ public final class EditActions {
     public static final BaseAction selectAllAction = new SelectAllAction();
 
     public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
+
+    public static final BaseAction groupSelectedRows = new GroupSelectionAction(Dimension.ROW);
+
+    public static final BaseAction groupSelectedColumns = new GroupSelectionAction(Dimension.COLUMN);
 
     public static final BaseAction invertSelectionAction = new InvertSelectionAction(Dimension.NONE_SPECIFIED);
 

@@ -78,7 +78,7 @@ public abstract class BaseAction extends AbstractAction {
         this(name, null, null, null);
     }
 
-    String getName() {
+    protected String getName() {
         return getValue(NAME).toString();
     }
 
@@ -111,7 +111,7 @@ public abstract class BaseAction extends AbstractAction {
         setSmallIcon(getIconResource(name));
     }
 
-    String getDesc() {
+    protected String getDesc() {
         Object desc = getValue(SHORT_DESCRIPTION);
 
         if (desc == null) {
