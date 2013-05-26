@@ -44,13 +44,13 @@ public class EditHeaderAction extends BaseAction {
 
         switch (dim) {
             case COLUMN:
-                setName("Edit column header");
-                setDesc("Edit column header");
+                setName("Edit column headers");
+                setDesc("Edit column headers");
                 break;
 
             case ROW:
-                setName("Edit row header");
-                setDesc("Edit row header");
+                setName("Edit row headers");
+                setDesc("Edit row headers");
                 break;
         }
     }
