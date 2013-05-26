@@ -160,10 +160,19 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         Point wheelPoint = HeatmapBodyMouseController.wheelPoint;
 
         int colValue = 0, rowValue = 0;
+        int leadPointXEnd = 0, leadPointYEnd = 0;
+        Point leadPoint = null;
         if (wheelPoint != null) {
             Point targetPoint = bodyPanel.getDrawer().getPoint(wheelPosition);
             colValue = (targetPoint.x - wheelPoint.x);
             rowValue = (targetPoint.y - wheelPoint.y);
+        } else {
+            int row = heatmap.getRows().getSelectionLead();
+            int col = heatmap.getColumns().getSelectionLead();
+
+            leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
+            leadPointXEnd = leadPoint.x + heatmap.getColumns().getFullSize();
+            leadPointYEnd = leadPoint.y + heatmap.getRows().getFullSize();
         }
 
         colSB.setValueIsAdjusting(true);
@@ -176,6 +185,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (wheelPoint != null) {
             colSB.setValue(colValue);
+        } else {
+            if (leadPoint.x < colSB.getValue())
+                colSB.setValue(leadPoint.x);
+            else if (leadPointXEnd > colSB.getValue() + visibleSize.width)
+                colSB.setValue(leadPointXEnd - visibleSize.width);
         }
 
         colSB.setVisibleAmount(visibleSize.width);
@@ -191,6 +205,11 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (wheelPoint != null) {
             rowSB.setValue(rowValue);
+        } else {
+            if (leadPoint.y < rowSB.getValue())
+                rowSB.setValue(leadPoint.y);
+            else if (leadPointYEnd > rowSB.getValue() + visibleSize.height)
+                rowSB.setValue(leadPointYEnd - visibleSize.height);
         }
 
         rowSB.setVisibleAmount(visibleSize.height);
