@@ -74,10 +74,10 @@ public class DetailsBox extends JXTaskPane {
 
         container.removeAll();
 
-        int maxValueLength = convertToCharacters(getWidth()) - maxValueLength(details);
+        int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details);
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
 
-        double columns[] = {5, TableLayout.PREFERRED, 10, TableLayout.FILL, 5};
+        double columns[] = {5, TableLayout.PREFERRED, 3, TableLayout.FILL, 5};
         double rows[] = new double[3 + details.size() * 2];
         rows[0] = 2;
         rows[1] = 2;
@@ -160,7 +160,7 @@ public class DetailsBox extends JXTaskPane {
         return label;
     }
 
-    private WebLabel createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
+    private Component createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
 
         String value = property.getFormatedValue();
 
@@ -189,14 +189,20 @@ public class DetailsBox extends JXTaskPane {
             TooltipManager.setTooltip(label, value, TooltipWay.down, 0);
         }
 
-        if (property.getBgColor() != null) {
-            label.setDrawShade(true);
-            label.setShadeColor(property.getBgColor());
-        }
-
         if (property.isSelectable()) {
             label.setCursor(new Cursor(Cursor.HAND_CURSOR));
             label.addMouseListener(new PropertyMouseListener(property));
+        }
+
+        if (property.isSelected()) {
+            SwingUtils.setBoldFont(label);
+        }
+
+        if (property.getBgColor() != null) {
+            WebPanel colorBox = new WebPanel();
+            colorBox.setPreferredSize(new Dimension(15, 15));
+            colorBox.setBackground(property.getBgColor());
+            return new GroupPanel(4, colorBox, label);
         }
 
         return label;
