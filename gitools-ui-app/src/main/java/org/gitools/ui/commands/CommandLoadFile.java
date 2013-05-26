@@ -22,6 +22,7 @@
 package org.gitools.ui.commands;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.analysis.combination.CombinationAnalysis;
 import org.gitools.core.analysis.correlation.CorrelationAnalysis;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
@@ -98,7 +99,9 @@ public class CommandLoadFile extends AbstractCommand {
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
-               MessageUtils.showErrorMessage(AppFrame.get(), "This file format is not supported. Check the supported file formats at the 'User guide' on www.gitools.org", e);
+               MessageUtils.showErrorMessage(AppFrame.get(), "<html>This file format is not supported or it is malformed.<br>" +
+                       (!StringUtils.isEmpty(e.getCause().getMessage())?"<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>":"") +
+                       "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
             }
 
             return;
