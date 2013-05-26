@@ -34,8 +34,6 @@ import org.gitools.core.utils.MemoryUtils;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.zip.Inflater;
 
 /**
@@ -46,8 +44,6 @@ import java.util.zip.Inflater;
  */
 public class CompressMatrix extends AbstractMatrix {
 
-    private static final char SEPARATOR = '\t';
-    private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
     private final CompressDimension rows;
     private final CompressDimension columns;
     private final byte[] dictionary;
@@ -114,21 +110,6 @@ public class CompressMatrix extends AbstractMatrix {
             }
         };
         (new Thread(fillCache, "LoadingCache")).start();
-
-
-        // Create a timer that watches every 5 seconds the available memory
-        // and evict all the cache if it is below a minimum threshold.
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD) {
-                    System.out.println("WARNING: Memory too low, cleaning cache.");
-                    rowsCache.invalidateAll();
-                    System.gc();
-                }
-            }
-        }, 5000, 5000);
 
     }
 
@@ -217,7 +198,6 @@ public class CompressMatrix extends AbstractMatrix {
 
     public void detach() {
         this.rowsCache.invalidateAll();
-        System.gc();
     }
 
     public byte[] getDictionary() {

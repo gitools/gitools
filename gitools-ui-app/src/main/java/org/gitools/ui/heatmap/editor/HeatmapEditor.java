@@ -36,6 +36,7 @@ import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.MemoryUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
@@ -62,16 +63,22 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HeatmapEditor extends AbstractEditor {
+
     private static final int DEFAULT_ACCORDION_WIDTH = 320;
-    protected final Heatmap heatmap;
+    private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
+
+    private Heatmap heatmap;
     private HeatmapPanel heatmapPanel;
     private ColorScalePanel colorScalePanel;
     private HeatmapSearchPanel searchPanel;
     private DetailsPanel detailsPanel;
     private int lastMouseRow = -1;
     private int lastMouseCol = -1;
+    private Timer timer;
 
     public HeatmapEditor(@NotNull Heatmap heatmap) {
 
@@ -110,6 +117,19 @@ public class HeatmapEditor extends AbstractEditor {
         heatmap.getColumns().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
+
+        // Create a timer that watches every 5 seconds the available memory
+        // and detach the heatmap if it is below a minimum threshold.
+        timer = new java.util.Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD) {
+                    System.out.println("WARNING: Memory too low, cleaning cache.");
+                    detach();
+                }
+            }
+        }, 5000, 5000);
 
     }
 
@@ -273,7 +293,14 @@ public class HeatmapEditor extends AbstractEditor {
             }
         }
 
-        // Force GC
+        // Force free memory
+        timer.cancel();
+        timer.purge();
+
+        heatmap.detach();
+        heatmap.getData().unload();
+        heatmap = null;
+
         System.gc();
 
         return true;
@@ -285,7 +312,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     void mouseMoved(int row, int col, MouseEvent e) {
-        /*
+        /*TODO
         if (lastMouseRow == row && lastMouseCol == col) {
             return;
         }
@@ -361,5 +388,6 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
+        System.gc();
     }
 }

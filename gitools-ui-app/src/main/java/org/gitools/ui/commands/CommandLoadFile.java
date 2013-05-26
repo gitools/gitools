@@ -32,7 +32,6 @@ import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.compressmatrix.MatrixConversion;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.persistence.*;
 import org.gitools.core.persistence.formats.FileSuffixes;
@@ -96,6 +95,7 @@ public class CommandLoadFile extends AbstractCommand {
             }
 
             resource = PersistenceManager.get().load(resourceLocator, format, monitor);
+
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
@@ -108,7 +108,7 @@ public class CommandLoadFile extends AbstractCommand {
         }
 
         monitor.begin("Initializing editor ...", 1);
-        final AbstractEditor editor = createEditor(resource, monitor);
+        AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(resourceLocator.getBaseName());
 
         AppFrame.get().getEditorsPanel().addEditor(editor);
@@ -147,11 +147,10 @@ public class CommandLoadFile extends AbstractCommand {
     @NotNull
     private AbstractEditor createHeatmapEditor(@NotNull IMatrix resource, @NotNull IProgressMonitor progressMonitor) throws CommandException {
 
-        MatrixConversion conversion = new MatrixConversion();
-
         IMatrix matrix;
         try {
-            //TODO matrix = conversion.convert(resource, progressMonitor);
+            //TODO MatrixConversion conversion = new MatrixConversion();
+            //     matrix = conversion.convert(resource, progressMonitor);
             matrix = resource;
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,7 +167,6 @@ public class CommandLoadFile extends AbstractCommand {
         if (columnsAnnotations != null) {
             File colsFile = download(columnsAnnotations, progressMonitor);
             loadAnnotations(colsFile, heatmap.getColumns());
-
         }
 
         return new HeatmapEditor(heatmap);
