@@ -178,7 +178,6 @@ public class DetailsBox extends JXTaskPane {
             label = new WebLabel(abbreviatedValue);
         } else {
             WebLinkLabel webLabel = new WebLinkLabel(abbreviatedValue);
-            webLabel.setIcon(WebLinkLabel.LINK_ICON);
             webLabel.setLink(property.getValueLink(), false);
             label = webLabel;
         }
