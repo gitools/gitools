@@ -364,6 +364,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         }
 
         arrayMoveLeft(visibleIndices, indices, selected);
+        updateVisibleLabels();
         firePropertyChange(PROPERTY_VISIBLE, null, visibleIndices);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
@@ -377,6 +378,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
         }
 
         arrayMoveRight(visibleIndices, indices, selected);
+        updateVisibleLabels();
         firePropertyChange(PROPERTY_VISIBLE, null, visibleIndices);
         firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
