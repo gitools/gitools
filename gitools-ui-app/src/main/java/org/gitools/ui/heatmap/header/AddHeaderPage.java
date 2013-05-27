@@ -37,10 +37,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * @noinspection ALL
- */
 public class AddHeaderPage extends AbstractWizardPage {
+
+    private final static Color SELECTED_BACKGROUND_COLOR = new Color(155,155,205);
 
     private class IconListRenderer extends DefaultListCellRenderer {
 
@@ -66,6 +65,11 @@ public class AddHeaderPage extends AbstractWizardPage {
             // Set icon to display for value
 
             label.setIcon(icon);
+
+            if (isSelected) {
+                setBackground(SELECTED_BACKGROUND_COLOR);
+            }
+
             return label;
         }
     }
