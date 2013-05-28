@@ -118,9 +118,6 @@ public class SaveFilePage extends AbstractWizardPage {
     }
 
     public void setFormats(FileFormat[] formats) {
-        /*boolean active = formats != null && formats.length > 0;
-        formatLabel.setVisible(active);
-		format.setVisible(active);*/
         this.formats = formats;
         format.setModel(new DefaultComboBoxModel(formats));
         updateGeneratedFile();
@@ -142,24 +139,18 @@ public class SaveFilePage extends AbstractWizardPage {
         StringBuilder sb = new StringBuilder();
         String name = getFileNameWithoutExtension();
         sb.append(name);
-        File file = new File(name);
 
         if (!name.isEmpty() && format.getSelectedIndex() >= 0) {
             FileFormat fmt = (FileFormat) format.getSelectedItem();
-            if (!name.endsWith(".")) {
-                sb.append('.');
+            if (!name.endsWith("." + fmt.getExtension())) {
+                if (!name.endsWith(".")) {
+                    sb.append('.');
+                }
+                sb.append(fmt.getExtension());
             }
-            sb.append(fmt.getExtension());
         }
 
         return sb.toString();
-    }
-
-    /**
-     * Returns the full path: folder + file + ext
-     */
-    public String getPath() {
-        return getPathAsFile().getAbsolutePath();
     }
 
     /**
