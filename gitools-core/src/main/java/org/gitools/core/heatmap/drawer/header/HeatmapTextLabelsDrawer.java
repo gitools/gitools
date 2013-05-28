@@ -47,7 +47,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         g.setFont(header.getFont());
 
-        Color gridColor = heatmapDimension.getGridColor();
+        Color gridColor = header.getBackgroundColor();
 
         int gridSize = (heatmapDimension.showGrid() ? heatmapDimension.getGridSize() : 0);
         int maxWidth = clip.width;

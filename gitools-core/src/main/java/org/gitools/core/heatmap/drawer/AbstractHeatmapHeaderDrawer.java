@@ -126,7 +126,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
         paintCell(
                 decoration,
-                heatmapDimension.getGridColor(),
+                header.getBackgroundColor(),
                 gridSize,
                 offset, index*(heatmapDimension.getFullSize()),
                 width,

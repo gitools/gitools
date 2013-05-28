@@ -80,7 +80,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
             paintCell(
                     decoration,
-                    getHeatmapDimension().getGridColor(),
+                    header.getBackgroundColor(),
                     gridSize,
                     margin, (startGroupIndex * fullSize),
                     cellWidth - margin,

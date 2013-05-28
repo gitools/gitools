@@ -78,6 +78,10 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                 }
 
                 Color rowsGridColor = heatmap.getRows().getGridColor();
+                Color colsGridColor = heatmap.getColumns().getGridColor();
+
+                g.setColor(colsGridColor);
+                g.fillRect(x - columnsGridSize, y, columnsGridSize, cellHeight);
 
                 paintCell(decoration, rowsGridColor, rowsGridSize, x - box.x, y - box.y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
 
