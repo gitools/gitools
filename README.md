@@ -14,7 +14,7 @@ Source code
 Documentation
 --------------
 
-+ <doc/README.rst> in the repository or at <https://help.gitools.org>
++ [gitools-doc](doc/README.rst) in the repository or at <https://help.gitools.org>
 
 Versioning
 ----------
