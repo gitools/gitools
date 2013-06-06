@@ -1,7 +1,7 @@
 Gitools
 =======
 
-Web portal
+Web site 
 ------------
 
 + <http://www.gitools.org>
