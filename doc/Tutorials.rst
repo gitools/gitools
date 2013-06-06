@@ -100,7 +100,7 @@ CASE STUDY 4: Studying the regulatory programs governing the expression in diffe
       Identify the transcription factors involved in the regulation of expression in different tissues                                                                       
 
   * - .. image:: img/tutorial-icon2.png
-    - `Tutorial 4.2. Correlation of expression patterns in different tissues <Tutorials_Tutorial4.rst>`_ 
+    - `Tutorial 4.2. Correlation of expression patterns in different tissues <Tutorials_Tutorial42.rst>`_ 
       
       Compare the expression pattern of genes expressed in different tissues                                                                                                                                              
 
@@ -114,7 +114,7 @@ CASE STUDY 5: Experimental regulatory modules in cancer
 .. list-table:: 
 
   * - .. image:: img/tutorial-icon3.png
-    - `Tutorial 5.1. Regulatory Modules enrichment analysis <Tutorials_Tutoria51.rst>`_ 
+    - `Tutorial 5.1. Regulatory Modules enrichment analysis <Tutorials_Tutorial51.rst>`_ 
       
       Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing                                                                       
 
@@ -132,22 +132,22 @@ The videos we have put online for this case study we are accessible on Youtube.
 .. list-table:: 
 
   * - .. image:: img/tutorial-icon6-1.png
-    - `Tutorial 6.1. Loading and annotating a multi-value matrix <Tutorials_Tutoria61.rst>`_ 
+    - `Tutorial 6.1. Loading and annotating a multi-value matrix <Tutorials_Tutorial61.rst>`_ 
       
       Get prepared to start working
 
   * - .. image:: img/tutorial-icon6-2.png
-    - `Tutorial 6.2. Finding and visualizing mutually exclusive genes  <Tutorials_Tutoria62.rst>`_ 
+    - `Tutorial 6.2. Finding and visualizing mutually exclusive genes  <Tutorials_Tutorial62.rst>`_ 
       
       See which genes are altered in a mutually exclusive manner
 
   * - .. image:: img/tutorial-icon6-3.png
-    - `Tutorial 6.3. Exploring the effect of genomic alterations on expression  <Tutorials_Tutoria63.rst>`_ 
+    - `Tutorial 6.3. Exploring the effect of genomic alterations on expression  <Tutorials_Tutorial63.rst>`_ 
       
       See which genes are significantly influenced by genomic alterations in their locus
 
   * - .. image:: img/tutorial-icon6-4.png
-    - `Tutorial 6.4. Sample Level Enrichment Analysis  <Tutorials_Tutoria64.rst>`_ 
+    - `Tutorial 6.4. Sample Level Enrichment Analysis  <Tutorials_Tutorial64.rst>`_ 
       
       Asses transcription level for pathways for each sample in the study
 
