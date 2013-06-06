@@ -11,6 +11,11 @@ Source code
 
 + <https://github.com/gitools/gitools>
 
+Documentation
+--------------
+
++ <doc/README.rst> in the repository or at <https://help.gitools.org>
+
 Versioning
 ----------
 
