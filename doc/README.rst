@@ -1,11 +1,11 @@
 ==========================
-Gitoos Documentation
+Gitools Documentation
 ==========================
 
 Read through the different sections of the documentation in order to learn Gitools. 
 
 .. list-table:: Gitools Documentation is divided into three sections:
-   :widths: 20 50
+   :widths: 40 60
 
    * - `User Guide <UserGuide.rst>`__
      - The user guide presents the main features of Gitools with explanations and screenshots.
