@@ -1,40 +1,79 @@
-.. contents::
+===========================
+Importing and Loading Data
+===========================
 
-=============
-Loading Data
-=============
+.. contents:: 
 
-File formats for data import
+
+Data import: file formats
 --------------------------------
 
 Various formats are accepted in Gitools to represent each of these data types. The following table list the file formats accepted for each data type and in the following sections each file format is described.
 
-========================= ================================================ 
-In Gitools                Accepted format         
-========================= ================================================ 
-Heatmap (1 value-dim)         
-                          - ``.bdm, .bdm.gz`` (Binary matrix)
-                          - ``.cdm, .cdm.gz`` (Continuous data matrix)
-                          - ``.gmx, .gmz.gz`` (Gene matrix)
-                          - ``.gmt, .gmt.gz`` (Gene matrix transposed)
-                          - ``.tcm, .tcm.gz`` (Two columns mapping)
-Heatmaps (muliple val.)  
-                          - ``.cmatrix, .cmatrix.gz`` (Compressed Heatmap)
-                          - ``.tdm, .tdm.gz`` (Multi-value data matrix)
-                          - ``.xls, .xlsx`` (Excel, table format)
-Annotation                - ``.tsv, .txt`` (tab separated values)
-Modules (Gene Sets)       - ``.gmx, .gmz.gz`` (Gene matrix)
-                          - ``.gmt, .gmt.gz`` (Gene matrix transposed)
-                          - ``.tcm, .tcm.gz`` (Two columns mapping)
-                          - ``.ixm, .ixm.gz`` 
-========================= ================================================ 
+=============================== ================================================ 
+In Gitools                      Accepted format         
+=============================== ================================================ 
+Matrix Heatmap (single-value)         
+                                - ``.bdm, .bdm.gz`` (Binary matrix)
+                                - ``.cdm, .cdm.gz`` (Continuous data matrix)
+                                - ``.gmx, .gmz.gz`` (Gene matrix)
+                                - ``.gmt, .gmt.gz`` (Gene matrix transposed)
+                                - ``.tcm, .tcm.gz`` (Two columns mapping)
+Matrix Heatmap (multipe values)  
+                                - ``.cmatrix, .cmatrix.gz`` (Compressed Heatmap)
+                                - ``.tdm, .tdm.gz`` (Multi-value data matrix)
+                                - ``.xls, .xlsx`` (Excel, table format)
+Annotation                      - ``.tsv, .txt`` (tab separated values)
+Module (Gene Sets)              - ``.gmx, .gmz.gz`` (Gene matrix)
+                                - ``.gmt, .gmt.gz`` (Gene matrix transposed)
+                                - ``.tcm, .tcm.gz`` (Two columns mapping)
+                                - ``.ixm, .ixm.gz`` 
+=============================== ================================================ 
 
 Any of the presented formats can be compressed using gzip and recognized if the suffix .gz is appended at the end of the file name, so for example the file matrix.cdm could be compressed using gzip and renamed to matrix.cdm.gz and Gitools would be able to read it without problems.
 
 
-Gitools file formats
+Data types
+-------------------------------------------------
+
+There are different kinds of data needed to import for different features in Gitools (Matrices, Modules and Annotations).
+
+
+Matrices
+...................
+
+A matrix is a bidimensional structure in which for each row and column there is a value (one value-dimension) or multipe values (multiple value-dimensions). All the values are of one dimension are the same type (for example all are p-values or log ratios).
+
+Matrices provide values for a number of items (i.e. one gene for each row) in several conditions/samples (i.e. one sample for each column). There could be empty values too (usually represented as a hyphen ’-’ or an empty field in text file formats).
+
+Flat files that can be imported to Gitools can be distinguished into matrix-layout and table-layout
+
+
+Flat files: matrix layout
+,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Flat files containing data in  matrices can only contain data for a  single value dimension. Examples for files containing data in matrix form are ``.cdm`` and ``.tdm``. Here, **each line contains data for one heatmap row**
+
+Flat files: tables form
+,,,,,,,,,,,,,,,,,,,,,,,,
+A flat file containing multiple value dimensions (multiple values per cell) need to be in the column form where **each line in the file contains data for one cell in the heatmap**. See for exampe the ``.tdm`` format
+
+
+Modules
+.................
+
+Modules are lists of genes or other biological elements with a common biological property. They are also known as gene sets or concepts. For example, genes in the same pathway or genes regulated by the same transcription factor can form toghether one module. You can have many modules, i.e one for each known pathway or TF.
+
+Annotations
+.................
+A table represents a list of attributes, where each row is an element of the list and each column an attribute where the first column has to be the id of the heatmap column or row. Each attribute can be of different type (i.e. one column with the gene id and other with a log-ratio). For R users it is the equivalent to data.frame.
+
+In Gitools they are used for different things, for providing extra attributes to row and column labels in heatmaps and for representing results of some analysis.
+
+
+
+Gitools' file formats
 ----------------------
-When saving a heatmap or an analysis, the format in which the heatap/analysis is saved will be a native Gitools format. Thus, these file types can be opened with Gitools only. Also note that Gitools can directly open and save in *.zip format, so there is no need to extract the archive. Find a list of the native Gitools formats:
+When saving a heatmap or an analysis, the format in which the heatap/analysis is saved will be a native Gitools format. Thus, these file types can be opened with Gitools only. Also note that Gitools can directly open and save in \*.zip format, so there is no need to extract the archive. Find a list of the native Gitools formats:
 
 ==========================  =======================================
 Gitools data type           File extension 
@@ -48,41 +87,6 @@ Combination Analysis        ``.combinations, .combinations.zip``
 ==========================  =======================================
 
 
-Data types
--------------------------------------------------
-
-There are different kinds of data needed to import for different features in Gitools (Matrices, Modules and Tables). 
-
-
-Matrices
-..........
-
-A matrix is a bidimensional structure in which for each row and column there is a value (one value-dimension) or multipe values (multiple value-dimensions). All the values are of one dimension are the same type (for example all are p-values or log ratios).
-
-Matrices provide values for a number of items (i.e. one gene for each row) in several conditions/samples (i.e. one sample for each column). There could be empty values too (usually represented as a hyphen ’-’ or an empty field in text file formats).
-
-Flat files that can be imported to Gitools can be distinguished into matrix-layout and table-layout
-
-
-Flat files: matrix layout
-,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Flat files containing data in  matrices can only contain data for a  single value dimension. Examples for files containing data in matrix form are ``.cdm`` and ``.tdm``. Here, *each line contains data for one heatmap row*
-
-Flat files: tables form
-,,,,,,,,,,,,,,,,,,,,,,,,
-A flat file containing multiple value dimensions (multiple values per cell) need to be in the column form where *each line in the file contains data for one cell in the heatmap*. See for exampe the ``.tdm``format
-
-
-Modules
-.................
-
-Modules are lists of genes or other biological elements with a common biological property. They are also known as gene sets or concepts. For example, genes in the same pathway or genes regulated by the same transcription factor can form toghether one module. You can have many modules, i.e one for each known pathway or TF.
-
-Annotations
-.................
-A table represents a list of attributes, where each row is an element of the list and each column an attribute where the first column has to be the id of the heatmap column or row. Each attribute can be of different type (i.e. one column with the gene id and other with a log-ratio). For R users it is the equivalent to data.frame.
-
-In Gitools they are used for different things, for providing extra attributes to row and column labels in heatmaps and for representing results of some analysis.
 
 Data File Formats
 -------------------
@@ -185,6 +189,17 @@ How can I get data ready for my analysis ?
 
 There are two ways to prepare data for Gitools:
 
-**Prepare your own data**. The easiest way to create data is using for example a program like *Excel* or *OpenOffice* and then export to tabulated text file. See the  `How to sections <UserGuide_HowtoModuleFilesSpreadsheet.rst>`__  with spreadsheet editors.
+Prepare your own data
+.......................
 
-**Import data**. Gitools allows retrieving data from different external data sources like *Biomart*, *IntOGen*, *Ensembl* or *KEGG*. See the  `importing data section <UserGuide_ImportingData.rst>`__  for details.
+The easiest way to create data is using for example a program like *Excel* or *OpenOffice* and then export to tabulated text file. See the  `How to sections <UserGuide_HowtoModuleFilesSpreadsheet.rst>`__  with spreadsheet editors.
+
+Import data from external sources
+..................................
+Gitools has built-in data importers from different external data sources like *Biomart*, *IntOGen*, *Ensembl* or *KEGG*. See the  `importing data section <UserGuide_ImportingData.rst>`__  for details.
+
+Gitools also disposes over commands for external control which can be used by other platforms to launch Gitools and launch their own data. See the  `external control of Gitools <UserGuide_ExternalControl.rst>`__  if you wish to use the available interfaces. 
+
+
+
+

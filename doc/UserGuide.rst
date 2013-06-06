@@ -2,21 +2,21 @@
 Gitools User Guide
 ==========================
 
-- `Installation <UserGuide_Installation.rst>`_
-- `Loading data <UserGuide_LoadingData.rst>`__
-- `Importing data <UserGuide_ImportingData.rst>`_
-    - `IntOGen <UserGuide_IntOGen.rst>`_
-    - `KEGG <UserGuide_KEGG.rst>`_
-    - `Gene Ontology <UserGuide_GeneOntology.rst>`_
-    - `Biomart <UserGuide_Biomart.rst>`_
-- `Running analysis <UserGuide_RunningAnalysis.rst>`_
-    - `Enrichment <UserGuide_Enrichment.rst>`_
-    - `Oncodrive <UserGuide_Oncodrive.rst>`_
+- `Installation <UserGuide_Installation.rst>`__
+- `Loading and Importing data <UserGuide_LoadingData.rst>`__
+    - `External data sources <UserGuide_ExternalDataSources.rst>`__
+        - `IntOGen <UserGuide_IntOGen.rst>`__
+        - `KEGG <UserGuide_KEGG.rst>`__
+        - `Gene Ontology <UserGuide_GeneOntology.rst>`__
+        - `Biomart <UserGuide_Biomart.rst>`__
+- `Running analysis <UserGuide_RunningAnalysis.rst>`__
+    - `Enrichment <UserGuide_Enrichment.rst>`__
+    - `Oncodrive <UserGuide_Oncodrive.rst>`__
     - `Correlations <UserGuide_Correlations.rst>`_
-    - `Combination of p-values <UserGuide_Combinations.rst>`_
-    - `Overlaps <UserGuide_Overlaps.rst>`_
-- `Visualization of data and results <UserGuide_Visualization.rst>`_
-    - `Analysis editor <UserGuide_AnalysisEditor.rst>`_
+    - `Combination of p-values <UserGuide_Combinations.rst>`__
+    - `Overlaps <UserGuide_Overlaps.rst>`__
+- `Visualization of data and results <UserGuide_Visualization.rst>`__
+    - `Analysis editor <UserGuide_AnalysisEditor.rst>`__
     - `Heatmap editor <UserGuide_HeatmapEditor.rst>`__
     - `Sorting <UserGuide_HeatmapSorting.rst>`__
     - `Filtering <UserGuide_HeatmapFiltering.rst>`__
@@ -25,7 +25,7 @@ Gitools User Guide
     - `Export labels, matrices and tables from a heatmap <UserGuide_ExportHeatmapData.rst>`__
     - `Export heatmap and scale as an image <UserGuide_ExportHeatmapImages.rst>`__
     - `Export heatmap reports <UserGuide_ExportHeatmapReports.rst>`__
-- `External control of Gitools <UserGuide_External Control of Gitools.rst>`__
+- `External control of Gitools <UserGuide_ExternalControl.rst>`__
 - `How to <UserGuide_Howto.rst>`__
     - `How to use MsigDB gene-sets in Gitools <UserGuide_HowtoMsigDB.rst>`__
     - `How to prepare matrix files for Gitools using a spreadsheet editor (e.g. Excel or OpenOffice) <UserGuide_HowtoMatrixFilesSpreadsheet.rst>`__
