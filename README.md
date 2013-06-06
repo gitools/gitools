@@ -6,15 +6,15 @@ Web site
 
 + <http://www.gitools.org>
 
+Documentation
+--------------
+
++ See [Gitools documentation files](doc/README.rst) in the repository or at <http://help.gitools.org>
+
 Source code
 -----------
 
 + <https://github.com/gitools/gitools>
-
-Documentation
---------------
-
-+ [gitools-doc](doc/README.rst) in the repository or at <https://help.gitools.org>
 
 Versioning
 ----------
