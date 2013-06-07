@@ -15,3 +15,11 @@ Read through the different sections of the documentation in order to learn Gitoo
      -  Gitools include real example files that can be used to evaluate it. In this section there are explanations on how to use them in order to better understand the features and options of the application.
 
 
+
+.. toctree::
+   :maxdepth: 1 
+
+   UserGuide
+   Tutorials
+   Examples
+   
