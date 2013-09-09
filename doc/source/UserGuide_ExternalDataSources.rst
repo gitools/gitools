@@ -1,4 +1,9 @@
 
+
+External data sources
+-------------------------------------------------
+
+
 It is possible to import data from different sources. There are wizards that guides the retrieval of data step by step.
 
 

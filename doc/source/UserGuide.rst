@@ -2,17 +2,14 @@
 Gitools User Guide
 ==========================
 
-This is a test for a doc-link:  :doc:`UserGuide_LoadingData`
 
-:doc:`Monty Python members </UserGuide_Installation>`
-
-- `Installation <UserGuide_Installation.rst>`__
-- `Loading and Importing data <UserGuide_LoadingData.rst>`__
-    - `External data sources <UserGuide_ExternalDataSources.rst>`__
-        - `IntOGen <UserGuide_IntOGen.rst>`__
-        - `KEGG <UserGuide_KEGG.rst>`__
-        - `Gene Ontology <UserGuide_GeneOntology.rst>`__
-        - `Biomart <UserGuide_Biomart.rst>`__
+- :doc:`UserGuide_Installation`
+- :doc:`UserGuide_LoadingData`
+    - :doc:`UserGuide_ExternalDataSources`
+        - :doc:`UserGuide_IntOGen`
+        - :doc:`UserGuide_KEGG`
+        - :doc:`UserGuide_GeneOntology`
+        - :doc:`UserGuide_Biomart`
 - `Running analysis <UserGuide_RunningAnalysis.rst>`__
     - `Enrichment <UserGuide_Enrichment.rst>`__
     - `Oncodrive <UserGuide_Oncodrive.rst>`__
