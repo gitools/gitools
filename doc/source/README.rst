@@ -17,7 +17,7 @@ Read through the different sections of the documentation in order to learn Gitoo
 
 
 .. toctree::
-   :maxdepth: 1 
+   :maxdepth: 3 
 
    UserGuide
    Tutorials

@@ -2,6 +2,8 @@
 Gitools User Guide
 ==========================
 
+This is a test for a doc-link:  :doc:`UserGuide_LoadingData`
+
 - `Installation <UserGuide_Installation.rst>`__
 - `Loading and Importing data <UserGuide_LoadingData.rst>`__
     - `External data sources <UserGuide_ExternalDataSources.rst>`__
