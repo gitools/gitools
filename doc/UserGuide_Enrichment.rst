@@ -1,5 +1,4 @@
 
-
 Enrichment
 -------------------------------------------------
 
@@ -38,6 +37,10 @@ Presentation and example
 -------------------------------------------------
 
 
+.. image:: img/analysisenrichmentexample.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis 
 
 If you select the option **Fill this wizard with an example** all the following wizard pages will be filled with example files and parameters. In some situations the example files will be downloaded automatically before you can go to the next page. By default, when Gitools is installed from the zip file, the examples are already included. But when Gitools is executed directly from the web page the example files have to be downloaded the first time they are used. In that case the files are cached at *$HOME/.gitools/examples*.
 
@@ -46,14 +49,20 @@ You can avoid this first presentation page by selecting the option **Don’t sho
 Selection of the data to analyze
 -------------------------------------------------
 
-
+.. image:: img/analysisenrichmentdata.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis data tab
 
 If you follow the conventions on file formats explained  `here <UserGuide_LoadingData.rst>`__  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Selection of the data transformation options
 -------------------------------------------------
 
-
+.. image:: img/analysisenrichmentdatafiltering.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis data filtering
 
 **Population / Background elements:** This field can be left blank if the data file contains data for all background elements, otherwise a file with the elements of the background population should be selected. The format of this file is a simple text file with one element per line. For example the list of all the protein coding genes, each one in a different row. All the rows in the data that don’t appear in the population will be removed and all the elements specified in the population that don’t appear in the data will be added to the data with the default value specified by the user.
 
@@ -64,7 +73,10 @@ Selection of the data transformation options
 Selection of the modules
 -------------------------------------------------
 
-
+.. image:: img/analysisenrichmentmodules.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis module selection
 
 **File format & File:** A file containing the modules information can be selected pressing the button [Browse...] and selecting a file. The format of the file will be automatically detected if the file extension matches any of the known file formats, otherwise a warning will appear and it should be the user who selects the appropiate format.
 
@@ -73,7 +85,10 @@ Selection of the modules
 Selection of the statistical test
 -------------------------------------------------
 
-
+.. image:: img/analysisenrichmenttest.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis statistical test
 
 There are different types of statistical tests that can be used, in this page the user can select the one that he/she wants to use in the selector on the top.
 
@@ -97,7 +112,10 @@ This wizard page allows to specify the prefix name for the files generated durin
 Analysis details
 -------------------------------------------------
 
-
+.. image:: img/analysisenrichmentdetails.png
+   :scale: 50%
+   :align: center
+   :alt: Enrichment analysis details
 
 This step is optional but recommended as it allows to give some details about the analysis for better organization and annotation of the results for future reviews.
 
