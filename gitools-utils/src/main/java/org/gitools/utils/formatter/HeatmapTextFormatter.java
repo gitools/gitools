@@ -24,31 +24,38 @@ package org.gitools.utils.formatter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Formatter;
 
-public class GenericFormatter implements Serializable {
+public class HeatmapTextFormatter implements ITextFormatter {
 
-    private final StringBuilder sb;
-    private final Formatter fmt;
+    protected final StringBuilder sb;
+    protected final Formatter fmt;
+    protected final DecimalFormat countFormat;
 
-    public GenericFormatter() {
-        sb = new StringBuilder(12);
+    public HeatmapTextFormatter() {
+        sb = new StringBuilder(8);
         fmt = new Formatter(sb);
+        countFormat = new DecimalFormat("#####.##");
     }
 
     @NotNull
-    private String decimal(double value) {
+    protected String decimal(double value) {
 
-        if (value!=0 && value < 1e-16 && value > -1e-16) {
+        if (value!=0 && value < 1e-99 && value > -1e-99) {
             return "~0.00";
         }
 
-        sb.setLength(0);
-        fmt.format("%.2g", value);
-        return sb.toString();
+        if (value < 1 && value > -1) {
+            sb.setLength(0);
+            fmt.format("%.2g", value);
+            return sb.toString();
+        } else {
+            return countFormat.format(value);
+        }
     }
 
+    @Override
     @NotNull
     public String format(@Nullable Object value) {
 

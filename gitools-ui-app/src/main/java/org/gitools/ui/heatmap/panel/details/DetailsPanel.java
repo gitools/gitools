@@ -148,7 +148,9 @@ public class DetailsPanel extends JXTaskPaneContainer {
             Decoration decoration = new Decoration();
             boolean showValue = decorator.isShowValue();
             decorator.setShowValue(true);
-            decorator.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+            decoration.reset();
+            int layerIdx = heatmap.getLayers().getTopLayerIndex();
+            decorator.decorate(decoration, heatmap.getLayers().get(layerIdx).getLongFormatter(), heatmap, row, col, layerIdx);
             decorator.setShowValue(showValue);
 
             layersBox.setTitle("Values: " + decoration.getFormatedValue());

@@ -24,7 +24,8 @@ package org.gitools.utils.colorscale.drawer;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -166,7 +167,7 @@ public class ColorScaleDrawer {
                 int fontHeight = g.getFontMetrics().getHeight();
                 int legendYTop = scaleYBottom + legendPadding;
                 int ye = legendYTop + fontHeight;
-                GenericFormatter gf = new GenericFormatter();
+                ITextFormatter gf = new HeatmapTextFormatter();
                 g.setColor(legendPointColor);
 
 

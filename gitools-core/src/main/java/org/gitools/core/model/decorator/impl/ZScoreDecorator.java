@@ -28,7 +28,7 @@ import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +54,6 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     private int correctedValueIndex;
     private boolean useCorrection;
     private double significanceLevel;
-
-    private final static GenericFormatter fmt = new GenericFormatter();
 
     private ZScoreColorScale scale;
 
@@ -198,7 +196,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -222,7 +220,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
 
         decoration.setBgColor(color);
         if (isShowValue()) {
-            decoration.setValue(fmt.format(value));
+            decoration.setValue(textFormatter.format(value));
         }
     }
 }

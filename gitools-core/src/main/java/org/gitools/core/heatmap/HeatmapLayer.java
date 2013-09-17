@@ -27,6 +27,9 @@ import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.core.utils.EventUtils;
+import org.gitools.utils.formatter.DetailsBoxFormatter;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,6 +38,10 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
+
+    private final static ITextFormatter SHORT_FORMATTER = new HeatmapTextFormatter();
+    private final static ITextFormatter LONG_FORMATTER = new DetailsBoxFormatter();
+
 
     private Decorator decorator;
 
@@ -63,6 +70,16 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     }
 
+    public ITextFormatter getShortFormatter() {
+        return SHORT_FORMATTER;
+    }
+
+    public ITextFormatter getLongFormatter() {
+        return LONG_FORMATTER;
+    }
+
+
+
     @Override
     public String toString() {
         return getName();
@@ -78,7 +95,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         if (row != -1 && column != -1) {
             boolean previousShowValue = getDecorator().isShowValue();
             getDecorator().setShowValue(true);
-            getDecorator().decorate(decoration, matrix, row, column, layerIndex);
+            getDecorator().decorate(decoration, getLongFormatter(), matrix, row, column, layerIndex);
             getDecorator().setShowValue(previousShowValue);
         }
         details.add(decoration);

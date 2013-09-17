@@ -27,6 +27,7 @@ import org.gitools.core.label.LabelProvider;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
 
 import javax.xml.bind.annotation.*;
 import java.awt.*;
@@ -108,7 +109,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         if (forceShowLabel) {
             decorator.setShowValue(true);
         }
-        decorator.decorate(decoration, getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
+        decorator.decorate(decoration, new HeatmapTextFormatter(), getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
         decorator.setShowValue(showValue);
     }
 

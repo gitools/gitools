@@ -26,6 +26,7 @@ import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.decorator.impl.*;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         super();
     }
 
-    public abstract void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer);
+    public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer);
 
     public abstract C getScale();
 

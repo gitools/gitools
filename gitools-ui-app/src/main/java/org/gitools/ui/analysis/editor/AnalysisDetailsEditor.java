@@ -39,7 +39,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
@@ -95,7 +95,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
             templatePanel.setTemplateFromResource(template, url);
 
             VelocityContext context = new VelocityContext();
-            context.put("fmt", new GenericFormatter());
+            context.put("fmt", new HeatmapTextFormatter());
             context.put("analysis", analysis);
 
             prepareContext(context);

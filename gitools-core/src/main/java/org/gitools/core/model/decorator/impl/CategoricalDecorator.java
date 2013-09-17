@@ -26,7 +26,7 @@ import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,7 +38,6 @@ import java.awt.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
-    private final static GenericFormatter fmt = new GenericFormatter();
     public static final String PROPERTY_COLOR = "color";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
     public static final String PROPERTY_CATEGORIES = "categories";
@@ -80,7 +79,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     }
 
     @Override
-    public void decorate(Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -96,7 +95,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
         if (isShowValue()) {
             String category = scale.getColorScalePoint(v).getName();
             decoration.setValue(
-                    category.equals("") ? fmt.format(value) : category
+                    category.equals("") ? textFormatter.format(value) : category
             );
         }
     }

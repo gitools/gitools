@@ -163,10 +163,13 @@ public class DetailsBox extends JXTaskPane {
     private Component createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
 
         String value = property.getFormatedValue();
-
         boolean abbreviate = (value.length() > maxLength);
-
         String abbreviatedValue;
+
+        if (value.matches("[0-9\\.]+e-?[0-9]+")) {
+            value = "<html><body>" + value.replaceAll("e(-?[0-9]+)", "·10<sup>$1</sup>")  + "</body></html>";
+        }
+
         if (abbreviate) {
             abbreviatedValue = StringUtils.abbreviate(value, maxLength);
         } else {

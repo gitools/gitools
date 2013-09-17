@@ -74,7 +74,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                     decoration.setValue("");
                 } else {
                     decoration.reset();
-                    deco.decorate(decoration, heatmap, row, col, heatmap.getLayers().getTopLayerIndex());
+                    int layerIdx = heatmap.getLayers().getTopLayerIndex();
+                    deco.decorate(decoration, heatmap.getLayers().get(layerIdx).getShortFormatter(), heatmap, row, col, layerIdx);
                 }
 
                 Color rowsGridColor = heatmap.getRows().getGridColor();

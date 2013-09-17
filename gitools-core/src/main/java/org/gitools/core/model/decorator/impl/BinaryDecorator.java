@@ -26,7 +26,7 @@ import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.BinaryColorScale;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,6 @@ import java.awt.*;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "binary")
 public class BinaryDecorator extends Decorator<BinaryColorScale> {
-    private final static GenericFormatter fmt = new GenericFormatter();
     public static final String PROPERTY_COMPARATOR = "comparator";
     public static final String PROPERTY_CUTOFF = "cutoff";
     public static final String PROPERTY_COLOR = "color";
@@ -123,7 +122,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -137,7 +136,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
 
         decoration.setBgColor(c);
         if (isShowValue()) {
-            decoration.setValue(fmt.format(value));
+            decoration.setValue(textFormatter.format(value));
         }
 
     }

@@ -25,7 +25,7 @@ import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,8 +45,6 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     public static final String PROPERTY_MID_VALUE = "midValue";
     public static final String PROPERTY_MAX_VALUE = "maxValue";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
-
-    private final static GenericFormatter fmt = new GenericFormatter();
 
     private LinearTwoSidedColorScale scale;
 
@@ -148,7 +146,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
         Object value = matrix.getValue(row, column, layer);
 
         double v = toDouble(value);
@@ -163,7 +161,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         decoration.setBgColor(color);
 
         if (isShowValue()) {
-            decoration.setValue(fmt.format(value));
+            decoration.setValue(textFormatter.format(value));
         }
 
     }

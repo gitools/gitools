@@ -27,6 +27,8 @@ import org.gitools.core.model.decorator.Decoration;
 import org.gitools.utils.color.utils.ColorUtils;
 
 import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.text.AttributedString;
 
 public abstract class AbstractHeatmapDrawer {
 
@@ -127,6 +129,7 @@ public abstract class AbstractHeatmapDrawer {
             if (fontHeight <= (isRotated ? width : height)) {
 
                 int textWidth = (int) g.getFontMetrics().getStringBounds(text, g).getWidth();
+                //TODO: textWidth depends on SuperScript
 
                 if (textWidth < (isRotated ? height : width)) {
 
@@ -139,7 +142,16 @@ public abstract class AbstractHeatmapDrawer {
                     }
 
                     g.setColor(ColorUtils.bestForegroundColor(decoration.getBgColor()));
-                    g.drawString(text, x + leftMargin, y + height - bottomMargin);
+                    if (text.matches("[0-9\\.]+e-?[0-9]+")) {
+                        int e_pos = text.indexOf("e") + 3;
+                        text = text.replaceAll("e(-?[0-9]+)", "·10$1");
+                        int superscriptEnd = text.length();
+                        AttributedString attText = new AttributedString(text);
+                        attText.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUPER, e_pos, superscriptEnd);
+                        g.drawString(attText.getIterator(), x + leftMargin, y + height - bottomMargin);
+                    } else {
+                        g.drawString(text, x + leftMargin, y + height - bottomMargin);
+                    }
 
                 }
             }

@@ -25,7 +25,7 @@ import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
-import org.gitools.utils.formatter.GenericFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,8 +48,6 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     private int correctedValueIndex;
     private boolean useCorrection;
     private double significanceLevel;
-
-    private final static GenericFormatter fmt = new GenericFormatter();
 
     private PValueColorScale scale;
 
@@ -153,7 +151,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
 
         Object value = matrix.getValue(row, column, layer);
         double v = toDouble(value);
@@ -176,7 +174,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
 
         decoration.setBgColor(color);
         if (isShowValue()) {
-            decoration.setValue(fmt.format(value));
+            decoration.setValue(textFormatter.format(value));
         }
     }
 
