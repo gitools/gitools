@@ -51,27 +51,27 @@ CASE STUDY 2: Studying the expression profile of 156 lung tumors and adjacent no
 .. list-table:: 
 
   * - .. image:: img/tutorial-iconCS2.1.png
-    - `Tutorial 2.1: Sample Level Enrichment Analysis (SLEA) with KEGG pathways <Tutorials_Tutorial21.rst>`_ 
+    - :doc:`Tutorials_Tutorial21` 
       
       Identify pathways which genes are differentially expressed in various groups of samples
 
   * - .. image:: img/tutorial-iconCS2.2.png
-    - `Tutorial 2.2: Expression profiles correlations <Tutorials_Tutorial22.rst>`_ 
+    - :doc:`Tutorials_Tutorial22` 
       
       Compare the expression profile of samples using correlations
 
   * - .. image:: img/tutorial-iconCS2.3.png
-    - `Tutorial 2.3: Identifying significantly up-regulated genes <Tutorials_Tutorial23.rst>`_ 
+    - :doc:`Tutorials_Tutorial23` 
       
       Run Oncodrive to identify the genes that are significantly up-regulated taking into account a set of tumour samples
 
   * - .. image:: img/tutorial-iconCS2.4.png
-    - `Tutorial 2.4: Compare and combine experiments <Tutorials_Tutorial24.rst>`_ 
+    - :doc:`Tutorials_Tutorial24` 
       
       Compare and combine the significantly up-regulated genes in our experiment and other lung experiments imported from IntOGen
 
   * - .. image:: img/tutorial-iconCS2.5.png
-    - `Tutorial 2.5: Overlapping analysis <Tutorials_Tutorial25.rst>`_ 
+    - :doc:`Tutorials_Tutorial25` 
       
       Compare the overlap of significantly up-regulated genes in our experiment and in other lung experiments imported from IntOGen
 
@@ -84,7 +84,7 @@ CASE STUDY 3: Functional protein divergence in the evolution of Homo sapiens
 
 
   * - .. image:: img/tutorial-iconCS3.1.png
-    - `Tutorial 3.1: Gene Ontology enrichment analysis <Tutorials_Tutorial31.rst>`_ 
+    - :doc:`Tutorials_Tutorial31` 
       
       Analyse the conservation patterns of genes involved in different biological processes                                                                          
 
@@ -95,12 +95,12 @@ CASE STUDY 4: Studying the regulatory programs governing the expression in diffe
 .. list-table:: 
 
   * - .. image:: img/tutorial-icon1.png
-    - `Tutorial 4.1: TFBS enrichment analysis <Tutorials_Tutorial41.rst>`_ 
+    - :doc:`Tutorials_Tutorial41` 
       
       Identify the transcription factors involved in the regulation of expression in different tissues                                                                       
 
   * - .. image:: img/tutorial-icon2.png
-    - `Tutorial 4.2. Correlation of expression patterns in different tissues <Tutorials_Tutorial42.rst>`_ 
+    - :doc:`Tutorials_Tutorial42` 
       
       Compare the expression pattern of genes expressed in different tissues                                                                                                                                              
 
@@ -114,7 +114,7 @@ CASE STUDY 5: Experimental regulatory modules in cancer
 .. list-table:: 
 
   * - .. image:: img/tutorial-icon3.png
-    - `Tutorial 5.1. Regulatory Modules enrichment analysis <Tutorials_Tutorial51.rst>`_ 
+    - :doc:`Tutorials_Tutorial51` 
       
       Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing                                                                       
 
@@ -132,22 +132,22 @@ The videos we have put online for this case study we are accessible on Youtube.
 .. list-table:: 
 
   * - .. image:: img/tutorial-icon6-1.png
-    - `Tutorial 6.1. Loading and annotating a multi-value matrix <Tutorials_Tutorial61.rst>`_ 
+    - :doc:`Tutorials_Tutorial61` 
       
       Get prepared to start working
 
   * - .. image:: img/tutorial-icon6-2.png
-    - `Tutorial 6.2. Finding and visualizing mutually exclusive genes  <Tutorials_Tutorial62.rst>`_ 
+    - :doc:`Tutorials_Tutorial62` 
       
       See which genes are altered in a mutually exclusive manner
 
   * - .. image:: img/tutorial-icon6-3.png
-    - `Tutorial 6.3. Exploring the effect of genomic alterations on expression  <Tutorials_Tutorial63.rst>`_ 
+    - :doc:`Tutorials_Tutorial63` 
       
       See which genes are significantly influenced by genomic alterations in their locus
 
   * - .. image:: img/tutorial-icon6-4.png
-    - `Tutorial 6.4. Sample Level Enrichment Analysis  <Tutorials_Tutorial64.rst>`_ 
+    - :doc:`Tutorials_Tutorial64` 
       
       Asses transcription level for pathways for each sample in the study
 

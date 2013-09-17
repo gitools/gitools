@@ -47,7 +47,7 @@ Selection of the data to analyze
 
 
 
-If you follow the conventions on file formats explained  `here <UserGuide_LoadingData.rst>`__  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
+If you follow the conventions on file formats explained  :doc:`here </UserGuide_LoadingData.rst>`  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Selection of the data transformation options
 -------------------------------------------------

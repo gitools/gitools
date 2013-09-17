@@ -111,7 +111,7 @@ It is useful for representing matrices (i.e. expression data for a microarray).
 
 
 .. image:: img/formatCDM.png
-   :scale: 50%
+   :width: 700px
    :align: center
    :alt: cdm file format 
 
@@ -128,7 +128,7 @@ When representing matrices a 1 means that this item (row) presents a positive ev
 When representing modules, rows correspond to genes or biological elements and each column a different module, then a 1 is used to specify that a given gene or biological element is related to a given module and 0 otherwise.
 
 .. image:: img/formatBDM.png
-   :scale: 50%
+   :width: 700px
    :align: center
    :alt: bdm file format 
 
@@ -140,7 +140,7 @@ TDM file format is a tab delimited file that has contains multiple values per ro
 In this following example we see a .tdm-file that contains three columns and two rows.
 
 .. image:: img/formatTDM.png
-   :scale: 50%
+   :width: 700px
    :align: center
    :alt: tdm file format 
 
@@ -154,7 +154,7 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMT.png
-   :scale: 50%
+   :width: 700px
    :align: center
    :alt: GMT file format 
 
@@ -170,7 +170,7 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMX.png
-   :scale: 50%
+   :width: 700px
    :align: center
    :alt: gmx file format 
 
