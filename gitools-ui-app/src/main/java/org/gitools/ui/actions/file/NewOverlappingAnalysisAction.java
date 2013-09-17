@@ -69,6 +69,9 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 
         final OverlappingAnalysis analysis = wizard.getAnalysis();
 
+        //TODO Convert a .tcm ModuleMap into a IMatrix. Related issue #94 (See ConvertModuleMapToMatrixResourceReference)
+
+
         ResourceReference<IMatrix> sourceData = new ResourceReference<IMatrix>(new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()), wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
 
         analysis.setSourceData(new ResourceReference<IMatrix>("source-data", sourceData.get()));
