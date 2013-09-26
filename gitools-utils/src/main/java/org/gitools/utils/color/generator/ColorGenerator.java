@@ -34,9 +34,10 @@ public interface ColorGenerator {
     void reset();
 
     /**
-     * generate a new color
+     * generate a new color only if the id that will be associated
+     * with the color hasnt been registered yet.
      */
-    Color next();
+    Color next(String id);
 
     /**
      * return the number of generated colors
