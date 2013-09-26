@@ -19,11 +19,17 @@
 	</head>
 	<body>
 		<h1>$appName</h1>
-		<p>Version $appVersion</p>
-		<p>Biomedical Genomics Laboratory<br>
+		<p>
+            <b>Gitools version <i>$appVersion</i>,</b>
+            running within Java environment <i>$javaRuntimeVersion</i> from
+            <i>$javaVendor</i>.
+        </p>
+
+        <p><b>Development:</b></p>
+        <p>Biomedical Genomics Laboratory<br>
 		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
 
-		<p><b>Development:</b></p>
+		<p><b>Developers:</b></p>
 		<ul>
 			<li>Christian Perez-Llamas</li>
 			<li>Jordi Deu-Pons</li>

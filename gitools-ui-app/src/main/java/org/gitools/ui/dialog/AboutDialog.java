@@ -39,12 +39,16 @@ public class AboutDialog extends JDialog {
 
     private final String appName;
     private final String appVersion;
+    private final String javaRuntimeVersion;
+    private final String javaVendor;
 
     public AboutDialog(JFrame owner) {
         super(owner);
 
         appName = AppFrame.getAppName();
         appVersion = AppFrame.getAppVersion();
+        javaRuntimeVersion = System.getProperty("java.vm.name") + " " +System.getProperty("java.version");
+        javaVendor = System.getProperty("java.vm.vendor");
 
         setModal(true);
         setTitle("About " + appName);
@@ -69,6 +73,8 @@ public class AboutDialog extends JDialog {
             VelocityContext context = new VelocityContext();
             context.put("appName", appName);
             context.put("appVersion", appVersion);
+            context.put("javaRuntimeVersion", javaRuntimeVersion);
+            context.put("javaVendor", javaVendor);
             creditsPane.setContext(context);
             creditsPane.render();
         } catch (Exception ex) {
