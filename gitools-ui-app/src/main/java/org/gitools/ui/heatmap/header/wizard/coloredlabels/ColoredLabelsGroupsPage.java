@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.color.generator.ColorRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -252,6 +253,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         table = new javax.swing.JTable();
         tableAddBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
+        colorSyncBtn = new javax.swing.JButton();
 
         jLabel5.setText("Labels");
 
@@ -276,6 +278,15 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
             }
         });
 
+        colorSyncBtn.setText("Lookup colors");
+        colorSyncBtn.setToolTipText("Looks up if any Value already as an assigned color within the current session of Gitools");
+        colorSyncBtn.setEnabled(true);
+        colorSyncBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorSyncBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jLabel5).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE).addGap(3, 3, 3).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addComponent(tableAddBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(removeBtn)))).addContainerGap()));
@@ -295,11 +306,20 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         updateButtons();
     }//GEN-LAST:event_removeBtnActionPerformed
 
+    private void colorSyncBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        ColoredLabel[] cls = getColoredLabels();
+        ColorRegistry cr = ColorRegistry.get();
+        for (ColoredLabel cl : cls) {
+            cl.setColor(cr.getColor(cl.getValue(), cl.getColor()));
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton removeBtn;
+    private javax.swing.JButton colorSyncBtn;
     private javax.swing.JTable table;
     private javax.swing.JButton tableAddBtn;
     // End of variables declaration//GEN-END:variables

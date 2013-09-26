@@ -164,7 +164,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         String[] clusterTitles = results.getClusterTitles();
         coloredLabels = new ColoredLabel[results.getNumClusters()];
         for (int i = 0; i < results.getNumClusters(); i++) {
-            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
+            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next(clusterTitles[i]));
         }
     }
 

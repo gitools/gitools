@@ -35,6 +35,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.gitools.utils.color.generator.ColorRegistry;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,6 +126,10 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
     @Override
     public void performFinish() {
         ColoredLabel[] cls = clustersPage.getColoredLabels();
+        ColorRegistry cr = ColorRegistry.get();
+        for (ColoredLabel cl : cls) {
+            cr.registerId(cl.getValue(), cl.getColor());
+        }
         header.setClusters(cls);
     }
 

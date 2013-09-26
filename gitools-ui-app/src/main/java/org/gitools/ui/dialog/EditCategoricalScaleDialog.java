@@ -80,6 +80,11 @@ public class EditCategoricalScaleDialog extends AbstractDialog {
         return buttons;
     }
 
+    @Override
+    protected void doClose(int retStatus) {
+        super.doClose(retStatus);
+    }
+
     public ColoredLabelsGroupsPage getPage() {
         return page;
     }
