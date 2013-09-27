@@ -31,6 +31,9 @@ import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.ColoredLabel;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.persistence.*;
@@ -48,6 +51,7 @@ import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.utils.color.generator.ColorRegistry;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
@@ -138,6 +142,7 @@ public class CommandLoadFile extends AbstractCommand {
             return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
         } else if (resource instanceof Heatmap) {
             ((Heatmap) resource).init();
+            registerAssignedColors(((Heatmap) resource));
             return new HeatmapEditor((Heatmap) resource);
         }
 
@@ -170,6 +175,29 @@ public class CommandLoadFile extends AbstractCommand {
         }
 
         return new HeatmapEditor(heatmap);
+    }
+
+    private void registerAssignedColors(Heatmap heatmap) {
+
+        ColorRegistry registry = ColorRegistry.get();
+
+        for (HeatmapHeader h : heatmap.getColumns().getHeaders()) {
+            if (h instanceof HeatmapColoredLabelsHeader) {
+                HeatmapColoredLabelsHeader clh = (HeatmapColoredLabelsHeader) h;
+                for (ColoredLabel cl : clh.getClusters()) {
+                    registry.registerId(cl.getValue(), cl.getColor());
+                }
+            }
+        }
+
+        for (HeatmapHeader h : heatmap.getRows().getHeaders()) {
+            if (h instanceof HeatmapColoredLabelsHeader) {
+                HeatmapColoredLabelsHeader clh = (HeatmapColoredLabelsHeader) h;
+                for (ColoredLabel cl : clh.getClusters()) {
+                    registry.registerId(cl.getValue(), cl.getColor());
+                }
+            }
+        }
     }
 
     private static File download(String file, @NotNull IProgressMonitor monitor) throws CommandException {
