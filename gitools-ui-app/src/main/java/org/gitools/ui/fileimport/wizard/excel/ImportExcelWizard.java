@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
+import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
@@ -29,9 +30,9 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileFormatFilter;
 import org.gitools.ui.wizard.common.FileChooserPage;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ImportExcelWizard extends AbstractWizard {
 
         fileSelectionPage = new FileChooserPage();
         fileSelectionPage.setTitle("Select Excel file");
-        fileSelectionPage.setFileFilter(new FileNameExtensionFilter("Microsoft Excel files", "xls", "xlsx"));
+        fileSelectionPage.setFileFilter(new FileFormatFilter("Microsoft Excel files", new FileFormat("Excel", "xls"), new FileFormat("Excel", "xlsx")));
         addPage(fileSelectionPage);
 
         selectColumnsPage = new SelectColumnsPage();
