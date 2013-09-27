@@ -21,9 +21,7 @@
  */
 package org.gitools.ui.batch;
 
-import org.gitools.ui.batch.tools.ITool;
-import org.gitools.ui.batch.tools.LoadTool;
-import org.gitools.ui.batch.tools.VersionTool;
+import org.gitools.ui.batch.tools.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
@@ -37,6 +35,8 @@ public class CommandExecutor {
     static {
         addTool(new LoadTool());
         addTool(new VersionTool());
+        addTool(new AddHeaderTextLabelsTool());
+        addTool(new AddHeaderColoredLabelsTool());
     }
 
     private static void addTool(@NotNull ITool tool) {
