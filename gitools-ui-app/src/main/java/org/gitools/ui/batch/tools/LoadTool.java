@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.batch.tools;
 
+import org.gitools.ui.commands.Command;
 import org.gitools.ui.commands.CommandLoadFile;
-import org.gitools.ui.platform.progress.JobRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
@@ -55,7 +55,7 @@ public class LoadTool extends AbstractTool {
 
     @NotNull
     @Override
-    protected JobRunnable newJob() {
+    protected Command newJob() {
         return new CommandLoadFile(file, rows, cols);
     }
 }

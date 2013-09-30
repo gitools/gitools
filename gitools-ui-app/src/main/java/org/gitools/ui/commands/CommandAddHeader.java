@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.commands;
 
-import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -37,7 +36,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
 
     protected final String side;
     protected String heatmapid;
-    protected final String LATEST = "latest";
+    protected final String LAST = "last";
     protected final String COLUMNS = "COLUMNS";
     protected final String ROWS = "ROWS";
 
@@ -56,7 +55,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
 
         try {
             monitor.begin("Adding header ...", 1);
-            if (heatmapid.equals(LATEST)) {
+            if (heatmapid.equals(LAST)) {
                 AbstractEditor e = appframe.getEditorsPanel().getSelectedEditor();
                 if (e instanceof HeatmapEditor)  {
                     heatmap = ((HeatmapEditor) e).getModel();
@@ -85,12 +84,19 @@ public abstract class CommandAddHeader extends AbstractCommand {
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
-               MessageUtils.showErrorMessage(AppFrame.get(), "<html>SOME ERROR.<br>" +
-                       (!StringUtils.isEmpty(e.getCause().getMessage())?"<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>":"") +
-                       "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
+               String text = "<html>Command error:<br>" +
+                       "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" +
+                       e.getLocalizedMessage() +
+                       "</strong></div>" +
+                       "You may find the <strong>'User guide'</strong> at <a href='http://www.gitools.org'>" +
+                       "www.gitools.org</a><br></html>";
+               MessageUtils.showErrorMessage(AppFrame.get(), text, e);
             }
+            setExitStatus(1);//Error!
             return;
         }
 
+        setExitStatus(0);
+        return;
     }
 }

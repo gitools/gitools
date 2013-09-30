@@ -194,12 +194,7 @@ public class PatternSourcePage extends AbstractWizardPage {
         return sb.toString();
     }
 
-    public String getAnnotationMetadata(String key) {
-        String[] values = getSelectedValues();
-        return hdim.getAnnotations().getAnnotationMetadata(key, values[0]);
-    }
-
-    String[] getSelectedValues() {
+    public String[] getSelectedValues() {
         int[] indices = annList.getSelectedIndices();
         String[] values = new String[indices.length];
 

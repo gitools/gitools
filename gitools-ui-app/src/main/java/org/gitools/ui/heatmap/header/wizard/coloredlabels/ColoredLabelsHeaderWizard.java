@@ -21,23 +21,14 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.core.clustering.ClusteringData;
-import org.gitools.core.clustering.ClusteringResults;
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.color.generator.ColorRegistry;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
@@ -98,28 +89,13 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
             return;
         }
 
-        IAnnotations am = hdim.getAnnotations();
         header.setAnnotationPattern(pattern);
 
-        final ClusteringData data = new AnnPatClusteringData(hdim, pattern);
-
         header.setTitle(sourcePage.getPatternTitle());
-        header.setDescription(sourcePage.getAnnotationMetadata("description"));
-        header.setValueUrl(sourcePage.getAnnotationMetadata("value-url"));
-        header.setDescriptionUrl(sourcePage.getAnnotationMetadata("description-url"));
+        header.setAnnotationMetadata(sourcePage.getSelectedValues()[0]);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
-            @Override
-            public void run(@NotNull IProgressMonitor monitor) {
-                try {
-                    final ClusteringResults results = clusteringMethod.cluster(data, monitor);
+        header.autoGenerateColoredLabels(clusteringMethod);
 
-                    header.updateFromClusterResults(results);
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
         clustersPage.setColoredLabels(header.getClusters());
     }
 

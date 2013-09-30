@@ -102,7 +102,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
             }
         }
         out.close();
-
-        super.execute(monitor);
+        setExitStatus(0);
+        return;
     }
 }

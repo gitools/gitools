@@ -107,7 +107,7 @@ public class CommandLoadFile extends AbstractCommand {
                        (!StringUtils.isEmpty(e.getCause().getMessage())?"<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>":"") +
                        "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
             }
-
+            setExitStatus(1); //Error!
             return;
         }
 
@@ -123,6 +123,8 @@ public class CommandLoadFile extends AbstractCommand {
 
         monitor.end();
 
+        setExitStatus(0);
+        return;
     }
 
     @NotNull

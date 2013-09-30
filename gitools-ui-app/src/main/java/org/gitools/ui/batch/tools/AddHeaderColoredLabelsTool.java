@@ -22,29 +22,44 @@
 package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.commands.Command;
-import org.gitools.ui.commands.CommandAddHeaderTextLabels;
+import org.gitools.ui.commands.CommandAddHeaderColoredLabels;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Option;
 
-public class AddHeaderTextLabelsTool extends AddHeaderTool {
+import java.util.List;
+
+public class AddHeaderColoredLabelsTool extends AddHeaderTool {
 
     @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
             usage = "The pattern of annotations as e.g. ${annotation-id}")
     private String pattern;
 
-    public AddHeaderTextLabelsTool() {
+    @Option(name = "-c", aliases = "--color", metaVar = "<color>", required = false,
+            usage = "A Hex color corresponding to the string for id: #FF0000")
+    private List<String> colors;
+
+    @Option(name = "-v", aliases = "--value", metaVar = "<value>", required = false,
+            usage = "A value corresponding to a color")
+    private List<String> ids;
+
+    @Option(name = "-n", aliases = "--no-auto-generate", required = false,
+    usage= "Specify if auto color generation is not desired.")
+    private boolean noAutoGenerate;
+
+    public AddHeaderColoredLabelsTool() {
         super();
     }
 
     @NotNull
     @Override
     public String getName() {
-        return "add-header-text-labels";
+        return "add-header-colored-labels";
     }
 
     @NotNull
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern);
+        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate);
     }
+
 }

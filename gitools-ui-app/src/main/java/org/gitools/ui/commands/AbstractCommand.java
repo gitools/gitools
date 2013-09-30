@@ -32,6 +32,8 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
     @Override
     public abstract void execute(IProgressMonitor monitor) throws CommandException;
 
+    private int exitStatus = -1;
+
     @Override
     public void run(@NotNull IProgressMonitor monitor) {
         try {
@@ -45,5 +47,14 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
     @Override
     public void run() {
         run(new NullProgressMonitor());
+    }
+
+    @Override
+    public int getExitStatus() {
+        return exitStatus;
+    }
+
+    protected void setExitStatus(int exitStatus) {
+        this.exitStatus = exitStatus;
     }
 }

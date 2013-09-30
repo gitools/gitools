@@ -328,4 +328,12 @@ public abstract class HeatmapHeader extends Model {
     public void setSortAscending(boolean ascending) {
         this.sortAscending = ascending;
     }
+
+    public String deriveTitleFromPattern () {
+        String title = "";
+
+        title = annotationPattern.replaceAll("[{}$]", "");
+
+        return title;
+    }
 }

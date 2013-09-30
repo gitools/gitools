@@ -38,8 +38,10 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
     @Override
     public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
-
         super.execute(monitor);
+        if (getExitStatus() > 0) {
+            return;
+        }
 
         HeatmapTextLabelsHeader header = new HeatmapTextLabelsHeader();
         header.setLabelPattern(pattern);
@@ -52,5 +54,7 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
         monitor.end();
 
+        setExitStatus(0);
+        return;
     }
 }
