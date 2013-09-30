@@ -46,6 +46,10 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
     usage= "Specify if auto color generation is not desired.")
     private boolean noAutoGenerate;
 
+    @Option(name = "-t", aliases = "--text-visible", required = false,
+    usage = "Set for visible text labels")
+    private boolean textVisible;
+
     public AddHeaderColoredLabelsTool() {
         super();
     }
@@ -59,7 +63,7 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
     @NotNull
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate);
+        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible);
     }
 
 }

@@ -34,17 +34,19 @@ import java.util.List;
 
 public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
+    private final boolean textVisible;
     private List<String> colors;
     private List<String> ids;
     private String pattern;
     private boolean autoGenerateColors;
 
-    public CommandAddHeaderColoredLabels(String heatmap, String side, String pattern, List<String> colors, List<String> ids, boolean autoGenerateColors) {
+    public CommandAddHeaderColoredLabels(String heatmap, String side, String pattern, List<String> colors, List<String> ids, boolean autoGenerateColors, boolean textVisible) {
         super(heatmap, side);
         this.colors = colors;
         this.ids = ids;
         this.pattern = pattern;
         this.autoGenerateColors = autoGenerateColors;
+        this.textVisible = textVisible;
     }
 
     @Override
@@ -63,6 +65,10 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         header.setAnnotationPattern(pattern);
         header.setHeatmapDimension(hdim);
         header.setTitle(header.deriveTitleFromPattern());
+
+        if (textVisible) {
+            header.setLabelVisible(true);
+        }
 
         if (autoGenerateColors) {
             cls =  header.getClusters();

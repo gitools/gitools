@@ -53,6 +53,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
 
         AppFrame appframe = AppFrame.get();
 
+        String availableHeatmaps = "<br/>Available hetamaps: ";
         try {
             monitor.begin("Adding header ...", 1);
             if (heatmapid.equals(LAST)) {
@@ -62,14 +63,18 @@ public abstract class CommandAddHeader extends AbstractCommand {
                 }
             } else {
                 for (AbstractEditor e : appframe.getEditorsPanel().getEditors()) {
-                    if (e instanceof HeatmapEditor && e.getName().equals(heatmapid)) {
-                        heatmap = ((HeatmapEditor) e).getModel();
+                    if (e instanceof HeatmapEditor) {
+                        if ( e.getName().equals(heatmapid)) {
+                            heatmap = ((HeatmapEditor) e).getModel();
+                        } else {
+                            availableHeatmaps += "<br/>- " + e.getName();
+                        }
                     }
                 }
             }
 
             if (heatmap == null) {
-                throw new Exception("No such heatmap loaded: " + heatmapid);
+                throw new Exception("No such heatmap loaded: " + heatmapid + availableHeatmaps);
             }
 
 
