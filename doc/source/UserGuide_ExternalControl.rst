@@ -1,13 +1,6 @@
-
 External Control of Gitools
 -------------------------------------------------
 
-Michael P Schroeder
-
-
-
-Table of Contents
--------------------------------------------------
 
 As of version 1.7.0 Gitools can be addressed from outside of the application. At the moment there is one command availabe.
 
