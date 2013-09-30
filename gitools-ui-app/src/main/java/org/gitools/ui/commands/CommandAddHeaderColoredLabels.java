@@ -73,6 +73,11 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
         if (!(colors == null || ids == null)) {
 
+            if (colors.size() != ids.size()) {
+                setExitStatus(1);
+                throw new CommandException("The number of specified colors and values must match");
+            }
+
             if (cls.length < 1) {
                 cls = new ColoredLabel[0];
             }
@@ -81,6 +86,11 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
                 ColoredLabel cl = new ColoredLabel(ids.get(i), Color.decode(colors.get(i)));
                 cls = addCluster(cls, cl);
             }
+
+            if (cls.length == 0)  {
+                throw new CommandException("No color labels have been created.");
+            }
+
             header.setClusters(cls);
 
         }
