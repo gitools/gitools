@@ -12,10 +12,11 @@ Gitools User Guide
         - :doc:`UserGuide_Biomart`
 - :doc:`UserGuide_RunningAnalysis`
     - :doc:`UserGuide_Enrichment`
-    - :doc:`UserGuide_Oncodrive`
     - :doc:`UserGuide_Correlations`
-    - :doc:`UserGuide_Combinations`
     - :doc:`UserGuide_Overlaps`
+    - :doc:`UserGuide_GroupComparison`
+    - :doc:`UserGuide_Combinations`
+    - :doc:`UserGuide_Oncodrive`
 - :doc:`UserGuide_Visualization`
     - :doc:`UserGuide_AnalysisEditor`
     - :doc:`UserGuide_HeatmapEditor`

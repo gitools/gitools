@@ -3,19 +3,6 @@ Enrichment
 ================================================================
 
 
-
-
-Table of Contents
--------------------------------------------------
-
-`Wizard steps to perform an enrichment analysis <#N1003A>`__  `#  <#N1003A>`__
-
-`Exploring the results of the analysis <#N10127>`__  `#  <#N10127>`__
-
-
-
-
-
 Enrichment analysis consists in a quantitative measure to infer if the values of a biological condition (e.g. fold changes) shows statistically significant, concordant values or increased proportion for a particular set of biological annotations (module or gene set).
 
 
@@ -35,7 +22,6 @@ To start the enrichment wizard go to the menu *File > New > Analysis > Enrichmen
 
 Presentation and example
 -------------------------------------------------
-
 
 .. image:: img/analysisenrichmentexample.png
    :scale: 50%
