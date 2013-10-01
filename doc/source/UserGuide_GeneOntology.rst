@@ -1,20 +1,7 @@
 
 
 GeneOntology
--------------------------------------------------
-
-Christian Pérez-Llamas
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Downloading the modules <#N10089>`__  `#  <#N10089>`__
-
-
-
-
+=================================================
 
 The Gene Ontology project is a major bioinformatics initiative with the aim of standardizing the representation of gene and gene product attributes across species and databases. The project provides a controlled vocabulary of terms for describing gene product characteristics. More information about Gene Ontology at  `http://www.geneontology.org/  <http://www.geneontology.org/>`__ .
 
@@ -41,7 +28,6 @@ Select destination
 -------------------------------------------------
 
 In this page you can select the name prefix for the files generated, the folder where they will be created and the file format.
-
 
 
 Downloading the modules
