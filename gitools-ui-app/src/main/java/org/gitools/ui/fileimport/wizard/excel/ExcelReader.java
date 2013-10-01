@@ -1,11 +1,33 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +35,13 @@ import java.util.Locale;
 
 public class ExcelReader {
 
-    private File file;
+    private final File file;
 
+    @Nullable
     private Sheet sheet = null;
+    @Nullable
     private DataFormatter formatter = null;
+    @Nullable
     private FormulaEvaluator evaluator = null;
     private List<ExcelHeader> headers;
 
@@ -38,7 +63,7 @@ public class ExcelReader {
 
     }
 
-    private void openWorkbook(File file) throws FileNotFoundException, IOException, InvalidFormatException {
+    private void openWorkbook(@NotNull File file) throws IOException, InvalidFormatException {
         FileInputStream fis = null;
         try {
             System.out.println("Opening workbook [" + file.getName() + "]");
@@ -58,7 +83,7 @@ public class ExcelReader {
     }
 
 
-    private String cellToString(Cell cell) {
+    private String cellToString(@NotNull Cell cell) {
         if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) {
             return this.formatter.formatCellValue(cell);
         } else {
@@ -66,7 +91,8 @@ public class ExcelReader {
         }
     }
 
-    private List<ExcelHeader> rowToHeader(Row header, Row firstRow) {
+    @NotNull
+    private List<ExcelHeader> rowToHeader(@Nullable Row header, @NotNull Row firstRow) {
 
         Cell cell = null;
         Cell firstCell = null;
@@ -80,7 +106,7 @@ public class ExcelReader {
                 cell = header.getCell(i);
                 firstCell = firstRow.getCell(i);
                 if (cell != null) {
-                    int cellType = (firstCell == null?Cell.CELL_TYPE_BLANK : firstCell.getCellType());
+                    int cellType = (firstCell == null ? Cell.CELL_TYPE_BLANK : firstCell.getCellType());
                     headers.add(new ExcelHeader(cellToString(cell), i, cellType));
                 }
             }
@@ -93,6 +119,7 @@ public class ExcelReader {
         return headers;
     }
 
+    @Nullable
     public String getValue(int rowPos, int colPos) {
 
         Row row = sheet.getRow(rowPos);

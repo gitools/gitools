@@ -1,7 +1,18 @@
 <?php
 
     header('Content-type: application/x-java-jnlp-file');
-    header('Content-Disposition: attachment; filename="gitools.jnlp"');
+
+    $LOAD=htmlspecialchars($_GET['load']);
+    if($LOAD != null && $LOAD != "")
+    {
+        $download_name = preg_replace('/.heatmap(.zip)?/', '', basename($LOAD));
+        header('Content-Disposition: attachment; filename="gitools-'.$download_name.'.jnlp"');
+    }
+    else
+    {
+        header('Content-Disposition: attachment; filename="gitools.jnlp"');
+    }
+
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -40,8 +51,7 @@
  <resources>
          <java version="1.6+"
                   initial-heap-size="256m"
-                  max-heap-size="<?php echo $heapsize; ?>"
-                  java-vm-args="-XX:MaxPermSize=250m -XX:+UseSerialGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20" />
+                  max-heap-size="<?php echo $heapsize; ?>" />
           $dependencies
         </resources>
 

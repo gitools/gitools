@@ -1,74 +1,80 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-cli
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.cli.convert;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.matrix.model.BaseMatrix;
-import org.gitools.matrix.model.DoubleBinaryMatrix;
-import org.gitools.matrix.model.DoubleMatrix;
-import org.gitools.persistence.MimeTypes;
+import org.gitools.core.matrix.model.matrix.BaseMatrix;
+import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.persistence._DEPRECATED.MimeTypes;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public class MatrixConversion implements ConversionDelegate {
 
-	@Override
-	public Object convert(String srcMime, Object src, String dstMime, IProgressMonitor monitor) throws Exception {
-		BaseMatrix srcMatrix = (BaseMatrix) src;
+    @Nullable
+    @Override
+    public Object convert(String srcFormat, @NotNull Object src, String dstFormat, @NotNull IProgressMonitor progressMonitor) throws Exception {
+        BaseMatrix srcMatrix = (BaseMatrix) src;
 
-		BaseMatrix dstMatrix = null;
+        BaseMatrix dstMatrix = null;
 
-		Class<? extends BaseMatrix> cls = null;
+        Class<? extends BaseMatrix> cls = null;
 
-		if (MimeTypes.DOUBLE_MATRIX.equals(dstMime))
-			cls = DoubleMatrix.class;
-		else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstMime)
-				|| MimeTypes.GENE_MATRIX.equals(dstMime)
-				|| MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstMime))
-			cls = DoubleBinaryMatrix.class;
-		else
-			throw new Exception("Unsupported mime type for destination matrix: " + dstMime);
+        if (MimeTypes.DOUBLE_MATRIX.equals(dstFormat)) {
+            cls = DoubleMatrix.class;
+        } else if (MimeTypes.DOUBLE_BINARY_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX.equals(dstFormat) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(dstFormat)) {
+            cls = DoubleBinaryMatrix.class;
+        } else {
+            throw new Exception("Unsupported mime type for destination matrix: " + dstFormat);
+        }
 
-		int numCols = srcMatrix.getColumnCount();
-		int numRows = srcMatrix.getRowCount();
+        int numCols = srcMatrix.getColumns().size();
+        int numRows = srcMatrix.getRows().size();
 
-		monitor.begin("Converting matrix ...", numRows);
+        progressMonitor.begin("Converting matrix ...", numRows);
 
-		if (!cls.equals(src.getClass())) {
-			dstMatrix = cls.newInstance();
-			dstMatrix.makeCells(numRows, numCols);
-			for (int row = 0; row < numRows; row++) {
-				for (int col = 0; col < numCols; col++) {
-					Object value = srcMatrix.getCellValue(row, col, 0);
-					dstMatrix.setCellValue(row, col, 0, value);
-				}
+        if (!cls.equals(src.getClass())) {
+            dstMatrix = cls.newInstance();
+            dstMatrix.makeCells(numRows, numCols);
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
+                    Object value = srcMatrix.getValue(row, col, 0);
+                    dstMatrix.setValue(row, col, 0, value);
+                }
 
-				monitor.worked(1);
-			}
+                progressMonitor.worked(1);
+            }
 
-			dstMatrix.setColumns(srcMatrix.getColumns());
-			dstMatrix.setRows(srcMatrix.getRows());
-		}
-		else
-			dstMatrix = srcMatrix;
+            dstMatrix.setColumns(srcMatrix.getInternalColumns());
+            dstMatrix.setRows(srcMatrix.getInternalRows());
+        } else {
+            dstMatrix = srcMatrix;
+        }
 
-		monitor.end();
-		
-		return dstMatrix;
-	}
+        progressMonitor.end();
+
+        return dstMatrix;
+    }
 
 }

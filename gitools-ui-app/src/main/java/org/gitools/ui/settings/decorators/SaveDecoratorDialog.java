@@ -1,104 +1,117 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * IntogenImportSaveDialog.java
- *
- * Created on 05-mar-2010, 12:28:41
- */
-
 package org.gitools.ui.settings.decorators;
 
-import java.util.Set;
-import javax.swing.event.DocumentEvent;
+import com.jgoodies.binding.value.ValueModel;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
 
+import javax.swing.event.DocumentEvent;
+import java.util.Set;
+
 public class SaveDecoratorDialog extends javax.swing.JDialog {
 
-	private Set<String> existingScaleNames;
+    private Set<String> existingScaleNames;
 
-    /** A return status code - returned if Cancel button has been pressed */
-    public static final int RET_CANCEL = 0;
-    /** A return status code - returned if OK button has been pressed */
-    public static final int RET_OK = 1;
-    
+    /**
+     * A return status code - returned if Cancel button has been pressed
+     */
+    private static final int RET_CANCEL = 0;
+    /**
+     * A return status code - returned if OK button has been pressed
+     */
+    private static final int RET_OK = 1;
+
     private static final String MESSAGE = "Enter a name for your scale";
 
-    /** Creates new form IntogenImportSaveDialog */
+    /**
+     * Creates new form IntogenImportSaveDialog
+     */
     public SaveDecoratorDialog(java.awt.Window parent) {
         super(parent);
 
-		setModal(true);
-		
+        setModal(true);
+
         initComponents();
 
-		//headerPanel = new DialogHeaderPanel();
-		headerPanel.setTitle("Save Scale");
-		headerPanel.setMessage(MESSAGE);
-		//headerPanel.setLeftLogo(IconUtils.getIconResource(IconNames.LOGO_SAVE));
-        	
+        //headerPanel = new DialogHeaderPanel();
+        headerPanel.setTitle("Save Scale");
+        headerPanel.setMessage(MESSAGE);
+        //headerPanel.setLeftLogo(IconUtils.getIconResource(IconNames.LOGO_SAVE));
+
         okButton.setEnabled(false);
 
-		DocumentChangeListener documentListener = new DocumentChangeListener() {
-			@Override protected void update(DocumentEvent e) {
-				boolean exists = checkScaleNameExists();
-				if (exists) {
-					headerPanel.setMessageStatus(MessageStatus.WARN);
-					headerPanel.setMessage("Scale name already exists and will be overwriten");
-				} else {
+        DocumentChangeListener documentListener = new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                boolean exists = checkScaleNameExists();
+                if (exists) {
+                    headerPanel.setMessageStatus(MessageStatus.WARN);
+                    headerPanel.setMessage("Scale name already exists and will be overwriten");
+                } else {
                     headerPanel.setMessageStatus(MessageStatus.INFO);
-					headerPanel.setMessage(MESSAGE);
+                    headerPanel.setMessage(MESSAGE);
                 }
-                if (name.getText().isEmpty())
+                if (name.getText().isEmpty()) {
                     okButton.setEnabled(false);
-                else
+                } else {
                     okButton.setEnabled(true);
-			}
-		};
+                }
+            }
+        };
 
-		name.getDocument().addDocumentListener(documentListener);
-        
+        name.getDocument().addDocumentListener(documentListener);
+
     }
 
-	public DialogHeaderPanel getHeaderPanel() {
-		return headerPanel;
-	}
+    public DialogHeaderPanel getHeaderPanel() {
+        return headerPanel;
+    }
 
-	public void setExistingScaleNames(Set<String> existingScaleNames) {
-		this.existingScaleNames = existingScaleNames;
-	}
+    public void setExistingScaleNames(Set<String> existingScaleNames) {
+        this.existingScaleNames = existingScaleNames;
+    }
 
-	public boolean checkScaleNameExists() {
+    boolean checkScaleNameExists() {
         return existingScaleNames.contains(name.getText());
         //return false;
-	}
-	
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    }
+
+    /**
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
     public int getReturnStatus() {
         return returnStatus;
     }
 
-	public boolean isCancelled() {
-		return returnStatus == RET_CANCEL;
-	}
+    public boolean isCancelled() {
+        return returnStatus == RET_CANCEL;
+    }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -142,43 +155,11 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(0, 570, Short.MAX_VALUE)
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)))
-                .addGap(9, 9, 9))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGap(0, 570, Short.MAX_VALUE).addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)).addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE))).addGap(9, 9, 9)));
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{cancelButton, okButton});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addGap(29, 29, 29))
-        );
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(headerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton)).addGap(29, 29, 29)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -191,7 +172,9 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /** Closes the dialog */
+    /**
+     * Closes the dialog
+     */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
@@ -213,7 +196,45 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-	public String getScaleName() {
-		return name.getText();
-	}
+    public String getScaleName() {
+        return name.getText();
+    }
+
+    public static void actionLoadDecorator(ValueModel decoratorModel) {
+
+        DecoratorArchivePersistance archivePersistance =
+                new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+
+        Decorator d = (Decorator) decoratorModel.getValue();
+
+        LoadDecoratorDialog dialog = new LoadDecoratorDialog(
+                AppFrame.get(),
+                archive.getDecorators().values().toArray(),
+                d.getClass());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+        Decorator loadedDecorator = dialog.getSelectedDecorator();
+
+        decoratorModel.setValue(loadedDecorator);
+
+    }
+
+    public static void actionSaveDecorator(Decorator d) {
+        DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
+        DecoratorArchive archive = archivePersistance.load();
+        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
+        dialog.setExistingScaleNames(archive.getDecorators().keySet());
+        dialog.setName(d.getName());
+        dialog.setVisible(true);
+        if (dialog.isCancelled()) {
+            return;
+        }
+
+        d.setName(dialog.getScaleName());
+        archive.add(d);
+        archivePersistance.save(archive);
+    }
 }

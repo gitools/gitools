@@ -1,30 +1,40 @@
 /*
- * Copyright (c) 2007-2012 The Broad Institute, Inc.
- * SOFTWARE COPYRIGHT NOTICE
- * This software and its documentation are the copyright of the Broad Institute, Inc. All rights are reserved.
- *
- * This software is supplied without any warranty or guaranteed support whatsoever. The Broad Institute is not responsible for its use, misuse, or functionality.
- *
- * This software is licensed under the terms of the GNU Lesser General Public License (LGPL),
- * Version 2.1 which is available at http://www.opensource.org/licenses/lgpl-2.1.php.
- */
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.platform.dialog;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @noinspection ALL
+ */
 public class MessageUtils {
 
-    private static Logger log = Logger.getLogger(MessageUtils.class);
+    private static final Logger log = Logger.getLogger(MessageUtils.class);
 
     // Somewhat silly class, needed to pass values between threads
     static class ValueHolder {
@@ -46,7 +56,7 @@ public class MessageUtils {
         showMessage(parent, Level.INFO, message);
     }
 
-    public static synchronized void showMessage(final Frame parent, Level level, String message) {
+    private static synchronized void showMessage(@Nullable final Frame parent, Level level, String message) {
 
         log.log(level, message);
         // Always use HTML for message displays, but first remove any embedded <html> tags.

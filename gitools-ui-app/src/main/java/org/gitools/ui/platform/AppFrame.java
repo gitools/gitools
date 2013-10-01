@@ -1,35 +1,32 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.Actions;
-import org.gitools.ui.heatmap.editor.HeatmapDemoEditor;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.settings.Settings;
-import org.gitools.ui.view.details.DetailsView;
-import org.gitools.ui.view.properties.PropertiesView;
 import org.gitools.ui.welcome.WelcomeEditor;
-import org.gitools.ui.workspace.NavigatorPanel;
-import org.gitools.workspace.Workspace;
-import org.gitools.workspace.WorkspaceManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,188 +39,110 @@ import java.net.URLConnection;
 
 public class AppFrame extends JFrame {
 
-	private static final long serialVersionUID = -6899584212813749990L;
+    private static final long serialVersionUID = -6899584212813749990L;
+    private static final String appName;
+    private static String appVersion;
 
-	public enum WorkbenchLayout {
-		LEFT, RIGHT, TOP, BOTTOM
-	}
-	
-	private static String appName;
-	private static String appVersion;
-	
-	static {
-		/*appName = AppFrame.class.getPackage().getImplementationTitle();
-		if (appName == null)*/
-			appName = "Gitools";
-		
-		appVersion = AppFrame.class.getPackage().getImplementationVersion();
-		if (appVersion == null)
-			appVersion = "SNAPSHOT";
-	}
-	
-	private static final int defaultDividerLocation = 340;
-	
-	private WorkbenchLayout layout;
-	
-	private JToolBar toolBar;
-	
-	private JTabbedPane leftPanel;
-	private int leftPanelSize;
-	
-	private NavigatorPanel navPanel;
+    static {
+        appName = "Gitools";
 
-	private DetailsView detailsView;
+        appVersion = AppFrame.class.getPackage().getImplementationVersion();
+        if (appVersion == null) {
+            appVersion = "SNAPSHOT";
+        }
+    }
 
-	private PropertiesView propertiesView;
-	
-	private EditorsPanel editorsPanel;
-	
-	private StatusBar statusBar;
+    private JToolBar toolBar;
 
-	private JSplitPane splitPane;
-	
-	private static AppFrame instance;
-	
-	public static AppFrame instance() {
-		if (instance == null)
-			instance = new AppFrame();
-		return instance;
-	}
-	
-	private AppFrame() {
+    private EditorsPanel editorsPanel;
 
-		this.leftPanelSize = defaultDividerLocation;
-		
-		this.layout = WorkbenchLayout.LEFT;
+    private StatusBar statusBar;
 
-		createComponents();
-		
-		addWindowListener(new WindowAdapter() {
-			@Override public void windowClosing(WindowEvent e) {
-				Settings.getDefault().save();
-				System.exit(0);
-			}
-		});
+    private static AppFrame instance;
 
-		setTitle(appName + " " + appVersion);
-		setStatusText("Ok");
-		
-		setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
-		
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setPreferredSize(new Dimension(980, 750));
-		pack();
-	}
+    public static AppFrame get() {
+        if (instance == null) {
+            instance = new AppFrame();
+        }
+        return instance;
+    }
 
-	public static String getAppName() {
-		return appName;
-	}
-	
-	public static String getAppVersion() {
-		return appVersion;
-	}
-	
-	private void createComponents() {
-		setJMenuBar(Actions.menuActionSet.createMenuBar());
-		
-		toolBar = Actions.toolBarActionSet.createToolBar();
-		
-		/*Workspace workspace = openWorkspace();
-		navPanel = new NavigatorPanel(workspace);*/
-				
-		leftPanel = new JTabbedPane();
-		//leftPanel.setTabPlacement(JTabbedPane.LEFT);
-		//leftPanel.add(navPanel, "Navigator");
+    private AppFrame() {
 
-		/* Details view */
-		detailsView = new DetailsView();
-		leftPanel.add(detailsView, "Details");
+        createComponents();
 
-		/* Properties view */
-		propertiesView = new PropertiesView();
-		leftPanel.add(propertiesView, "Properties");
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Settings.getDefault().save();
+                System.exit(0);
+            }
+        });
 
-		editorsPanel = new EditorsPanel();
-		
-		statusBar = new StatusBar();
-		
-		configureLayout(layout);
-	}
-	
-	private void configureLayout(WorkbenchLayout layout) {
-		int splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
-		boolean leftOrTop = true;
-		switch(layout) {
-		case LEFT:
-		case RIGHT:
-			splitOrientation = JSplitPane.HORIZONTAL_SPLIT;
-			break;
-		case TOP:
-		case BOTTOM:
-			splitOrientation = JSplitPane.VERTICAL_SPLIT;
-			break;
-		}
-		switch(layout) {
-		case LEFT:
-		case TOP: leftOrTop = true; break;
-		case RIGHT:
-		case BOTTOM: leftOrTop = false; break;
-		}
-		
-		splitPane = new JSplitPane(splitOrientation);
-		if (leftOrTop) {
-			splitPane.add(leftPanel);
-			splitPane.add(editorsPanel);
-		}
-		else {
-			splitPane.add(editorsPanel);
-			splitPane.add(leftPanel);
-		}
-		splitPane.setDividerLocation(leftPanelSize);
-		splitPane.setOneTouchExpandable(true);
-		splitPane.setContinuousLayout(true);
-		
-		setLayout(new BorderLayout());
-		add(toolBar, BorderLayout.NORTH);
-		add(splitPane, BorderLayout.CENTER);
-		add(statusBar, BorderLayout.SOUTH);
-	}
-	
-	private Workspace openWorkspace() {
-		Workspace workspace = WorkspaceManager.getDefault().getWorkspace();
-		
-		return workspace;
-	}
-	
-	private void createWelcomeView() {
-		AbstractEditor view = new WelcomeEditor();
-		editorsPanel.addEditor(view);
-	}
-	
-	private void createDemoView() {
-		AbstractEditor demoView = 
-			new HeatmapDemoEditor(40, 12);
-		
-		editorsPanel.addEditor(demoView);
-	}
+        setTitle(appName + " " + appVersion);
+        setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(1200, 750));
+        pack();
+    }
 
-	public void start() {
-		createWelcomeView();
-		//createDemoView();
-		editorsPanel.setSelectedIndex(0);
+    public static String getAppName() {
+        return appName;
+    }
 
-		setLocationByPlatform(true);
-		setVisible(true);
+    public static String getAppVersion() {
+        return appVersion;
+    }
+
+    private void createComponents() {
+        setJMenuBar(Actions.menuActionSet.createMenuBar());
+
+        toolBar = Actions.toolBarActionSet.createToolBar();
+
+        editorsPanel = new EditorsPanel();
+
+        statusBar = new StatusBar();
+
+
+        configureLayout();
+    }
+
+
+    private void configureLayout() {
+        setLayout(new BorderLayout());
+        add(toolBar, BorderLayout.NORTH);
+        add(editorsPanel, BorderLayout.CENTER);
+        add(statusBar, BorderLayout.SOUTH);
+    }
+
+    private void createWelcomeView() {
+        AbstractEditor view = new WelcomeEditor();
+        editorsPanel.addEditor(view);
+    }
+
+    public void start() {
+        createWelcomeView();
+        editorsPanel.setSelectedIndex(0);
+
+        setLocationByPlatform(true);
+        setVisible(true);
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(!isLatestGitools()) {
-                        JOptionPane.showMessageDialog(AppFrame.instance(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
-                    }
-                } catch (Exception e) {
 
+                    String javaVersion = System.getProperty("java.version");
+                    if (javaVersion != null && javaVersion.endsWith("1.7.0_25")) {
+                        JOptionPane.showMessageDialog(AppFrame.get(), "You are using Java 7 build 25. This build has some important bugs, please update to the latest Java 7 build.");
+                    }
+
+                    if (!isLatestGitools()) {
+                        JOptionPane.showMessageDialog(AppFrame.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -231,24 +150,22 @@ public class AppFrame extends JFrame {
         Thread t = new Thread(runnable);
         t.start();
 
+    }
 
-
-	}
-
-    public boolean isLatestGitools() throws Exception {
+    boolean isLatestGitools() throws Exception {
 
         String thisVersion = AppFrame.getAppVersion();
-        if (thisVersion.toLowerCase().contains("snapshot"))
+        if (thisVersion.toLowerCase().contains("snapshot")) {
             return true;
+        }
 
-        URL latestUrl = new URL("http://www.gitools.org/download/latest.txt");
+        URL latestUrl = new URL("http://www.gitools.org/downloads/latest.txt");
 
         URLConnection con = latestUrl.openConnection();
         con.setConnectTimeout(5);
         con.setReadTimeout(5);
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(latestUrl.openStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(latestUrl.openStream()));
 
         String latestVersion;
         latestVersion = in.readLine();
@@ -260,46 +177,20 @@ public class AppFrame extends JFrame {
         return true;
     }
 
-	public void setLeftPanelVisible(boolean visible) {
-		boolean prevVisible = leftPanel.isVisible();
+    public EditorsPanel getEditorsPanel() {
+        return editorsPanel;
+    }
 
-		if (prevVisible != visible) {
-			if (!visible)
-				leftPanelSize = splitPane.getDividerLocation();
-			else
-				splitPane.setDividerLocation(leftPanelSize);
+    public JToolBar getToolBar() {
+        return toolBar;
+    }
 
-			leftPanel.setVisible(visible);
-		}
-	}
+    public void setStatusText(String text) {
+        statusBar.setText(text);
+        repaint();
+    }
 
-	public NavigatorPanel getNavigatorPanel() {
-		return navPanel;
-	}
-	
-	public EditorsPanel getEditorsPanel() {
-		return editorsPanel;
-	}
+    public void refresh() {
+    }
 
-	public DetailsView getDetailsView() {
-		return detailsView;
-	}
-
-	public PropertiesView getPropertiesView() {
-		return propertiesView;
-	}
-	
-	public void setStatusText(String text) {
-		statusBar.setText(text);
-		repaint();
-	}
-
-	@Deprecated
-	public IProgressMonitor createMonitor() {
-		return statusBar.createMonitor();
-	}
-
-	public void refresh() {
-		
-	}
 }

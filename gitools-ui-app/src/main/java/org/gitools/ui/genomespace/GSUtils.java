@@ -11,8 +11,9 @@
 
 package org.gitools.ui.genomespace;
 
-
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.*;
@@ -22,23 +23,30 @@ import java.util.List;
 /**
  * @author jrobinso
  * @date Jun 9, 2011
+ * @noinspection ALL
  */
 public class GSUtils {
-    static final Logger log = Logger.getLogger(GSUtils.class);
+    private static final Logger log = Logger.getLogger(GSUtils.class);
 
 
     /*
     * Directory and filenames to save the token and username to facilitate SSO
     */
-    private static String tokenSaveDir = ".gs";
-    private static String tokenSaveFileName = ".gstoken";
-    private static String usernameSaveFileName = ".gsusername";
-    public static String gsUser = null;
-    public static String gsToken = null;
+    @NotNull
+    private static final String tokenSaveDir = ".gs";
+    @NotNull
+    private static final String tokenSaveFileName = ".gstoken";
+    @NotNull
+    private static final String usernameSaveFileName = ".gsusername";
+    @Nullable
+    private static String gsUser = null;
+    @Nullable
+    private static String gsToken = null;
 
     public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
     public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identity.genomespace.org/identityServer/basic";
 
+    @NotNull
     private static File getTokenSaveDir() {
         String userDir = System.getProperty("user.home");
         File gsDir = new File(userDir, tokenSaveDir);
@@ -48,11 +56,13 @@ public class GSUtils {
         return gsDir;
     }
 
+    @Nullable
     private static File getTokenFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, tokenSaveFileName) : null;
     }
 
+    @Nullable
     private static File getUsernameFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, usernameSaveFileName) : null;
@@ -69,11 +79,14 @@ public class GSUtils {
                 return; // someone made a file with this name...
             }
             File tokenFile = getTokenFile();
-            if (tokenFile.exists()) tokenFile.delete();
+            if (tokenFile.exists()) {
+                tokenFile.delete();
+            }
             writeToFile(gsToken, tokenFile);
         }
     }
 
+    @Nullable
     public static String getGSToken() {
         if (gsToken == null) {
             File file = GSUtils.getTokenFile();
@@ -85,10 +98,12 @@ public class GSUtils {
                 } catch (IOException e) {
                     log.error("Error reading GS cookie", e);
                 } finally {
-                    if (br != null) try {
-                        br.close();
-                    } catch (IOException e) {
-                        // Ignore
+                    if (br != null) {
+                        try {
+                            br.close();
+                        } catch (IOException e) {
+                            // Ignore
+                        }
                     }
                 }
             }
@@ -107,12 +122,15 @@ public class GSUtils {
                 return; // someone made a file with this name...
             }
             File userFile = getUsernameFile();
-            if (userFile.exists()) userFile.delete();
+            if (userFile.exists()) {
+                userFile.delete();
+            }
             writeToFile(gsUser, userFile);
         }
     }
 
 
+    @Nullable
     public static String getGSUser() throws IOException {
         if (gsUser == null) {
             BufferedReader br = null;
@@ -124,7 +142,9 @@ public class GSUtils {
                 }
             } finally {
                 try {
-                    if (br != null) br.close();
+                    if (br != null) {
+                        br.close();
+                    }
                 } catch (Exception e) {
                 }
             }
@@ -152,7 +172,9 @@ public class GSUtils {
         try {
             URI gsURI = new URI(DEFAULT_GS_DM_SERVER);
             CookieManager manager = (CookieManager) CookieManager.getDefault();
-            if (manager == null) return;
+            if (manager == null) {
+                return;
+            }
             final CookieStore cookieStore = manager.getCookieStore();
             List<HttpCookie> cookies = new ArrayList<HttpCookie>(cookieStore.get(gsURI));
             if (cookies != null) {
@@ -181,14 +203,16 @@ public class GSUtils {
             log.error("Failed to save the token for later Single Sign on", e);
         } finally {
             try {
-                if (bw != null) bw.close();
+                if (bw != null) {
+                    bw.close();
+                }
             } catch (Exception e) {
             }
         }
     }
 
 
-    public static boolean isGenomeSpace(URL url) {
+    public static boolean isGenomeSpace(@NotNull URL url) {
         return url.getHost().contains("genomespace");
     }
 

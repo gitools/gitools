@@ -1,38 +1,37 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * AddHeaderDialog.java
- *
- * Created on 25-feb-2011, 19:33:13
- */
-
 package org.gitools.ui.heatmap.header;
 
-import javax.swing.*;
-
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDataHeatmapHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,25 +39,24 @@ import java.util.Map;
 
 public class AddHeaderPage extends AbstractWizardPage {
 
-    private class IconListRenderer
-            extends DefaultListCellRenderer {
+    private final static Color SELECTED_BACKGROUND_COLOR = new Color(155,155,205);
 
+    private class IconListRenderer extends DefaultListCellRenderer {
+
+        @Nullable
         private Map<Object, ImageIcon> icons = null;
 
         public IconListRenderer(Map<Object, ImageIcon> icons) {
             this.icons = icons;
         }
 
+        @NotNull
         @Override
-        public Component getListCellRendererComponent(
-                JList list, Object value, int index,
-                boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, @NotNull Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
             // Get the renderer component from parent class
 
-            JLabel label =
-                    (JLabel) super.getListCellRendererComponent(list,
-                            value, index, isSelected, cellHasFocus);
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             // Get icon to use for the list item value
 
@@ -67,43 +65,52 @@ public class AddHeaderPage extends AbstractWizardPage {
             // Set icon to display for value
 
             label.setIcon(icon);
+
+            if (isSelected) {
+                setBackground(SELECTED_BACKGROUND_COLOR);
+            }
+
             return label;
         }
     }
 
 
-	private static class HeaderType {
-		private String title;
-		private Class<? extends HeatmapHeader> cls;
+    private static class HeaderType {
+        private final String title;
+        private final Class<? extends HeatmapHeader> cls;
 
-		public HeaderType(String title, Class<? extends HeatmapHeader> cls) {
-			this.title = title;
-			this.cls = cls;
-		}
+        public HeaderType(String title, Class<? extends HeatmapHeader> cls) {
+            this.title = title;
+            this.cls = cls;
+        }
 
-		public String getTitle() {
-			return title;
-		}
+        public String getTitle() {
+            return title;
+        }
 
-		public Class<? extends HeatmapHeader> getHeaderClass() {
-			return cls;
-		}
+        public Class<? extends HeatmapHeader> getHeaderClass() {
+            return cls;
+        }
 
-		@Override
-		public String toString() {
-			return title;
-		}
-	}
-    
-    public static String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
-    public static String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
-    public static String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
-    public static String ANNOTATION_HEATMAP = "Heatmap from annotation";
+        @Override
+        public String toString() {
+            return title;
+        }
+    }
+
+    @NotNull
+    private static final String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    @NotNull
+    private static final String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    @NotNull
+    private static final String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    @NotNull
+    public static final String ANNOTATION_HEATMAP = "Heatmap from annotation";
 
 
-	private DefaultListModel model;
-
-    /** Creates new form AddHeaderDialog */
+    /**
+     * Creates new form AddHeaderDialog
+     */
     public AddHeaderPage() {
         initComponents();
 
@@ -114,33 +121,34 @@ public class AddHeaderPage extends AbstractWizardPage {
         icons.put(ANNOTATION_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_HEATMAP, 60));
 
 
-		model = new DefaultListModel();
-		model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
-		model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
-        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDataHeatmapHeader.class));
-        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDataHeatmapHeader.class));
-		// TODO Colored clusters from a hierarchical clustering
-		// TODO Values plot
-		// TODO Calculated value
+        DefaultListModel model = new DefaultListModel();
+        model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
+        model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
+        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDecoratorHeader.class));
+        model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDecoratorHeader.class));
+        // TODO Colored clusters from a hierarchical clustering
+        // TODO Values plot
+        // TODO Calculated value
 
-		headerTypeList.setModel(model);
+        headerTypeList.setModel(model);
         headerTypeList.setCellRenderer(new IconListRenderer(icons));
-		headerTypeList.setSelectedIndex(0);
+        headerTypeList.setSelectedIndex(0);
 
-		setTitle("Which type of header do you want to add ?");
+        setTitle("Which type of header do you want to add ?");
 
-		setComplete(true);
+        setComplete(true);
     }
 
-	public Class<? extends HeatmapHeader> getHeaderClass() {
-		return ((HeaderType) headerTypeList.getSelectedValue()).getHeaderClass();
-	}
-    
+    public Class<? extends HeatmapHeader> getHeaderClass() {
+        return ((HeaderType) headerTypeList.getSelectedValue()).getHeaderClass();
+    }
+
     public String getHeaderTitle() {
         return ((HeaderType) headerTypeList.getSelectedValue()).getTitle();
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -157,20 +165,8 @@ public class AddHeaderPage extends AbstractWizardPage {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
 

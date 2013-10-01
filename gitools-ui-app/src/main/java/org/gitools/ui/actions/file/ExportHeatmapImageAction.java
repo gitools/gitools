@@ -1,28 +1,31 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.drawer.HeatmapDrawer;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.drawer.HeatmapDrawer;
+import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.core.persistence.formats.FileFormats;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -32,6 +35,8 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -42,90 +47,79 @@ import java.io.File;
 
 public class ExportHeatmapImageAction extends BaseAction {
 
-	private static final long serialVersionUID = -7288045475037410310L;
+    private static final long serialVersionUID = -7288045475037410310L;
 
-	public ExportHeatmapImageAction() {
-		super("Export heatmap as an image ...");
-		
-		setDesc("Export the heatmap as an image file");
-		setMnemonic(KeyEvent.VK_I);
-	}
-	
-	@Override
-	public boolean isEnabledByModel(Object model) {
-		return model instanceof Heatmap;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    public ExportHeatmapImageAction() {
+        super("Export heatmap as an image ...");
 
-		AbstractEditor editor = ActionUtils.getSelectedEditor();
-		if (editor == null)
-			return;
+        setDesc("Export the heatmap as an image file");
+        setMnemonic(KeyEvent.VK_I);
+    }
 
-		final Object model = editor.getModel();
-		if (!(model instanceof Heatmap))
-			return;
+    @Override
+    public boolean isEnabledByModel(Object model) {
+        return model instanceof Heatmap;
+    }
 
-		SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-				"Export heatmap to image ...",
-				PersistenceUtils.getFileName(editor.getName()),
-				Settings.getDefault().getLastExportPath(),
-				new FileFormat[] {
-					FileFormats.PNG,
-					FileFormats.JPG
-				});
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-		WizardDialog dlg = new WizardDialog(AppFrame.instance(), saveWiz);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+        AbstractEditor editor = ActionUtils.getSelectedEditor();
+        if (editor == null) {
+            return;
+        }
 
-		Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+        final Object model = editor.getModel();
+        if (!(model instanceof Heatmap)) {
+            return;
+        }
 
-		final File file = saveWiz.getPathAsFile();
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG});
 
-		final String formatExtension = saveWiz.getFormat().getExtension();
+        WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Exporting heatmap to image ...", 1);
-					monitor.info("File: " + file.getName());
+        Settings.getDefault().setLastExportPath(saveWiz.getFolder());
 
-					Heatmap hm = (Heatmap) model;
+        final File file = saveWiz.getPathAsFile();
 
-					HeatmapDrawer drawer = new HeatmapDrawer(hm);
-					drawer.setPictureMode(true);
+        final String formatExtension = saveWiz.getFormat().getExtension();
 
-					Dimension heatmapSize = drawer.getSize();
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
+            @Override
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
+                    monitor.begin("Exporting heatmap to image ...", 1);
+                    monitor.info("File: " + file.getName());
 
-					/*int type = formatExtension.equals(FileChooserUtils.png) ?
-						BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB;*/
+                    Heatmap hm = (Heatmap) model;
 
-					int type = BufferedImage.TYPE_INT_RGB;
+                    HeatmapDrawer drawer = new HeatmapDrawer(hm);
+                    drawer.setPictureMode(true);
 
-					BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, type);
-					Graphics2D g = bi.createGraphics();
-					g.setColor(Color.WHITE);
-					g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
-					drawer.draw(g,
-							new Rectangle(new Point(), heatmapSize),
-							new Rectangle(new Point(), heatmapSize));
+                    Dimension heatmapSize = drawer.getSize();
 
-					ImageIO.write(bi, formatExtension, file);
+                    final BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, BufferedImage.TYPE_INT_RGB);
+                    Graphics2D g = bi.createGraphics();
+                    g.setColor(Color.WHITE);
+                    g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
+                    drawer.draw(g, new Rectangle(new Point(), heatmapSize), new Rectangle(new Point(), heatmapSize));
 
-					monitor.end();
-				}
-				catch (Exception ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
+                    ImageIO.write(bi, formatExtension, file);
 
-		AppFrame.instance().setStatusText("Image created.");
-	}
+                    monitor.end();
+                } catch (Exception ex) {
+                    monitor.exception(ex);
+                }
+            }
+        });
+
+        AppFrame.get().setStatusText("Image created.");
+    }
+
 
 
 }

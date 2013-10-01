@@ -1,174 +1,183 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
-	private static final long serialVersionUID = -4330234851091328953L;
+    private static final long serialVersionUID = -4330234851091328953L;
 
-	private String id;
-	
-	private IWizard wizard;
-	
-	private boolean pageComplete;
-	
-	private String title = "";
+    @Nullable
+    private String id;
 
-	private Icon logo;
+    private IWizard wizard;
 
-	private MessageStatus status = MessageStatus.INFO;
+    private boolean pageComplete;
 
-	private String message = "";
+    private String title = "";
 
-	private HelpContext helpContext;
+    private Icon logo;
 
-	private List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
-	
-	public AbstractWizardPage() {
-		this(null);
-	}
-	
-	public AbstractWizardPage(String id) {
-		this.id = id != null ? id : this.getClass().getCanonicalName();
-		this.pageComplete = false;
-		//this.helpContext = new HelpContext(this.getClass());
-	}
-	
-	@Override
-	public String getId() {
-		return id;
-	}
-	
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	@Override
-	public IWizard getWizard() {
-		return wizard;
-	}
-	
-	@Override
-	public void setWizard(IWizard wizard) {
-		this.wizard = wizard;
-	}
-	
-	@Override
-	public boolean isComplete() {
-		return pageComplete;
-	}
-	
-	public void setComplete(boolean complete) {
-		this.pageComplete = complete;
-		fireUpdated();
-	}
+    private MessageStatus status = MessageStatus.INFO;
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
-	
-	@Override
-	public void updateControls() {
-		// do nothing
-	}
+    private String message = "";
 
-	@Override
-	public void updateModel() {
-		// do nothing
-	}
-	
-	@Override
-	public String getTitle() {
-		return title;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-		fireUpdated();
-	}
+    private HelpContext helpContext;
 
-	@Override
-	public Icon getLogo() {
-		return logo;
-	}
+    @NotNull
+    private final List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
 
-	public void setLogo(Icon logo) {
-		this.logo = logo;
-	}
+    protected AbstractWizardPage() {
+        this(null);
+    }
 
-	@Override
-	public MessageStatus getStatus() {
-		return this.status;
-	}
+    protected AbstractWizardPage(@Nullable String id) {
+        this.id = id != null ? id : this.getClass().getCanonicalName();
+        this.pageComplete = false;
+        //this.helpContext = new HelpContext(this.getClass());
+    }
 
-	public void setStatus(MessageStatus status) {
-		this.status = status;
-		fireUpdated();
-	}
+    @Nullable
+    @Override
+    public String getId() {
+        return id;
+    }
 
-	@Override
-	public String getMessage() {
-		return message;
-	}
-	
-	public void setMessage(String message) {
-		this.message = message;
-		fireUpdated();
-	}
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	@Override
-	public HelpContext getHelpContext() {
-		return helpContext;
-	}
+    @Override
+    public IWizard getWizard() {
+        return wizard;
+    }
 
-	@Override
-	public void addPageUpdateListener(IWizardPageUpdateListener listener) {
-		listeners.add(listener);
-	}
+    @Override
+    public void setWizard(IWizard wizard) {
+        this.wizard = wizard;
+    }
 
-	@Override
-	public void removePageUpdateListener(IWizardPageUpdateListener listener) {
-		listeners.remove(listener);
-	}
+    @Override
+    public boolean isComplete() {
+        return pageComplete;
+    }
 
-	@Override
-	public void setHelpContext(HelpContext helpContext) {
-		this.helpContext = helpContext;
-	}
+    protected void setComplete(boolean complete) {
+        this.pageComplete = complete;
+        fireUpdated();
+    }
 
-	public void setMessage(MessageStatus status, String message) {
-		this.status = status;
-		this.message = message;
-		fireUpdated();
-	}
+    @Nullable
+    @Override
+    public JComponent createControls() {
+        return this;
+    }
 
-	protected void fireUpdated() {
-		for (IWizardPageUpdateListener l : listeners)
-			l.pageUpdated(this);
-	}
+    @Override
+    public void updateControls() {
+        // do nothing
+    }
+
+    @Override
+    public void updateModel() {
+        // do nothing
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        fireUpdated();
+    }
+
+    @Override
+    public Icon getLogo() {
+        return logo;
+    }
+
+    protected void setLogo(Icon logo) {
+        this.logo = logo;
+    }
+
+    @Override
+    public MessageStatus getStatus() {
+        return this.status;
+    }
+
+    protected void setStatus(MessageStatus status) {
+        this.status = status;
+        fireUpdated();
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    protected void setMessage(String message) {
+        this.message = message;
+        fireUpdated();
+    }
+
+    @Override
+    public HelpContext getHelpContext() {
+        return helpContext;
+    }
+
+    @Override
+    public void addPageUpdateListener(IWizardPageUpdateListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removePageUpdateListener(IWizardPageUpdateListener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void setHelpContext(HelpContext helpContext) {
+        this.helpContext = helpContext;
+    }
+
+    public void setMessage(MessageStatus status, String message) {
+        this.status = status;
+        this.message = message;
+        fireUpdated();
+    }
+
+    protected void fireUpdated() {
+        for (IWizardPageUpdateListener l : listeners)
+            l.pageUpdated(this);
+    }
 }

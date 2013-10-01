@@ -1,98 +1,136 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * LabelHeaderPage.java
- *
- * Created on 25-feb-2011, 21:01:35
- */
-
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.matrix.model.AnnotationMatrix;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.FileSuffixes;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.settings.Settings;
+import org.gitools.ui.utils.FileChooserUtils;
+import org.gitools.ui.utils.LogUtils;
+import org.gitools.ui.wizard.common.AnnotationOption;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class AnnotationSourcePage extends AbstractWizardPage {
 
-	protected HeatmapDim hdim;
-    public  String infoMessage = "";
+    private final HeatmapDimension hdim;
+    public String infoMessage = "";
     private int[] selectedIndices;
+    private List<AnnotationOption> annotationOptions;
 
-    public AnnotationSourcePage(HeatmapDim hdim, String infoMessage) {
-		this.hdim = hdim;
+    public AnnotationSourcePage(HeatmapDimension hdim, String infoMessage) {
+        this.hdim = hdim;
 
         initComponents();
 
         this.selectedIndices = new int[0];
         this.infoMessage = infoMessage;
-		setTitle("Select the annotation");
-        setMessage(MessageStatus.INFO,infoMessage);
-		setComplete(false);
+        setTitle("Select the annotation");
+        setMessage(MessageStatus.INFO, infoMessage);
+        setComplete(false);
     }
 
 
+    @Override
+    public void updateControls() {
+        super.updateControls();
 
-	@Override
-	public void updateControls() {
-		super.updateControls();
+        IAnnotations am = hdim.getAnnotations();
+        if (am != null && !am.getLabels().isEmpty() && annList.getModel().getSize() != am.getLabels().size()) {
+            DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
 
-		AnnotationMatrix am = hdim.getAnnotations();
-        int seomvar = annList.getModel().getSize();
-		if (am != null && am.getColumnCount() > 0 && annList.getModel().getSize() != am.getColumnCount()) {
-			DefaultListModel model = new DefaultListModel();
-			for (int i = 0; i < am.getColumnCount(); i++)
-				model.addElement(am.getColumnLabel(i));
-			annList.setModel(model);
-		}
+            annotationOptions = new ArrayList<>(am.getLabels().size());
+            for (String key : am.getLabels()) {
+                String description = hdim.getAnnotations().getAnnotationMetadata("description", key);
+                annotationOptions.add(new AnnotationOption(key, description));
+            }
+
+            Collections.sort(annotationOptions, new Comparator<AnnotationOption>() {
+                @Override
+                public int compare(AnnotationOption o1, AnnotationOption o2) {
+                    return o1.toString().toUpperCase().compareTo(o2.toString().toUpperCase());
+                }
+            });
+
+            for (AnnotationOption annotationOption : annotationOptions) {
+                model.addElement(annotationOption);
+            }
+
+            annList.setModel(model);
+        }
         annList.setSelectedIndices(selectedIndices);
-	}
+    }
 
-	@Override
-	public void updateModel() {
-		super.updateModel();
-	}
+    @Override
+    public void updateModel() {
+        super.updateModel();
+    }
 
+    @NotNull
     public String getSelectedPattern() {
 
         StringBuilder sb = new StringBuilder();
-        Object[] values = annList.getSelectedValues();
-        if (values.length == 0)
+        int[] values = annList.getSelectedIndices();
+        if (values.length == 0) {
             return "";
+        }
 
         sb.append("${");
-        sb.append(values[0]);
+        sb.append(getSelectedAnnotation());
         sb.append("}");
 
         return sb.toString();
     }
 
-	public String getSelectedAnnotation() {
-		if (annList.getSelectedIndex() != -1)
-			return (String) annList.getSelectedValue();
-		else
-			return "";
-	}
+    @NotNull
+    public String getSelectedAnnotation() {
+        if (annList.getSelectedIndex() != -1) {
+            return annotationOptions.get(annList.getSelectedIndex()).getKey();
+        } else {
+            return "";
+        }
+    }
+
+    public String getAnnotationMetadata(String key) {
+        return hdim.getAnnotations().getAnnotationMetadata(key, getSelectedAnnotation());
+    }
 
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -105,6 +143,7 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         jScrollPane1 = new javax.swing.JScrollPane();
         annList = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
+        loadAnnotations = new javax.swing.JButton();
 
         annList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         annList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -114,48 +153,76 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         });
         jScrollPane1.setViewportView(annList);
 
-        jLabel1.setText("Available annotations");
+        jLabel1.setText("Available " + hdim.getId() + " annotations");
+
+        loadAnnotations.setText("Add annotations from file...");
+        loadAnnotations.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadAnnotationsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(loadAnnotations))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(loadAnnotations))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void annListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_annListValueChanged
         boolean complete = annList.getSelectedIndices().length > 0;
         setComplete(complete);
-        
+
         if (complete) {
-            int oldvalue = selectedIndices.length > 0 ? selectedIndices[0]: -1;
+            int oldvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
             selectedIndices = annList.getSelectedIndices();
             int newvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
-            if (oldvalue != selectedIndices[0])
-                setMessage(MessageStatus.INFO,this.infoMessage);
+            if (oldvalue != selectedIndices[0]) {
+                setMessage(MessageStatus.INFO, this.infoMessage);
+            }
         }
     }//GEN-LAST:event_annListValueChanged
+
+    private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
+        try {
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
+
+            if (file != null) {
+                hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class)).get());
+                updateControls();
+                //annFile.setText(file.getName());
+            }
+        } catch (Exception ex) {
+            LogUtils.logException(ex, LoggerFactory.getLogger(getClass()));
+        }
+    }//GEN-LAST:event_loadAnnotationsActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList annList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadAnnotations;
     private javax.swing.ButtonGroup optGroup;
     // End of variables declaration//GEN-END:variables
 

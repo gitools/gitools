@@ -1,98 +1,103 @@
 /*
- *  Copyright 2012 michi.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.settings.decorators;
 
-import java.util.*;
+import org.gitools.core.model.decorator.Decorator;
+import org.gitools.core.model.decorator.DecoratorDescriptor;
+import org.gitools.core.model.decorator.DecoratorFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.gitools.model.decorator.ElementDecorator;
-import org.gitools.model.decorator.ElementDecoratorDescriptor;
-import org.gitools.model.decorator.ElementDecoratorFactory;
+import java.util.*;
 
 
-/**
- *
- * @author michi
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DecoratorArchive {
 
-    public transient final static String VERSION = "2.0";
+    public transient final static String VERSION = "3.0";
 
-    private List<ElementDecorator> scaleDecorators = new ArrayList<ElementDecorator>();
-        
+    @NotNull
+    private final List<Decorator> scaleDecorators = new ArrayList<Decorator>();
+
     private transient final String DEFAULT = "Default";
 
     public DecoratorArchive() {
     }
 
-    public void add(ElementDecorator[] decorators) {
-        for (ElementDecorator d : decorators) {
+    public void add(Decorator[] decorators) {
+        for (Decorator d : decorators) {
             add(d);
         }
     }
-    
-    public void add(ElementDecorator decorator) {
+
+    public void add(@NotNull Decorator decorator) {
         String name = decorator.getName();
         Set<String> map = getDecorators().keySet();
         if (map.contains(name)) {
-            remove(scaleDecorators,name);
+            remove(scaleDecorators, name);
             scaleDecorators.add(decorator);
         } else {
             scaleDecorators.add(decorator);
         }
     }
-    
-    private void remove(List<ElementDecorator> scaleDecorators, String name) {
-           for(ElementDecorator d : scaleDecorators) {
-               if (d.getName().equals(name)) {
-                   scaleDecorators.remove(d);
-                   return;
-               }
-           }
+
+    private void remove(@NotNull List<Decorator> scaleDecorators, String name) {
+        for (Decorator d : scaleDecorators) {
+            if (d.getName().equals(name)) {
+                scaleDecorators.remove(d);
+                return;
+            }
+        }
     }
-    
-    public Map<String, ElementDecorator> getDecorators(){
-        Map<String, ElementDecorator> decoratorMap = new HashMap<String, ElementDecorator>();
-        
-        for (ElementDecorator d : scaleDecorators) {
+
+    @NotNull
+    public Map<String, Decorator> getDecorators() {
+        Map<String, Decorator> decoratorMap = new HashMap<String, Decorator>();
+
+        for (Decorator d : scaleDecorators) {
             decoratorMap.put(d.getName(), d);
         }
         return decoratorMap;
     }
-   
-    public ElementDecorator[] getDefaultElementDecoratros() {
-        List<ElementDecoratorDescriptor> descriptors = ElementDecoratorFactory.getDescriptors();
-        ElementDecorator[] decorators = new ElementDecorator[descriptors.size()];
+
+    @Nullable
+    public Decorator[] getDefaultElementDecoratros() {
+        List<DecoratorDescriptor> descriptors = DecoratorFactory.getDescriptors();
+        Decorator[] decorators = new Decorator[descriptors.size()];
         int i = 0;
-        for (ElementDecoratorDescriptor descriptor : descriptors) {
-            ElementDecorator decorator = null;
+        for (DecoratorDescriptor descriptor : descriptors) {
+            Decorator decorator = null;
             try {
                 decorator = descriptor.getDecoratorClass().
                         getConstructor().newInstance();
-            }
-            catch (Exception e) {
-            	return null;
+            } catch (Exception e) {
+                return null;
             }
             //decorator = (descriptor.getDecoratorClass()) decorator;
-            decorator.setName(DEFAULT + " " +descriptor.getName());
+            decorator.setName(DEFAULT + " " + descriptor.getName());
             decorators[i] = decorator;
             i++;
         }

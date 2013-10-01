@@ -1,181 +1,198 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.editor;
 
-
+import com.alee.laf.tabbedpane.TabbedPaneStyle;
+import com.alee.laf.tabbedpane.WebTabbedPane;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.component.EditorTabComponent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class EditorsPanel extends JTabbedPane {
+public class EditorsPanel extends WebTabbedPane {
 
-	private static final long serialVersionUID = 2170150185478413716L;
+    private static final String DEFAULT_NAME_PREFIX = "unnamed";
 
-	public static final String DEFAULT_NAME_PREFIX = "unnamed";
+    @NotNull
+    private final Map<String, Integer> nameCounts = new HashMap<String, Integer>();
 
-	private Map<String, Integer> nameCounts = new HashMap<String, Integer>();
+    public EditorsPanel() {
+        createComponents();
 
-	//private AbstractEditor.EditorListener editorListener;
+        setTabbedPaneStyle(TabbedPaneStyle.attached);
 
-	//private JTabbedPane tabbedPane;
-	
-	public EditorsPanel() {
-		createComponents();
+        addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent evt) {
 
-		setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		
-		addChangeListener(new ChangeListener() {
-			@Override public void stateChanged(ChangeEvent evt) {
-				AbstractEditor selectedEditor = getSelectedEditor();
-				if (selectedEditor != null)
-					selectedEditor.doVisible();
+                AbstractEditor selectedEditor = getSelectedEditor();
+                if (selectedEditor != null) {
+                    selectedEditor.doVisible();
 
-				refreshActions();
-			}
-		});
+                    for (int i = 0; i < getTabCount(); i++) {
+                        Component component = getTabComponentAt(i);
+                        if (component instanceof EditorTabComponent) {
+                            AbstractEditor editor = ((EditorTabComponent) component).getEditor();
 
-		/*editorListener = new AbstractEditor.EditorListener() {
-			@Override public void dirtyChanged(IEditor editor) {
-				EditorTabComponent tab = getEditorTab(editor);
-				
-			}
-		};*/
-	}
+                            if (editor != selectedEditor) {
+                                editor.detach();
+                            }
+                        }
+                    }
+                }
 
-	private void createComponents() {
-		//tabbedPane = new JTabbedPane();
-	}
-	
-	public void addEditor(AbstractEditor editor) {
-		if (editor == null)
-			return;
-		
-		final String name = editor.getName() != null ? 
-				editor.getName() : createName();
-				
-		final Icon icon = editor.getIcon();
-		
-		if (icon == null)
-			addTab(name, editor);
-		else
-			addTab(name, icon, editor);
+                refreshActions();
+            }
+        });
+    }
 
-		setTabComponentAt(getTabCount() - 1, new EditorTabComponent(this, editor));
+    public AbstractEditor[] getEditors() {
+        AbstractEditor[] editors = new AbstractEditor[getTabCount()];
+        for (int i = 0; i < editors.length; i++) {
+            Component component = getTabComponentAt(i);
+            if (component instanceof EditorTabComponent) {
+                editors[i] = ((EditorTabComponent) component).getEditor();
+            }
+        }
+        return editors;
+    }
 
-		//editor.addEditorListener(editorListener);
-		
-		refreshActions();
-		
-		setSelectedComponent(editor);
-	}
+    private void createComponents() {
 
-	public void removeEditor(AbstractEditor editor) {
-		if (editor == null)
-			return;
+    }
 
-		//editor.removeEditorListener(editorListener);
+    public void addEditor(@Nullable AbstractEditor editor) {
+        if (editor == null) {
+            return;
+        }
 
-		if (editor.doClose()) {
-			int i = indexOfComponent(editor);
-			if (i != -1)
-				remove(i);
+        final String name = editor.getName() != null ? editor.getName() : createName();
 
-			refreshActions();
-		}
-	}
-	
-	public AbstractEditor getSelectedEditor() {
-		return (AbstractEditor) getSelectedComponent();
-	}
-	
-	public void refreshActions() {
-		AbstractEditor editor = getSelectedEditor();
-		ActionManager.getDefault().updateEnabledByEditor(editor);
-	}
+        final Icon icon = editor.getIcon();
 
-	public String createName() {
-		return createName(DEFAULT_NAME_PREFIX, "");
-	}
+        if (icon == null) {
+            addTab(name, editor);
+        } else {
+            addTab(name, icon, editor);
+        }
 
-	public String createName(String prefix, String suffix) {
-		Set<String> names = new HashSet<String>();
-		int numTabs = getTabCount();
-		for (int i = 0; i < numTabs; i++) {
-			IEditor editor = (IEditor) getComponentAt(i);
-			names.add(editor.getName());
-		}
+        setTabComponentAt(getTabCount() - 1, new EditorTabComponent(this, editor));
 
-		prefix = prefix.replace(" ", "_");
-		Integer c = nameCounts.get(prefix);
-		if (c == null)
-			c = 1;
+        refreshActions();
 
-		int nameCount = c;
-		String name = prefix + "-" + (nameCount++) + suffix;
-		while (names.contains(name))
-			name = prefix + "-" + (nameCount++) + suffix;
+        setSelectedComponent(editor);
+    }
 
-		nameCounts.put(prefix, nameCount);
-		return name;
-	}
+    public void removeEditor(@Nullable AbstractEditor editor) {
+        if (editor == null) {
+            return;
+        }
 
-	public String deriveName(String name, String removeExtension, String prefixAdd, String newExtension) {
-		if (!removeExtension.isEmpty() && name.endsWith(removeExtension)) {
-			int endIndex = name.length() - removeExtension.length() - 1;
-			name = endIndex >= 0 ? name.substring(0, endIndex) : "";
-		}
-		
-		int i = name.length() - 1;
-		while (i >= 0 && Character.isDigit(name.charAt(i))) i--;
-		if (name.charAt(i) != '-')
-			i++;
+        if (editor.doClose()) {
+            int i = indexOfComponent(editor);
+            if (i != -1) {
+                remove(i);
+            }
 
-		name = name.substring(0, i);
+            refreshActions();
+        }
+    }
 
-		if (!name.endsWith(prefixAdd))
-			name += prefixAdd;
+    @NotNull
+    public AbstractEditor getSelectedEditor() {
+        return (AbstractEditor) getSelectedComponent();
+    }
 
-        if (!newExtension.equals(""))
+    void refreshActions() {
+        AbstractEditor editor = getSelectedEditor();
+        ActionManager.getDefault().updateEnabledByEditor(editor);
+    }
+
+    @NotNull
+    String createName() {
+        return createName(DEFAULT_NAME_PREFIX, "");
+    }
+
+    @NotNull
+    String createName(String prefix, String suffix) {
+        Set<String> names = new HashSet<String>();
+        int numTabs = getTabCount();
+        for (int i = 0; i < numTabs; i++) {
+            IEditor editor = (IEditor) getComponentAt(i);
+            names.add(editor.getName());
+        }
+
+        prefix = prefix.replace(" ", "_");
+        Integer c = nameCounts.get(prefix);
+        if (c == null) {
+            c = 1;
+        }
+
+        int nameCount = c;
+        String name = prefix + "-" + (nameCount++) + suffix;
+        while (names.contains(name))
+            name = prefix + "-" + (nameCount++) + suffix;
+
+        nameCounts.put(prefix, nameCount);
+        return name;
+    }
+
+    @NotNull
+    public String deriveName(@NotNull String name, @NotNull String removeExtension, @NotNull String prefixAdd, @NotNull String newExtension) {
+        if (!removeExtension.isEmpty() && name.endsWith(removeExtension)) {
+            int endIndex = name.length() - removeExtension.length() - 1;
+            name = endIndex >= 0 ? name.substring(0, endIndex) : "";
+        }
+
+        int i = name.length() - 1;
+        while (i >= 0 && Character.isDigit(name.charAt(i)))
+            i--;
+        if (name.charAt(i) != '-') {
+            i++;
+        }
+
+        name = name.substring(0, i);
+
+        if (!name.endsWith(prefixAdd)) {
+            name += prefixAdd;
+        }
+
+        if (!newExtension.equals("")) {
             newExtension = "." + newExtension;
-		
-		return createName(name, newExtension);
-	}
+        }
 
-	private EditorTabComponent getEditorTab(IEditor editor) {
-		int index = getEditorIndex(editor);
-		return (EditorTabComponent) getTabComponentAt(index);
-	}
+        return createName(name, newExtension);
+    }
 
-	private int getEditorIndex(IEditor editor) {
-		for (int i = 0; i < getComponentCount(); i++)
-			if (getComponent(i) == editor)
-				return i;
-		return -1;
-	}
-
-	public void setSelectedEditor(AbstractEditor editor) {
-		setSelectedComponent(editor);
-	}
+    public void setSelectedEditor(AbstractEditor editor) {
+        setSelectedComponent(editor);
+    }
 }

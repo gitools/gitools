@@ -1,0 +1,173 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            background-color: #ffffff;
+            font-family: sans-serif;
+            padding: 8px;
+            margin: 0px;
+        }
+
+        A:link, A:visited {
+            text-decoration: none;
+        }
+
+        A:hover {
+            color: #f43a01;
+        }
+
+        thead {
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        table {
+            font-size: 9px;
+            border-bottom-width: 1px;
+            border-color: black;
+        }
+
+        td {
+            margin: 3px;
+        }
+
+        td.subtitle {
+            font-weight: bold;
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+
+        td.shortcut {
+            color: blue;
+            font-weight: bold;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<h3>$appName Shortcuts</h3>
+<table>
+    <thead>
+    <tr>
+        <td>Key combination</td>
+        <td>Action</td>
+        <td>Applies if</td>
+    </tr>
+    </thead>
+    <tbody>
+
+
+    <tr>
+        <td class="subtitle" colspan="3">Select and Edit</td>
+    </tr>
+    <tr>
+        <td class="shortcut">C/R/B or click</td>
+        <td><b>Switch selection</b> of column/row/both</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">C/R + &uarr;/&darr;/&larr;/&rarr;</td>
+        <td><b>Add to selection</b> columns and rows</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$shiftKey + C/R</td>
+        <td><b>Add to selection</b> columns/rows from last selection on</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$altKey + C/R or click</td>
+        <td><b>Unselect</b> a group columns/rows</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">U + C/R/B</td>
+        <td><b>Unselect</b> either all columns/rows/both</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">U + A</td>
+        <td><b>Unselect</b> all</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">Backspace or Delete</td>
+        <td><b>Hide</b> rows <i>and</i> columns</td>
+        <td>Rows/Columns selected</td>
+    </tr>
+    <tr>
+        <td class="shortcut">C/R + Backspace or Delete</td>
+        <td><b>Hide</b> columns/columns</td>
+        <td>Columns/rows selected</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$altKey + &uarr;/&darr;/&larr;/&rarr;</td>
+        <td><b>Move selected</b> columns/rows</td>
+        <td>Lead in heatmap</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$shiftKey + click on cell</td>
+        <td><b>Select</b> square</td>
+        <td>Lead in heatmap</td>
+    </tr>
+
+    <tr>
+        <td class="subtitle" colspan="3">Navigation</td>
+    </tr>
+    <tr>
+        <td class="shortcut">&uarr;/&darr;/&larr;/&rarr;</td>
+        <td><b>Move</b> lead cell by cell</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Page Up/Down</td>
+        <td><b>Move</b> lead up/down</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Page Up/Down + $shiftKey</td>
+        <td><b>Move</b> lead left/right</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td class="shortcut">Wheel</td>
+        <td><b>Scroll</b> heatmap up/down</td>
+        <td>Mouse over row headers</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$shiftKey + Wheel</td>
+        <td><b>Scrolling</b> heatmap left/right</td>
+        <td>Mouse over column headers</td>
+    </tr>
+
+
+    <tr>
+        <td class="subtitle" colspan="3">Zooming and Sizes</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$ctrlKey + wheel</td>
+        <td><b>Zoom</b> of underlying element</td>
+        <td>Mouse in heatmap panel</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$ctrlKey + R + wheel</td>
+        <td><b>Zoom</b> rows only</td>
+        <td>Mouse in heatmap panel</td>
+    </tr>
+    <tr>
+        <td class="shortcut">$ctrlKey + C + wheel</td>
+        <td><b>Zoom</b> columns only</td>
+        <td>Mouse in heatmap panel</td>
+    </tr>
+    <!--tr>
+        <td class="shortcut">$ctrlKey + T + wheel</td>
+        <td><b>Increase/Decrease</b> font size</td>
+        <td>Mouse hovering text</td>
+    </tr-->
+
+    </tbody>
+</table>
+
+</body>
+</html>

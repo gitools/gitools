@@ -1,21 +1,27 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.settings;
+
+import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -29,38 +35,35 @@ import java.io.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings {
 
-	public static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
-	public static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
-	public static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
+    private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
+    private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
+    private static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
 
-    public static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
-    public static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
 
-	private static final String userPath = 
-		System.getProperty("user.home", ".");
-	
-	public static final String CONFIG_PATH =
-		userPath + File.separator + ".gitools";
-	
-	private static final String configFileName = "ui.xml";
-	
-	private static final String configFile = 
-		CONFIG_PATH + File.separator + configFileName;
-	
-	private static final String defaultWorkspacePath =
-		CONFIG_PATH + File.separator + "workspace";
+    private static final String userPath = System.getProperty("user.home", ".");
 
-	private static Settings instance;
+    public static final String CONFIG_PATH = userPath + File.separator + ".gitools";
 
+    private static final String configFileName = "ui.xml";
+
+    private static final String configFile = CONFIG_PATH + File.separator + configFileName;
+
+    @Nullable
+    private static Settings instance;
+
+    @Nullable
     public static Settings getDefault() {
-		if (instance == null) {
+        if (instance == null) {
             instance = load();
         }
         return instance;
-	}
+    }
 
-	private static Settings load() {
+    @Nullable
+    private static Settings load() {
         Settings settings = null;
         try {
             Reader reader = new FileReader(configFile);
@@ -74,36 +77,36 @@ public class Settings {
             System.err.println("Created one with defaults.");
             settings = new Settings();
             settings.save();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(); //TODO Deberia lanzar una excepción?
             settings = new Settings();
         }
         return settings;
     }
 
-	private String version;
-	
-	private String lastPath = userPath;
-	private String lastImportPath = userPath;
-	private String lastExportPath = userPath;
-	private String lastWorkPath = userPath;
-	private String lastDataPath = userPath;
-	private String lastMapPath = userPath;
-	private String lastAnnotationPath = userPath;
-	private String lastFilterPath = userPath;
-	private String workspacePath = defaultWorkspacePath;
-	private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
-	private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
+    private String version;
+
+    private String lastPath = userPath;
+    private String lastImportPath = userPath;
+    private String lastExportPath = userPath;
+    private String lastWorkPath = userPath;
+    private String lastDataPath = userPath;
+    private String lastMapPath = userPath;
+    private String lastAnnotationPath = userPath;
+    private String lastFilterPath = userPath;
+    private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
+    private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
 
 
     private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
 
-	private boolean showEnrichmentExamplePage = true;
-	private boolean showOncodriveExamplePage = true;
-	private boolean showCorrelationExamplePage = true;
-	private boolean showOverlapExamplePage = true;
-	private boolean showCombinationExamplePage = true;
+    private boolean showEnrichmentExamplePage = true;
+    private boolean showOncodriveExamplePage = true;
+    private boolean showCorrelationExamplePage = true;
+    private boolean showOverlapExamplePage = true;
+    private boolean showCombinationExamplePage = true;
+    private boolean showTipsAtStartup = true;
+
 
     // Port parameters
     private boolean portEnabled = true;
@@ -116,15 +119,15 @@ public class Settings {
     // Preview features
     private boolean previewFeatures = false;
 
-    
 
-	private Settings() {
-	}
-	
-	public void save() {
+    private Settings() {
+    }
+
+    public void save() {
         File path = new File(CONFIG_PATH);
-        if (!path.exists())
+        if (!path.exists()) {
             path.mkdirs();
+        }
 
         try {
             FileWriter writer = new FileWriter(configFile);
@@ -136,145 +139,149 @@ public class Settings {
 
             writer.close();
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String getLastPath() {
-		return lastPath;
-	}
+    public String getLastPath() {
+        return lastPath;
+    }
 
-	public void setLastPath(String lastPath) {
-		this.lastPath = lastPath;
-	}
+    public void setLastPath(String lastPath) {
+        this.lastPath = lastPath;
+    }
 
-	public String getLastImportPath() {
-		return lastImportPath;
-	}
+    public String getLastImportPath() {
+        return lastImportPath;
+    }
 
-	public void setLastImportPath(String lastImportPath) {
-		this.lastImportPath = lastImportPath;
-	}
+    public void setLastImportPath(String lastImportPath) {
+        this.lastImportPath = lastImportPath;
+    }
 
-	public String getLastExportPath() {
-		return lastExportPath;
-	}
+    public String getLastExportPath() {
+        return lastExportPath;
+    }
 
-	public void setLastExportPath(String lastExportPath) {
-		this.lastExportPath = lastExportPath;
-	}
-	
-	public String getLastWorkPath() {
-		return lastWorkPath;
-	}
+    public void setLastExportPath(String lastExportPath) {
+        this.lastExportPath = lastExportPath;
+    }
 
-	public void setLastWorkPath(String lastWorkPath) {
-		this.lastWorkPath = lastWorkPath;
-	}
-	
-	public String getLastDataPath() {
-		return lastDataPath;
-	}
+    public String getLastWorkPath() {
+        return lastWorkPath;
+    }
 
-	public void setLastDataPath(String lastDataPath) {
-		this.lastDataPath = lastDataPath;
-	}
-	
-	public String getLastMapPath() {
-		return lastMapPath;
-	}
+    public void setLastWorkPath(String lastWorkPath) {
+        this.lastWorkPath = lastWorkPath;
+    }
 
-	public void setLastMapPath(String lastMapPath) {
-		this.lastMapPath = lastMapPath;
-	}
+    public String getLastDataPath() {
+        return lastDataPath;
+    }
 
-	public String getLastAnnotationPath() {
-		return lastAnnotationPath;
-	}
+    public void setLastDataPath(String lastDataPath) {
+        this.lastDataPath = lastDataPath;
+    }
 
-	public void setLastAnnotationPath(String lastAnnotationPath) {
-		this.lastAnnotationPath = lastAnnotationPath;
-	}
+    public String getLastMapPath() {
+        return lastMapPath;
+    }
 
-	public String getLastFilterPath() {
-		return lastFilterPath;
-	}
+    public void setLastMapPath(String lastMapPath) {
+        this.lastMapPath = lastMapPath;
+    }
 
-	public void setLastFilterPath(String lastFilterPath) {
-		this.lastFilterPath = lastFilterPath;
-	}
+    public String getLastAnnotationPath() {
+        return lastAnnotationPath;
+    }
 
-	public String getWorkspacePath() {
-		return workspacePath;
-	}
-	
-	public void setWorkspacePath(String workspacePath) {
-		this.workspacePath = workspacePath;
-	}
+    public void setLastAnnotationPath(String lastAnnotationPath) {
+        this.lastAnnotationPath = lastAnnotationPath;
+    }
 
-	public String getIntogenOncomodulesUrl() {
-		return intogenOncomodulesUrl;
-	}
+    public String getLastFilterPath() {
+        return lastFilterPath;
+    }
 
-	public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
-		this.intogenOncomodulesUrl = intogenOncomodulesUrl;
-	}
+    public void setLastFilterPath(String lastFilterPath) {
+        this.lastFilterPath = lastFilterPath;
+    }
 
-	public String getIntogenDataUrl() {
-		return intogenDataUrl;
-	}
+    public String getIntogenOncomodulesUrl() {
+        return intogenOncomodulesUrl;
+    }
 
-	public void setIntogenDataUrl(String intogenDataUrl) {
-		this.intogenDataUrl = intogenDataUrl;
-	}
+    public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
+        this.intogenOncomodulesUrl = intogenOncomodulesUrl;
+    }
 
-	public boolean isShowEnrichmentExamplePage() {
-		return showEnrichmentExamplePage;
-	}
+    public String getIntogenDataUrl() {
+        return intogenDataUrl;
+    }
 
-	public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
-		this.showEnrichmentExamplePage = showEnrichmentExamplePage;
-	}
+    public void setIntogenDataUrl(String intogenDataUrl) {
+        this.intogenDataUrl = intogenDataUrl;
+    }
 
-	public boolean isShowOncodriveExamplePage() {
-		return showOncodriveExamplePage;
-	}
+    public boolean isShowEnrichmentExamplePage() {
+        return showEnrichmentExamplePage;
+    }
 
-	public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
-		this.showOncodriveExamplePage = showOncodriveExamplePage;
-	}
+    public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
+        this.showEnrichmentExamplePage = showEnrichmentExamplePage;
+    }
 
-	public boolean isShowCorrelationExamplePage() {
-		return showCorrelationExamplePage;
-	}
+    /**
+     * @noinspection UnusedDeclaration
+     */
+    public boolean isShowOncodriveExamplePage() {
+        return showOncodriveExamplePage;
+    }
 
-	public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
-		this.showCorrelationExamplePage = showCorrelationExamplePage;
-	}
+    public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
+        this.showOncodriveExamplePage = showOncodriveExamplePage;
+    }
 
-	public boolean isShowCombinationExamplePage() {
-		return showCombinationExamplePage;
-	}
+    public boolean isShowCorrelationExamplePage() {
+        return showCorrelationExamplePage;
+    }
 
-	public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
-		this.showCombinationExamplePage = showCombinationExamplePage;
-	}
+    public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
+        this.showCorrelationExamplePage = showCorrelationExamplePage;
+    }
 
-	public boolean isShowOverlapExamplePage() {
-		return showOverlapExamplePage;
-	}
+    public boolean isShowCombinationExamplePage() {
+        return showCombinationExamplePage;
+    }
 
-	public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
-		this.showOverlapExamplePage = showOverlapExamplePage;
-	}
+    public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
+        this.showCombinationExamplePage = showCombinationExamplePage;
+    }
+
+
+    public boolean isShowTipsAtStartup() {
+        return showTipsAtStartup;
+    }
+
+    public void setShowTipsAtStartup(boolean showTipsAtStartup) {
+        this.showTipsAtStartup = showTipsAtStartup;
+    }
+
+    public boolean isShowOverlapExamplePage() {
+        return showOverlapExamplePage;
+    }
+
+    public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
+        this.showOverlapExamplePage = showOverlapExamplePage;
+    }
 
     public boolean isPortEnabled() {
         return portEnabled;

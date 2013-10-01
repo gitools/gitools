@@ -1,48 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.gitools</groupId>
-		<artifactId>gitools</artifactId>
-		<version>1.8.4</version>
-	</parent>
+    <parent>
+        <groupId>org.gitools</groupId>
+        <artifactId>gitools</artifactId>
+        <version>2.0.0</version>
+    </parent>
 
-	<artifactId>gitools-biomart</artifactId>
-	<name>gitools-biomart</name>
-	<description>Gitools BioMart Bridge</description>
+    <artifactId>gitools-biomart</artifactId>
+    <name>gitools-biomart</name>
+    <description>Gitools BioMart Bridge</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>edu.upf.bg</groupId>
-			<artifactId>bg-commons</artifactId>
-		</dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>gitools-utils</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.gitools</groupId>
-			<artifactId>gitools-core</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>gitools-core</artifactId>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase />
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>org.gitools.biomart.Main</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase/>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.gitools.biomart.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

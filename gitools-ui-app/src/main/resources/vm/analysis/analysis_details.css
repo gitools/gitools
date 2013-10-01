@@ -1,60 +1,80 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 body {
 	padding-top: 8px;
 }
 
-.green_section {
-	background-color: #a7b526;
-	margin: 4px 2px 2px 2px;
-	border: 1px solid #92a014;
-}
-
-#section {
-	background-color: #ed8029;
+.section {
+	background-color: #f29128;
 	margin: 8px 2px 2px 2px;
-	border: 1px solid #df7826;
+	border: 1px solid #f29128;
 	white-space: normal;
 }
 
-#section_title {
+.section_title {
 	padding: 2px 4px 2px 4px;
 	font-weight: bold;
+	color: white;
 }
 
-#section_body {
+.section_body {
 	background-color: white;
 	padding: 4px 2px 2px 2px;
 }
 
-#attr_table {
+.attr_table table {
+
 }
 
-#attr_table td {
+.attr_table td {
 	vertical-align: text-top;
-	padding-bottom: 3px;
+	padding-bottom: 5px;
+	text-align: justify;
 	white-space: normal;
-	width: 80%;
+	padding-right: 30px;
 }
 
-#attr_table .name {
+.attr_table td.name {
+	padding-right: 5px;
+}
+
+.attr_table td.name div {
 	font-weight: bold;
-	padding-right: 8px;
-	white-space: nowrap;
-	width: 19%;
+	padding-right: 10px;
+	text-align: right;
+	width: 160px;
 }
 
-#button_bar {
-	margin: 4px 2px;
+.button_bar {
+	margin: 10px 10px 5px 5px;
 }
 
-#button_bar .button {
-	/*padding: 2px 6px 2px 6px;*/
+.button_bar .button {
 	font-weight: bold;
 	color: black;
-	border: 1px solid #444;
 	background-color: #DDD;
 	text-decoration: none;
 }
 
-#button_bar .button:hover {
+.button_bar .button:hover {
 	background-color: #AAA;
 }

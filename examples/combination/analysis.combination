@@ -13,6 +13,6 @@ In this example, we deduce a generic profile for significant gene up-regulation 
     <elapsedTime>18</elapsedTime>
     <transposeData>false</transposeData>
     <groupsMap path="analysis-modules.ixm.gz" mime="application/gitools-modules-indexed"/>
-    <data path="../../../../../shared/gitools/examples/combination/19_lung_10_breast_upreg_annot.cdm.gz" mime="application/gitools-matrix-double"/>
+    <data path="19_lung_10_breast_upreg_annot.cdm.gz" mime="application/gitools-matrix-double"/>
     <results path="analysis-results.tdm.gz" mime="application/gitools-matrix-object"/>
 </combinationAnalysis>

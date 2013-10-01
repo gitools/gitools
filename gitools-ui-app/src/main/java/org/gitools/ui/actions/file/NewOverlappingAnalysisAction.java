@@ -1,106 +1,125 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.actions.file;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import javax.swing.SwingUtilities;
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.analysis.overlapping.OverlappingCommand;
-import org.gitools.model.ResourceRef;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
+import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.core.analysis.overlapping.OverlappingCommand;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class NewOverlappingAnalysisAction extends BaseAction {
 
-	private static final long serialVersionUID = -8917512377366424724L;
+    private static final long serialVersionUID = -8917512377366424724L;
 
-	public NewOverlappingAnalysisAction() {
-		super("Overlapping analysis ...");
-		
-		setDesc("Run an overlapping analysis");
-		setMnemonic(KeyEvent.VK_L);
+    public NewOverlappingAnalysisAction() {
+        super("Overlapping analysis ...");
 
-		setDefaultEnabled(true);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		final OverlappingAnalysisWizard wizard = new OverlappingAnalysisWizard();
+        setDesc("Run an overlapping analysis");
+        setMnemonic(KeyEvent.VK_L);
 
-		WizardDialog wizDlg = new WizardDialog(AppFrame.instance(), wizard);
+        setDefaultEnabled(true);
+    }
 
-		wizDlg.open();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final OverlappingAnalysisWizard wizard = new OverlappingAnalysisWizard();
 
-		if (wizDlg.isCancelled())
-			return;
+        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
 
-		final OverlappingAnalysis analysis = wizard.getAnalysis();
+        wizDlg.open();
 
-		ResourceRef sourceDataResource = new ResourceRef(
-				wizard.getDataFilePage().getFileFormat().getMime(),
-				wizard.getDataFilePage().getFile().getAbsolutePath());
-		
-		analysis.setSourceDataResource(sourceDataResource);
+        if (wizDlg.isCancelled()) {
+            return;
+        }
 
-		final OverlappingCommand cmd = new OverlappingCommand(
-				analysis,
-				wizard.getWorkdir(),
-				wizard.getFileName());
+        final OverlappingAnalysis analysis = wizard.getAnalysis();
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					cmd.run(monitor);
+        IResourceLocator resourceLocator = new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath());
+        ResourceReference<IMatrix> sourceData;
+        try {
+            IResourceFormat<? extends IMatrix> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class);
+            sourceData = new ResourceReference<>(resourceLocator, resourceFormat);
+        } catch (PersistenceException ex) {
 
-					if (monitor.isCancelled())
-						return;
+            // Allow to use ModuleMaps as IMatrix
+            IResourceFormat<? extends ModuleMap> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(ModuleMap.class);
+            sourceData = new ConvertModuleMapToMatrixResourceReference(resourceLocator, resourceFormat);
+        }
 
-					final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
+        analysis.setSourceData(new ResourceReference<>("source-data", sourceData.get()));
 
-					editor.setName(PersistenceUtils.getFileName(wizard.getFileName()) + "." + FileSuffixes.HEATMAP);
+        final OverlappingCommand cmd = new OverlappingCommand(analysis, wizard.getWorkdir(), wizard.getFileName());
 
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							AppFrame.instance().getEditorsPanel().addEditor(editor);
-							AppFrame.instance().refresh();
-						}
-					});
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
+            @Override
+            public void run(@NotNull IProgressMonitor monitor) {
+                try {
+                    cmd.run(monitor);
 
-					monitor.end();
+                    if (monitor.isCancelled()) {
+                        return;
+                    }
 
-					AppFrame.instance().setStatusText("Done.");
-				}
-				catch (Throwable ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-	}
+                    final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
+
+                    editor.setName(FilenameUtils.getName(wizard.getFileName()) + "." + HeatmapFormat.EXTENSION);
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppFrame.get().getEditorsPanel().addEditor(editor);
+                            AppFrame.get().refresh();
+                        }
+                    });
+
+                    monitor.end();
+
+                    AppFrame.get().setStatusText("Done.");
+                } catch (Throwable ex) {
+                    monitor.exception(ex);
+                }
+            }
+        });
+    }
 }

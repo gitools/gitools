@@ -1,97 +1,106 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-kegg
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.kegg.idmapper;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.gitools.idmapper.MappingContext;
-import org.gitools.idmapper.MappingData;
-import org.gitools.idmapper.MappingException;
-import org.gitools.idmapper.MappingNode;
-import org.gitools.kegg.service.domain.IdConversion;
+import org.gitools.core.idmapper.MappingContext;
+import org.gitools.core.idmapper.MappingData;
+import org.gitools.core.idmapper.MappingException;
+import org.gitools.core.idmapper.MappingNode;
 import org.gitools.kegg.service.KeggService;
+import org.gitools.kegg.service.domain.IdConversion;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
-	public static final String NCBI_DB = "ncbi-geneid";
-	public static final String UNIPROT_DB = "uniprot";
-	public static final String PDB_DB = "pdb";
-	public static final String ENSEMBL_DB = "ensembl";
+    public static final String NCBI_DB = "ncbi-geneid";
+    public static final String UNIPROT_DB = "uniprot";
+    public static final String PDB_DB = "pdb";
+    public static final String ENSEMBL_DB = "ensembl";
 
-	private static final Map<String, String> fileKey = new HashMap<String, String>();
-	static {
-		fileKey.put(NCBI_GENES, NCBI_DB);
-		fileKey.put(UNIPROT, UNIPROT_DB);
-		fileKey.put(PDB, PDB_DB);
-		fileKey.put(ENSEMBL_GENES, ENSEMBL_DB);
-	}
+    private static final Map<String, String> fileKey = new HashMap<String, String>();
 
-	public KeggGenesMapper(KeggService service, String organismId) {
-		super("KeggGenes", false, true, service, organismId);
-	}
+    static {
+        fileKey.put(NCBI_GENES, NCBI_DB);
+        fileKey.put(UNIPROT, UNIPROT_DB);
+        fileKey.put(PDB, PDB_DB);
+        fileKey.put(ENSEMBL_GENES, ENSEMBL_DB);
+    }
 
-	@Override
-	public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
-		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+    public KeggGenesMapper(KeggService service, String organismId) {
+        super("KeggGenes", false, true, service, organismId);
+    }
 
-		monitor.begin("Getting mapping information from KEGG ...", 1);
+    @NotNull
+    @Override
+    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
+        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
-		// TODO Filter out items not in data if data is not empty
-		
-		// Get map from the API
-		try {
-			String prefix = fileKey.get(dst.getId());
-			if (!KEGG_GENES.equals(src.getId()) || prefix == null)
-				throw new MappingException("Unsupported mapping from " + src + " to " + dst);
+        monitor.begin("Getting mapping information from KEGG ...", 1);
 
-			if (prefix.equals(ENSEMBL_DB))
-				prefix = prefix + "-" + organismId;
+        // TODO Filter out items not in data if data is not empty
 
-			List<IdConversion> relations = service.getConvert(organismId, prefix);
+        // Get map from the API
+        try {
+            String prefix = fileKey.get(dst.getId());
+            if (!KEGG_GENES.equals(src.getId()) || prefix == null) {
+                throw new MappingException("Unsupported mapping from " + src + " to " + dst);
+            }
 
-			int plen = prefix.length() + 1;
-			for (IdConversion rel : relations) {
-				String srcId = rel.getSourceId();
-				String dstId = rel.getTargetId();
-				Set<String> b = map.get(srcId);
-				if (b == null) {
-					b = new HashSet<String>();
-					map.put(srcId, b);
-				}
-				b.add(dstId.substring(plen));
-			}
-		}
-		catch (Exception ex) {
-			throw new MappingException(ex);
-		}
+            if (prefix.equals(ENSEMBL_DB)) {
+                prefix = prefix + "-" + organismId;
+            }
 
-		monitor.end();
+            List<IdConversion> relations = service.getConvert(organismId, prefix);
 
-		monitor.begin("Mapping KEGG genes ...", 1);
+            int plen = prefix.length() + 1;
+            for (IdConversion rel : relations) {
+                String srcId = rel.getSourceId();
+                String dstId = rel.getTargetId();
+                Set<String> b = map.get(srcId);
+                if (b == null) {
+                    b = new HashSet<String>();
+                    map.put(srcId, b);
+                }
+                b.add(dstId.substring(plen));
+            }
+        } catch (Exception ex) {
+            throw new MappingException(ex);
+        }
 
-		if (data.isEmpty())
-			data.identity(map.keySet());
-		
-		data.map(map);
+        monitor.end();
 
-		monitor.end();
-		
-		return data;
-	}
+        monitor.begin("Mapping KEGG genes ...", 1);
+
+        if (data.isEmpty()) {
+            data.identity(map.keySet());
+        }
+
+        data.map(map);
+
+        monitor.end();
+
+        return data;
+    }
 }

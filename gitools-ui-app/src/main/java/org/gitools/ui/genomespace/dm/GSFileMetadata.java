@@ -18,6 +18,7 @@
 
 package org.gitools.ui.genomespace.dm;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,6 +27,7 @@ import org.json.JSONObject;
  *
  * @author Jim Robinson
  * @date Aug 2, 2011
+ * @noinspection ALL
  */
 public class GSFileMetadata {
     private boolean isDirectory;
@@ -44,7 +46,7 @@ public class GSFileMetadata {
         this.size = size;
     }
 
-    public GSFileMetadata(JSONObject o) throws JSONException {
+    public GSFileMetadata(@NotNull JSONObject o) throws JSONException {
         name = (String) o.get("name");
         path = (String) o.get("path");
         url = (String) o.get("url");
@@ -52,7 +54,7 @@ public class GSFileMetadata {
         if (o.has("dataFormat")) {
             JSONObject dataFormat = o.has("dataFormat") ? (JSONObject) o.get("dataFormat") : null;
             format = dataFormat == null ? "" : dataFormat.getString("name");
-            size =  o.get("size").toString();
+            size = o.get("size").toString();
         }
 
     }

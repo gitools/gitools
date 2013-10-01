@@ -1,191 +1,208 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.wizard;
 
+import org.gitools.ui.platform.help.HelpContext;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.Icon;
-import org.gitools.ui.platform.help.HelpContext;
-
+/**
+ * @noinspection ALL
+ */
 public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
-	private String title;
-	
-	private Icon logo;
+    private String title;
 
-	private HelpContext helpContext;
-	
-	protected IWizardPage currentPage;
-	
-	private List<IWizardPage> pages = new ArrayList<IWizardPage>();
-	
-	private Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
+    private Icon logo;
 
-	private List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
-	
-	public AbstractWizard() {
-	}
+    private HelpContext helpContext;
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    protected IWizardPage currentPage;
 
-	public void setTitle(String title) {
-		this.title = title;
-		fireWizardUpdate();
-	}
+    @NotNull
+    private final List<IWizardPage> pages = new ArrayList<IWizardPage>();
 
-	@Override
-	public Icon getLogo() {
-		return logo;
-	}
+    @NotNull
+    private final Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
 
-	public void setLogo(Icon icon) {
-		this.logo = icon;
-		fireWizardUpdate();
-	}
+    @NotNull
+    private final List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
 
-	@Override
-	public HelpContext getHelpContext() {
-		return helpContext;
-	}
+    protected AbstractWizard() {
+    }
 
-	public void setHelpContext(HelpContext helpContext) {
-		this.helpContext = helpContext;
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	public void setHelpContext(String helpContextId) {
-		this.helpContext = new HelpContext(helpContextId);
-	}
+    public void setTitle(String title) {
+        this.title = title;
+        fireWizardUpdate();
+    }
 
-	public void addPage(IWizardPage page) {
-		String id = page.getId();
-		if (id == null)
-			id = "Page" + pages.size();
-		
-		addPage(id, page);
-	}
-	
-	public void addPage(String id, IWizardPage page) {
-		page.setId(id);
-		page.setWizard(this);
-		pages.add(page);
-		pageIdMap.put(id, page);
+    @Override
+    public Icon getLogo() {
+        return logo;
+    }
 
-		page.addPageUpdateListener(this);
-	}
-	
-	@Override
-	public IWizardPage getStartingPage() {
-		return pages.size() > 0 ? pages.get(0) : null;
-	}
-	
-	@Override
-	public IWizardPage getCurrentPage() {
-		return currentPage;
-	}
-	
-	@Override
-	public void setCurrentPage(IWizardPage currentPage) {
-		this.currentPage = currentPage;
-	}
-	
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		int idx = pages.indexOf(page);
-		
-		return idx == -1 || idx == pages.size() - 1 ? null : pages.get(idx + 1);
-	}
+    protected void setLogo(Icon icon) {
+        this.logo = icon;
+        fireWizardUpdate();
+    }
 
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage page) {
-		int idx = pages.indexOf(page);
-		
-		return idx == -1 || idx == 0 ? null : pages.get(idx - 1);
-	}
-	
-	@Override
-	public boolean isLastPage(IWizardPage page) {
-		return page.equals(pages.get(pages.size() - 1));
-	}
-	
-	@Override
-	public IWizardPage getPage(String id) {
-		return pageIdMap.get(id);
-	}
-	
-	@Override
-	public IWizardPage[] getPages() {
-		final IWizardPage[] pagesArray = new IWizardPage[pages.size()];
-		pages.toArray(pagesArray);
-		return pagesArray;
-	}
-	
-	@Override
-	public int getPageCount() {
-		return pages.size();
-	}
+    @Override
+    public HelpContext getHelpContext() {
+        return helpContext;
+    }
 
-	@Override
-	public void pageLeft(IWizardPage currentPage) {
-	}
+    public void setHelpContext(HelpContext helpContext) {
+        this.helpContext = helpContext;
+    }
 
-	@Override
-	public void pageEntered(IWizardPage page) {
-	}
-	
-	@Override
-	public boolean canFinish() {
-		return currentPage != null ? currentPage.isComplete() && isLastPage(currentPage) : false;
-	}
-	
-	@Override
-	public void performFinish() {
-		// do nothing
-	}
-	
-	@Override
-	public void performCancel() {
-		// do nothing
-	}
+    protected void setHelpContext(String helpContextId) {
+        this.helpContext = new HelpContext(helpContextId);
+    }
 
-	@Override
-	public void addWizardUpdateListener(IWizardUpdateListener listener) {
-		listeners.add(listener);
-	}
+    protected void addPage(@NotNull IWizardPage page) {
+        String id = page.getId();
+        if (id == null) {
+            id = "Page" + pages.size();
+        }
 
-	@Override
-	public void removeWizardUpdateListener(IWizardUpdateListener listener) {
-		listeners.remove(listener);
-	}
+        addPage(id, page);
+    }
 
-	@Override
-	public void pageUpdated(IWizardPage page) {
-		for (IWizardUpdateListener l : listeners)
-			l.pageUpdated(page);
-	}
+    protected void addPage(String id, @NotNull IWizardPage page) {
+        page.setId(id);
+        page.setWizard(this);
+        pages.add(page);
+        pageIdMap.put(id, page);
 
-	private void fireWizardUpdate() {
-		for (IWizardUpdateListener l : listeners)
-			l.wizardUpdated(this);
-	}
+        page.addPageUpdateListener(this);
+    }
+
+    @Nullable
+    @Override
+    public IWizardPage getStartingPage() {
+        return pages.size() > 0 ? pages.get(0) : null;
+    }
+
+    @Override
+    public IWizardPage getCurrentPage() {
+        return currentPage;
+    }
+
+    @Override
+    public void setCurrentPage(IWizardPage currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    @Nullable
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+        int idx = pages.indexOf(page);
+
+        return idx == -1 || idx == pages.size() - 1 ? null : pages.get(idx + 1);
+    }
+
+    @Nullable
+    @Override
+    public IWizardPage getPreviousPage(IWizardPage page) {
+        int idx = pages.indexOf(page);
+
+        return idx == -1 || idx == 0 ? null : pages.get(idx - 1);
+    }
+
+    @Override
+    public boolean isLastPage(@NotNull IWizardPage page) {
+        return page.equals(pages.get(pages.size() - 1));
+    }
+
+    @Override
+    public IWizardPage getPage(String id) {
+        return pageIdMap.get(id);
+    }
+
+    @NotNull
+    @Override
+    public IWizardPage[] getPages() {
+        final IWizardPage[] pagesArray = new IWizardPage[pages.size()];
+        pages.toArray(pagesArray);
+        return pagesArray;
+    }
+
+    @Override
+    public int getPageCount() {
+        return pages.size();
+    }
+
+    @Override
+    public void pageLeft(IWizardPage currentPage) {
+    }
+
+    @Override
+    public void pageEntered(IWizardPage page) {
+    }
+
+    @Override
+    public boolean canFinish() {
+        return currentPage != null ? currentPage.isComplete() && isLastPage(currentPage) : false;
+    }
+
+    @Override
+    public void performFinish() {
+        // do nothing
+    }
+
+    @Override
+    public void performCancel() {
+        // do nothing
+    }
+
+    @Override
+    public void addWizardUpdateListener(IWizardUpdateListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeWizardUpdateListener(IWizardUpdateListener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void pageUpdated(IWizardPage page) {
+        for (IWizardUpdateListener l : listeners)
+            l.pageUpdated(page);
+    }
+
+    private void fireWizardUpdate() {
+        for (IWizardUpdateListener l : listeners)
+            l.wizardUpdated(this);
+    }
 }

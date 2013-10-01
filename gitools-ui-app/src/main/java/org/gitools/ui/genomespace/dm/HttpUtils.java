@@ -14,6 +14,8 @@ package org.gitools.ui.genomespace.dm;
 import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.GSUtils;
 import org.gitools.ui.platform.AppFrame;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -37,23 +39,27 @@ import java.util.zip.GZIPInputStream;
  */
 public class HttpUtils {
 
-    private static Logger log = Logger.getLogger(HttpUtils.class);
+    private static final Logger log = Logger.getLogger(HttpUtils.class);
 
     private static HttpUtils instance;
 
-    public static int CONNECT_TIMEOUT = 20000;        // 20 seconds
-    public static int READ_TIMEOUT = 1000 * 3 * 60;   // 3 minutes
+    private static final int CONNECT_TIMEOUT = 20000;        // 20 seconds
+    private static final int READ_TIMEOUT = 1000 * 3 * 60;   // 3 minutes
 
-    private Map<String, Boolean> byteRangeTestMap;
+    private final Map<String, Boolean> byteRangeTestMap;
 
     private final int MAX_REDIRECTS = 5;
 
+    @Nullable
     private String defaultUserName = null;
+    @Nullable
     private char[] defaultPassword = null;
     private static Pattern URLmatcher = Pattern.compile(".{1,8}://.*");
 
-    // static provided to support unit testing
-    private static boolean  BYTE_RANGE_DISABLED = false;
+    /**
+     * @noinspection UnusedDeclaration
+     */ // static provided to support unit testing
+    private static boolean BYTE_RANGE_DISABLED = false;
 
     /**
      * @return the single instance
@@ -78,19 +84,19 @@ public class HttpUtils {
     }
 
 
-    public static boolean isRemoteURL(String string) {
+    public static boolean isRemoteURL(@NotNull String string) {
         String lcString = string.toLowerCase();
         return lcString.startsWith("http://") || lcString.startsWith("https://") || lcString.startsWith("ftp://");
     }
 
     /**
      * Provided to support unit testing (force disable byte range requests)
+     *
      * @return
      */
     public static void disableByteRange(boolean b) {
-         BYTE_RANGE_DISABLED = b;
+        BYTE_RANGE_DISABLED = b;
     }
-
 
 
     /**
@@ -107,7 +113,7 @@ public class HttpUtils {
      * @param joiner
      * @return
      */
-    public static String buildURLString(Iterable<String> elements, String joiner) {
+    public static String buildURLString(@NotNull Iterable<String> elements, String joiner) {
 
         Iterator<String> iter = elements.iterator();
         if (!iter.hasNext()) {
@@ -133,7 +139,8 @@ public class HttpUtils {
      * @return
      * @throws IOException
      */
-    public String getContentsAsString(URL url) throws IOException {
+    @NotNull
+    public String getContentsAsString(@NotNull URL url) throws IOException {
 
         InputStream is = null;
         HttpURLConnection conn = openConnection(url, null);
@@ -142,11 +149,14 @@ public class HttpUtils {
             return readContents(is);
 
         } finally {
-            if (is != null) is.close();
+            if (is != null) {
+                is.close();
+            }
         }
     }
 
-    public String getContentsAsJSON(URL url) throws IOException {
+    @NotNull
+    public String getContentsAsJSON(@NotNull URL url) throws IOException {
 
         InputStream is = null;
         Map<String, String> reqProperties = new HashMap();
@@ -157,7 +167,9 @@ public class HttpUtils {
             return readContents(is);
 
         } finally {
-            if (is != null) is.close();
+            if (is != null) {
+                is.close();
+            }
         }
     }
 
@@ -168,15 +180,18 @@ public class HttpUtils {
      * @return
      * @throws IOException
      */
-    public InputStream openConnectionStream(URL url) throws IOException {
+    @Nullable
+    public InputStream openConnectionStream(@NotNull URL url) throws IOException {
         return openConnectionStream(url, null);
     }
 
-    public InputStream openConnectionStream(URL url, Map<String, String> requestProperties) throws IOException {
+    @Nullable
+    InputStream openConnectionStream(@NotNull URL url, Map<String, String> requestProperties) throws IOException {
 
         HttpURLConnection conn = openConnection(url, requestProperties);
-        if (conn == null)
+        if (conn == null) {
             return null;
+        }
         InputStream input = conn.getInputStream();
         if ("gzip".equals(conn.getContentEncoding())) {
             input = new GZIPInputStream(input);
@@ -185,7 +200,7 @@ public class HttpUtils {
     }
 
 
-    public boolean resourceAvailable(URL url) {
+    public boolean resourceAvailable(@NotNull URL url) {
         try {
             HttpURLConnection conn = openConnection(url, null, "HEAD");
             int code = conn.getResponseCode();
@@ -195,13 +210,16 @@ public class HttpUtils {
         }
     }
 
-    public String getHeaderField(URL url, String key) throws IOException {
+    @Nullable
+    String getHeaderField(@NotNull URL url, String key) throws IOException {
         HttpURLConnection conn = openConnection(url, null, "HEAD");
-        if (conn == null) return null;
+        if (conn == null) {
+            return null;
+        }
         return conn.getHeaderField(key);
     }
 
-    public long getContentLength(URL url) throws IOException {
+    public long getContentLength(@NotNull URL url) throws IOException {
 
         String contentLengthString = getHeaderField(url, "Content-Length");
         if (contentLengthString == null) {
@@ -211,7 +229,7 @@ public class HttpUtils {
         }
     }
 
-    public boolean downloadFile(String url, File outputFile) throws IOException {
+    public boolean downloadFile(String url, @NotNull File outputFile) throws IOException {
 
         log.info("Downloading " + url + " to " + outputFile.getAbsolutePath());
 
@@ -242,7 +260,9 @@ public class HttpUtils {
             }
             log.info("Download complete.  Total bytes downloaded = " + downloaded);
         } finally {
-            if (is != null) is.close();
+            if (is != null) {
+                is.close();
+            }
             if (out != null) {
                 out.flush();
                 out.close();
@@ -254,7 +274,7 @@ public class HttpUtils {
     }
 
 
-    public void uploadGenomeSpaceFile(String uri, File file, Map<String, String> headers) throws IOException {
+    public void uploadGenomeSpaceFile(String uri, @NotNull File file, Map<String, String> headers) throws IOException {
 
         HttpURLConnection urlconnection = null;
         OutputStream bos = null;
@@ -282,7 +302,8 @@ public class HttpUtils {
     }
 
 
-    public String createGenomeSpaceDirectory(URL url, String body) throws IOException {
+    @NotNull
+    public String createGenomeSpaceDirectory(@NotNull URL url, @NotNull String body) throws IOException {
 
         HttpURLConnection urlconnection = null;
         OutputStream bos = null;
@@ -329,21 +350,18 @@ public class HttpUtils {
      */
     private void disableCertificateValidation() {
         // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                        return new java.security.cert.X509Certificate[0];
-                    }
+        TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+            @NotNull
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[0];
+            }
 
-                    public void checkClientTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
 
-                    public void checkServerTrusted(
-                            java.security.cert.X509Certificate[] certs, String authType) {
-                    }
-                }
-        };
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
+        }};
 
         // Install the all-trusting trust manager
         try {
@@ -356,6 +374,7 @@ public class HttpUtils {
 
     }
 
+    @NotNull
     private String readContents(InputStream is) throws IOException {
         BufferedInputStream bis = new BufferedInputStream(is);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -366,7 +385,8 @@ public class HttpUtils {
         return new String(bos.toByteArray());
     }
 
-    private String readErrorStream(HttpURLConnection connection) throws IOException {
+    @Nullable
+    private String readErrorStream(@NotNull HttpURLConnection connection) throws IOException {
         InputStream inputStream = null;
 
         try {
@@ -376,17 +396,21 @@ public class HttpUtils {
             }
             return readContents(inputStream);
         } finally {
-            if (inputStream != null) inputStream.close();
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
 
 
     }
 
-    private HttpURLConnection openConnection(URL url, Map<String, String> requestProperties) throws IOException {
+    @Nullable
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties) throws IOException {
         return openConnection(url, requestProperties, "GET");
     }
 
-    private HttpURLConnection openConnection(URL url, Map<String, String> requestProperties, String method) throws IOException {
+    @Nullable
+    private HttpURLConnection openConnection(@NotNull URL url, Map<String, String> requestProperties, @NotNull String method) throws IOException {
         return openConnection(url, requestProperties, method, 0);
     }
 
@@ -399,18 +423,19 @@ public class HttpUtils {
      * @return
      * @throws IOException
      */
-    private HttpURLConnection openConnection(
-            URL url, Map<String, String> requestProperties, String method, int redirectCount) throws IOException {
+    @Nullable
+    private HttpURLConnection openConnection(@NotNull URL url, @Nullable Map<String, String> requestProperties, @NotNull String method, int redirectCount) throws IOException {
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
         if (GSUtils.isGenomeSpace(url)) {
             String token = GSUtils.getGSToken();
-            if (token != null) conn.setRequestProperty("Cookie", "gs-token=" + token);
+            if (token != null) {
+                conn.setRequestProperty("Cookie", "gs-token=" + token);
+            }
             conn.setRequestProperty("Accept", "application/json,text/plain");
-        }
-        else {
+        } else {
             conn.setRequestProperty("Accept", "text/plain");
         }
 
@@ -430,7 +455,7 @@ public class HttpUtils {
             return conn;
         } else {
 
-             int code = conn.getResponseCode();
+            int code = conn.getResponseCode();
 
             // Redirects.  These can occur even if followRedirects == true if there is a change in protocol,
             // for example http -> https.
@@ -453,15 +478,13 @@ public class HttpUtils {
                 if (code == 404) {
                     message = "File not found: " + url.toString();
                     throw new FileNotFoundException(message);
-                }
-                else if (code == 401) {
+                } else if (code == 401) {
                     // Looks like this only happens when user hits "Cancel".
-                   // message = "Not authorized to view this file";
-                   // JOptionPane.showMessageDialog(null, message, "HTTP error", JOptionPane.ERROR_MESSAGE);
+                    // message = "Not authorized to view this file";
+                    // JOptionPane.showMessageDialog(null, message, "HTTP error", JOptionPane.ERROR_MESSAGE);
                     redirectCount = MAX_REDIRECTS + 1;
                     return null;
-                }
-                else {
+                } else {
                     message = conn.getResponseMessage();
                 }
                 String details = readErrorStream(conn);
@@ -475,7 +498,7 @@ public class HttpUtils {
         return conn;
     }
 
-    public void setDefaultPassword(String defaultPassword) {
+    public void setDefaultPassword(@NotNull String defaultPassword) {
         this.defaultPassword = defaultPassword.toCharArray();
     }
 
@@ -493,14 +516,17 @@ public class HttpUtils {
      */
     public class IGVAuthenticator extends Authenticator {
 
-        Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
-        HashSet<String> cacheAttempts = new HashSet<String>();
+        @NotNull
+        final Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
+        @NotNull
+        final HashSet<String> cacheAttempts = new HashSet<String>();
 
         /**
          * Called when password authentication is needed.
          *
          * @return
          */
+        @Nullable
         @Override
         protected synchronized PasswordAuthentication getPasswordAuthentication() {
 
@@ -526,7 +552,7 @@ public class HttpUtils {
                 return new PasswordAuthentication(defaultUserName, defaultPassword);
             }
 
-            Frame owner = AppFrame.instance();
+            Frame owner = AppFrame.get();
 
             boolean isGenomeSpace = GSUtils.isGenomeSpace(getRequestingURL());
             if (isGenomeSpace) {
@@ -559,6 +585,8 @@ public class HttpUtils {
 
     /**
      * For unit tests
+     *
+     * @noinspection UnusedDeclaration
      */
     public void resetAuthenticator() {
         Authenticator.setDefault(new IGVAuthenticator());
@@ -573,14 +601,14 @@ public class HttpUtils {
      * gs-token=HnR9rBShNO4dTXk8cKXVJT98Oe0jWVY+; Domain=.genomespace.org; Expires=Mon, 21-Jul-2031 03:27:23 GMT; Path=/
      */
 
-    final static public Pattern equalPattern = Pattern.compile("=");
-    final static public Pattern semicolonPattern = Pattern.compile(";");
+    private final static Pattern equalPattern = Pattern.compile("=");
+    private final static Pattern semicolonPattern = Pattern.compile(";");
 
-    static class IGVCookieManager extends CookieManager {
+    private static class IGVCookieManager extends CookieManager {
 
 
         @Override
-        public void put(URI uri, Map<String, List<String>> stringListMap) throws IOException {
+        public void put(@NotNull URI uri, @NotNull Map<String, List<String>> stringListMap) throws IOException {
             if (uri.toString().startsWith(GSUtils.DEFAULT_GS_IDENTITY_SERVER)) {
                 List<String> cookies = stringListMap.get("Set-Cookie");
                 if (cookies != null) {

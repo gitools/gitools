@@ -1,48 +1,53 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * FilterDialog.java
- *
- * Created on Jan 19, 2010, 2:04:30 PM
- */
-
 package org.gitools.ui.wizard.add.data;
 
-import edu.upf.bg.cutoffcmp.CutoffCmp;
-import edu.upf.bg.operators.Operator;
-import java.awt.Component;
-import java.util.List;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
+import org.gitools.ui.utils.DocumentChangeListener;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import org.gitools.matrix.data.integration.DataIntegrationCriteria;
-import org.gitools.ui.utils.DocumentChangeListener;
+import java.awt.*;
+import java.util.List;
 
-public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
-    /** A return status code - returned if Cancel button has been pressed */
-    public static final int RET_CANCEL = 0;
-    /** A return status code - returned if OK button has been pressed */
+/**
+ * @noinspection ALL
+ */
+class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
+    /**
+     * A return status code - returned if Cancel button has been pressed
+     */
+    private static final int RET_CANCEL = 0;
+    /**
+     * A return status code - returned if OK button has been pressed
+     */
     public static final int RET_OK = 1;
 
     private static class OperatorCellRenderer extends DefaultTableCellRenderer {
@@ -54,88 +59,97 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Operator op = (Operator) value;
             String opString = op.getAbbreviation();
-            if (op.equals(Operator.AND))
+            if (op.equals(Operator.AND)) {
                 opString = "    " + op.getAbbreviation();
+            }
             return super.getTableCellRendererComponent(table, opString, isSelected, hasFocus, row, column);
         }
     }
 
-	private static class ComboBoxCellEditor extends DefaultCellEditor {
-		public ComboBoxCellEditor(Object[] values) {
-        		super(new JComboBox(values));
-		}
-	}
-        
-	private String[] attributeNames;
-	private CutoffCmp[] comparators;
-	private String[] operators;
+    private static class ComboBoxCellEditor extends DefaultCellEditor {
+        public ComboBoxCellEditor(Object[] values) {
+            super(new JComboBox(values));
+        }
+    }
 
-	private DataIntegrationCriteriaTableModel criteriaModel;
+    private final String[] attributeNames;
+    private final CutoffCmp[] comparators;
+    private final String[] operators;
 
-    /** Creates new form FilterDialog */
-    public DataIntegrationCriteriaDialog(java.awt.Frame parent,
-			String[] attributeNames,
-                        CutoffCmp[] comparators,
-                        String[] operators,
-			List<DataIntegrationCriteria> initialCriteriaList,
-                        String setToValue) {
+    private final DataIntegrationCriteriaTableModel criteriaModel;
+
+    /**
+     * Creates new form FilterDialog
+     *
+     * @noinspection UnusedDeclaration
+     */
+    public DataIntegrationCriteriaDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, String[] operators, @Nullable List<DataIntegrationCriteria> initialCriteriaList, String setToValue) {
 
         super(parent, true);
 
-		this.attributeNames = attributeNames;
-		this.comparators = comparators;
-		this.operators = operators;
+        this.attributeNames = attributeNames;
+        this.comparators = comparators;
+        this.operators = operators;
 
-		this.criteriaModel = new DataIntegrationCriteriaTableModel(attributeNames);
-		initComponents();
+        this.criteriaModel = new DataIntegrationCriteriaTableModel(attributeNames);
+        initComponents();
 
         this.setToValue.setText(setToValue);
-		table.setModel(criteriaModel);
+        table.setModel(criteriaModel);
 
-		criteriaModel.addTableModelListener(new TableModelListener() {
-			@Override public void tableChanged(TableModelEvent e) {
-				tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
-			}
-		});
+        criteriaModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
+            }
+        });
 
-		if (initialCriteriaList != null)
-			criteriaModel.addAllCriteria(initialCriteriaList);
-		
-		TableColumnModel columnModel = table.getColumnModel();
-                columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(operators));
-                columnModel.getColumn(0).setCellRenderer(new OperatorCellRenderer());
-                columnModel.getColumn(0).setMaxWidth(70);
-		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(attributeNames));
-                columnModel.getColumn(1).setMinWidth(200);
-		columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(comparators));
-                columnModel.getColumn(2).setMaxWidth(110);
-                columnModel.getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
-                columnModel.getColumn(3).setMaxWidth(60);
+        if (initialCriteriaList != null) {
+            criteriaModel.addAllCriteria(initialCriteriaList);
+        }
 
-                if (initialCriteriaList == null)
-                    addCriteria(true);
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(operators));
+        columnModel.getColumn(0).setCellRenderer(new OperatorCellRenderer());
+        columnModel.getColumn(0).setMaxWidth(70);
+        columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(1).setMinWidth(200);
+        columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(comparators));
+        columnModel.getColumn(2).setMaxWidth(110);
+        columnModel.getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
+        columnModel.getColumn(3).setMaxWidth(60);
+
+        if (initialCriteriaList == null) {
+            addCriteria(true);
+        }
 
     }
 
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    /**
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
     public boolean isCancelled() {
         return returnStatus != RET_OK;
     }
 
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    /**
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
     public int getReturnStatus() {
         return returnStatus;
     }
 
     private void addCriteria(boolean first) {
-        if (first)
+        if (first) {
             criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, CutoffCmp.EQ, 1.0, Operator.EMPTY));
-        else
+        } else {
             criteriaModel.addCriteria(new DataIntegrationCriteria(attributeNames[0], 0, CutoffCmp.EQ, 1.0, Operator.AND));
+        }
 
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -177,20 +191,14 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
             }
         });
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-            },
-            new String [] {
-                "Operator", "Attribute", "Condition", "Value"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class
-            };
+        }, new String[]{"Operator", "Attribute", "Condition", "Value"}) {
+            @NotNull
+            final Class[] types = new Class[]{java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
         });
         table.setColumnSelectionAllowed(true);
@@ -224,53 +232,11 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(setToValue, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addGap(18, 18, 18).addComponent(setToValue, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap()));
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{cancelButton, okButton});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tableRemoveBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(setToValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap())
-        );
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(tableRemoveBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(setToValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton)).addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -283,29 +249,31 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /** Closes the dialog */
+    /**
+     * Closes the dialog
+     */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-	private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-            boolean first = table.getRowCount() == 0;
-            addCriteria(first);
-	}//GEN-LAST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
+        boolean first = table.getRowCount() == 0;
+        addCriteria(first);
+    }//GEN-LAST:event_tableAddBtnActionPerformed
 
-	private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
-		criteriaModel.removeCriteria(table.getSelectedRows());
-	}//GEN-LAST:event_tableRemoveBtnActionPerformed
+    private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
+        criteriaModel.removeCriteria(table.getSelectedRows());
+    }//GEN-LAST:event_tableRemoveBtnActionPerformed
 
-        private void setToValueChanged(DocumentEvent evt) {
-            double d;
-            try {
-                d = Double.parseDouble(setToValue.getText());
-                okButton.setEnabled(true);
-            } catch (NumberFormatException e) {
-                okButton.setEnabled(false);
-            }
+    private void setToValueChanged(DocumentEvent evt) {
+        double d;
+        try {
+            d = Double.parseDouble(setToValue.getText());
+            okButton.setEnabled(true);
+        } catch (NumberFormatException e) {
+            okButton.setEnabled(false);
         }
+    }
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -328,11 +296,11 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-	public List<DataIntegrationCriteria> getCriteriaList() {
-		return criteriaModel.getList();
-	}
+    public List<DataIntegrationCriteria> getCriteriaList() {
+        return criteriaModel.getList();
+    }
 
-        public String getSetToValue() {
-            return setToValue.getText();
-        }
+    public String getSetToValue() {
+        return setToValue.getText();
+    }
 }

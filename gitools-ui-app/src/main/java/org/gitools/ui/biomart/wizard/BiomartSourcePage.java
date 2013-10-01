@@ -1,43 +1,29 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
- */
-
-
-/*
- * BiomartTableFilteringPage.java
- *
- * Created on Feb 23, 2010, 4:51:10 PM
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
 package org.gitools.ui.biomart.wizard;
 
-import java.awt.BorderLayout;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.BiomartServiceException;
 import org.gitools.biomart.BiomartServiceFactory;
-import org.gitools.biomart.BiomartService;
 import org.gitools.biomart.restful.model.DatasetInfo;
 import org.gitools.biomart.restful.model.MartLocation;
 import org.gitools.biomart.settings.BiomartSource;
@@ -47,115 +33,136 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.wizard.common.FilteredListPanel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @noinspection ALL
+ */
 public class BiomartSourcePage extends AbstractWizardPage {
 
-	// Biomart model wrappers
-	private static class BiomartSourceWrapper {
+    // Biomart model wrappers
+    private static class BiomartSourceWrapper {
 
-		private BiomartSource source;
+        private BiomartSource source;
 
-		public BiomartSourceWrapper(BiomartSource bs) {
-			this.source = bs;
-		}
+        public BiomartSourceWrapper(BiomartSource bs) {
+            this.source = bs;
+        }
 
-		public BiomartSource getBiomartSource() {
-			return source;
-		}
+        public BiomartSource getBiomartSource() {
+            return source;
+        }
 
-		public void setBiomartSource(BiomartSource source) {
-			this.source = source;
-		}
+        public void setBiomartSource(BiomartSource source) {
+            this.source = source;
+        }
 
-		@Override
-		public String toString() {
-			return source.getDescription();
-		}
-	}
+        @Override
+        public String toString() {
+            return source.getDescription();
+        }
+    }
 
-	private static class DatabaseListWrapper {
+    private static class DatabaseListWrapper {
 
-		private MartLocation mart;
+        private final MartLocation mart;
 
-		public DatabaseListWrapper(MartLocation mart) {
-			this.mart = mart;
-		}
+        public DatabaseListWrapper(MartLocation mart) {
+            this.mart = mart;
+        }
 
-		public MartLocation getMart() {
-			return mart;
-		}
+        public MartLocation getMart() {
+            return mart;
+        }
 
-		@Override
-		public String toString() {
-			return mart.getDisplayName();
-		}
-	}
+        @Override
+        public String toString() {
+            return mart.getDisplayName();
+        }
+    }
 
-	private static class DatasetListWrapper {
+    private static class DatasetListWrapper {
 
-		private DatasetInfo dataset;
+        private final DatasetInfo dataset;
 
-		public DatasetListWrapper(DatasetInfo dataset) {
-			this.dataset = dataset;
-		}
+        public DatasetListWrapper(DatasetInfo dataset) {
+            this.dataset = dataset;
+        }
 
-		public DatasetInfo getDataset() {
-			return dataset;
-		}
+        public DatasetInfo getDataset() {
+            return dataset;
+        }
 
-		@Override
-		public String toString() {
-			return dataset.getDisplayName();
-		}
-	}
+        @Override
+        public String toString() {
+            return dataset.getDisplayName();
+        }
+    }
 
 
-	private BiomartService biomartService;
+    @Nullable
+    private BiomartService biomartService;
 
-	private boolean updated;
-	private FilteredListPanel datasetPanel;
-	private MartLocation lastMartSelected;
+    private boolean updated;
+    private FilteredListPanel datasetPanel;
+    @Nullable
+    private MartLocation lastMartSelected;
 
-	public BiomartSourcePage() {
-		super();
+    public BiomartSourcePage() {
+        super();
 
-		initComponents();
+        initComponents();
 
-		portalCombo.addItemListener(new ItemListener() {
-			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED)
-					updateDatabase();
-			}
-		});
+        portalCombo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(@NotNull ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    updateDatabase();
+                }
+            }
+        });
 
-		databaseList.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent e) {
-				updateDatasets();
-			}
-		});
+        databaseList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                updateDatasets();
+            }
+        });
 
-		datasetPanel = new FilteredListPanel() {
-			@Override protected void selectionChanged() {
-				Object value = datasetPanel.getSelectedValue();
-				setComplete(value != null);
-			}
-		};
-		datasetPanel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        datasetPanel = new FilteredListPanel() {
+            @Override
+            protected void selectionChanged() {
+                Object value = datasetPanel.getSelectedValue();
+                setComplete(value != null);
+            }
+        };
+        datasetPanel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		dataFilterPanel.setLayout(new BorderLayout());
-		dataFilterPanel.add(datasetPanel, BorderLayout.CENTER);
+        dataFilterPanel.setLayout(new BorderLayout());
+        dataFilterPanel.add(datasetPanel, BorderLayout.CENTER);
 
-		updated = false;
+        updated = false;
 
-		setTitle("Select dataset");
-	}
+        setTitle("Select dataset");
+    }
 
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -187,22 +194,8 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
-                    .addComponent(jLabel2))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
-        );
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE).addComponent(jLabel2)).addContainerGap()));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)));
 
         jSplitPane1.setLeftComponent(jPanel1);
 
@@ -210,61 +203,20 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
         javax.swing.GroupLayout dataFilterPanelLayout = new javax.swing.GroupLayout(dataFilterPanel);
         dataFilterPanel.setLayout(dataFilterPanelLayout);
-        dataFilterPanelLayout.setHorizontalGroup(
-            dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 272, Short.MAX_VALUE)
-        );
-        dataFilterPanelLayout.setVerticalGroup(
-            dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 328, Short.MAX_VALUE)
-        );
+        dataFilterPanelLayout.setHorizontalGroup(dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 272, Short.MAX_VALUE));
+        dataFilterPanelLayout.setVerticalGroup(dataFilterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 328, Short.MAX_VALUE));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addContainerGap(202, Short.MAX_VALUE))
-            .addComponent(dataFilterPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dataFilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(jLabel3).addContainerGap(202, Short.MAX_VALUE)).addComponent(dataFilterPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(dataFilterPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
         jSplitPane1.setRightComponent(jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(portalCombo, 0, 543, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(portalCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addGap(18, 18, 18).addComponent(portalCombo, 0, 543, Short.MAX_VALUE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(portalCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -281,154 +233,159 @@ public class BiomartSourcePage extends AbstractWizardPage {
     private javax.swing.JComboBox portalCombo;
     // End of variables declaration//GEN-END:variables
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    @NotNull
+    @Override
+    public JComponent createControls() {
+        return this;
+    }
 
-	@Override
-	public void updateControls() {
+    @Override
+    public void updateControls() {
 
-		if (updated)
-			return;
+        if (updated) {
+            return;
+        }
 
-		List<BiomartSource> sources = BiomartSourceManager.getDefault().getSources();
-		DefaultComboBoxModel sourcesModel = new DefaultComboBoxModel();
-		for (BiomartSource source : sources)
-			sourcesModel.addElement(new BiomartSourceWrapper(source));
-		portalCombo.setModel(sourcesModel);
+        List<BiomartSource> sources = BiomartSourceManager.getDefault().getSources();
+        DefaultComboBoxModel sourcesModel = new DefaultComboBoxModel();
+        for (BiomartSource source : sources)
+            sourcesModel.addElement(new BiomartSourceWrapper(source));
+        portalCombo.setModel(sourcesModel);
 
-		updateDatabase();
+        updateDatabase();
 
-		//Clear dataset list
-		datasetPanel.setListData(new Object[0]);
-		datasetPanel.resetFilterText();
-	}
+        //Clear dataset list
+        datasetPanel.setListData(new Object[0]);
+        datasetPanel.resetFilterText();
+    }
 
-	public void updateDatabase() {
-		if (portalCombo.getSelectedItem() == null)
-			return;
+    void updateDatabase() {
+        if (portalCombo.getSelectedItem() == null) {
+            return;
+        }
 
-		setMessage(MessageStatus.PROGRESS, "Retrieving databases...");
+        setMessage(MessageStatus.PROGRESS, "Retrieving databases...");
 
-		//Clear database list
-		databaseList.setModel(new DefaultListModel());
-		datasetPanel.setListData(new Object[0]);
-		datasetPanel.resetFilterText();
+        //Clear database list
+        databaseList.setModel(new DefaultListModel());
+        datasetPanel.setListData(new Object[0]);
+        datasetPanel.resetFilterText();
 
-		BiomartSource bs = getSource();
-		if (bs == null)
-			return;
+        BiomartSource bs = getSource();
+        if (bs == null) {
+            return;
+        }
 
-		try {
-			biomartService = null;
-			biomartService = BiomartServiceFactory.createService(bs);
-		} catch (BiomartServiceException ex) {
-			ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-			dlg.setVisible(true);
-			setStatus(MessageStatus.ERROR);
-			setMessage(ex.getMessage());
-			// TODO close the wizard or throw up the exception (RuntimeException)
-		}
+        try {
+            biomartService = null;
+            biomartService = BiomartServiceFactory.createService(bs);
+        } catch (BiomartServiceException ex) {
+            ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+            dlg.setVisible(true);
+            setStatus(MessageStatus.ERROR);
+            setMessage(ex.getMessage());
+            // TODO close the wizard or throw up the exception (RuntimeException)
+        }
 
-		if (biomartService == null)
-			return;
+        if (biomartService == null) {
+            return;
+        }
 
-		new Thread(new Runnable() {
-			@Override public void run() {
-				try {
-					List<MartLocation> registry = biomartService.getRegistry();
-					DefaultListModel model = new DefaultListModel();
-					for (MartLocation mart : registry)
-						if (mart.getVisible() != 0)
-							model.addElement(new DatabaseListWrapper(mart));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<MartLocation> registry = biomartService.getRegistry();
+                    DefaultListModel model = new DefaultListModel();
+                    for (MartLocation mart : registry)
+                        if (mart.getVisible() != 0) {
+                            model.addElement(new DatabaseListWrapper(mart));
+                        }
 
-					databaseList.setModel(model);
-					updated = true;
-					setMessage(MessageStatus.INFO, "");
-				}
-				catch (final Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override public void run() {
-							setStatus(MessageStatus.ERROR);
-							setMessage(ex.getMessage());
-						}
-					});
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-					dlg.setVisible(true);
-				}
-			}
-		}).start();
-	}
+                    databaseList.setModel(model);
+                    updated = true;
+                    setMessage(MessageStatus.INFO, "");
+                } catch (@NotNull final Exception ex) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            setStatus(MessageStatus.ERROR);
+                            setMessage(ex.getMessage());
+                        }
+                    });
+                    ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                    dlg.setVisible(true);
+                }
+            }
+        }).start();
+    }
 
-	private void updateDatasets() {
+    private void updateDatasets() {
 
-		// Avoid to process null values or unaltered database selections 
-		if (databaseList.getSelectedValue() == null ||
-				(lastMartSelected != null &&
-				lastMartSelected.getName().equals(getDataBase().getName()))
-				)
-			return;
+        // Avoid to process null values or unaltered database selections
+        if (databaseList.getSelectedValue() == null || (lastMartSelected != null && lastMartSelected.getName().equals(getDataBase().getName()))) {
+            return;
+        }
 
-		setMessage(MessageStatus.PROGRESS, "Retrieving datasets...");
+        setMessage(MessageStatus.PROGRESS, "Retrieving datasets...");
 
-		datasetPanel.setListData(new Object[]{});
-		datasetPanel.resetFilterText();
-				
-		new Thread(new Runnable() {
-			@Override public void run() {
-				try {
-					lastMartSelected = getDataBase();
-					
-					List<DatasetInfo> datasets = biomartService.getDatasets(lastMartSelected);
+        datasetPanel.setListData(new Object[]{});
+        datasetPanel.resetFilterText();
 
-					List<Object> model = new ArrayList();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    lastMartSelected = getDataBase();
 
-					for (int i = 0; i < datasets.size(); i++) {
-						DatasetInfo ds = datasets.get(i);
-						if (ds.getVisible() != 0)
-							model.add(new DatasetListWrapper(ds));
-					}
+                    List<DatasetInfo> datasets = biomartService.getDatasets(lastMartSelected);
 
-					datasetPanel.setListData(model.toArray());
+                    List<Object> model = new ArrayList();
 
-					updated = true;
-					setMessage(MessageStatus.INFO, "");
-				}
-				catch (final Exception ex) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override public void run() {
-							setStatus(MessageStatus.ERROR);
-							setMessage(ex.getMessage());
-						}
-					});
-					ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-					dlg.setVisible(true);
-				}
-			}
-		}).start();
-	}
+                    for (int i = 0; i < datasets.size(); i++) {
+                        DatasetInfo ds = datasets.get(i);
+                        if (ds.getVisible() != 0) {
+                            model.add(new DatasetListWrapper(ds));
+                        }
+                    }
 
-	// GETTERS
-	public BiomartSource getSource() {
-		return portalCombo.getSelectedItem() != null ?
-			((BiomartSourceWrapper) portalCombo.getSelectedItem()).getBiomartSource()
-			: null;
-	}
+                    datasetPanel.setListData(model.toArray());
 
-	public MartLocation getDataBase() {
-		return databaseList.getSelectedValue() != null ?
-			((DatabaseListWrapper) databaseList.getSelectedValue()).getMart()
-			: null;
-	}
+                    updated = true;
+                    setMessage(MessageStatus.INFO, "");
+                } catch (@NotNull final Exception ex) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            setStatus(MessageStatus.ERROR);
+                            setMessage(ex.getMessage());
+                        }
+                    });
+                    ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                    dlg.setVisible(true);
+                }
+            }
+        }).start();
+    }
 
-	public DatasetInfo getDataset() {
-		return datasetPanel.getSelectedValue() != null ?
-			((DatasetListWrapper) datasetPanel.getSelectedValue()).getDataset()
-			: null;
-	}
+    // GETTERS
+    @Nullable
+    BiomartSource getSource() {
+        return portalCombo.getSelectedItem() != null ? ((BiomartSourceWrapper) portalCombo.getSelectedItem()).getBiomartSource() : null;
+    }
 
-	public BiomartService getBiomartService() {
-		return biomartService;
-	}
+    @Nullable
+    public MartLocation getDataBase() {
+        return databaseList.getSelectedValue() != null ? ((DatabaseListWrapper) databaseList.getSelectedValue()).getMart() : null;
+    }
+
+    @Nullable
+    public DatasetInfo getDataset() {
+        return datasetPanel.getSelectedValue() != null ? ((DatasetListWrapper) datasetPanel.getSelectedValue()).getDataset() : null;
+    }
+
+    @Nullable
+    public BiomartService getBiomartService() {
+        return biomartService;
+    }
 }

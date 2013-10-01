@@ -1,22 +1,27 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.panel;
 
+import org.jetbrains.annotations.NotNull;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -47,14 +52,15 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public void onMouseOver(HTMLElement element, MouseEvent event) {
+        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
-            if ("a".equalsIgnoreCase(element.getTagName()))
+            if ("a".equalsIgnoreCase(element.getTagName())) {
                 cursor = new Cursor(Cursor.HAND_CURSOR);
-            else
+            } else {
                 cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+            }
 
             setCursor(cursor);
         }
@@ -67,7 +73,7 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public boolean onMouseClick(HTMLElement element, MouseEvent event) {
+        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event) {
 
             if ("a".equalsIgnoreCase(element.getTagName())) {
                 try {
@@ -84,7 +90,6 @@ public class Html4Panel extends JPanel {
         @Override
         public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
             try {
-                //System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
                 Html4Panel.this.submitForm(method, action, target, enctype, formInputs);
                 super.submitForm(method, action, target, enctype, formInputs);
             } catch (LinkVetoException ex) {
@@ -93,10 +98,10 @@ public class Html4Panel extends JPanel {
 
     }
 
-    protected HtmlPanel panel;
-    protected SimpleHtmlRendererContext rcontext;
+    HtmlPanel panel;
+    SimpleHtmlRendererContext rcontext;
 
-    public Html4Panel() {
+    Html4Panel() {
         createComponents();
     }
 
@@ -108,7 +113,7 @@ public class Html4Panel extends JPanel {
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void linkClicked(HTMLElement linkNode) throws LinkVetoException {
+    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
         String target = linkNode.getAttribute("target");
@@ -137,11 +142,15 @@ public class Html4Panel extends JPanel {
             throw new LinkVetoException();
         } else if (target != null && target.equalsIgnoreCase("_external")) {
             try {
-                Desktop.getDesktop().browse(new URI(href));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                URI uri = new URI(href);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(uri);
+                } else {
+                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
             throw new LinkVetoException();
         }
     }

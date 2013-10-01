@@ -1,128 +1,150 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.editor;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
-import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.view.AbstractView;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEditor
-		extends AbstractView
-		implements IEditor {
+public abstract class AbstractEditor extends AbstractView implements IEditor {
 
-	private static final long serialVersionUID = -2379950551933668781L;
+    private static final long serialVersionUID = -2379950551933668781L;
 
-	public static abstract class EditorListener {
-		public void nameChanged(IEditor editor) {}
-		public void fileChanged(IEditor editor) {};
-		public void dirtyChanged(IEditor editor) {};
-		public void saved(IEditor editor) {};
-	}
+    public static abstract class EditorListener {
+        public void nameChanged(IEditor editor) {
+        }
 
-	private File file;
-	private boolean dirty = false;
-	private boolean saveAsAllowed = false;
+        public void fileChanged(IEditor editor) {
+        }
+
+        public void dirtyChanged(IEditor editor) {
+        }
+
+        public void saved(IEditor editor) {
+        }
+
+    }
+
+    private File file;
+    private boolean dirty = false;
+    private boolean saveAsAllowed = false;
     private boolean saveAllowed = false;
 
-	private List<EditorListener> listeners = new ArrayList<EditorListener>();
+    @NotNull
+    private final List<EditorListener> listeners = new ArrayList<EditorListener>();
 
-	@Override
-	public void setName(String name) {
-		String oldName = getName();
-		if (oldName == null || !oldName.equals(name)) {
-			super.setName(name);
-			for (EditorListener l : listeners) l.nameChanged(this);
-		}
-	}
+    @Override
+    public void setName(String name) {
+        String oldName = getName();
+        if (oldName == null || !oldName.equals(name)) {
+            super.setName(name);
+            for (EditorListener l : listeners)
+                l.nameChanged(this);
+        }
+    }
 
-	public File getFile() {
-		return file;
-	}
+    public File getFile() {
+        return file;
+    }
 
-	public void setFile(File file) {
-		if (this.file != file || !this.file.equals(file)) {
-			this.file = file;
-			for (EditorListener l : listeners) l.fileChanged(this);
-			setName(file.getName());
-		}
-	}
-	
-	@Override
-	public boolean isDirty() {
-		return dirty;
-	}
-	
-	protected void setDirty(boolean dirty) {
-		//TODO enablse save feature
-		if (false && this.dirty != dirty) {
-			this.dirty = dirty;
-			for (EditorListener l : listeners) l.dirtyChanged(this);
-			ActionManager.getDefault().updateEnabledByEditor(this);
-		}
-	}
-	
-	@Override
-	public boolean isSaveAsAllowed() {
-		return saveAsAllowed;
-	}
+    public void setFile(File file) {
+        if (this.file != file || !this.file.equals(file)) {
+            this.file = file;
+            for (EditorListener l : listeners)
+                l.fileChanged(this);
+            if (file != null) {
+                setName(file.getName());
+            }
+        }
+    }
 
-	public void setSaveAsAllowed(boolean saveAsAllowed) {
-		this.saveAsAllowed = saveAsAllowed;
-	}
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    protected void setDirty(boolean dirty) {
+        if (this.dirty != dirty) {
+            this.dirty = dirty;
+            for (EditorListener l : listeners)
+                l.dirtyChanged(this);
+            ActionManager.getDefault().updateEnabledByEditor(this);
+        }
+    }
+
+    @Override
+    public boolean isSaveAsAllowed() {
+        return saveAsAllowed;
+    }
+
+    protected void setSaveAsAllowed(boolean saveAsAllowed) {
+        this.saveAsAllowed = saveAsAllowed;
+    }
 
     @Override
     public boolean isSaveAllowed() {
         return saveAllowed;
     }
 
-    public void setSaveAllowed(boolean  saveAllowed) {
+    protected void setSaveAllowed(boolean saveAllowed) {
         this.saveAllowed = saveAllowed;
     }
-	
-	@Override
-	public void doSave(IProgressMonitor monitor) {
-		for (EditorListener l : listeners) l.saved(this);
-	}
-	
-	@Override
-	public void doSaveAs(IProgressMonitor monitor) {
-		for (EditorListener l : listeners) l.saved(this);
-	}
 
-	@Override
-	public void doVisible() {
-	}
+    @Override
+    public void doSave(IProgressMonitor monitor) {
+        for (EditorListener l : listeners)
+            l.saved(this);
+    }
 
-	@Override
-	public boolean doClose() {
-		return true;
-	}
+    @Override
+    public void doSaveAs(IProgressMonitor monitor) {
+        for (EditorListener l : listeners)
+            l.saved(this);
+    }
 
-	public void addEditorListener(EditorListener listener) {
-		listeners.add(listener);
-	}
+    @Override
+    public void doVisible() {
+    }
 
-	public void removeEditorListener(EditorListener listener) {
-		listeners.add(listener);
-	}
+    @Override
+    public boolean doClose() {
+        return true;
+    }
+
+    @Override
+    public void detach() {
+        // Override if needed
+    }
+
+    public void addEditorListener(EditorListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeEditorListener(EditorListener listener) {
+        listeners.add(listener);
+    }
 }

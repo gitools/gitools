@@ -1,110 +1,114 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * OverlappingPage.java
- *
- * Created on 25-mar-2010, 17:40:59
- */
-
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComponent;
-import javax.swing.event.DocumentEvent;
-import org.gitools.matrix.model.element.IElementAttribute;
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
-	private List<IElementAttribute> attrs;
+    @Nullable
+    private IMatrixLayers attrs;
 
-	private static class AttrOption {
-		private String name;
-		private IElementAttribute attr;
+    private static class AttrOption {
+        private String name;
+        private IMatrixLayer attr;
 
-		public AttrOption(String name) {
-			this.name = name;
-		}
+        public AttrOption(String name) {
+            this.name = name;
+        }
 
-		public AttrOption(IElementAttribute attr) {
-			this.attr = attr;
-		}
+        public AttrOption(IMatrixLayer attr) {
+            this.attr = attr;
+        }
 
-		public IElementAttribute getAttr() {
-			return attr;
-		}
+        public IMatrixLayer getAttr() {
+            return attr;
+        }
 
-		@Override
-		public String toString() {
-			return attr != null ? attr.getName() : name;
-		}
-	}
+        @Override
+        public String toString() {
+            return attr != null ? attr.getName() : name;
+        }
+    }
 
     public OverlappingAnalysisWizardPage() {
-		super();
+        super();
 
-		initComponents();
+        initComponents();
 
-		setTitle("Configure overlapping options");
+        setTitle("Configure overlapping options");
 
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
-		setComplete(true);
+        setComplete(true);
 
-		replaceEmptyValuesCheck.addActionListener(new ActionListener() {
+        replaceEmptyValuesCheck.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
-			}
-		});
-		replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                replaceValueField.setEnabled(replaceEmptyValuesCheck.isSelected());
+            }
+        });
+        replaceValueField.getDocument().addDocumentListener(new DocumentChangeListener() {
 
-			@Override
-			protected void update(DocumentEvent e) {
+            @Override
+            protected void update(DocumentEvent e) {
 
-				boolean valid = isValidNumber(replaceValueField.getText());
+                boolean valid = isValidNumber(replaceValueField.getText());
 
-				boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
+                boolean completed = !replaceEmptyValuesCheck.isSelected() || valid;
 
-				setComplete(completed);
+                setComplete(completed);
 
-				if (!valid) {
+                if (!valid) {
 
-					setStatus(MessageStatus.ERROR);
+                    setStatus(MessageStatus.ERROR);
 
-					setMessage("Invalid replacement for empty values, it should be a real number");
+                    setMessage("Invalid replacement for empty values, it should be a real number");
 
-				} else
+                } else
 
-					setMessage(MessageStatus.INFO, "");
+                {
+                    setMessage(MessageStatus.INFO, "");
+                }
 
-			}
-		});
-	}
+            }
+        });
+    }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -141,86 +145,51 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(attributeLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(replaceEmptyValuesCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2)
-                    .addComponent(applyToColumnsRb)
-                    .addComponent(applyToRowsRb))
-                .addContainerGap(100, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(attributeLabel)
-                    .addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(replaceEmptyValuesCheck)
-                    .addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(applyToColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applyToRowsRb)
-                .addContainerGap(116, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(attributeLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)).addGroup(layout.createSequentialGroup().addComponent(replaceEmptyValuesCheck).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)).addComponent(jLabel2).addComponent(applyToColumnsRb).addComponent(applyToRowsRb)).addContainerGap(100, Short.MAX_VALUE)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(attributeLabel).addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(replaceEmptyValuesCheck).addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(applyToColumnsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(applyToRowsRb).addContainerGap(116, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    @NotNull
+    @Override
+    public JComponent createControls() {
+        return this;
+    }
 
-	private boolean isValidNumber(String text) {
-		try {
-			Double.parseDouble(text);
-		}
-		catch (NumberFormatException ex) {
-			return false;
-		}
-		return true;
-	}
+    private boolean isValidNumber(String text) {
+        try {
+            Double.parseDouble(text);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        return true;
+    }
 
 
-	public void setAttributes(List<IElementAttribute> attrs) {
-		this.attrs = attrs;
+    public void setAttributes(IMatrixLayers attrs) {
+        this.attrs = attrs;
 
-		if (attrs != null) {
-			AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
+        if (attrs != null) {
+            AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
 
-			for (int i = 0; i < attrs.size(); i++)
-				pvalueAttrs[i] = new AttrOption(attrs.get(i));
+            for (int i = 0; i < attrs.size(); i++)
+                pvalueAttrs[i] = new AttrOption(attrs.get(i));
 
-			attributeCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
-			attributeCb.setSelectedIndex(0);
-			attributeCb.setEnabled(true);
-			attributeCb.setVisible(true);
-			attributeLabel.setVisible(true);
-		}
-		else
-			dissableAttrCb();
-	}
+            attributeCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
+            attributeCb.setSelectedIndex(0);
+            attributeCb.setEnabled(true);
+            attributeCb.setVisible(true);
+            attributeLabel.setVisible(true);
+        } else {
+            dissableAttrCb();
+        }
+    }
 
-	private void dissableAttrCb() {
-		attributeCb.setModel(new DefaultComboBoxModel());
-		attributeCb.setEnabled(false);
-		attributeCb.setVisible(false);
-		attributeLabel.setVisible(false);
-	}
+    private void dissableAttrCb() {
+        attributeCb.setModel(new DefaultComboBoxModel());
+        attributeCb.setEnabled(false);
+        attributeCb.setVisible(false);
+        attributeLabel.setVisible(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup applyGroup;
@@ -233,32 +202,35 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     private javax.swing.JTextField replaceValueField;
     // End of variables declaration//GEN-END:variables
 
-	public int getAttributeIndex() {
-		return attributeCb.getSelectedIndex();
-	}
+    public String getAttributeName() {
+        if (attrs != null) {
+            attrs.get(attributeCb.getSelectedIndex()).getId();
+        }
+        return null;
+    }
 
-	public boolean isReplaceNanValuesEnabled() {
-		return replaceEmptyValuesCheck.isSelected();
-	}
+    public boolean isReplaceNanValuesEnabled() {
+        return replaceEmptyValuesCheck.isSelected();
+    }
 
-	public double getReplaceNanValue() {
-		return Double.parseDouble(replaceValueField.getText());
-	}
+    public double getReplaceNanValue() {
+        return Double.parseDouble(replaceValueField.getText());
+    }
 
-	public boolean isTransposeEnabled() {
-		return applyToRowsRb.isSelected();
-	}
+    public boolean isTransposeEnabled() {
+        return applyToRowsRb.isSelected();
+    }
 
-	public void setReplaceNanValue(double value) {
-		replaceValueField.setText(Double.toString(value));
-	}
+    public void setReplaceNanValue(double value) {
+        replaceValueField.setText(Double.toString(value));
+    }
 
-	public void setTransposeEnabled(boolean enabled) {
-		applyToRowsRb.setSelected(enabled);
-	}
-	
-	public void setReplaceNanValuesEnabled(boolean enabled) {
-		replaceEmptyValuesCheck.setSelected(enabled);
-	}
+    public void setTransposeEnabled(boolean enabled) {
+        applyToRowsRb.setSelected(enabled);
+    }
+
+    public void setReplaceNanValuesEnabled(boolean enabled) {
+        replaceEmptyValuesCheck.setSelected(enabled);
+    }
 
 }

@@ -1,70 +1,57 @@
 /*
- *  Copyright 2011 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * ColoredClustersAnnotationsPage.java
- *
- * Created on 02-mar-2011, 8:08:28
- */
-
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
-import edu.upf.bg.aggregation.AggregatorFactory;
-import edu.upf.bg.aggregation.IAggregator;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.aggregation.AggregatorFactory;
+import org.gitools.utils.aggregation.IAggregator;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.element.IElementAttribute;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class AggregationDataSourcePage extends AbstractWizardPage {
 
-    private Heatmap heatmap;
-    private String[] cellAttributes;
-    private String[] aggregatorNames;
-    private IAggregator[] aggregatorsArray;
-    private boolean applyToRows;
+    private final IAggregator[] aggregatorsArray;
 
 
-	public AggregationDataSourcePage(Heatmap heatmap, boolean applyToRows) {
-        this.heatmap = heatmap;
+    public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
 
-        List<IElementAttribute> attributes =  heatmap.getMatrixView().getCellAttributes();
-        cellAttributes = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-            this.cellAttributes[i] = attributes.get(i).getName();
 
         this.aggregatorsArray = AggregatorFactory.getAggregatorsArray();
-        this.aggregatorNames = new String[aggregatorsArray.length];
+        String[] aggregatorNames = new String[aggregatorsArray.length];
         for (int i = 0; i < aggregatorsArray.length; i++)
-            this.aggregatorNames[i] = aggregatorsArray[i].toString();
+            aggregatorNames[i] = aggregatorsArray[i].toString();
 
-        this.applyToRows = applyToRows;
-		initComponents();
+        initComponents();
         updateModel();
 
-        boolean hasAnnotation = applyToRows ? heatmap.getColumnDim().getAnnotations() != null : heatmap.getRowDim().getAnnotations() != null;
+        boolean hasAnnotation = headerDimension.getAnnotations() != null;
         separateAggregationCb.setEnabled(hasAnnotation);
 
-        valueCb.setModel(new DefaultComboBoxModel(cellAttributes));
-        valueCb.setSelectedIndex(heatmap.getMatrixView().getSelectedPropertyIndex());
+        valueCb.setModel(new DefaultComboBoxModel(layerNames.toArray()));
+        valueCb.setSelectedIndex(selectedLayer);
         valueCb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,42 +67,36 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             }
         });
 
-        if (applyToRows) {
-            useAllRb.setText("Use values from all columns");
-            useSelectedRb.setText("Use values from selected columns");
-            separateAggregationCb.setText("aggregate by column annotations groups");
-        } else {
-            useAllRb.setText("Use values from all rows");
-            useSelectedRb.setText("Use values from selected rows");
-            separateAggregationCb.setText("aggregate by row annotations groups");
-        }
+        useAllRb.setText("Use values from all " + headerDimension.getId());
+        useSelectedRb.setText("Use values from selected " + headerDimension.getId());
+        separateAggregationCb.setText("aggregate by " + aggregationDimension.getId() + " annotations groups");
 
         setTitle("Choose the data source for the header to add");
 
     }
 
-    public IAggregator getDataAggregator () {
+    public IAggregator getAggregator() {
         return aggregatorsArray[aggregatorCb.getSelectedIndex()];
     }
-    
-    public int getSelectedDataValueIndex() {
+
+    public int getAggregationLayer() {
         return valueCb.getSelectedIndex();
     }
 
     public String getSelectedDataValueName() {
         return valueCb.getSelectedItem().toString();
     }
-    
+
     public boolean useAllColumnsOrRows() {
         return useAllRb.isSelected();
     }
 
-	private void updateCompleted() {
-		boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
-		setComplete(completed);
-	}
+    private void updateCompleted() {
+        boolean completed = aggregatorCb.getSelectedIndex() > -1 && valueCb.getSelectedIndex() > -1;
+        setComplete(completed);
+    }
 
-    public boolean aggregateAnnotationsSeparately(){
+    public boolean aggregateAnnotationsSeparately() {
         return separateAggregationCb.isEnabled() && separateAggregationCb.isSelected();
     }
 
@@ -125,14 +106,14 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
     }
 
 
-	@Override
-	public void updateModel() {
+    @Override
+    public void updateModel() {
         super.updateModel();
-	}
+    }
 
 
-
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -151,11 +132,11 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         useSelectedRb = new javax.swing.JRadioButton();
         separateAggregationCb = new javax.swing.JCheckBox();
 
-        valueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        valueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
         jLabel1.setText("Select data value");
 
-        aggregatorCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        aggregatorCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
         jLabel2.setText("Value aggregation");
 
@@ -188,42 +169,8 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(useAllRb)
-                    .addComponent(useSelectedRb)
-                    .addComponent(separateAggregationCb))
-                .addContainerGap(204, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(separateAggregationCb)
-                .addGap(18, 18, 18)
-                .addComponent(useAllRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(useSelectedRb)
-                .addContainerGap(83, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel1).addComponent(jLabel2).addComponent(jLabel3).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(useAllRb).addComponent(useSelectedRb).addComponent(separateAggregationCb)).addContainerGap(204, Short.MAX_VALUE)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(15, 15, 15).addComponent(separateAggregationCb).addGap(18, 18, 18).addComponent(useAllRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(useSelectedRb).addContainerGap(83, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     private void useAllRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAllRbActionPerformed

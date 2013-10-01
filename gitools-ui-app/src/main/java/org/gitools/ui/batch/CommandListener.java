@@ -1,8 +1,31 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.batch;
 
-
 import org.apache.log4j.Logger;
+import org.gitools.ui.batch.tools.VersionTool;
 import org.gitools.ui.platform.AppFrame;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.*;
@@ -13,19 +36,72 @@ import java.nio.channels.ClosedByInterruptException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @noinspection ALL
+ */
 public class CommandListener implements Runnable {
 
-    private static Logger log = Logger.getLogger(CommandListener.class);
+    private static final Logger log = Logger.getLogger(CommandListener.class);
 
+    @Nullable
     private static CommandListener listener;
 
     private int port = -1;
+    @Nullable
     private ServerSocket serverSocket = null;
+    @Nullable
     private Socket clientSocket = null;
-    private Thread listenerThread;
-    boolean halt = false;
+    private final Thread listenerThread;
+    private boolean halt = false;
 
     public static synchronized void start(int port) {
+        start(port, null);
+    }
+
+    public static synchronized void start(int port, @Nullable String[] args) {
+        if (args != null && args.length > 0) {
+            if (checkSameVersion(port)) {
+
+                // Pass the arguments to the other gitools instance
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost", port);
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    InputStream in = socket.getInputStream();
+
+                    StringBuilder cmd = new StringBuilder();
+                    for (String arg : args) {
+                        cmd.append(arg).append(' ');
+                    }
+                    out.println(cmd.toString());
+
+                    // Wait server response
+                    while (in.available() == 0) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception ee) {
+                        }
+                    }
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    reader.readLine();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (socket != null) {
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                // Close gitools
+                System.exit(0);
+            }
+        }
+
         listener = new CommandListener(port);
         listener.listenerThread.start();
     }
@@ -87,7 +163,7 @@ public class CommandListener implements Runnable {
      * @param cmdExe
      * @throws IOException
      */
-    private void processClientSession(CommandExecutor cmdExe) throws IOException {
+    private void processClientSession(@NotNull CommandExecutor cmdExe) throws IOException {
         PrintWriter out = null;
         BufferedReader in = null;
 
@@ -150,8 +226,12 @@ public class CommandListener implements Runnable {
         } catch (IOException e) {
             log.error("Error processing client session", e);
         } finally {
-            if (out != null) out.close();
-            if (in != null) in.close();
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
         }
     }
 
@@ -164,7 +244,7 @@ public class CommandListener implements Runnable {
     private static final String CONTENT_TYPE_TEXT_HTML = "text/html";
     private static final String CONNECTION_CLOSE = "Connection: close";
 
-    private void sendHTTPResponse(PrintWriter out, String result) {
+    private static void sendHTTPResponse(@NotNull PrintWriter out, @Nullable String result) {
 
         out.println(result == null ? HTTP_NO_RESPONSE : HTTP_RESPONSE);
         if (result != null) {
@@ -206,9 +286,9 @@ public class CommandListener implements Runnable {
      * Process an http get request.
      */
 
-    private void processGet(String command, Map<String, String> params, CommandExecutor cmdExe, PrintWriter out) throws IOException {
+    private void processGet(@NotNull String command, @NotNull Map<String, String> params, @NotNull CommandExecutor cmdExe, @NotNull PrintWriter out) throws IOException {
 
-        final Frame mainFrame = AppFrame.instance();
+        final Frame mainFrame = AppFrame.get();
 
         // Trick to force window to front, the setAlwaysOnTop works on a Mac,  toFront() does nothing.
         mainFrame.toFront();
@@ -219,7 +299,7 @@ public class CommandListener implements Runnable {
             String file = params.get("file");
 
             if (file != null) {
-                cmdExe.execute(new String[] { "load" , file }, out);
+                cmdExe.execute(new String[]{"load", file}, out);
             } else {
                 out.println("ERROR Parameter \"file\" is required");
             }
@@ -236,6 +316,7 @@ public class CommandListener implements Runnable {
      * @param parameterString
      * @return
      */
+    @NotNull
     private Map<String, String> parseParameters(String parameterString) {
 
         // Do a partial decoding now (ampersands only)
@@ -267,8 +348,9 @@ public class CommandListener implements Runnable {
      * @param s
      * @return
      */
-    public static String decodeURL(String s) {
-        if(s == null) {
+    @Nullable
+    private static String decodeURL(@Nullable String s) {
+        if (s == null) {
             return null;
         }
         try {
@@ -278,5 +360,51 @@ public class CommandListener implements Runnable {
         }
     }
 
+    /**
+     * Check if the current open instance is the same version
+     *
+     * @return True if there are the same version, false if not the same version or if there is no other instance running.
+     */
+    private static boolean checkSameVersion(int port) {
 
+        Socket socket = null;
+        PrintWriter out = null;
+        BufferedReader in = null;
+
+        try {
+            socket = new Socket("localhost", port);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            VersionTool version = new VersionTool();
+
+            out.println(version.getName());
+            String otherInstanceVersion = in.readLine();
+
+            in.close();
+            out.close();
+
+            if (otherInstanceVersion != null && otherInstanceVersion.equals(version.getVersion())) {
+                return true;
+            }
+
+            return false;
+
+        } catch (IOException e) {
+
+            return false;
+
+        } finally {
+
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+            }
+        }
+
+    }
 }

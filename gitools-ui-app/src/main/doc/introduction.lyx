@@ -208,25 +208,25 @@ License
 \end_layout
 
 \begin_layout Standard
-The Gitools distribution is licensed according to the liberal 
+The Gitools distribution is licensed according to
 \emph on
-Apache License 2.0
+GNU GPL 3.0
 \emph default
 .
  See the files in the top-level of the Gitools distribution called 
 \emph on
-LICENSE-2.0.txt
+LICENSE.txt
 \emph default
  and see licenses for accompanying products in the "
 \emph on
 lib
 \emph default
 " directory.
- See full explanation and FAQs regarding the Apache License at
+ See full explanation and FAQs regarding the GNU GPL 3.0 License at
 \end_layout
 
 \begin_layout LyX-Code
-http://www.apache.org/licenses/
+http://www.gnu.org/licenses/
 \end_layout
 
 \end_body

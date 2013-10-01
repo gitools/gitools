@@ -1,179 +1,201 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * AnalysisDetailsPanel.java
- *
- * Created on September 4, 2009, 12:31 PM
- */
-
 package org.gitools.ui.analysis.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JComponent;
-import javax.swing.ListSelectionModel;
+import org.gitools.core.model.Property;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import org.gitools.model.Attribute;
-import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class AnalysisDetailsPage extends AbstractWizardPage {
 
-	private static final long serialVersionUID = -6310021084299136899L;
+    private static final long serialVersionUID = -6310021084299136899L;
 
-	private static class AttributesModel implements TableModel {
+    private static class AttributesModel implements TableModel {
 
-		private List<Attribute> attrs;
-		private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+        @Nullable
+        private final List<Property> attrs;
+        @NotNull
+        private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-		public AttributesModel() {
-			attrs = new ArrayList<Attribute>();
-		}
+        public AttributesModel() {
+            attrs = new ArrayList<Property>();
+        }
 
-		public AttributesModel(List<Attribute> attrs) {
-			this.attrs = attrs != null ? attrs : new ArrayList<Attribute>();
-		}
+        public AttributesModel(@Nullable List<Property> attrs) {
+            this.attrs = attrs != null ? attrs : new ArrayList<Property>();
+        }
 
-		@Override public int getRowCount() {
-			return attrs.size();
-		}
+        @Override
+        public int getRowCount() {
+            return attrs.size();
+        }
 
-		@Override public int getColumnCount() {
-			return 2;
-		}
+        @Override
+        public int getColumnCount() {
+            return 2;
+        }
 
-		@Override public String getColumnName(int columnIndex) {
-			return columnIndex == 0 ? "Name" : "Value";
-		}
+        @NotNull
+        @Override
+        public String getColumnName(int columnIndex) {
+            return columnIndex == 0 ? "Name" : "Value";
+        }
 
-		@Override public Class<?> getColumnClass(int columnIndex) {
-			return String.class;
-		}
+        @NotNull
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return String.class;
+        }
 
-		@Override public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return false;
-		}
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false;
+        }
 
-		@Override public Object getValueAt(int rowIndex, int columnIndex) {
-			Attribute attr = attrs.get(rowIndex);
-			return columnIndex == 0 ? attr.getName() : attr.getValue();
-		}
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            Property attr = attrs.get(rowIndex);
+            return columnIndex == 0 ? attr.getName() : attr.getValue();
+        }
 
-		@Override public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 
-		@Override public void addTableModelListener(TableModelListener l) {
-			listeners.add(l);
-		}
+        @Override
+        public void addTableModelListener(TableModelListener l) {
+            listeners.add(l);
+        }
 
-		@Override public void removeTableModelListener(TableModelListener l) {
-			listeners.remove(l);
-		}
+        @Override
+        public void removeTableModelListener(TableModelListener l) {
+            listeners.remove(l);
+        }
 
-		public List<Attribute> getAttributes() {
-			return attrs;
-		}
-		
-		public Attribute getAttribute(int index) {
-			return attrs.get(index);
-		}
+        @Nullable
+        public List<Property> getAttributes() {
+            return attrs;
+        }
 
-		public void addAttribute(Attribute attr) {
-			attrs.add(attr);
-			for (TableModelListener l : listeners)
-				l.tableChanged(new TableModelEvent(this));
-		}
+        public Property getAttribute(int index) {
+            return attrs.get(index);
+        }
 
-		private void modifyAttribute(int index, Attribute attribute) {
-			Attribute attr = getAttribute(index);
-			attr.setName(attribute.getName());
-			attr.setValue(attribute.getValue());
-			for (TableModelListener l : listeners)
-				l.tableChanged(new TableModelEvent(this));
-		}
+        public void addAttribute(Property attr) {
+            attrs.add(attr);
+            for (TableModelListener l : listeners)
+                l.tableChanged(new TableModelEvent(this));
+        }
 
-		public void removeAttribute(int index) {
-			attrs.remove(index);
-			for (TableModelListener l : listeners)
-				l.tableChanged(new TableModelEvent(this));
-		}
-	}
+        private void modifyAttribute(int index, @NotNull Property attribute) {
+            Property attr = getAttribute(index);
+            attr.setName(attribute.getName());
+            attr.setValue(attribute.getValue());
+            for (TableModelListener l : listeners)
+                l.tableChanged(new TableModelEvent(this));
+        }
 
-	private AttributesModel attrModel;
-
-	/** Creates new form AnalysisDetailsPanel */
-    public AnalysisDetailsPage() {
-		setTitle("Analysis details");
-
-		setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANALYSIS_DETAILS, 96));
-
-		setComplete(true);
-		
-        initComponents();
-
-		attrTable.setModel(attrModel = new AttributesModel());
-		attrTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		attrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				int row = attrTable.getSelectedRow();
-				attrEditBtn.setEnabled(row != -1);
-				attrRemoveBtn.setEnabled(row != -1);
-			}
-		});
+        public void removeAttribute(int index) {
+            attrs.remove(index);
+            for (TableModelListener l : listeners)
+                l.tableChanged(new TableModelEvent(this));
+        }
     }
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    private AttributesModel attrModel;
 
-	public String getAnalysisTitle() {
-		return titleField.getText();
-	}
+    /**
+     * Creates new form AnalysisDetailsPanel
+     */
+    public AnalysisDetailsPage() {
+        setTitle("Analysis details");
 
-	public void setAnalysisTitle(String title) {
-		titleField.setText(title);
-	}
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANALYSIS_DETAILS, 96));
 
-	public String getAnalysisNotes() {
-		return notesArea.getText();
-	}
+        setComplete(true);
 
-	public void setAnalysisNotes(String notes) {
-		notesArea.setText(notes);
-	}
-	
-	public List<Attribute> getAnalysisAttributes() {
-		return attrModel.getAttributes();
-	}
+        initComponents();
 
-	public void setAnalysisAttributes(List<Attribute> attrs) {
-		attrTable.setModel(attrModel = new AttributesModel(attrs));
-	}
+        attrTable.setModel(attrModel = new AttributesModel());
+        attrTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        attrTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int row = attrTable.getSelectedRow();
+                attrEditBtn.setEnabled(row != -1);
+                attrRemoveBtn.setEnabled(row != -1);
+            }
+        });
+    }
 
-    /** This method is called from within the constructor to
+    @NotNull
+    @Override
+    public JComponent createControls() {
+        return this;
+    }
+
+    public String getAnalysisTitle() {
+        return titleField.getText();
+    }
+
+    public void setAnalysisTitle(String title) {
+        titleField.setText(title);
+    }
+
+    public String getAnalysisNotes() {
+        return notesArea.getText();
+    }
+
+    public void setAnalysisNotes(String notes) {
+        notesArea.setText(notes);
+    }
+
+    @Nullable
+    public List<Property> getAnalysisAttributes() {
+        return attrModel.getAttributes();
+    }
+
+    public void setAnalysisAttributes(List<Property> attrs) {
+        attrTable.setModel(attrModel = new AttributesModel(attrs));
+    }
+
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -207,20 +229,14 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 
         jScrollPane2.setEnabled(false);
 
-        attrTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        attrTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-            },
-            new String [] {
-                "Name", "Value"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
+        }, new String[]{"Name", "Value"}) {
+            @NotNull
+            final Class[] types = new Class[]{java.lang.String.class, java.lang.String.class};
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
         });
         jScrollPane2.setViewportView(attrTable);
@@ -250,81 +266,44 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-                    .addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(attrRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(attrEditBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(attrAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(attrAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attrEditBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(attrRemoveBtn))
-                    .addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE).addComponent(titleField, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE).addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE).addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(attrRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(attrEditBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(attrAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))).addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(attrAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(attrEditBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(attrRemoveBtn)).addComponent(jScrollPane2, 0, 0, Short.MAX_VALUE)).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-	private void attrAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrAddBtnActionPerformed
-		AttributeDialog dlg = new AttributeDialog(null);
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+    private void attrAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrAddBtnActionPerformed
+        AttributeDialog dlg = new AttributeDialog(null);
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
 
-		attrModel.addAttribute(dlg.getAttribute());
-	}//GEN-LAST:event_attrAddBtnActionPerformed
+        attrModel.addAttribute(dlg.getAttribute());
+    }//GEN-LAST:event_attrAddBtnActionPerformed
 
-	private void attrEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrEditBtnActionPerformed
-		int row = attrTable.getSelectedRow();
-		if (row == -1)
-			return;
+    private void attrEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrEditBtnActionPerformed
+        int row = attrTable.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
 
-		AttributeDialog dlg = new AttributeDialog(null);
-		dlg.setAttribute(attrModel.getAttribute(row));
-		dlg.setVisible(true);
-		if (dlg.isCancelled())
-			return;
+        AttributeDialog dlg = new AttributeDialog(null);
+        dlg.setAttribute(attrModel.getAttribute(row));
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
 
-		attrModel.modifyAttribute(row, dlg.getAttribute());
-	}//GEN-LAST:event_attrEditBtnActionPerformed
+        attrModel.modifyAttribute(row, dlg.getAttribute());
+    }//GEN-LAST:event_attrEditBtnActionPerformed
 
-	private void attrRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrRemoveBtnActionPerformed
-		int row = attrTable.getSelectedRow();
-		if (row == -1)
-			return;
+    private void attrRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attrRemoveBtnActionPerformed
+        int row = attrTable.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
 
-		attrModel.removeAttribute(row);
-	}//GEN-LAST:event_attrRemoveBtnActionPerformed
+        attrModel.removeAttribute(row);
+    }//GEN-LAST:event_attrRemoveBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

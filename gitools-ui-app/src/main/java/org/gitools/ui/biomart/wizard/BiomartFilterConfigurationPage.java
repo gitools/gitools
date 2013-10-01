@@ -1,187 +1,190 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.wizard;
 
-import java.awt.Dimension;
+import org.gitools.biomart.BiomartService;
+import org.gitools.biomart.restful.model.*;
+import org.gitools.ui.biomart.filter.FilterCollectionPanel;
+import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.DatasetConfig;
-import org.gitools.biomart.restful.model.FilterGroup;
-import org.gitools.biomart.restful.model.FilterPage;
-import org.gitools.biomart.restful.model.DatasetInfo;
-import org.gitools.biomart.restful.model.Filter;
-import org.gitools.biomart.restful.model.FilterCollection;
-import org.gitools.biomart.restful.model.Option;
-import org.gitools.ui.biomart.filter.FilterCollectionPanel;
-import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
+/**
+ * @noinspection ALL
+ */
 public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
 
-	// Biomart Configuration Wrappers
-	private static class PageListWrapper {
+    // Biomart Configuration Wrappers
+    private static class PageListWrapper {
 
-		private FilterPage page;
+        private final FilterPage page;
 
-		public PageListWrapper(FilterPage dataset) {
-			this.page = dataset;
-		}
+        public PageListWrapper(FilterPage dataset) {
+            this.page = dataset;
+        }
 
-		public FilterPage getFilterPage() {
-			return page;
-		}
+        public FilterPage getFilterPage() {
+            return page;
+        }
 
-		@Override
-		public String toString() {
+        @Override
+        public String toString() {
 
-			String res = page.getDisplayName();
-			if (res != null) {
-				res = res.replace(":", "");
-			}
+            String res = page.getDisplayName();
+            if (res != null) {
+                res = res.replace(":", "");
+            }
 
-			return res;
-		}
-	}
+            return res;
+        }
+    }
 
-	private static class GroupListWrapper {
+    private static class GroupListWrapper {
 
-		private FilterGroup group;
+        private final FilterGroup group;
 
-		public GroupListWrapper(FilterGroup dataset) {
-			this.group = dataset;
-		}
+        public GroupListWrapper(FilterGroup dataset) {
+            this.group = dataset;
+        }
 
-		public FilterGroup getFilterGroup() {
-			return group;
-		}
+        public FilterGroup getFilterGroup() {
+            return group;
+        }
 
-		@Override
-		public String toString() {
+        @Override
+        public String toString() {
 
-			String res = group.getDisplayName();
-			if (res != null) {
-				res = res.replace(":", "");
-			}
+            String res = group.getDisplayName();
+            if (res != null) {
+                res = res.replace(":", "");
+            }
 
-			return res;
-		}
-	}
-	
-	private final Integer FILTER_PANEL_WEIGHT = 333;
+            return res;
+        }
+    }
 
-	private final Integer FILTER_PANEL_HEIGHT = 330;
+    private final Integer FILTER_PANEL_WEIGHT = 333;
 
-	private DatasetInfo dataset;
+    private final Integer FILTER_PANEL_HEIGHT = 330;
 
-	private DatasetConfig biomartConfig;
+    private DatasetInfo dataset;
 
-	private BiomartService biomartService;
+    private DatasetConfig biomartConfig;
 
-	private FilterGroup lastGroupSelected;
+    private BiomartService biomartService;
 
-	private FilterPage lastPageSelected;
+    @Nullable
+    private FilterGroup lastGroupSelected;
 
-	private HashMap<String,Filter> filters;
+    @Nullable
+    private FilterPage lastPageSelected;
 
-	private HashMap<FilterPage,CollectionsPanelsCache> collectionsCache; // Stores component panel selections
+    private final HashMap<String, Filter> filters;
 
-	private Boolean reloadData; //determine whether update panel data
+    private HashMap<FilterPage, CollectionsPanelsCache> collectionsCache; // Stores component panel selections
 
-	private HashMap<String, List<Option>> defaultSelecComposData; //Stores default selection component data
+    private Boolean reloadData; //determine whether update panel data
 
-	public static class CollectionsPanelsCache{
-		
-		public HashMap<FilterGroup,List<FilterCollectionPanel>> collections = new HashMap<FilterGroup, List<FilterCollectionPanel>>();
+    private HashMap<String, List<Option>> defaultSelecComposData; //Stores default selection component data
 
-	}
+    public static class CollectionsPanelsCache {
 
-	/*
-	 * Default class constructor.
-	 * Member attributes and graphic components are initialised
-	 *
-	 */
-	public BiomartFilterConfigurationPage() {
+        @NotNull
+        public final HashMap<FilterGroup, List<FilterCollectionPanel>> collections = new HashMap<FilterGroup, List<FilterCollectionPanel>>();
 
-		initComponents();
-		
-		lastGroupSelected = null;
+    }
 
-		lastPageSelected = null;
+    /*
+     * Default class constructor.
+     * Member attributes and graphic components are initialised
+     *
+     */
+    public BiomartFilterConfigurationPage() {
 
-		reloadData = true;
+        initComponents();
 
-		filters = new HashMap<String,Filter>();
+        lastGroupSelected = null;
 
-		collectionsCache = new HashMap<FilterPage, CollectionsPanelsCache>();
-		
-		setComplete(true); //Next button always is true, input filters is not mandatory
+        lastPageSelected = null;
 
-		filterPageCombo.addItemListener(new ItemListener() {
-			@Override public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED){
-					if (filterPageCombo.getSelectedItem() != null) {
+        reloadData = true;
 
-						updateGroupFilterList(((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage());
+        filters = new HashMap<String, Filter>();
 
-						lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
-					}
-				}
+        collectionsCache = new HashMap<FilterPage, CollectionsPanelsCache>();
 
-			}
-		});
+        setComplete(true); //Next button always is true, input filters is not mandatory
 
-		filterGroupList.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent e) {
-				if (filterPageCombo.getModel().getSelectedItem() != null && filterGroupList.getSelectedValue() != null)
-				{
-					updateCollectionControls(((PageListWrapper) filterPageCombo.getModel().getSelectedItem()).getFilterPage(),
-							((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup());
-					
-					lastGroupSelected = ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup();
-				}
-			}
-		});
+        filterPageCombo.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(@NotNull ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    if (filterPageCombo.getSelectedItem() != null) {
 
-	}
+                        updateGroupFilterList(((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage());
+
+                        lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
+                    }
+                }
+
+            }
+        });
+
+        filterGroupList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (filterPageCombo.getModel().getSelectedItem() != null && filterGroupList.getSelectedValue() != null) {
+                    updateCollectionControls(((PageListWrapper) filterPageCombo.getModel().getSelectedItem()).getFilterPage(), ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup());
+
+                    lastGroupSelected = ((GroupListWrapper) filterGroupList.getSelectedValue()).getFilterGroup();
+                }
+            }
+        });
+
+    }
 
 
-
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -205,19 +208,8 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE).addContainerGap()));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(filterGroupList, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE).addContainerGap()));
 
         jSplitPane1.setLeftComponent(jPanel1);
 
@@ -228,64 +220,22 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
 
         javax.swing.GroupLayout collectionsPanelLayout = new javax.swing.GroupLayout(collectionsPanel);
         collectionsPanel.setLayout(collectionsPanelLayout);
-        collectionsPanelLayout.setHorizontalGroup(
-            collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
-        );
-        collectionsPanelLayout.setVerticalGroup(
-            collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
-        );
+        collectionsPanelLayout.setHorizontalGroup(collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 350, Short.MAX_VALUE));
+        collectionsPanelLayout.setVerticalGroup(collectionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 366, Short.MAX_VALUE));
 
         scrollPanel.setViewportView(collectionsPanel);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 362, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 362, Short.MAX_VALUE).addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))));
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 390, Short.MAX_VALUE).addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addComponent(scrollPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE).addContainerGap())));
 
         jSplitPane1.setRightComponent(jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filterPageCombo, 0, 522, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(filterPageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(filterPageCombo, 0, 522, Short.MAX_VALUE))).addContainerGap()));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(filterPageCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE).addContainerGap()));
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -299,307 +249,315 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
     private javax.swing.JScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
 
-	@Override
-	public JComponent createControls() {
-		return this;
-	}
+    @NotNull
+    @Override
+    public JComponent createControls() {
+        return this;
+    }
 
-	/**
-	 * Method called each time this class is shown in the application
-	 * All components from collections panel are cleaned, to avoid wrong
-	 * component visualisations
-	 *
-	 */
-	@Override
-	public void updateControls() {
+    /**
+     * Method called each time this class is shown in the application
+     * All components from collections panel are cleaned, to avoid wrong
+     * component visualisations
+     */
+    @Override
+    public void updateControls() {
 
-		//Clean main collections panel
-		collectionsPanel.removeAll();
+        //Clean main collections panel
+        collectionsPanel.removeAll();
 
-		collectionsPanel.setPreferredSize(new Dimension(FILTER_PANEL_WEIGHT,FILTER_PANEL_HEIGHT));
+        collectionsPanel.setPreferredSize(new Dimension(FILTER_PANEL_WEIGHT, FILTER_PANEL_HEIGHT));
 
-		filterGroupList.clearSelection();
-		
-		lastGroupSelected = null;
-
-		lastPageSelected = null;
+        filterGroupList.clearSelection();
 
-		if (reloadData) {
+        lastGroupSelected = null;
 
-			setMessage(MessageStatus.PROGRESS, "Retrieving available filters ...");
+        lastPageSelected = null;
 
-			new Thread(new Runnable() {
-				@Override public void run() {
-					try {
+        if (reloadData) {
 
-						defaultSelecComposData = new HashMap<String, List<Option>>();
-
-						initCollectionsCache();
-						updatePageFilterList();
-
-						if (filterPageCombo.getSelectedItem() != null)						{							
-							lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
-							setMessage(MessageStatus.INFO, "");
-
-						}else{
-							lastPageSelected = null;
-							setMessage(MessageStatus.INFO, " No filters are availables");
-						}						
-
-						reloadData = false;
-						
-					}
-					catch (final Exception ex) {
-
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override public void run() {
-								
-								setStatus(MessageStatus.ERROR);
-								setMessage(ex.getMessage());
-							}
-						});
+            setMessage(MessageStatus.PROGRESS, "Retrieving available filters ...");
 
-						ExceptionDialog dlg = new ExceptionDialog(AppFrame.instance(), ex);
-						dlg.setVisible(true);
-						System.out.println(ex);
-					}
-				}
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
 
-			}).start();
-		}
-	}
-	
-	public void updatePageFilterList() {
-		DefaultComboBoxModel model = new DefaultComboBoxModel();
+                        defaultSelecComposData = new HashMap<String, List<Option>>();
 
-		if (biomartConfig.getFilterPages() != null) {
-			for (FilterPage p : biomartConfig.getFilterPages()) {
-				if (!p.isHidden() && !p.isHideDisplay()) {
-					model.addElement(new PageListWrapper(p));
-					updateGroupFilterList(p);
-				}
-			}			
-		}
+                        initCollectionsCache();
+                        updatePageFilterList();
 
-		this.filterPageCombo.setModel(model);
-	}
+                        if (filterPageCombo.getSelectedItem() != null) {
+                            lastPageSelected = ((PageListWrapper) filterPageCombo.getSelectedItem()).getFilterPage();
+                            setMessage(MessageStatus.INFO, "");
 
-	private void updateGroupFilterList(FilterPage page) {
+                        } else {
+                            lastPageSelected = null;
+                            setMessage(MessageStatus.INFO, " No filters are availables");
+                        }
 
-		// Avoid update process when null value or unaltered filter group selection
-		if (lastPageSelected != null
-				&& lastPageSelected.getInternalName().equals(page.getInternalName())) {
+                        reloadData = false;
 
-			return;
-		}		
+                    } catch (@NotNull final Exception ex) {
 
-		//Clean main collections panel
-		collectionsPanel.removeAll();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
 
-		collectionsPanel.setPreferredSize(new Dimension(FILTER_PANEL_WEIGHT,FILTER_PANEL_HEIGHT));
+                                setStatus(MessageStatus.ERROR);
+                                setMessage(ex.getMessage());
+                            }
+                        });
 
-		lastGroupSelected = null;
+                        ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                        dlg.setVisible(true);
+                        System.out.println(ex);
+                    }
+                }
 
-		DefaultListModel model = new DefaultListModel();
+            }).start();
+        }
+    }
 
-		for (FilterGroup group : page.getFilterGroups()) {
-			if (!group.isHidden() && !group.isHideDisplay()) {
+    void updatePageFilterList() {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
 
-				model.addElement(new GroupListWrapper(group));
+        if (biomartConfig.getFilterPages() != null) {
+            for (FilterPage p : biomartConfig.getFilterPages()) {
+                if (!p.isHidden() && !p.isHideDisplay()) {
+                    model.addElement(new PageListWrapper(p));
+                    updateGroupFilterList(p);
+                }
+            }
+        }
 
-				updateCollectionsCache(page,group);
-			}
-		}
+        this.filterPageCombo.setModel(model);
+    }
 
-		this.filterGroupList.setModel(model);
-	}
+    private void updateGroupFilterList(@NotNull FilterPage page) {
 
-	/**
-	 * Stores in a field (memory) all Panels (collectionsPanels, descriptionPanels, components,...)
-	 * but do not show them on the screen
-	 * @param page
-	 * @param group
-	 */
-	private void updateCollectionsCache(FilterPage page,FilterGroup group){
+        // Avoid update process when null value or unaltered filter group selection
+        if (lastPageSelected != null && lastPageSelected.getInternalName().equals(page.getInternalName())) {
 
-		FilterCollectionPanel collectionPanel = null;
+            return;
+        }
 
-		List<FilterCollectionPanel> listCollections = new ArrayList<FilterCollectionPanel>();
+        //Clean main collections panel
+        collectionsPanel.removeAll();
 
-		for (FilterCollection collection : group.getFilterCollections()) {
-			if (!collection.isHidden() && !collection.isHideDisplay()) {
-				collectionPanel = new FilterCollectionPanel(collection, this);
-				if (collectionPanel.isPanelRendered())
-					listCollections.add(collectionPanel); //add collectionPanel in list
-			}
-		}
+        collectionsPanel.setPreferredSize(new Dimension(FILTER_PANEL_WEIGHT, FILTER_PANEL_HEIGHT));
 
-		//add collectionPanel list in cache
-		collectionsCache.get(page).collections.put(group, listCollections);
-	}
+        lastGroupSelected = null;
 
-	/**
-	 * Shows in the screen all collections panels which belongs to the group selected
-	 * @param page
-	 * @param group
-	 */
-	private void updateCollectionControls(FilterPage page,FilterGroup group) {
+        DefaultListModel model = new DefaultListModel();
 
-		// Avoid update process when null value or unaltered filter group selection
-		if (filterGroupList.getSelectedValue() == null
-				|| (lastGroupSelected != null
-				&& lastGroupSelected.getInternalName().equals(group.getInternalName()))) {
+        for (FilterGroup group : page.getFilterGroups()) {
+            if (!group.isHidden() && !group.isHideDisplay()) {
 
-			return;
-		}
+                model.addElement(new GroupListWrapper(group));
 
-		Integer collectionPanelHeight = 0;
+                updateCollectionsCache(page, group);
+            }
+        }
 
-		collectionsPanel.removeAll();
+        this.filterGroupList.setModel(model);
+    }
 
-		collectionsPanel.repaint();
+    /**
+     * Stores in a field (memory) all Panels (collectionsPanels, descriptionPanels, components,...)
+     * but do not show them on the screen
+     *
+     * @param page
+     * @param group
+     */
+    private void updateCollectionsCache(FilterPage page, @NotNull FilterGroup group) {
 
-		collectionsPanel.setLayout(new BoxLayout(collectionsPanel, BoxLayout.Y_AXIS));
+        FilterCollectionPanel collectionPanel;
 
-		//Check if collections have not been load previously (cache)
-		if (collectionsCache.get(page).collections.get(group).size() == 0)
-			updateCollectionsCache(page,group);
+        List<FilterCollectionPanel> listCollections = new ArrayList<FilterCollectionPanel>();
 
-		for (FilterCollectionPanel col : collectionsCache.get(page).collections.get(group)) {
+        for (FilterCollection collection : group.getFilterCollections()) {
+            if (!collection.isHidden() && !collection.isHideDisplay()) {
+                collectionPanel = new FilterCollectionPanel(collection, this);
+                if (collectionPanel.isPanelRendered()) {
+                    listCollections.add(collectionPanel); //add collectionPanel in list
+                }
+            }
+        }
 
-			collectionsPanel.add(col);
+        //add collectionPanel list in cache
+        collectionsCache.get(page).collections.put(group, listCollections);
+    }
 
-			collectionPanelHeight += col.getCurrentHeigh();
-		}
-		
-		Dimension d = new Dimension(collectionsPanel.getWidth(), collectionPanelHeight);
+    /**
+     * Shows in the screen all collections panels which belongs to the group selected
+     *
+     * @param page
+     * @param group
+     */
+    private void updateCollectionControls(FilterPage page, @NotNull FilterGroup group) {
 
-		collectionsPanel.setPreferredSize(d);
-		collectionsPanel.repaint();
-		scrollPanel.validate();
+        // Avoid update process when null value or unaltered filter group selection
+        if (filterGroupList.getSelectedValue() == null || (lastGroupSelected != null && lastGroupSelected.getInternalName().equals(group.getInternalName()))) {
 
-		validate();
-	}
-	
-	/**
-	 * Loop through all groups and their collections.
-	 * If checkBox collection checked the filter is annotated
-	 * @return
-	*/
-	public Collection<Filter> getFilters() {
+            return;
+        }
 
-		List<Filter> listFilters = new ArrayList<Filter>();
+        Integer collectionPanelHeight = 0;
 
-		for (FilterPage page :collectionsCache.keySet())
+        collectionsPanel.removeAll();
 
-			for(FilterGroup group : collectionsCache.get(page).collections.keySet())
+        collectionsPanel.repaint();
 
-				for (FilterCollectionPanel panel : collectionsCache.get(page).collections.get(group))
+        collectionsPanel.setLayout(new BoxLayout(collectionsPanel, BoxLayout.Y_AXIS));
 
-						listFilters.addAll(panel.getFilters());
+        //Check if collections have not been load previously (cache)
+        if (collectionsCache.get(page).collections.get(group).size() == 0) {
+            updateCollectionsCache(page, group);
+        }
 
-		return listFilters;
-	}
+        for (FilterCollectionPanel col : collectionsCache.get(page).collections.get(group)) {
 
-	/**
-	 * Load global attributes and guess if reload data
-	 * @param service
-	 * @param dataset
-	 */
-	public void setSource(BiomartService service, DatasetConfig config) {
+            collectionsPanel.add(col);
 
-		if (this.biomartConfig != null && this.biomartConfig.getDataset().equals(config.getDataset()))
-			reloadData = false;
-		else {
-			reloadData = true;
-			filterPageCombo.setModel(new DefaultComboBoxModel());
-			filterGroupList.setModel(new DefaultListModel());
-			collectionsPanel.removeAll();
-			collectionsPanel.repaint();
-			scrollPanel.validate();
+            collectionPanelHeight += col.getCurrentHeigh();
+        }
 
-			validate();
-		}
+        Dimension d = new Dimension(collectionsPanel.getWidth(), collectionPanelHeight);
 
-		this.biomartService = service;
-		this.biomartConfig = config;
-	}
+        collectionsPanel.setPreferredSize(d);
+        collectionsPanel.repaint();
+        scrollPanel.validate();
 
-	/**
-	 * Initialisation of the field which will contain all filter panels
-	 */
-	private void initCollectionsCache() {
+        validate();
+    }
 
-		if (collectionsCache == null) collectionsCache = new HashMap<FilterPage, CollectionsPanelsCache>();
+    /**
+     * Loop through all groups and their collections.
+     * If checkBox collection checked the filter is annotated
+     *
+     * @return
+     */
+    @NotNull
+    public Collection<Filter> getFilters() {
 
-		else collectionsCache.clear();
+        List<Filter> listFilters = new ArrayList<Filter>();
 
-		for (FilterPage page : biomartConfig.getFilterPages()) {
+        for (FilterPage page : collectionsCache.keySet())
 
-			if (!page.isHidden() && !page.isHideDisplay()) {
+            for (FilterGroup group : collectionsCache.get(page).collections.keySet())
 
-			collectionsCache.put(page, null);
+                for (FilterCollectionPanel panel : collectionsCache.get(page).collections.get(group))
 
-			CollectionsPanelsCache panels = new CollectionsPanelsCache();
+                    listFilters.addAll(panel.getFilters());
 
-			for (FilterGroup group : page.getFilterGroups())
+        return listFilters;
+    }
 
-				panels.collections.put(group, new ArrayList(0));
+    /**
+     * Load global attributes and guess if reload data
+     *
+     * @param service
+     * @param dataset
+     */
+    public void setSource(BiomartService service, @NotNull DatasetConfig config) {
 
-			collectionsCache.put(page, panels);
-		}
-	}
+        if (this.biomartConfig != null && this.biomartConfig.getDataset().equals(config.getDataset())) {
+            reloadData = false;
+        } else {
+            reloadData = true;
+            filterPageCombo.setModel(new DefaultComboBoxModel());
+            filterGroupList.setModel(new DefaultListModel());
+            collectionsPanel.removeAll();
+            collectionsPanel.repaint();
+            scrollPanel.validate();
 
-	}
+            validate();
+        }
 
-	public void setFilter(String name, Filter f) {
-		filters.put(name,f);
-	}
+        this.biomartService = service;
+        this.biomartConfig = config;
+    }
 
-	public void setFilters(HashMap<String,Filter> filters) {
-		filters.putAll(filters);
-	}
+    /**
+     * Initialisation of the field which will contain all filter panels
+     */
+    private void initCollectionsCache() {
 
-	public void deleteFilter(String name) {
-			filters.remove(name);
-	}
+        if (collectionsCache == null) {
+            collectionsCache = new HashMap<FilterPage, CollectionsPanelsCache>();
+        } else {
+            collectionsCache.clear();
+        }
 
-	public void deleteFilters(HashMap<String,Filter> delFilters) {
+        for (FilterPage page : biomartConfig.getFilterPages()) {
 
-		for (String name : delFilters.keySet())
-			filters.remove(name);
-	}
-	
-	public BiomartService getBiomartService() {
-		return this.biomartService;
-	}
+            if (!page.isHidden() && !page.isHideDisplay()) {
 
-	public DatasetConfig getDatasetConfig() {
-		return this.biomartConfig;
-	}
-	
-	public HashMap<FilterPage, CollectionsPanelsCache> getCollectionsCache() {
-		return collectionsCache;
-	}
+                collectionsCache.put(page, null);
 
-	public void setCollectionsCache(HashMap<FilterPage, CollectionsPanelsCache> collectionsCache) {
-		this.collectionsCache = collectionsCache;
-	}
+                CollectionsPanelsCache panels = new CollectionsPanelsCache();
 
-	public HashMap<String, List<Option>> getDefaultSelecComposData() {
-		return defaultSelecComposData;
-	}
+                for (FilterGroup group : page.getFilterGroups())
 
+                    panels.collections.put(group, new ArrayList(0));
 
-	public void storeSelecComponentsDefaultData(HashMap<String, List<Option>> data) {
+                collectionsCache.put(page, panels);
+            }
+        }
 
-		if (data.size()>0)
-			for (String key : data.keySet())
-				this.defaultSelecComposData.put(key, data.get(key));
-	}
-	
+    }
+
+    public void setFilter(String name, Filter f) {
+        filters.put(name, f);
+    }
+
+    public void setFilters(@NotNull HashMap<String, Filter> filters) {
+        filters.putAll(filters);
+    }
+
+    public void deleteFilter(String name) {
+        filters.remove(name);
+    }
+
+    public void deleteFilters(@NotNull HashMap<String, Filter> delFilters) {
+
+        for (String name : delFilters.keySet())
+            filters.remove(name);
+    }
+
+    public BiomartService getBiomartService() {
+        return this.biomartService;
+    }
+
+    public DatasetConfig getDatasetConfig() {
+        return this.biomartConfig;
+    }
+
+    public HashMap<FilterPage, CollectionsPanelsCache> getCollectionsCache() {
+        return collectionsCache;
+    }
+
+    public void setCollectionsCache(HashMap<FilterPage, CollectionsPanelsCache> collectionsCache) {
+        this.collectionsCache = collectionsCache;
+    }
+
+    public HashMap<String, List<Option>> getDefaultSelecComposData() {
+        return defaultSelecComposData;
+    }
+
+
+    public void storeSelecComponentsDefaultData(@NotNull HashMap<String, List<Option>> data) {
+
+        if (data.size() > 0) {
+            for (String key : data.keySet())
+                this.defaultSelecComposData.put(key, data.get(key));
+        }
+    }
+
 	/*
-	public void resetCollectionCache() {
+    public void resetCollectionCache() {
 
 		if (collectionsCache == null) return;
 

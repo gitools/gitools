@@ -1,10 +1,31 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.ui.fileimport.wizard.excel;
 
-import edu.upf.bg.csv.RawCsvWriter;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.persistence.FileFormats;
 import org.gitools.ui.commands.CommandLoadFile;
+import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,13 +34,13 @@ import java.util.List;
 
 public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
 
-    private int columns;
-    private int rows;
-    private List<Integer> values;
-    private ExcelReader reader;
+    private final int columns;
+    private final int rows;
+    private final List<Integer> values;
+    private final ExcelReader reader;
 
-    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, ExcelReader reader) {
-        super(createTdmFile(reader).getAbsolutePath(), FileFormats.MULTIVALUE_DATA_MATRIX.getMime());
+    public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, @NotNull ExcelReader reader) {
+        super(createTdmFile(reader).getAbsolutePath());
 
         this.columns = columns;
         this.rows = rows;
@@ -27,13 +48,14 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
         this.reader = reader;
     }
 
-    private static File createTdmFile(ExcelReader reader) {
+    @NotNull
+    private static File createTdmFile(@NotNull ExcelReader reader) {
         File excelFile = reader.getFile();
-        return new File( excelFile.getParent(), FilenameUtils.getBaseName( excelFile.getName() ) + ".tdm");
+        return new File(excelFile.getParent(), FilenameUtils.getBaseName(excelFile.getName()) + ".tdm");
     }
 
     @Override
-    public void execute(IProgressMonitor monitor) throws CommandException {
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Converting excel file", reader.getLastRowNum());
 
@@ -44,7 +66,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
             if (!tdmFile.exists()) {
                 tdmFile.createNewFile();
             }
-            out = new RawCsvWriter(new FileWriter( tdmFile ),'\t','"');
+            out = new RawCsvWriter(new FileWriter(tdmFile), '\t', '"');
         } catch (IOException e) {
             throw new CommandException("Error opening file '" + tdmFile.getName() + "'");
         }
@@ -60,7 +82,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
         out.writeNewLine();
 
         // Write rows
-        for (int r=1; r <= reader.getLastRowNum(); r++) {
+        for (int r = 1; r <= reader.getLastRowNum(); r++) {
             out.writeQuotedValue(reader.getValue(r, columns));
             out.writeSeparator();
             out.writeQuotedValue(reader.getValue(r, rows));
@@ -80,7 +102,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
             }
         }
         out.close();
-
-        super.execute(monitor);
+        setExitStatus(0);
+        return;
     }
 }

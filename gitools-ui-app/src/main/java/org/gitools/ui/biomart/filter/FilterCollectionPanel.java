@@ -1,147 +1,163 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.biomart.filter;
 
-import java.awt.Component;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import org.gitools.biomart.restful.model.Filter;
 import org.gitools.biomart.restful.model.FilterCollection;
 import org.gitools.biomart.restful.model.FilterDescription;
-
-import org.gitools.biomart.restful.model.Filter;
 import org.gitools.ui.biomart.wizard.BiomartFilterConfigurationPage;
+import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @noinspection ALL
+ */
 public class FilterCollectionPanel extends JPanel {
 
-	private BiomartFilterConfigurationPage filterConfigurationPage;
+    private BiomartFilterConfigurationPage filterConfigurationPage;
 
-	private Integer currentHeight = 0;
-	private Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
+    private Integer currentHeight = 0;
+    @NotNull
+    private final Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
 
-	private Boolean rendered; //Controls if collectionPanel contains any component
+    private Boolean rendered; //Controls if collectionPanel contains any component
 
-	/** Creates new form FilterCollectionPanel1 */
-	public FilterCollectionPanel(FilterCollection fc, BiomartFilterConfigurationPage parent) {
+    /**
+     * Creates new form FilterCollectionPanel1
+     */
+    public FilterCollectionPanel(@NotNull FilterCollection fc, BiomartFilterConfigurationPage parent) {
 
-		initComponents();
+        initComponents();
 
-		rendered =false;
+        rendered = false;
 
-		filterConfigurationPage = parent;
+        filterConfigurationPage = parent;
 
-		buildDescriptions(fc);
+        buildDescriptions(fc);
 
-	}
+    }
 
-	private void buildDescriptions(FilterCollection fc) {
-		
-		collectionCheckBox.setText(fc.getDisplayName());
+    private void buildDescriptions(@NotNull FilterCollection fc) {
 
-		descriptionsPanel.removeAll();
+        collectionCheckBox.setText(fc.getDisplayName());
 
-		descriptionsPanel.setLayout(new BoxLayout(descriptionsPanel, BoxLayout.Y_AXIS));
+        descriptionsPanel.removeAll();
 
-		FilterDescriptionPanel description = null;
+        descriptionsPanel.setLayout(new BoxLayout(descriptionsPanel, BoxLayout.Y_AXIS));
 
-		Boolean doLblDescription = renderLabelDescription (fc);
+        FilterDescriptionPanel description = null;
 
-		for (FilterDescription d : fc.getFilterDescriptions()) {
-			
-			if (!d.isHideDisplay()) {
+        Boolean doLblDescription = renderLabelDescription(fc);
 
-				description = new FilterDescriptionPanel(d, this, doLblDescription);
+        for (FilterDescription d : fc.getFilterDescriptions()) {
 
-				rendered = description.getRenderPanel();
-				descriptionsPanel.add(description);
-				currentHeight += description.getCurrentHeight();
-			}
-		}
+            if (!d.isHideDisplay()) {
+
+                description = new FilterDescriptionPanel(d, this, doLblDescription);
+
+                rendered = description.getRenderPanel();
+                descriptionsPanel.add(description);
+                currentHeight += description.getCurrentHeight();
+            }
+        }
 
 
-		validate();
-	}
+        validate();
+    }
 
-	public JPanel getDescriptionsPanel() {
-		return descriptionsPanel;
-	}
+    public JPanel getDescriptionsPanel() {
+        return descriptionsPanel;
+    }
 
-	/**
-	 * Render Label descriptions when more than 1 descriptions per collection
-	 * @param fc
-	 * @return
-	 */
-	private Boolean renderLabelDescription (FilterCollection fc)
-	{
-		Integer components = 0;
+    /**
+     * Render Label descriptions when more than 1 descriptions per collection
+     *
+     * @param fc
+     * @return
+     */
+    @NotNull
+    private Boolean renderLabelDescription(@NotNull FilterCollection fc) {
+        Integer components = 0;
 
-		for (FilterDescription d : fc.getFilterDescriptions())
-			if (!d.isHideDisplay())
-				components ++;
+        for (FilterDescription d : fc.getFilterDescriptions())
+            if (!d.isHideDisplay()) {
+                components++;
+            }
 
-		return components > 1;
-	}
+        return components > 1;
+    }
 
-	public Boolean isPanelRendered(){
+    public Boolean isPanelRendered() {
 
-		return rendered;
+        return rendered;
 
-	}
+    }
 
-	public FilterCollectionPanel() {
+    public FilterCollectionPanel() {
 
-		initComponents();
-	}
+        initComponents();
+    }
 
-	public Integer getCurrentHeigh() {		
-		return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
-	}
+    @NotNull
+    public Integer getCurrentHeigh() {
+        return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
+    }
 
-	public List<Filter> getFilters(){
+    @NotNull
+    public List<Filter> getFilters() {
 
-		List<Filter> filters = new ArrayList<Filter>();
-		List<Filter> filtersAux = null;
+        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filtersAux = null;
 
-		if (collectionCheckBox.isSelected()) {
-			// Obtain the filters involved for this event
-			for (Component compo : descriptionsPanel.getComponents()) {
-				filtersAux = ((FilterDescriptionPanel) compo).getFilters();
+        if (collectionCheckBox.isSelected()) {
+            // Obtain the filters involved for this event
+            for (Component compo : descriptionsPanel.getComponents()) {
+                filtersAux = ((FilterDescriptionPanel) compo).getFilters();
 
-				for (Filter f : filtersAux)
-					if (f.getName() != null && f.getValue() != null && !f.getValue().isEmpty())
-						filters.add(f);
-				}
-		}
-		return filters;
-	}
+                for (Filter f : filtersAux)
+                    if (f.getName() != null && f.getValue() != null && !f.getValue().isEmpty()) {
+                        filters.add(f);
+                    }
+            }
+        }
+        return filters;
+    }
 
-	public BiomartFilterConfigurationPage getFilterConfigurationPage() {
-		return filterConfigurationPage;
-	}
+    public BiomartFilterConfigurationPage getFilterConfigurationPage() {
+        return filterConfigurationPage;
+    }
 
-	
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
-	 */
-	@SuppressWarnings("unchecked")
+
+    /**
+     * This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -154,14 +170,8 @@ public class FilterCollectionPanel extends JPanel {
 
         javax.swing.GroupLayout descriptionsPanelLayout = new javax.swing.GroupLayout(descriptionsPanel);
         descriptionsPanel.setLayout(descriptionsPanelLayout);
-        descriptionsPanelLayout.setHorizontalGroup(
-            descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
-        );
-        descriptionsPanelLayout.setVerticalGroup(
-            descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 247, Short.MAX_VALUE)
-        );
+        descriptionsPanelLayout.setHorizontalGroup(descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 374, Short.MAX_VALUE));
+        descriptionsPanelLayout.setVerticalGroup(descriptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 247, Short.MAX_VALUE));
 
         collectionCheckBox.setText("name");
         collectionCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -172,33 +182,17 @@ public class FilterCollectionPanel extends JPanel {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(collectionCheckBox)
-                    .addComponent(descriptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(16, 16, 16))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(collectionCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(descriptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(collectionCheckBox).addComponent(descriptionsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addGap(16, 16, 16)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(collectionCheckBox).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(descriptionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(16, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-	private void stateChangedAction(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_stateChangedAction
-	}//GEN-LAST:event_stateChangedAction
+    private void stateChangedAction(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_stateChangedAction
+    }//GEN-LAST:event_stateChangedAction
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox collectionCheckBox;
     private javax.swing.JPanel descriptionsPanel;
     // End of variables declaration//GEN-END:variables
 
 
-	
 }

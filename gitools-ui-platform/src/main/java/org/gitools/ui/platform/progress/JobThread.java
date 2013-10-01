@@ -1,53 +1,67 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.progress;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
-import java.awt.Window;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.SwingUtilities;
 
+/**
+ * @noinspection ALL
+ */
 public class JobThread implements JobRunnable {
 
-    private Window parent;
+    private final Window parent;
 
-	private JobRunnable runnable;
+    private final JobRunnable runnable;
 
     private Thread thread;
 
-	private JobProgressDialog dlg;
+    private JobProgressDialog dlg;
 
-	private JobProgressMonitor monitor;
+    private JobProgressMonitor monitor;
 
-	public static void execute(Window parent, JobRunnable runnable) {
-		new JobThread(parent, runnable).execute();
-	}
-    
-	public JobThread(Window parent, JobRunnable runnable) {
-        this.parent = parent;
-		this.runnable = runnable;
+    public static void execute(Window parent, JobRunnable runnable) {
+        new JobThread(parent, runnable).execute();
     }
 
-	public JobThread(Window parent) {
+    public static void executeAndWait(Window parent, JobRunnable runnable) {
+        new JobThread(parent, runnable).executeAndWait();
+    }
+
+    private JobThread(Window parent, JobRunnable runnable) {
         this.parent = parent;
-		this.runnable = this;
+        this.runnable = runnable;
+    }
+
+    public JobThread(Window parent) {
+        this.parent = parent;
+        this.runnable = this;
     }
 
     public Window getParent() {
@@ -62,19 +76,20 @@ public class JobThread implements JobRunnable {
         this.cancelled = cancelled;
     }*/
 
-    public Thread getThread() {
+    Thread getThread() {
         return thread;
     }
 
-    public synchronized void setThread(Thread jobThread) {
+    synchronized void setThread(Thread jobThread) {
         this.thread = jobThread;
     }
 
     private synchronized JobProgressDialog getDlg() {
         if (dlg == null) {
-            dlg = new JobProgressDialog(parent, false);
+            dlg = new JobProgressDialog(parent, false, true);
             dlg.addCancelListener(new JobProgressDialog.CancelListener() {
-				@Override public void cancelled() {
+                @Override
+                public void cancelled() {
                     cancelJob();
                 }
             });
@@ -86,27 +101,30 @@ public class JobThread implements JobRunnable {
         this.dlg = dlg;
     }
 
-	protected void cancelJob() {
+    void cancelJob() {
         getMonitor().cancel();
 
         dlg.setMessage("Cancelling...");
 
         Timer timer = new Timer("JobThread.cancelJob");
         timer.schedule(new TimerTask() {
-            @Override public void run() {
-                synchronized(JobThread.this) {
+            @Override
+            public void run() {
+                synchronized (JobThread.this) {
                     Thread jobThread = getThread();
-                    if (jobThread != null && jobThread.isAlive())
+                    if (jobThread != null && jobThread.isAlive()) {
                         jobThread.interrupt();
+                    }
                 }
             }
 
         }, 250);
     }
 
-    protected void done() {
+    void done() {
         SwingUtilities.invokeLater(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 JobProgressDialog dlg = getDlg();
                 dlg.setVisible(false);
                 dlg.dispose();
@@ -115,31 +133,41 @@ public class JobThread implements JobRunnable {
         });
     }
 
-	protected synchronized JobProgressMonitor getMonitor() {
-		return monitor;
-	}
+    synchronized JobProgressMonitor getMonitor() {
+        return monitor;
+    }
 
-	protected synchronized void setMonitor(JobProgressMonitor monitor) {
-		this.monitor = monitor;
-	}
+    synchronized void setMonitor(JobProgressMonitor monitor) {
+        this.monitor = monitor;
+    }
 
-    public void startThread() {
+    void startThread() {
         thread = new Thread("JobThread") {
             @Override
             public void run() {
-				JobProgressMonitor m = new JobProgressMonitor(
-						getDlg(), System.out, false, false);
+                newRunnable().run();
+            }
+        };
+        thread.start();
+    }
 
-				setMonitor(m);
+    @Nullable
+    private Runnable newRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                JobProgressMonitor m = new JobProgressMonitor(getDlg(), System.out, false, false);
 
-				try {
-					runnable.run(monitor);
-				}
-				catch (Throwable cause) {
-					m.exception(cause);
-				}
+                setMonitor(m);
+                org.gitools.utils.progressmonitor.ProgressMonitor.set(m);
 
-				done();
+                try {
+                    runnable.run(monitor);
+                } catch (Throwable cause) {
+                    m.exception(cause);
+                }
+
+                done();
 
                 setThread(null);
 
@@ -149,27 +177,39 @@ public class JobThread implements JobRunnable {
                 }
             }
         };
-
-        thread.start();
     }
 
-	public void execute() {
-		startThread();
+    void execute() {
+        startThread();
 
-		getDlg().setModal(true);
-		getDlg().setVisible(true);
-	}
+        getDlg().setModal(true);
+        getDlg().setVisible(true);
+    }
 
-	public boolean isCancelled() {
-		return getMonitor().isCancelled();
-	}
+    void executeAndWait() {
 
-	public Throwable getCause() {
-		return getMonitor().getCause();
-	}
+        getDlg().setModal(true);
+        getDlg().setVisible(true);
 
-	@Override
-	public void run(IProgressMonitor monitor) {
-		throw new UnsupportedOperationException("Opperation should be overrided");
-	}
+        try {
+            SwingUtilities.invokeAndWait(newRunnable());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isCancelled() {
+        return getMonitor().isCancelled();
+    }
+
+    public Throwable getCause() {
+        return getMonitor().getCause();
+    }
+
+    @Override
+    public void run(IProgressMonitor monitor) {
+        throw new UnsupportedOperationException("Opperation should be overrided");
+    }
 }

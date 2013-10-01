@@ -1,208 +1,182 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * #%L
+ * gitools-ui-platform
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.platform.actions;
 
-import java.net.URL;
-
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.editor.IEditor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.net.URL;
 
 public abstract class BaseAction extends AbstractAction {
 
-	private static final long serialVersionUID = 8312774908067146251L;
+    private static final long serialVersionUID = 8312774908067146251L;
 
-	private static final String CHECK_MODE_PROP = "checkMode";
-	private static final String SELECTED_PROP = "selected";
+    private static final String SELECTED_PROP = "selected";
 
-	public static final BaseAction separator = new SeparatorAction();
+    public static final BaseAction separator = new SeparatorAction();
 
-	private boolean defaultEnabled;
+    private boolean defaultEnabled;
 
-	/* whether this is a normal action or a radio/check action */
-	private boolean checkMode;
 
-	/* whether if this action is checked/selected */
-	private boolean selected;
+    public BaseAction(String name, ImageIcon icon, @Nullable String desc, @Nullable Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
+        super(name, icon);
 
-	/* When checkMode enabled, if actionGroup is defined then
-	 * it is a radio action otherwise it is a check action */
-	private String actionGroup;
-	
-	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
-		super(name, icon);
-		
-		this.defaultEnabled = false;
-		
-		if (desc != null)
-			putValue(SHORT_DESCRIPTION, desc);
-		
-		if (mnemonic != null)
-			putValue(MNEMONIC_KEY, mnemonic);
+        this.defaultEnabled = false;
 
-		this.checkMode = checkMode;
-		this.selected = selected;
-		this.actionGroup = actionGroup;
-	}
+        if (desc != null) {
+            putValue(SHORT_DESCRIPTION, desc);
+        }
 
-	public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
-		this(name, icon, desc, mnemonic, false, false, null);
-	}
+        if (mnemonic != null) {
+            putValue(MNEMONIC_KEY, mnemonic);
+        }
+    }
 
-	public BaseAction(String name, ImageIcon icon, boolean checkMode, boolean checked, String actionGroup) {
-		this(name, icon, null, null, checkMode, checked, actionGroup);
-	}
+    public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic) {
+        this(name, icon, desc, mnemonic, false, false, null);
+    }
 
-	public BaseAction(String name, boolean checkMode, boolean checked, String actionGroup) {
-		this(name, null, null, null, checkMode, checked, actionGroup);
-	}
+    public BaseAction(String name, ImageIcon icon, boolean checkMode, boolean checked, String actionGroup) {
+        this(name, icon, null, null, checkMode, checked, actionGroup);
+    }
 
-	public BaseAction(String name, ImageIcon icon, String desc) {
-		this(name, icon, desc, null);
-	}
+    public BaseAction(String name, boolean checkMode, boolean checked, String actionGroup) {
+        this(name, null, null, null, checkMode, checked, actionGroup);
+    }
 
-	public BaseAction(String name, ImageIcon icon) {
-		this(name, icon, null, null);
-	}
+    public BaseAction(String name, ImageIcon icon, String desc) {
+        this(name, icon, desc, null);
+    }
 
-	public BaseAction(String name) {
-		this(name, null, null, null);
-	}
-	
-	public String getName() {
-		return getValue(NAME).toString();
-	}
-	
-	protected void setName(String name) {
-		putValue(NAME, name);
-	}
-	
-	protected void setDesc(String desc) {
-		putValue(SHORT_DESCRIPTION, desc);
-	}
-	
-	protected void setAccelerator(KeyStroke ks) {
-		putValue(ACCELERATOR_KEY, ks);
-	}
-	
-	protected void setMnemonic(int vk) {
-		putValue(MNEMONIC_KEY, vk);
-	}
+    public BaseAction(String name, ImageIcon icon) {
+        this(name, icon, null, null);
+    }
 
-	protected ImageIcon getSmallIcon() {
-		return (ImageIcon) getValue(SMALL_ICON);
-	}
-	
-	protected void setSmallIcon(ImageIcon icon) {
-		putValue(SMALL_ICON, icon);
-	}
-	
-	protected void setSmallIconFromResource(String name) {
-		setSmallIcon(getIconResource(name));
-	}
-	
-	protected ImageIcon getLargeIcon() {
-		return (ImageIcon) getValue(LARGE_ICON_KEY);
-	}
-	
-	protected void setLargeIcon(ImageIcon icon) {
-		putValue(LARGE_ICON_KEY, icon);
-	}
-	
-	protected void setLargeIconFromResource(String name) {
-		setLargeIcon(getIconResource(name));
-	}
-	
-	private ImageIcon getIconResource(String name) {
-		URL url = getClass().getResource(name);
-		if (url == null)
-			url = getClass().getResource(IconUtils.nullResourceImage);
-		
-		return new ImageIcon(url);
-	}
-	
-	public boolean isSeparator() {
-		return false;
-	}
-	
-	public void setDefaultEnabled(boolean defaultEnabled) {
-		this.defaultEnabled = defaultEnabled;
-		setEnabled(defaultEnabled);
-	}
-	
-	public void setTreeEnabled(boolean enabled) {
-		setEnabled(enabled);
-	}
+    public BaseAction(String name) {
+        this(name, null, null, null);
+    }
 
-	public boolean updateEnabledByEditor(IEditor editor) {
-		boolean en = isEnabledByEditor(editor);
-		setEnabled(en);
-		return en;
-	}
-	
-	public boolean isEnabledByEditor(IEditor editor) {
-		if (editor != null) {
-			Object model = editor.getModel();
-			if (model != null)
-				return isEnabledByModel(model);
-		}
-		
-		return defaultEnabled;
-	}
-	
-	public boolean updateEnabledByModel(Object model) {
-		boolean en = isEnabledByModel(model);
-		setEnabled(en);
-		return en;
-	}
-	
-	protected boolean isEnabledByModel(Object model) {
-		return defaultEnabled;
-	}
+    protected String getName() {
+        return getValue(NAME).toString();
+    }
 
-	public boolean isCheckMode() {
-		return checkMode;
-	}
+    protected void setName(String name) {
+        putValue(NAME, name);
+    }
 
-	public void setCheckMode(boolean checkMode) {
-		boolean old = this.checkMode;
-		this.checkMode = checkMode;
-		firePropertyChange(CHECK_MODE_PROP, old, checkMode);
-	}
+    protected void setDesc(String desc) {
+        putValue(SHORT_DESCRIPTION, desc);
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    protected void setAccelerator(KeyStroke ks) {
+        putValue(ACCELERATOR_KEY, ks);
+    }
 
-	public void setSelected(boolean selected) {
-		boolean old = this.selected;
-		this.selected = selected;
-		firePropertyChange(SELECTED_PROP, old, selected);
-	}
+    protected void setMnemonic(int vk) {
+        putValue(MNEMONIC_KEY, vk);
+    }
 
-	public String getActionGroup() {
-		return actionGroup;
-	}
+    @Nullable
+    ImageIcon getSmallIcon() {
+        return (ImageIcon) getValue(SMALL_ICON);
+    }
 
-	public void setActionGroup(String actionGroup) {
-		this.actionGroup = actionGroup;
-	}
+    void setSmallIcon(ImageIcon icon) {
+        putValue(SMALL_ICON, icon);
+    }
+
+    protected void setSmallIconFromResource(String name) {
+        setSmallIcon(getIconResource(name));
+    }
+
+    protected String getDesc() {
+        Object desc = getValue(SHORT_DESCRIPTION);
+
+        if (desc == null) {
+            return getName();
+        }
+
+        return String.valueOf(desc);
+    }
+
+    @NotNull
+    protected ImageIcon getLargeIcon() {
+        return (ImageIcon) getValue(LARGE_ICON_KEY);
+    }
+
+    protected void setLargeIcon(ImageIcon icon) {
+        putValue(LARGE_ICON_KEY, icon);
+    }
+
+    protected void setLargeIconFromResource(String name) {
+        setLargeIcon(getIconResource(name));
+    }
+
+    @NotNull
+    private ImageIcon getIconResource(String name) {
+        URL url = getClass().getResource(name);
+        if (url == null) {
+            url = getClass().getResource(IconUtils.nullResourceImage);
+        }
+
+        return new ImageIcon(url);
+    }
+
+    protected void setDefaultEnabled(boolean defaultEnabled) {
+        this.defaultEnabled = defaultEnabled;
+        setEnabled(defaultEnabled);
+    }
+
+    void setTreeEnabled(boolean enabled) {
+        setEnabled(enabled);
+    }
+
+    public boolean updateEnabledByEditor(IEditor editor) {
+        boolean en = isEnabledByEditor(editor);
+        setEnabled(en);
+        return en;
+    }
+
+    protected boolean isEnabledByEditor(@Nullable IEditor editor) {
+        if (editor != null) {
+            Object model = editor.getModel();
+            if (model != null) {
+                return isEnabledByModel(model);
+            }
+        }
+
+        return defaultEnabled;
+    }
+
+    public boolean updateEnabledByModel(Object model) {
+        boolean en = isEnabledByModel(model);
+        setEnabled(en);
+        return en;
+    }
+
+    protected boolean isEnabledByModel(Object model) {
+        return defaultEnabled;
+    }
 }

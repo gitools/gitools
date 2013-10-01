@@ -1,197 +1,250 @@
 /*
- *  Copyright 2009 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.heatmap.panel;
 
-import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
+import org.gitools.ui.platform.os.OSProperties;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JViewport;
-import org.gitools.heatmap.drawer.HeatmapPosition;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.IMatrixView;
 
-public class HeatmapBodyMouseController
-		implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
-	private enum Mode {
-		none, selecting, moving
-	}
+    private final IMatrixView heatmap;
+    private final JViewport viewPort;
+    @NotNull
+    private final HeatmapPanel panel;
+    private final HeatmapBodyPanel bodyPanel;
 
-	private final Heatmap heatmap;
-	private final JViewport viewPort;
-	private final HeatmapPanel panel;
-	private final HeatmapBodyPanel bodyPanel;
+    private HeatmapPanelInputProcessor.Mode mode;
+    private Point point;
+    private HeatmapPosition coord;
 
-	private Mode mode;
-	private Point point;
-	private HeatmapPosition coord;
+    private Point startPoint;
+    private Point startScrollValue;
 
-	private Point startPoint;
-	private Point startScrollValue;
+    private int keyPressed;
 
-	private List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
-	
-	public HeatmapBodyMouseController(HeatmapPanel panel) {
-		this.heatmap = panel.getHeatmap();
-		this.viewPort = panel.getBodyViewPort();
-		this.bodyPanel = panel.getBodyPanel();
-		this.panel = panel;
+    private HeatmapKeyboardController keyboardController;
+    private HeatmapPanelInputProcessor ip;
 
-		viewPort.addMouseListener(this);
-		viewPort.addMouseMotionListener(this);
-		viewPort.addMouseWheelListener(this);
-		//viewPort.addKeyListener(this);
+    private int shiftMask = OSProperties.get().getShiftMask();
+    private int ctrlMask = OSProperties.get().getCtrlMask();
+    private int altMask = OSProperties.get().getAltMask();
+    private int metaMask = OSProperties.get().getMetaMask();
 
-		this.mode = Mode.none;
-	}
+    @NotNull
+    private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
-	public void addHeatmapMouseListener(HeatmapMouseListener listener) {
-		listeners.add(listener);
-	}
+    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel, @NotNull HeatmapPanelInputProcessor inputProcessor) {
+        this.heatmap = panel.getHeatmap();
+        this.viewPort = panel.getBodyViewPort();
+        this.bodyPanel = panel.getBodyPanel();
+        this.panel = panel;
 
-	public void removeHeatmapMouseListener(HeatmapMouseListener listener) {
-		listeners.remove(listener);
-	}
+        viewPort.addMouseListener(this);
+        viewPort.addMouseMotionListener(this);
+        viewPort.addMouseWheelListener(this);
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		panel.requestFocusInWindow();
+        panel.addKeyListener(this);
+        this.ip = inputProcessor;
+        keyboardController = new HeatmapKeyboardController(heatmap, inputProcessor);
 
-		point = e.getPoint();
-		Point viewPosition = viewPort.getViewPosition();
-		point.translate(viewPosition.x, viewPosition.y);
-		coord = bodyPanel.getDrawer().getPosition(point);
+        this.mode = Mode.none;
+    }
 
-		for (HeatmapMouseListener l : listeners)
-			l.mouseClicked(coord.row, coord.column, e);
-	}
+    public void addHeatmapMouseListener(HeatmapMouseListener listener) {
+        listeners.add(listener);
+    }
 
-	@Override
-	public void mousePressed(MouseEvent e) {
-		int modifiers = e.getModifiers();
-		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+    public void removeHeatmapMouseListener(HeatmapMouseListener listener) {
+        listeners.remove(listener);
+    }
 
-		mode = shiftDown || ctrlDown ? Mode.moving : Mode.selecting;
-		switch (mode) {
-			case selecting: updateSelection(e); break;
-			case moving: updateScroll(e, false); break;
-		}
+    @Override
+    public void mouseClicked(@NotNull MouseEvent e) {
+        panel.requestFocusInWindow();
 
-		panel.requestFocusInWindow();
-	}
+        point = e.getPoint();
+        Point viewPosition = viewPort.getViewPosition();
+        point.translate(viewPosition.x, viewPosition.y);
+        coord = bodyPanel.getDrawer().getPosition(point);
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		mode = Mode.none;
-	}
+        for (HeatmapMouseListener l : listeners)
+            l.mouseClicked(coord.row, coord.column, e);
+    }
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		//System.out.println("entered");
-	}
+    @Override
+    public void mousePressed(@NotNull MouseEvent e) {
+        int modifiers = e.getModifiers();
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		//System.out.println("exited");
-	}
+        mode = shiftDown ? Mode.selectingRowsAndCols : Mode.dragging;
+        switch (mode) {
+            case dragging:
+                updateLeadSelection(e);
+                dragHeatmap(e, true);
+                break;
+            case selectingRowsAndCols:
+                selectRowsAndCols(e);
+                break;
+        }
+        panel.requestFocusInWindow();
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		//System.out.println("dragged");
-		switch (mode) {
-			case selecting: updateSelection(e); break;
-			case moving: updateScroll(e, true); break;
-		}
-	}
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		//System.out.println("moved");
+    @Override
+    public void mouseReleased(@NotNull MouseEvent e) {
+        panel.mouseReleased(e);
+        mode = Mode.none;
+    }
 
-		point = e.getPoint();
-		Point viewPosition = viewPort.getViewPosition();
-		point.translate(viewPosition.x, viewPosition.y);
-		coord = bodyPanel.getDrawer().getPosition(point);
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
 
-		for (HeatmapMouseListener l : listeners)
-			l.mouseMoved(coord.row, coord.column, e);
-	}
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
 
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		int rotation = e.getWheelRotation();
+    @Override
+    public void mouseDragged(@NotNull MouseEvent e) {
+        dragHeatmap(e, false);
+    }
 
-		int modifiers = e.getModifiers();
-		boolean shiftDown = ((modifiers & InputEvent.SHIFT_MASK) != 0);
-		boolean ctrlDown = ((modifiers & InputEvent.CTRL_MASK) != 0);
+    @Override
+    public void mouseMoved(@NotNull MouseEvent e) {
+        point = e.getPoint();
+        Point viewPosition = viewPort.getViewPosition();
+        point.translate(viewPosition.x, viewPosition.y);
+        coord = bodyPanel.getDrawer().getPosition(point);
 
-		if (!shiftDown && !ctrlDown) {
-			HeatmapPosition pos = panel.getScrollPosition();
-			panel.setScrollRowPosition(pos.row + rotation);
-		}
-		else {
-			int width = heatmap.getCellWidth() + rotation * -1;
-			if (width < 1)
-				width = 1;
+        for (HeatmapMouseListener l : listeners)
+            l.mouseMoved(coord.row, coord.column, e);
+    }
 
-			int height = heatmap.getCellHeight() + rotation * -1;
-			if (height < 1)
-				height = 1;
+    public static HeatmapPosition wheelPosition;
+    public static Point wheelPoint;
 
-			heatmap.setCellWidth(width);
-			heatmap.setCellHeight(height);
-		}
-	}
+    @Override
+    public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
+        int unitsToScroll = e.getUnitsToScroll();
 
-	private void updateSelection(MouseEvent e) {
-		point = e.getPoint();
-		Point viewPosition = viewPort.getViewPosition();
-		point.translate(viewPosition.x, viewPosition.y);
-		coord = bodyPanel.getDrawer().getPosition(point);
+        int modifiers = e.getModifiers();
+        boolean shiftDown = ((modifiers & shiftMask) != 0);
+        boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-		IMatrixView mv = heatmap.getMatrixView();
-		mv.setLeadSelection(coord.row, coord.column);
-		mv.setSelectedRows(new int[0]);
-		mv.setSelectedColumns(new int[0]);
+        if (ctrlDown) {
+            if (wheelPoint == null && wheelPosition == null) {
+                wheelPoint = e.getPoint();
+                Point viewPosition = viewPort.getViewPosition();
+                Point absPoint = new Point(wheelPoint);
+                absPoint.translate(viewPosition.x, viewPosition.y);
+                wheelPosition = bodyPanel.getDrawer().getPosition(absPoint);
+            }
+            wheelPoint = e.getPoint();
+        } else {
+            wheelPoint = null;
+            wheelPosition = null;
+        }
 
-		//System.out.println(mode + " " + point + " -> " + coord);
-	}
+        mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
 
-	private void updateScroll(MouseEvent e, boolean dragging) {
-		point = e.getPoint();
-		
-		if (!dragging) {
-			startPoint = point;
-			startScrollValue = panel.getScrollValue();
-		}
-		else {
-			int widthOffset = point.x - startPoint.x;
-			int heightOffset = point.y - startPoint.y;
+        if (mode == Mode.scrolling) {
+            ip.scroll(unitsToScroll, shiftDown);
 
-			panel.setScrollColumnValue(startScrollValue.x - widthOffset);
-			panel.setScrollRowValue(startScrollValue.y - heightOffset);
-		}
-	}
+        } else if (mode == Mode.zooming) {
+
+            ip.zoomHeatmap(unitsToScroll);
+        }
+    }
+
+
+    private void updateLeadSelection(@NotNull MouseEvent e) {
+        point = e.getPoint();
+        Point viewPosition = viewPort.getViewPosition();
+        point.translate(viewPosition.x, viewPosition.y);
+        coord = bodyPanel.getDrawer().getPosition(point);
+
+        ip.setLead(coord.row, coord.column);
+    }
+
+    private void selectRowsAndCols(MouseEvent e) {
+        int corner1Row = ip.getLeadRow();
+        int corner1Col = ip.getLeadColumn();
+
+        point = e.getPoint();
+        Point viewPosition = viewPort.getViewPosition();
+        point.translate(viewPosition.x, viewPosition.y);
+        coord = bodyPanel.getDrawer().getPosition(point);
+
+        ip.addToSelected(corner1Col, coord.column, heatmap.getColumns());
+        ip.addToSelected(corner1Row, coord.row, heatmap.getRows());
+        ip.setLastSelectedCol(coord.column);
+        ip.setLastSelectedRow(coord.row);
+    }
+
+    private void dragHeatmap(@NotNull MouseEvent e, boolean initStartPoint) {
+        point = e.getPoint();
+
+        if (initStartPoint) {
+            startPoint = point;
+            startScrollValue = panel.getScrollValue();
+        } else {
+            int widthOffset = point.x - startPoint.x;
+            int heightOffset = point.y - startPoint.y;
+
+            panel.setScrollColumnValue(startScrollValue.x - widthOffset);
+            panel.setScrollRowValue(startScrollValue.y - heightOffset);
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        keyboardController.keyTyped(e);
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        keyPressed = e.getKeyCode();
+        keyboardController.keyPressed(e);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+        if (wheelPoint != null) {
+            wheelPoint = null;
+            wheelPosition = null;
+        }
+
+        keyPressed = -1;
+        keyboardController.keyReleased(e);
+    }
 }
+

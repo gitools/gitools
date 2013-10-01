@@ -1,7 +1,30 @@
 package org.gitools.ui.fileimport.wizard.excel;
 
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Biomedical Genomics Lab
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,7 +98,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
             // Add a mouse listener to handle changing selection
             valueCellsList.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent event) {
+                public void mouseClicked(@NotNull MouseEvent event) {
                     JList list = (JList) event.getSource();
 
                     int index = list.locationToIndex(event.getPoint());
@@ -107,7 +130,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     }
 
-    private void createCheckListItems(List<ExcelHeader> headers) {
+    private void createCheckListItems(@NotNull List<ExcelHeader> headers) {
         values = new CheckListItem[headers.size()];
         for (int i = 0; i < headers.size(); i++) {
             values[i] = new CheckListItem(headers.get(i));
@@ -148,6 +171,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
         return row.getPos();
     }
 
+    @NotNull
     public List<Integer> getSelectedValues() {
 
         List<Integer> valuesPos = new ArrayList<Integer>(values.length);
@@ -162,7 +186,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
     }
 
     private class CheckListItem {
-        private ExcelHeader header;
+        private final ExcelHeader header;
         private boolean isSelected = false;
 
         public CheckListItem(ExcelHeader header) {
@@ -189,7 +213,8 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     private class CheckListRenderer extends JCheckBox implements ListCellRenderer {
 
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+        @NotNull
+        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value, int index, boolean isSelected, boolean hasFocus) {
 
             setEnabled(list.isEnabled());
             setSelected(((CheckListItem) value).isSelected());

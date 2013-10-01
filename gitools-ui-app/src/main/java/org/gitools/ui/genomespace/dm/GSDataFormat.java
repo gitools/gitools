@@ -23,11 +23,12 @@ import java.net.URL;
 /**
  * @author Jim Robinson
  * @date 8/12/11
+ * @noinspection ALL
  */
-public class GSDataFormat {
-    private String name;
-    private String version;
-    private URL url;
+class GSDataFormat {
+    private final String name;
+    private final String version;
+    private final URL url;
 
     public GSDataFormat(String name, String version, URL url) {
         this.name = name;

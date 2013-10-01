@@ -29,6 +29,8 @@ import org.gitools.ui.genomespace.dm.GSFileMetadata;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -41,23 +43,28 @@ import java.util.List;
 
 /**
  * @author Jim Robinson
+ * @noinspection ALL
  */
 public class GSFileBrowser extends JDialog {
 
     private GSDirectoryListing dirListing;
 
-    public enum Mode {OPEN, SAVE}
+    public enum Mode {
+        OPEN, SAVE
+    }
 
-    private static Logger log = Logger.getLogger(GSFileBrowser.class);
+    private static final Logger log = Logger.getLogger(GSFileBrowser.class);
 
-    static ImageIcon folderIcon;
-    static ImageIcon fileIcon;
-    static GSFileMetadata selectedFile;
+    private static ImageIcon folderIcon;
+    private static ImageIcon fileIcon;
+    @Nullable
+    private static GSFileMetadata selectedFile;
 
-    Mode mode = Mode.OPEN;
-    String userRootUrl = null;
+    private Mode mode = Mode.OPEN;
+    @Nullable
+    private String userRootUrl = null;
 
-    public GSFileBrowser(Frame owner) throws IOException, JSONException {
+    private GSFileBrowser(Frame owner) throws IOException, JSONException {
         this(owner, Mode.OPEN);
     }
 
@@ -86,7 +93,7 @@ public class GSFileBrowser extends JDialog {
         fileList.setCellRenderer(new CellRenderer());
 
         MouseListener mouseListener = new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(@NotNull MouseEvent e) {
                 int index = fileList.locationToIndex(e.getPoint());
                 GSFileMetadata md = (GSFileMetadata) fileList.getModel().getElementAt(index);
                 setSelectedFile(md);
@@ -112,7 +119,7 @@ public class GSFileBrowser extends JDialog {
         fetchContents(defaultURL);
     }
 
-    private void setSelectedFile(GSFileMetadata md) {
+    private void setSelectedFile(@NotNull GSFileMetadata md) {
         selectedFile = md;
         if (md.isDirectory()) {
             selectedFileTextField.setText(null);
@@ -121,10 +128,12 @@ public class GSFileBrowser extends JDialog {
         }
     }
 
+    @Nullable
     public String getFileURL() {
         return selectedFile == null ? null : selectedFile.getUrl();
     }
 
+    @Nullable
     public String getPath() {
         if (selectedFile == null) {
             return null;
@@ -180,7 +189,7 @@ public class GSFileBrowser extends JDialog {
         setVisible(false);
         dispose();
         GSUtils.logout();
-        if (MessageUtils.confirm(AppFrame.instance(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
+        if (MessageUtils.confirm(AppFrame.get(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
             Settings.getDefault().save();
             System.exit(0);
         }
@@ -216,12 +225,12 @@ public class GSFileBrowser extends JDialog {
 
         } catch (Exception e1) {
             log.error("Error loading GS files", e1);
-            MessageUtils.showMessage(AppFrame.instance(), "Error: " + e1.toString());
+            MessageUtils.showMessage(AppFrame.get(), "Error: " + e1.toString());
         }
     }
 
     private void newFolderButtonActionPerformed(ActionEvent e) {
-        String folderName = MessageUtils.showInputDialog(AppFrame.instance(), "Name of new folder:");
+        String folderName = MessageUtils.showInputDialog(AppFrame.get(), "Name of new folder:");
         if (folderName != null && folderName.length() > 0) {
             String dirurl = selectedFile.getUrl();
             if (!selectedFile.isDirectory()) {
@@ -232,14 +241,14 @@ public class GSFileBrowser extends JDialog {
             String putURL = dirurl + "/" + folderName;
             try {
                 GSFileMetadata metaData = DMUtils.createDirectory(putURL);
-                if(metaData != null) {
+                if (metaData != null) {
                     setSelectedFile(metaData);
                 }
                 // Refresh
                 fetchContents(new URL(putURL));
             } catch (IOException e1) {
                 log.error("Error creating directory: " + putURL, e1);
-                MessageUtils.showMessage(AppFrame.instance(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
+                MessageUtils.showMessage(AppFrame.get(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
             } catch (JSONException e1) {
                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -250,7 +259,7 @@ public class GSFileBrowser extends JDialog {
 
     static class ListModel extends AbstractListModel {
 
-        List<GSFileMetadata> elements;
+        final List<GSFileMetadata> elements;
 
         ListModel(List<GSFileMetadata> elements) {
             this.elements = elements;
@@ -266,16 +275,15 @@ public class GSFileBrowser extends JDialog {
 
     }
 
-    static class CellRenderer extends JLabel implements ListCellRenderer {
+    private static class CellRenderer extends JLabel implements ListCellRenderer {
         // This is the only method defined by ListCellRenderer.
         // We just reconfigure the JLabel each time we're called.
 
-        public Component getListCellRendererComponent(
-                JList list,
-                Object value,            // value to display
-                int index,               // cell index
-                boolean isSelected,      // is the cell selected
-                boolean cellHasFocus)    // the list and the cell have the focus
+        @NotNull
+        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value,            // value to display
+                                                      int index,               // cell index
+                                                      boolean isSelected,      // is the cell selected
+                                                      boolean cellHasFocus)    // the list and the cell have the focus
         {
             GSFileMetadata fileElement = (GSFileMetadata) value;
 
@@ -408,8 +416,10 @@ public class GSFileBrowser extends JDialog {
     // Generated using JFormDesigner non-commercial license
     private JPanel dialogPane;
     private JPanel buttonBar;
+    @Nullable
     private JPanel hSpacer2;
     private JButton newFolderButton;
+    @Nullable
     private JPanel hSpacer1;
     private JButton cancelButton;
     private JButton openButton;

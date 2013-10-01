@@ -1,45 +1,45 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.groupcomparison.editor;
 
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDim;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.heatmap.util.HeatmapUtil;
-import org.gitools.matrix.model.IMatrixView;
-import org.gitools.matrix.model.MatrixView;
-import org.gitools.persistence.FileFormats;
-import org.gitools.persistence.FileSuffixes;
-import org.gitools.persistence.PersistenceManager;
-import org.gitools.persistence.xml.GroupComparisonAnalysisXmlPersistence;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.model.decorator.impl.PValueDecorator;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.SerialClone;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -48,193 +48,148 @@ import java.util.Map;
 
 public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupComparisonAnalysis> {
 
-	public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
-		super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", null);
-	}
+    public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
+        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", null);
+    }
 
 
-	@Override
-	protected void prepareContext(VelocityContext context) {
+    @Override
+    protected void prepareContext(@NotNull VelocityContext context) {
 
-		PersistenceManager.FileRef fileRef = PersistenceManager.getDefault()
-				.getEntityFileRef(analysis.getData());
+        IResourceLocator fileRef = analysis.getData().getLocator();
 
-		context.put("dataFile",
-				fileRef != null ? fileRef.getFile().getName() : "Not defined");
+        context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
-		context.put("mtc", analysis.getMtc().getName());
+        context.put("mtc", analysis.getMtc().getName());
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis.getResults());
-        context.put("resultsFile",
-                fileRef != null ? fileRef.getFile().getName() : "Not defined");
+        fileRef = analysis.getResults().getLocator();
+        context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
 
-        fileRef = PersistenceManager.getDefault()
-                .getEntityFileRef(analysis);
-        if (fileRef != null) {
-            context.put("analysisLocation", fileRef.getFile().getParentFile().getAbsolutePath());
-        } else {
+        fileRef = analysis.getLocator();
+        context.put("analysisLocation", fileRef != null ? fileRef.getURL() : "Not defined");
+
+        if (fileRef == null || fileRef.isWritable()) {
             setSaveAllowed(true);
         }
 
-	}
-
-    @Override
-    public void doSave(IProgressMonitor monitor) {
-        xmlPersistance = new GroupComparisonAnalysisXmlPersistence();
-        fileformat = FileFormats.GROUP_COMPARISON;
-        super.doSave(monitor);
     }
 
     @Override
-	protected void performUrlAction(String name, Map<String, String> params) {
-		if ("NewDataHeatmap".equals(name))
-			newDataHeatmap();
-		else if ("NewResultsHeatmap".equals(name))
-			newResultsHeatmap();
-	}
+    public void doSave(IProgressMonitor progressMonitor) {
+        xmlPersistance = new GroupComparisonAnalysisFormat();
+        fileformat = GroupComparisonAnalysisFormat.FILE_FORMAT;
+        super.doSave(progressMonitor);
+    }
 
-	private void newDataHeatmap() {
-		if (analysis.getData() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contain data.");
-			return;
-		}
+    @Override
+    protected void performUrlAction(String name, Map<String, String> params) {
+        if ("NewDataHeatmap".equals(name)) {
+            newDataHeatmap();
+        } else if ("NewResultsHeatmap".equals(name)) {
+            newResultsHeatmap();
+        }
+    }
 
-		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
+    private void newDataHeatmap() {
+        if (analysis.getData() == null) {
+            AppFrame.get().setStatusText("Analysis doesn't contain data.");
+            return;
+        }
 
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				monitor.begin("Creating new heatmap from data ...", 1);
+        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-				IMatrixView dataTable = new MatrixView(analysis.getData());
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
+            @Override
+            public void run(@NotNull IProgressMonitor monitor) {
+                monitor.begin("Creating new heatmap from data ...", 1);
 
-				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-				heatmap.setTitle(analysis.getTitle() + " (data)");
+                Heatmap heatmap = new Heatmap(analysis.getData().get());
+                heatmap.setTitle(analysis.getTitle() + " (data)");
 
-                if (analysis.getRowHeaders() != null) {
-				    heatmap.getRowDim().setAnnotations(analysis.getRowAnnotations());
-				    copyHeaders(heatmap.getRowDim(), analysis.getRowHeaders());
+                if (analysis.getRowAnnotations() != null) {
+                    heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
                 }
-                if (analysis.getColumnHeaders() != null) {
-				    heatmap.getColumnDim().setAnnotations(analysis.getColumnAnnotations());
-				    copyHeaders(heatmap.getColumnDim(), analysis.getColumnHeaders());
+                if (analysis.getRowHeaders() != null)
+                    copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
+
+                if (analysis.getColumnAnnotations() != null) {
+                    heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
                 }
+                if (analysis.getColumnHeaders() != null)
+                    copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());
 
-				final HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-
-				editor.setName(editorPanel.deriveName(
-						getName(), FileSuffixes.GROUP_COMPARISON,
-						"-data", ""));
-
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override public void run() {
-						editorPanel.addEditor(editor);
-						AppFrame.instance().setStatusText("New heatmap created.");
-					}
-				});
-			}
-		});
-	}
+                final HeatmapEditor editor = new HeatmapEditor(heatmap);
 
 
-	private void copyHeaders(HeatmapDim dim, List<HeatmapHeader> headers) {
+                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-data", ""));
 
-		dim.removeHeader(0);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        editorPanel.addEditor(editor);
+                        AppFrame.get().setStatusText("New heatmap created.");
+                    }
+                });
+            }
+        });
+    }
 
-		for (HeatmapHeader hh : headers ) {
-			HeatmapHeader headerCopy = null;
-			if (hh instanceof HeatmapTextLabelsHeader) {
-				HeatmapTextLabelsHeader oldHeader = (HeatmapTextLabelsHeader) hh;
-				HeatmapTextLabelsHeader textHeaderCopy = new HeatmapTextLabelsHeader(dim);
-				textHeaderCopy.setFont(oldHeader.getFont());
-				textHeaderCopy.setLabelColor(oldHeader.getLabelColor());
-				textHeaderCopy.setLabelAnnotation(oldHeader.getLabelAnnotation());
-				textHeaderCopy.setLabelPattern(oldHeader.getLabelPattern());
-				textHeaderCopy.setLabelSource(oldHeader.getLabelSource());
-				headerCopy = textHeaderCopy;
-			} else if (hh instanceof HeatmapColoredLabelsHeader) {
-				//headerCopy = hh;
-				// Not working yet!
-				
-				HeatmapColoredLabelsHeader oldHeader = (HeatmapColoredLabelsHeader) hh;
-				HeatmapColoredLabelsHeader colorHeaderCopy = new HeatmapColoredLabelsHeader(dim);
-				colorHeaderCopy.setLabelColor(oldHeader.getLabelColor());
-				colorHeaderCopy.setForceLabelColor(oldHeader.isForceLabelColor());
-				colorHeaderCopy.setLabelFont(oldHeader.getLabelFont());
-				colorHeaderCopy.setLabelRotated(oldHeader.isLabelRotated());
-				colorHeaderCopy.setLabelVisible(oldHeader.isLabelVisible());
-				colorHeaderCopy.setMargin(oldHeader.getMargin());
-				colorHeaderCopy.setSeparationGrid(oldHeader.isSeparationGrid());
-				colorHeaderCopy.setThickness(oldHeader.getThickness());
 
-				ColoredLabel[] clusters = oldHeader.getClusters();
-				ColoredLabel[] newClusters = new ColoredLabel[clusters.length];
-				int index = 0;
+    private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers) {
+        for (HeatmapHeader hh : headers) {
+            dim.addHeader(hh);
+        }
+    }
 
-				for (ColoredLabel cl : clusters) {
-					//newClusters[index] ;
-					ColoredLabel newcl =
-							new ColoredLabel(cl.getDisplayedLabel(), cl.getColor());
-					newClusters[index] = newcl;
-					index++;
-				}
-				colorHeaderCopy.setClusters(newClusters);
-				colorHeaderCopy.setAssignedColoredLabels(
-						oldHeader.getAssignedColoredLabels());
+    private void newResultsHeatmap() {
+        if (analysis.getResults() == null) {
+            AppFrame.get().setStatusText("Analysis doesn't contain results.");
+            return;
+        }
 
-				dim.getAnnotations().getRows();
+        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-				headerCopy = colorHeaderCopy;
-				
-			}
-			headerCopy.setBackgroundColor(hh.getBackgroundColor());
-			//newHh.setHeatmapDim(dim);
-			headerCopy.setSize(hh.getSize());
-			headerCopy.setTitle(hh.getTitle());
-			headerCopy.setVisible(hh.isVisible());
-			dim.addHeader(headerCopy);
-		}
-	}
+        JobThread.execute(AppFrame.get(), new JobRunnable() {
+            @Override
+            public void run(@NotNull IProgressMonitor monitor) {
+                monitor.begin("Creating new heatmap from results ...", 1);
 
-	private void newResultsHeatmap() {
-		if (analysis.getResults() == null) {
-			AppFrame.instance().setStatusText("Analysis doesn't contain results.");
-			return;
-		}
+                Heatmap heatmap = new Heatmap(analysis.getResults().get());
 
-		final EditorsPanel editorPanel = AppFrame.instance().getEditorsPanel();
-
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override public void run(IProgressMonitor monitor) {
-				monitor.begin("Creating new heatmap from results ...", 1);
-
-				IMatrixView dataTable = new MatrixView(analysis.getResults());
-
-				Heatmap heatmap = HeatmapUtil.createFromMatrixView(dataTable);
-				heatmap.setTitle(analysis.getTitle() + " (results)");
-
-                if (analysis.getRowHeaders() != null) {
-                    heatmap.getRowDim().setAnnotations(SerialClone.xclone(analysis.getRowAnnotations()));
-                    heatmap.getRowDim().removeHeader(0);
-                    for (HeatmapHeader hh : analysis.getRowHeaders()) {
-                        heatmap.getRowDim().addHeader(SerialClone.xclone(hh));
+                for (HeatmapLayer heatmapLayer : heatmap.getLayers()) {
+                    if (heatmapLayer.getId().contains("p-value")) {
+                        heatmapLayer.setDecorator(new PValueDecorator());
                     }
                 }
 
-				final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                heatmap.getLayers().setTopLayerById("two-tail-p-value");
 
-				editor.setName(editorPanel.deriveName(
-						getName(), FileSuffixes.GROUP_COMPARISON,
-						"-results", ""));
+                heatmap.setTitle(analysis.getTitle() + " (results)");
 
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override public void run() {
-						editorPanel.addEditor(editor);
-						AppFrame.instance().setStatusText("Heatmap for group comparison results created.");
-					}
-				});
-			}
-		});
-	}
+                if (analysis.getRowHeaders() != null) {
+                    if (analysis.getRowAnnotations() != null) {
+                        heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
+                    }
+
+                    for (HeatmapHeader hh : analysis.getRowHeaders()) {
+                        heatmap.getRows().addHeader(hh);
+                        hh.init(heatmap.getRows());
+                    }
+                }
+
+                final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
+
+                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        editorPanel.addEditor(editor);
+                        AppFrame.get().setStatusText("Heatmap for group comparison results created.");
+                    }
+                });
+            }
+        });
+    }
 }

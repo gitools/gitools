@@ -1,29 +1,33 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
 package org.gitools.ui.analysis.editor;
 
-import edu.upf.bg.formatter.GenericFormatter;
-import edu.upf.bg.progressmonitor.IProgressMonitor;
 import org.apache.velocity.VelocityContext;
-import org.gitools.model.Analysis;
-import org.gitools.persistence.FileFormat;
-import org.gitools.persistence.PersistenceException;
-import org.gitools.persistence.xml.AbstractXmlPersistence;
+import org.gitools.core.model.Analysis;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.core.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
@@ -35,6 +39,9 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,111 +51,113 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-public class AnalysisDetailsEditor<A> extends AbstractEditor {
+public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
-	private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
-	
-	protected A analysis;
-	
-	protected String template;
+    private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
 
-	protected ActionSet toolBar = null;
+    protected final A analysis;
 
-	protected TemplatePanel templatePanel;
+    private final String template;
 
-    protected AbstractXmlPersistence xmlPersistance = null;
+    @Nullable
+    private ActionSet toolBar = null;
+
+    private TemplatePanel templatePanel;
+
+    @Nullable
+    protected AbstractXmlFormat xmlPersistance = null;
 
     protected FileFormat fileformat;
 
-	public AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar) {
-		this.analysis = analysis;
-		this.template = template;
-		this.toolBar = toolBar;
+    protected AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar) {
+        this.analysis = analysis;
+        this.template = template;
+        this.toolBar = toolBar;
         this.setIcon(IconUtils.getIconResource(IconNames.LOGO_ANALYSIS_DETAILS16));
 
         createComponents();
-	}
+    }
 
-	private void createComponents() {
-		templatePanel = new TemplatePanel() {
-			@Override protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-				AnalysisDetailsEditor.this.submitForm(method, action, target, enctype, formInputs);
-			}
+    private void createComponents() {
+        templatePanel = new TemplatePanel() {
+            @Override
+            protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+                AnalysisDetailsEditor.this.submitForm(method, action, target, enctype, formInputs);
+            }
 
-			@Override protected void performUrlAction(String name, Map<String, String> params) {
-				AnalysisDetailsEditor.this.performUrlAction(name, params);
-			}
-		};
-		try {
-			URL url = getClass().getResource(template);
-			templatePanel.setTemplateFromResource(template, url);
+            @Override
+            protected void performUrlAction(String name, Map<String, String> params) {
+                AnalysisDetailsEditor.this.performUrlAction(name, params);
+            }
+        };
+        try {
+            URL url = getClass().getResource(template);
+            templatePanel.setTemplateFromResource(template, url);
 
-			VelocityContext context = new VelocityContext();
-			context.put("fmt", new GenericFormatter());
-			context.put("analysis", analysis);
+            VelocityContext context = new VelocityContext();
+            context.put("fmt", new HeatmapTextFormatter());
+            context.put("analysis", analysis);
 
-			prepareContext(context);
+            prepareContext(context);
 
-			templatePanel.render(context);
-		}
-		catch (Exception e) {
-			LogUtils.logException(e, log);
-		}
+            templatePanel.render(context);
+        } catch (Exception e) {
+            LogUtils.logException(e, log);
+        }
 
-		setLayout(new BorderLayout());
-		
-		if (toolBar != null)
-			add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
+        setLayout(new BorderLayout());
 
-		add(templatePanel, BorderLayout.CENTER);
-	}
+        if (toolBar != null) {
+            add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
+        }
 
-	protected void prepareContext(VelocityContext context) {
-	}
-	
-	@Override
-	public Object getModel() {
-		return analysis;
-	}
+        add(templatePanel, BorderLayout.CENTER);
+    }
 
-	@Override
-	public void doVisible() {
-		AppFrame.instance().setLeftPanelVisible(true);
-		AppFrame.instance().getPropertiesView().updateContext(null);
-		AppFrame.instance().getDetailsView().updateContext(null);
-		templatePanel.requestFocusInWindow();
-	}
-
-	protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
-	}
-
-	protected void performUrlAction(String name, Map<String, String> params) {
-	}
+    protected void prepareContext(VelocityContext context) {
+    }
 
     @Override
-    public void doSave(IProgressMonitor monitor) {
-        if (xmlPersistance == null || fileformat == null)
+    public Object getModel() {
+        return analysis;
+    }
+
+    @Override
+    public void doVisible() {
+        templatePanel.requestFocusInWindow();
+    }
+
+    void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
+    }
+
+    protected void performUrlAction(String name, Map<String, String> params) {
+    }
+
+    @Override
+    public void doSave(IProgressMonitor progressMonitor) {
+        if (xmlPersistance == null || fileformat == null) {
             return;
+        }
 
         String title = ((Analysis) analysis).getTitle();
 
         String lastWorkPath = Settings.getDefault().getLastWorkPath();
 
-        SaveFileWizard wizard = SaveFileWizard.createSimple(title,title,lastWorkPath, fileformat);
-        WizardDialog dlg = new WizardDialog(AppFrame.instance(), wizard);
+        SaveFileWizard wizard = SaveFileWizard.createSimple(title, title, lastWorkPath, fileformat);
+        WizardDialog dlg = new WizardDialog(AppFrame.get(), wizard);
         dlg.setVisible(true);
 
-        if (dlg.isCancelled())
+        if (dlg.isCancelled()) {
             return;
+        }
 
         File workdir = new File(wizard.getFolder());
-        File file = new File(workdir,wizard.getFileName());
-        xmlPersistance.setRecursivePersistence(true);
+        File file = new File(workdir, wizard.getFileName());
         Settings.getDefault().setLastWorkPath(wizard.getFolder());
 
 
         try {
-            xmlPersistance.write(file, analysis, monitor);
+            xmlPersistance.write(new UrlResourceLocator(file), analysis, progressMonitor);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }

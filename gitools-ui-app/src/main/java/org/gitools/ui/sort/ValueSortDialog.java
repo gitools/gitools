@@ -1,124 +1,131 @@
 /*
- *  Copyright 2010 Universitat Pompeu Fabra.
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
  * 
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  * 
- *       http://www.apache.org/licenses/LICENSE-2.0
- * 
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  under the License.
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
  */
-
-/*
- * FilterDialog.java
- *
- * Created on Jan 19, 2010, 2:04:30 PM
- */
-
 package org.gitools.ui.sort;
 
-import java.awt.Component;
-import java.util.List;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
+import org.gitools.core.matrix.sort.ValueSortCriteria;
+import org.gitools.utils.aggregation.IAggregator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-import edu.upf.bg.aggregation.IAggregator;
-import org.gitools.matrix.sort.ValueSortCriteria;
+import java.awt.*;
+import java.util.List;
 
+/**
+ * @noinspection ALL
+ */
 public class ValueSortDialog extends javax.swing.JDialog {
-    /** A return status code - returned if Cancel button has been pressed */
-    public static final int RET_CANCEL = 0;
-    /** A return status code - returned if OK button has been pressed */
-    public static final int RET_OK = 1;
+    /**
+     * A return status code - returned if Cancel button has been pressed
+     */
+    private static final int RET_CANCEL = 0;
+    /**
+     * A return status code - returned if OK button has been pressed
+     */
+    private static final int RET_OK = 1;
 
-	private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer {
+    private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer {
 
-		public ComboBoxCellRenderer(Object[] values) {
-			super(values);
-		}
+        public ComboBoxCellRenderer(Object[] values) {
+            super(values);
+        }
 
-		@Override
-		public Component getTableCellRendererComponent(
-				JTable table, Object value,
-				boolean isSelected, boolean hasFocus,
-				int row, int column) {
+        @NotNull
+        @Override
+        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
-			if (isSelected) {
-				setForeground(table.getSelectionForeground());
-				super.setBackground(table.getSelectionBackground());
-			} else {
-				setForeground(table.getForeground());
-				setBackground(table.getBackground());
-			}
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                super.setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(table.getBackground());
+            }
 
-			// Select the current value
-			setSelectedItem(value);
-			return this;
-		}
-	}
+            // Select the current value
+            setSelectedItem(value);
+            return this;
+        }
+    }
 
-	private static class ComboBoxCellEditor extends DefaultCellEditor {
-		public ComboBoxCellEditor(Object[] values) {
-			super(new JComboBox(values));
-		}
-	}
+    private static class ComboBoxCellEditor extends DefaultCellEditor {
+        public ComboBoxCellEditor(Object[] values) {
+            super(new JComboBox(values));
+        }
+    }
 
-	private String[] attributeNames;
-	private IAggregator[] aggregators;
-	private ValueSortCriteria.SortDirection[] directions;
+    private final String[] attributeNames;
+    private final IAggregator[] aggregators;
+    private final ValueSortCriteria.SortDirection[] directions;
 
-	private ValueSortCriteriaTableModel criteriaModel;
+    private final ValueSortCriteriaTableModel criteriaModel;
 
-    /** Creates new form FilterDialog */
-    public ValueSortDialog(java.awt.Frame parent,
-			String[] attributeNames,
-			IAggregator[] aggregators,
-			ValueSortCriteria.SortDirection[] directions,
-			List<ValueSortCriteria> initialCriteriaList) {
+    /**
+     * Creates new form FilterDialog
+     */
+    public ValueSortDialog(java.awt.Frame parent, @NotNull String[] attributeNames, IAggregator[] aggregators, ValueSortCriteria.SortDirection[] directions, @Nullable List<ValueSortCriteria> initialCriteriaList) {
 
         super(parent, true);
 
-		this.attributeNames = attributeNames;
-		this.aggregators = aggregators;
-		this.directions = directions;
+        this.attributeNames = attributeNames;
+        this.aggregators = aggregators;
+        this.directions = directions;
 
-		this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
+        this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
 
-		initComponents();
+        initComponents();
 
-		table.setModel(criteriaModel);
+        table.setModel(criteriaModel);
 
-		criteriaModel.addTableModelListener(new TableModelListener() {
-			@Override public void tableChanged(TableModelEvent e) {
-				tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
-			}
-		});
+        criteriaModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                tableRemoveBtn.setEnabled(criteriaModel.getList().size() > 0);
+            }
+        });
 
-		if (initialCriteriaList != null)
-			criteriaModel.addAllCriteria(initialCriteriaList);
-		
-		TableColumnModel columnModel = table.getColumnModel();
-		columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
-		columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
-		columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
+        if (initialCriteriaList != null) {
+            criteriaModel.addAllCriteria(initialCriteriaList);
+        }
+
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
+        columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
     }
 
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    /**
+     * @return the return status of this dialog - one of RET_OK or RET_CANCEL
+     */
     public boolean isCancelled() {
         return returnStatus != RET_OK;
     }
 
-    /** This method is called from within the constructor to
+    /**
+     * This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
@@ -164,20 +171,14 @@ public class ValueSortDialog extends javax.swing.JDialog {
             }
         });
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-            },
-            new String [] {
-                "Attribute", "Condition", "Value"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Double.class
-            };
+        }, new String[]{"Attribute", "Condition", "Value"}) {
+            @NotNull
+            final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
             public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+                return types[columnIndex];
             }
         });
         table.setColumnSelectionAllowed(true);
@@ -219,63 +220,11 @@ public class ValueSortDialog extends javax.swing.JDialog {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(applyToRowsRb)
-                    .addComponent(applyToColumnsRb)
-                    .addComponent(applyToRowsAndColumnsRb)
-                    .addComponent(jLabel2))
-                .addContainerGap())
-        );
+        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(saveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(loadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addComponent(applyToRowsRb).addComponent(applyToColumnsRb).addComponent(applyToRowsAndColumnsRb).addComponent(jLabel2)).addContainerGap()));
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelButton, okButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{cancelButton, okButton});
 
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tableRemoveBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(loadBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveBtn))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(applyToRowsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applyToColumnsRb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(applyToRowsAndColumnsRb)
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(okButton))
-                .addContainerGap())
-        );
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(tableRemoveBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(loadBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(saveBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(applyToRowsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(applyToColumnsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(applyToRowsAndColumnsRb).addGap(18, 18, 18).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton)).addContainerGap()));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -288,19 +237,20 @@ public class ValueSortDialog extends javax.swing.JDialog {
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    /** Closes the dialog */
+    /**
+     * Closes the dialog
+     */
     private void closeDialog(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_closeDialog
         doClose(RET_CANCEL);
     }//GEN-LAST:event_closeDialog
 
-	private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-		criteriaModel.addCriteria(new ValueSortCriteria(
-				attributeNames[0], 0, aggregators[0], directions[0]));
-	}//GEN-LAST:event_tableAddBtnActionPerformed
+    private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
+        criteriaModel.addCriteria(new ValueSortCriteria(attributeNames[0], 0, aggregators[0], directions[0]));
+    }//GEN-LAST:event_tableAddBtnActionPerformed
 
-	private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
-		criteriaModel.removeCriteria(table.getSelectedRows());
-	}//GEN-LAST:event_tableRemoveBtnActionPerformed
+    private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
+        criteriaModel.removeCriteria(table.getSelectedRows());
+    }//GEN-LAST:event_tableRemoveBtnActionPerformed
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
@@ -327,15 +277,15 @@ public class ValueSortDialog extends javax.swing.JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-	public boolean isApplyToRowsChecked() {
-		return applyToRowsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
-	}
+    public boolean isApplyToRowsChecked() {
+        return applyToRowsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
+    }
 
-	public boolean isApplyToColumnsChecked() {
-		return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
-	}
+    public boolean isApplyToColumnsChecked() {
+        return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
+    }
 
-	public List<ValueSortCriteria> getCriteriaList() {
-		return criteriaModel.getList();
-	}
+    public List<ValueSortCriteria> getCriteriaList() {
+        return criteriaModel.getList();
+    }
 }
