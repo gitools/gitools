@@ -1,7 +1,7 @@
 
-
+================================================================
 GeneOntology
-=================================================
+================================================================
 
 The Gene Ontology project is a major bioinformatics initiative with the aim of standardizing the representation of gene and gene product attributes across species and databases. The project provides a controlled vocabulary of terms for describing gene product characteristics. More information about Gene Ontology at  `http://www.geneontology.org/  <http://www.geneontology.org/>`__ .
 

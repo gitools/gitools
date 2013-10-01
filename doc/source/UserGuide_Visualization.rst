@@ -1,16 +1,6 @@
-
-
+================================================================
 Visualization
--------------------------------------------------
-
-
-
-
-Table of Contents
--------------------------------------------------
-
-
-
+================================================================
 
 
 The main window of Gitools is divided in two parts: the left part or the contextual panels and the right part or editors panel.

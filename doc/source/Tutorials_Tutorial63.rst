@@ -1,23 +1,8 @@
-
-
+================================================================
 Tutorial 6.3. Exploring the effect of genomic alterations on expression
--------------------------------------------------
+================================================================
 
 Michael P Schroeder
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Concept <#N1003B>`__  `#  <#N1003B>`__
-
-`How to use Gitools for this task <#N1005D>`__  `#  <#N1005D>`__
-
-`The Group Comparison Wizard - data and test <#N1007F>`__  `#  <#N1007F>`__
-
-
-
 
 
 

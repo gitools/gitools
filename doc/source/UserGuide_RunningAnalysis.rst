@@ -1,30 +1,18 @@
-
-
 Running analysis
--------------------------------------------------
-
-
-
-
-Table of Contents
--------------------------------------------------
-
-
-
+==================================
 
 
 There are several analysis implemented in Gitools:
 
-`Enrichment <UserGuide_Enrichment.rst>`__
 
-`Oncodrive <UserGuide_Oncodrive.rst>`__
+- :doc:`UserGuide_Enrichment`
+- :doc:`UserGuide_Correlations`
+- :doc:`UserGuide_Combinations`
+- :doc:`UserGuide_Overlaps`
+- :doc:`UserGuide_GroupComparison`
+- :doc:`UserGuide_Oncodrive`
 
-`Correlations <UserGuide_Correlations.rst>`__
 
-`Combination of p-values <UserGuide_Combinations.rst>`__
-
-`Overlaps <UserGuide_Overlaps.rst>`__
-
-The can be performed by clicking in the corresponding image in the welcome page of the application or by selecting it from *File -> New -> Analysis* menu.
-
-Some analysis can be also performed from an opened heatmap by selecting it from *Analysis* menu.
+The analyses are available in two ways:
+ - Selecting :code:`File -> New`. This way will always ask to locate the data on your computer.
+ - When a heatmap already loaded, the analyses become available through the menu :code:`Analysis` and will take as input data the currently selected heatmap.

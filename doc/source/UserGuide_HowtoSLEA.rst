@@ -1,25 +1,7 @@
 
-
+================================================================
 How to run SLEA in Gitools
--------------------------------------------------
-
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Sample Level Enrichment Analysis (SLEA) using Gitools <#N10037>`__  `#  <#N10037>`__
-
-`Files needed <#N10040>`__  `#  <#N10040>`__
-
-`Perform an enrichment analysis with Gitools <#N1007D>`__  `#  <#N1007D>`__
-
-`Explore the results <#N100AC>`__  `#  <#N100AC>`__
-
-
-
-
+================================================================
 
 
 

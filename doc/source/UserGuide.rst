@@ -6,7 +6,7 @@ Gitools User Guide
 - :doc:`UserGuide_Installation`
 - :doc:`UserGuide_LoadingData`
     - :doc:`UserGuide_ExternalDataSources`
-        - :doc:`UserGuide_IntOGen`
+        - :doc:`UserGuide_IntOGen_Arrays`
         - :doc:`UserGuide_KEGG`
         - :doc:`UserGuide_GeneOntology`
         - :doc:`UserGuide_Biomart`

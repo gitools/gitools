@@ -1,21 +1,7 @@
 
-
+================================================================
 Overlaps
--------------------------------------------------
-
-XWikiGuest
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Wizard steps to perform an overlapping analysis <#N1003A>`__  `#  <#N1003A>`__
-
-`Exploring the results of the analysis <#N100E0>`__  `#  <#N100E0>`__
-
-
-
+================================================================
 
 
 This analysis is useful to study the overlap of positive elements between columns and rows in a binary matrix. For example, to compare the list of genes altered among many samples by pairwise comparison.

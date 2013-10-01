@@ -1,23 +1,7 @@
 
-
+================================================================
 Tutorial 6.1. Loading and annotating a multi-value matrix
--------------------------------------------------
-
-Michael P Schroeder
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Loading and annotating a multi-value matrix <#N1003B>`__  `#  <#N1003B>`__
-
-`Files needed: <#N1007D>`__  `#  <#N1007D>`__
-
-
-
-
-
+================================================================
 
 
 Loading and annotating a multi-value matrix
