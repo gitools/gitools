@@ -22,26 +22,11 @@
 package org.gitools.ui.batch;
 
 import org.gitools.ui.batch.tools.ITool;
-import org.gitools.ui.batch.tools.LoadTool;
-import org.gitools.ui.batch.tools.VersionTool;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CommandExecutor {
-
-    private final static Map<String, ITool> TOOLS = new HashMap<String, ITool>();
-
-    static {
-        addTool(new LoadTool());
-        addTool(new VersionTool());
-    }
-
-    private static void addTool(@NotNull ITool tool) {
-        TOOLS.put(tool.getName().toLowerCase(), tool);
-    }
 
     public boolean checkArguments(@NotNull String[] args, @NotNull PrintWriter out) {
 
@@ -55,7 +40,7 @@ public class CommandExecutor {
         String toolArgs[] = new String[args.length - 1];
         System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
 
-        ITool tool = TOOLS.get(toolName);
+        ITool tool = ToolFactory.get(toolName);
 
         if (tool == null) {
             out.println(errorMsg());
@@ -82,7 +67,7 @@ public class CommandExecutor {
         String toolArgs[] = new String[args.length - 1];
         System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
 
-        ITool tool = TOOLS.get(toolName.toLowerCase());
+        ITool tool = ToolFactory.get(toolName.toLowerCase());
 
         if (tool == null) {
             out.println(errorMsg());
@@ -94,6 +79,9 @@ public class CommandExecutor {
         if (tool.run(toolArgs, out)) {
             out.println("OK");
             out.flush();
+        } else {
+            out.println("NOT OK");
+            out.flush();
         }
 
     }
@@ -102,7 +90,7 @@ public class CommandExecutor {
     private static String errorMsg() {
         StringBuilder msg = new StringBuilder();
         msg.append("ERROR | Unknown command. Valid commands: ");
-        for (String tool : TOOLS.keySet()) {
+        for (String tool : ToolFactory.TOOLS.keySet()) {
             msg.append(" ").append(tool);
         }
         return msg.toString();

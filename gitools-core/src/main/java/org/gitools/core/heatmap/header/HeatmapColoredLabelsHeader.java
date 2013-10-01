@@ -21,7 +21,11 @@
  */
 package org.gitools.core.heatmap.header;
 
+import org.gitools.core.clustering.ClusteringData;
+import org.gitools.core.clustering.ClusteringException;
+import org.gitools.core.clustering.ClusteringMethod;
 import org.gitools.core.clustering.ClusteringResults;
+import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.label.AnnotationsPatternProvider;
 import org.gitools.core.label.LabelProvider;
@@ -29,6 +33,7 @@ import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
+import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -164,7 +169,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         String[] clusterTitles = results.getClusterTitles();
         coloredLabels = new ColoredLabel[results.getNumClusters()];
         for (int i = 0; i < results.getNumClusters(); i++) {
-            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next());
+            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next(clusterTitles[i]));
         }
     }
 
@@ -209,5 +214,28 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         }
 
         return labelProvider;
+    }
+
+    public void autoGenerateColoredLabels(ClusteringMethod clusteringMethod) {
+
+        ClusteringData data = new AnnPatClusteringData(getHeatmapDimension(), getAnnotationPattern());
+        ClusteringResults results = null;
+        try {
+            results = clusteringMethod.cluster(data, new DefaultProgressMonitor());
+        } catch (ClusteringException e) {
+            e.printStackTrace();
+        }
+        updateFromClusterResults(results);
+
+    }
+
+    public void setAnnotationMetadata(String annotationKey) {
+        setDescription(getAnnotationMetadata("description", annotationKey));
+        setValueUrl(getAnnotationMetadata("value-url", annotationKey));
+        setDescriptionUrl(getAnnotationMetadata("description-url", annotationKey));
+    }
+
+    public String getAnnotationMetadata(String metadataKey, String annotationKey) {
+        return getHeatmapDimension().getAnnotations().getAnnotationMetadata(metadataKey, annotationKey);
     }
 }

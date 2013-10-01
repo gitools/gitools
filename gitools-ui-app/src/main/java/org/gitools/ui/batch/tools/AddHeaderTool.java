@@ -19,32 +19,30 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.commands;
+package org.gitools.ui.batch.tools;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.jetbrains.annotations.NotNull;
+import org.kohsuke.args4j.Option;
 
-/**
- * @noinspection ALL
- */
-public interface Command {
+public abstract class AddHeaderTool extends AbstractTool {
 
-    public class CommandException extends Exception {
-        private static final long serialVersionUID = 2147640402258540409L;
+    @Option(name = "-h", aliases = "--heatmap", metaVar = "<heatmap>", required = true,
+            usage = "Heatmap ")
+    protected String heatmap;
 
-        public CommandException(Exception e) {
-            super(e);
-        }
+    enum Side { ROWS,COLUMNS }
+    @Option(name = "-s", aliases = "--side", metaVar = "<side>", required = true,
+            usage = "Indicate where to add the header: 'rows' or 'columns'.")
+    protected Side side;
 
-        public CommandException(String msg) {
-            super(msg);
-        }
-
-        public CommandException(String msg, Throwable cause) {
-            super(msg, cause);
-        }
+    public AddHeaderTool() {
+        super();
     }
 
-    void execute(IProgressMonitor monitor) throws CommandException;
+    @NotNull
+    @Override
+    public String getName() {
+        return "add-header";
+    }
 
-    int getExitStatus();
 }

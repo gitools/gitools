@@ -19,42 +19,32 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.commands;
+package org.gitools.ui.batch.tools;
 
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.ui.commands.Command;
+import org.gitools.ui.commands.CommandAddHeaderTextLabels;
 import org.jetbrains.annotations.NotNull;
+import org.kohsuke.args4j.Option;
 
+public class AddHeaderTextLabelsTool extends AddHeaderTool {
 
-public abstract class AbstractCommand implements Command, JobRunnable, Runnable {
+    @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
+            usage = "The pattern of annotations as e.g. ${annotation-id}")
+    private String pattern;
 
-    @Override
-    public abstract void execute(IProgressMonitor monitor) throws CommandException;
-
-    private int exitStatus = -1;
-
-    @Override
-    public void run(@NotNull IProgressMonitor monitor) {
-        try {
-            execute(monitor);
-            monitor.end();
-        } catch (CommandException e) {
-            monitor.exception(e);
-        }
+    public AddHeaderTextLabelsTool() {
+        super();
     }
 
+    @NotNull
     @Override
-    public void run() {
-        run(new NullProgressMonitor());
+    public String getName() {
+        return "add-header-text-labels";
     }
 
+    @NotNull
     @Override
-    public int getExitStatus() {
-        return exitStatus;
-    }
-
-    protected void setExitStatus(int exitStatus) {
-        this.exitStatus = exitStatus;
+    protected Command newJob() {
+        return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern);
     }
 }

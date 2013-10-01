@@ -36,6 +36,7 @@ public class PaletteColorGenerator implements ColorGenerator {
 
     private final Color[] palette;
     private int index = -1;
+    private final ColorRegistry colorRegistry;
 
     public PaletteColorGenerator() {
         this(DEFAULT_PALETTE);
@@ -45,10 +46,12 @@ public class PaletteColorGenerator implements ColorGenerator {
         this.palette = new Color[palette.length];
         for (int i = 0; i < palette.length; i++)
             this.palette[i] = new Color(palette[i]);
+        colorRegistry = ColorRegistry.get();
     }
 
     public PaletteColorGenerator(Color[] palette) {
         this.palette = palette;
+        colorRegistry = ColorRegistry.get();
     }
 
     @Override
@@ -56,11 +59,21 @@ public class PaletteColorGenerator implements ColorGenerator {
         index = -1;
     }
 
-    @Override
-    public Color next() {
+
+    private Color next() {
         index++;
 
         return palette[index % palette.length];
+    }
+
+    @Override
+    public Color next(String id) {
+        Color c = colorRegistry.getColor(id);
+        if (c == null) {
+            c = next();
+            colorRegistry.registerId(id, c);
+        }
+        return c;
     }
 
     @Override

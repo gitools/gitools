@@ -74,6 +74,17 @@ public class EditorsPanel extends WebTabbedPane {
         });
     }
 
+    public AbstractEditor[] getEditors() {
+        AbstractEditor[] editors = new AbstractEditor[getTabCount()];
+        for (int i = 0; i < editors.length; i++) {
+            Component component = getTabComponentAt(i);
+            if (component instanceof EditorTabComponent) {
+                editors[i] = ((EditorTabComponent) component).getEditor();
+            }
+        }
+        return editors;
+    }
+
     private void createComponents() {
 
     }

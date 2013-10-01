@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.batch.tools;
 
+import org.gitools.ui.commands.Command;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -31,6 +32,9 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.PrintWriter;
 
 public abstract class AbstractTool implements ITool {
+
+    private int exitStatus = -1;
+
 
     @Override
     public boolean check(String[] args, @NotNull PrintWriter out) {
@@ -65,12 +69,15 @@ public abstract class AbstractTool implements ITool {
             out.println("ERROR | " + e.getMessage());
             return false;
         }
+        if (exitStatus != 0) {
+            return false;
+        }
 
         return true;
     }
 
     void execute() {
-        JobRunnable job = newJob();
+        Command job = newJob();
 
         if (job != null) {
 
@@ -81,11 +88,17 @@ public abstract class AbstractTool implements ITool {
             mainFrame.setAlwaysOnTop(true);
             mainFrame.setAlwaysOnTop(false);
 
-            JobThread.execute(mainFrame, job);
+            JobThread.execute(mainFrame, (JobRunnable) job);
+            setExitStatus(job.getExitStatus());
+
         }
+    }
+
+    protected void setExitStatus(int exitStatus) {
+        this.exitStatus = exitStatus;
     }
 
 
     @NotNull
-    protected abstract JobRunnable newJob();
+    protected abstract Command newJob();
 }

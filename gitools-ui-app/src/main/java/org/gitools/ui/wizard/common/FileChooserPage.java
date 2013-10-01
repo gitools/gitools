@@ -21,11 +21,13 @@
  */
 package org.gitools.ui.wizard.common;
 
+import com.googlecode.vfsjfilechooser2.VFSJFileChooser;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.utils.FileFormatFilter;
+import org.gitools.ui.utils.VFSFileFilterAdaptor;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -33,36 +35,24 @@ import java.io.File;
 
 public class FileChooserPage extends AbstractWizardPage {
 
-    private int selectionMode;
-    private File currentPath;
-    private File selectedFile;
-    private FileFilter fileFilter;
+    private FileFormatFilter fileFilter;
 
-    private JFileChooser fileChooser;
+    private VFSJFileChooser fileChooser;
 
     public FileChooserPage() {
-        this(JFileChooser.FILES_ONLY);
-    }
 
-    private FileChooserPage(int selectionMode) {
-        this.selectionMode = selectionMode;
     }
 
     @NotNull
     @Override
     public JComponent createControls() {
 
-        fileChooser = new JFileChooser();
-        fileChooser.setControlButtonsAreShown(false);
-        fileChooser.setFileSelectionMode(selectionMode);
-        fileChooser.setFileFilter(fileFilter);
+        fileChooser = new VFSJFileChooser();
+        fileChooser.setFileHidingEnabled(false);
 
-        if (currentPath != null) {
-            fileChooser.setCurrentDirectory(currentPath);
-        }
-        if (selectedFile != null) {
-            fileChooser.setSelectedFile(selectedFile);
-        }
+        fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.FILES_ONLY);
+        fileChooser.setFileFilter(new VFSFileFilterAdaptor(fileFilter));
+
         updateComplete();
 
         fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
@@ -84,37 +74,11 @@ public class FileChooserPage extends AbstractWizardPage {
         setComplete(fileChooser.getSelectedFile() != null || fileChooser.getSelectedFiles().length > 0);
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public void setFileSelectionMode(int selectionMode) {
-        this.selectionMode = selectionMode;
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public void setCurrentPath(File file) {
-        currentPath = file;
-    }
-
-    public void setSelectedFile(File file) {
-        selectedFile = file;
-    }
-
     public File getSelectedFile() {
         return fileChooser.getSelectedFile();
     }
 
-    public File[] getSelectedFiles() {
-        return fileChooser.getSelectedFiles();
-    }
-
-    public FileFilter getFileFilter() {
-        return fileFilter;
-    }
-
-    public void setFileFilter(FileFilter fileFilter) {
+    public void setFileFilter(FileFormatFilter fileFilter) {
         this.fileFilter = fileFilter;
     }
 }

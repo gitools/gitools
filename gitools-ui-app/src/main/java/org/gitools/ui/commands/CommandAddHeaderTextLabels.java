@@ -21,40 +21,40 @@
  */
 package org.gitools.ui.commands;
 
-import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.ui.platform.AppFrame;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
-public abstract class AbstractCommand implements Command, JobRunnable, Runnable {
+    private final String pattern;
+
+    public CommandAddHeaderTextLabels(String heatmap, String side, String pattern) {
+        super(heatmap, side);
+        this.pattern = pattern;
+    }
 
     @Override
-    public abstract void execute(IProgressMonitor monitor) throws CommandException;
+    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
 
-    private int exitStatus = -1;
-
-    @Override
-    public void run(@NotNull IProgressMonitor monitor) {
-        try {
-            execute(monitor);
-            monitor.end();
-        } catch (CommandException e) {
-            monitor.exception(e);
+        super.execute(monitor);
+        if (getExitStatus() > 0) {
+            return;
         }
-    }
 
-    @Override
-    public void run() {
-        run(new NullProgressMonitor());
-    }
+        HeatmapTextLabelsHeader header = new HeatmapTextLabelsHeader();
+        header.setLabelPattern(pattern);
+        hdim.addHeader(header);
 
-    @Override
-    public int getExitStatus() {
-        return exitStatus;
-    }
+        AppFrame.get().refresh();
 
-    protected void setExitStatus(int exitStatus) {
-        this.exitStatus = exitStatus;
+        // Force a GC to release free memory
+        System.gc();
+
+        monitor.end();
+
+        setExitStatus(0);
+        return;
     }
 }

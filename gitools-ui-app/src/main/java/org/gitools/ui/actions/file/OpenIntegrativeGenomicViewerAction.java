@@ -143,13 +143,17 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
                 showMessage("Unable to connect with Integrative Genomics Viewer (IGV). " +
                         "\n It must be running on '" + Settings.getDefault().getIgvUrl() + "'. " +
                         "\n Install or launch it from 'http://www.broadinstitute.org/igv'.");
+                setExitStatus(1);
             } catch (SocketTimeoutException e) {
                 monitor.end();
                 showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
+                setExitStatus(1);
             } catch (IOException e) {
                 monitor.end();
-                showMessage("Unknown problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
+                showMessage("Unknwn problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");
+                setExitStatus(1);
             } catch (UnsupportedOperationException e) {
+                setExitStatus(1);
             } finally {
                 monitor.end();
                 if (socket != null) {
@@ -160,8 +164,8 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
                     }
                 }
             }
-
-
+            setExitStatus(0);
+            return;
         }
 
         private void waitServerResponse(@NotNull InputStream in, @NotNull IProgressMonitor monitor) throws UnsupportedOperationException, IOException {

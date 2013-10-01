@@ -29,6 +29,7 @@ import org.gitools.ui.dialog.EditCategoricalScaleDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
+import org.gitools.utils.color.generator.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 
@@ -84,8 +85,10 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
 
             ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.length];
             index = 0;
+            ColorRegistry cr = ColorRegistry.get();
             for (ColoredLabel cl : coloredLabels) {
                 newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());
+                cr.registerId(cl.getValue(), cl.getColor());
                 index++;
             }
 
