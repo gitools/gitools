@@ -22,9 +22,14 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
 import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.core.analysis.overlapping.OverlappingCommand;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.model.ModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
@@ -41,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class NewOverlappingAnalysisAction extends BaseAction {
 
@@ -69,12 +75,19 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 
         final OverlappingAnalysis analysis = wizard.getAnalysis();
 
-        //TODO Convert a .tcm ModuleMap into a IMatrix. Related issue #94 (See ConvertModuleMapToMatrixResourceReference)
+        IResourceLocator resourceLocator = new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath());
+        ResourceReference<IMatrix> sourceData;
+        try {
+            IResourceFormat<? extends IMatrix> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class);
+            sourceData = new ResourceReference<>(resourceLocator, resourceFormat);
+        } catch (PersistenceException ex) {
 
+            // Allow to use ModuleMaps as IMatrix
+            IResourceFormat<? extends ModuleMap> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(ModuleMap.class);
+            sourceData = new ConvertModuleMapToMatrixResourceReference(resourceLocator, resourceFormat);
+        }
 
-        ResourceReference<IMatrix> sourceData = new ResourceReference<IMatrix>(new UrlResourceLocator(wizard.getDataFilePage().getFile().getAbsolutePath()), wizard.getDataFilePage().getFileFormat().getFormat(IMatrix.class));
-
-        analysis.setSourceData(new ResourceReference<IMatrix>("source-data", sourceData.get()));
+        analysis.setSourceData(new ResourceReference<>("source-data", sourceData.get()));
 
         final OverlappingCommand cmd = new OverlappingCommand(analysis, wizard.getWorkdir(), wizard.getFileName());
 

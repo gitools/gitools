@@ -70,10 +70,10 @@ public class DoubleBinaryMatrix extends BaseMatrix {
     @Override
     public void setValue(int[] position, int layer, @Nullable Object value) {
         if (value != null) {
-            cells.putQuick(position[0], position[1], ((Double) value) == 1.0);
-            cellsNan.putQuick(position[0], position[1], Double.isNaN((Double) value));
+            cells.putQuick(position[1], position[0], ((Double) value) == 1.0);
+            cellsNan.putQuick(position[1], position[0], Double.isNaN((Double) value));
         } else {
-            cellsNan.putQuick(position[0], position[1], true);
+            cellsNan.putQuick(position[1], position[0], true);
         }
     }
 
