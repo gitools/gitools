@@ -29,16 +29,16 @@ import org.gitools.ui.platform.imageviewer.ResizeStrategy;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class SnapshotViewer extends AbstractEditor {
+public class BitmapImageViewer extends AbstractEditor {
 
     private ImageViewer imageViewer;
 
-    public SnapshotViewer(BufferedImage image) {
+    public BitmapImageViewer(BufferedImage image) {
 
         imageViewer = new ImageViewer(image);
         imageViewer.setResizeStrategy(ResizeStrategy.SHRINK_TO_FIT);
 
-        setIcon(IconNames.SNAPSHOT_SMALL_ICON);
+        setIcon(IconNames.CREATE_IMAGE_SMALL_ICON);
 
         setLayout(new BorderLayout());
         add(imageViewer.getComponent());

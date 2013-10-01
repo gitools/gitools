@@ -193,7 +193,7 @@ public class IconNames {
 
     public static final ImageIcon INFO_ICON = new ImageIcon(IconNames.class.getResource("/img/info.png"));
 
-    public static final ImageIcon SNAPSHOT_LARGE_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot24.png"));
+    public static final ImageIcon CREATE_IMAGE_LARGE_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot24.png"));
 
-    public static final ImageIcon SNAPSHOT_SMALL_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot16.png"));
+    public static final ImageIcon CREATE_IMAGE_SMALL_ICON = new ImageIcon(IconNames.class.getResource("/img/snapshot16.png"));
 }

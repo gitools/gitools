@@ -40,13 +40,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
-public class HeatmapSnapshotAction extends BaseAction {
+public class HeatmapCreateImageAction extends BaseAction {
 
-    public HeatmapSnapshotAction() {
-        super("Snapshot heatmap");
+    public HeatmapCreateImageAction() {
+        super("Create Image");
 
-        setDesc("Snapshot heatmap");
-        setLargeIcon(IconNames.SNAPSHOT_LARGE_ICON);
+        setDesc("Create image");
+        setLargeIcon(IconNames.CREATE_IMAGE_LARGE_ICON);
     }
 
     @Override
@@ -70,9 +70,9 @@ public class HeatmapSnapshotAction extends BaseAction {
 
         final Heatmap heatmap = (Heatmap) model;
 
-        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a snapshot title", editor.getName() + " (snapshot)");
+        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a title", editor.getName() + " (image)");
 
-        // The user canceled the snapshot
+        // The user canceled the image createn
         if (title == null) {
             return;
         }
@@ -97,7 +97,7 @@ public class HeatmapSnapshotAction extends BaseAction {
                     g.fillRect(0, 0, heatmapSize.width, heatmapSize.height);
                     drawer.draw(g, new Rectangle(new Point(), heatmapSize), new Rectangle(new Point(), heatmapSize));
 
-                    final SnapshotViewer viewer = new SnapshotViewer(bi);
+                    final BitmapImageViewer viewer = new BitmapImageViewer(bi);
                     viewer.setName(title);
 
                     SwingUtilities.invokeLater(new Runnable() {
