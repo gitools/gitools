@@ -131,11 +131,18 @@ public class AppFrame extends JFrame {
             @Override
             public void run() {
                 try {
+
+                    String javaVersion = System.getProperty("java.version");
+                    if (javaVersion != null && javaVersion.endsWith("1.7.0_25")) {
+                        JOptionPane.showMessageDialog(AppFrame.get(), "You are using Java 7 build 25. This build has some important bugs, please update to the latest Java 7 build.");
+                    }
+
                     if (!isLatestGitools()) {
                         JOptionPane.showMessageDialog(AppFrame.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
                     }
-                } catch (Exception e) {
 
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -152,7 +159,7 @@ public class AppFrame extends JFrame {
             return true;
         }
 
-        URL latestUrl = new URL("http://www.gitools.org/download/latest.txt");
+        URL latestUrl = new URL("http://www.gitools.org/downloads/latest.txt");
 
         URLConnection con = latestUrl.openConnection();
         con.setConnectTimeout(5);
