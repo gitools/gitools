@@ -1,8 +1,7 @@
 
-================================================================
+=============================================================================
 Tutorial 4.2. Correlation of expression patterns in different tissues
-================================================================
-
+=============================================================================
 
 
 Table of Contents
@@ -25,7 +24,7 @@ Table of Contents
 
 
 Compare the expression profile of samples using correlations
--------------------------------------------------
+---------------------------------------------------------------
 
 
 
@@ -56,7 +55,7 @@ Give a name to the analysis. Select a directory where to safe it and click Finis
 
 
 Colour the columns and rows according to the class label of the tissue samples and order them
--------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 In the analysis details tab, click on “heatmap” under “Results” to view the heatmap of the results.
 

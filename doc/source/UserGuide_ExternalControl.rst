@@ -42,29 +42,33 @@ Command line
 
 With a terminal application that lets you execute command line you can create a new Gitools instance with command to execute upon startup.
 
- ::
- $ gitools load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv 
- ::
+
+.. code-block:: bash
+
+    $ gitools load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv
+
 
 HTTP
 .................................................
 
 By HTTP it is possible to send the command like this:
 
- ::
- $ http://localhost:50151/load?file =/home/user/matrix-file.tdm&cols =/home/user/col-annotations.tsv&rows =/home/user/row-annotations.tsv 
- ::
+.. code-block:: bash
+
+    $ http://localhost:50151/load?file=/home/user/matrix-file.tdm&cols=/home/user/col-annotations.tsv&rows=/home/user/row-annotations.tsv 
+
 
 Python
 .................................................
 
-Python or any other programming environment can make use of the  `Telnet <http://en.wikipedia.org/wiki/Telnet>`__  internet protocol. See below to understand how python can connect to Gitools and send it a command.
+Python or any other programming environment can make use of the  `Telnet <http://en.wikipedia.org/wiki/Telnet>`__ 
+internet protocol. See below to understand how python can connect to Gitools and send it a command.
 
- ::
- import socket
- gitools = socket .socket(socket .AF\_INET, socket .SOCK\_STREAM)
- gitools .connect(( ’localhost’, 50151))
- command = ”load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv”
- gitools .send( command )
- gitools .close()
- ::
+.. code-block:: python
+
+    import socket
+    gitools = socket .socket(socket .AF\_INET, socket .SOCK\_STREAM)
+    gitools .connect(( ’localhost’, 50151))
+    command = ”load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv”
+    gitools .send( command )
+    gitools .close()

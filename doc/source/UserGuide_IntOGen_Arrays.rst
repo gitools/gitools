@@ -17,7 +17,7 @@ Oncogenomic data comprise a collation of independent experiments that analyze di
 Currently there are two types of data that can be accessed from Gitools:
 
 Significance of genes being driver alterations for transcriptomic and/or genomic alterations.
--------------------------------------------------
+----------------------------------------------------------------------------------------------
 
 All experiments collated and shown in IntOGen arrays analyze alterations in cancer cells compared to normal cells (normal cells of the same tissue in the case of expression), in order to identify which are the main changes involved in the development of different cancer types. The first step in the IntOGen arrays analysis pipeline is to assess the significance of each alteration in each experiment independently, this results in a p-value per gene and experiment. In Gitools this data can be imported as matrices of p-values where each row represents a gene and each column an experiment and it is shown as Onco Experiments type.
 
@@ -48,7 +48,7 @@ The next step consists on filtering the data by topography, morphology, platform
 The total number of columns that will be downloaded will be shown in red. There are some restrictions regarding the maximum number of columns that can be downloaded at the same time (a message will appear in red warning on that), so filters have to be applied to reduce the number of columns.
 
 Modules (gene sets) of genes susceptible to be altered in cancer.
--------------------------------------------------
+------------------------------------------------------------------
 
 When identifying the significance of alterations at the level of genes, genes are assumed to be independent from each other. However, genes related to each other in some biological way might share similar alteration patterns. To be able to detect such tendencies in the oncogenomic data, the p-values of genes can be analyzed by enrichment analysis. There are quite a lot of modules already prepared for different biological aspects. Different modules (gene sets) are already prepared in IntOGen arrays representing sets of genes susceptible to be altered in different tumor types and experiments that can be used to analyze your data with an enrichment analysis.
 

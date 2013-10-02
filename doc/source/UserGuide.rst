@@ -36,9 +36,3 @@ Gitools User Guide
 
 
 
-    .. commented out
-    - :doc:`UserGuide_AnalysisEditor`
-    - :doc:`UserGuide_HeatmapEditor`
-    - :doc:`UserGuide_HeatmapSorting`
-    - :doc:`UserGuide_HeatmapFiltering`
-    - :doc:`UserGuide_HeatmapClustering`

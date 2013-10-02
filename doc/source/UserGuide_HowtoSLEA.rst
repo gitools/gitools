@@ -6,7 +6,7 @@ How to run SLEA in Gitools
 
 
 Sample Level Enrichment Analysis (SLEA) using Gitools
--------------------------------------------------
+------------------------------------------------------
 
 SLEA is a method to analyse the transcriptional status of gene modules (gene sets) per sample in a transcriptomic dataset. The results are presented in the form of interactive heatmaps which facilitates their interpretation. It can be used to identify tumor subtypes, correlate molecular features with clinical features and study relationship between modules.
 

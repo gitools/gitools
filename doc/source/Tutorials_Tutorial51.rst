@@ -4,28 +4,8 @@ Tutorial 5.1. Regulatory Modules enrichment analysis
 ================================================================
 
 
-
-Table of Contents
--------------------------------------------------
-
-`Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing <#N10037>`__  `#  <#N10037>`__
-
-`Files needed: dit <#N1003D>`__  `#  <#N1003D>`__
-
-`Perform enrichment analysis <#N10075>`__  `#  <#N10075>`__
-
-`Use annotations for cancer types <#N100A5>`__  `#  <#N100A5>`__
-
-`Explore the results <#N100B9>`__  `#  <#N100B9>`__
-
-
-
-
-
-
-
 Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing
--------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

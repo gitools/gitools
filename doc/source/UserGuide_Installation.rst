@@ -133,4 +133,20 @@ You can also specify 2 gigabytes like this:
 Source code
 -------------------------------------------------
 
-Go  `here <https://bg.upf.edu/forge/projects/gitools/wiki>`__  to know how to download the source code and compile it.
+The code is located at `Github <http://www.github.com/gitools/gitools>`_ .
+
+The last stable release is in the branch called ``master`` and the development code is in the branch ``develop``.
+
+Download from github or checkout via the command ``git@github.com:gitools/gitools.git`` and compile it with Maven 3.
+
+.. code-block:: bash
+
+    # Compile and package
+    mvn clean install assembly:assembly
+
+    # Extract it and run
+    cd target
+    unzip gitools-2.0.0-bin.zip
+    gitools-2.0.0/bin/gitools
+
+

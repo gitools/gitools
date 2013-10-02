@@ -159,6 +159,8 @@ html_static_path = ['docbuild_static']
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
 
+unused_docs = ["README"]
+
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
 #html_additional_pages = {}

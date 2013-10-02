@@ -2,30 +2,8 @@
 Tutorial 4.1. TFBS enrichment analysis
 ================================================================
 
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Identify regulatory modules which are differentially expressed in various human tissues <#N1003B>`__  `#  <#N1003B>`__
-
-`Files needed <#N1004F>`__  `#  <#N1004F>`__
-
-`Perform an enrichment analysis with Gitools <#N1009A>`__  `#  <#N1009A>`__
-
-`Use annotation colours for samples <#N100C9>`__  `#  <#N100C9>`__
-
-`Explore the results <#N100E6>`__  `#  <#N100E6>`__
-
-
-
-
-
-
-
 Identify regulatory modules which are differentially expressed in various human tissues
--------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 We will use the GeneAtlas dataset, which is a collection of expression data for 72 samples from different human normal tissues, plus 7 malignant tissues, from  `Su et al 2004 <http://www.ncbi.nlm.nih.gov/pmc/articles/PMC395923/?tool=pubmed>`__  and we will test if genes expressed in different tissues are enriched by genes with particular Transcription Factor Biding Sites (TFBS) in their promoters.
 

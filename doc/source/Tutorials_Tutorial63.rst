@@ -1,10 +1,6 @@
-================================================================
+=======================================================================
 Tutorial 6.3. Exploring the effect of genomic alterations on expression
-================================================================
-
-Michael P Schroeder
-
-
+=======================================================================
 
 
 Concept
@@ -62,7 +58,7 @@ Now we select the “ *Next >*\ ” button.
 
 
 The Group Comparison Wizard - Running the analysis
--------------------------------------------------
+---------------------------------------------------
 
 As a last step we can choose to set a title and hit the *Finish *\ Button. The analysis will be run and a new tab opens in Gitools showing the report of the analysis. 
 

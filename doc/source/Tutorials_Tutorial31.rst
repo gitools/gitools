@@ -3,27 +3,8 @@ Tutorial 3.1 Gene Ontology enrichment analysis
 ================================================================
 
 
-
-
-Table of Contents
--------------------------------------------------
-
-`Analyse the conservation patterns of genes involved in different biological processes <#N10037>`__  `#  <#N10037>`__
-
-`Files needed <#N10049>`__  `#  <#N10049>`__
-
-`Perform an enrichment analysis with Gitools <#N10067>`__  `#  <#N10067>`__
-
-`Explore the results <#N100A7>`__  `#  <#N100A7>`__
-
-
-
-
-
-
-
 Analyse the conservation patterns of genes involved in different biological processes
--------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
 We will use a data set containing the Conservation Score for all human genes to their closest ortholog in 15 other organisms and we will reproduce the results described in  `Lopez-Bigas et al 2008 <http://genomebiology.com/2008/9/2/R33>`__ .
 
