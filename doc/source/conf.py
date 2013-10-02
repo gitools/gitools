@@ -39,7 +39,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'README'
+master_doc = 'index'
 
 # General information about the project.
 project = 'Gitools'
@@ -209,7 +209,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('README', 'Gitools.tex', 'Gitools Documentation',
+  ('index', 'Gitools.tex', 'Gitools Documentation',
    'Biomedical Lab, Barcelona', 'manual'),
 ]
 
@@ -239,7 +239,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('README', 'gitools', 'Gitools Documentation',
+    ('index', 'gitools', 'Gitools Documentation',
      ['Biomedical Lab, Barcelona'], 1)
 ]
 
@@ -253,7 +253,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('README', 'Gitools', 'Gitools Documentation',
+  ('index', 'Gitools', 'Gitools Documentation',
    'Biomedical Lab, Barcelona', 'Gitools', 'One line description of project.',
    'Miscellaneous'),
 ]

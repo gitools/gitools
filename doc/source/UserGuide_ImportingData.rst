@@ -1,9 +1,10 @@
 ================================================================
-Importing and Loading Data
+Importing data to Gitools
 ================================================================
 
 .. contents:: 
 
+.. _importformats:
 
 Data import: file formats
 --------------------------------
@@ -33,24 +34,7 @@ Module (Gene Sets)              - ``.gmx, .gmz.gz`` (Gene matrix)
 Any of the presented formats can be compressed using gzip and recognized if the suffix .gz is appended at the end of the file name, so for example the file matrix.cdm could be compressed using gzip and renamed to matrix.cdm.gz and Gitools would be able to read it without problems.
 
 
-
-
-Gitools' file formats
-----------------------
-When saving a heatmap or an analysis, the format in which the heatap/analysis is saved will be a native Gitools format. Thus, these file types can be opened with Gitools only. Also note that Gitools can directly open and save in \*.zip format, so there is no need to extract the archive. Find a list of the native Gitools formats:
-
-==========================  =======================================
-Gitools data type           File extension 
-==========================  =======================================
-Heatmap                     ``.heatmaps, .heatmaps.zip``
-Enrichment Analysis         ``.enrichment, .enrichment.zip``
-Overlap Analyis             ``.overlapping, .overlapping.zip``     
-Group Comparison Analysis   ``.comparison, .comparison.zip``
-Correlation Analysis        ``.correlations, .correlations.zip``
-Combination Analysis        ``.combinations, .combinations.zip``
-==========================  =======================================
-
-
+.. _datatypes:
 
 Data types
 -------------------------------------------------
@@ -92,15 +76,17 @@ In Gitools they are used for different things, for providing extra attributes to
 
 Import data from external sources
 -------------------------------------------------
-Gitools has built-in data importers from different external data sources like *Biomart*, *IntOGen*, *Ensembl* or *KEGG*. See the  `importing data section <UserGuide_ExternalDataSources.rst>`__  for details.
+Gitools has built-in data importers from different external data sources like *Biomart*, *IntOGen*, *Ensembl* or *KEGG*. See the  :doc:`importing data section <UserGuide_ExternalDataSources>` for details.
 
-Gitools also disposes over commands for external control which can be used by other platforms to launch Gitools and launch their own data. See the  `external control of Gitools <UserGuide_ExternalControl.rst>`__  if you wish to use the available interfaces. 
+Gitools also disposes over commands for external control which can be used by other platforms to launch Gitools and launch their own data. See the  :doc:`external control of Gitools <UserGuide_ExternalControl>`  if you wish to use the available interfaces.
 
 
 Prepare your own data
 -------------------------------------------------
 
-The easiest way to create data is using for example a program like *Excel* or *OpenOffice* and then export to tabulated text file. See the  `How to sections <UserGuide_HowtoModuleFilesSpreadsheet.rst>`__  with spreadsheet editors.
+The easiest way to create data is using for example a program like *Excel* or *OpenOffice* and then export to tabulated text file. See the  :doc:`How to sections <UserGuide_HowtoModuleFilesSpreadsheet>`  with spreadsheet editors.
+
+.. _cdm:
 
 Continuous data matrix (CDM)
 ..................................................
@@ -131,6 +117,8 @@ When representing modules, rows correspond to genes or biological elements and e
    :width: 700px
    :align: center
    :alt: bdm file format 
+
+.. _tdm:
 
 Multi-value data matrix (TDM)
 ..................................................

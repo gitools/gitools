@@ -4,12 +4,18 @@ Gitools User Guide
 
 
 - :doc:`UserGuide_Installation`
-- :doc:`UserGuide_LoadingData`
-    - :doc:`UserGuide_ExternalDataSources`
-        - :doc:`UserGuide_IntOGen_Arrays`
-        - :doc:`UserGuide_KEGG`
-        - :doc:`UserGuide_GeneOntology`
-        - :doc:`UserGuide_Biomart`
+- :doc:`UserGuide_LoadSaveImportExport`
+    - :doc:`UserGuide_GitoolsHeatmapsFormat`
+    - :doc:`UserGuide_ImportingData`
+        - :doc:`UserGuide_ExternalDataSources`
+            - :doc:`UserGuide_IntOGen_Arrays`
+            - :doc:`UserGuide_KEGG`
+            - :doc:`UserGuide_GeneOntology`
+            - :doc:`UserGuide_Biomart`
+    - :doc:`UserGuide_Export`
+        - :doc:`UserGuide_ExportHeatmapData`
+        - :doc:`UserGuide_ExportHeatmapImages`
+- :doc:`UserGuide_Visualization`
 - :doc:`UserGuide_RunningAnalysis`
     - :doc:`UserGuide_Enrichment`
     - :doc:`UserGuide_Correlations`
@@ -17,16 +23,7 @@ Gitools User Guide
     - :doc:`UserGuide_GroupComparison`
     - :doc:`UserGuide_Combinations`
     - :doc:`UserGuide_Oncodrive`
-- :doc:`UserGuide_Visualization`
-    - :doc:`UserGuide_AnalysisEditor`
-    - :doc:`UserGuide_HeatmapEditor`
-    - :doc:`UserGuide_HeatmapSorting`
-    - :doc:`UserGuide_HeatmapFiltering`
-    - :doc:`UserGuide_HeatmapClustering`
-- :doc:`UserGuide_ExportDataImagesAndReports`
-    - :doc:`UserGuide_ExportHeatmapData`
-    - :doc:`UserGuide_ExportHeatmapImages`
-    - :doc:`UserGuide_ExportHeatmapReports`
+
 - :doc:`UserGuide_ExternalControl`
 - :doc:`UserGuide_Howto`
     - :doc:`UserGuide_HowtoMsigDB`
@@ -36,3 +33,12 @@ Gitools User Guide
     - :doc:`UserGuide_HowtoMultipleGeneAnnotations`
     - :doc:`UserGuide_HowtoSLEA`
     - :doc:`UserGuide_HowtoMultiDimensionalData`
+
+
+
+    .. commented out
+    - :doc:`UserGuide_AnalysisEditor`
+    - :doc:`UserGuide_HeatmapEditor`
+    - :doc:`UserGuide_HeatmapSorting`
+    - :doc:`UserGuide_HeatmapFiltering`
+    - :doc:`UserGuide_HeatmapClustering`
