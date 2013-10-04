@@ -28,7 +28,7 @@ See `this chapter <UserGuide_Overlaps.rst>`__  for details on how to perform ove
 
 - We will do an analysis to see how many genes that are significantly up-regulated in each of the experiments are also significantly up-regulated in the other experiments.
 
-- Select intogen-lung-upreg-plus-gse19188.cdm.gz as data file
+- Select file:`intogen-lung-upreg-plus-gse19188.cdm.gz` as data file
 
 - In Data Filtering Options choose “Transform to 1 (0 otherwise) cells with values less than 0.05”
 
@@ -41,7 +41,7 @@ See `this chapter <UserGuide_Overlaps.rst>`__  for details on how to perform ove
 Change labels of rows and columns
 -------------------------------------------------
 
-- In properties/columns, select the file “intogen-lung-upreg-columns.tsv.gz” and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
+- In properties/columns, select the file file:`intogen-lung-upreg-columns.tsv.gz` and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
 
 - Do the same for rows.
 
@@ -50,7 +50,7 @@ Change labels of rows and columns
 Change the value to be displayed in the heatmap
 -------------------------------------------------
 
-- In properties/cells, select the value “Row only proportions” to show in colors the proportion of genes in the experiment of the column that are up-regulated in the experiment of the row.
+- Select the value “Row only proportions” to show in colors the proportion of genes in the experiment of the column that are up-regulated in the experiment of the row.
 
 
 

@@ -17,9 +17,9 @@ Files needed
 Run Oncodrive analysis
 -------------------------------------------------
 
-See  `this chapter <UserGuide_Oncodrive.rst>`__  for details on how to run an Oncodrive analysis
+See  :doc:`UserGuide_Oncodrive`  for details on how to run an Oncodrive analysis
 
-- Select gse19188\_l2r-cancer-vs-normal.cdm.gz as data file
+- Select :file:`gse19188_l2r-cancer-vs-normal.cdm.gz` as data file
 
 - In filtering options choose “Transform to 1 (0 otherwise) cells with values greater than 1.297 (this is the optimal cutoff for this dataset obtained as explained in the supplementary material of  `IntOGen paper <http://www.nature.com/nmeth/journal/v7/n2/full/nmeth0210-92.html>`__ ).
 

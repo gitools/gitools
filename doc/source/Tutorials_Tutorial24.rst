@@ -32,13 +32,13 @@ Import p-value matrix from IntOGen for up-regulation in various independent lung
 Open heatmap and change scale and labels
 -------------------------------------------------
 
-- File>Open>Heatmap… and select the file intogen\_lung\_upreg\_plus\_gse19188.cdm.gz. 
+- ``File>Open>Heatmap…`` and select the file :file:`intogen\_lung\_upreg\_plus\_gse19188.cdm.gz`.
 
-- Change the color scale to p-value scale (in Properties/Cells/Scale). 
+- Change the color scale to p-value scale (in Settings).
 
-- Change the labels of columns: In properties/columns, select the file “intogen\_lung\_upreg-columns.tsv.gz” and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
+- Change the labels of columns: In Settings, select the file file:`intogen_lung_upreg-columns.tsv.gz` and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
 
-- Change the labels of rows: In properties/rows, select the file “intogen\_lung\_upreg-rows.tsv.gz” and choose “symbol” as label to show in the rows instead of the ensembl id of the gene.
+- Change the labels of rows: In properties/rows, select the file file:`intogen\_lung\_upreg-rows.tsv.gz` and choose “symbol” as label to show in the rows instead of the ensembl id of the gene.
 
 - Select all the rows and sort to have the most significantly up-regulated genes in the various lung cancer experiments on top.
 
