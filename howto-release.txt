@@ -18,7 +18,17 @@ find . -name pom.xml | awk '{ system("sed 0,/2.0.0-SNAPSHOT/s//2.0.0/ "$0)}' | g
 # Update all like this:
 find . -name pom.xml | awk '{ system("sed -i 0,/2.0.0-SNAPSHOT/s//2.0.0/ "$0)}'
 
-# Compile and package 
+# Go to Documentation folder.
+# Check in src/conf.py if the version numbers are up to date
+# Generate the documentation (which hopefully is up to date).
+# verify the documentation has the same version as Gitools
+cd doc
+gedit src/conf.py
+make html
+firefox html/index.html
+
+# Go back and Compile and package
+cd ..
 mvn clean install assembly:assembly
 
 # Test new release
@@ -36,6 +46,12 @@ scp target/gitools-2.0.0-bin.zip bgadmin@ankara:/usr/local/gitools/www/downloads
 
 # Update this file on the server:
 /usr/local/gitools/www/downloads/latest.txt
+
+# Deploy documentation and clean the directory
+cd doc
+scp -r doc/html/* bgadmin@ankara:/usr/local/gitools/www/documentation/
+make clean
+cd ..
 
 # Commit the changes
 git commit -a -m "Set version to 2.0.0"

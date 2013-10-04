@@ -49,6 +49,14 @@
         </fileSet>
 
         <fileSet>
+            <directory>doc/html</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>documentation</outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <directory>gitools-ui-app/src/main/resources/img</directory>
             <includes>
                 <include>LogoMini.png</include>
