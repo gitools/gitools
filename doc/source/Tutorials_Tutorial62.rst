@@ -16,14 +16,15 @@ In figure 2C of the paper we can see that four genes of the  `p53-signalling pa
 
 Watch the  `video tutorial <http://www.youtube.com/watch?v=rIvBN_iw6rs>`__  and/or read the instructions below
 
+.. image:: img/youtube-mutex.png
+    :target: http://www.youtube.com/watch?v=rIvBN_iw6rs
 
 
 How to use Gitools for this task
 -------------------------------------------------
 
-`**dit** <http://help.gitools.org/xwiki/bin/create/..%2F..%2F..%2F..%2F..%2Fbin%2Fcreate%2F..%252F..%252F..%252F..%252F.%2F%252Fbin%252Fedit%252FTutorials%252FTutorial41%253Fsection%253D2%3Fparent%3Dxwiki%253ATutorials/Tutorial42?parent=xwiki%3ATutorials.Tutorial62>`__
-
-Load the alteration matrix ( by * File -> Open -> Heatmap*) into Gitools. Select the *Alteration* as cell value to be shown in the heatmap (  `this is how you do it <UserGuide_HowtoMultiDimensionalData.rst>`__ ).
+Load the alteration matrix ( by * File -> Open -> Heatmap*) into Gitools. Select the *Alteration* as cell value to be
+shown in the heatmap (  :doc:`UserGuide_HowtoMultiDimensionalData` ).
 
 Select the *Linear two-sided color scale*, so you can distinguish loss from gain which are designated by the values -2 and 2.
 

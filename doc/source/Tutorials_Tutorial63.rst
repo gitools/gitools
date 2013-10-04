@@ -12,12 +12,13 @@ In the matrix we have loaded in step one of the case study we have homozygous lo
 
 Watch the  `video tutorial <http://www.youtube.com/watch?v=HPPHy5LNSBY>`__  and/or read the instructions below
 
-
+.. image:: img/youtube-ciseffect.png
+    :target: http://www.youtube.com/watch?v=HPPHy5LNSBY
 
 How to use Gitools for this task
 -------------------------------------------------
 
-Load the data as described in  `step 1 <Tutorials_Tutorial62.rst>`__   or filter the matrix for your genes in interest and you are ready.
+Load the data as described in :doc:`step 1 <Tutorials_Tutorial62>`  or filter the matrix for your genes in interest and you are ready.
 
 
 
@@ -28,15 +29,13 @@ To analyse which genes are affected by alterations in their locus we have to mak
 
 The first two things we have to select are:
 
-What data values we want to compare for the genes (rows)?
-
-Which sample groups (columns) do we want to compare?
+- What data values we want to compare for the genes (rows)?
+- Which sample groups (columns) do we want to compare?
 
 The answers are:
 
-We want to compare expression values (median-centered)
-
-We want to compare two groups: altered vs non-altered for each gene.
+- We want to compare expression values (median-centered)
+- We want to compare two groups: altered vs non-altered for each gene.
 
 Thus we will select for the first box: “ *expr* *median-centered*\ ” and “ *Group by value*\ ”. For the other boxes regarding the statistics, we can just leave the default selection and click “ *Next >*\ ”.
 
