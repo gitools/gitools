@@ -122,6 +122,14 @@ public abstract class AbstractTextMatrixFormat<R extends BaseMatrix> extends Abs
             final List<String> names = new ArrayList<String>();
             while ((fields = skipColumns(parser.readNext())) != null) {
                 if (popLabelsSet == null || popLabelsSet.contains(fields[0])) {
+                    int headerRowDiff = (int) fields.length - (numColumns + 1);
+                    if (headerRowDiff != 0) {
+                        String moreOrLess = headerRowDiff < 0 ? "less" : "more";
+                        String oneOrMore = Math.abs(headerRowDiff) > 1 ? " fields " : " field ";
+                        throw new DataFormatException("Row '<i>" + fields[0] + "</i>' has <i>"  + Math.abs(headerRowDiff) +
+                                                        oneOrMore + moreOrLess +"</i> than the header " +
+                                "                       (which has "+ header.length +" fields).");
+                    }
                     names.add(fields[0]);
                 }
             }
