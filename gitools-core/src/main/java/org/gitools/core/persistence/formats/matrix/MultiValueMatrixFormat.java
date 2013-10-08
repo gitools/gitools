@@ -162,7 +162,7 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
 
             String[] line = parser.readNext();
             if (line.length < 3) {
-                throw new DataFormatException("At least 3 columns expected.");
+                throw new DataFormatException("At least 3 fields expected on one line.");
             }
 
 
@@ -236,7 +236,11 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
             Map<String, Integer> rowMap = new HashMap<String, Integer>();
             List<Object[]> list = new ArrayList<Object[]>();
 
+            int linenb = 1;
+
             while ((line = parser.readNext()) != null) {
+
+                linenb ++;
 
                 if (progressMonitor.isCancelled()) {
                     throw new CancellationException();
@@ -271,6 +275,16 @@ public class MultiValueMatrixFormat extends AbstractMatrixFormat<ObjectMatrix> {
 
                     Object value;
                     if (sourceIdx != null) {
+
+                        int headerRowDiff = (int) line.length - (numAttributes + 2);
+                        if (headerRowDiff != 0) {
+                            String moreOrLess = headerRowDiff < 0 ? "less" : "more";
+                            String oneOrMore = Math.abs(headerRowDiff) > 1 ? " fields " : " field ";
+                            throw new DataFormatException("Line <i>" + linenb + "</i> has <i>"  + Math.abs(headerRowDiff) +
+                                    oneOrMore + moreOrLess +"</i> than the header " +
+                                    "                       (which has "+ (numAttributes + 2) +" fields).");
+                        }
+
                         if (valueTranslators[i] != null) {
                             value = valueTranslators[i].stringToValue(line[sourceIdx + 2]);
                         } else {
