@@ -32,6 +32,7 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.ui.settings.Settings;
 import org.gitools.ui.sort.MutualExclusionSortPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
@@ -109,7 +110,17 @@ public class SortByMutualExclusionAction extends BaseAction {
                         break;
                 }
 
-                MatrixViewSorter.sortByMutualExclusion(hm, page.getPattern(), am, page.getValues(), page.isUseRegexChecked(), dim.equals(FilterDimension.ROWS), dim.equals(FilterDimension.COLUMNS), monitor);
+                MatrixViewSorter.sortByMutualExclusion(
+                        hm,
+                        page.getPattern(),
+                        am,
+                        page.getValues(),
+                        page.isUseRegexChecked(),
+                        dim.equals(FilterDimension.ROWS),
+                        dim.equals(FilterDimension.COLUMNS),
+                        monitor,
+                        Settings.getDefault().isShowMutualExclusionProgress()
+                );
 
                 monitor.end();
             }

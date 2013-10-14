@@ -106,6 +106,7 @@ public class Settings {
     private boolean showOverlapExamplePage = true;
     private boolean showCombinationExamplePage = true;
     private boolean showTipsAtStartup = true;
+    private boolean showMutualExclusionProgress = false;
 
 
     // Port parameters
@@ -329,5 +330,13 @@ public class Settings {
 
     public void setEditorTabLength(int editorTabLength) {
         this.editorTabLength = editorTabLength;
+    }
+
+    public boolean isShowMutualExclusionProgress() {
+        return showMutualExclusionProgress;
+    }
+
+    public void setShowMutualExclusionProgress(boolean showMutualExclusionProgress) {
+        this.showMutualExclusionProgress = showMutualExclusionProgress;
     }
 }

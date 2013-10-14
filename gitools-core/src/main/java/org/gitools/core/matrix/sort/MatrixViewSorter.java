@@ -47,17 +47,17 @@ import java.util.concurrent.CancellationException;
 public abstract class MatrixViewSorter {
 
 
-    public static void sortByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor) {
+    public static void sortByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor, boolean showProgress) {
         if (applyToRows) {
-            sortRowsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor);
+            sortRowsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor, showProgress);
         }
 
         if (applyToColumns) {
-            sortColumnsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor);
+            sortColumnsByMutualExclusion(heatmap, pattern, am, values, regExChecked, monitor, showProgress);
         }
     }
 
-    private static void sortRowsByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor) {
+    private static void sortRowsByMutualExclusion(@NotNull final Heatmap heatmap, String pattern, IAnnotations am, @NotNull List<String> values, boolean regExChecked, IProgressMonitor monitor, boolean showProgress) {
 
         int[] selColumns = heatmap.getColumns().getSelected();
 
@@ -116,8 +116,11 @@ public abstract class MatrixViewSorter {
 
         HeatmapDimension sortDimension = heatmap.getColumns();
         PropertyChangeListener[] listeners = sortDimension.getPropertyChangeListeners();
-        for (PropertyChangeListener listener : listeners) {
-            sortDimension.removePropertyChangeListener(listener);
+
+        if (!showProgress) {
+            for (PropertyChangeListener listener : listeners) {
+                sortDimension.removePropertyChangeListener(listener);
+            }
         }
 
         IProgressMonitor nullProgress = new NullProgressMonitor();
@@ -133,8 +136,10 @@ public abstract class MatrixViewSorter {
             sortByValue(heatmap, sortDimension, null, heatmap.getRows(), exclusiveRow, criteriaArray, nullProgress);
         }
 
-        for (PropertyChangeListener listener : listeners) {
-            sortDimension.addPropertyChangeListener(listener);
+        if (!showProgress) {
+            for (PropertyChangeListener listener : listeners) {
+                sortDimension.addPropertyChangeListener(listener);
+            }
         }
 
         // Force to fire the events
@@ -142,7 +147,7 @@ public abstract class MatrixViewSorter {
 
     }
 
-    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, IAnnotations am, List<String> values, boolean regExChecked, IProgressMonitor monitor) {
+    private static void sortColumnsByMutualExclusion(IMatrixView matrixView, String pattern, IAnnotations am, List<String> values, boolean regExChecked, IProgressMonitor monitor, boolean showProgress) {
         throw new UnsupportedOperationException("Mutually exclusive sorting for columns is not yet implemented");
     }
 
