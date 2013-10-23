@@ -108,4 +108,17 @@ public class CommonResult implements Serializable {
     public void setCorrTwoTailPvalue(double corrTwoTailPvalue) {
         this.corrTwoTailPvalue = corrTwoTailPvalue;
     }
+
+    @Override
+    public String toString() {
+        return "CommonResult{" +
+                "N=" + N +
+                ", leftPvalue=" + leftPvalue +
+                ", rightPvalue=" + rightPvalue +
+                ", twoTailPvalue=" + twoTailPvalue +
+                ", corrLeftPvalue=" + corrLeftPvalue +
+                ", corrRightPvalue=" + corrRightPvalue +
+                ", corrTwoTailPvalue=" + corrTwoTailPvalue +
+                '}';
+    }
 }
