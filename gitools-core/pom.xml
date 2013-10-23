@@ -40,8 +40,8 @@
         </dependency>
 
         <dependency>
-            <groupId>jsc</groupId>
-            <artifactId>jsc</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
         </dependency>
 
         <dependency>

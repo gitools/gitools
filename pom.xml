@@ -194,9 +194,9 @@
             </dependency>
 
             <dependency>
-                <groupId>jsc</groupId>
-                <artifactId>jsc</artifactId>
-                <version>20050805</version>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math3</artifactId>
+                <version>3.2</version>
             </dependency>
 
             <dependency>
