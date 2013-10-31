@@ -28,7 +28,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
@@ -100,7 +100,7 @@ public class CombinationsAction extends BaseAction {
 
         File columnSetsFile = wizard.getColumnSetsPage().getFile();
         String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-        IResourceFormat columnSetsFormat = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getFormat(ModuleMap.class) : null;
+        IResourceFormat columnSetsFormat = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getFormat(IModuleMap.class) : null;
 
         final CombinationCommand cmd = new CombinationCommand(analysis, null, null, columnSetsFormat, columnSetsPath, null, null);
         cmd.setStoreAnalysis(false);

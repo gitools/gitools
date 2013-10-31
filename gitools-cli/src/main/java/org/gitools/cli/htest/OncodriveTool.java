@@ -24,7 +24,7 @@ package org.gitools.cli.htest;
 import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.core.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
@@ -94,7 +94,7 @@ public class OncodriveTool extends HtestTool {
 
         IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
-        IResourceFormat setsMime = getResourceFormat(args.setsFormat, args.setsFile, ModuleMap.class);
+        IResourceFormat setsMime = getResourceFormat(args.setsFormat, args.setsFile, IModuleMap.class);
 
         OncodriveCommand cmd = new OncodriveCommand(analysis, dataMime, args.dataFile, args.valueIndex, args.populationFile, populationDefaultValue, setsMime, args.setsFile, args.workdir, args.analysisName + "." + OncodriveAnalysisFormat.EXTENSION);
 

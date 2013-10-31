@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model;
 
-public interface IMatrixDimension {
+public interface IMatrixDimension extends Iterable<String> {
 
     /**
      * Gets the dimension identifier.

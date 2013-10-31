@@ -44,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class OncodriveAnalysisWizard extends AbstractWizard {
 
@@ -127,11 +126,10 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, props, monitor);
+                            final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override

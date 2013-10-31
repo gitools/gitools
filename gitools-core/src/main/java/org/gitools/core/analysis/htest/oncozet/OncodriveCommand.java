@@ -23,25 +23,19 @@ package org.gitools.core.analysis.htest.oncozet;
 
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestCommand;
-import org.gitools.core.datafilters.ValueTranslator;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.GeneSet;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.core.persistence.*;
+import org.gitools.core.model.IModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
-import org.gitools.core.persistence.formats.matrix.AbstractCdmMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.AbstractMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
-import org.gitools.core.persistence.formats.modulemap.AbstractModuleMapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 public class OncodriveCommand extends HtestCommand {
 
@@ -86,8 +80,12 @@ public class OncodriveCommand extends HtestCommand {
 
     private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, @Nullable String modulesFileName, @NotNull OncodriveAnalysis analysis, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        // Load background population
+        ResourceReference<IMatrix> dataMatrixRef = new ResourceReference<IMatrix>( new UrlResourceLocator(new File(dataFileName)), dataFormat);
+        IMatrix dataMatrix = dataMatrixRef.load(progressMonitor);
 
+        //TODO
+        /*
+         // Load background population
         String[] populationLabels = null;
 
         if (populationFileName != null) {
@@ -98,9 +96,6 @@ public class OncodriveCommand extends HtestCommand {
             populationLabels = popLabels.toArray(new String[popLabels.size()]);
         }
 
-        // Load data
-
-        IResourceLocator dataLocator = new UrlResourceLocator(new File(dataFileName));
         Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
         valueTranslators.put(0, createValueTranslator(analysis.isBinaryCutoffEnabled(), analysis.getBinaryCutoffCmp(), analysis.getBinaryCutoffValue()));
 
@@ -112,28 +107,18 @@ public class OncodriveCommand extends HtestCommand {
             dataProps.put(AbstractCdmMatrixFormat.POPULATION_LABELS, populationLabels);
             dataProps.put(AbstractCdmMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
-
-        ResourceReference<IMatrix> dataMatrix = new ResourceReference<IMatrix>(dataLocator, dataFormat);
-        dataMatrix.setProperties(dataProps);
-        dataMatrix.load(progressMonitor);
-        analysis.setData(new ResourceReference<IMatrix>("data", dataMatrix.get()));
+        */
+        analysis.setData(new ResourceReference<>("data", dataMatrix));
 
         // Load modules
-
         if (modulesFileName != null) {
-            IResourceLocator modulesLocator = new UrlResourceLocator(new File(modulesFileName));
 
-            Properties modProps = new Properties();
-            modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-            modProps.put(AbstractModuleMapFormat.ITEM_NAMES, getItemName(dataMatrix.get().getColumns()));
-            modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
-            modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
+            ResourceReference<IModuleMap> moduleMapRef = new ResourceReference<IModuleMap>(new UrlResourceLocator(new File(modulesFileName)), modulesFormat);
+            IModuleMap moduleMap = moduleMapRef.load(progressMonitor);
+            moduleMap = ModuleMapUtils.filterByItems( moduleMap, dataMatrix.getColumns() );
+            moduleMap = ModuleMapUtils.filterByModuleSize( moduleMap, analysis.getMinModuleSize(), analysis.getMaxModuleSize() );
 
-            ResourceReference<ModuleMap> moduleMap = new ResourceReference<ModuleMap>(modulesLocator, modulesFormat);
-            moduleMap.setProperties(modProps);
-            moduleMap.load(progressMonitor);
-
-            analysis.setModuleMap(new ResourceReference<>("modules", moduleMap.get()));
+            analysis.setModuleMap(new ResourceReference<>("modules", moduleMap));
         }
     }
 

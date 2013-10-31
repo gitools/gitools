@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.FileFormats;
@@ -239,7 +239,7 @@ public class ModulesPage extends AbstractWizardPage {
     }
 
     public IResourceFormat getFileResourceFormat() {
-        return ((FileFormat) fileFormatCb.getSelectedItem()).getFormat(ModuleMap.class);
+        return ((FileFormat) fileFormatCb.getSelectedItem()).getFormat(IModuleMap.class);
     }
 
     @Nullable

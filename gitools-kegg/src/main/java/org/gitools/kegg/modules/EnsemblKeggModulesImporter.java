@@ -31,13 +31,14 @@ import org.gitools.biomart.settings.BiomartSource;
 import org.gitools.biomart.settings.BiomartSourceManager;
 import org.gitools.core.idmapper.MappingData;
 import org.gitools.core.idmapper.MappingEngine;
+import org.gitools.core.model.ArrayModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.kegg.idmapper.AllIds;
 import org.gitools.kegg.idmapper.KeggGenesMapper;
 import org.gitools.kegg.idmapper.KeggPathwaysMapper;
 import org.gitools.kegg.service.KeggService;
 import org.gitools.kegg.service.domain.KeggOrganism;
 import org.gitools.kegg.service.domain.KeggPathway;
-import org.gitools.core.model.ModuleMap;
 import org.gitools.core.modules.importer.*;
 import org.gitools.obo.OBOEvent;
 import org.gitools.obo.OBOEventTypes;
@@ -438,8 +439,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
     // Import
 
     @Nullable
-    public ModuleMap importMap(@NotNull IProgressMonitor monitor) throws ModulesImporterException {
-        ModuleMap mmap = null;
+    public IModuleMap importMap(@NotNull IProgressMonitor monitor) throws ModulesImporterException {
 
         MappingEngine mapping = new MappingEngine();
 
@@ -573,19 +573,17 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                     tree = retrieveGoTree(monitor);
                     data = plainGoData(data, tree, monitor);
                 } else {
-                    tree = new HashMap<String, Set<String>>();
+                    tree = new HashMap<>();
                 }
 
-                mmap = new ModuleMap(data.getMap(), modDesc, tree);
+                return new ArrayModuleMap(data.getMap(), modDesc, tree);
 
-                //if (plainGo)
-                //mmap = mmap.plain();
             }
         } catch (Exception ex) {
             throw new ModulesImporterException(ex);
         }
 
-        return mmap;
+        return null;
     }
 
 
@@ -753,28 +751,12 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
         monitor.end();
 
-		/*System.out.println();
-        for (String key : tree.keySet()) {
-		System.out.print(key + " --> ");
-		for (String v : tree.get(key))
-		System.out.print(v + ", ");
-		System.out.println();
-		}*/
-
         return tree;
     }
 
     @NotNull
     private MappingData plainGoData(@NotNull MappingData data, @NotNull Map<String, Set<String>> tree, @NotNull IProgressMonitor monitor) throws IOException {
         monitor.begin("Plaining Gene Ontology hierarchy ...", 1);
-
-		/*Map<String, Set<String>> m = data.getMap();
-        for (String key : m.keySet()) {
-			System.out.print(key + " --> ");
-			for (String v : m.get(key))
-				System.out.print(v + ", ");
-			System.out.println();
-		}*/
 
         MappingData plainData = new MappingData(data.getSrcNode().getId(), data.getDstNode().getId());
 

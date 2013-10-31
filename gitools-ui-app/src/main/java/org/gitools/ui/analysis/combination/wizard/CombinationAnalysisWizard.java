@@ -23,8 +23,8 @@ package org.gitools.ui.analysis.combination.wizard;
 
 
 import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.formats.FileFormat;
@@ -53,7 +53,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
 
@@ -156,7 +155,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
                         try {
                             dataFile = dataPage.getFile();
 
-                            IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
+                            IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IMatrix.class);
                             if (dataFormat instanceof TdmMatrixFormat) {
                                 attributes = TdmMatrixFormat.readHeader(dataFile);
                             } else if (dataFormat instanceof CmatrixMatrixFormat){
@@ -193,9 +192,9 @@ public class CombinationAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
+
                         try {
-                            final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, props, monitor);
+                            final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override

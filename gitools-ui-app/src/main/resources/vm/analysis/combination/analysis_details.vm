@@ -52,7 +52,6 @@
 			<table class="attr_table">
 				<tr><td class="name"><div>File</div></td><td>$dataFile</td></tr>
 				<tr><td class="name"><div>Size attribute</div></td><td>$sizeAttr</td></tr>
-				<tr><td class="name"><div>Pvalue attribute</div></td><td>$pvalueAttr</td></tr>
 			</table>
 
 			<div class="button_bar">

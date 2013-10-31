@@ -23,7 +23,7 @@ package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceManager;
@@ -74,7 +74,7 @@ public class ImportKeggModulesAction extends BaseAction {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
                 try {
-                    ModuleMap mmap = importer.importMap(monitor);
+                    IModuleMap mmap = importer.importMap(monitor);
                     if (!monitor.isCancelled()) {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();

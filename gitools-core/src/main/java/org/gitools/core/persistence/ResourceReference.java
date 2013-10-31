@@ -124,13 +124,14 @@ public class ResourceReference<R extends IResource> {
         resource = onAfterUnload();
     }
 
-    public final void load(IProgressMonitor progressMonitor) throws PersistenceException {
+    public final R load(IProgressMonitor progressMonitor) throws PersistenceException {
 
         resource = onBeforeLoad(resource);
         IResource loadedResource = PersistenceManager.get().load(locator, resourceFormat, progressMonitor);
         resource = onAfterLoad(loadedResource);
         loaded = true;
 
+        return resource;
     }
 
     R onBeforeLoad(R resource) {

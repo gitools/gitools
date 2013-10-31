@@ -151,7 +151,7 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
                 for (int j = 0; j < numCols; j++) {
                     pw.print('\t');
-                    pw.print(DoubleTranslator.get().valueToString((Double) matrix.getValue(i, j, 0)));
+                    pw.print(DoubleTranslator.get().valueToString(MatrixUtils.doubleValue(matrix.getValue(i, j, 0))));
                 }
 
                 pw.print('\n');

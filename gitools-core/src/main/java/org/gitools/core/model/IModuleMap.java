@@ -19,19 +19,41 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.matrix.model.matrix.element;
+package org.gitools.core.model;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.core.persistence.IResource;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.Collection;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface AttributeDef {
+public interface IModuleMap extends IResource {
 
-    @NotNull String id();
+    Collection<String> getModules();
 
-    @NotNull String name();
+    Collection<String> getItems();
 
-    @NotNull String description();
+    Collection<String> getMappingItems(String module);
+
+    @Deprecated
+    String[] getModuleNames();
+
+    @Deprecated
+    int getModuleCount();
+
+    @Deprecated
+    String getModuleName(int index);
+
+    @Deprecated
+    String getModuleDescription(int index);
+
+    @Deprecated
+    String[] getItemNames();
+
+    @Deprecated
+    String getItemName(int index);
+
+    @Deprecated
+    int[] getItemIndices(int moduleIndex);
+
+    @Deprecated
+    int[] getItemIndices(String modName);
 }

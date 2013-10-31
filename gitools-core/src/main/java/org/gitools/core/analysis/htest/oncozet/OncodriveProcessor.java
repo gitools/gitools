@@ -27,9 +27,10 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.model.HashModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.mtc.MTCFactory;
@@ -40,6 +41,7 @@ import org.gitools.core.threads.ThreadManager;
 import org.gitools.core.threads.ThreadQueue;
 import org.gitools.core.threads.ThreadSlot;
 import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -77,18 +79,15 @@ public class OncodriveProcessor extends HtestProcessor {
 
         IMatrix dataMatrix = analysis.getData().get();
 
-        String[] labels = new String[dataMatrix.getColumns().size()];
-        for (int i = 0; i < labels.length; i++)
-            labels[i] = dataMatrix.getColumns().getLabel(i);
-
-        ModuleMap csmap = analysis.getModuleMap().get();
+        IModuleMap csmap = analysis.getModuleMap().get();
         if (csmap != null) {
-            csmap = csmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+            csmap = ModuleMapUtils.filterByItems( csmap, dataMatrix.getColumns() );
+            csmap = ModuleMapUtils.filterByModuleSize( csmap, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
         } else {
-            csmap = new ModuleMap("All data columns", labels);
+            csmap = new HashModuleMap().addMapping("All data columns", dataMatrix.getColumns() );
         }
 
-        analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", csmap));
+        analysis.setModuleMap(new ResourceReference<>("modules", csmap));
 
         final int numRows = dataMatrix.getRows().size();
         String[] rowLabels = new String[numRows];
@@ -97,8 +96,6 @@ public class OncodriveProcessor extends HtestProcessor {
 
         String[] csetLabels = new String[csmap.getModuleNames().length];
         System.arraycopy(csmap.getModuleNames(), 0, csetLabels, 0, csmap.getModuleNames().length);
-
-        int[][] moduleColumnIndices = csmap.getAllItemIndices();
 
         final int numCsets = csetLabels.length;
 
@@ -131,7 +128,7 @@ public class OncodriveProcessor extends HtestProcessor {
 
             final String csetName = csetLabels[csetIndex];
 
-            final int[] columnIndices = moduleColumnIndices[csetIndex];
+            final int[] columnIndices = csmap.getItemIndices(csetIndex);
 
             final IProgressMonitor condMonitor = monitor.subtask();
 
@@ -210,8 +207,6 @@ public class OncodriveProcessor extends HtestProcessor {
 
         ThreadManager.shutdown(monitor);
 
-		/* Multiple test correction */
-
         MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
         multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
@@ -219,7 +214,7 @@ public class OncodriveProcessor extends HtestProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
         monitor.end();
     }

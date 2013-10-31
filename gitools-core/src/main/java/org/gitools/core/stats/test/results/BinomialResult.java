@@ -21,7 +21,7 @@
  */
 package org.gitools.core.stats.test.results;
 
-import org.gitools.core.matrix.model.matrix.element.AttributeDef;
+import org.gitools.core.matrix.model.matrix.element.LayerDef;
 
 public class BinomialResult extends CommonResult {
 
@@ -56,7 +56,7 @@ public class BinomialResult extends CommonResult {
     /**
      * @noinspection UnusedDeclaration
      */
-    @AttributeDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
+    @LayerDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
     public int getObserved() {
         return observed;
     }
@@ -65,7 +65,7 @@ public class BinomialResult extends CommonResult {
         this.observed = observed;
     }
 
-    @AttributeDef(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
+    @LayerDef(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
     public double getExpectedMean() {
         return expectedMean;
     }
@@ -74,7 +74,7 @@ public class BinomialResult extends CommonResult {
         this.expectedMean = expectedMean;
     }
 
-    @AttributeDef(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
+    @LayerDef(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
     public double getExpectedStdev() {
         return expectedStdev;
     }
@@ -83,7 +83,7 @@ public class BinomialResult extends CommonResult {
         this.expectedStdev = expectedStdev;
     }
 
-    @AttributeDef(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
+    @LayerDef(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
     public Distribution getDistribution() {
         return distribution;
     }
@@ -92,7 +92,7 @@ public class BinomialResult extends CommonResult {
         this.distribution = distribution;
     }
 
-    @AttributeDef(id = "probability", name = "Probability", description = "Population probability of a positive event")
+    @LayerDef(id = "probability", name = "Probability", description = "Population probability of a positive event")
     public double getProbability() {
         return probability;
     }

@@ -22,6 +22,7 @@
 package org.gitools.core.persistence.formats.matrix;
 
 import org.apache.commons.io.IOUtils;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressDimension;
 import org.gitools.core.matrix.model.compressmatrix.CompressMatrix;
@@ -37,12 +38,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-public class CmatrixMatrixFormat extends AbstractResourceFormat<CompressMatrix> {
+public class CmatrixMatrixFormat extends AbstractResourceFormat<IMatrix> {
 
     public static final String EXTENSION = "cmatrix";
 
     public CmatrixMatrixFormat() {
-        super(EXTENSION, CompressMatrix.class);
+        super(EXTENSION, IMatrix.class);
     }
 
     @Override
@@ -89,7 +90,13 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<CompressMatrix> 
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, CompressMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void writeResource(IResourceLocator resourceLocator, IMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        if (!(resource instanceof CompressMatrix)) {
+            throw new UnsupportedOperationException("It is not possible to convert into a compress matrix");
+        }
+
+        CompressMatrix matrix = (CompressMatrix) resource;
 
         try {
 
@@ -99,17 +106,17 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<CompressMatrix> 
             out.writeInt(0);
 
             progressMonitor.begin("Writing dictionary...", 1);
-            byte[] dictionary = resource.getDictionary();
+            byte[] dictionary = matrix.getDictionary();
             out.writeInt(dictionary.length);
             out.write(dictionary);
 
             progressMonitor.begin("Writing columns...", 1);
-            byte[] buffer = AbstractCompressor.stringToByteArray(resource.getColumns().getLabels());
+            byte[] buffer = AbstractCompressor.stringToByteArray(matrix.getColumns().getLabels());
             out.writeInt(buffer.length);
             out.write(buffer);
 
             progressMonitor.begin("Writing rows...", 1);
-            buffer = AbstractCompressor.stringToByteArray(resource.getRows().getLabels());
+            buffer = AbstractCompressor.stringToByteArray(matrix.getRows().getLabels());
             out.writeInt(buffer.length);
             out.write(buffer);
 
@@ -123,7 +130,7 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<CompressMatrix> 
             out.write(buffer);
 
 
-            Map<Integer, CompressRow> compressRowMap = resource.getCompressRows();
+            Map<Integer, CompressRow> compressRowMap = matrix.getCompressRows();
             progressMonitor.begin("Writing values...", compressRowMap.size());
             for (Map.Entry<Integer, CompressRow> value : compressRowMap.entrySet()) {
                 progressMonitor.worked(1);

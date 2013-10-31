@@ -43,7 +43,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class EnrichmentAnalysisWizard extends AbstractWizard {
 
@@ -123,11 +122,10 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final EnrichmentAnalysis a = PersistenceManager.get().load(analysisFile, EnrichmentAnalysis.class, props, monitor);
+                            final EnrichmentAnalysis a = PersistenceManager.get().load(analysisFile, EnrichmentAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override

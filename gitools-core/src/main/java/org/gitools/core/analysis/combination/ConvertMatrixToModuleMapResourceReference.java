@@ -21,9 +21,9 @@
  */
 package org.gitools.core.analysis.combination;
 
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResource;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
@@ -31,7 +31,7 @@ import org.gitools.core.persistence.ResourceReference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConvertMatrixToModuleMapResourceReference extends ResourceReference<ModuleMap> {
+public class ConvertMatrixToModuleMapResourceReference extends ResourceReference<IModuleMap> {
 
     public ConvertMatrixToModuleMapResourceReference(IResourceLocator locator, IResourceFormat resourceFormat) {
         super(locator, resourceFormat);
@@ -39,13 +39,13 @@ public class ConvertMatrixToModuleMapResourceReference extends ResourceReference
 
     @NotNull
     @Override
-    protected ModuleMap onAfterLoad(@Nullable IResource resource) {
+    protected IModuleMap onAfterLoad(@Nullable IResource resource) {
 
         if (resource != null && resource instanceof IMatrix) {
             return MatrixUtils.matrixToModuleMap((IMatrix) resource);
         }
 
-        return (ModuleMap) resource;
+        return (IModuleMap) resource;
     }
 
 }

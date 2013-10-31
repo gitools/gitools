@@ -46,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 /**
  * @noinspection ALL
@@ -123,11 +122,11 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
+
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final CorrelationAnalysis a = PersistenceManager.get().load(analysisFile, CorrelationAnalysis.class, props, monitor);
+                            final CorrelationAnalysis a = PersistenceManager.get().load(analysisFile, CorrelationAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
