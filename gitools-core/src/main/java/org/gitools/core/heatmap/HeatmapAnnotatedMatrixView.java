@@ -93,4 +93,5 @@ public class HeatmapAnnotatedMatrixView implements IMatrixView {
     public void detach() {
         hm.detach();
     }
+
 }

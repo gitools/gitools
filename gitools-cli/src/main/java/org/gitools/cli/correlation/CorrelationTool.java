@@ -26,7 +26,7 @@ import org.gitools.core.analysis.correlation.CorrelationCommand;
 import org.gitools.core.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.core.threads.ThreadManager;
@@ -122,7 +122,7 @@ public class CorrelationTool extends AnalysisTool {
         analysis.setTransposeData(args.applyToRows);
         analysis.setReplaceNanValue(args.replaceValue);
 
-        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
         CorrelationCommand cmd = new CorrelationCommand(analysis, dataFormat, args.dataFile, args.workdir, args.analysisName + "." + CorrelationAnalysisFormat.EXTENSION);
 

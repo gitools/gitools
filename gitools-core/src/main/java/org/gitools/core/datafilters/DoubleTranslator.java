@@ -29,6 +29,15 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
     private static final Logger log = LoggerFactory.getLogger(DoubleTranslator.class);
 
+    // Singleton pattern
+    private static final DoubleTranslator INSTANCE = new DoubleTranslator();
+    public static final DoubleTranslator get() {
+        return INSTANCE;
+    }
+
+    private DoubleTranslator() {
+    }
+
     @Nullable
     @Override
     public Double stringToValue(String str) {

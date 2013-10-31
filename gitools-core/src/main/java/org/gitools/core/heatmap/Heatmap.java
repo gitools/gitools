@@ -26,15 +26,15 @@ import org.gitools.core.matrix.MirrorDimension;
 import org.gitools.core.matrix.model.AbstractMatrix;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
-import org.gitools.core.model.decorator.impl.BinaryDecorator;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -206,7 +206,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
 
     @Deprecated
     private void particularInitialization(IMatrix matrix) {
-        if (matrix instanceof DoubleBinaryMatrix) {
+        /*if (matrix instanceof DoubleBinaryMatrix) {
             for (HeatmapLayer layer : getLayers()) {
                 BinaryDecorator decorator = new BinaryDecorator();
                 decorator.setCutoff(1.0);
@@ -219,7 +219,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         } else if (matrix instanceof DoubleMatrix) {
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
-        }
+        } */
     }
 
     private void applyDiagonal(int[] position) {

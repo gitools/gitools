@@ -19,21 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.matrix.model.matrix.element;
+package org.gitools.core.persistence.formats.matrix;
 
-import org.jetbrains.annotations.NotNull;
+public class GctMatrixFormat extends AbstractCdmMatrixFormat {
 
-public class ArrayElementFactory implements IElementFactory {
+    public static final String EXTENSION = "gct";
 
-    private final int length;
-
-    public ArrayElementFactory(int length) {
-        this.length = length;
+    public GctMatrixFormat() {
+        super(EXTENSION, 1, Integer.valueOf(1));
     }
 
-    @NotNull
-    @Override
-    public Object create() {
-        return new double[length];
-    }
 }

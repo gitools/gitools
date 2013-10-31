@@ -27,11 +27,10 @@ import org.gitools.core.persistence.formats.FileFormat;
 public class EnrichmentAnalysisFormat extends AbstractXmlFormat<EnrichmentAnalysis> {
 
     public static final String EXTENSION = "enrichment";
-    private static final Class<EnrichmentAnalysis> RESOURCE_CLASS = EnrichmentAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Enrichment analysis", EXTENSION, true, false, true);
 
     public EnrichmentAnalysisFormat() {
-        super(EXTENSION, RESOURCE_CLASS);
+        super(EXTENSION, EnrichmentAnalysis.class);
     }
 
 }

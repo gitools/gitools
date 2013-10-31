@@ -23,36 +23,31 @@ package org.gitools.core.matrix.model;
 
 import java.util.*;
 
-public class MatrixLayers implements IMatrixLayers<MatrixLayer> {
-    private List<MatrixLayer> descriptors;
-    private Map<String, Integer> idToIndex;
+public class MatrixLayers<T extends MatrixLayer> implements IMatrixLayers<T> {
 
-    public MatrixLayers(List<MatrixLayer> descriptors) {
-        this.descriptors = descriptors;
+    private List<T> layers = new ArrayList<>();
+    private Map<String, Integer> idToIndex = new HashMap<>();
 
-        init();
+    public MatrixLayers() {
     }
 
-    public MatrixLayers(Class<?> valueClass, String... headers) {
-        this.descriptors = new ArrayList<MatrixLayer>(headers.length);
-
-        for (String header : headers) {
-            this.descriptors.add(new MatrixLayer(header, valueClass));
+    public MatrixLayers(List<T> descriptors) {
+        for (T layer : descriptors) {
+            add(layer);
         }
-
-        init();
     }
+
 
     private void init() {
-        this.idToIndex = new HashMap<String, Integer>(descriptors.size());
-        for (int i = 0; i < descriptors.size(); i++) {
-            this.idToIndex.put(descriptors.get(i).getId(), i);
+        this.idToIndex = new HashMap<>(layers.size());
+        for (int i = 0; i < layers.size(); i++) {
+            this.idToIndex.put(layers.get(i).getId(), i);
         }
     }
 
     @Override
-    public MatrixLayer get(int layerIndex) {
-        return descriptors.get(layerIndex);
+    public T get(int layerIndex) {
+        return layers.get(layerIndex);
     }
 
     @Override
@@ -66,11 +61,16 @@ public class MatrixLayers implements IMatrixLayers<MatrixLayer> {
 
     @Override
     public int size() {
-        return descriptors.size();
+        return layers.size();
     }
 
     @Override
-    public Iterator<MatrixLayer> iterator() {
-        return descriptors.iterator();
+    public Iterator<T> iterator() {
+        return layers.iterator();
+    }
+
+    public void add(T matrixLayer) {
+        layers.add(matrixLayer);
+        idToIndex.put(matrixLayer.getId(), layers.indexOf(matrixLayer));
     }
 }

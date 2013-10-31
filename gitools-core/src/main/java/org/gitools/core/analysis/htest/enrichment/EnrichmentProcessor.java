@@ -24,15 +24,14 @@ package org.gitools.core.analysis.htest.enrichment;
 import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectMatrix1D;
 import cern.jet.math.Functions;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.ResourceReference;
@@ -49,7 +48,12 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class EnrichmentProcessor extends HtestProcessor {
 
@@ -113,27 +117,23 @@ public class EnrichmentProcessor extends HtestProcessor {
         mmap = mmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
 
         //DoubleMatrix2D data = null;
-        ObjectMatrix1D conditions = ObjectFactory1D.dense.make(dataMatrix.getColumns().size());
+        String[] conditions = new String[dataMatrix.getColumns().size()];
         for (int i = 0; i < numConditions; i++)
-            conditions.setQuick(i, dataMatrix.getColumns().getLabel(i));
+            conditions[i] = dataMatrix.getColumns().getLabel(i);
 
-        ObjectMatrix1D modules = ObjectFactory1D.dense.make(mmap.getModuleNames());
+        String[] modules = new String[mmap.getModuleNames().length];
+        System.arraycopy(mmap.getModuleNames(), 0, modules, 0, mmap.getModuleNames().length);
 
         int[][] moduleItemIndices = mmap.getAllItemIndices();
 
-        final int numModules = modules.size();
+        final int numModules = modules.length;
 
         monitor.begin("Running enrichment analysis...", numConditions);
 
         Test test = testFactory.create();
 
-        final ObjectMatrix resultsMatrix = new ObjectMatrix();
-
-        resultsMatrix.setColumns(conditions);
-        resultsMatrix.setRows(modules);
-        resultsMatrix.makeCells();
-
-        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(test.getResultClass()));
+        final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
+        final IMatrix resultsMatrix = new HashMatrix(modules, conditions, adapter.getMatrixLayers());
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -172,7 +172,7 @@ public class EnrichmentProcessor extends HtestProcessor {
 
             for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
 
-                final String moduleName = modules.getQuick(moduleIndex).toString();
+                final String moduleName = modules[moduleIndex];
                 final int[] itemIndices = moduleItemIndices[moduleIndex];
 
                 final RunSlot slot;
@@ -211,7 +211,8 @@ public class EnrichmentProcessor extends HtestProcessor {
                         }
 
                         try {
-                            resultsMatrix.setCell(moduleIdx, condIdx, result);
+                            adapter.setCell(resultsMatrix, moduleIdx, condIdx, result);
+
                         } catch (Throwable cause) {
                             cause.printStackTrace();
                         }
@@ -235,12 +236,12 @@ public class EnrichmentProcessor extends HtestProcessor {
 
         MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
+        multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(new ResourceReference<ObjectMatrix>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
 
         monitor.end();
     }

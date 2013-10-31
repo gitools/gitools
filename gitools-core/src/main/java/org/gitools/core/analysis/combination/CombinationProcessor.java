@@ -24,15 +24,15 @@ package org.gitools.core.analysis.combination;
 import cern.jet.stat.Probability;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -46,7 +46,7 @@ public class CombinationProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) throws AnalysisException {
 
         Date startTime = new Date();
 
@@ -75,7 +75,6 @@ public class CombinationProcessor implements AnalysisProcessor {
         analysis.setGroupsMap(new ResourceReference<>("modules", cmap));
 
         // Prepare results matrix
-        final ObjectMatrix results = new ObjectMatrix();
 
         String[] cclabels = cmap.getModuleNames();
         cclabels = Arrays.copyOf(cclabels, cclabels.length);
@@ -83,13 +82,11 @@ public class CombinationProcessor implements AnalysisProcessor {
         for (int i = 0; i < numRows; i++)
             rlabels[i] = data.getRows().getLabel(i);
 
-        results.setColumns(cclabels);
-        results.setRows(rlabels);
-        results.makeCells();
 
-        results.setObjectCellAdapter(new BeanElementAdapter(CombinationResult.class));
+        final ElementAdapter adapter = new BeanElementAdapter(CombinationResult.class);
+        final IMatrix results = new HashMatrix(rlabels, cclabels, adapter.getMatrixLayers());
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", results));
+        analysis.setResults(new ResourceReference<>("results", results));
 
         // Run combination
         int sizeIndex = -1;
@@ -151,7 +148,7 @@ public class CombinationProcessor implements AnalysisProcessor {
                 r.setZscore(zcomb);
                 r.setPvalue(pvalue);
 
-                results.setCell(ri, cmi, r);
+                adapter.setCell(results, ri, cmi, r);
 
                 monitor.worked(1);
             }

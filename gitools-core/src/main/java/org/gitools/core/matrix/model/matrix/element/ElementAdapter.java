@@ -21,30 +21,39 @@
  */
 package org.gitools.core.matrix.model.matrix.element;
 
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 
-import java.lang.reflect.Method;
+import java.io.Serializable;
 
-public class BeanElementProperty extends MatrixLayer {
+public abstract class ElementAdapter<T extends MatrixLayer> implements Serializable {
 
-    private static final long serialVersionUID = 1735870808859461498L;
+    private Class<?> elementClass;
 
-    private Method getterMethod;
-    private Method setterMethod;
+    private MatrixLayers<T> matrixLayers;
 
-    public BeanElementProperty(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod) {
-
-        super(id, valueClass, name, description);
-
-        this.getterMethod = getterMethod;
-        this.setterMethod = setterMethod;
+    protected ElementAdapter(Class<?> elementClass) {
+        this.elementClass = elementClass;
     }
 
-    public Method getGetterMethod() {
-        return getterMethod;
+    void setElementClass(Class<?> elementClass) {
+        this.elementClass = elementClass;
     }
 
-    public Method getSetterMethod() {
-        return setterMethod;
+    public Class<?> getElementClass() {
+        return elementClass;
     }
+
+    public final MatrixLayers<T> getMatrixLayers() {
+        return matrixLayers;
+    }
+
+    final void setMatrixLayers(MatrixLayers<T> matrixLayers) {
+        this.matrixLayers = matrixLayers;
+    }
+
+    public abstract void setCell(IMatrix resultsMatrix, int row, int column, Object result);
+
+    public abstract Object getCell(IMatrix resultsMatrix, int row, int column);
 }

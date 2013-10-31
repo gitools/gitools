@@ -23,20 +23,21 @@ package org.gitools.core.utils;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
-import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.*;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MatrixUtils {
@@ -44,14 +45,23 @@ public class MatrixUtils {
     private static final int MAX_UNIQUE = 30;
     public static final int MAXIMUM_ROWS_TO_SCAN = 2000;
 
+    public static String[] createLabelArray(IMatrixDimension dimension) {
+        String[] labels = new String[dimension.size()];
+
+        for (int i=0; i < dimension.size(); i++) {
+            labels[i] = dimension.getLabel(i);
+        }
+
+        return labels;
+    }
+
     public static interface DoubleCast {
-        @Nullable
         Double getDoubleValue(Object value);
     }
 
 
     @Deprecated // Better use createDoubleCast() when accessing multiple values
-    public static double doubleValue(@Nullable Object value) {
+    public static double doubleValue(Object value) {
         if (value == null) {
             return Double.NaN; //TODO null;
         }
@@ -70,53 +80,46 @@ public class MatrixUtils {
         return v;
     }
 
-    @Nullable
-    public static DoubleCast createDoubleCast(@NotNull Class cls) {
+    public static DoubleCast createDoubleCast(Class cls) {
         if (cls.equals(Double.class) || cls.equals(double.class)) {
             return new DoubleCast() {
-                @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value) {
+                public Double getDoubleValue(Object value) {
                     return value != null ? ((Double) value).doubleValue() : null;
                 }
             };
         } else if (cls.equals(Float.class) || cls.equals(float.class)) {
             return new DoubleCast() {
-                @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value) {
+                public Double getDoubleValue(Object value) {
                     return value != null ? ((Float) value).doubleValue() : null;
                 }
             };
         } else if (cls.equals(Integer.class) || cls.equals(int.class)) {
             return new DoubleCast() {
-                @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value) {
+                public Double getDoubleValue(Object value) {
                     return value != null ? ((Integer) value).doubleValue() : null;
                 }
             };
         } else if (cls.equals(Long.class) || cls.equals(long.class)) {
             return new DoubleCast() {
-                @Nullable
                 @Override
-                public Double getDoubleValue(@Nullable Object value) {
+                public Double getDoubleValue(Object value) {
                     return value != null ? ((Long) value).doubleValue() : null;
                 }
             };
         }
 
         return new DoubleCast() {
-            @Nullable
             @Override
-            public Double getDoubleValue(@Nullable Object value) {
+            public Double getDoubleValue(Object value) {
                 return value != null ? Double.NaN : null;
             }
         };
     }
 
-    @Nullable
-    public static IColorScale inferScale(@NotNull IMatrix data, int valueIndex) {
+    public static IColorScale inferScale(IMatrix data, int valueIndex) {
 
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
@@ -173,22 +176,20 @@ public class MatrixUtils {
         return -1;
     }
 
-    @NotNull
-    public static BaseMatrix moduleMapToMatrix(@NotNull ModuleMap mmap) {
-        DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
+    public static IMatrix moduleMapToMatrix(ModuleMap mmap) {
+
         String[] columns = mmap.getModuleNames();
         String[] rows = mmap.getItemNames();
-        matrix.setColumns(columns);
-        matrix.setRows(rows);
-        matrix.makeCells(rows.length, columns.length);
+
+        IMatrix matrix = new HashMatrix(rows, columns, new MatrixLayers(Arrays.asList(new MatrixLayer("value", double.class))));
+
         for (int col = 0; col < mmap.getModuleCount(); col++)
             for (int row : mmap.getItemIndices(col))
                 matrix.setValue(row, col, 0, 1.0);
         return matrix;
     }
 
-    @NotNull
-    public static ModuleMap matrixToModuleMap(@NotNull IMatrix matrix) {
+    public static ModuleMap matrixToModuleMap(IMatrix matrix) {
         String[] itemNames = new String[matrix.getRows().size()];
         for (int i = 0; i < matrix.getRows().size(); i++)
             itemNames[i] = matrix.getRows().getLabel(i);
@@ -221,16 +222,16 @@ public class MatrixUtils {
         return map;
     }
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, IProgressMonitor monitor) {
+    private static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension, IProgressMonitor monitor) {
         return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
-    public static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension) {
+    public static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension) {
         return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
 
-    private static double[] getUniquedValuesFromMatrix(@NotNull IMatrix data, int valueDimension, int maxUnique, @NotNull IProgressMonitor monitor) {
+    private static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension, int maxUnique, IProgressMonitor monitor) {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too many (50), it returns
         * an equally distributed array values from min to max*/
 

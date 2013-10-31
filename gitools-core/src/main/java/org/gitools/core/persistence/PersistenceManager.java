@@ -112,8 +112,8 @@ public class PersistenceManager implements Serializable {
     }
 
     @Deprecated
-    public <R extends IResource> R load(@NotNull File file, @NotNull Class<R> resourceClass, @NotNull Properties properties, IProgressMonitor progressMonitor) {
-        return load(new UrlResourceLocator(file), getFormat(file.getName(), resourceClass), properties, progressMonitor);
+    public <R extends IResource> R load(@NotNull File file, @NotNull Class<R> resourceClass, @NotNull IProgressMonitor progressMonitor) {
+        return load(new UrlResourceLocator(file), getFormat(file.getName(), resourceClass), progressMonitor);
     }
 
     public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull Class<R> resourceClass, IProgressMonitor progressMonitor) {
@@ -121,10 +121,6 @@ public class PersistenceManager implements Serializable {
     }
 
     public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException {
-        return load(resourceLocator, resourceFormat, new Properties(), progressMonitor);
-    }
-
-    public <R extends IResource> R load(@NotNull IResourceLocator resourceLocator, @NotNull IResourceFormat<R> resourceFormat, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Use cached locator if exists
         IResourceLocator filteredResourceLocator = CacheResourceManager.get().getCacheResourceLocator(resourceLocator);
@@ -134,7 +130,7 @@ public class PersistenceManager implements Serializable {
 
         // Configure the format
         if (resourceFormat.isConfigurable()) {
-            resourceFormat.configure(filteredResourceLocator, properties, progressMonitor);
+            resourceFormat.configure(filteredResourceLocator, progressMonitor);
         }
 
         // Build the resource

@@ -138,4 +138,21 @@ public class MatrixLayer extends Model implements IMatrixLayer {
         this.valueUrl = valueUrl;
         firePropertyChange(PROPERTY_VALUE_URL, old, valueUrl);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatrixLayer that = (MatrixLayer) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

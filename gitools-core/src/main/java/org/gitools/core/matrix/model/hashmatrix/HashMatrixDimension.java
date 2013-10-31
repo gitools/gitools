@@ -19,28 +19,42 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.matrix.model.matrix.element;
+package org.gitools.core.matrix.model.hashmatrix;
 
-import org.jetbrains.annotations.Nullable;
+import org.gitools.core.matrix.model.AbstractMatrixDimension;
 
-public class BeanElementFactory implements IElementFactory {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    private final Class<?> elementClass;
+public class HashMatrixDimension extends AbstractMatrixDimension {
 
-    public BeanElementFactory(Class<?> elementClass) {
-        this.elementClass = elementClass;
+    private List<String> labels;
+
+    public HashMatrixDimension() {
+        this.labels = new ArrayList<>();
     }
 
-    @Nullable
+    public HashMatrixDimension(String[] labels) {
+        this.labels = new ArrayList<>(Arrays.asList(labels));
+    }
+
     @Override
-    public Object create() {
-        Object object = null;
-        try {
-            object = elementClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return object;
+    public int size() {
+        return labels.size();
     }
 
+    @Override
+    public String getLabel(int index) {
+        return labels.get(index);
+    }
+
+    @Override
+    public int getIndex(String label) {
+        return labels.indexOf(label);
+    }
+
+    void addLabel(String label) {
+        labels.add(label);
+    }
 }

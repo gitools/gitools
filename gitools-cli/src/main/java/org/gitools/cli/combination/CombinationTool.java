@@ -21,11 +21,11 @@
  */
 package org.gitools.cli.combination;
 
-import org.gitools.core.analysis.combination.CombinationAnalysis;
-import org.gitools.core.analysis.combination.CombinationCommand;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.core.analysis.combination.CombinationCommand;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.FileFormat;
@@ -104,7 +104,7 @@ public class CombinationTool extends AnalysisTool {
         analysis.setSizeAttrName(args.sizeName);
         analysis.setPvalueAttrName(args.pvalueName);
 
-        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
         IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, ModuleMap.class);
 
         CombinationCommand cmd = new CombinationCommand(analysis, dataMime, args.dataFile, columnsMime, args.columnsFile, args.workdir, args.analysisName + "." + CombinationAnalysisFormat.EXTENSION);

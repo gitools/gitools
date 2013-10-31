@@ -27,7 +27,8 @@ import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.MTC;
@@ -62,20 +63,16 @@ public class GroupComparisonProcessor extends HtestProcessor {
 
         final int numRows = data.getRows().size();
 
-        // Prepare results matrix
-        final ObjectMatrix resultsMatrix = new ObjectMatrix();
-
         String[] columnLabels = new String[1];
         columnLabels[0] = analysis.getTest().getName();
         String[] rlabels = new String[numRows];
         for (int i = 0; i < numRows; i++)
             rlabels[i] = data.getRows().getLabel(i);
 
-        resultsMatrix.setColumns(columnLabels);
-        resultsMatrix.setRows(rlabels);
-        resultsMatrix.makeCells();
+        final ElementAdapter adapter = new BeanElementAdapter(GroupComparisonResult.class);
 
-        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(GroupComparisonResult.class));
+        // Prepare results matrix
+        final IMatrix resultsMatrix = new HashMatrix(rlabels, columnLabels, adapter.getMatrixLayers());
 
         monitor.begin("Running group comparison analysis ...", numRows);
 
@@ -114,7 +111,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
                 MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
                 GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
 
-                resultsMatrix.setCell(row, column, r);
+                adapter.setCell(resultsMatrix, row, column, r);
 
                 monitor.worked(1);
             }
@@ -127,7 +124,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
 		/* Multiple test correction */
         MTC mtc = analysis.getMtc();
 
-        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
+        multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

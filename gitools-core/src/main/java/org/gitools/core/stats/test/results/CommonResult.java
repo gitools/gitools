@@ -25,7 +25,7 @@ import org.gitools.core.matrix.model.matrix.element.AttributeDef;
 
 import java.io.Serializable;
 
-public class CommonResult implements Serializable {
+public abstract class CommonResult implements Serializable {
 
     private int N;
     private double leftPvalue;

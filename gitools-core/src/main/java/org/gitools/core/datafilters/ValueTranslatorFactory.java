@@ -31,7 +31,7 @@ public class ValueTranslatorFactory {
         ValueTranslator vt = null;
 
         if (double.class.equals(cls) || Double.class.equals(cls)) {
-            vt = new DoubleTranslator();
+            vt = DoubleTranslator.get();
         } else if (int.class.equals(cls) || Integer.class.equals(cls)) {
             vt = new IntegerTranslator();
         } else {

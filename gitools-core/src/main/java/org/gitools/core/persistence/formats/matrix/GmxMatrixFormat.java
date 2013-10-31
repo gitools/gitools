@@ -21,31 +21,34 @@
  */
 package org.gitools.core.persistence.formats.matrix;
 
-import cern.colt.matrix.ObjectFactory1D;
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileSuffixes;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
-public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
+public class GmxMatrixFormat extends AbstractMatrixFormat {
 
-    public GeneMatrixFormat() {
-        super(FileSuffixes.GENE_MATRIX, DoubleBinaryMatrix.class);
+    public static final String EXTENSION = "gmx";
+
+    public GmxMatrixFormat() {
+        super(EXTENSION);
     }
 
-    @NotNull
     @Override
-    protected DoubleBinaryMatrix readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
+    protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
-        DoubleBinaryMatrix matrix = new DoubleBinaryMatrix();
+        HashMatrix matrix = new HashMatrix();
 
         try {
 
@@ -53,77 +56,21 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
             // read column names
-            String[] columnNames = parser.readNext();
+            String[] columns = parser.readNext();
 
             // Discard descriptions
             parser.readNext();
 
             String[] fields;
-            // read file
-            Map<String, Integer> rowIndices = new HashMap<String, Integer>();
-
-            List<Set<Integer>> indices = new ArrayList<Set<Integer>>(columnNames.length);
-            for (int i = 0; i < columnNames.length; i++)
-                indices.add(new HashSet<Integer>());
-
             while ((fields = parser.readNext()) != null) {
 
-                if (fields.length > columnNames.length) {
+                if (fields.length > columns.length) {
                     throw new PersistenceException("Row with more columns than expected at line " + parser.getLineNumber());
                 }
 
                 for (int i = 0; i < fields.length; i++) {
-                    String name = fields[i];
-                    if (!name.isEmpty()) {
-                        Integer rowIndex = rowIndices.get(name);
-                        if (rowIndex == null) {
-                            rowIndex = rowIndices.size();
-                            rowIndices.put(name, rowIndex);
-                        }
-                        indices.get(i).add(rowIndex);
-                    }
+                    matrix.setValue(fields[i], columns[i], "value", 1.0);
                 }
-            }
-
-            // incorporate population labels
-
-            String[] populationLabels = getPopulationLabels();
-            if (populationLabels != null) {
-                for (String name : populationLabels) {
-                    Integer index = rowIndices.get(name);
-                    if (index == null) {
-                        rowIndices.put(name, rowIndices.size());
-                    }
-                }
-            }
-
-            int numRows = rowIndices.size();
-
-            matrix.makeCells(numRows, columnNames.length);
-
-            // set row names
-
-            matrix.setRows(ObjectFactory1D.dense.make(numRows));
-            for (Map.Entry<String, Integer> entry : rowIndices.entrySet())
-                matrix.setRow(entry.getValue(), entry.getKey());
-
-            // set column names
-
-            matrix.setColumns(columnNames);
-
-            // fill matrix with background value
-
-            double backgroundValue = getBackgroundValue();
-            for (int row = 0; row < numRows; row++)
-                for (int col = 0; col < columnNames.length; col++)
-                    matrix.setValue(row, col, 0, backgroundValue);
-
-            // set cell values
-
-            for (int col = 0; col < columnNames.length; col++) {
-                Set<Integer> colIndices = indices.get(col);
-                for (Integer index : colIndices)
-                    matrix.setValue(index, col, 0, 1.0);
             }
 
             in.close();
@@ -140,7 +87,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
 
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull DoubleBinaryMatrix matrix, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void writeResource(IResourceLocator resourceLocator, IMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
 
         try {
@@ -151,9 +98,9 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
             int numRows = matrix.getRows().size();
 
             // column labels
-            pw.append(matrix.getLabel(0));
+            pw.append(matrix.getColumns().getLabel(0));
             for (int col = 1; col < matrix.getColumns().size(); col++)
-                pw.append('\t').append(matrix.getLabel(col));
+                pw.append('\t').append(matrix.getColumns().getLabel(col));
             pw.println();
 
             // descriptions
@@ -180,7 +127,7 @@ public class GeneMatrixFormat extends AbstractMatrixFormat<DoubleBinaryMatrix> {
                             value = MatrixUtils.doubleValue(matrix.getValue(++row, col, 0));
 
                         if (value == 1.0) {
-                            line.append(matrix.internalRowLabel(row));
+                            line.append(matrix.getRows().getLabel(row));
                             validLine = true;
                         }
 

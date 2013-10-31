@@ -24,24 +24,33 @@ package org.gitools.core.persistence.formats.modulemap;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.zip.DataFormatException;
 
-public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
+public class IxmModuleMapFormat extends AbstractModuleMapFormat {
 
-    public IndexedModuleMapFormat() {
-        super(FileSuffixes.MODULES_INDEXED_MAP, ModuleMap.class);
+    public static final String EXTENSION = "ixm";
+
+    public IxmModuleMapFormat() {
+        super(EXTENSION);
     }
 
-    @NotNull
     @Override
-    protected ModuleMap readResource(@NotNull IResourceLocator resourceLocator, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
+    protected ModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Loading modules...", resourceLocator.getContentLength());
 
@@ -64,7 +73,7 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
     }
 
     @Override
-    protected void writeResource(@NotNull IResourceLocator resourceLocator, @NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void writeResource(IResourceLocator resourceLocator, ModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Saving modules...", moduleMap.getModuleNames().length);
 
         try {
@@ -116,7 +125,7 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
         }
     }
 
-    private void loadItemNames(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader csvReader) throws IOException, DataFormatException {
+    private void loadItemNames(ModuleMap moduleMap, IProgressMonitor progressMonitor, CSVReader csvReader) throws IOException, DataFormatException {
 
         progressMonitor.begin("Reading item names ...", 1);
 
@@ -130,7 +139,7 @@ public class IndexedModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
 
     }
 
-    private void loadModules(@NotNull ModuleMap moduleMap, @NotNull IProgressMonitor progressMonitor, @NotNull CSVReader parser) throws NumberFormatException, IOException {
+    private void loadModules(ModuleMap moduleMap, IProgressMonitor progressMonitor, CSVReader parser) throws NumberFormatException, IOException {
 
         progressMonitor.begin("Reading modules ...", 1);
 

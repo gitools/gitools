@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Properties;
 
 @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
 public class ResourceReference<R extends IResource> {
@@ -43,11 +42,9 @@ public class ResourceReference<R extends IResource> {
     private String baseName;
     private Class<? extends R> resourceClass;
 
-    // Stored instanc
+    // Stored instance
     private IResourceLocator locator;
     private IResourceFormat<? extends R> resourceFormat;
-
-    private Properties properties = new Properties();
 
     public ResourceReference(String baseName, @NotNull R resource) {
         this(baseName, resource, (Class<? extends R>) resource.getClass());
@@ -106,21 +103,13 @@ public class ResourceReference<R extends IResource> {
         return this.resourceClass;
     }
 
-    public final void setLocator(@NotNull IResourceLocator locator) {
+    public final void setLocator(IResourceLocator locator) {
         this.locator = locator;
         this.baseName = locator.getBaseName();
     }
 
     public final IResourceFormat getResourceFormat() {
         return this.resourceFormat;
-    }
-
-    public final Properties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Properties properties) {
-        this.properties = properties;
     }
 
     public final boolean isLoaded() {
@@ -138,7 +127,7 @@ public class ResourceReference<R extends IResource> {
     public final void load(IProgressMonitor progressMonitor) throws PersistenceException {
 
         resource = onBeforeLoad(resource);
-        IResource loadedResource = PersistenceManager.get().load(locator, resourceFormat, properties, progressMonitor);
+        IResource loadedResource = PersistenceManager.get().load(locator, resourceFormat, progressMonitor);
         resource = onAfterLoad(loadedResource);
         loaded = true;
 
@@ -148,8 +137,7 @@ public class ResourceReference<R extends IResource> {
         return resource;
     }
 
-    @NotNull
-    protected R onAfterLoad(@NotNull IResource resource) {
+    protected R onAfterLoad(IResource resource) {
         return (R) resource;
     }
 

@@ -25,11 +25,11 @@ import org.gitools.core.analysis.correlation.GroupComparisonCommand;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.core.stats.test.Test;
 import org.gitools.core.stats.test.factory.TestFactory;
@@ -143,7 +143,7 @@ public class ComparisonTool extends AnalysisTool {
         this.groups = (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
 
         if (args.attrName != null) {
-            MultiValueMatrixFormat obp = new MultiValueMatrixFormat();
+            TdmMatrixFormat obp = new TdmMatrixFormat();
             String[] headers = new String[0];
             try {
                 headers = readHeader(new File(args.dataFile));
@@ -195,7 +195,7 @@ public class ComparisonTool extends AnalysisTool {
         analysis.setMtc(args.mtc);
         analysis.setToolConfig(TestFactory.createToolConfig("group comparison", t.getName()));
 
-        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
         analysis.setAttributeIndex(args.attrIndex);
 

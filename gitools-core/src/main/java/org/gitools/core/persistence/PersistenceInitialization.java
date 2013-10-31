@@ -22,11 +22,12 @@
 package org.gitools.core.persistence;
 
 import org.gitools.core.persistence.formats.analysis.*;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
+import org.gitools.core.persistence.formats.annotations.TsvAnnotationMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CmatrixMatrixFormat;
 import org.gitools.core.persistence.formats.matrix.*;
-import org.gitools.core.persistence.formats.modulemap.IndexedModuleMapFormat;
-import org.gitools.core.persistence.formats.modulemap.TwoColumnModuleMapFormat;
-import org.gitools.core.persistence.formats.text.GeneSetFormat;
+import org.gitools.core.persistence.formats.modulemap.IxmModuleMapFormat;
+import org.gitools.core.persistence.formats.modulemap.TcmModuleMapFormat;
+import org.gitools.core.persistence.formats.geneset.GeneSetFormat;
 import org.gitools.core.persistence.locators.filters.gz.GzResourceFilter;
 import org.gitools.core.persistence.locators.filters.zip.ZipResourceFilter;
 import org.jetbrains.annotations.NotNull;
@@ -46,16 +47,16 @@ public class PersistenceInitialization {
         pm.registerFormat(new GroupComparisonAnalysisFormat());
         pm.registerFormat(new HeatmapFormat());
         pm.registerFormat(new GeneSetFormat());
-        pm.registerFormat(new GeneMatrixFormat());
-        pm.registerFormat(new GeneMatrixTransposedFormat());
-        pm.registerFormat(new MultiValueMatrixFormat());
-        pm.registerFormat(new GeneClusterTextMatrixFormat());
-        pm.registerFormat(new DoubleMatrixFormat());
-        pm.registerFormat(new DoubleBinaryMatrixFormat());
-        pm.registerFormat(new AnnotationMatrixFormat());
-        pm.registerFormat(new TwoColumnModuleMapFormat());
-        pm.registerFormat(new IndexedModuleMapFormat());
-        pm.registerFormat(new CompressedMatrixFormat());
+        pm.registerFormat(new GmxMatrixFormat());
+        pm.registerFormat(new GmtMatrixFormat());
+        pm.registerFormat(new TdmMatrixFormat());
+        pm.registerFormat(new GctMatrixFormat());
+        pm.registerFormat(new CdmMatrixFormat());
+        pm.registerFormat(new BdmMatrixFormat());
+        pm.registerFormat(new TsvAnnotationMatrixFormat());
+        pm.registerFormat(new TcmModuleMapFormat());
+        pm.registerFormat(new IxmModuleMapFormat());
+        pm.registerFormat(new CmatrixMatrixFormat());
 
         pm.registerResourceFilter(new GzResourceFilter());
         pm.registerResourceFilter(new ZipResourceFilter());

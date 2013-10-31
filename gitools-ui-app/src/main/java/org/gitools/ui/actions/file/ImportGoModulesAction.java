@@ -22,15 +22,16 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileSuffixes;
+import org.gitools.core.persistence.formats.matrix.GmtMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.GmxMatrixFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.go.wizard.GoModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -78,9 +79,9 @@ public class ImportGoModulesAction extends BaseAction {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (FileSuffixes.GENE_MATRIX.equals(extension) || FileSuffixes.GENE_MATRIX_TRANSPOSED.equals(extension)) {
+                        if (GmxMatrixFormat.EXTENSION.equals(extension) || GmtMatrixFormat.EXTENSION.equals(extension)) {
 
-                            BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
+                            IMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
 
                             IResourceFormat format = PersistenceManager.get().getFormat(extension, mat.getClass());
 

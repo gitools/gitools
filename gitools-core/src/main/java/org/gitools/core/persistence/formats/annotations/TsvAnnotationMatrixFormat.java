@@ -19,14 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence.formats.matrix;
+package org.gitools.core.persistence.formats.annotations;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
-import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.utils.csv.CSVParser;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
@@ -40,11 +39,12 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
+public class TsvAnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
 
+    public static final String EXTENSION = "tsv";
 
-    public AnnotationMatrixFormat() {
-        super(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class);
+    public TsvAnnotationMatrixFormat() {
+        super(EXTENSION, AnnotationMatrix.class);
     }
 
     @NotNull

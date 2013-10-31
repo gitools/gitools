@@ -23,12 +23,13 @@ package org.gitools.core.analysis.overlapping;
 
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
@@ -73,14 +74,10 @@ public class OverlappingProcessor implements AnalysisProcessor {
         for (int i = 0; i < numColumns; i++)
             labels[i] = data.getColumns().getLabel(i);
 
-        final ObjectMatrix results = new ObjectMatrix();
+
+        final ElementAdapter adapter = new BeanElementAdapter(OverlappingResult.class);
+        final IMatrix results = new HashMatrix(labels, labels, adapter.getMatrixLayers());
         analysis.setCellResults(new ResourceReference<IMatrix>("results", results));
-
-        results.setColumns(labels);
-        results.setRows(labels);
-        results.makeCells();
-
-        results.setObjectCellAdapter(new BeanElementAdapter(OverlappingResult.class));
 
         BitSet x = new BitSet(numRows);
         BitSet xna = new BitSet(numRows);
@@ -135,7 +132,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
                         }
                     }
 
-                    results.setCell(i, j, new OverlappingResult(rowCount, columnCount, bothCount));
+                    adapter.setCell(results, i, j, new OverlappingResult(rowCount, columnCount, bothCount));
                 }
 
                 monitor.worked(1);

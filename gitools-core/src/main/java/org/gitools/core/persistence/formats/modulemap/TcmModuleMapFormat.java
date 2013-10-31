@@ -24,25 +24,38 @@ package org.gitools.core.persistence.formats.modulemap;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Read/Write modules from a two columns tabulated file,
  * first column for item and second for module.
  */
 
-public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap> {
+public class TcmModuleMapFormat extends AbstractModuleMapFormat {
 
+    public static final String EXTENSION = "tcm";
 
-    public TwoColumnModuleMapFormat() {
-        super(FileSuffixes.MODULES_2C_MAP, ModuleMap.class);
+    public TcmModuleMapFormat() {
+        super(EXTENSION);
     }
 
     @NotNull
@@ -52,17 +65,6 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         // map between the item names and its index
 
         Map<String, Integer> itemNameToRowMapping = new TreeMap<String, Integer>();
-
-        if (isItemNamesFilterEnabled()) {
-            String[] itemNames = getItemNames();
-            for (int i = 0; i < itemNames.length; i++) {
-                if (itemNameToRowMapping.containsKey(itemNames[i])) {
-                    throw new PersistenceException("Modules not mappable to heatmap due to duplicated row: " + itemNames[i]);
-                } else {
-                    itemNameToRowMapping.put(itemNames[i], i);
-                }
-            }
-        }
 
         // map between modules and item indices
 
@@ -76,7 +78,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            readModuleMappings(parser, isItemNamesFilterEnabled(), itemNameToRowMapping, moduleItemsMap);
+            readModuleMappings(parser, itemNameToRowMapping, moduleItemsMap);
 
             in.close();
             progressMonitor.end();
@@ -85,9 +87,6 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         }
 
         progressMonitor.begin("Filtering modules ...", 1);
-
-        int minSize = getMinSize();
-        int maxSize = getMaxSize();
 
         // create array of item names
         String[] itemNames = new String[itemNameToRowMapping.size()];
@@ -147,7 +146,7 @@ public class TwoColumnModuleMapFormat extends AbstractModuleMapFormat<ModuleMap>
         return mmap;
     }
 
-    void readModuleMappings(@NotNull CSVReader parser, boolean filterRows, @NotNull Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException {
+    void readModuleMappings(CSVReader parser, Map<String, Integer> itemNameToRowMapping, @NotNull Map<String, Set<Integer>> moduleItemsMap) throws PersistenceException {
 
         try {
             String[] fields;

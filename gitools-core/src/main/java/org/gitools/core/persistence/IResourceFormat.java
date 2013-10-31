@@ -32,7 +32,7 @@ public interface IResourceFormat<R extends IResource> {
 
     boolean isConfigurable();
 
-    void configure(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException;
+    void configure(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException;
 
     R read(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException;
 

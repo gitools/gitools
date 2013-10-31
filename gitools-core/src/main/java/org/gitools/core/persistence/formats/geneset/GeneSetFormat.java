@@ -19,25 +19,31 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence.formats.text;
+package org.gitools.core.persistence.formats.geneset;
 
 import org.gitools.core.model.GeneSet;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileSuffixes;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
 
+    public static final String EXTENSION = "grp";
+
     public GeneSetFormat() {
-        super(FileSuffixes.GENE_SET, GeneSet.class);
+        super(EXTENSION, GeneSet.class);
     }
 
     @NotNull

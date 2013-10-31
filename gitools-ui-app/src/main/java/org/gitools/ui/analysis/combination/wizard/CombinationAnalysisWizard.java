@@ -30,8 +30,8 @@ import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.FileFormats;
 import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -157,10 +157,10 @@ public class CombinationAnalysisWizard extends AbstractWizard {
                             dataFile = dataPage.getFile();
 
                             IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
-                            if (dataFormat instanceof MultiValueMatrixFormat) {
-                                attributes = MultiValueMatrixFormat.readHeader(dataFile);
-                            } else if (dataFormat instanceof CompressedMatrixFormat){
-                                attributes = CompressedMatrixFormat.readHeader(dataFile);
+                            if (dataFormat instanceof TdmMatrixFormat) {
+                                attributes = TdmMatrixFormat.readHeader(dataFile);
+                            } else if (dataFormat instanceof CmatrixMatrixFormat){
+                                attributes = CmatrixMatrixFormat.readHeader(dataFile);
                             } else {
                                 attributes = null;
                             }
