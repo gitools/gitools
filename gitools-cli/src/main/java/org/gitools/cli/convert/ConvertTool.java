@@ -24,12 +24,16 @@ package org.gitools.cli.convert;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
-import org.gitools.core.persistence.*;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence._DEPRECATED.MimeTypes;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.FileSuffixes;
-import org.gitools.core.persistence._DEPRECATED.MimeTypes;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
@@ -124,7 +128,7 @@ public class ConvertTool extends AbstractTool {
             // We don't want to load all the tdm in memory this is why this conversion is not possible
             // using the standard interface.
             //TODO rethink the interface
-            if (inputMime.equals(FileSuffixes.OBJECT_MATRIX) && outputMime.equals(CompressedMatrixFormat.EXTENSION)) {
+            if (inputMime.equals(TdmMatrixFormat.EXSTENSION) && outputMime.equals(CmatrixMatrixFormat.EXTENSION)) {
                 FileCompressMatrixConversion converter = new FileCompressMatrixConversion();
                 converter.convert(args.inputFileName, args.outputFileName, monitor);
                 return;

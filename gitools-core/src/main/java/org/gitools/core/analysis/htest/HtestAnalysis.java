@@ -24,7 +24,6 @@ package org.gitools.core.analysis.htest;
 import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.model.ToolConfig;
@@ -94,7 +93,7 @@ public class HtestAnalysis extends Analysis {
     /**
      * Results
      */
-    private ResourceReference<ObjectMatrix> results;
+    private ResourceReference<IMatrix> results;
 
     protected HtestAnalysis() {
     }
@@ -171,11 +170,11 @@ public class HtestAnalysis extends Analysis {
         this.mtc = mtc;
     }
 
-    public ResourceReference<ObjectMatrix> getResults() {
+    public ResourceReference<IMatrix> getResults() {
         return results;
     }
 
-    public void setResults(ResourceReference<ObjectMatrix> results) {
+    public void setResults(ResourceReference<IMatrix> results) {
         this.results = results;
     }
 }

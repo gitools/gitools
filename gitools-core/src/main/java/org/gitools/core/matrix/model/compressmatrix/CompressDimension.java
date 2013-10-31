@@ -48,7 +48,6 @@ public class CompressDimension extends AbstractMatrixDimension {
         for (int i = 0; i < labels.length; i++) {
             this.labelsToIndex.put(labels[i], i);
         }
-
     }
 
     /**

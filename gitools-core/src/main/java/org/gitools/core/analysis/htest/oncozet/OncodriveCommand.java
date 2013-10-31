@@ -29,9 +29,9 @@ import org.gitools.core.model.GeneSet;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.*;
 import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.core.persistence.formats.matrix.AbstractCdmMatrixFormat;
 import org.gitools.core.persistence.formats.matrix.AbstractMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.AbstractTextMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.core.persistence.formats.modulemap.AbstractModuleMapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -107,10 +107,10 @@ public class OncodriveCommand extends HtestCommand {
         Properties dataProps = new Properties();
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
         dataProps.put(AbstractMatrixFormat.VALUE_TRANSLATORS, valueTranslators);
-        dataProps.put(MultiValueMatrixFormat.VALUE_INDICES, new int[]{valueIndex});
+        dataProps.put(TdmMatrixFormat.VALUE_INDICES, new int[]{valueIndex});
         if (populationLabels != null) {
-            dataProps.put(AbstractTextMatrixFormat.POPULATION_LABELS, populationLabels);
-            dataProps.put(AbstractTextMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
+            dataProps.put(AbstractCdmMatrixFormat.POPULATION_LABELS, populationLabels);
+            dataProps.put(AbstractCdmMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
         }
 
         ResourceReference<IMatrix> dataMatrix = new ResourceReference<IMatrix>(dataLocator, dataFormat);

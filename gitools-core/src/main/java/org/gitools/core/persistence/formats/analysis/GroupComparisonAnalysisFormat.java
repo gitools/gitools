@@ -27,12 +27,10 @@ import org.gitools.core.persistence.formats.FileFormat;
 public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupComparisonAnalysis> {
 
     public static final String EXTENSION = "comparison";
-    private static final Class<GroupComparisonAnalysis> RESOURCE_CLASS = GroupComparisonAnalysis.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Overlapping analysis", EXTENSION, true, false, true);
 
-
     public GroupComparisonAnalysisFormat() {
-        super(EXTENSION, RESOURCE_CLASS);
+        super(EXTENSION, GroupComparisonAnalysis.class);
     }
 
 }

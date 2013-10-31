@@ -577,9 +577,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 }
 
                 mmap = new ModuleMap(data.getMap(), modDesc, tree);
-                mmap.setOrganism(organism.getId());
-                mmap.setModuleCategory(modCategory.getId());
-                mmap.setItemCategory(featCategory.getId());
 
                 //if (plainGo)
                 //mmap = mmap.plain();

@@ -56,8 +56,8 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     }
 
     @Override
-    public final void configure(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
-        configureResource(resourceLocator, properties, progressMonitor);
+    public final void configure(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+        configureResource(resourceLocator, progressMonitor);
     }
 
     /**
@@ -68,11 +68,10 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
      * careful because the resource can be in a remote and slow location.
      *
      * @param resourceLocator the resource locator
-     * @param properties      the config properties
      * @param progressMonitor the progress monitor
      * @throws PersistenceException the persistence exception
      */
-    protected void configureResource(IResourceLocator resourceLocator, Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void configureResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         // Nothing
     }
 

@@ -22,15 +22,15 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence._DEPRECATED.MimeTypes;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.MatrixUtils;
+import org.gitools.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.kegg.wizard.KeggModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -81,7 +81,7 @@ public class ImportKeggModulesAction extends BaseAction {
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
                         if (MimeTypes.GENE_MATRIX.equals(extension) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension)) {
 
-                            BaseMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
+                            IMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
                             IResourceFormat format = PersistenceManager.get().getFormat(extension, mat.getClass());
                             PersistenceManager.get().store(resourceLocator, mat, format, monitor);
                         } else {

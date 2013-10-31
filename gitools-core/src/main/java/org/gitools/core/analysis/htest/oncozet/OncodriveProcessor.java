@@ -23,13 +23,11 @@ package org.gitools.core.analysis.htest.oncozet;
 
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.ObjectFactory1D;
-import cern.colt.matrix.ObjectMatrix1D;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.persistence.ResourceReference;
@@ -41,6 +39,7 @@ import org.gitools.core.stats.test.results.CommonResult;
 import org.gitools.core.threads.ThreadManager;
 import org.gitools.core.threads.ThreadQueue;
 import org.gitools.core.threads.ThreadSlot;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -92,27 +91,23 @@ public class OncodriveProcessor extends HtestProcessor {
         analysis.setModuleMap(new ResourceReference<ModuleMap>("modules", csmap));
 
         final int numRows = dataMatrix.getRows().size();
-        ObjectMatrix1D rowLabels = ObjectFactory1D.dense.make(numRows);
+        String[] rowLabels = new String[numRows];
         for (int i = 0; i < numRows; i++)
-            rowLabels.setQuick(i, dataMatrix.getRows().getLabel(i));
+            rowLabels[i] = dataMatrix.getRows().getLabel(i);
 
-        ObjectMatrix1D csetLabels = ObjectFactory1D.dense.make(csmap.getModuleNames());
+        String[] csetLabels = new String[csmap.getModuleNames().length];
+        System.arraycopy(csmap.getModuleNames(), 0, csetLabels, 0, csmap.getModuleNames().length);
 
         int[][] moduleColumnIndices = csmap.getAllItemIndices();
 
-        final int numCsets = csetLabels.size();
+        final int numCsets = csetLabels.length;
 
         monitor.begin("Running oncodrive analysis...", numRows * numCsets);
 
         Test test = testFactory.create();
 
-        final ObjectMatrix resultsMatrix = new ObjectMatrix();
-
-        resultsMatrix.setColumns(csetLabels);
-        resultsMatrix.setRows(rowLabels);
-        resultsMatrix.makeCells();
-
-        resultsMatrix.setObjectCellAdapter(new BeanElementAdapter(test.getResultClass()));
+        final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
+        final IMatrix resultsMatrix = new HashMatrix(rowLabels, csetLabels, adapter.getMatrixLayers());
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -134,7 +129,7 @@ public class OncodriveProcessor extends HtestProcessor {
 
             final int csetIdx = csetIndex;
 
-            final String csetName = csetLabels.getQuick(csetIndex).toString();
+            final String csetName = csetLabels[csetIndex];
 
             final int[] columnIndices = moduleColumnIndices[csetIndex];
 
@@ -164,7 +159,7 @@ public class OncodriveProcessor extends HtestProcessor {
 
                     final int itemIdx = itemIndex;
 
-                    final String itemName = rowLabels.getQuick(itemIdx).toString();
+                    final String itemName = rowLabels[itemIdx];
 
                     final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 
@@ -195,7 +190,7 @@ public class OncodriveProcessor extends HtestProcessor {
                             }
 
                             try {
-                                resultsMatrix.setCell(itemIdx, csetIdx, result);
+                                adapter.setCell(resultsMatrix, itemIdx, csetIdx, result);
                             } catch (Throwable cause) {
                                 cause.printStackTrace();
                             }
@@ -219,12 +214,12 @@ public class OncodriveProcessor extends HtestProcessor {
 
         MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
-        multipleTestCorrection(resultsMatrix, mtc, monitor.subtask());
+        multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(new ResourceReference<ObjectMatrix>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
 
         monitor.end();
     }

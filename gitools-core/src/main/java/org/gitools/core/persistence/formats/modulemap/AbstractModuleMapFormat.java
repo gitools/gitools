@@ -32,41 +32,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Properties;
 
 
-public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends AbstractResourceFormat<R> {
+public abstract class AbstractModuleMapFormat extends AbstractResourceFormat<ModuleMap> {
 
-    public static final String MIN_SIZE = "min_size";
-    private static final int DEFAULT_MIN_SIZE = 0;
-
-    public static final String MAX_SIZE = "max_size";
-    private static final int DEFAULT_MAX_SIZE = Integer.MAX_VALUE;
-
-    public static final String ITEM_NAMES_FILTER_ENABLED = "item_names_filter_enabled";
-    private static final boolean DEFAULT_ITEM_NAMES_FILTER_ENABLED = false;
-
-    public static final String ITEM_NAMES = "item_names";
-
-    private int minSize;
-    private int maxSize;
-    private boolean itemNamesFilterEnabled;
-    private String[] itemNames;
-
-    AbstractModuleMapFormat(String extension, Class<R> resourceClass) {
-        super(extension, resourceClass);
-    }
-
-    @Override
-    public boolean isConfigurable() {
-        return true;
-    }
-
-    @Override
-    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties p, IProgressMonitor progressMonitor) throws PersistenceException {
-
-        this.minSize = defaultValue(p.get(MIN_SIZE), DEFAULT_MIN_SIZE);
-        this.maxSize = defaultValue(p.get(MAX_SIZE), DEFAULT_MAX_SIZE);
-        this.itemNamesFilterEnabled = defaultValue(p.get(ITEM_NAMES_FILTER_ENABLED), DEFAULT_ITEM_NAMES_FILTER_ENABLED);
-        this.itemNames = (String[]) p.get(ITEM_NAMES);
-
+    protected AbstractModuleMapFormat(String extension) {
+        super(extension, ModuleMap.class);
     }
 
     @Nullable
@@ -77,20 +46,5 @@ public abstract class AbstractModuleMapFormat<R extends ModuleMap> extends Abstr
         return (T) value;
     }
 
-    int getMinSize() {
-        return minSize;
-    }
-
-    int getMaxSize() {
-        return maxSize;
-    }
-
-    boolean isItemNamesFilterEnabled() {
-        return itemNamesFilterEnabled;
-    }
-
-    String[] getItemNames() {
-        return itemNames;
-    }
 
 }

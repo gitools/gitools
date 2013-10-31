@@ -21,118 +21,27 @@
  */
 package org.gitools.core.persistence.formats.matrix;
 
-import org.gitools.core.datafilters.DoubleTranslator;
-import org.gitools.core.datafilters.ValueTranslator;
-import org.gitools.core.matrix.model.matrix.BaseMatrix;
-import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.persistence.formats.AbstractResourceFormat;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Properties;
-
-public abstract class AbstractMatrixFormat<T extends BaseMatrix> extends AbstractResourceFormat<T> {
-
-    public static final String POPULATION_LABELS = "population_labels";
-    public static final String BACKGROUND_VALUE = "background_value";
-    public static final String BINARY_VALUES = "binary_values";
-    public static final String VALUE_TRANSLATORS = "value_translators";
-
-    private Properties properties;
-    private String[] populationLabels;
-    private Double backgroundValue;
-    @Nullable
-    private Map<Integer, ValueTranslator> valueTranslatorMap;
+public abstract class AbstractMatrixFormat extends AbstractResourceFormat<IMatrix> {
 
 
-    AbstractMatrixFormat(String extension, Class<T> resourceClass) {
-        super(extension, resourceClass);
+    protected AbstractMatrixFormat(String extension) {
+        super(extension, IMatrix.class);
     }
 
-    @Override
-    public boolean isConfigurable() {
-        return true;
-    }
-
-    @Override
-    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
-
-        // Save properties
-        this.properties = properties;
-
-        // Population labels
-        this.populationLabels = (String[]) properties.get(POPULATION_LABELS);
-
-        // Background value
-        if (properties.containsKey(BACKGROUND_VALUE)) {
-            this.backgroundValue = (Double) properties.get(BACKGROUND_VALUE);
-        } else {
-            this.backgroundValue = 0.0;
-        }
-
-        // Value translator map
-        if (properties.containsKey(VALUE_TRANSLATORS)) {
-            valueTranslatorMap = (Map<Integer, ValueTranslator>) properties.get(VALUE_TRANSLATORS);
-        } else {
-            valueTranslatorMap = null;
-        }
-    }
-
-    Properties getProperties() {
-        return properties;
-    }
-
-    /**
-     * Returns the array of labels to consider as background population,
-     * or null if no population is specified.
-     *
-     * @return population labels
-     */
-    String[] getPopulationLabels() {
-        return populationLabels;
-    }
-
-    /**
-     * The value to use for population rows not having data in the file
-     *
-     * @return background value
-     */
-    Double getBackgroundValue() {
-        return this.backgroundValue;
-    }
-
-    /**
-     * Returns the String <-> Double translator to use.
-     * <p/>
-     * the class calling this method assumes there is only ONE ValueTranslator
-     *
-     * @return value translator
-     */
-    @Nullable
-    ValueTranslator getValueTranslator() {
-        return getValueTranslator(0);
-    }
-
-    /**
-     * Returns the String <-> Double translator to use for
-     * value index i.
-     *
-     * @return value translator
-     */
-    @Nullable
-    @Deprecated
-    ValueTranslator getValueTranslator(int i) {
-        if (valueTranslatorMap == null) {
-            return new DoubleTranslator();
-        }
-
-        if (valueTranslatorMap.containsKey(i)) {
-            return valueTranslatorMap.get(i);
-        } else {
-            return null;
+    protected void checkLine(String[] line, String[] header, int count) throws PersistenceException {
+        int lengthDiff = line.length - header.length;
+        if (lengthDiff != 0) {
+            throw new PersistenceException(
+                    "Line <i>" + count + "</i> has <i>" +
+                            Math.abs(lengthDiff) +
+                            (Math.abs(lengthDiff) > 1 ? " columns " : " column ") +
+                            (lengthDiff < 0 ? "less" : "more") +
+                            "</i> than the header (which has "+ (header.length + 2) +" fields)."
+            );
         }
     }
 

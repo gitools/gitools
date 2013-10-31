@@ -23,7 +23,7 @@ package org.gitools.cli.htest;
 
 import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.core.analysis.htest.oncozet.OncodriveCommand;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.ModuleMap;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.IResourceFormat;
@@ -92,7 +92,7 @@ public class OncodriveTool extends HtestTool {
         analysis.setMinModuleSize(args.minSetSize);
         analysis.setMaxModuleSize(args.maxSetSize);
 
-        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
         IResourceFormat setsMime = getResourceFormat(args.setsFormat, args.setsFile, ModuleMap.class);
 

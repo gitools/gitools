@@ -21,28 +21,36 @@
  */
 package org.gitools.core.persistence.formats;
 
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.BdmMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CdmMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.GctMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.GmtMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.GmxMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
+import org.gitools.core.persistence.formats.modulemap.IxmModuleMapFormat;
+import org.gitools.core.persistence.formats.modulemap.TcmModuleMapFormat;
 
 public class FileFormats {
 
     // Data
-    public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", FileSuffixes.GENE_MATRIX);
+    public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", GmxMatrixFormat.EXTENSION);
 
-    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat("Gene Matrix Transposed", FileSuffixes.GENE_MATRIX_TRANSPOSED);
+    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat("Gene Matrix Transposed", GmtMatrixFormat.EXTENSION);
 
-    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat("Binary data matrix", FileSuffixes.DOUBLE_BINARY_MATRIX);
+    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat("Binary data matrix", BdmMatrixFormat.EXTENSION);
 
-    public static final FileFormat DOUBLE_MATRIX = new FileFormat("Continuous data matrix", FileSuffixes.DOUBLE_MATRIX);
+    public static final FileFormat DOUBLE_MATRIX = new FileFormat("Continuous data matrix", CdmMatrixFormat.EXTENSION);
 
-    public static final FileFormat GENE_CLUSTER_TEXT = new FileFormat("Gene cluster text", FileSuffixes.GENE_CLUSTER_TEXT);
+    public static final FileFormat GENE_CLUSTER_TEXT = new FileFormat("Gene cluster text", GctMatrixFormat.EXTENSION);
 
-    public static final FileFormat MODULES_INDEXED_MAP = new FileFormat("Indexed mappings", FileSuffixes.MODULES_INDEXED_MAP);
+    public static final FileFormat MODULES_INDEXED_MAP = new FileFormat("Indexed mappings", IxmModuleMapFormat.EXTENSION);
 
-    public static final FileFormat MODULES_2C_MAP = new FileFormat("Two columns mappings", FileSuffixes.MODULES_2C_MAP);
+    public static final FileFormat MODULES_2C_MAP = new FileFormat("Two columns mappings", TcmModuleMapFormat.EXTENSION);
 
-    public static final FileFormat MULTIVALUE_DATA_MATRIX = new FileFormat("Multivalue data matrix", FileSuffixes.OBJECT_MATRIX);
+    public static final FileFormat MULTIVALUE_DATA_MATRIX = new FileFormat("Multivalue data matrix", TdmMatrixFormat.EXSTENSION);
 
-    public static final FileFormat COMPRESSED_MATRIX = new FileFormat("Compressed matrix", CompressedMatrixFormat.EXTENSION);
+    public static final FileFormat COMPRESSED_MATRIX = new FileFormat("Compressed matrix", CmatrixMatrixFormat.EXTENSION);
 
     // Image
     public static final FileFormat PNG = new FileFormat("PNG", "png", true, false);

@@ -21,17 +21,18 @@
  */
 package org.gitools.core.matrix.model.matrix.element;
 
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayers;
-import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class BeanElementAdapter extends AbstractElementAdapter {
+public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
 
     private static final long serialVersionUID = 2174377187447656241L;
 
@@ -49,9 +50,9 @@ public class BeanElementAdapter extends AbstractElementAdapter {
     }
 
     void readProperties() {
-        List<MatrixLayer> properties = new ArrayList<MatrixLayer>();
+        List<BeanMatrixLayer> properties = new ArrayList<>();
 
-        for (Method m : elementClass.getMethods()) {
+        for (Method m : getElementClass().getMethods()) {
             boolean isGet = m.getName().startsWith("get");
             if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is"))) {
 
@@ -78,12 +79,11 @@ public class BeanElementAdapter extends AbstractElementAdapter {
 
                 Method setterMethod = null;
                 try {
-                    setterMethod = elementClass.getMethod("set" + getterName, new Class<?>[]{propertyClass});
+                    setterMethod = getElementClass().getMethod("set" + getterName, new Class<?>[]{propertyClass});
                 } catch (Exception e) {
                 }
 
-                MatrixLayer prop = new BeanElementProperty(id, name, description, propertyClass, m, setterMethod);
-
+                BeanMatrixLayer prop = new BeanMatrixLayer(id, name, description, propertyClass, m, setterMethod);
                 properties.add(prop);
             }
         }
@@ -95,30 +95,51 @@ public class BeanElementAdapter extends AbstractElementAdapter {
             }
         });
 
-        setProperties(new MatrixLayers(properties));
+        setMatrixLayers(new MatrixLayers<>(properties));
     }
 
-    @Nullable
     @Override
-    public Object getValue(Object element, int index) {
-        BeanElementProperty prop = (BeanElementProperty) getProperty(index);
-        Method m = prop.getGetterMethod();
+    public void setCell(IMatrix resultsMatrix, int row, int column, Object result) {
+
+        try {
+            for (int layerIndex = 0; layerIndex < getMatrixLayers().size(); layerIndex++) {
+
+                BeanMatrixLayer layer = getMatrixLayers().get(layerIndex);
+                Method getter = layer.getGetterMethod();
+
+                resultsMatrix.setValue(row, column, layerIndex, getter.invoke(result));
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public Object getCell(IMatrix resultsMatrix, int row, int column) {
+
         Object value = null;
         try {
-            value = m.invoke(element, (Object[]) null);
-        } catch (Exception e) {
+            value = getElementClass().newInstance();
+
+            for (int layerIndex = 0; layerIndex < getMatrixLayers().size(); layerIndex++) {
+
+                BeanMatrixLayer layer = getMatrixLayers().get(layerIndex);
+                Method setter = layer.getSetterMethod();
+
+                setter.invoke(value, resultsMatrix.getValue(row, column, layerIndex));
+            }
+
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+
         return value;
-    }
-
-    @Override
-    public void setValue(Object element, int index, Object value) {
-        BeanElementProperty prop = (BeanElementProperty) getProperty(index);
-        Method m = prop.getSetterMethod();
-        try {
-            value = m.invoke(element, value);
-        } catch (Exception e) {
-
-        }
     }
 }

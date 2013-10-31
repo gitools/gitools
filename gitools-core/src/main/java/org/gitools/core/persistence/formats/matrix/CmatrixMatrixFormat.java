@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence.formats.compressmatrix;
+package org.gitools.core.persistence.formats.matrix;
 
 import org.apache.commons.io.IOUtils;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
@@ -37,11 +37,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-public class CompressedMatrixFormat extends AbstractResourceFormat<CompressMatrix> {
+public class CmatrixMatrixFormat extends AbstractResourceFormat<CompressMatrix> {
 
     public static final String EXTENSION = "cmatrix";
 
-    public CompressedMatrixFormat() {
+    public CmatrixMatrixFormat() {
         super(EXTENSION, CompressMatrix.class);
     }
 

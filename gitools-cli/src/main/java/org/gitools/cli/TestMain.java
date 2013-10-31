@@ -21,16 +21,15 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.persistence.formats.FileSuffixes;
+import org.gitools.core.persistence.formats.matrix.BdmMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.CdmMatrixFormat;
+import org.gitools.core.persistence.formats.modulemap.TcmModuleMapFormat;
 import org.gitools.utils.tools.exception.ToolException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class TestMain {
 
     public static void main(String[] unusedArgs) throws ToolException {
@@ -41,9 +40,9 @@ public class TestMain {
         String cmd = "enrichment -t binomial-exact" +
                 " -tc sample-size=100 -tc aproximation=none" +
                 " -d " + stuff + "/d1.tsv" +
-                " -df " + FileSuffixes.DOUBLE_BINARY_MATRIX +
+                " -df " + BdmMatrixFormat.EXTENSION +
                 " -m " + stuff + "/m1.tsv" +
-                " -mf " + FileSuffixes.MODULES_2C_MAP +
+                " -mf " + TcmModuleMapFormat.EXTENSION +
                 " -min 0" +
                 " -w " + temp + "/test -N test" +
                 " -title 'Test Analysis'" +
@@ -51,54 +50,9 @@ public class TestMain {
                 " -A author=Christian" +
                 " -verbose -debug -err-log -";
 
-		/*cmd = "enrichment -t binomial-exact" +
-                " -d " + stuff + "/real/data.tsv" +
-				" -df " + MimeTypes.DOUBLE_MATRIX +
-				" -b gt,0.05" +
-				" -m " + stuff + "/real/modules.tsv" +
-				" -mf tcm" + //MimeTypes.MODULES_2C_MAP +
-				" -min 100" +
-				" -w "+ temp + "/test -N test_gt" +
-				" -title 'Test Analysis'" +
-				" -notes 'Testing...'" +
-				" -A author=Christian" +
-				" -verbose -debug -err-log -";*/
-
-		/*cmd = "oncodrive" +
-                " -d " + stuff + "/GAFtargets_upDownGeneslog5.bdm" +
-				" -min 0" +
-				" -w " + temp +
-				" -t binomial";*/
-
-		/*cmd = "correlation" +
-                " -d " + stuff + "/real/data.tsv" +
-				" -dm " + MimeTypes.DOUBLE_MATRIX +
-				" -w "+ temp + "/test -N test_cor" +
-				" -verbose -debug -err-log -";*/
-
-		/*cmd = "combination" +
-                " -d " + stuff + "/brain-comb2.cdm.gz" +
-				" -df " + MimeTypes.DOUBLE_MATRIX +
-				" -w "+ temp + "/test-cmb -N test_comb" +
-				" -verbose -debug -err-log -";*/
-
-		/*String cmd = "convert" +
-                " -i data.tsv" +
-				" -im application/gitools-matrix-double" +
-				" -o pru.txt" +
-				" -om application/gitools-element-lists" +
-				" -verbose -debug -err-log -";*/
-
-		/*cmd = "convert" +
-				" -o " + stuff + "/d2.tsv" +
-				" -om " + MimeTypes.DOUBLE_BINARY_MATRIX +
-				" -i " + stuff + "/data.gmx" +
-				" -im " + MimeTypes.GENE_MATRIX +
-				" -verbose -debug -err-log -";*/
-
         cmd = "overlapping" +
                 " -d " + temp + "/test/data.cdm.gz" +
-                " -df " + FileSuffixes.DOUBLE_MATRIX +
+                " -df " + CdmMatrixFormat.EXTENSION +
                 " -b lt,0.05" +
                 " -w " + temp + "/test -N test_ovl" +
                 " -verbose -debug -err-log -";

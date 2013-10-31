@@ -26,8 +26,15 @@ import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.FileSuffixes;
-import org.gitools.core.persistence.formats.analysis.*;
+import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
+import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.core.persistence.formats.matrix.CdmMatrixFormat;
+import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;
@@ -127,10 +134,10 @@ public class OpenAction extends BaseAction {
         IResourceFormat format = null;
         if (fileChoose.getFilter() != null) {
             if (fileChoose.getFilter().getDescription().startsWith(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle())) {
-                format = PersistenceManager.get().getFormat(FileSuffixes.OBJECT_MATRIX, IMatrix.class);
+                format = PersistenceManager.get().getFormat(TdmMatrixFormat.EXSTENSION, IMatrix.class);
             }
             if (fileChoose.getFilter().getDescription().startsWith(FileFormats.DOUBLE_MATRIX.getTitle())) {
-                format = PersistenceManager.get().getFormat(FileSuffixes.DOUBLE_MATRIX, IMatrix.class);
+                format = PersistenceManager.get().getFormat(CdmMatrixFormat.EXTENSION, IMatrix.class);
             }
         }
 

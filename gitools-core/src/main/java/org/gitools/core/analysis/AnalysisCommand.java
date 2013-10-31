@@ -71,7 +71,6 @@ public abstract class AnalysisCommand {
 
     @NotNull
     protected ValueTranslator createValueTranslator(boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue) {
-
-        return binaryCutoffEnabled ? new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) : new DoubleTranslator();
+        return binaryCutoffEnabled ? new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) : DoubleTranslator.get();
     }
 }

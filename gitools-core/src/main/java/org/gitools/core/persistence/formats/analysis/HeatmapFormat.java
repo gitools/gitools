@@ -33,12 +33,10 @@ import java.io.InputStream;
 public class HeatmapFormat extends AbstractXmlFormat<Heatmap> {
 
     public static final String EXTENSION = "heatmap";
-    private static final Class<Heatmap> RESOURCE_CLASS = Heatmap.class;
     public static final FileFormat FILE_FORMAT = new FileFormat("Heatmap", EXTENSION, true, false, true);
 
-
     public HeatmapFormat() {
-        super(EXTENSION, RESOURCE_CLASS);
+        super(EXTENSION, Heatmap.class);
     }
 
     @Override

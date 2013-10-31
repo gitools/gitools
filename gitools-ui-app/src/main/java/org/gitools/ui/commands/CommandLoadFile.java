@@ -36,8 +36,12 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.core.persistence.*;
-import org.gitools.core.persistence.formats.FileSuffixes;
+import org.gitools.core.persistence.IResource;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.IResourceLocator;
+import org.gitools.core.persistence.PersistenceManager;
+import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.persistence.formats.annotations.TsvAnnotationMatrixFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -240,6 +244,6 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     private static void loadAnnotations(@NotNull File file, @NotNull HeatmapDimension hdim) {
-        hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(FileSuffixes.ANNOTATION_MATRIX, AnnotationMatrix.class)).get());
+        hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
     }
 }

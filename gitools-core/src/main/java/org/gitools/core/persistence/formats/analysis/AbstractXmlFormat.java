@@ -49,10 +49,10 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     @Override
-    protected void configureResource(IResourceLocator resourceLocator, @NotNull Properties properties, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected void configureResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
     }
 
-    void beforeRead(InputStream in, IResourceLocator resourceLocator, @NotNull Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException {
+    void beforeRead(InputStream in, IResourceLocator resourceLocator, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException {
         dependencies = new ArrayList<ResourceReference>();
         unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }

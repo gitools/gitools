@@ -27,12 +27,15 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.core.matrix.model.AbstractMatrix;
 import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.Inflater;
 
@@ -69,7 +72,11 @@ public class CompressMatrix extends AbstractMatrix {
         this.values = values;
 
         // We assume that all the attributes are doubles.
-        this.layers = new MatrixLayers(double.class, headers);
+        List<MatrixLayer> matrixLayers = new ArrayList<>(headers.length);
+        for (String header : headers) {
+            matrixLayers.add(new MatrixLayer(header, double.class));
+        }
+        this.layers = new MatrixLayers<>(matrixLayers);
 
         // Force a garbage collector now
         Runtime.getRuntime().gc();

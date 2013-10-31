@@ -22,10 +22,12 @@
 package org.gitools.core.model.decorator;
 
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
-import org.gitools.core.model.decorator.impl.*;
-import org.gitools.core.stats.test.results.CommonResult;
-import org.gitools.core.stats.test.results.ZScoreResult;
+import org.gitools.core.model.decorator.impl.BinaryDecorator;
+import org.gitools.core.model.decorator.impl.CategoricalDecorator;
+import org.gitools.core.model.decorator.impl.CorrelationDecorator;
+import org.gitools.core.model.decorator.impl.LinearDecorator;
+import org.gitools.core.model.decorator.impl.PValueDecorator;
+import org.gitools.core.model.decorator.impl.ZScoreDecorator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +81,10 @@ public class DecoratorFactory {
         return descriptors;
     }
 
+    @Deprecated
     public static Decorator defaultDecorator(IMatrix matrix, int layer) {
+
+        /*
         Decorator decorator;
 
         if (matrix instanceof ObjectMatrix) {
@@ -100,6 +105,9 @@ public class DecoratorFactory {
         }
 
         return decorator;
+        */
+
+        return new LinearDecorator();
     }
 
 }

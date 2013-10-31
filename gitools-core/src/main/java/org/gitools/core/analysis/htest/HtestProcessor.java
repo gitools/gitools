@@ -25,7 +25,8 @@ import cern.colt.function.DoubleProcedure;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.gitools.core.analysis.AnalysisProcessor;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.test.results.CommonResult;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -40,14 +41,16 @@ public abstract class HtestProcessor implements AnalysisProcessor {
         }
     };
 
-    protected void multipleTestCorrection(@NotNull ObjectMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor) {
+    protected void multipleTestCorrection(ElementAdapter adapter, @NotNull IMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor) {
 
         monitor.begin(mtc.getName() + " correction...", 1);
 
         DoubleMatrix2D adjpvalues = DoubleFactory2D.dense.make(3, res.getRows().size());
         for (int condIdx = 0; condIdx < res.getColumns().size(); condIdx++) {
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
-                CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
+
+                CommonResult r = (CommonResult) adapter.getCell(res, moduleIdx, condIdx);
+
                 adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
                 adjpvalues.setQuick(1, moduleIdx, r != null ? r.getRightPvalue() : Double.NaN);
                 adjpvalues.setQuick(2, moduleIdx, r != null ? r.getTwoTailPvalue() : Double.NaN);
@@ -58,7 +61,7 @@ public abstract class HtestProcessor implements AnalysisProcessor {
             mtc.correct(adjpvalues.viewRow(2).viewSelection(notNaNProc));
 
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
-                CommonResult r = (CommonResult) res.getObjectCell(moduleIdx, condIdx);
+                CommonResult r = (CommonResult) adapter.getCell(res, moduleIdx, condIdx);
                 if (r != null) {
                     r.setCorrLeftPvalue(adjpvalues.getQuick(0, moduleIdx));
                     r.setCorrRightPvalue(adjpvalues.getQuick(1, moduleIdx));
