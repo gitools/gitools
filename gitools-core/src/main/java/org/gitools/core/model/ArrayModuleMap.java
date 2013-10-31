@@ -23,15 +23,10 @@ package org.gitools.core.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ModuleMap extends Resource {
+public class ArrayModuleMap extends Resource implements IModuleMap {
 
     private static final long serialVersionUID = 6463084331984782264L;
 
@@ -40,48 +35,22 @@ public class ModuleMap extends Resource {
     private String[] itemNames;
 
     private int[][] itemIndices;
-
-    private int[][] moduleTreeIndices;
-
     private final Map<String, Integer> moduleIndexMap = new HashMap<>();
 
-    public ModuleMap() {
-        this.moduleNames = new String[0];
-        this.moduleDescriptions = new String[0];
-        this.itemNames = new String[0];
-        this.itemIndices = new int[0][];
-        this.moduleTreeIndices = new int[0][];
+    public ArrayModuleMap(String[] moduleNames, String[] itemNames, int[][] itemIndices) {
+        this.moduleNames = moduleNames;
+        this.moduleDescriptions = new String[moduleNames.length];
+        this.itemNames = itemNames;
+        this.itemIndices = itemIndices;
     }
 
-    public ModuleMap(String[] moduleNames, String[] itemNames) {
-
-    }
-
-    public ModuleMap(String moduleName, String[] itemNames) {
-        setModuleNames(new String[]{moduleName});
-        setItemNames(itemNames);
-        int[] indices = new int[itemNames.length];
-        for (int i = 0; i < indices.length; i++)
-            indices[i] = i;
-        setAllItemIndices(new int[][]{indices});
-    }
-
-    public ModuleMap(Map<String, Set<String>> map) {
-        this(map, new HashMap<String, String>());
-    }
-
-    public ModuleMap(Map<String, Set<String>> map, Map<String, String> desc) {
-        this(map, desc, new HashMap<String, Set<String>>());
-    }
-
-    public ModuleMap(Map<String, Set<String>> map, Map<String, String> desc, Map<String, Set<String>> tree) {
+    public ArrayModuleMap(Map<String, Set<String>> map, Map<String, String> desc, Map<String, Set<String>> tree) {
 
         int modCount = map.keySet().size();
 
         String[] mname = map.keySet().toArray(new String[modCount]);
         String[] mdesc = new String[modCount];
         int[][] mapIndices = new int[modCount][];
-        int[][] treeIndices = new int[modCount][];
 
         Map<String, Integer> itemMap = new HashMap<>();
         Map<String, Integer> modMap = new HashMap<>();
@@ -134,7 +103,6 @@ public class ModuleMap extends Resource {
                 mi = tmp;
             }
 
-            treeIndices[j] = mi;
         }
 
         String[] inames = new String[itemMap.keySet().size()];
@@ -142,17 +110,22 @@ public class ModuleMap extends Resource {
             inames[entry.getValue()] = entry.getKey();
 
         setModuleNames(mname);
-        setModuleDescriptions(mdesc);
+        this.moduleDescriptions = mdesc;
         setItemNames(inames);
         this.itemIndices = mapIndices;
-        this.moduleTreeIndices = treeIndices;
     }
 
+    @Override
     public String[] getModuleNames() {
         return moduleNames;
     }
 
-    private final void setModuleNames(String[] moduleNames) {
+    @Override
+    public Collection<String> getModules() {
+        return Arrays.asList(moduleNames);
+    }
+
+    private void setModuleNames(String[] moduleNames) {
         this.moduleNames = moduleNames;
 
         moduleIndexMap.clear();
@@ -162,113 +135,64 @@ public class ModuleMap extends Resource {
         this.itemIndices = new int[moduleNames.length][];
     }
 
-    private final void setModuleDescriptions(String[] descriptions) {
-        this.moduleDescriptions = descriptions;
-    }
-
+    @Override
     public int getModuleCount() {
         return moduleNames.length;
     }
 
+    @Override
     public String getModuleName(int index) {
         return moduleNames[index];
     }
 
+    @Override
     public String getModuleDescription(int index) {
         return moduleDescriptions[index];
     }
 
+    @Override
     public String[] getItemNames() {
         return itemNames;
     }
 
-    public final void setItemNames(String[] itemNames) {
+    @Override
+    public Collection<String> getItems() {
+        return Arrays.asList(itemNames);
+    }
+
+    @Override
+    public Collection<String> getMappingItems(String module) {
+
+        int[] mappingIndices = getItemIndices(module);
+
+        List<String> mappingItems = new ArrayList<>(mappingIndices.length);
+        for (int itemIndex : mappingIndices) {
+            mappingItems.add(itemNames[itemIndex]);
+        }
+
+        return mappingItems;
+    }
+
+    private void setItemNames(String[] itemNames) {
         this.itemNames = itemNames;
     }
 
+    @Override
     public String getItemName(int index) {
         return itemNames[index];
     }
 
+    @Override
     public int[] getItemIndices(int moduleIndex) {
         return itemIndices[moduleIndex];
     }
 
-    public final int[][] getAllItemIndices() {
-        return itemIndices;
-    }
-
-    public final void setAllItemIndices(int[][] itemIndices) {
+    private void setAllItemIndices(int[][] itemIndices) {
         this.itemIndices = itemIndices;
     }
 
-    private void setModuleTreeIndices(int[][] moduleTreeIndices) {
-        this.moduleTreeIndices = moduleTreeIndices;
-    }
 
-    public final ModuleMap remap(String[] names) {
-        return remap(names, 1, Integer.MAX_VALUE);
-    }
-
-    public final ModuleMap remap(String[] names, int minSize, int maxSize) {
-
-        // prepare a item name to index map for input names
-        Map<String, Integer> nameIndices = new HashMap<>();
-        for (int i = 0; i < names.length; i++)
-            nameIndices.put(names[i], i);
-
-        // prepare new indices for item names
-        int[] indexMap = new int[itemNames.length];
-        for (int i = 0; i < itemNames.length; i++) {
-            Integer index = nameIndices.get(itemNames[i]);
-            if (index == null) {
-                index = -1;
-            }
-            indexMap[i] = index;
-        }
-
-        // remap indices
-        List<String> modNames = new ArrayList<>();
-        List<int[]> modIndices = new ArrayList<>();
-
-        int[] remapedIndices;
-        for (int i = 0; i < itemIndices.length; i++) {
-            int[] indices = itemIndices[i];
-            remapedIndices = new int[indices.length];
-
-            int numItems = 0;
-            for (int j = 0; j < indices.length; j++) {
-                int newIndex = indexMap[indices[j]];
-                remapedIndices[j] = newIndex;
-                numItems += newIndex >= 0 ? 1 : 0;
-            }
-
-            boolean inRange = numItems >= minSize && numItems <= maxSize;
-
-            if (numItems != remapedIndices.length && inRange) {
-                int[] newIndices = new int[numItems];
-                int k = 0;
-                for (int remapedIndex : remapedIndices)
-                    if (remapedIndex != -1) {
-                        newIndices[k++] = remapedIndex;
-                    }
-                remapedIndices = newIndices;
-            }
-
-            if (inRange) {
-                modNames.add(moduleNames[i]);
-                modIndices.add(remapedIndices);
-            }
-        }
-
-        ModuleMap mmap = new ModuleMap();
-        mmap.setItemNames(names);
-        mmap.setModuleNames(modNames.toArray(new String[modNames.size()]));
-        mmap.setAllItemIndices(modIndices.toArray(new int[modIndices.size()][]));
-        mmap.setModuleTreeIndices(moduleTreeIndices);
-        return mmap;
-    }
-
+    @Override
     public int[] getItemIndices(String modName) {
         Integer modIndex = moduleIndexMap.get(modName);
         if (modIndex == null) {

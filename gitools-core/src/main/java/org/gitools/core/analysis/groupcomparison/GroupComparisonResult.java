@@ -21,7 +21,7 @@
  */
 package org.gitools.core.analysis.groupcomparison;
 
-import org.gitools.core.matrix.model.matrix.element.AttributeDef;
+import org.gitools.core.matrix.model.matrix.element.LayerDef;
 import org.gitools.core.stats.test.results.CommonResult;
 
 
@@ -46,7 +46,7 @@ public class GroupComparisonResult extends CommonResult {
         this.N_group2 = N_group2;
     }
 
-    @AttributeDef(id = "N-group1", name = "N Group 1", description = "Number of elements in Group 1")
+    @LayerDef(id = "N-group1", name = "N Group 1", description = "Number of elements in Group 1")
     public int getN_group1() {
         return N_group1;
     }
@@ -55,7 +55,7 @@ public class GroupComparisonResult extends CommonResult {
         this.N_group1 = N_group1;
     }
 
-    @AttributeDef(id = "N-group2", name = "N Group 2", description = "Number of elements in Group 2")
+    @LayerDef(id = "N-group2", name = "N Group 2", description = "Number of elements in Group 2")
     public int getN_group2() {
         return N_group2;
     }

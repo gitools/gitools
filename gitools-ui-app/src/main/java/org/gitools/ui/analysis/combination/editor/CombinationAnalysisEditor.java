@@ -24,7 +24,6 @@ package org.gitools.ui.analysis.combination.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.combination.CombinationAnalysis;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
@@ -68,15 +67,6 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
             sizeAttr = "Constant value of 1";
         }
         context.put("sizeAttr", sizeAttr);
-
-        String pvalueAttr = analysis.getPvalueAttrName();
-        if (pvalueAttr == null || pvalueAttr.isEmpty()) {
-            IMatrixLayers attrs = analysis.getData().get().getLayers();
-            if (attrs.size() > 0) {
-                pvalueAttr = attrs.get(0).getName();
-            }
-        }
-        context.put("pvalueAttr", pvalueAttr);
 
         resourceLocator = analysis.getResults().getLocator();
         context.put("resultsFile", resourceLocator != null ? resourceLocator.getName() : "Not defined");

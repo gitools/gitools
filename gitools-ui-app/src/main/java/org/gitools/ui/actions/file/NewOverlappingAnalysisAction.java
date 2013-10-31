@@ -26,7 +26,7 @@ import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceRef
 import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.core.analysis.overlapping.OverlappingCommand;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
@@ -46,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 public class NewOverlappingAnalysisAction extends BaseAction {
 
@@ -83,7 +82,7 @@ public class NewOverlappingAnalysisAction extends BaseAction {
         } catch (PersistenceException ex) {
 
             // Allow to use ModuleMaps as IMatrix
-            IResourceFormat<? extends ModuleMap> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(ModuleMap.class);
+            IResourceFormat<? extends IModuleMap> resourceFormat = wizard.getDataFilePage().getFileFormat().getFormat(IModuleMap.class);
             sourceData = new ConvertModuleMapToMatrixResourceReference(resourceLocator, resourceFormat);
         }
 

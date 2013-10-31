@@ -27,11 +27,13 @@ import org.gitools.core.analysis.AnalysisProcessor;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.model.HashModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Arrays;
@@ -56,21 +58,16 @@ public class CombinationProcessor implements AnalysisProcessor {
             data = new TransposedMatrixView(data);
         }
 
-        final int numCols = data.getColumns().size();
         final int numRows = data.getRows().size();
-
-        String[] labels = new String[numCols];
-        for (int i = 0; i < numCols; i++)
-            labels[i] = data.getColumns().getLabel(i);
 
         String combOf = analysis.isTransposeData() ? "rows" : "columns";
 
         // Prepare columns map
-        ModuleMap cmap = (analysis.getGroupsMap()==null? null : analysis.getGroupsMap().get());
-        if (cmap != null) {
-            cmap = cmap.remap(labels);
+        IModuleMap cmap;
+        if (analysis.getGroupsMap() == null) {
+            cmap = new HashModuleMap().addMapping("All data " + combOf, data.getColumns());
         } else {
-            cmap = new ModuleMap("All data " + combOf, labels);
+            cmap = ModuleMapUtils.filterByItems( analysis.getGroupsMap().get(), data.getColumns() );
         }
         analysis.setGroupsMap(new ResourceReference<>("modules", cmap));
 
@@ -91,8 +88,6 @@ public class CombinationProcessor implements AnalysisProcessor {
         // Run combination
         int sizeIndex = -1;
         String sizeAttrName = analysis.getSizeAttrName();
-        /*if (sizeAttrName == null || sizeAttrName.isEmpty())
-            sizeIndex = analysis.getSizeAttrIndex();*/
         if (sizeAttrName != null && !sizeAttrName.isEmpty()) {
             sizeIndex = data.getLayers().findId(sizeAttrName);
         }

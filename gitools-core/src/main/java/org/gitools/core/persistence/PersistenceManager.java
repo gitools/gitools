@@ -69,6 +69,12 @@ public class PersistenceManager implements Serializable {
                 }
             }
 
+            for (Class<? extends IResource> keyClass : formats.keySet()) {
+                if (keyClass.isAssignableFrom(resourceClass) && formats.get(keyClass).containsKey(extension)) {
+                    return formats.get(keyClass).get(extension);
+                }
+            }
+
             throw new PersistenceException("Unknow resource class: '" + resourceClass.getName() + "'");
         }
 

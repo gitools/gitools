@@ -24,7 +24,7 @@ package org.gitools.core.analysis.combination;
 import org.gitools.core.analysis.AnalysisCommand;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.PersistenceManager;
 import org.gitools.core.persistence.ResourceReference;
@@ -67,7 +67,7 @@ public class CombinationCommand extends AnalysisCommand {
             }
 
             if (columnsPath != null) {
-                ResourceReference<ModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
+                ResourceReference<IModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
                 analysis.setGroupsMap(columnsMap);
                 columnsMap.load(progressMonitor);
             }

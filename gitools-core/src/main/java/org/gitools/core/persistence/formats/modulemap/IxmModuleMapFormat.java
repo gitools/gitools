@@ -21,25 +21,15 @@
  */
 package org.gitools.core.persistence.formats.modulemap;
 
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.HashModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.zip.DataFormatException;
+import java.io.*;
+import java.util.*;
 
 public class IxmModuleMapFormat extends AbstractModuleMapFormat {
 
@@ -50,65 +40,82 @@ public class IxmModuleMapFormat extends AbstractModuleMapFormat {
     }
 
     @Override
-    protected ModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
-
-        progressMonitor.begin("Loading modules...", resourceLocator.getContentLength());
-
-        ModuleMap moduleMap = new ModuleMap();
-
+    protected IModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         try {
+
+            progressMonitor.begin("Loading modules...", resourceLocator.getContentLength());
+
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
-            loadItemNames(moduleMap, progressMonitor, parser);
-            loadModules(moduleMap, progressMonitor, parser);
+            progressMonitor.begin("Reading item names ...", 1);
+            List<String> items = Arrays.asList(parser.readNext());
+            progressMonitor.info(items.size() + " items");
+            progressMonitor.end();
+
+            progressMonitor.begin("Reading modules ...", 1);
+            String[] fields;
+            HashModuleMap moduleMap = new HashModuleMap();
+            while ((fields = parser.readNext()) != null) {
+                String module = fields[0];
+                for (int j = 1; j < fields.length; j++) {
+                    int itemIndex = Integer.parseInt(fields[j]);
+                    if (itemIndex >= 0 && itemIndex < items.size()) {
+                        moduleMap.addMapping(module, items.get(itemIndex));
+                    }
+                }
+            }
+
+            progressMonitor.info(moduleMap.getModules().size() + " modules and " + moduleMap.getItems().size() + " items annotated");
+            progressMonitor.end();
             in.close();
+
+            return moduleMap;
         } catch (Exception e) {
             throw new PersistenceException(e);
+        } finally {
+            progressMonitor.end();
         }
-
-        progressMonitor.end();
-
-        return moduleMap;
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, ModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException {
-        progressMonitor.begin("Saving modules...", moduleMap.getModuleNames().length);
+    protected void writeResource(IResourceLocator resourceLocator, IModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException {
+        progressMonitor.begin("Saving modules...", moduleMap.getModules().size());
 
         try {
             OutputStream out = resourceLocator.openOutputStream();
             final PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            final String[] itemNames = moduleMap.getItemNames();
+            final Iterator<String> itemsIterator = moduleMap.getItems().iterator();
 
-            if (itemNames.length > 0) {
+            Map<String, Integer> itemsIndex = new HashMap<>();
+            int index = 0;
+            while (itemsIterator.hasNext()) {
+
+                String item = itemsIterator.next();
+                itemsIndex.put(item, index);
+                index++;
+
                 pw.print('"');
-                pw.print(itemNames[0]);
+                pw.print(item);
                 pw.print('"');
 
-                for (int i = 1; i < itemNames.length; i++) {
-                    pw.print("\t\"");
-                    pw.print(itemNames[i]);
-                    pw.print('"');
+                if (itemsIterator.hasNext()) {
+                    pw.print("\t");
                 }
             }
             pw.print('\n');
 
-            final String[] moduleNames = moduleMap.getModuleNames();
 
-            final int[][] indices = moduleMap.getAllItemIndices();
 
-            int numModules = moduleNames.length;
-
-            for (int i = 0; i < numModules; i++) {
+            for (String module : moduleMap.getModules()) {
                 pw.print('"');
-                pw.print(moduleNames[i]);
+                pw.print(module);
                 pw.print('"');
 
-                for (int index : indices[i]) {
+                for (String item : moduleMap.getMappingItems(module)) {
                     pw.print('\t');
-                    pw.print(index);
+                    pw.print(itemsIndex.get(item));
                 }
 
                 pw.print('\n');
@@ -125,115 +132,4 @@ public class IxmModuleMapFormat extends AbstractModuleMapFormat {
         }
     }
 
-    private void loadItemNames(ModuleMap moduleMap, IProgressMonitor progressMonitor, CSVReader csvReader) throws IOException, DataFormatException {
-
-        progressMonitor.begin("Reading item names ...", 1);
-
-        final String[] itemNames = csvReader.readNext();
-
-        moduleMap.setItemNames(itemNames);
-
-        progressMonitor.info(itemNames.length + " items");
-
-        progressMonitor.end();
-
-    }
-
-    private void loadModules(ModuleMap moduleMap, IProgressMonitor progressMonitor, CSVReader parser) throws NumberFormatException, IOException {
-
-        progressMonitor.begin("Reading modules ...", 1);
-
-        String[] itemNames = moduleMap.getItemNames();
-
-        // Prepare valid item names depending on whether item name filtering is enabled or not
-
-        BitSet valid = new BitSet(itemNames.length);
-
-        if (isItemNamesFilterEnabled()) {
-            Map<String, Integer> itemIndices = new HashMap<String, Integer>();
-            for (int i = 0; i < itemNames.length; i++)
-                itemIndices.put(itemNames[i], i);
-
-            for (String name : getItemNames()) {
-                Integer index = itemIndices.get(name);
-                if (index != null) {
-                    valid.set(index);
-                }
-            }
-        } else {
-            valid.set(0, itemNames.length);
-        }
-
-        // Load mapping and mark items used
-
-        BitSet used = new BitSet(itemNames.length);
-
-        String[] fields;
-        final Map<String, Set<Integer>> mapItemIndices = new HashMap<String, Set<Integer>>();
-
-        int minSize = getMinSize();
-        int maxSize = getMaxSize();
-
-        while ((fields = parser.readNext()) != null) {
-
-            String moduleName = fields[0];
-
-            Set<Integer> items = new HashSet<Integer>();
-
-            for (int j = 1; j < fields.length; j++) {
-                int index = Integer.parseInt(fields[j]);
-                boolean inRange = index >= 0 && index < itemNames.length;
-                if (inRange && valid.get(index)) {
-                    items.add(index);
-                    used.set(index);
-                }
-            }
-
-            if (items.size() >= minSize && items.size() <= maxSize) {
-                mapItemIndices.put(moduleName, items);
-            } else {
-                items.clear();
-            }
-        }
-
-        // Remap indices as there are items that may not be used
-
-        int lastIndex = 0;
-        int[] indexMap = new int[itemNames.length];
-        for (int i = 0; i < itemNames.length; i++)
-            if (used.get(i)) {
-                indexMap[i] = lastIndex++;
-            }
-
-        int i = 0;
-        String[] finalItemNames = new String[lastIndex];
-        for (int j = 0; j < itemNames.length; j++)
-            if (used.get(j)) {
-                finalItemNames[i++] = itemNames[j];
-            }
-
-        i = 0;
-        String[] moduleNames = new String[mapItemIndices.size()];
-
-        int[][] moduleItemIndices = new int[moduleNames.length][];
-
-        for (Map.Entry<String, Set<Integer>> entry : mapItemIndices.entrySet()) {
-            moduleNames[i] = entry.getKey();
-
-            int[] indices = new int[entry.getValue().size()];
-            Iterator<Integer> it = entry.getValue().iterator();
-            for (int j = 0; j < indices.length; j++)
-                indices[j] = indexMap[it.next()];
-            moduleItemIndices[i] = indices;
-            i++;
-        }
-
-        moduleMap.setItemNames(finalItemNames);
-        moduleMap.setModuleNames(moduleNames);
-        moduleMap.setAllItemIndices(moduleItemIndices);
-
-        progressMonitor.info(moduleNames.length + " modules and " + finalItemNames.length + " items annotated");
-
-        progressMonitor.end();
-    }
 }

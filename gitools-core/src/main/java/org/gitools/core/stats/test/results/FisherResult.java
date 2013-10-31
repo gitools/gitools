@@ -21,7 +21,7 @@
  */
 package org.gitools.core.stats.test.results;
 
-import org.gitools.core.matrix.model.matrix.element.AttributeDef;
+import org.gitools.core.matrix.model.matrix.element.LayerDef;
 
 public class FisherResult extends CommonResult {
 
@@ -45,7 +45,7 @@ public class FisherResult extends CommonResult {
         this.d = d;
     }
 
-    @AttributeDef(id = "a", name = "a", description = "Number of positive events that belongs to the module")
+    @LayerDef(id = "a", name = "a", description = "Number of positive events that belongs to the module")
     public int getA() {
         return a;
     }
@@ -54,10 +54,7 @@ public class FisherResult extends CommonResult {
         this.a = a;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    @AttributeDef(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
+    @LayerDef(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
     public int getB() {
         return b;
     }
@@ -66,10 +63,7 @@ public class FisherResult extends CommonResult {
         this.b = b;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    @AttributeDef(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
+    @LayerDef(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
     public int getC() {
         return c;
     }
@@ -78,7 +72,7 @@ public class FisherResult extends CommonResult {
         this.c = c;
     }
 
-    @AttributeDef(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
+    @LayerDef(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
     public int getD() {
         return d;
     }

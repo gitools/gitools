@@ -49,7 +49,6 @@ public class PersistenceInitialization {
         pm.registerFormat(new GeneSetFormat());
         pm.registerFormat(new GmxMatrixFormat());
         pm.registerFormat(new GmtMatrixFormat());
-        pm.registerFormat(new TdmMatrixFormat());
         pm.registerFormat(new GctMatrixFormat());
         pm.registerFormat(new CdmMatrixFormat());
         pm.registerFormat(new BdmMatrixFormat());
@@ -57,6 +56,7 @@ public class PersistenceInitialization {
         pm.registerFormat(new TcmModuleMapFormat());
         pm.registerFormat(new IxmModuleMapFormat());
         pm.registerFormat(new CmatrixMatrixFormat());
+        pm.registerFormat(new TdmMatrixFormat());
 
         pm.registerResourceFilter(new GzResourceFilter());
         pm.registerResourceFilter(new ZipResourceFilter());

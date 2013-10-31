@@ -24,7 +24,7 @@ package org.gitools.cli.htest;
 import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
@@ -107,7 +107,7 @@ public class EnrichmentTool extends HtestTool {
 
         IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
-        IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, ModuleMap.class);
+        IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, IModuleMap.class);
 
         EnrichmentCommand cmd = new EnrichmentCommand(analysis, dataMime, args.dataFile, args.valueIndex, args.populationFile, populationDefaultValue, modulesMime, args.modulesFile, args.workdir, args.analysisName + "." + EnrichmentAnalysisFormat.EXTENSION);
 

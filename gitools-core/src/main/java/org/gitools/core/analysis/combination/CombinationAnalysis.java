@@ -23,7 +23,7 @@ package org.gitools.core.analysis.combination;
 
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Analysis;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,7 +37,7 @@ public class CombinationAnalysis extends Analysis {
 
     private boolean transposeData;
 
-    private ResourceReference<ModuleMap> groupsMap;
+    private ResourceReference<IModuleMap> groupsMap;
 
     private ResourceReference<IMatrix> data;
 
@@ -71,11 +71,11 @@ public class CombinationAnalysis extends Analysis {
         this.transposeData = transposeData;
     }
 
-    public ResourceReference<ModuleMap> getGroupsMap() {
+    public ResourceReference<IModuleMap> getGroupsMap() {
         return groupsMap;
     }
 
-    public void setGroupsMap(ResourceReference<ModuleMap> groupsMap) {
+    public void setGroupsMap(ResourceReference<IModuleMap> groupsMap) {
         this.groupsMap = groupsMap;
     }
 

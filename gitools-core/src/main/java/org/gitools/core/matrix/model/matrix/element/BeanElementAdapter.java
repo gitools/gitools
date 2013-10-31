@@ -34,8 +34,6 @@ import java.util.List;
 
 public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
 
-    private static final long serialVersionUID = 2174377187447656241L;
-
     public BeanElementAdapter(Class<?> elementClass) {
         super(elementClass);
 
@@ -64,7 +62,7 @@ public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
                 String name = id;
                 String description = "";
 
-                AttributeDef a = m.getAnnotation(AttributeDef.class);
+                LayerDef a = m.getAnnotation(LayerDef.class);
                 if (a != null) {
                     if (a.id() != null) {
                         id = a.id();
@@ -101,6 +99,10 @@ public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
     @Override
     public void setCell(IMatrix resultsMatrix, int row, int column, Object result) {
 
+        if (result == null) {
+            return;
+        }
+
         try {
             for (int layerIndex = 0; layerIndex < getMatrixLayers().size(); layerIndex++) {
 
@@ -129,7 +131,19 @@ public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
                 BeanMatrixLayer layer = getMatrixLayers().get(layerIndex);
                 Method setter = layer.getSetterMethod();
 
-                setter.invoke(value, resultsMatrix.getValue(row, column, layerIndex));
+                Object result = resultsMatrix.getValue(row, column, layerIndex);
+
+                if (result != null) {
+
+                    //TODO This is temporal while we only manage Double matrix.
+                    if (layer.getValueClass() == int.class && result.getClass() != int.class && !result.getClass().equals(Integer.class)) {
+                        result = Double.valueOf((double) result).intValue();
+                    }
+
+                    if (layer.getValueClass().isAssignableFrom(result.getClass())) {
+                        setter.invoke(value, result);
+                    }
+                }
             }
 
         } catch (InstantiationException e) {

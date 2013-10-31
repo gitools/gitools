@@ -26,9 +26,8 @@ import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayers;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HashMatrix extends AbstractMatrix {
 
@@ -39,11 +38,11 @@ public class HashMatrix extends AbstractMatrix {
     private Map<Integer, Map<String, Map<String, Object>>> values;
 
     public HashMatrix() {
-        this(new HashMatrixDimension(), new HashMatrixDimension(), new MatrixLayers());
+        this(new HashMatrixDimension("rows", 0), new HashMatrixDimension("columns", 1), new MatrixLayers());
     }
 
     public HashMatrix(String[] rows, String[] columns, MatrixLayers layers) {
-        this(new HashMatrixDimension(rows), new HashMatrixDimension(columns), layers);
+        this(new HashMatrixDimension("rows", 0, rows), new HashMatrixDimension("columns", 1, columns), layers);
     }
 
     private HashMatrix(HashMatrixDimension rows, HashMatrixDimension columns, MatrixLayers layers) {
@@ -51,8 +50,9 @@ public class HashMatrix extends AbstractMatrix {
         this.columns = columns;
         this.layers = layers;
 
+        this.values = new ConcurrentHashMap<>();
         for (int i=0; i < layers.size(); i++) {
-            values.put(i, new HashMap<String, Map<String, Object>>());
+            values.put(i, new ConcurrentHashMap<String, Map<String, Object>>());
         }
     }
 
@@ -91,12 +91,16 @@ public class HashMatrix extends AbstractMatrix {
 
     public void setValue(String rowId, String columnId, String layerId, Object value) {
 
+        if (value == null) {
+            return;
+        }
+
         // Check that the layers exists
         int layerIndex = layers.findId(layerId);
         if (layerIndex == -1) {
             layers.add(new MatrixLayer(layerId, value.getClass()));
             layerIndex = layers.findId(layerId);
-            values.put(layerIndex, new HashMap<String, Map<String, Object>>());
+            values.put(layerIndex, new ConcurrentHashMap<String, Map<String, Object>>());
         }
 
         // Check that the row exists
@@ -115,7 +119,7 @@ public class HashMatrix extends AbstractMatrix {
     private Map<String, Object> getRow(int layer, String row) {
 
         if (!values.get(layer).containsKey(row)) {
-            values.get(layer).put(row, new HashMap<String, Object>());
+            values.get(layer).put(row, new ConcurrentHashMap<String, Object>());
         }
 
         return values.get(layer).get(row);

@@ -19,26 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.persistence.formats.modulemap;
-
-import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.formats.AbstractResourceFormat;
-import org.jetbrains.annotations.Nullable;
+package org.gitools.core.matrix.model.matrix.element;
 
 
-public abstract class AbstractModuleMapFormat extends AbstractResourceFormat<IModuleMap> {
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-    protected AbstractModuleMapFormat(String extension) {
-        super(extension, IModuleMap.class);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+public @interface LayerDef {
 
-    @Nullable
-    private static <T> T defaultValue(@Nullable Object value, T defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        }
-        return (T) value;
-    }
+    String id();
 
+    String name();
+
+    String description();
 
 }

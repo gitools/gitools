@@ -21,8 +21,7 @@
  */
 package org.gitools.core.analysis.combination;
 
-import org.gitools.core.matrix.model.matrix.element.AttributeDef;
-
+import org.gitools.core.matrix.model.matrix.element.LayerDef;
 
 public class CombinationResult {
 
@@ -32,7 +31,7 @@ public class CombinationResult {
 
     private double pvalue;
 
-    @AttributeDef(id = "N", name = "N", description = "Number of pvalues combined")
+    @LayerDef(id = "N", name = "N", description = "Number of pvalues combined")
     public int getN() {
         return n;
     }
@@ -41,7 +40,7 @@ public class CombinationResult {
         this.n = n;
     }
 
-    @AttributeDef(id = "z-score", name = "Z-Score", description = "Z-Score of the combination")
+    @LayerDef(id = "z-score", name = "Z-Score", description = "Z-Score of the combination")
     public double getZscore() {
         return zscore;
     }
@@ -50,7 +49,7 @@ public class CombinationResult {
         this.zscore = zscore;
     }
 
-    @AttributeDef(id = "p-value", name = "P-Value", description = "Combined P-Value")
+    @LayerDef(id = "p-value", name = "P-Value", description = "Combined P-Value")
     public double getPvalue() {
         return pvalue;
     }

@@ -29,7 +29,7 @@ public interface IMatrix extends IResource {
 
     IMatrixDimension getColumns();
 
-    IMatrixLayers getLayers();
+    IMatrixLayers<? extends IMatrixLayer> getLayers();
 
     @Deprecated
     Object getValue(int row, int column, int layer);

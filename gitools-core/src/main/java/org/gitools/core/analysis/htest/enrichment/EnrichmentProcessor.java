@@ -31,9 +31,9 @@ import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.mtc.MTCFactory;
@@ -44,16 +44,12 @@ import org.gitools.core.threads.ThreadManager;
 import org.gitools.core.threads.ThreadQueue;
 import org.gitools.core.threads.ThreadSlot;
 import org.gitools.core.utils.MatrixUtils;
+import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class EnrichmentProcessor extends HtestProcessor {
 
@@ -109,12 +105,9 @@ public class EnrichmentProcessor extends HtestProcessor {
         final int numConditions = dataMatrix.getColumns().size();
         final int numRows = dataMatrix.getRows().size();
 
-        String[] labels = new String[numRows];
-        for (int i = 0; i < labels.length; i++)
-            labels[i] = dataMatrix.getRows().getLabel(i);
-
-        ModuleMap mmap = analysis.getModuleMap().get();
-        mmap = mmap.remap(labels, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+        IModuleMap mmap = analysis.getModuleMap().get();
+        mmap = ModuleMapUtils.filterByItems( mmap, dataMatrix.getRows() );
+        mmap = ModuleMapUtils.filterByModuleSize( mmap, analysis.getMinModuleSize(), analysis.getMaxModuleSize() );
 
         //DoubleMatrix2D data = null;
         String[] conditions = new String[dataMatrix.getColumns().size()];
@@ -123,8 +116,6 @@ public class EnrichmentProcessor extends HtestProcessor {
 
         String[] modules = new String[mmap.getModuleNames().length];
         System.arraycopy(mmap.getModuleNames(), 0, modules, 0, mmap.getModuleNames().length);
-
-        int[][] moduleItemIndices = mmap.getAllItemIndices();
 
         final int numModules = modules.length;
 
@@ -173,7 +164,7 @@ public class EnrichmentProcessor extends HtestProcessor {
             for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
 
                 final String moduleName = modules[moduleIndex];
-                final int[] itemIndices = moduleItemIndices[moduleIndex];
+                final int[] itemIndices = mmap.getItemIndices(moduleIndex);
 
                 final RunSlot slot;
                 try {

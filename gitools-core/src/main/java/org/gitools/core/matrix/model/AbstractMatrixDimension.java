@@ -23,6 +23,8 @@ package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
 
+import java.util.Iterator;
+
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
     private int vectorPosition;
@@ -79,5 +81,34 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
         }
 
         return next;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return new MatrixDimensionIterator();
+    }
+
+    private class MatrixDimensionIterator implements Iterator<String> {
+
+        private int nextPosition;
+
+        private MatrixDimensionIterator() {
+            nextPosition = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextPosition < AbstractMatrixDimension.this.size();
+        }
+
+        @Override
+        public String next() {
+            return AbstractMatrixDimension.this.getLabel(nextPosition++);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Read only iterator");
+        }
     }
 }

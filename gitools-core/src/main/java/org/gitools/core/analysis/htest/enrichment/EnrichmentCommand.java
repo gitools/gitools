@@ -23,25 +23,19 @@ package org.gitools.core.analysis.htest.enrichment;
 
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestCommand;
-import org.gitools.core.datafilters.ValueTranslator;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.GeneSet;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.core.persistence.*;
+import org.gitools.core.model.IModuleMap;
+import org.gitools.core.persistence.IResourceFormat;
+import org.gitools.core.persistence.PersistenceException;
+import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
-import org.gitools.core.persistence.formats.matrix.AbstractCdmMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.AbstractMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
-import org.gitools.core.persistence.formats.modulemap.AbstractModuleMapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 public class EnrichmentCommand extends HtestCommand {
 
@@ -108,10 +102,14 @@ public class EnrichmentCommand extends HtestCommand {
      */
     private void loadDataAndModules(IResourceFormat dataFormat, String dataFileName, int valueIndex, @Nullable String populationFileName, IResourceFormat modulesFormat, String modulesFileName, @NotNull EnrichmentAnalysis analysis, IProgressMonitor monitor) throws PersistenceException {
 
+        // Load data matrix
+        ResourceReference<IMatrix> dataMatrixReference = new ResourceReference<IMatrix>(new UrlResourceLocator(new File(dataFileName)), this.dataFormat);
+        IMatrix dataMatrix = dataMatrixReference.load(monitor);
+
+        //TODO
+        /*
         // Load background population
-
         String[] populationLabels = null;
-
         if (populationFileName != null) {
             IResourceLocator resourceLocator = new UrlResourceLocator(new File(populationFileName));
 
@@ -121,13 +119,8 @@ public class EnrichmentCommand extends HtestCommand {
             populationLabels = popLabels.toArray(new String[popLabels.size()]);
         }
 
-        // Load data
-
-        IResourceLocator dataLocator = new UrlResourceLocator(new File(dataFileName));
-
         Map<Integer, ValueTranslator> valueTranslators = new HashMap<Integer, ValueTranslator>();
         valueTranslators.put(0, createValueTranslator(analysis.isBinaryCutoffEnabled(), analysis.getBinaryCutoffCmp(), analysis.getBinaryCutoffValue()));
-
         Properties dataProps = new Properties();
         dataProps.put(AbstractMatrixFormat.BINARY_VALUES, analysis.isBinaryCutoffEnabled());
         dataProps.put(AbstractMatrixFormat.VALUE_TRANSLATORS, valueTranslators);
@@ -135,28 +128,15 @@ public class EnrichmentCommand extends HtestCommand {
         if (populationLabels != null) {
             dataProps.put(AbstractCdmMatrixFormat.POPULATION_LABELS, populationLabels);
             dataProps.put(AbstractCdmMatrixFormat.BACKGROUND_VALUE, populationDefaultValue);
-        }
+        }*/
+        analysis.setData(new ResourceReference<>("data", dataMatrix));
 
-        ResourceReference<IMatrix> dataMatrix = new ResourceReference<IMatrix>(dataLocator, this.dataFormat);
-        dataMatrix.setProperties(dataProps);
-        dataMatrix.load(monitor);
-
-        // Load modules
-        IResourceLocator modLocator = new UrlResourceLocator(new File(modulesFileName));
-
-        Properties modProps = new Properties();
-        modProps.put(AbstractModuleMapFormat.ITEM_NAMES_FILTER_ENABLED, true);
-        modProps.put(AbstractModuleMapFormat.ITEM_NAMES, getItemName(dataMatrix.get().getRows()));
-        modProps.put(AbstractModuleMapFormat.MIN_SIZE, analysis.getMinModuleSize());
-        modProps.put(AbstractModuleMapFormat.MAX_SIZE, analysis.getMaxModuleSize());
-
-        ResourceReference<ModuleMap> moduleMap = new ResourceReference<ModuleMap>(modLocator, this.modulesFormat);
-        moduleMap.setProperties(modProps);
-        moduleMap.load(monitor);
-
-        analysis.setData(new ResourceReference<>("data", dataMatrix.get()));
-
-        analysis.setModuleMap(new ResourceReference<>("modules", moduleMap.get()));
+        // Load and filter module map
+        ResourceReference<IModuleMap> moduleMapRef = new ResourceReference<IModuleMap>(new UrlResourceLocator(new File(modulesFileName)), this.modulesFormat);
+        IModuleMap moduleMap = moduleMapRef.load(monitor);
+        moduleMap = ModuleMapUtils.filterByItems(moduleMap, dataMatrix.getRows());
+        moduleMap = ModuleMapUtils.filterByModuleSize(moduleMap, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+        analysis.setModuleMap(new ResourceReference<>("modules", moduleMap));
     }
 
 }

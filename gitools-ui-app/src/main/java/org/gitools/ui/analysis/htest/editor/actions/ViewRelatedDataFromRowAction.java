@@ -24,7 +24,7 @@ package org.gitools.ui.analysis.htest.editor.actions;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -44,9 +44,9 @@ public class ViewRelatedDataFromRowAction extends BaseAction {
 
     private final String title;
     private final IMatrix matrix;
-    private final ModuleMap map;
+    private final IModuleMap map;
 
-    public ViewRelatedDataFromRowAction(String title, IMatrix matrix, ModuleMap map) {
+    public ViewRelatedDataFromRowAction(String title, IMatrix matrix, IModuleMap map) {
         super("View annotated elements");
 
         setDesc("View annotated elements in a new heatmap");

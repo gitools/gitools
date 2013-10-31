@@ -22,7 +22,6 @@
 package org.gitools.core.analysis.htest;
 
 import org.gitools.core.analysis.AnalysisCommand;
-import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.stats.test.factory.TestFactory;
@@ -100,14 +99,4 @@ public abstract class HtestCommand extends AnalysisCommand {
         return testFactory;
     }
 
-    protected static String[] getItemName(IMatrixDimension dimension) {
-
-        String[] names = new String[dimension.size()];
-
-        for (int i = 0; i < dimension.size(); i++) {
-            names[i] = dimension.getLabel(i);
-        }
-
-        return names;
-    }
 }

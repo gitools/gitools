@@ -21,16 +21,11 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.HashModuleMap;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 
 public class MatrixToModulesConversion implements ConversionDelegate {
@@ -42,7 +37,7 @@ public class MatrixToModulesConversion implements ConversionDelegate {
 
         IMatrix matrix = (IMatrix) src;
 
-        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        HashModuleMap moduleMap = new HashModuleMap();
 
         MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getLayers().get(attrIndex).getValueClass());
 
@@ -50,19 +45,18 @@ public class MatrixToModulesConversion implements ConversionDelegate {
         int numCols = matrix.getColumns().size();
         for (int row = 0; row < numRows; row++) {
             String rowLabel = matrix.getRows().getLabel(row);
-            Set<String> items = new HashSet<String>();
+
             for (int col = 0; col < numCols; col++) {
                 String colLabel = matrix.getColumns().getLabel(col);
                 Object cellValue = matrix.getValue(row, col, attrIndex);
                 double value = cast.getDoubleValue(cellValue);
                 if (value == 1.0) {
-                    items.add(colLabel);
+                    moduleMap.addMapping(colLabel, rowLabel);
                 }
             }
-            map.put(rowLabel, items);
         }
-        ModuleMap mmap = new ModuleMap(map);
-        return mmap;
+
+        return moduleMap;
     }
 
 }

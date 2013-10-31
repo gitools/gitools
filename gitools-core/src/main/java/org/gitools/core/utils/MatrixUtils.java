@@ -22,14 +22,10 @@
 package org.gitools.core.utils;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.MatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.HashModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.*;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -176,7 +172,7 @@ public class MatrixUtils {
         return -1;
     }
 
-    public static IMatrix moduleMapToMatrix(ModuleMap mmap) {
+    public static IMatrix moduleMapToMatrix(IModuleMap mmap) {
 
         String[] columns = mmap.getModuleNames();
         String[] rows = mmap.getItemNames();
@@ -189,53 +185,37 @@ public class MatrixUtils {
         return matrix;
     }
 
-    public static ModuleMap matrixToModuleMap(IMatrix matrix) {
-        String[] itemNames = new String[matrix.getRows().size()];
-        for (int i = 0; i < matrix.getRows().size(); i++)
-            itemNames[i] = matrix.getRows().getLabel(i);
+    public static IModuleMap matrixToModuleMap(IMatrix matrix) {
 
-        String[] modNames = new String[matrix.getColumns().size()];
-        for (int i = 0; i < matrix.getColumns().size(); i++)
-            modNames[i] = matrix.getColumns().getLabel(i);
+        HashModuleMap moduleMap = new HashModuleMap();
 
-        ModuleMap map = new ModuleMap();
-        map.setItemNames(itemNames);
-        map.setModuleNames(modNames);
+        for (int row=0; row < matrix.getRows().size(); row++) {
 
-        int[][] mapIndices = new int[matrix.getColumns().size()][];
-        for (int col = 0; col < matrix.getColumns().size(); col++) {
-            List<Integer> indexList = new ArrayList<Integer>();
-            for (int row = 0; row < matrix.getRows().size(); row++) {
-                double value = MatrixUtils.doubleValue(matrix.getValue(row, col, 0));
+            String item = matrix.getRows().getLabel(row);
+
+            for (int column=0; column < matrix.getColumns().size(); column++) {
+
+                String module = matrix.getColumns().getLabel(column);
+
+                double value = MatrixUtils.doubleValue(matrix.getValue(row, column, 0));
                 if (value == 1.0) {
-                    indexList.add(row);
+                    moduleMap.addMapping(module, item);
                 }
+
             }
-            int[] indexArray = new int[indexList.size()];
-            for (int i = 0; i < indexList.size(); i++)
-                indexArray[i] = indexList.get(i);
-            mapIndices[col] = indexArray;
         }
 
-        map.setAllItemIndices(mapIndices);
-
-        return map;
-    }
-
-    private static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension, IProgressMonitor monitor) {
-        return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
+        return moduleMap;
     }
 
     public static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension) {
         return getUniquedValuesFromMatrix(data, valueDimension, MAX_UNIQUE, new StreamProgressMonitor(System.out, true, true));
     }
 
-
     private static double[] getUniquedValuesFromMatrix(IMatrix data, int valueDimension, int maxUnique, IProgressMonitor monitor) {
         /* returns all values DIFFERENT from a heatmap dimension except if it is too many (50), it returns
         * an equally distributed array values from min to max*/
 
-        Double[] values = null;
         List<Double> valueList = new ArrayList<Double>();
         MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(data.getLayers().get(valueDimension).getValueClass());
         Double min = Double.POSITIVE_INFINITY;

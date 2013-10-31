@@ -25,7 +25,7 @@ import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Analysis;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -68,7 +68,7 @@ public class HtestAnalysis extends Analysis {
     /**
      * Modules
      */
-    private ResourceReference<ModuleMap> moduleMap;
+    private ResourceReference<IModuleMap> moduleMap;
 
     /**
      * Minimum module size
@@ -130,11 +130,11 @@ public class HtestAnalysis extends Analysis {
         this.testConfig = testConfig;
     }
 
-    public ResourceReference<ModuleMap> getModuleMap() {
+    public ResourceReference<IModuleMap> getModuleMap() {
         return moduleMap;
     }
 
-    public void setModuleMap(ResourceReference<ModuleMap> moduleMap) {
+    public void setModuleMap(ResourceReference<IModuleMap> moduleMap) {
         this.moduleMap = moduleMap;
     }
 

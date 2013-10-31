@@ -23,38 +23,52 @@ package org.gitools.core.matrix.model.hashmatrix;
 
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HashMatrixDimension extends AbstractMatrixDimension {
 
-    private List<String> labels;
+    private Map<String, Integer> labelToIndex;
+    private Map<Integer, String> indexToLabel;
 
-    public HashMatrixDimension() {
-        this.labels = new ArrayList<>();
+    public HashMatrixDimension(String id, int vectorPosition) {
+        super(id, vectorPosition);
+
+        this.labelToIndex = new HashMap<>();
+        this.indexToLabel = new HashMap<>();
     }
 
-    public HashMatrixDimension(String[] labels) {
-        this.labels = new ArrayList<>(Arrays.asList(labels));
+    public HashMatrixDimension(String id, int vectorPosition, String[] labels) {
+        this(id, vectorPosition);
+
+        for (String label : labels) {
+            addLabel(label);
+        }
     }
 
     @Override
     public int size() {
-        return labels.size();
+        return labelToIndex.size();
     }
 
     @Override
     public String getLabel(int index) {
-        return labels.get(index);
+        return indexToLabel.get(index);
     }
 
     @Override
     public int getIndex(String label) {
-        return labels.indexOf(label);
+
+        if (labelToIndex.containsKey(label)) {
+            return labelToIndex.get(label);
+        }
+
+        return -1;
     }
 
     void addLabel(String label) {
-        labels.add(label);
+        Integer nextIndex = this.labelToIndex.size();
+        this.labelToIndex.put(label, nextIndex);
+        this.indexToLabel.put(nextIndex, label);
     }
 }
