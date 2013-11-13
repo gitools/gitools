@@ -22,10 +22,7 @@
 package org.gitools.core.heatmap.header;
 
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.*;
 
 import java.util.List;
 
@@ -38,7 +35,10 @@ class MatrixAdapter extends AbstractMatrix {
     }
 
     @Override
-    public Object getValue(int[] position, int layerIndex) {
+    public Object getValue(IMatrixPosition position) {
+
+        String layerIdentifier = position.get(getLayers());
+        int layerIndex = getLayers().getIndex(layerIdentifier);
 
         if (layerIndex == -1) {
             return null;
@@ -46,7 +46,7 @@ class MatrixAdapter extends AbstractMatrix {
 
         HeatmapDimension heatmapDimension = header.getHeatmapDimension();
         IAnnotations annotations = heatmapDimension.getAnnotations();
-        String identifier = heatmapDimension.getLabel(position[0]);
+        String identifier = position.get(heatmapDimension);
         String value = annotations.getAnnotation(identifier, getLabels().get(layerIndex));
 
         Double number;
@@ -78,7 +78,7 @@ class MatrixAdapter extends AbstractMatrix {
     }
 
     @Override
-    public void setValue(int[] position, int layerIndex, Object value) {
+    public void setValue(IMatrixPosition position, Object value) {
     }
 
     @Override

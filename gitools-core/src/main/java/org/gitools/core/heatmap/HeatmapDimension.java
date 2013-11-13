@@ -115,7 +115,6 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
 
     public void init(Heatmap heatmap, IMatrixDimension matrixDimension) {
 
-        setVectorPosition(matrixDimension.getVectorPosition());
         setId(matrixDimension.getId());
 
         if (this.annotations == null) {

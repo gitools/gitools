@@ -46,6 +46,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImportKeggModulesAction extends BaseAction {
 
@@ -74,7 +76,8 @@ public class ImportKeggModulesAction extends BaseAction {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
                 try {
-                    IModuleMap mmap = importer.importMap(monitor);
+                    Map<String, String> descriptions = new HashMap<>();
+                    IModuleMap mmap = importer.importMap(monitor, descriptions);
                     if (!monitor.isCancelled()) {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
@@ -92,13 +95,13 @@ public class ImportKeggModulesAction extends BaseAction {
                         //TODO Use PersistenceManager
                         String prefix = FilenameUtils.getName(file.getName());
                         file = new File(file.getParentFile(), prefix + "_annotations.tsv");
-                        monitor.begin("Saving module annotations ...", mmap.getModuleCount());
+                        monitor.begin("Saving module annotations ...", mmap.getModules().size());
                         PrintWriter pw = new PrintWriter(file);
                         pw.println("id\tname");
-                        for (int i = 0; i < mmap.getModuleCount(); i++) {
-                            pw.print(mmap.getModuleName(i));
+                        for (String module : mmap.getModules()) {
+                            pw.print(module);
                             pw.print('\t');
-                            pw.println(mmap.getModuleDescription(i));
+                            pw.println(descriptions.get(module));
                             monitor.worked(1);
                         }
                         pw.close();

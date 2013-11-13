@@ -39,8 +39,8 @@ public class CompressDimension extends AbstractMatrixDimension {
      *
      * @param labels the identifier labels of this dimension
      */
-    public CompressDimension(String id, int vectorPosition, String[] labels) {
-        super(id, vectorPosition);
+    public CompressDimension(String id, String[] labels) {
+        super(id);
 
         this.labels = labels;
         this.labelsToIndex = new HashMap<>(labels.length);

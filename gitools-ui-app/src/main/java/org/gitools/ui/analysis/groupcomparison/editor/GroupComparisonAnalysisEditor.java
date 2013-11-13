@@ -25,7 +25,6 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.persistence.IResourceLocator;
@@ -156,9 +155,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
 
-                for (HeatmapLayer heatmapLayer : heatmap.getLayers()) {
-                    if (heatmapLayer.getId().contains("p-value")) {
-                        heatmapLayer.setDecorator(new PValueDecorator());
+                for (String heatmapLayerId : heatmap.getLayers()) {
+                    if (heatmapLayerId.contains("p-value")) {
+                        heatmap.getLayers().get(heatmapLayerId).setDecorator(new PValueDecorator());
                     }
                 }
 

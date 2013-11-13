@@ -22,6 +22,9 @@
 package org.gitools.cli.convert;
 
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.IMatrixIterator;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.model.HashModuleMap;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -33,25 +36,30 @@ public class MatrixToModulesConversion implements ConversionDelegate {
     @NotNull
     @Override
     public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
-        final int attrIndex = 0; // TODO get from configuration
-
-        IMatrix matrix = (IMatrix) src;
 
         HashModuleMap moduleMap = new HashModuleMap();
 
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getLayers().get(attrIndex).getValueClass());
+        IMatrix matrix = (IMatrix) src;
+        IMatrixDimension rows = matrix.getRows();
+        IMatrixDimension columns = matrix.getColumns();
+        IMatrixIterator iterator = matrix.newIterator().build();
+        IMatrixLayer currentLayer = matrix.getLayers().get(iterator.get(matrix.getLayers()));
+        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(currentLayer.getValueClass());
 
-        int numRows = matrix.getRows().size();
-        int numCols = matrix.getColumns().size();
-        for (int row = 0; row < numRows; row++) {
-            String rowLabel = matrix.getRows().getLabel(row);
+        iterator.reset( rows );
+        while (iterator.next( rows )) {
 
-            for (int col = 0; col < numCols; col++) {
-                String colLabel = matrix.getColumns().getLabel(col);
-                Object cellValue = matrix.getValue(row, col, attrIndex);
-                double value = cast.getDoubleValue(cellValue);
+            iterator.reset( columns );
+            while (iterator.next( columns )) {
+
+                double value = cast.getDoubleValue(matrix.getValue(iterator));
+
                 if (value == 1.0) {
-                    moduleMap.addMapping(colLabel, rowLabel);
+
+                    String column = iterator.get( columns );
+                    String row = iterator.get( rows );
+                    moduleMap.addMapping(column, row);
+
                 }
             }
         }

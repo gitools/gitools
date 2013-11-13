@@ -36,7 +36,6 @@ import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class CombinationProcessor implements AnalysisProcessor {
@@ -72,16 +71,8 @@ public class CombinationProcessor implements AnalysisProcessor {
         analysis.setGroupsMap(new ResourceReference<>("modules", cmap));
 
         // Prepare results matrix
-
-        String[] cclabels = cmap.getModuleNames();
-        cclabels = Arrays.copyOf(cclabels, cclabels.length);
-        String[] rlabels = new String[numRows];
-        for (int i = 0; i < numRows; i++)
-            rlabels[i] = data.getRows().getLabel(i);
-
-
         final ElementAdapter adapter = new BeanElementAdapter(CombinationResult.class);
-        final IMatrix results = new HashMatrix(rlabels, cclabels, adapter.getMatrixLayers());
+        final IMatrix results = new HashMatrix(data.getRows(), cmap.getModules(), adapter.getMatrixLayers());
 
         analysis.setResults(new ResourceReference<>("results", results));
 
@@ -89,13 +80,13 @@ public class CombinationProcessor implements AnalysisProcessor {
         int sizeIndex = -1;
         String sizeAttrName = analysis.getSizeAttrName();
         if (sizeAttrName != null && !sizeAttrName.isEmpty()) {
-            sizeIndex = data.getLayers().findId(sizeAttrName);
+            sizeIndex = data.getLayers().getIndex(sizeAttrName);
         }
 
         int pvalueIndex = 0;
         String pvalueAttrName = analysis.getPvalueAttrName();
         if (pvalueAttrName != null && !pvalueAttrName.isEmpty()) {
-            pvalueIndex = data.getLayers().findId(pvalueAttrName);
+            pvalueIndex = data.getLayers().getIndex(pvalueAttrName);
         }
 
         MatrixUtils.DoubleCast sizeCast = null;
@@ -106,12 +97,13 @@ public class CombinationProcessor implements AnalysisProcessor {
 
         MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getLayers().get(pvalueIndex).getValueClass());
 
-        int numCC = cmap.getModuleCount();
+        int numCC = cmap.getModules().size();
 
         monitor.begin("Running combination analysis ...", numCC * numRows);
 
-        for (int cmi = 0; cmi < numCC; cmi++) {
-            int[] cindices = cmap.getItemIndices(cmi);
+        int cmi = 0;
+        for (String module : cmap.getModules()) {
+            int[] cindices = cmap.getItemIndices(module);
             for (int ri = 0; ri < numRows; ri++) {
                 int n = 0;
                 double sumSizeZ = 0;
@@ -146,6 +138,7 @@ public class CombinationProcessor implements AnalysisProcessor {
                 adapter.setCell(results, ri, cmi, r);
 
                 monitor.worked(1);
+                cmi++;
             }
         }
 

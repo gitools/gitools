@@ -23,7 +23,6 @@ package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.datafilters.DoubleTranslator;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
@@ -32,13 +31,7 @@ import org.gitools.utils.csv.RawCsvWriter;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.util.concurrent.CancellationException;
 
 public class TdmMatrixFormat extends AbstractMatrixFormat {
@@ -120,9 +113,9 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         out.writeSeparator();
         out.writeQuotedValue("row");
 
-        for (IMatrixLayer prop : resultsMatrix.getLayers()) {
+        for (String layerId : resultsMatrix.getLayers()) {
             out.writeSeparator();
-            out.writeQuotedValue(prop.getId());
+            out.writeQuotedValue(layerId);
         }
 
         out.writeNewLine();
@@ -164,8 +157,10 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 out.write(DoubleTranslator.get().valueToString(v));
             } else if (value instanceof Integer) {
                 out.writeValue(value.toString());
-            } else {
+            } else if (value != null) {
                 out.writeQuotedValue(value.toString());
+            } else {
+                out.writeValue("-");
             }
         }
 

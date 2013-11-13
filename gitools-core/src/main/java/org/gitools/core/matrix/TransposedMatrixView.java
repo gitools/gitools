@@ -22,10 +22,7 @@
 package org.gitools.core.matrix;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
-import org.gitools.core.matrix.model.IMatrixViewLayers;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
@@ -79,8 +76,8 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public Object getValue(int[] position, int layer) {
-        return mv.getValue(position, layer);
+    public Object getValue(IMatrixPosition position) {
+        return mv.getValue(position);
     }
 
     @Override
@@ -89,8 +86,13 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
-        mv.setValue(position, layer, value);
+    public void setValue(IMatrixPosition position, Object value) {
+        mv.setValue(position, value);
+    }
+
+    @Override
+    public IMatrixIterator newIterator() {
+        return mv.newIterator();
     }
 
     @Override

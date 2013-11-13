@@ -27,7 +27,6 @@ import java.util.*;
 public class HashModuleMap extends Resource implements IModuleMap {
 
     private List<String> modules;
-    private Map<String, String> modulesDescriptionMap;
     private List<String> items;
     private Map<String, List<String>> map;
 
@@ -37,37 +36,11 @@ public class HashModuleMap extends Resource implements IModuleMap {
         this.modules = new ArrayList<>();
         this.items = new ArrayList<>();
         this.map = new HashMap<>();
-        this.modulesDescriptionMap = new HashMap<>();
-    }
-
-    @Override
-    public String[] getModuleNames() {
-        return modules.toArray(new String[modules.size()]);
     }
 
     @Override
     public Collection<String> getModules() {
         return modules;
-    }
-
-    @Override
-    public int getModuleCount() {
-        return modules.size();
-    }
-
-    @Override
-    public String getModuleName(int index) {
-        return modules.get(index);
-    }
-
-    @Override
-    public String getModuleDescription(int index) {
-        return modulesDescriptionMap.get(modules.get(index));
-    }
-
-    @Override
-    public String[] getItemNames() {
-        return items.toArray(new String[items.size()]);
     }
 
     @Override
@@ -81,16 +54,6 @@ public class HashModuleMap extends Resource implements IModuleMap {
     }
 
     @Override
-    public String getItemName(int index) {
-        return items.get(index);
-    }
-
-    @Override
-    public int[] getItemIndices(int moduleIndex) {
-        return getItemIndices(modules.get(moduleIndex));
-    }
-
-    @Override
     public int[] getItemIndices(String modName) {
 
         int[] result = getMapIndices().get(modName);
@@ -100,19 +63,6 @@ public class HashModuleMap extends Resource implements IModuleMap {
         }
 
         return result;
-    }
-
-    public void addModule(String module) {
-        addModule(module, "");
-    }
-
-    public void addModule(String module, String description) {
-
-        if (!modules.contains(module)) {
-            modules.add(module);
-        }
-
-        this.modulesDescriptionMap.put(module, description);
     }
 
     public HashModuleMap addMapping(String module, String... items) {
@@ -163,5 +113,13 @@ public class HashModuleMap extends Resource implements IModuleMap {
         }
 
         return mapIndices;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(modules.size()).append(" modules, ");
+        sb.append(items.size()).append(" items");
+        return sb.toString();
     }
 }

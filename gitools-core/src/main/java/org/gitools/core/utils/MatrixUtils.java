@@ -174,14 +174,15 @@ public class MatrixUtils {
 
     public static IMatrix moduleMapToMatrix(IModuleMap mmap) {
 
-        String[] columns = mmap.getModuleNames();
-        String[] rows = mmap.getItemNames();
+        IMatrix matrix = new HashMatrix(mmap.getItems(), mmap.getModules(), new MatrixLayers(Arrays.asList(new MatrixLayer("value", double.class))));
 
-        IMatrix matrix = new HashMatrix(rows, columns, new MatrixLayers(Arrays.asList(new MatrixLayer("value", double.class))));
-
-        for (int col = 0; col < mmap.getModuleCount(); col++)
-            for (int row : mmap.getItemIndices(col))
+        int col=0;
+        for (String column : mmap.getModules()) {
+            for (int row : mmap.getItemIndices(column)) {
                 matrix.setValue(row, col, 0, 1.0);
+            }
+            col++;
+        }
         return matrix;
     }
 

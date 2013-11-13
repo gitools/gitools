@@ -27,18 +27,16 @@ import java.util.Iterator;
 
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
-    private int vectorPosition;
     private String id;
 
     protected AbstractMatrixDimension() {
         super();
     }
 
-    public AbstractMatrixDimension(String id, int vectorPosition) {
+    public AbstractMatrixDimension(String id) {
         super();
 
         this.id = id;
-        this.vectorPosition = vectorPosition;
     }
 
     @Override
@@ -48,39 +46,6 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
 
     protected void setId(String id) {
         this.id = id;
-    }
-
-    @Override
-    public int getVectorPosition() {
-        return vectorPosition;
-    }
-
-    protected void setVectorPosition(int vectorPosition) {
-        this.vectorPosition = vectorPosition;
-    }
-
-    @Override
-    public int getPosition(int[] matrixPosition) {
-        return matrixPosition[vectorPosition];
-    }
-
-    @Override
-    public void setPosition(int[] matrixPosition, int index) {
-        matrixPosition[vectorPosition] = index;
-    }
-
-    @Override
-    public int next(int[] matrixPosition) {
-        int next = matrixPosition[vectorPosition]++;
-
-        if (next == size()) {
-            matrixPosition[vectorPosition] = 0;
-            next = -1;
-        } else {
-            matrixPosition[vectorPosition] = next;
-        }
-
-        return next;
     }
 
     @Override
@@ -110,5 +75,22 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
         public void remove() {
             throw new UnsupportedOperationException("Read only iterator");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractMatrixDimension strings = (AbstractMatrixDimension) o;
+
+        if (!id.equals(strings.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

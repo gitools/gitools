@@ -24,7 +24,6 @@ package org.gitools.ui.analysis.correlation.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.correlation.CorrelationAnalysis;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.impl.CorrelationDecorator;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
@@ -162,11 +161,11 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
         heatmap.setTitle(analysis.getTitle() + " (results)");
 
-        for (HeatmapLayer layer : heatmap.getLayers()) {
-            layer.setDecorator(new CorrelationDecorator());
+        for (String layer : heatmap.getLayers()) {
+            heatmap.getLayers().get(layer).setDecorator(new CorrelationDecorator());
         }
 
-        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("score"));
+        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().getIndex("score"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;

@@ -96,16 +96,13 @@ public class ViewRelatedDataFromColumnAction extends BaseAction {
             }
             moduleNames.append(modName);
 
-            int[] indices = map.getItemIndices(modName);
-            if (indices != null) {
-                for (int index : indices) {
-                    String itemName = map.getItemName(index);
-                    Integer dstIndex = itemNameMap.get(itemName);
-                    if (dstIndex != null) {
-                        elements.add(dstIndex);
-                    }
+            for (String item : map.getMappingItems(modName)) {
+                Integer dstIndex = itemNameMap.get(item);
+                if (dstIndex != null) {
+                    elements.add(dstIndex);
                 }
             }
+
         }
 
         int[] newView = new int[elements.size()];

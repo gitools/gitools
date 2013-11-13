@@ -21,9 +21,7 @@
  */
 package org.gitools.core.matrix;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 
 public class TransposedMatrix implements IMatrix {
@@ -45,18 +43,18 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public Object getValue(int[] position, int layerIndex) {
-        return matrix.getValue(position, layerIndex);
-    }
-
-    @Override
     public void setValue(int row, int column, int layer, Object value) {
         matrix.setValue(row, column, layer, value);
     }
 
     @Override
-    public void setValue(int[] position, int layerIndex, Object value) {
-        matrix.setValue(position, layerIndex, value);
+    public void setValue(IMatrixPosition position, Object value) {
+        matrix.setValue(position, value);
+    }
+
+    @Override
+    public IMatrixIterator newIterator() {
+        return matrix.newIterator();
     }
 
     @Override
@@ -67,6 +65,11 @@ public class TransposedMatrix implements IMatrix {
     @Override
     public Object getValue(int row, int column, int layerIndex) {
         return matrix.getValue(row, column, layerIndex);
+    }
+
+    @Override
+    public Object getValue(IMatrixPosition position) {
+        return matrix.getValue(position);
     }
 
     @Override

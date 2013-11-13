@@ -22,7 +22,6 @@
 package org.gitools.ui.wizard.add.data;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -62,8 +61,8 @@ public class DataDetailsPage extends AbstractWizardPage {
             String existingName;
             String originalWantedName = nameField.getText();
             String wantedName = originalWantedName.toLowerCase().trim();
-            for (IMatrixLayer iElementAttribute : hm.getLayers()) {
-                existingName = iElementAttribute.getName().toLowerCase();
+            for (String layerId : hm.getLayers()) {
+                existingName = layerId.toLowerCase();
                 if (existingName.equals(wantedName)) {
                     setMessage(MessageStatus.ERROR, "Data dimension with name '" + originalWantedName + "' already exists");
                     everythingIsOk = false;

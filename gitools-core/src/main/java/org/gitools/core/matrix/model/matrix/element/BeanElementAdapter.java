@@ -104,7 +104,7 @@ public class BeanElementAdapter extends ElementAdapter<BeanMatrixLayer> {
         }
 
         try {
-            for (int layerIndex = 0; layerIndex < getMatrixLayers().size(); layerIndex++) {
+            for (int layerIndex=0 ; layerIndex < getMatrixLayers().size(); layerIndex++) {
 
                 BeanMatrixLayer layer = getMatrixLayers().get(layerIndex);
                 Method getter = layer.getGetterMethod();

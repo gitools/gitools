@@ -22,10 +22,8 @@
 package org.gitools.core.heatmap;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixViewLayers;
+import org.apache.commons.lang.StringUtils;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DecoratorFactory;
 import org.gitools.core.model.decorator.DetailsDecoration;
@@ -61,29 +59,28 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     private void createLayers(IMatrix matrix) {
         IMatrixLayers<? extends IMatrixLayer> matrixLayers = matrix.getLayers();
-        this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
+        this.layers = new ArrayList<>(matrixLayers.size());
         this.layerNames = null;
         this.layersIdToIndex = null;
 
-        for (int i = 0; i < matrixLayers.size(); i++) {
-            IMatrixLayer layer = matrixLayers.get(i);
-            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
-            this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
+        for (String layerId : matrixLayers) {
+            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layerId);
+            this.layers.add(new HeatmapLayer(layerId, matrixLayers.get(layerId).getValueClass(), defaultDecorator));
         }
     }
 
     public void init(IMatrix matrix) {
-        IMatrixLayers matrixLayers = matrix.getLayers();
+        IMatrixLayers<?> matrixLayers = matrix.getLayers();
         this.layersIdToIndex = new HashMap<>(matrixLayers.size());
         this.layerNames = new ArrayList<>(matrixLayers.size());
 
         // Reorder layers
         List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
-        for (int i=0; i < matrixLayers.size(); i++) {
-            IMatrixLayer layer = matrixLayers.get(i);
+        for (String layerId : matrixLayers) {
+            IMatrixLayer layer = matrixLayers.get(layerId);
             HeatmapLayer orderedLayer = null;
             for (HeatmapLayer heatmapLayer : this.layers) {
-                if (heatmapLayer.getId().equals(layer.getId())) {
+                if (heatmapLayer.getId().equals(layerId)) {
                     orderedLayer = heatmapLayer;
                     break;
                 }
@@ -91,8 +88,8 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
             // This is a new layer
             if (orderedLayer == null) {
-                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
-                orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
+                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layerId);
+                orderedLayer = new HeatmapLayer(layerId, layer.getValueClass(), defaultDecorator);
             }
 
             orderedLayers.add(orderedLayer);
@@ -122,7 +119,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     public void setTopLayerById(String id) {
-        int layer = findId(id);
+        int layer = getIndex(id);
 
         if (layer != -1) {
             setTopLayerIndex(layer);
@@ -145,12 +142,17 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     @Override
-    public HeatmapLayer get(int layerIndex) {
-        return layers.get(layerIndex);
+    public HeatmapLayer get(String layer) {
+        return layers.get(getIndex(layer));
     }
 
     @Override
-    public int findId(String id) {
+    public HeatmapLayer get(int layer) {
+        return layers.get(layer);
+    }
+
+    @Override
+    public int getIndex(String id) {
         Integer layer = layersIdToIndex.get(id);
 
         if (layer == null) {
@@ -161,13 +163,18 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     @Override
+    public String getId() {
+        return MatrixLayers.LAYERS_ID;
+    }
+
+    @Override
     public int size() {
         return layers.size();
     }
 
     @Override
-    public Iterator<HeatmapLayer> iterator() {
-        return layers.iterator();
+    public String getLabel(int index) {
+        return layers.get(index).getId();
     }
 
     public List<String> getLayerNames() {
@@ -182,6 +189,25 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
             i++;
         }
 
+    }
 
+    @Override
+    public Iterator<String> iterator() {
+        return layersIdToIndex.keySet().iterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HeatmapLayers strings = (HeatmapLayers) o;
+
+        return StringUtils.equals(getId(), strings.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }

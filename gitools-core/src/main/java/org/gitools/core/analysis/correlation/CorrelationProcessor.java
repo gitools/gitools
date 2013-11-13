@@ -66,14 +66,10 @@ public class CorrelationProcessor implements AnalysisProcessor {
 
         monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
 
-        String[] labels = new String[numColumns];
-        for (int i = 0; i < numColumns; i++)
-            labels[i] = data.getColumns().getLabel(i);
-
         final ElementAdapter adapter = new BeanElementAdapter(method.getResultClass());
-        final IMatrix results = new HashMatrix(labels, labels, adapter.getMatrixLayers());
+        final IMatrix results = new HashMatrix(data.getColumns(), data.getColumns(), adapter.getMatrixLayers());
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", results));
+        analysis.setResults(new ResourceReference<>("results", results));
 
         double[] x = new double[numRows];
         double[] y = new double[numRows];

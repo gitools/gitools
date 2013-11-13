@@ -21,10 +21,7 @@
  */
 package org.gitools.core.matrix.model.hashmatrix;
 
-import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.MatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,24 +32,24 @@ public class HashMatrix extends AbstractMatrix {
     private HashMatrixDimension columns;
     private MatrixLayers layers;
 
-    private Map<Integer, Map<String, Map<String, Object>>> values;
+    private Map<String, Map<String, Map<String, Object>>> values;
 
     public HashMatrix() {
-        this(new HashMatrixDimension("rows", 0), new HashMatrixDimension("columns", 1), new MatrixLayers());
+        this(new HashMatrixDimension("rows"), new HashMatrixDimension("columns"), new MatrixLayers());
     }
 
-    public HashMatrix(String[] rows, String[] columns, MatrixLayers layers) {
-        this(new HashMatrixDimension("rows", 0, rows), new HashMatrixDimension("columns", 1, columns), layers);
+    public HashMatrix(Iterable<String> rows, Iterable<String> columns, MatrixLayers layers) {
+        this(new HashMatrixDimension("rows", rows), new HashMatrixDimension("columns", columns), layers);
     }
 
-    private HashMatrix(HashMatrixDimension rows, HashMatrixDimension columns, MatrixLayers layers) {
+    private HashMatrix(HashMatrixDimension rows, HashMatrixDimension columns, MatrixLayers<?> layers) {
         this.rows = rows;
         this.columns = columns;
         this.layers = layers;
 
         this.values = new ConcurrentHashMap<>();
-        for (int i=0; i < layers.size(); i++) {
-            values.put(i, new ConcurrentHashMap<String, Map<String, Object>>());
+        for (String layer : layers) {
+            values.put(layer, new ConcurrentHashMap<String, Map<String, Object>>());
         }
     }
 
@@ -72,21 +69,23 @@ public class HashMatrix extends AbstractMatrix {
     }
 
     @Override
-    public Object getValue(int[] position, int layer) {
+    public Object getValue(IMatrixPosition position) {
 
-        String columnIdentifier = columns.getLabel(columns.getPosition(position));
-        String rowIdentifier = rows.getLabel(rows.getPosition(position));
+        String layer = position.get(getLayers());
+        String row = position.get(getRows());
+        String column = position.get(getColumns());
 
-        return getRow(layer, rowIdentifier).get(columnIdentifier);
+        return getRow(layer, row).get(column);
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
+    public void setValue(IMatrixPosition position, Object value) {
 
-        String columnIdentifier = columns.getLabel(columns.getPosition(position));
-        String rowIdentifier = rows.getLabel(rows.getPosition(position));
+        String layer = position.get(getLayers());
+        String row = position.get(getRows());
+        String column = position.get(getColumns());
 
-        getRow(layer, rowIdentifier).put(columnIdentifier, value);
+        getRow(layer, row).put(column, value);
     }
 
     public void setValue(String rowId, String columnId, String layerId, Object value) {
@@ -96,11 +95,10 @@ public class HashMatrix extends AbstractMatrix {
         }
 
         // Check that the layers exists
-        int layerIndex = layers.findId(layerId);
+        int layerIndex = layers.getIndex(layerId);
         if (layerIndex == -1) {
             layers.add(new MatrixLayer(layerId, value.getClass()));
-            layerIndex = layers.findId(layerId);
-            values.put(layerIndex, new ConcurrentHashMap<String, Map<String, Object>>());
+            values.put(layerId, new ConcurrentHashMap<String, Map<String, Object>>());
         }
 
         // Check that the row exists
@@ -113,10 +111,10 @@ public class HashMatrix extends AbstractMatrix {
             columns.addLabel(columnId);
         }
 
-        getRow(layerIndex, rowId).put(columnId, value);
+        getRow(layerId, rowId).put(columnId, value);
     }
 
-    private Map<String, Object> getRow(int layer, String row) {
+    private Map<String, Object> getRow(String layer, String row) {
 
         if (!values.get(layer).containsKey(row)) {
             values.get(layer).put(row, new ConcurrentHashMap<String, Object>());

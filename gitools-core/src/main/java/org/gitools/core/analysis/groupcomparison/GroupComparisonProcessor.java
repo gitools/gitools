@@ -38,6 +38,7 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -63,16 +64,10 @@ public class GroupComparisonProcessor extends HtestProcessor {
 
         final int numRows = data.getRows().size();
 
-        String[] columnLabels = new String[1];
-        columnLabels[0] = analysis.getTest().getName();
-        String[] rlabels = new String[numRows];
-        for (int i = 0; i < numRows; i++)
-            rlabels[i] = data.getRows().getLabel(i);
-
         final ElementAdapter adapter = new BeanElementAdapter(GroupComparisonResult.class);
 
         // Prepare results matrix
-        final IMatrix resultsMatrix = new HashMatrix(rlabels, columnLabels, adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(data.getRows(), Arrays.asList(analysis.getTest().getName()), adapter.getMatrixLayers());
 
         monitor.begin("Running group comparison analysis ...", numRows);
 
@@ -82,42 +77,42 @@ public class GroupComparisonProcessor extends HtestProcessor {
         final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
 
 
-        for (int column = 0; column < columnLabels.length; column++) {
-            for (int row = 0; row < numRows; row++) {
+        int column = 0;
+        for (int row = 0; row < numRows; row++) {
 
-                int[] group1 = getColumnIndices(data, analysis.getGroups1(), row);
-                int[] group2 = getColumnIndices(data, analysis.getGroups2(), row);
+            int[] group1 = getColumnIndices(data, analysis.getGroups1(), row);
+            int[] group2 = getColumnIndices(data, analysis.getGroups2(), row);
 
 
-                double[] groupVals1 = new double[group1.length];
-                double[] groupVals2 = new double[group2.length];
-                for (int gi = 0; gi < group1.length; gi++) {
-                    Object value = data.getValue(row, group1[gi], attrIndex);
-                    Double v = cast.getDoubleValue(value);
-                    if (v == null || Double.isNaN(v)) {
-                        v = Double.NaN;
-                    }
-                    groupVals1[gi] = v;
+            double[] groupVals1 = new double[group1.length];
+            double[] groupVals2 = new double[group2.length];
+            for (int gi = 0; gi < group1.length; gi++) {
+                Object value = data.getValue(row, group1[gi], attrIndex);
+                Double v = cast.getDoubleValue(value);
+                if (v == null || Double.isNaN(v)) {
+                    v = Double.NaN;
                 }
-                for (int gi = 0; gi < group2.length; gi++) {
-                    Object value = data.getValue(row, group2[gi], attrIndex);
-                    Double v = cast.getDoubleValue(value);
-                    if (v == null || Double.isNaN(v)) {
-                        v = Double.NaN;
-                    }
-                    groupVals2[gi] = v;
-                }
-
-                MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
-                GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
-
-                adapter.setCell(resultsMatrix, row, column, r);
-
-                monitor.worked(1);
+                groupVals1[gi] = v;
             }
+            for (int gi = 0; gi < group2.length; gi++) {
+                Object value = data.getValue(row, group2[gi], attrIndex);
+                Double v = cast.getDoubleValue(value);
+                if (v == null || Double.isNaN(v)) {
+                    v = Double.NaN;
+                }
+                groupVals2[gi] = v;
+            }
+
+            MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
+            GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
+
+            adapter.setCell(resultsMatrix, row, column, r);
+
+            monitor.worked(1);
         }
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
+
+        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
@@ -129,7 +124,7 @@ public class GroupComparisonProcessor extends HtestProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
         monitor.end();
 

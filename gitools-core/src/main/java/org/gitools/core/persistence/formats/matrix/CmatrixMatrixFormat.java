@@ -78,8 +78,8 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<IMatrix> {
 
             in.close();
 
-            CompressDimension rowDim = new CompressDimension("rows", 0, rows);
-            CompressDimension colDim = new CompressDimension("columns", 1, columns);
+            CompressDimension rowDim = new CompressDimension("rows", rows);
+            CompressDimension colDim = new CompressDimension("columns", columns);
             return new CompressMatrix(rowDim, colDim, dictionary, headers, values);
 
         } catch (IOException e) {

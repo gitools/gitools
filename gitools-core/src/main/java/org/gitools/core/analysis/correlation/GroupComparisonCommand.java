@@ -131,7 +131,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 } else if (matcher.find()) {
                     dataDim = matcher.group(1);
                 }
-                dataDimIndex = data.getLayers().findId(dataDim);
+                dataDimIndex = data.getLayers().getIndex(dataDim);
 
                 String[] parts = groupDefs[i].split(" ");
                 int partsNb = parts.length;

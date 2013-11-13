@@ -169,7 +169,9 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getCellResults().get(), true);
         heatmap.setTitle(analysis.getTitle() + " (results)");
-        for (HeatmapLayer layer : heatmap.getLayers()) {
+        for (String layerId : heatmap.getLayers()) {
+
+            HeatmapLayer layer = heatmap.getLayers().get(layerId);
             LinearDecorator dec = new LinearDecorator();
             Color minColor = new Color(0x63, 0xdc, 0xfe);
             Color maxColor = new Color(0xff, 0x00, 0x5f);
@@ -183,7 +185,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
             layer.setDecorator(dec);
         }
 
-        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("jaccard-index"));
+        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().getIndex("jaccard-index"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;
