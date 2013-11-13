@@ -25,10 +25,7 @@ package org.gitools.core.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.MatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.PersistenceException;
 import org.gitools.core.utils.MemoryUtils;
 
@@ -131,13 +128,21 @@ public class CompressMatrix extends AbstractMatrix {
     }
 
     @Override
-    public Object getValue(int[] position, int layer) {
+    public Object getValue(IMatrixPosition position) {
+
+        String rowIdentifier = position.get(rows);
+        int row = rows.getIndex(rowIdentifier);
+
+        String columnIdentifier = position.get(columns);
+        int column = columns.getIndex(columnIdentifier);
+
+        String layerIdentifier = position.get(layers);
+        int layer = layers.getIndex(layerIdentifier);
 
         // The cache is who loads the value if it's not already loaded.
-        double[][] rowValues = rowsCache.getUnchecked(rows.getPosition(position));
+        double[][] rowValues = rowsCache.getUnchecked(row);
 
         if (rowValues != null) {
-            int column = columns.getPosition(position);
 
             if (column != -1) {
                 return rowValues[column][layer];
@@ -148,7 +153,7 @@ public class CompressMatrix extends AbstractMatrix {
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
+    public void setValue(IMatrixPosition position, Object value) {
         throw new UnsupportedOperationException("Read only matrix");
     }
 

@@ -23,37 +23,29 @@ package org.gitools.core.matrix.model;
 
 import java.util.*;
 
-public class MatrixLayers<T extends MatrixLayer> implements IMatrixLayers<T> {
+public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension implements IMatrixLayers<T> {
+
+    public static final String LAYERS_ID = "layers";
 
     private List<T> layers = new ArrayList<>();
     private Map<String, Integer> idToIndex = new HashMap<>();
 
     public MatrixLayers() {
+        super(LAYERS_ID);
     }
 
-    public MatrixLayers(List<T> descriptors) {
-        for (T layer : descriptors) {
+    public MatrixLayers(List<T> layers) {
+        this();
+
+        for (T layer : layers) {
             add(layer);
         }
     }
 
-
-    private void init() {
-        this.idToIndex = new HashMap<>(layers.size());
-        for (int i = 0; i < layers.size(); i++) {
-            this.idToIndex.put(layers.get(i).getId(), i);
-        }
-    }
-
     @Override
-    public T get(int layerIndex) {
-        return layers.get(layerIndex);
-    }
-
-    @Override
-    public int findId(String id) {
-        if (idToIndex.containsKey(id)) {
-            return idToIndex.get(id);
+    public int getIndex(String label) {
+        if (idToIndex.containsKey(label)) {
+            return idToIndex.get(label);
         }
 
         return -1;
@@ -65,12 +57,24 @@ public class MatrixLayers<T extends MatrixLayer> implements IMatrixLayers<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
-        return layers.iterator();
+    public String getLabel(int index) {
+        return layers.get(index).getId();
+    }
+
+    @Override
+    public T get(String layer) {
+        return layers.get(getIndex(layer));
+    }
+
+    @Override
+    public T get(int layer) {
+        return layers.get(layer);
     }
 
     public void add(T matrixLayer) {
         layers.add(matrixLayer);
         idToIndex.put(matrixLayer.getId(), layers.indexOf(matrixLayer));
     }
+
+
 }

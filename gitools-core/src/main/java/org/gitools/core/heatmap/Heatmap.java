@@ -25,20 +25,16 @@ import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.core.matrix.MirrorDimension;
 import org.gitools.core.matrix.model.AbstractMatrix;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -176,27 +172,13 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     }
 
     @Override
-    public Object getValue(int[] position, int layer) {
-
-        int[] p = Arrays.copyOf(position, position.length);
-
-        applyDiagonal(p);
-        applyVisible(p);
-        applyDiagonal(p);
-
-        return getContents().getValue(p, layer);
+    public Object getValue(IMatrixPosition position) {
+        return getContents().getValue(position);
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
-
-        int[] p = Arrays.copyOf(position, position.length);
-
-        applyDiagonal(p);
-        applyVisible(p);
-        applyDiagonal(p);
-
-        getContents().setValue(p, layer, value);
+    public void setValue(IMatrixPosition position, Object value) {
+        getContents().setValue(position, value);
     }
 
     @Override
@@ -220,19 +202,6 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
         } */
-    }
-
-    private void applyDiagonal(int[] position) {
-        if (isDiagonal() && position[COLUMN] < position[ROW]) {
-            int tmp = position[COLUMN];
-            position[COLUMN] = position[ROW];
-            position[ROW] = tmp;
-        }
-    }
-
-    private void applyVisible(int[] position) {
-        position[ROW] = getRows().getVisibleIndices()[position[ROW]];
-        position[COLUMN] = getColumns().getVisibleIndices()[position[COLUMN]];
     }
 
 }

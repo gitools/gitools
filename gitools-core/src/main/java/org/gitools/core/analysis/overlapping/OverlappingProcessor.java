@@ -56,7 +56,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
         int attrIndex = 0;
         String attrName = analysis.getAttributeName();
         if (attrName != null && !attrName.isEmpty()) {
-            attrIndex = data.getLayers().findId(attrName);
+            attrIndex = data.getLayers().getIndex(attrName);
         }
 
         if (analysis.isTransposeData()) {
@@ -70,14 +70,9 @@ public class OverlappingProcessor implements AnalysisProcessor {
 
         monitor.begin("Running Overlapping analysis ...", numColumns * (numColumns - 1) / 2);
 
-        String[] labels = new String[numColumns];
-        for (int i = 0; i < numColumns; i++)
-            labels[i] = data.getColumns().getLabel(i);
-
-
         final ElementAdapter adapter = new BeanElementAdapter(OverlappingResult.class);
-        final IMatrix results = new HashMatrix(labels, labels, adapter.getMatrixLayers());
-        analysis.setCellResults(new ResourceReference<IMatrix>("results", results));
+        final IMatrix results = new HashMatrix(data.getColumns(), data.getColumns(), adapter.getMatrixLayers());
+        analysis.setCellResults(new ResourceReference<>("results", results));
 
         BitSet x = new BitSet(numRows);
         BitSet xna = new BitSet(numRows);

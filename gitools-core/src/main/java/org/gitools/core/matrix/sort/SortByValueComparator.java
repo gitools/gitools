@@ -26,10 +26,10 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.MatrixPosition;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.CancellationException;
 
@@ -42,7 +42,7 @@ public class SortByValueComparator implements Comparator<Integer> {
     private IMatrixView matrixView;
     private int[] aggregatingIndices;
     private double[] valueBuffer;
-    private int[] position = new int[2];
+    private MatrixPosition position;
 
     private LoadingCache<Long, Double> cache;
 
@@ -54,6 +54,7 @@ public class SortByValueComparator implements Comparator<Integer> {
         this.matrixView = matrixView;
         this.progressMonitor = progressMonitor;
         this.valueBuffer = new double[aggregatingIndices.length];
+        this.position = new MatrixPosition();
 
         this.cache = CacheBuilder.newBuilder()
                 .maximumSize(totalItemsToSort + 10)
@@ -75,8 +76,6 @@ public class SortByValueComparator implements Comparator<Integer> {
 
         ValueSortCriteria criteria = null;
         int criteriaIndex = 0;
-
-        Arrays.fill(position, 0);
 
         while (criteriaIndex < criteriaArray.length && aggr1 == aggr2) {
 
@@ -121,13 +120,14 @@ public class SortByValueComparator implements Comparator<Integer> {
             throw new CancellationException();
         }
 
-        sortDimension.setPosition(position, index);
+        position.set(sortDimension, sortDimension.getLabel(index));
         ValueSortCriteria criteria = criteriaArray[criteriaIndex];
 
+        position.set(matrixView.getLayers(), matrixView.getLayers().getLabel(criteria.getAttributeIndex()));
 
         for (int i = 0; i < aggregatingIndices.length; i++) {
-            aggregationDimension.setPosition(position, aggregatingIndices[i]);
-            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.getValue(position, criteria.getAttributeIndex()));
+            position.set(aggregationDimension, aggregationDimension.getLabel(aggregatingIndices[i]));
+            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.getValue(position));
         }
 
         return criteria.getAggregator().aggregate(valueBuffer);

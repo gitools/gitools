@@ -47,6 +47,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.Iterator;
 
 public class OncodriveProcessor extends HtestProcessor {
 
@@ -90,21 +91,14 @@ public class OncodriveProcessor extends HtestProcessor {
         analysis.setModuleMap(new ResourceReference<>("modules", csmap));
 
         final int numRows = dataMatrix.getRows().size();
-        String[] rowLabels = new String[numRows];
-        for (int i = 0; i < numRows; i++)
-            rowLabels[i] = dataMatrix.getRows().getLabel(i);
-
-        String[] csetLabels = new String[csmap.getModuleNames().length];
-        System.arraycopy(csmap.getModuleNames(), 0, csetLabels, 0, csmap.getModuleNames().length);
-
-        final int numCsets = csetLabels.length;
+        final int numCsets = csmap.getModules().size();
 
         monitor.begin("Running oncodrive analysis...", numRows * numCsets);
 
         Test test = testFactory.create();
 
         final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
-        final IMatrix resultsMatrix = new HashMatrix(rowLabels, csetLabels, adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(dataMatrix.getRows(), csmap.getModules(), adapter.getMatrixLayers());
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -121,14 +115,11 @@ public class OncodriveProcessor extends HtestProcessor {
         final int maxCsetSize = analysis.getMaxModuleSize();
 
 		/* Test analysis */
-
-        for (int csetIndex = 0; csetIndex < numCsets; csetIndex++) {
-
+        Iterator<String> modulesIterator = csmap.getModules().iterator();
+        for (int csetIndex = 0; modulesIterator.hasNext(); csetIndex++) {
             final int csetIdx = csetIndex;
-
-            final String csetName = csetLabels[csetIndex];
-
-            final int[] columnIndices = csmap.getItemIndices(csetIndex);
+            final String csetName = modulesIterator.next();
+            final int[] columnIndices = csmap.getItemIndices(csetName);
 
             final IProgressMonitor condMonitor = monitor.subtask();
 
@@ -156,7 +147,7 @@ public class OncodriveProcessor extends HtestProcessor {
 
                     final int itemIdx = itemIndex;
 
-                    final String itemName = rowLabels[itemIdx];
+                    final String itemName = dataMatrix.getRows().getLabel(itemIdx);
 
                     final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 

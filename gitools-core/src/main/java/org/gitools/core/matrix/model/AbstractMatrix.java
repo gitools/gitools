@@ -27,12 +27,35 @@ public abstract class AbstractMatrix extends Resource implements IMatrix {
 
     @Override
     public Object getValue(int row, int column, int layerIndex) {
-        return getValue(new int[]{ row, column }, layerIndex);
+        return getValue(getPostion(row, column, layerIndex));
     }
 
     @Override
     public void setValue(int row, int column, int layer, Object value) {
-        setValue(new int[]{row, column}, layer, value);
+        setValue(getPostion(row, column, layer), value);
+    }
+
+    private MatrixPosition getPostion(int row, int column, int layer) {
+
+        IMatrixDimension rows = getRows();
+        String rowIdentifier = rows.getLabel(row);
+
+        IMatrixDimension columns = getColumns();
+        String columnIdentifier = columns.getLabel(column);
+
+        IMatrixDimension layers = getLayers();
+        String layerIdentifier = layers.getLabel(layer);
+
+        return new MatrixPosition()
+                .set(rows, rowIdentifier)
+                .set(columns, columnIdentifier)
+                .set(layers, layerIdentifier);
+
+    }
+
+    @Override
+    public IMatrixIterator newIterator() {
+        return new MatrixIterator();
     }
 
     @Override

@@ -86,9 +86,9 @@ public class EnrichmentProcessor extends HtestProcessor {
 
             Heatmap heatmap = new Heatmap(dataMatrix);
             List<Integer> rowsToHide = new ArrayList<>();
-            String[] names = analysis.getModuleMap().get().getItemNames();
+            Collection<String> names = analysis.getModuleMap().get().getItems();
             Set<String> backgroundNames = new HashSet<>();
-            backgroundNames.addAll(Arrays.asList(names));
+            backgroundNames.addAll(names);
 
             for (int i = 0; i < dataMatrix.getRows().size(); i++) {
                 if (!backgroundNames.contains(dataMatrix.getRows().getLabel(i))) {
@@ -109,22 +109,13 @@ public class EnrichmentProcessor extends HtestProcessor {
         mmap = ModuleMapUtils.filterByItems( mmap, dataMatrix.getRows() );
         mmap = ModuleMapUtils.filterByModuleSize( mmap, analysis.getMinModuleSize(), analysis.getMaxModuleSize() );
 
-        //DoubleMatrix2D data = null;
-        String[] conditions = new String[dataMatrix.getColumns().size()];
-        for (int i = 0; i < numConditions; i++)
-            conditions[i] = dataMatrix.getColumns().getLabel(i);
-
-        String[] modules = new String[mmap.getModuleNames().length];
-        System.arraycopy(mmap.getModuleNames(), 0, modules, 0, mmap.getModuleNames().length);
-
-        final int numModules = modules.length;
+        Collection<String> modules = mmap.getModules();
 
         monitor.begin("Running enrichment analysis...", numConditions);
-
         Test test = testFactory.create();
 
         final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
-        final IMatrix resultsMatrix = new HashMatrix(modules, conditions, adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(modules, dataMatrix.getColumns(), adapter.getMatrixLayers());
 
         int numProcs = ThreadManager.getNumThreads();
 
@@ -144,10 +135,8 @@ public class EnrichmentProcessor extends HtestProcessor {
 
         for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++) {
 
-            //final String condName = conditions.getQuick(condIndex).toString();
             final String condName = dataMatrix.getColumns().getLabel(condIndex);
 
-            //final DoubleMatrix1D condItems = data.viewRow(condIndex);
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
             for (int i = 0; i < numRows; i++) {
                 double value = MatrixUtils.doubleValue(dataMatrix.getValue(i, condIndex, 0));
@@ -159,12 +148,13 @@ public class EnrichmentProcessor extends HtestProcessor {
 
             final IProgressMonitor condMonitor = monitor.subtask();
 
-            condMonitor.begin("Condition " + condName + "...", numModules);
+            condMonitor.begin("Condition " + condName + "...", modules.size());
 
-            for (int moduleIndex = 0; moduleIndex < numModules && !monitor.isCancelled(); moduleIndex++) {
+            Iterator<String> modulesIterator = modules.iterator();
+            for (int moduleIndex = 0; modulesIterator.hasNext() && !monitor.isCancelled(); moduleIndex++) {
 
-                final String moduleName = modules[moduleIndex];
-                final int[] itemIndices = mmap.getItemIndices(moduleIndex);
+                final String moduleName = modulesIterator.next();
+                final int[] itemIndices = mmap.getItemIndices(moduleName);
 
                 final RunSlot slot;
                 try {

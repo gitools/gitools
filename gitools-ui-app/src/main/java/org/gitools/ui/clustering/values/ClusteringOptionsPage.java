@@ -61,8 +61,8 @@ class ClusteringOptionsPage extends AbstractWizardPage {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         MatrixAttributeWrapper attrWrapper = null;
-        for (IMatrixLayer attr : cellAttributes) {
-            attrWrapper = new MatrixAttributeWrapper(attr);
+        for (String attrId : cellAttributes) {
+            attrWrapper = new MatrixAttributeWrapper(cellAttributes.get(attrId));
             model.addElement(attrWrapper);
         }
 

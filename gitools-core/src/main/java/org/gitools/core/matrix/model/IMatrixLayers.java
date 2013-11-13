@@ -21,11 +21,12 @@
  */
 package org.gitools.core.matrix.model;
 
-public interface IMatrixLayers<L extends IMatrixLayer> extends Iterable<L> {
+public interface IMatrixLayers<L extends IMatrixLayer> extends IMatrixDimension {
 
+    public L get(String layerId);
+
+    @Deprecated
     public L get(int layerIndex);
-
-    public int findId(String id);
 
     public int size();
 }

@@ -53,7 +53,9 @@ public abstract class ElementAdapter<T extends MatrixLayer> implements Serializa
         this.matrixLayers = matrixLayers;
     }
 
+    @Deprecated
     public abstract void setCell(IMatrix resultsMatrix, int row, int column, Object result);
 
+    @Deprecated
     public abstract Object getCell(IMatrix resultsMatrix, int row, int column);
 }

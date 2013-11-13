@@ -34,12 +34,14 @@ public interface IMatrix extends IResource {
     @Deprecated
     Object getValue(int row, int column, int layer);
 
-    Object getValue(int[] position, int layer);
+    Object getValue(IMatrixPosition position);
 
     @Deprecated
     void setValue(int row, int column, int layer, Object value);
 
-    void setValue(int[] position, int layer, Object value);
+    void setValue(IMatrixPosition position, Object value);
+
+    IMatrixIterator newIterator();
 
     /**
      * This method is called when the matrix is not in use.

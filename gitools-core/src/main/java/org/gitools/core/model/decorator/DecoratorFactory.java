@@ -82,7 +82,7 @@ public class DecoratorFactory {
     }
 
     @Deprecated
-    public static Decorator defaultDecorator(IMatrix matrix, int layer) {
+    public static Decorator defaultDecorator(IMatrix matrix, String layer) {
 
         /*
         Decorator decorator;

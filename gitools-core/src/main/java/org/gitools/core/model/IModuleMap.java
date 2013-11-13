@@ -34,26 +34,5 @@ public interface IModuleMap extends IResource {
     Collection<String> getMappingItems(String module);
 
     @Deprecated
-    String[] getModuleNames();
-
-    @Deprecated
-    int getModuleCount();
-
-    @Deprecated
-    String getModuleName(int index);
-
-    @Deprecated
-    String getModuleDescription(int index);
-
-    @Deprecated
-    String[] getItemNames();
-
-    @Deprecated
-    String getItemName(int index);
-
-    @Deprecated
-    int[] getItemIndices(int moduleIndex);
-
-    @Deprecated
     int[] getItemIndices(String modName);
 }

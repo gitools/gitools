@@ -31,15 +31,15 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     private Map<String, Integer> labelToIndex;
     private Map<Integer, String> indexToLabel;
 
-    public HashMatrixDimension(String id, int vectorPosition) {
-        super(id, vectorPosition);
+    public HashMatrixDimension(String id) {
+        super(id);
 
         this.labelToIndex = new HashMap<>();
         this.indexToLabel = new HashMap<>();
     }
 
-    public HashMatrixDimension(String id, int vectorPosition, String[] labels) {
-        this(id, vectorPosition);
+    public HashMatrixDimension(String id, Iterable<String> labels) {
+        this(id);
 
         for (String label : labels) {
             addLabel(label);
