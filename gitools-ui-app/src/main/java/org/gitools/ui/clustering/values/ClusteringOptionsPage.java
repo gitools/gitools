@@ -27,9 +27,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 class ClusteringOptionsPage extends AbstractWizardPage {
 
     // model wrapper
@@ -55,14 +52,14 @@ class ClusteringOptionsPage extends AbstractWizardPage {
         }
     }
 
-    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> cellAttributes, int index) {
+    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> layers, int index) {
 
         initComponents();
 
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         MatrixAttributeWrapper attrWrapper = null;
-        for (String attrId : cellAttributes) {
-            attrWrapper = new MatrixAttributeWrapper(cellAttributes.get(attrId));
+        for (IMatrixLayer layer : layers) {
+            attrWrapper = new MatrixAttributeWrapper(layer);
             model.addElement(attrWrapper);
         }
 

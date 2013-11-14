@@ -26,6 +26,8 @@ import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class TransposedMatrixView implements IMatrixView {
 
     private IMatrixView mv;
@@ -61,23 +63,18 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public IMatrixViewDimension getRows() {
-        return mv.getColumns();
-    }
-
-    @Override
-    public IMatrixViewDimension getColumns() {
-        return mv.getRows();
-    }
-
-    @Override
     public Object getValue(int row, int column, int layer) {
         return mv.getValue(column, row, layer);
     }
 
     @Override
-    public Object getValue(IMatrixPosition position) {
-        return mv.getValue(position);
+    public <T> T get(IMatrixLayer<T> layer, IMatrixPosition position) {
+        return mv.get(layer, position);
+    }
+
+    @Override
+    public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+        return mv.get(layer, identifiers);
     }
 
     @Override
@@ -86,13 +83,23 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public void setValue(IMatrixPosition position, Object value) {
-        mv.setValue(position, value);
+    public <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position) {
+        mv.set(layer, value, position);
     }
 
     @Override
-    public IMatrixIterator newIterator() {
-        return mv.newIterator();
+    public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
+        mv.set(layer, value, identifiers);
+    }
+
+    @Override
+    public List<MatrixDimension> getDimensions() {
+        return mv.getDimensions();
+    }
+
+    @Override
+    public IMatrixViewDimension getIdentifiers(MatrixDimension dimension) {
+        return mv.getIdentifiers(dimension);
     }
 
     @Override
@@ -103,6 +110,16 @@ public class TransposedMatrixView implements IMatrixView {
     @Override
     public void detach() {
         mv.detach();
+    }
+
+    @Override
+    public IMatrixViewDimension getRows() {
+        return mv.getRows();
+    }
+
+    @Override
+    public IMatrixViewDimension getColumns() {
+        return mv.getColumns();
     }
 
 }

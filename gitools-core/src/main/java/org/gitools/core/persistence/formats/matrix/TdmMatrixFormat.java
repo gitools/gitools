@@ -23,6 +23,7 @@ package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.datafilters.DoubleTranslator;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
@@ -33,6 +34,9 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.io.*;
 import java.util.concurrent.CancellationException;
+
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
 
 public class TdmMatrixFormat extends AbstractMatrixFormat {
 
@@ -45,7 +49,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     @Override
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        HashMatrix resultsMatrix = new HashMatrix();
+        HashMatrix resultsMatrix = new HashMatrix(ROWS, COLUMNS);
 
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
@@ -73,7 +77,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 for (int i = 2; i < fields.length; i++) {
                     final String layerId = header[i];
                     Double value = DoubleTranslator.get().stringToValue(fields[i]);
-                    resultsMatrix.setValue(rowId, columnId, layerId, value);
+                    resultsMatrix.set(layerId, value, rowId, columnId);
                 }
             }
 
@@ -113,9 +117,9 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         out.writeSeparator();
         out.writeQuotedValue("row");
 
-        for (String layerId : resultsMatrix.getLayers()) {
+        for (IMatrixLayer layer : resultsMatrix.getLayers()) {
             out.writeSeparator();
-            out.writeQuotedValue(layerId);
+            out.writeQuotedValue(layer.getId());
         }
 
         out.writeNewLine();

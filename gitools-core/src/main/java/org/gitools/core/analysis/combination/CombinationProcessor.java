@@ -24,21 +24,25 @@ package org.gitools.core.analysis.combination;
 import cern.jet.stat.Probability;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
-import org.gitools.core.matrix.TransposedMatrixView;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.model.HashModuleMap;
 import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.utils.ModuleMapUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Date;
 
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+
 public class CombinationProcessor implements AnalysisProcessor {
+
+    private static MatrixLayer LAYER_N = new MatrixLayer("N", int.class, "N",  "Number of pvalues combined");
+    private static MatrixLayer LAYER_Z_SCORE = new MatrixLayer("z-score", double.class, "Z-Score", "Z-Score of the combination");
+    private static MatrixLayer LAYER_P_VALUE = new MatrixLayer("p-value", double.class, "P-Value", "Combined P-Value");
 
     private final CombinationAnalysis analysis;
 
@@ -51,72 +55,78 @@ public class CombinationProcessor implements AnalysisProcessor {
 
         Date startTime = new Date();
 
-        // Prepare data
+        // Prepare data matrix to combine
         IMatrix data = analysis.getData().get();
-        if (analysis.isTransposeData()) {
-            data = new TransposedMatrixView(data);
-        }
 
-        final int numRows = data.getRows().size();
+        // Dimension to combine using the module map
+        MatrixDimension combineDimension = (analysis.isTransposeData() ? ROWS : COLUMNS);
 
-        String combOf = analysis.isTransposeData() ? "rows" : "columns";
+        // Dimension to iterate
+        MatrixDimension iterateDimension = (analysis.isTransposeData() ? COLUMNS : ROWS);
 
-        // Prepare columns map
-        IModuleMap cmap;
+        // The module map
+        IModuleMap moduleMap ;
         if (analysis.getGroupsMap() == null) {
-            cmap = new HashModuleMap().addMapping("All data " + combOf, data.getColumns());
+            moduleMap = new HashModuleMap().addMapping("All data " + combineDimension.getLabel(), data.getIdentifiers(combineDimension));
         } else {
-            cmap = ModuleMapUtils.filterByItems( analysis.getGroupsMap().get(), data.getColumns() );
+            moduleMap = ModuleMapUtils.filterByItems( analysis.getGroupsMap().get(), data.getIdentifiers(combineDimension) );
         }
-        analysis.setGroupsMap(new ResourceReference<>("modules", cmap));
+        analysis.setGroupsMap(new ResourceReference<>("modules", moduleMap));
+
+        // Set size and p-value layers
+        String sizeLayer = analysis.getSizeAttrName();
+        String pvalueLayer = analysis.getPvalueAttrName();
+        if (pvalueLayer == null) {
+            pvalueLayer = data.getLayers().get(0).getId();
+        }
 
         // Prepare results matrix
-        final ElementAdapter adapter = new BeanElementAdapter(CombinationResult.class);
-        final IMatrix results = new HashMatrix(data.getRows(), cmap.getModules(), adapter.getMatrixLayers());
+        analysis.setResults(new ResourceReference<>("results",
+                combine(
+                        monitor,
+                        data,
+                        combineDimension,
+                        iterateDimension,
+                        moduleMap,
+                        (IMatrixLayer<Number>) data.getLayers().get(sizeLayer),
+                        (IMatrixLayer<Double>) data.getLayers().get(pvalueLayer))
+        ));
 
-        analysis.setResults(new ResourceReference<>("results", results));
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        // Run combination
-        int sizeIndex = -1;
-        String sizeAttrName = analysis.getSizeAttrName();
-        if (sizeAttrName != null && !sizeAttrName.isEmpty()) {
-            sizeIndex = data.getLayers().getIndex(sizeAttrName);
-        }
+        monitor.end();
+    }
 
-        int pvalueIndex = 0;
-        String pvalueAttrName = analysis.getPvalueAttrName();
-        if (pvalueAttrName != null && !pvalueAttrName.isEmpty()) {
-            pvalueIndex = data.getLayers().getIndex(pvalueAttrName);
-        }
+    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimension combineDimension, MatrixDimension iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer,  IMatrixLayer<? extends Double> pvalueLayer) {
 
-        MatrixUtils.DoubleCast sizeCast = null;
 
-        if (sizeIndex >= 0) {
-            sizeCast = MatrixUtils.createDoubleCast(data.getLayers().get(sizeIndex).getValueClass());
-        }
+        final IMatrix results = new HashMatrix(
+                new MatrixLayers(LAYER_N, LAYER_Z_SCORE, LAYER_P_VALUE),
+                new HashMatrixDimension(ROWS, data.getIdentifiers(iterateDimension)),
+                new HashMatrixDimension(COLUMNS, moduleMap.getModules())
+        );
 
-        MatrixUtils.DoubleCast pvalueCast = MatrixUtils.createDoubleCast(data.getLayers().get(pvalueIndex).getValueClass());
+        MatrixPosition resultsPosition = new MatrixPosition(ROWS, COLUMNS);
+        MatrixPosition dataPosition = new MatrixPosition(iterateDimension, combineDimension);
 
-        int numCC = cmap.getModules().size();
+        monitor.begin("Running combination analysis ...", moduleMap.getModules().size() * data.getIdentifiers(iterateDimension).size());
 
-        monitor.begin("Running combination analysis ...", numCC * numRows);
+        for (String row : data.getIdentifiers(iterateDimension)) {
 
-        int cmi = 0;
-        for (String module : cmap.getModules()) {
-            int[] cindices = cmap.getItemIndices(module);
-            for (int ri = 0; ri < numRows; ri++) {
+            for (String module : moduleMap.getModules()) {
+
                 int n = 0;
                 double sumSizeZ = 0;
                 double sumSizeSqr = 0;
 
-                for (int ci = 0; ci < cindices.length; ci++) {
-                    int mci = cindices[ci];
+                for (String item : moduleMap.getMappingItems(module)) {
 
-                    if (data.getValue(ri, mci, pvalueIndex) != null) {
-                        double size = sizeIndex < 0 ? 1 : sizeCast.getDoubleValue(data.getValue(ri, mci, sizeIndex));
+                    Double value = data.get(pvalueLayer, dataPosition.set(row, item));
+                    if (value != null) {
 
-                        double pvalue = pvalueCast.getDoubleValue(data.getValue(ri, mci, pvalueIndex));
-
+                        double size = sizeLayer == null ? 1 : data.get(sizeLayer, dataPosition).doubleValue();
+                        double pvalue = value.doubleValue();
                         double zscore = pvalueToZscore(pvalue);
 
                         if (!Double.isNaN(size + pvalue + zscore)) {
@@ -125,27 +135,23 @@ public class CombinationProcessor implements AnalysisProcessor {
                             sumSizeSqr += size * size;
                         }
                     }
+
                 }
 
                 double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
                 double pvalue = zscoreToPvalue(zcomb);
 
-                CombinationResult r = new CombinationResult();
-                r.setN(n);
-                r.setZscore(zcomb);
-                r.setPvalue(pvalue);
-
-                adapter.setCell(results, ri, cmi, r);
+                resultsPosition.set(row, module);
+                results.set(LAYER_N, n, resultsPosition);
+                results.set(LAYER_Z_SCORE, zcomb, resultsPosition);
+                results.set(LAYER_P_VALUE, pvalue, resultsPosition);
 
                 monitor.worked(1);
-                cmi++;
+
             }
         }
 
-        analysis.setStartTime(startTime);
-        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-
-        monitor.end();
+        return results;
     }
 
     private double pvalueToZscore(double pvalue) {

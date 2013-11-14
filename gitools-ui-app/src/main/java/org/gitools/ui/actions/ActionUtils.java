@@ -22,7 +22,6 @@
 package org.gitools.ui.actions;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapAnnotatedMatrixView;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -61,7 +60,7 @@ public class ActionUtils {
         IEditor editor = ActionUtils.getSelectedEditor();
         Object model = editor.getModel();
         if (model instanceof Heatmap) {
-            matrixView = new HeatmapAnnotatedMatrixView((Heatmap) model);
+            matrixView = (Heatmap) model;
         } else {
             matrixView = getMatrixView();
         }

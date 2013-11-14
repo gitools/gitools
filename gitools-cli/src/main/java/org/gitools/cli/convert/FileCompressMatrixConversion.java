@@ -156,7 +156,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
 
                     String row = parseField(line, 1);
                     if (someRows.contains(row)) {
-                        notCompressRows[getRows().getIndex(row) - from].append(line);
+                        notCompressRows[getRows().indexOf(row) - from].append(line);
                     }
                 }
                 reader.close();

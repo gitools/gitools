@@ -63,9 +63,9 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         this.layerNames = null;
         this.layersIdToIndex = null;
 
-        for (String layerId : matrixLayers) {
-            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layerId);
-            this.layers.add(new HeatmapLayer(layerId, matrixLayers.get(layerId).getValueClass(), defaultDecorator));
+        for (IMatrixLayer layer : matrixLayers) {
+            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
+            this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
         }
     }
 
@@ -76,11 +76,10 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
         // Reorder layers
         List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
-        for (String layerId : matrixLayers) {
-            IMatrixLayer layer = matrixLayers.get(layerId);
+        for (IMatrixLayer layer : matrixLayers) {
             HeatmapLayer orderedLayer = null;
             for (HeatmapLayer heatmapLayer : this.layers) {
-                if (heatmapLayer.getId().equals(layerId)) {
+                if (heatmapLayer.getId().equals(layer.getId())) {
                     orderedLayer = heatmapLayer;
                     break;
                 }
@@ -88,8 +87,8 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
             // This is a new layer
             if (orderedLayer == null) {
-                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layerId);
-                orderedLayer = new HeatmapLayer(layerId, layer.getValueClass(), defaultDecorator);
+                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
+                orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
             }
 
             orderedLayers.add(orderedLayer);
@@ -119,7 +118,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     public void setTopLayerById(String id) {
-        int layer = getIndex(id);
+        int layer = indexOf(id);
 
         if (layer != -1) {
             setTopLayerIndex(layer);
@@ -143,7 +142,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     @Override
     public HeatmapLayer get(String layer) {
-        return layers.get(getIndex(layer));
+        return layers.get(indexOf(layer));
     }
 
     @Override
@@ -151,8 +150,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layers.get(layer);
     }
 
-    @Override
-    public int getIndex(String id) {
+    public int indexOf(String id) {
         Integer layer = layersIdToIndex.get(id);
 
         if (layer == null) {
@@ -162,7 +160,6 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layer;
     }
 
-    @Override
     public String getId() {
         return MatrixLayers.LAYERS_ID;
     }
@@ -172,7 +169,6 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layers.size();
     }
 
-    @Override
     public String getLabel(int index) {
         return layers.get(index).getId();
     }
@@ -192,8 +188,8 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     @Override
-    public Iterator<String> iterator() {
-        return layersIdToIndex.keySet().iterator();
+    public Iterator<HeatmapLayer> iterator() {
+        return layers.iterator();
     }
 
     @Override

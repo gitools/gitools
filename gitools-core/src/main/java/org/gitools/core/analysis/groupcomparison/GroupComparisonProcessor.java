@@ -27,7 +27,9 @@ import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.MatrixDimension;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
@@ -67,7 +69,11 @@ public class GroupComparisonProcessor extends HtestProcessor {
         final ElementAdapter adapter = new BeanElementAdapter(GroupComparisonResult.class);
 
         // Prepare results matrix
-        final IMatrix resultsMatrix = new HashMatrix(data.getRows(), Arrays.asList(analysis.getTest().getName()), adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(
+                adapter.getMatrixLayers(),
+                new HashMatrixDimension(MatrixDimension.ROWS, data.getRows()),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, Arrays.asList(analysis.getTest().getName()))
+        );
 
         monitor.begin("Running group comparison analysis ...", numRows);
 

@@ -37,6 +37,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+
 public class GmtMatrixFormat extends AbstractMatrixFormat {
 
     public static final String EXTENSION = "gmt";
@@ -50,7 +53,7 @@ public class GmtMatrixFormat extends AbstractMatrixFormat {
 
         progressMonitor.begin("Reading names ...", 1);
 
-        HashMatrix matrix = new HashMatrix();
+        HashMatrix matrix = new HashMatrix(ROWS, COLUMNS);
 
 
         try {
@@ -72,7 +75,7 @@ public class GmtMatrixFormat extends AbstractMatrixFormat {
 
                 for (int i = 2; i < fields.length; i++) {
                     String rowId = fields[i];
-                    matrix.setValue(rowId, columnId, "value", 1.0);
+                    matrix.set("value", 1.0, rowId, columnId);
                 }
             }
             in.close();

@@ -27,30 +27,40 @@ import java.util.Iterator;
 
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
-    private String id;
+    private MatrixDimension id;
 
     protected AbstractMatrixDimension() {
         super();
     }
 
-    public AbstractMatrixDimension(String id) {
+    public AbstractMatrixDimension(MatrixDimension id) {
         super();
 
         this.id = id;
     }
 
     @Override
-    public String getId() {
+    public MatrixDimension getId() {
         return id;
     }
 
-    protected void setId(String id) {
+    protected void setId(MatrixDimension id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean contains(String identifier) {
+        return indexOf(identifier) != -1;
     }
 
     @Override
     public Iterator<String> iterator() {
         return new MatrixDimensionIterator();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size() == 0;
     }
 
     private class MatrixDimensionIterator implements Iterator<String> {

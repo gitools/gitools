@@ -133,7 +133,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
             // Convert visible labels to indices
             List<Integer> indices = new ArrayList<>(visibleLabels.size());
             for (String label : visibleLabels) {
-                int index = getIndex(label);
+                int index = indexOf(label);
 
                 if (index != -1) {
                     indices.add(index);
@@ -485,7 +485,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     @Override
-    public String getId() {
+    public MatrixDimension getId() {
         return matrixDimension.getId();
     }
 
@@ -576,8 +576,8 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     @Override
-    public int getIndex(String label) {
-        return matrixDimension.getIndex(label);
+    public int indexOf(String label) {
+        return matrixDimension.indexOf(label);
     }
 
     public void populateDetails(List<DetailsDecoration> details) {

@@ -24,6 +24,7 @@ package org.gitools.core.utils;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.model.HashModuleMap;
 import org.gitools.core.model.IModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
@@ -33,7 +34,6 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MatrixUtils {
@@ -174,7 +174,13 @@ public class MatrixUtils {
 
     public static IMatrix moduleMapToMatrix(IModuleMap mmap) {
 
-        IMatrix matrix = new HashMatrix(mmap.getItems(), mmap.getModules(), new MatrixLayers(Arrays.asList(new MatrixLayer("value", double.class))));
+        IMatrix matrix = new HashMatrix(
+                new MatrixLayers(
+                        new MatrixLayer("value", double.class)
+                ),
+                new HashMatrixDimension(MatrixDimension.ROWS, mmap.getItems()),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, mmap.getModules())
+        );
 
         int col=0;
         for (String column : mmap.getModules()) {

@@ -30,7 +30,9 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.MatrixDimension;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.model.IModuleMap;
@@ -115,7 +117,11 @@ public class EnrichmentProcessor extends HtestProcessor {
         Test test = testFactory.create();
 
         final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
-        final IMatrix resultsMatrix = new HashMatrix(modules, dataMatrix.getColumns(), adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(
+                adapter.getMatrixLayers(),
+                new HashMatrixDimension(MatrixDimension.ROWS, modules),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, dataMatrix.getColumns())
+        );
 
         int numProcs = ThreadManager.getNumThreads();
 

@@ -23,13 +23,13 @@ package org.gitools.cli.convert;
 
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixIterator;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.model.HashModuleMap;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
 
 public class MatrixToModulesConversion implements ConversionDelegate {
 
@@ -40,26 +40,15 @@ public class MatrixToModulesConversion implements ConversionDelegate {
         HashModuleMap moduleMap = new HashModuleMap();
 
         IMatrix matrix = (IMatrix) src;
-        IMatrixDimension rows = matrix.getRows();
-        IMatrixDimension columns = matrix.getColumns();
-        IMatrixIterator iterator = matrix.newIterator().build();
-        IMatrixLayer currentLayer = matrix.getLayers().get(iterator.get(matrix.getLayers()));
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(currentLayer.getValueClass());
+        IMatrixDimension rows = matrix.getIdentifiers(ROWS);
+        IMatrixDimension columns = matrix.getIdentifiers(COLUMNS);
 
-        iterator.reset( rows );
-        while (iterator.next( rows )) {
+        IMatrixLayer<Double> firstLayer = matrix.getLayers().iterator().next();
 
-            iterator.reset( columns );
-            while (iterator.next( columns )) {
-
-                double value = cast.getDoubleValue(matrix.getValue(iterator));
-
-                if (value == 1.0) {
-
-                    String column = iterator.get( columns );
-                    String row = iterator.get( rows );
+        for (String row : rows) {
+            for (String column : columns) {
+                if (matrix.get(firstLayer, row, column) == 1.0) {
                     moduleMap.addMapping(column, row);
-
                 }
             }
         }

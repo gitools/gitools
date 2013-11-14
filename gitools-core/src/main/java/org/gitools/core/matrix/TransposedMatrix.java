@@ -24,6 +24,8 @@ package org.gitools.core.matrix;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 
+import java.util.List;
+
 public class TransposedMatrix implements IMatrix {
 
     private IMatrix matrix;
@@ -33,13 +35,13 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public IMatrixDimension getRows() {
-        return matrix.getColumns();
+    public List<MatrixDimension> getDimensions() {
+        return matrix.getDimensions();
     }
 
     @Override
-    public IMatrixDimension getColumns() {
-        return matrix.getRows();
+    public IMatrixDimension getIdentifiers(MatrixDimension dimension) {
+        return matrix.getIdentifiers(dimension);
     }
 
     @Override
@@ -48,13 +50,13 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public void setValue(IMatrixPosition position, Object value) {
-        matrix.setValue(position, value);
+    public <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position) {
+        matrix.set(layer, value, position);
     }
 
     @Override
-    public IMatrixIterator newIterator() {
-        return matrix.newIterator();
+    public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
+        matrix.set(layer, value, identifiers);
     }
 
     @Override
@@ -68,13 +70,28 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public Object getValue(IMatrixPosition position) {
-        return matrix.getValue(position);
+    public <T> T get(IMatrixLayer<T> layer, IMatrixPosition position) {
+        return matrix.get(layer, position);
+    }
+
+    @Override
+    public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+        return matrix.get(layer, identifiers);
     }
 
     @Override
     public void detach() {
         matrix.detach();
+    }
+
+    @Override
+    public IMatrixDimension getRows() {
+        return matrix.getRows();
+    }
+
+    @Override
+    public IMatrixDimension getColumns() {
+        return matrix.getColumns();
     }
 
     @Override

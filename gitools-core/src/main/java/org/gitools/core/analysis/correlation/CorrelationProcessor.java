@@ -27,7 +27,9 @@ import org.gitools.core.analysis.MethodException;
 import org.gitools.core.analysis.correlation.methods.CorrelationMethodFactory;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.MatrixDimension;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
@@ -67,7 +69,11 @@ public class CorrelationProcessor implements AnalysisProcessor {
         monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
 
         final ElementAdapter adapter = new BeanElementAdapter(method.getResultClass());
-        final IMatrix results = new HashMatrix(data.getColumns(), data.getColumns(), adapter.getMatrixLayers());
+        final IMatrix results = new HashMatrix(
+                adapter.getMatrixLayers(),
+                new HashMatrixDimension(MatrixDimension.ROWS, data.getColumns()),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, data.getColumns())
+        );
 
         analysis.setResults(new ResourceReference<>("results", results));
 

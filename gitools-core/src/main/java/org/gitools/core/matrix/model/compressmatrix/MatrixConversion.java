@@ -49,9 +49,9 @@ public class MatrixConversion extends AbstractCompressor {
         for (int r = 0; r < rows.size(); r++) {
             NotCompressRow notCompressRow = new NotCompressRow(r, totalProperties, columns);
 
-            int row = inputMatrix.getRows().getIndex(rows.getLabel(r));
+            int row = inputMatrix.getRows().indexOf(rows.getLabel(r));
             for (int c = 0; c < columns.size(); c++) {
-                int column = inputMatrix.getColumns().getIndex(columns.getLabel(c));
+                int column = inputMatrix.getColumns().indexOf(columns.getLabel(c));
 
                 StringBuilder line = new StringBuilder(totalProperties * 8);
                 line.append(inputMatrix.getColumns().getLabel(column)).append(SEPARATOR);
