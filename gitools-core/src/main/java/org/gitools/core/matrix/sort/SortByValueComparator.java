@@ -54,7 +54,7 @@ public class SortByValueComparator implements Comparator<Integer> {
         this.matrixView = matrixView;
         this.progressMonitor = progressMonitor;
         this.valueBuffer = new double[aggregatingIndices.length];
-        this.position = new MatrixPosition();
+        this.position = new MatrixPosition(sortDimension.getId(), aggregationDimension.getId());
 
         this.cache = CacheBuilder.newBuilder()
                 .maximumSize(totalItemsToSort + 10)
@@ -120,14 +120,12 @@ public class SortByValueComparator implements Comparator<Integer> {
             throw new CancellationException();
         }
 
-        position.set(sortDimension, sortDimension.getLabel(index));
+        position.set(sortDimension.getId(), sortDimension.getLabel(index));
         ValueSortCriteria criteria = criteriaArray[criteriaIndex];
 
-        position.set(matrixView.getLayers(), matrixView.getLayers().getLabel(criteria.getAttributeIndex()));
-
         for (int i = 0; i < aggregatingIndices.length; i++) {
-            position.set(aggregationDimension, aggregationDimension.getLabel(aggregatingIndices[i]));
-            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.getValue(position));
+            position.set(aggregationDimension.getId(), aggregationDimension.getLabel(aggregatingIndices[i]));
+            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.get(matrixView.getLayers().get(criteria.getAttributeIndex()), position));
         }
 
         return criteria.getAggregator().aggregate(valueBuffer);

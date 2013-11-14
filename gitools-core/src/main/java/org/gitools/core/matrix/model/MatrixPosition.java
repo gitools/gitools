@@ -5,19 +5,41 @@ import java.util.Map;
 
 public class MatrixPosition implements IMatrixPosition {
 
-    private Map<String, String> positions = new HashMap<>(3);
+    private MatrixDimension[] dimensions;
+    private String[] identifiers;
+    private Map<MatrixDimension, Integer> positions;
 
-    public MatrixPosition() {
+    public MatrixPosition(MatrixDimension... dimensions) {
         super();
+
+        this.dimensions = dimensions;
+        this.identifiers = new String[dimensions.length];
+        this.positions = new HashMap<>(dimensions.length);
     }
 
     @Override
-    public String get(IMatrixDimension dimension) {
-        return positions.get(dimension.getId());
+    public String get(MatrixDimension dimension) {
+        return identifiers[positions.get(dimension)];
     }
 
-    public MatrixPosition set(IMatrixDimension dimension, String identifier) {
-        positions.put(dimension.getId(), identifier);
+    @Override
+    public MatrixPosition set(MatrixDimension dimension, String identifier) {
+
+        if (identifier != null) {
+            identifiers[positions.get(dimension)] = identifier;
+        }
+
+        return this;
+    }
+
+    @Override
+    public String[] toVector() {
+        return identifiers;
+    }
+
+    public MatrixPosition set(String... identifiers) {
+        assert identifiers.length == dimensions.length : "This matrix position has " + dimensions.length + " and your identifier vector " + identifiers.length;
+        this.identifiers = identifiers;
         return this;
     }
 

@@ -112,7 +112,9 @@ public class TsvAnnotationMatrixFormat extends AbstractResourceFormat<Annotation
 
             // Header
             List<String> labels = new ArrayList<>();
-            labels.addAll(resource.getLabels());
+            for (String label : resource.getLabels()) {
+                labels.add(label);
+            }
             writer.writePropertyList("identifier", labels);
 
             // Annotation metadata

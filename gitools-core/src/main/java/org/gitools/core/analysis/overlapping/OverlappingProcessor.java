@@ -25,7 +25,9 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
 import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.MatrixDimension;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
@@ -56,7 +58,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
         int attrIndex = 0;
         String attrName = analysis.getAttributeName();
         if (attrName != null && !attrName.isEmpty()) {
-            attrIndex = data.getLayers().getIndex(attrName);
+            attrIndex = data.getLayers().indexOf(attrName);
         }
 
         if (analysis.isTransposeData()) {
@@ -71,7 +73,11 @@ public class OverlappingProcessor implements AnalysisProcessor {
         monitor.begin("Running Overlapping analysis ...", numColumns * (numColumns - 1) / 2);
 
         final ElementAdapter adapter = new BeanElementAdapter(OverlappingResult.class);
-        final IMatrix results = new HashMatrix(data.getColumns(), data.getColumns(), adapter.getMatrixLayers());
+        final IMatrix results = new HashMatrix(
+                adapter.getMatrixLayers(),
+                new HashMatrixDimension(MatrixDimension.ROWS, data.getColumns()),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, data.getColumns())
+        );
         analysis.setCellResults(new ResourceReference<>("results", results));
 
         BitSet x = new BitSet(numRows);

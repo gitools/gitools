@@ -23,39 +23,93 @@ package org.gitools.core.matrix.model;
 
 import org.gitools.core.model.Resource;
 
-public abstract class AbstractMatrix extends Resource implements IMatrix {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    @Override
-    public Object getValue(int row, int column, int layerIndex) {
-        return getValue(getPostion(row, column, layerIndex));
+public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
+
+    private List<MatrixDimension> dimensions;
+    private Map<MatrixDimension, MD> identifiers;
+    private ML layers;
+
+    public AbstractMatrix(ML layers, MD... identifiers) {
+
+        this.layers = layers;
+        this.dimensions = new ArrayList<>(identifiers.length);
+        this.identifiers = new HashMap<>(identifiers.length);
+
+        for (MD identifier : identifiers) {
+            this.dimensions.add( identifier.getId() );
+            this.identifiers.put( identifier.getId(), identifier);
+        }
     }
 
     @Override
-    public void setValue(int row, int column, int layer, Object value) {
-        setValue(getPostion(row, column, layer), value);
-    }
-
-    private MatrixPosition getPostion(int row, int column, int layer) {
-
-        IMatrixDimension rows = getRows();
-        String rowIdentifier = rows.getLabel(row);
-
-        IMatrixDimension columns = getColumns();
-        String columnIdentifier = columns.getLabel(column);
-
-        IMatrixDimension layers = getLayers();
-        String layerIdentifier = layers.getLabel(layer);
-
-        return new MatrixPosition()
-                .set(rows, rowIdentifier)
-                .set(columns, columnIdentifier)
-                .set(layers, layerIdentifier);
-
+    public ML getLayers() {
+        return layers;
     }
 
     @Override
-    public IMatrixIterator newIterator() {
-        return new MatrixIterator();
+    public MD getIdentifiers(MatrixDimension dimension) {
+        return identifiers.get(dimension);
+    }
+
+    @Override
+    public List<MatrixDimension> getDimensions() {
+        return dimensions;
+    }
+
+    @Override
+    public <T> T get(IMatrixLayer<T> layer, IMatrixPosition position) {
+        return get(layer, position.toVector());
+    }
+
+    @Override
+    public <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position) {
+        set(layer, value, position.toVector());
+    }
+
+    @Override
+    @Deprecated
+    public MD getRows() {
+        return getIdentifiers(dimensions.get(0));
+    }
+
+    @Override
+    @Deprecated
+    public MD getColumns() {
+        return getIdentifiers(dimensions.get(1));
+    }
+
+    @Override
+    @Deprecated
+    public final Object getValue(int row, int column, int layerIndex) {
+        return get(getLayer(layerIndex), getPostion(row, column));
+    }
+
+    @Override
+    @Deprecated
+    public final void setValue(int row, int column, int layer, Object value) {
+        set(getLayer(layer), value, getPostion(row, column));
+    }
+
+    @Deprecated
+    private IMatrixLayer<Object> getLayer(int layerIndex) {
+        return (IMatrixLayer<Object>) getLayers().get(layerIndex);
+    }
+
+    @Deprecated
+    private MatrixPosition getPostion(int row, int column) {
+
+        MatrixDimension rowsDimension = getDimensions().get(0);
+        String rowIdentifier = getIdentifiers(rowsDimension).getLabel(row);
+
+        MatrixDimension columnsDimensions = getDimensions().get(1);
+        String columnIdentifier = getIdentifiers(columnsDimensions).getLabel(column);
+
+        return new MatrixPosition(getDimensions().get(0), getDimensions().get(1)).set(rowIdentifier, columnIdentifier);
     }
 
     @Override

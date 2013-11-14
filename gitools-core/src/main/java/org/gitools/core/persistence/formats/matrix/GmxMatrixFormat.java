@@ -36,6 +36,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+
 public class GmxMatrixFormat extends AbstractMatrixFormat {
 
     public static final String EXTENSION = "gmx";
@@ -48,7 +51,7 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
-        HashMatrix matrix = new HashMatrix();
+        HashMatrix matrix = new HashMatrix(ROWS, COLUMNS);
 
         try {
 
@@ -69,7 +72,7 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
                 }
 
                 for (int i = 0; i < fields.length; i++) {
-                    matrix.setValue(fields[i], columns[i], "value", 1.0);
+                    matrix.set("value", 1.0, fields[i], columns[i]);
                 }
             }
 

@@ -70,7 +70,7 @@ public class NotCompressRow {
      * @param value the fields
      */
     public void append(String value) {
-        int column = columns.getIndex(AbstractCompressor.parseField(value, 0));
+        int column = columns.indexOf(AbstractCompressor.parseField(value, 0));
         double[] cells = parseDoubles(value);
         indices[column] = true;
         values[column] = cells;

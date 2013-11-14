@@ -23,25 +23,24 @@ package org.gitools.core.matrix.model;
 
 import org.gitools.core.persistence.IResource;
 
+import java.util.List;
+
 public interface IMatrix extends IResource {
 
-    IMatrixDimension getRows();
+    List<MatrixDimension> getDimensions();
 
-    IMatrixDimension getColumns();
+    IMatrixDimension getIdentifiers(MatrixDimension dimension);
 
     IMatrixLayers<? extends IMatrixLayer> getLayers();
 
-    @Deprecated
-    Object getValue(int row, int column, int layer);
+    <T> T get(IMatrixLayer<T> layer, IMatrixPosition position);
 
-    Object getValue(IMatrixPosition position);
+    <T> T get(IMatrixLayer<T> layer, String... identifiers);
 
-    @Deprecated
-    void setValue(int row, int column, int layer, Object value);
+    <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position);
 
-    void setValue(IMatrixPosition position, Object value);
+    <T> void set(IMatrixLayer<T> layer, T value, String... identifiers);
 
-    IMatrixIterator newIterator();
 
     /**
      * This method is called when the matrix is not in use.
@@ -49,5 +48,18 @@ public interface IMatrix extends IResource {
      * It's a good practice to free all the caching memory usage.
      */
     void detach();
+
+
+    @Deprecated
+    IMatrixDimension getRows();
+
+    @Deprecated
+    IMatrixDimension getColumns();
+
+    @Deprecated
+    Object getValue(int row, int column, int layer);
+
+    @Deprecated
+    void setValue(int row, int column, int layer, Object value);
 
 }

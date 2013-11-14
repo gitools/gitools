@@ -30,14 +30,14 @@ import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+
 
 public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
@@ -56,7 +56,7 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
         progressMonitor.begin("Reading data ...", 1);
 
-        HashMatrix matrix = new HashMatrix();
+        HashMatrix matrix = new HashMatrix(ROWS, COLUMNS);
 
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
@@ -80,7 +80,7 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
                     String columnId = columns[i];
                     Double value = DoubleTranslator.get().stringToValue(fields[i]);
-                    matrix.setValue(rowId, columnId, "value", value);
+                    matrix.set("value", value, rowId, columnId);
                 }
             }
 

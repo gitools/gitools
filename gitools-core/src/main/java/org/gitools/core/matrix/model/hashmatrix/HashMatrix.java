@@ -26,101 +26,102 @@ import org.gitools.core.matrix.model.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HashMatrix extends AbstractMatrix {
+public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension> {
 
-    private HashMatrixDimension rows;
-    private HashMatrixDimension columns;
-    private MatrixLayers layers;
+    private Map<String, Map> values;
 
-    private Map<String, Map<String, Map<String, Object>>> values;
-
-    public HashMatrix() {
-        this(new HashMatrixDimension("rows"), new HashMatrixDimension("columns"), new MatrixLayers());
+    public HashMatrix(MatrixDimension... dimensions) {
+        this(new MatrixLayers(), createHashMatrixDimensions(dimensions));
     }
 
-    public HashMatrix(Iterable<String> rows, Iterable<String> columns, MatrixLayers layers) {
-        this(new HashMatrixDimension("rows", rows), new HashMatrixDimension("columns", columns), layers);
-    }
-
-    private HashMatrix(HashMatrixDimension rows, HashMatrixDimension columns, MatrixLayers<?> layers) {
-        this.rows = rows;
-        this.columns = columns;
-        this.layers = layers;
+    public HashMatrix(MatrixLayers<IMatrixLayer> layers, HashMatrixDimension... dimensions) {
+        super(layers, dimensions);
 
         this.values = new ConcurrentHashMap<>();
-        for (String layer : layers) {
-            values.put(layer, new ConcurrentHashMap<String, Map<String, Object>>());
+        for (IMatrixLayer layer : layers) {
+            this.values.put(layer.getId(), new ConcurrentHashMap());
         }
     }
 
     @Override
-    public HashMatrixDimension getRows() {
-        return rows;
+    public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+
+        Map result = values.get(layer.getId());
+        if (result == null) {
+            return null;
+        }
+
+        String identifier = identifiers[0];
+        for (int i=1; i < identifiers.length; i++) {
+
+            if (identifier == null || !result.containsKey(identifier)) {
+                return null;
+            }
+
+            result = (Map) result.get(identifier);
+            identifier = identifiers[i];
+        }
+
+        return (T) result.get(identifier);
     }
 
-    @Override
-    public HashMatrixDimension getColumns() {
-        return columns;
-    }
-
-    @Override
-    public IMatrixLayers getLayers() {
-        return layers;
-    }
-
-    @Override
-    public Object getValue(IMatrixPosition position) {
-
-        String layer = position.get(getLayers());
-        String row = position.get(getRows());
-        String column = position.get(getColumns());
-
-        return getRow(layer, row).get(column);
-    }
-
-    @Override
-    public void setValue(IMatrixPosition position, Object value) {
-
-        String layer = position.get(getLayers());
-        String row = position.get(getRows());
-        String column = position.get(getColumns());
-
-        getRow(layer, row).put(column, value);
-    }
-
-    public void setValue(String rowId, String columnId, String layerId, Object value) {
+    public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
+        assert identifiers.length == getDimensions().size() : "Matrix of dimension " + getDimensions().size() + " and position of " + identifiers.length + " elements";
 
         if (value == null) {
             return;
         }
 
-        // Check that the layers exists
-        int layerIndex = layers.getIndex(layerId);
-        if (layerIndex == -1) {
-            layers.add(new MatrixLayer(layerId, value.getClass()));
-            values.put(layerId, new ConcurrentHashMap<String, Map<String, Object>>());
+        Map result = values.get(layer.getId());
+        if (result == null) {
+            throw new UnsupportedOperationException("Layer '" + layer.getId() + "' not found");
         }
 
-        // Check that the row exists
-        if (rows.getIndex(rowId) == -1) {
-            rows.addLabel(rowId);
+        String identifier = identifiers[0];
+        HashMatrixDimension dimension = getIdentifiers(getDimensions().get(0));
+
+        for (int i=1; i < identifiers.length; i++) {
+
+            if (!result.containsKey(identifier)) {
+                result.put(identifier, new ConcurrentHashMap());
+                dimension.add(identifier);
+            }
+
+            result = (Map) result.get(identifier);
+
+            identifier = identifiers[i];
+            dimension = getIdentifiers(getDimensions().get(i));
         }
 
-        // Check that the column exists
-        if (columns.getIndex(columnId) == -1) {
-            columns.addLabel(columnId);
+        if (!result.containsKey(identifier)) {
+           dimension.add(identifier);
         }
 
-        getRow(layerId, rowId).put(columnId, value);
+        result.put(identifier, value);
+
     }
 
-    private Map<String, Object> getRow(String layer, String row) {
+    public void set(String layerId, Object value, String... identifiers) {
 
-        if (!values.get(layer).containsKey(row)) {
-            values.get(layer).put(row, new ConcurrentHashMap<String, Object>());
+        // Check that the layers exists
+        IMatrixLayer<Object> layer = getLayers().get(layerId);
+        if (layer == null) {
+            layer = new MatrixLayer(layerId, value.getClass());
+            getLayers().add(layer);
+            values.put(layerId, new ConcurrentHashMap());
         }
 
-        return values.get(layer).get(row);
+        set(layer, value, identifiers);
+    }
+
+    private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimension[] identifiers) {
+        HashMatrixDimension[] dimensions = new HashMatrixDimension[identifiers.length];
+
+        for (int i=0; i<identifiers.length; i++) {
+            dimensions[i] = new HashMatrixDimension(identifiers[i]);
+        }
+
+        return dimensions;
     }
 
 

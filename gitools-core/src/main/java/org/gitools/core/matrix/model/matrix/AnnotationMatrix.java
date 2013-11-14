@@ -23,19 +23,28 @@ package org.gitools.core.matrix.model.matrix;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.model.Resource;
+import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnnotationMatrix extends Resource implements IAnnotations {
-    private List<String> labels;
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
 
-    private Map<String, Map<String, String>> annotations;
+public class AnnotationMatrix extends HashMatrix implements IAnnotations {
+
+    private static MatrixLayer<String> LAYER = new MatrixLayer<>("value", String.class);
+
     private Map<String, Map<String, String>> annotationsMetadata;
 
     public AnnotationMatrix() {
-        this.labels = new ArrayList<>();
-        this.annotations = new HashMap<>();
+        super(new MatrixLayers(LAYER), new HashMatrixDimension(ROWS), new HashMatrixDimension(COLUMNS));
+
         this.annotationsMetadata = new HashMap<>();
     }
 
@@ -61,13 +70,8 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     @Override
-    public boolean hasIdentifier(String identifier) {
-        return annotations.containsKey(identifier);
-    }
-
-    @Override
-    public Collection<String> getIdentifiers() {
-        return annotations.keySet();
+    public IMatrixDimension getIdentifiers() {
+        return getIdentifiers(ROWS);
     }
 
     @Override
@@ -76,46 +80,26 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     @Override
-    public List<String> getLabels() {
-        return labels;
+    public IMatrixDimension getLabels() {
+        return getIdentifiers(COLUMNS);
     }
 
     @Override
-    public String getAnnotation(String identifier, String annotationLabel) {
-        if (!hasIdentifier(identifier)) {
-            return null;
-        }
-
-        return annotations.get(identifier).get(annotationLabel);
+    public String getAnnotation(String identifier, String label) {
+        return get(LAYER, identifier, label);
     }
 
-    public void setAnnotation(String identifier, String annotationLabel, String value) {
-
-        if (value == null || value.isEmpty()) {
-            return;
-        }
-
-        if (!labels.contains(annotationLabel)) {
-            labels.add(annotationLabel);
-        }
-
-        Map<String, String> identifierAnnotations = annotations.get(identifier);
-
-        if (identifierAnnotations == null) {
-            identifierAnnotations = new HashMap<>(labels.size());
-            annotations.put(identifier, identifierAnnotations);
-        }
-
-        identifierAnnotations.put(annotationLabel, value);
+    public void setAnnotation(String identifier, String label, String value) {
+        set(LAYER, value, identifier, label);
     }
 
     @Override
-    public String getAnnotationMetadata(String key, String annotationLabel) {
+    public String getAnnotationMetadata(String key, String label) {
         if (!annotationsMetadata.containsKey(key)) {
             return null;
         }
 
-        return annotationsMetadata.get(key).get(annotationLabel);
+        return annotationsMetadata.get(key).get(label);
     }
 
     public void setAnnotationMetadata(String key, String annotationLabel, String value) {

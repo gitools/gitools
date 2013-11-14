@@ -23,12 +23,16 @@ package org.gitools.core.matrix.model;
 
 public interface IMatrixView extends IMatrix {
 
-    IMatrixViewDimension getRows();
-
-    IMatrixViewDimension getColumns();
+    IMatrixViewDimension getIdentifiers(MatrixDimension dimension);
 
     IMatrixViewLayers getLayers();
 
     IMatrix getContents();
+
+    @Deprecated
+    IMatrixViewDimension getRows();
+
+    @Deprecated
+    IMatrixViewDimension getColumns();
 
 }

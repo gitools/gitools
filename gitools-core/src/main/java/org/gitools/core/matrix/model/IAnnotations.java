@@ -21,23 +21,18 @@
  */
 package org.gitools.core.matrix.model;
 
-import org.gitools.core.persistence.IResource;
-
 import java.util.Collection;
-import java.util.List;
 
-public interface IAnnotations extends IResource {
+public interface IAnnotations extends IMatrix {
 
-    boolean hasIdentifier(String identifier);
+    IMatrixDimension getIdentifiers();
 
-    Collection<String> getIdentifiers();
+    IMatrixDimension getLabels();
 
     Collection<String> getMetadataKeys();
 
-    List<String> getLabels();
+    String getAnnotation(String identifier, String label);
 
-    String getAnnotation(String identifier, String annotationLabel);
-
-    String getAnnotationMetadata(String key, String annotationLabel);
+    String getAnnotationMetadata(String key, String label);
 
 }

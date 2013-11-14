@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model;
 
-public interface IMatrixLayer {
+public interface IMatrixLayer<T> {
 
     String getId();
 
@@ -29,5 +29,6 @@ public interface IMatrixLayer {
 
     String getDescription();
 
-    Class<?> getValueClass();
+    Class<T> getValueClass();
+
 }

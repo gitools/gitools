@@ -26,7 +26,9 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.HtestProcessor;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.MatrixDimension;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
 import org.gitools.core.model.HashModuleMap;
@@ -98,7 +100,11 @@ public class OncodriveProcessor extends HtestProcessor {
         Test test = testFactory.create();
 
         final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
-        final IMatrix resultsMatrix = new HashMatrix(dataMatrix.getRows(), csmap.getModules(), adapter.getMatrixLayers());
+        final IMatrix resultsMatrix = new HashMatrix(
+                adapter.getMatrixLayers(),
+                new HashMatrixDimension(MatrixDimension.ROWS, dataMatrix.getRows()),
+                new HashMatrixDimension(MatrixDimension.COLUMNS, csmap.getModules())
+        );
 
         int numProcs = ThreadManager.getNumThreads();
 

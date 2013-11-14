@@ -24,6 +24,7 @@ package org.gitools.core.heatmap.header;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.label.AnnotationProvider;
 import org.gitools.core.label.LabelProvider;
+import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
@@ -109,19 +110,10 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         if (forceShowLabel) {
             decorator.setShowValue(true);
         }
-        decorator.decorate(decoration, new HeatmapTextFormatter(), getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
+
+        IAnnotations annotations = getHeatmapDimension().getAnnotations();
+        decorator.decorate(decoration, new HeatmapTextFormatter(), annotations, index, index, annotations.getLabels().indexOf(annotation));
         decorator.setShowValue(showValue);
-    }
-
-    private MatrixAdapter matrixAdapter;
-
-    private MatrixAdapter getMatrixAdapter() {
-
-        if (matrixAdapter == null) {
-            matrixAdapter = new MatrixAdapter(this);
-        }
-
-        return matrixAdapter;
     }
 
     @Override

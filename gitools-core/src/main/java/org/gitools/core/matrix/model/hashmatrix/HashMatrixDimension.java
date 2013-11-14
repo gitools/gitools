@@ -22,6 +22,7 @@
 package org.gitools.core.matrix.model.hashmatrix;
 
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimension;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,18 +32,18 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     private Map<String, Integer> labelToIndex;
     private Map<Integer, String> indexToLabel;
 
-    public HashMatrixDimension(String id) {
+    public HashMatrixDimension(MatrixDimension id) {
         super(id);
 
         this.labelToIndex = new HashMap<>();
         this.indexToLabel = new HashMap<>();
     }
 
-    public HashMatrixDimension(String id, Iterable<String> labels) {
+    public HashMatrixDimension(MatrixDimension id, Iterable<String> labels) {
         this(id);
 
         for (String label : labels) {
-            addLabel(label);
+            add(label);
         }
     }
 
@@ -57,7 +58,7 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     }
 
     @Override
-    public int getIndex(String label) {
+    public int indexOf(String label) {
 
         if (labelToIndex.containsKey(label)) {
             return labelToIndex.get(label);
@@ -66,7 +67,12 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
         return -1;
     }
 
-    void addLabel(String label) {
+    void add(String label) {
+
+        if (labelToIndex.containsKey(label)) {
+            return;
+        }
+
         Integer nextIndex = this.labelToIndex.size();
         this.labelToIndex.put(label, nextIndex);
         this.indexToLabel.put(nextIndex, label);

@@ -23,7 +23,7 @@ package org.gitools.core.matrix.model;
 
 import java.util.*;
 
-public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension implements IMatrixLayers<T> {
+public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
 
     public static final String LAYERS_ID = "layers";
 
@@ -31,7 +31,15 @@ public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension
     private Map<String, Integer> idToIndex = new HashMap<>();
 
     public MatrixLayers() {
-        super(LAYERS_ID);
+        super();
+    }
+
+    public MatrixLayers(T... layers) {
+        this();
+
+        for (T layer : layers) {
+            add(layer);
+        }
     }
 
     public MatrixLayers(List<T> layers) {
@@ -42,8 +50,7 @@ public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension
         }
     }
 
-    @Override
-    public int getIndex(String label) {
+    public int indexOf(String label) {
         if (idToIndex.containsKey(label)) {
             return idToIndex.get(label);
         }
@@ -56,14 +63,25 @@ public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension
         return layers.size();
     }
 
-    @Override
     public String getLabel(int index) {
+
+        if (!layers.contains(index)) {
+            return null;
+        }
+
         return layers.get(index).getId();
     }
 
     @Override
     public T get(String layer) {
-        return layers.get(getIndex(layer));
+
+        int index = indexOf(layer);
+
+        if (index == -1) {
+            return null;
+        }
+
+        return layers.get(index);
     }
 
     @Override
@@ -77,4 +95,8 @@ public class MatrixLayers<T extends MatrixLayer> extends AbstractMatrixDimension
     }
 
 
+    @Override
+    public Iterator<T> iterator() {
+        return layers.iterator();
+    }
 }

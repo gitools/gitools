@@ -184,7 +184,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             return false;
         }
 
-        if (!am.hasIdentifier(label)) {
+        if (!am.getIdentifiers().contains(label)) {
             return false;
         }
 

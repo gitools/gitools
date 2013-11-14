@@ -92,7 +92,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                     HashSet<Integer> colIndices = new HashSet<Integer>();
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        int i = data.getColumns().getIndex(line);
+                        int i = data.getColumns().indexOf(line);
                         if (i != -1) {
                             colIndices.add(i);
                         }
@@ -131,7 +131,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 } else if (matcher.find()) {
                     dataDim = matcher.group(1);
                 }
-                dataDimIndex = data.getLayers().getIndex(dataDim);
+                dataDimIndex = data.getLayers().indexOf(dataDim);
 
                 String[] parts = groupDefs[i].split(" ");
                 int partsNb = parts.length;

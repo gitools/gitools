@@ -28,7 +28,7 @@ public interface IMatrixDimension extends Iterable<String> {
      *
      * @return the id
      */
-    String getId();
+    MatrixDimension getId();
 
     /**
      * Total number of items in this dimension
@@ -51,6 +51,10 @@ public interface IMatrixDimension extends Iterable<String> {
      * @param label the label
      * @return the index
      */
-    int getIndex(String label);
+    int indexOf(String label);
+
+    boolean isEmpty();
+
+    boolean contains(String identifier);
 
 }
