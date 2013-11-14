@@ -24,8 +24,6 @@ package org.gitools.core.matrix;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 
-import java.util.List;
-
 public class TransposedMatrix implements IMatrix {
 
     private IMatrix matrix;
@@ -35,7 +33,7 @@ public class TransposedMatrix implements IMatrix {
     }
 
     @Override
-    public List<MatrixDimension> getDimensions() {
+    public MatrixDimension[] getDimensions() {
         return matrix.getDimensions();
     }
 

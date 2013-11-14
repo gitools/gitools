@@ -31,9 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
 
-    private String sizeAttrName;
+    private String sizeLayer;
 
-    private String pvalueAttrName;
+    private String valueLayer;
 
     private boolean transposeData;
 
@@ -47,20 +47,20 @@ public class CombinationAnalysis extends Analysis {
         this.transposeData = false;
     }
 
-    public String getSizeAttrName() {
-        return sizeAttrName;
+    public String getSizeLayer() {
+        return sizeLayer;
     }
 
-    public void setSizeAttrName(String sizeAttrName) {
-        this.sizeAttrName = sizeAttrName;
+    public void setSizeLayer(String sizeLayer) {
+        this.sizeLayer = sizeLayer;
     }
 
-    public String getPvalueAttrName() {
-        return pvalueAttrName;
+    public String getValueLayer() {
+        return valueLayer;
     }
 
-    public void setPvalueAttrName(String pvalueAttrName) {
-        this.pvalueAttrName = pvalueAttrName;
+    public void setValueLayer(String valueLayer) {
+        this.valueLayer = valueLayer;
     }
 
     public boolean isTransposeData() {

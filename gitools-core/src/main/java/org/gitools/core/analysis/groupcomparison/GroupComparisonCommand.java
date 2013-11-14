@@ -19,15 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.analysis.correlation;
+package org.gitools.core.analysis.groupcomparison;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisCommand;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
-import org.gitools.core.analysis.groupcomparison.ColumnGroup;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Property;
@@ -89,7 +86,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 for (String filename : groupDefs) {
                     FileReader fileReader = new FileReader(filename);
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
-                    HashSet<Integer> colIndices = new HashSet<Integer>();
+                    HashSet<Integer> colIndices = new HashSet<>();
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
                         int i = data.getColumns().indexOf(line);
@@ -119,7 +116,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 String groupString = groupDefs[i];
 
                 String dataDim = "";
-                int dataDimIndex = -1;
+                int dataDimIndex;
                 BinaryCutoff bc;
 
                 Matcher matcherAbs = dataDimPatternAbs.matcher(groupString);
@@ -156,7 +153,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
 
     @NotNull
     private List<Property> getGroupAttributes(@NotNull ColumnGroup[] groups) {
-        List<Property> analysisAttributes = new ArrayList<Property>();
+        List<Property> analysisAttributes = new ArrayList<>();
         if (groupDescriptions.length > 1) {
             for (int i = 0; i < groupDescriptions.length; i++) {
                 analysisAttributes.add(new Property("Group " + Integer.toString(i + 1), groupDescriptions[i]));

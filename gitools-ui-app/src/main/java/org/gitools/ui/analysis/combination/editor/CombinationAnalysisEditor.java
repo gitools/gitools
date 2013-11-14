@@ -62,7 +62,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         String groupsFile = resourceLocator != null ? resourceLocator.getName() : "Not specified. All " + combOf + " are combined";
         context.put("groupsFile", groupsFile);
 
-        String sizeAttr = analysis.getSizeAttrName();
+        String sizeAttr = analysis.getSizeLayer();
         if (sizeAttr == null || sizeAttr.isEmpty()) {
             sizeAttr = "Constant value of 1";
         }

@@ -15,6 +15,10 @@ public class MatrixPosition implements IMatrixPosition {
         this.dimensions = dimensions;
         this.identifiers = new String[dimensions.length];
         this.positions = new HashMap<>(dimensions.length);
+
+        for (int i=0; i < dimensions.length; i++) {
+            this.positions.put(dimensions[i], i);
+        }
     }
 
     @Override

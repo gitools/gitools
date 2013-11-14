@@ -74,10 +74,10 @@ public class CombinationProcessor implements AnalysisProcessor {
         analysis.setGroupsMap(new ResourceReference<>("modules", moduleMap));
 
         // Set size and p-value layers
-        String sizeLayer = analysis.getSizeAttrName();
-        String pvalueLayer = analysis.getPvalueAttrName();
+        String sizeLayer = analysis.getSizeLayer();
+        String pvalueLayer = analysis.getValueLayer();
         if (pvalueLayer == null) {
-            pvalueLayer = data.getLayers().get(0).getId();
+            pvalueLayer = data.getLayers().iterator().next().getId();
         }
 
         // Prepare results matrix
@@ -98,7 +98,7 @@ public class CombinationProcessor implements AnalysisProcessor {
         monitor.end();
     }
 
-    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimension combineDimension, MatrixDimension iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer,  IMatrixLayer<? extends Double> pvalueLayer) {
+    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimension combineDimension, MatrixDimension iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer,  IMatrixLayer<? extends Double> valueLayer) {
 
 
         final IMatrix results = new HashMatrix(
@@ -106,9 +106,6 @@ public class CombinationProcessor implements AnalysisProcessor {
                 new HashMatrixDimension(ROWS, data.getIdentifiers(iterateDimension)),
                 new HashMatrixDimension(COLUMNS, moduleMap.getModules())
         );
-
-        MatrixPosition resultsPosition = new MatrixPosition(ROWS, COLUMNS);
-        MatrixPosition dataPosition = new MatrixPosition(iterateDimension, combineDimension);
 
         monitor.begin("Running combination analysis ...", moduleMap.getModules().size() * data.getIdentifiers(iterateDimension).size());
 
@@ -122,29 +119,27 @@ public class CombinationProcessor implements AnalysisProcessor {
 
                 for (String item : moduleMap.getMappingItems(module)) {
 
-                    Double value = data.get(pvalueLayer, dataPosition.set(row, item));
-                    if (value != null) {
+                    Double pValue = data.get(valueLayer, row, item);
+                    if (pValue != null) {
 
-                        double size = sizeLayer == null ? 1 : data.get(sizeLayer, dataPosition).doubleValue();
-                        double pvalue = value.doubleValue();
-                        double zscore = pvalueToZscore(pvalue);
+                        double size = sizeLayer == null ? 1 : data.get(sizeLayer, row, item).doubleValue();
+                        double zScore = toZScore(pValue);
 
-                        if (!Double.isNaN(size + pvalue + zscore)) {
+                        if (!Double.isNaN(size + pValue + zScore)) {
                             n++;
-                            sumSizeZ += size * zscore;
+                            sumSizeZ += size * zScore;
                             sumSizeSqr += size * size;
                         }
                     }
 
                 }
 
-                double zcomb = sumSizeZ / Math.sqrt(sumSizeSqr);
-                double pvalue = zscoreToPvalue(zcomb);
+                double zComb = sumSizeZ / Math.sqrt(sumSizeSqr);
+                double pValue = toPValue(zComb);
 
-                resultsPosition.set(row, module);
-                results.set(LAYER_N, n, resultsPosition);
-                results.set(LAYER_Z_SCORE, zcomb, resultsPosition);
-                results.set(LAYER_P_VALUE, pvalue, resultsPosition);
+                results.set(LAYER_N, n, row, module);
+                results.set(LAYER_Z_SCORE, zComb, row, module);
+                results.set(LAYER_P_VALUE, pValue, row, module);
 
                 monitor.worked(1);
 
@@ -154,26 +149,24 @@ public class CombinationProcessor implements AnalysisProcessor {
         return results;
     }
 
-    private double pvalueToZscore(double pvalue) {
-        if (Double.isNaN(pvalue)) {
-            return pvalue;
+    private double toZScore(double pValue) {
+        if (Double.isNaN(pValue)) {
+            return pValue;
         }
 
-        pvalue = 1.0 - pvalue;
-        pvalue = pvalue < 0.000001 ? 0.000001 : pvalue;
-        pvalue = pvalue > 0.999999 ? 0.999999 : pvalue;
+        pValue = 1.0 - pValue;
+        pValue = pValue < 0.000001 ? 0.000001 : pValue;
+        pValue = pValue > 0.999999 ? 0.999999 : pValue;
 
-        double zscore = Probability.normalInverse(pvalue);
-        return zscore;
+        return Probability.normalInverse(pValue);
     }
 
-    private double zscoreToPvalue(double zscore) {
-        if (Double.isNaN(zscore)) {
-            return zscore;
+    private double toPValue(double zScore) {
+        if (Double.isNaN(zScore)) {
+            return zScore;
         }
 
-        double pvalue = 1.0 - Probability.normal(zscore);
-        return pvalue;
+        return  1.0 - Probability.normal(zScore);
     }
 
 }

@@ -21,9 +21,6 @@
  */
 package org.gitools.core.analysis.correlation;
 
-import org.gitools.core.matrix.model.matrix.element.LayerDef;
-
-
 public class CorrelationResult {
 
     private int n;
@@ -33,7 +30,12 @@ public class CorrelationResult {
     public CorrelationResult() {
     }
 
-    @LayerDef(id = "n", name = "Observations", description = "Number of observations")
+    public CorrelationResult(int n, double score, double standardError) {
+        this.n = n;
+        this.score = score;
+        this.standardError = standardError;
+    }
+
     public int getN() {
         return n;
     }
@@ -42,7 +44,6 @@ public class CorrelationResult {
         this.n = n;
     }
 
-    @LayerDef(id = "score", name = "Correlation", description = "Correlation score")
     public double getScore() {
         return score;
     }
@@ -51,7 +52,6 @@ public class CorrelationResult {
         this.score = score;
     }
 
-    @LayerDef(id = "se", name = "Standard Error", description = "Standard Error")
     public double getStandardError() {
         return standardError;
     }

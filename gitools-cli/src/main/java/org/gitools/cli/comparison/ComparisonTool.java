@@ -21,7 +21,7 @@
  */
 package org.gitools.cli.comparison;
 
-import org.gitools.core.analysis.correlation.GroupComparisonCommand;
+import org.gitools.core.analysis.groupcomparison.GroupComparisonCommand;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;

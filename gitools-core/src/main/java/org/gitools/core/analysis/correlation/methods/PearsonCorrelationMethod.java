@@ -25,8 +25,8 @@ import org.gitools.core.analysis.AbstractMethod;
 import org.gitools.core.analysis.MethodException;
 import org.gitools.core.analysis.correlation.CorrelationMethod;
 import org.gitools.core.analysis.correlation.CorrelationResult;
-import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 public class PearsonCorrelationMethod extends AbstractMethod implements CorrelationMethod {
@@ -37,37 +37,44 @@ public class PearsonCorrelationMethod extends AbstractMethod implements Correlat
         super(ID, "Pearson's correlation", "Pearson's product-moment correlation", CorrelationResult.class, properties);
     }
 
-    @NotNull
     @Override
-    public CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException {
-        CorrelationResult result = new CorrelationResult();
+    public CorrelationResult correlation(Iterable<Double> x, Iterable<Double> y, Double valueNaN) throws MethodException {
 
-        double sumxy = 0;
-        double sumx = 0;
-        double sumx2 = 0;
-        double sumy = 0;
-        double sumy2 = 0;
-        double n = indicesLength;
+        Iterator<Double> xIterator = x.iterator();
+        Iterator<Double> yIterator = y.iterator();
 
-        for (int k = 0; k < indicesLength; k++) {
-            int i = indices[k];
-            double xi = x[i];
-            double yi = y[i];
-            sumxy += xi * yi;
-            sumx += xi;
-            sumx2 += xi * xi;
-            sumy += yi;
-            sumy2 += yi * yi;
+        int n = 0;
+        double sumXY = 0, sumX = 0, sumX2 = 0, sumY = 0, sumY2 = 0;
+
+
+        while (xIterator.hasNext() && yIterator.hasNext()) {
+            Double xi = xIterator.next();
+            Double yi = yIterator.next();
+
+
+            if (xi == null) {
+                xi = valueNaN;
+            }
+
+            if (yi == null) {
+                yi = valueNaN;
+            }
+
+            if (xi == null || yi == null || Double.isNaN(xi) || Double.isNaN(yi)) {
+                continue;
+            }
+
+            n++;
+            sumXY += xi * yi;
+            sumX += xi;
+            sumX2 += xi * xi;
+            sumY += yi;
+            sumY2 += yi * yi;
         }
 
-        double r = (sumxy - (sumx * sumy / n)) / Math.sqrt((sumx2 - (sumx * sumx / n)) * (sumy2 - (sumy * sumy / n)));
+        double score = (sumXY - (sumX * sumY / n)) / Math.sqrt((sumX2 - (sumX * sumX / n)) * (sumY2 - (sumY * sumY / n)));
+        double standardError = Math.sqrt((1 - (score * score)) / (n - 2));
 
-        double se = Math.sqrt((1 - (r * r)) / (n - 2));
-
-        result.setN(indicesLength);
-        result.setScore(r);
-        result.setStandardError(se);
-
-        return result;
+        return new CorrelationResult(n, score, standardError);
     }
 }
