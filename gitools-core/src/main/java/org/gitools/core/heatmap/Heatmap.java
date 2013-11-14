@@ -32,8 +32,6 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
 import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
@@ -191,9 +189,9 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         getContents().set(layer, value, identifiers);
     }
 
-    private static List<MatrixDimension> dimensions = Arrays.asList(ROWS, COLUMNS);
+    private static MatrixDimension[] dimensions = new MatrixDimension[] { ROWS, COLUMNS };
     @Override
-    public List<MatrixDimension> getDimensions() {
+    public MatrixDimension[] getDimensions() {
         return dimensions;
     }
 

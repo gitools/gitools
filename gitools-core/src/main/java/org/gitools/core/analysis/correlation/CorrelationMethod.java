@@ -23,14 +23,9 @@ package org.gitools.core.analysis.correlation;
 
 import org.gitools.core.analysis.Method;
 import org.gitools.core.analysis.MethodException;
-import org.jetbrains.annotations.Nullable;
 
 public interface CorrelationMethod extends Method {
 
-    /**
-     * Calculate the correlation between the two vectors
-     * x should be the same length than y
-     */
-    @Nullable
-    CorrelationResult correlation(double[] x, double[] y, int[] indices, int indicesLength) throws MethodException;
+    CorrelationResult correlation(Iterable<Double> x, Iterable<Double> y, Double valueNaN) throws MethodException;
+
 }

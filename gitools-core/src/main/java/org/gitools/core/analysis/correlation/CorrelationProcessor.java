@@ -25,22 +25,23 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
 import org.gitools.core.analysis.MethodException;
 import org.gitools.core.analysis.correlation.methods.CorrelationMethodFactory;
-import org.gitools.core.matrix.TransposedMatrixView;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
+import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+
 public class CorrelationProcessor implements AnalysisProcessor {
 
+    private static MatrixLayer<Integer> LAYER_N = new MatrixLayer<>("n", Integer.class, "Observations", "Number of observations");
+    private static MatrixLayer<Double> LAYER_SCORE = new MatrixLayer<>("score", Double.class, "Correlation", "Correlation score");
+    private static MatrixLayer<Double> LAYER_STANDARD_ERROR = new MatrixLayer<>("se", Double.class, "Standard Error", "Standard Error");
     private final CorrelationAnalysis analysis;
 
     public CorrelationProcessor(CorrelationAnalysis analysis) {
@@ -55,73 +56,46 @@ public class CorrelationProcessor implements AnalysisProcessor {
         CorrelationMethod method = CorrelationMethodFactory.createMethod(analysis.getMethod(), analysis.getMethodProperties());
 
         IMatrix data = analysis.getData().get();
-        int attributeIndex = analysis.getAttributeIndex();
+        int layerIndex = analysis.getAttributeIndex();
 
-        if (analysis.isTransposeData()) {
-            TransposedMatrixView mt = new TransposedMatrixView();
-            mt.setMatrix(data);
-            data = mt;
-        }
+        IMatrixLayer<Double> layer = data.getLayers().get(layerIndex);
+        IMatrixDimension rows = analysis.isTransposeData() ? data.getIdentifiers(COLUMNS) : data.getIdentifiers(ROWS);
+        IMatrixDimension columns = analysis.isTransposeData() ? data.getIdentifiers(ROWS) : data.getIdentifiers(COLUMNS);
 
-        int numRows = data.getRows().size();
-        int numColumns = data.getColumns().size();
+        monitor.begin("Running correlation analysis ...", columns.size() * (columns.size() - 1) / 2);
 
-        monitor.begin("Running correlation analysis ...", numColumns * (numColumns - 1) / 2);
-
-        final ElementAdapter adapter = new BeanElementAdapter(method.getResultClass());
         final IMatrix results = new HashMatrix(
-                adapter.getMatrixLayers(),
-                new HashMatrixDimension(MatrixDimension.ROWS, data.getColumns()),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, data.getColumns())
+                new MatrixLayers<MatrixLayer>(
+                        LAYER_N, LAYER_SCORE, LAYER_STANDARD_ERROR
+                ),
+                new HashMatrixDimension(ROWS, columns),
+                new HashMatrixDimension(COLUMNS, columns)
         );
 
         analysis.setResults(new ResourceReference<>("results", results));
 
-        double[] x = new double[numRows];
-        double[] y = new double[numRows];
-        int[] indices = new int[numRows];
+        MatrixIterable<Double> x = new MatrixIterable<>(data, layer, rows.getId());
+        MatrixIterable<Double> y = new MatrixIterable<>(data, layer, rows.getId());
 
-        Double replaceNanValue = analysis.getReplaceNanValue();
-        if (replaceNanValue == null) {
-            replaceNanValue = Double.NaN;
-        }
+        for (int i = 0; i < columns.size() && !monitor.isCancelled(); i++) {
 
-        Class<?> valueClass = data.getLayers().get(attributeIndex).getValueClass();
-        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+            String columnX = columns.getLabel(i);
+            x.set(columns.getId(), columnX);
 
-        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
-            for (int row = 0; row < numRows; row++) {
-                Object value = data.getValue(row, i, attributeIndex);
-                Double v = cast.getDoubleValue(value);
-                if (v == null || Double.isNaN(v)) {
-                    v = replaceNanValue;
-                }
-                x[row] = v;
-            }
+            for (int j = i; j < columns.size() && !monitor.isCancelled(); j++) {
 
-            for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
-                monitor.info("Correlating " + data.getColumns().getLabel(i) + " with " + data.getColumns().getLabel(j));
+                String columnY = columns.getLabel(j);
+                y.set(columns.getId(), columnY);
 
-                int numPairs = 0;
-                for (int row = 0; row < numRows; row++) {
-                    double v0 = x[row];
-
-                    Object value = data.getValue(row, j, attributeIndex);
-
-                    Double v1 = cast.getDoubleValue(value);
-                    if (v1 == null || Double.isNaN(v1)) {
-                        v1 = replaceNanValue;
-                    }
-
-                    if (!Double.isNaN(v0) && !Double.isNaN(v1)) {
-                        y[row] = v1;
-
-                        indices[numPairs++] = row;
-                    }
-                }
+                monitor.info("Correlating " + columnX + " with " + columnY);
 
                 try {
-                    adapter.setCell(results, i, j, method.correlation(x, y, indices, numPairs));
+                    CorrelationResult result = method.correlation(x, y, analysis.getReplaceNanValue());
+
+                    results.set(LAYER_N, result.getN(), columnX, columnY);
+                    results.set(LAYER_SCORE, result.getScore(), columnX, columnY);
+                    results.set(LAYER_STANDARD_ERROR, result.getStandardError(), columnX, columnY);
+
                 } catch (MethodException ex) {
                     throw new AnalysisException(ex);
                 }

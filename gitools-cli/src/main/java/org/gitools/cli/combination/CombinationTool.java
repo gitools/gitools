@@ -101,8 +101,8 @@ public class CombinationTool extends AnalysisTool {
         CombinationAnalysis analysis = new CombinationAnalysis();
         prepareGeneralAnalysisAttributes(analysis, args);
         analysis.setTransposeData(args.applyToRows);
-        analysis.setSizeAttrName(args.sizeName);
-        analysis.setPvalueAttrName(args.pvalueName);
+        analysis.setSizeLayer(args.sizeName);
+        analysis.setValueLayer(args.pvalueName);
 
         IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
         IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, IModuleMap.class);

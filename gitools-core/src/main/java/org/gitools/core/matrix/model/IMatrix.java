@@ -23,11 +23,9 @@ package org.gitools.core.matrix.model;
 
 import org.gitools.core.persistence.IResource;
 
-import java.util.List;
-
 public interface IMatrix extends IResource {
 
-    List<MatrixDimension> getDimensions();
+    MatrixDimension[] getDimensions();
 
     IMatrixDimension getIdentifiers(MatrixDimension dimension);
 
@@ -40,7 +38,6 @@ public interface IMatrix extends IResource {
     <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position);
 
     <T> void set(IMatrixLayer<T> layer, T value, String... identifiers);
-
 
     /**
      * This method is called when the matrix is not in use.

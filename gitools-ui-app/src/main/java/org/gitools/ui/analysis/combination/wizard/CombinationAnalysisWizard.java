@@ -264,11 +264,11 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
         IMatrixLayer attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;
-        a.setSizeAttrName(sizeAttrName);
+        a.setSizeLayer(sizeAttrName);
 
         attr = combinationParamsPage.getPvalueAttribute();
         String pvalueAttrName = attr != null ? attr.getId() : null;
-        a.setPvalueAttrName(pvalueAttrName);
+        a.setValueLayer(pvalueAttrName);
 
         a.setTransposeData(combinationParamsPage.isTransposeEnabled());
 
@@ -279,8 +279,8 @@ public class CombinationAnalysisWizard extends AbstractWizard {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());
-        combinationParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
-        combinationParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
+        combinationParamsPage.setPreferredSizeAttr(a.getSizeLayer());
+        combinationParamsPage.setPreferredPvalueAttr(a.getValueLayer());
         combinationParamsPage.setTransposeEnabled(a.isTransposeData());
     }
 

@@ -34,7 +34,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         this(new MatrixLayers(), createHashMatrixDimensions(dimensions));
     }
 
-    public HashMatrix(MatrixLayers<IMatrixLayer> layers, HashMatrixDimension... dimensions) {
+    public HashMatrix(MatrixLayers<? extends IMatrixLayer> layers, HashMatrixDimension... dimensions) {
         super(layers, dimensions);
 
         this.values = new ConcurrentHashMap<>();
@@ -66,7 +66,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
     }
 
     public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
-        assert identifiers.length == getDimensions().size() : "Matrix of dimension " + getDimensions().size() + " and position of " + identifiers.length + " elements";
+        assert identifiers.length == getDimensions().length : "Matrix of dimension " + getDimensions().length + " and position of " + identifiers.length + " elements";
 
         if (value == null) {
             return;
@@ -78,7 +78,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         }
 
         String identifier = identifiers[0];
-        HashMatrixDimension dimension = getIdentifiers(getDimensions().get(0));
+        HashMatrixDimension dimension = getIdentifiers(getDimensions()[0]);
 
         for (int i=1; i < identifiers.length; i++) {
 
@@ -90,7 +90,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
             result = (Map) result.get(identifier);
 
             identifier = identifiers[i];
-            dimension = getIdentifiers(getDimensions().get(i));
+            dimension = getIdentifiers(getDimensions()[i]);
         }
 
         if (!result.containsKey(identifier)) {

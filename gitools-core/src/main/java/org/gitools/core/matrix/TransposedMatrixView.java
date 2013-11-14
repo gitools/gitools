@@ -26,8 +26,6 @@ import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.IResourceLocator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class TransposedMatrixView implements IMatrixView {
 
     private IMatrixView mv;
@@ -93,7 +91,7 @@ public class TransposedMatrixView implements IMatrixView {
     }
 
     @Override
-    public List<MatrixDimension> getDimensions() {
+    public MatrixDimension[] getDimensions() {
         return mv.getDimensions();
     }
 

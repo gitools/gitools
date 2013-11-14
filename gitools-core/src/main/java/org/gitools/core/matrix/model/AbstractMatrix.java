@@ -23,25 +23,24 @@ package org.gitools.core.matrix.model;
 
 import org.gitools.core.model.Resource;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
 
-    private List<MatrixDimension> dimensions;
+    private MatrixDimension[] dimensions;
     private Map<MatrixDimension, MD> identifiers;
     private ML layers;
 
     public AbstractMatrix(ML layers, MD... identifiers) {
 
         this.layers = layers;
-        this.dimensions = new ArrayList<>(identifiers.length);
+        this.dimensions = new MatrixDimension[identifiers.length];
         this.identifiers = new HashMap<>(identifiers.length);
 
-        for (MD identifier : identifiers) {
-            this.dimensions.add( identifier.getId() );
+        for (int i=0; i < identifiers.length; i++) {
+            MD identifier = identifiers[i];
+            this.dimensions[i] = identifier.getId();
             this.identifiers.put( identifier.getId(), identifier);
         }
     }
@@ -57,7 +56,7 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Override
-    public List<MatrixDimension> getDimensions() {
+    public MatrixDimension[] getDimensions() {
         return dimensions;
     }
 
@@ -74,13 +73,13 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     @Override
     @Deprecated
     public MD getRows() {
-        return getIdentifiers(dimensions.get(0));
+        return getIdentifiers(dimensions[0]);
     }
 
     @Override
     @Deprecated
     public MD getColumns() {
-        return getIdentifiers(dimensions.get(1));
+        return getIdentifiers(dimensions[1]);
     }
 
     @Override
@@ -103,13 +102,13 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     @Deprecated
     private MatrixPosition getPostion(int row, int column) {
 
-        MatrixDimension rowsDimension = getDimensions().get(0);
+        MatrixDimension rowsDimension = getDimensions()[0];
         String rowIdentifier = getIdentifiers(rowsDimension).getLabel(row);
 
-        MatrixDimension columnsDimensions = getDimensions().get(1);
+        MatrixDimension columnsDimensions = getDimensions()[1];
         String columnIdentifier = getIdentifiers(columnsDimensions).getLabel(column);
 
-        return new MatrixPosition(getDimensions().get(0), getDimensions().get(1)).set(rowIdentifier, columnIdentifier);
+        return new MatrixPosition(getDimensions()[0], getDimensions()[1]).set(rowIdentifier, columnIdentifier);
     }
 
     @Override
