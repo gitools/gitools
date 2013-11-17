@@ -1,5 +1,6 @@
-package org.gitools.core.analysis.groupcomparison;
+package org.gitools.core.stats.mtc;
 
+import org.gitools.core.analysis.groupcomparison.NotNullPredicate;
 import org.gitools.core.matrix.model.AbstractMatrixFunction;
 import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixIterable;

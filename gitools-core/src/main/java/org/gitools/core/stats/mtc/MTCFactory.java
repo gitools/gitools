@@ -21,6 +21,7 @@
  */
 package org.gitools.core.stats.mtc;
 
+import org.gitools.core.matrix.model.IMatrixFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,5 +59,14 @@ public class MTCFactory {
             return null;
         }
         return mtc;
+    }
+
+    public static IMatrixFunction<Double, Double> createFunction(MTC mtc) {
+
+        if (mtc instanceof Bonferroni) {
+            return new BonferroniMtcFunction();
+        }
+
+        return new BenjaminiHochbergFdrMtcFunction();
     }
 }

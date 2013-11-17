@@ -55,7 +55,4 @@ public interface IMatrix extends IResource {
     @Deprecated
     Object getValue(int row, int column, int layer);
 
-    @Deprecated
-    void setValue(int row, int column, int layer, Object value);
-
 }

@@ -31,6 +31,8 @@ public interface IMatrixIterable<T> extends Iterable<T> {
 
     IMatrixIterable<T> monitor(IProgressMonitor monitor, String title);
 
+    IMatrixIterable<T> monitor(IProgressMonitor monitor);
+
     void store(IMatrix output, IMatrixPositionMapping mapping, LayerAdapter<T> layerAdapter);
 
     void store(IMatrix output, IMatrixPositionMapping mapping, IMatrixLayer<T> layer);

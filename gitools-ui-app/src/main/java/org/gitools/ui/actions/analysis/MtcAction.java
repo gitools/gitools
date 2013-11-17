@@ -21,15 +21,11 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import cern.colt.function.DoubleProcedure;
-import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.colt.matrix.DoubleMatrix2D;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.stats.mtc.MTC;
+import org.gitools.core.stats.mtc.MTCFactory;
+import org.gitools.core.utils.MatrixUtils;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -82,38 +78,22 @@ public class MtcAction extends BaseAction {
             public void run(@NotNull IProgressMonitor monitor) {
 
                 IMatrix contents = matrixView.getContents();
+                IMatrixDimension rows = contents.getRows();
+                IMatrixDimension columns = contents.getColumns();
+                IMatrixLayer<Double> fromLayer = contents.getLayers().get(propIndex);
+                IMatrixLayer<Double> toLayer = contents.getLayers().get(corrPropIndex);
+                IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(mtc);
 
-                int rowCount = contents.getRows().size();
-                int columnCount = contents.getColumns().size();
+                monitor.begin("Multiple test correction for  " + mtc.getName() + " ...", columns.size() * rows.size() * 3);
 
-                monitor.begin("Multiple test correction for  " + mtc.getName() + " ...", columnCount * 3);
+                IMatrixPosition position = contents.newPosition();
+                for (String column : position.iterate(columns)) {
 
-                DoubleMatrix2D values = DoubleFactory2D.dense.make(rowCount, columnCount);
+                    position.iterate(fromLayer, rows)
+                            .monitor(monitor)
+                            .transform( mtcFunction )
+                            .store( contents, toLayer );
 
-                for (int col = 0; col < columnCount; col++) {
-                    for (int row = 0; row < rowCount; row++)
-                        values.setQuick(row, col, MatrixUtils.doubleValue(contents.getValue(row, col, propIndex)));
-
-                    monitor.worked(1);
-                }
-
-                for (int col = 0; col < columnCount; col++) {
-                    DoubleMatrix1D columnValues = values.viewColumn(col).viewSelection(new DoubleProcedure() {
-                        @Override
-                        public boolean apply(double v) {
-                            return !Double.isNaN(v);
-                        }
-                    });
-                    mtc.correct(columnValues);
-
-                    monitor.worked(1);
-                }
-
-                for (int col = 0; col < columnCount; col++) {
-                    for (int row = 0; row < rowCount; row++)
-                        contents.setValue(row, col, corrPropIndex, values.getQuick(row, col));
-
-                    monitor.worked(1);
                 }
 
                 monitor.end();
