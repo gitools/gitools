@@ -91,12 +91,6 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
         return get(getLayer(layerIndex), getPosition(row, column));
     }
 
-    @Override
-    @Deprecated
-    public final void setValue(int row, int column, int layer, Object value) {
-        set(getLayer(layer), value, getPosition(row, column));
-    }
-
     @Deprecated
     private IMatrixLayer<Object> getLayer(int layerIndex) {
         return (IMatrixLayer<Object>) getLayers().get(layerIndex);

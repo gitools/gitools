@@ -33,6 +33,7 @@ import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.Bonferroni;
 import org.gitools.core.stats.mtc.MTC;
+import org.gitools.core.stats.mtc.MTCFactory;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
@@ -95,7 +96,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
         // Run multiple test correction
         IMatrixPosition position = resultsMatrix.newPosition().set(conditions, test.getName());
-        IMatrixFunction<Double, Double> mtcFunction = createMultipleTestCorrectionFunction(analysis.getMtc());
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
 
         // Left p-Value
         position.iterate(adapter.getLayer(Double.class, "left-p-value"), modules)
@@ -134,13 +135,6 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
     }
 
-    private static IMatrixFunction<Double, Double> createMultipleTestCorrectionFunction(MTC mtc) {
 
-        if (mtc instanceof Bonferroni) {
-            return new BonferroniMtcFunction();
-        }
-
-        return new BenjaminiHochbergFdrMtcFunction();
-    }
 
 }

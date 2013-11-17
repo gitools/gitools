@@ -3,6 +3,7 @@ package org.gitools.core.matrix.model.iterable;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Iterator;
+import java.util.concurrent.CancellationException;
 
 public class MonitorMatrixIterable<T> extends AbstractChainIterable<T, T> {
 
@@ -18,7 +19,11 @@ public class MonitorMatrixIterable<T> extends AbstractChainIterable<T, T> {
 
     @Override
     public Iterator<T> iterator() {
-        monitor.begin(title, size());
+
+        if (title!=null) {
+            monitor.begin(title, size());
+        }
+
         return new MonitorIterator<T>(newParentIterator());
     }
 
@@ -30,6 +35,11 @@ public class MonitorMatrixIterable<T> extends AbstractChainIterable<T, T> {
 
         @Override
         public T next() {
+
+            if (monitor.isCancelled()) {
+                throw new CancellationException();
+            }
+
             monitor.worked(1);
             return parentNext();
         }

@@ -51,6 +51,11 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     }
 
     @Override
+    public IMatrixIterable<T> monitor(IProgressMonitor monitor) {
+        return monitor(monitor, null);
+    }
+
+    @Override
     public void store(IMatrix output, IMatrixPositionMapping mapping, LayerAdapter<T> layerAdapter) {
 
         IMatrixPosition position = output.newPosition();
