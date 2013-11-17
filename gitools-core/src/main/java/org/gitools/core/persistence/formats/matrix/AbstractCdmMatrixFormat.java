@@ -35,8 +35,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 
 public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {

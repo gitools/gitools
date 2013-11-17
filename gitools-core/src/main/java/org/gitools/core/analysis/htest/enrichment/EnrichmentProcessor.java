@@ -27,14 +27,13 @@ import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.math.Functions;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
-import org.gitools.core.analysis.htest.HtestProcessor;
+import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.stats.mtc.MTC;
@@ -53,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class EnrichmentProcessor extends HtestProcessor {
+public class EnrichmentProcessor extends MtcTestProcessor {
 
     private class RunSlot extends ThreadSlot {
         @Nullable
@@ -116,11 +115,11 @@ public class EnrichmentProcessor extends HtestProcessor {
         monitor.begin("Running enrichment analysis...", numConditions);
         Test test = testFactory.create();
 
-        final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
+        final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
-                new HashMatrixDimension(MatrixDimension.ROWS, modules),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, dataMatrix.getColumns())
+                new HashMatrixDimension(MatrixDimensionKey.ROWS, modules),
+                new HashMatrixDimension(MatrixDimensionKey.COLUMNS, dataMatrix.getColumns())
         );
 
         int numProcs = ThreadManager.getNumThreads();
@@ -157,7 +156,7 @@ public class EnrichmentProcessor extends HtestProcessor {
             condMonitor.begin("Condition " + condName + "...", modules.size());
 
             Iterator<String> modulesIterator = modules.iterator();
-            for (int moduleIndex = 0; modulesIterator.hasNext() && !monitor.isCancelled(); moduleIndex++) {
+            while (modulesIterator.hasNext() && !monitor.isCancelled()) {
 
                 final String moduleName = modulesIterator.next();
                 final int[] itemIndices = mmap.getItemIndices(moduleName);
@@ -174,9 +173,6 @@ public class EnrichmentProcessor extends HtestProcessor {
                     slot.test = testFactory.create();
                     slot.test.processPopulation(condName, population);
                 }
-
-                final int condIdx = condIndex;
-                final int moduleIdx = moduleIndex;
 
                 slot.execute(new Runnable() {
                     @Override
@@ -198,7 +194,7 @@ public class EnrichmentProcessor extends HtestProcessor {
                         }
 
                         try {
-                            adapter.setCell(resultsMatrix, moduleIdx, condIdx, result);
+                            adapter.set(resultsMatrix, result, moduleName, condName);
 
                         } catch (Throwable cause) {
                             cause.printStackTrace();
@@ -228,7 +224,7 @@ public class EnrichmentProcessor extends HtestProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        analysis.setResults(new ResourceReference<IMatrix>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
         monitor.end();
     }

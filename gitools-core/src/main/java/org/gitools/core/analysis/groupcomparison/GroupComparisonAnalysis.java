@@ -23,8 +23,7 @@ package org.gitools.core.analysis.groupcomparison;
 
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.ResourceReference;
@@ -251,4 +250,5 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     public void setNoneConversion(double noneConversion) {
         this.noneConversion = noneConversion;
     }
+
 }

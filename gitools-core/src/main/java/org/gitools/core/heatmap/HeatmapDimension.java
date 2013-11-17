@@ -485,7 +485,7 @@ public class HeatmapDimension extends AbstractMatrixDimension implements IMatrix
     }
 
     @Override
-    public MatrixDimension getId() {
+    public MatrixDimensionKey getId() {
         return matrixDimension.getId();
     }
 

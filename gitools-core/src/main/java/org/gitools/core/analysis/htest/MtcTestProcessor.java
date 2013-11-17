@@ -26,13 +26,12 @@ import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import org.gitools.core.analysis.AnalysisProcessor;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.test.results.CommonResult;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
-public abstract class HtestProcessor implements AnalysisProcessor {
+public abstract class MtcTestProcessor implements AnalysisProcessor {
 
     protected static final DoubleProcedure notNaNProc = new DoubleProcedure() {
         @Override
@@ -41,15 +40,18 @@ public abstract class HtestProcessor implements AnalysisProcessor {
         }
     };
 
-    protected void multipleTestCorrection(ElementAdapter adapter, @NotNull IMatrix res, @NotNull MTC mtc, @NotNull IProgressMonitor monitor) {
+    protected void multipleTestCorrection(LayerAdapter<? extends CommonResult> adapter, IMatrix res, MTC mtc, IProgressMonitor monitor) {
 
         monitor.begin(mtc.getName() + " correction...", 1);
 
         DoubleMatrix2D adjpvalues = DoubleFactory2D.dense.make(3, res.getRows().size());
-        for (int condIdx = 0; condIdx < res.getColumns().size(); condIdx++) {
+
+        for (String condIdx : res.getColumns()) {
+
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
 
-                CommonResult r = (CommonResult) adapter.getCell(res, moduleIdx, condIdx);
+                String module = res.getRows().getLabel(moduleIdx);
+                CommonResult r = adapter.get(res, module, condIdx);
 
                 adjpvalues.setQuick(0, moduleIdx, r != null ? r.getLeftPvalue() : Double.NaN);
                 adjpvalues.setQuick(1, moduleIdx, r != null ? r.getRightPvalue() : Double.NaN);
@@ -61,7 +63,10 @@ public abstract class HtestProcessor implements AnalysisProcessor {
             mtc.correct(adjpvalues.viewRow(2).viewSelection(notNaNProc));
 
             for (int moduleIdx = 0; moduleIdx < res.getRows().size(); moduleIdx++) {
-                CommonResult r = (CommonResult) adapter.getCell(res, moduleIdx, condIdx);
+
+                String module = res.getRows().getLabel(moduleIdx);
+                CommonResult r = adapter.get(res, module, condIdx);
+
                 if (r != null) {
                     r.setCorrLeftPvalue(adjpvalues.getQuick(0, moduleIdx));
                     r.setCorrRightPvalue(adjpvalues.getQuick(1, moduleIdx));
@@ -72,4 +77,5 @@ public abstract class HtestProcessor implements AnalysisProcessor {
 
         monitor.end();
     }
+
 }

@@ -21,31 +21,27 @@
  */
 package org.gitools.core.analysis.groupcomparison;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
-import org.gitools.core.analysis.htest.HtestProcessor;
+import org.gitools.core.analysis.groupcomparison.filters.GroupByLabelPredicate;
+import org.gitools.core.analysis.groupcomparison.filters.GroupByValuePredicate;
+import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.datafilters.BinaryCutoff;
-import org.gitools.core.matrix.TransposedMatrixView;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
+import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 
-public class GroupComparisonProcessor extends HtestProcessor {
+public class GroupComparisonProcessor extends MtcTestProcessor {
 
     private final GroupComparisonAnalysis analysis;
 
@@ -54,121 +50,78 @@ public class GroupComparisonProcessor extends HtestProcessor {
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
-
+    public void run(IProgressMonitor monitor) throws AnalysisException {
         Date startTime = new Date();
 
-        // Prepare data
-        IMatrix data = analysis.getData().get();
-        if (analysis.isTransposeData()) {
-            data = new TransposedMatrixView(data);
-        }
+        // Prepare input data matrix
+        IMatrix dataMatrix = analysis.getData().get();
+        IMatrixLayer<Double> layer = dataMatrix.getLayers().get(analysis.getAttributeIndex());
 
-        final int numRows = data.getRows().size();
+        // Prepare dimensions to compare
+        IMatrixDimension rows = (analysis.isTransposeData() ? dataMatrix.getIdentifiers(COLUMNS) : dataMatrix.getIdentifiers(ROWS) );
+        IMatrixDimension columns = (analysis.isTransposeData() ? dataMatrix.getIdentifiers(ROWS) : dataMatrix.getIdentifiers(COLUMNS) );
 
-        final ElementAdapter adapter = new BeanElementAdapter(GroupComparisonResult.class);
-
-        // Prepare results matrix
-        final IMatrix resultsMatrix = new HashMatrix(
+        // Prepare results data matrix
+        LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
+        MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
+        HashMatrixDimension conditions = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
+        HashMatrixDimension modules = new HashMatrixDimension(ROWS, rows);
+        IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
-                new HashMatrixDimension(MatrixDimension.ROWS, data.getRows()),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, Arrays.asList(analysis.getTest().getName()))
+                modules,
+                conditions
         );
 
-        monitor.begin("Running group comparison analysis ...", numRows);
+        // Prepare groups filters and test
+        IMatrixPredicate<Double> group1Filter = createFilter(dataMatrix, columns, analysis.getGroups1(), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group2Filter = createFilter(dataMatrix, columns, analysis.getGroups2(), analysis.getNoneConversion());
 
-        int attrIndex = analysis.getAttributeIndex();
+        // Run comparison
+        dataMatrix.newPosition()
+                .iterate(rows)
+                .monitor(monitor, "Running group comparison analysis")
+                .transform(
+                        new GroupComparisonFunction(test, columns, layer, group1Filter, group2Filter)
+                )
+                .store(
+                        resultsMatrix,
+                        new PositionMapping().map(rows, modules).fix(conditions, test.getName()),
+                        adapter
+                );
 
-        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
-        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
+        // Run multiple test correction
+        multipleTestCorrection(adapter, resultsMatrix, analysis.getMtc(), monitor);
 
+        /*
+        resultsMatrix.newPosition()
+                .set(conditions, test.getName())
+                .iterate(adapter, modules)
+                .monitor(monitor.subtask(), "Running multiple test correction")
+                .transform(
+                        new MultipleTestCorrectionFunction<GroupComparisonResult>(analysis.getMtc(), modules)
+                ).store(resultsMatrix, adapter);
+                */
 
-        int column = 0;
-        for (int row = 0; row < numRows; row++) {
-
-            int[] group1 = getColumnIndices(data, analysis.getGroups1(), row);
-            int[] group2 = getColumnIndices(data, analysis.getGroups2(), row);
-
-
-            double[] groupVals1 = new double[group1.length];
-            double[] groupVals2 = new double[group2.length];
-            for (int gi = 0; gi < group1.length; gi++) {
-                Object value = data.getValue(row, group1[gi], attrIndex);
-                Double v = cast.getDoubleValue(value);
-                if (v == null || Double.isNaN(v)) {
-                    v = Double.NaN;
-                }
-                groupVals1[gi] = v;
-            }
-            for (int gi = 0; gi < group2.length; gi++) {
-                Object value = data.getValue(row, group2[gi], attrIndex);
-                Double v = cast.getDoubleValue(value);
-                if (v == null || Double.isNaN(v)) {
-                    v = Double.NaN;
-                }
-                groupVals2[gi] = v;
-            }
-
-            MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
-            GroupComparisonResult r = test.processTest(groupVals1, groupVals2);
-
-            adapter.setCell(resultsMatrix, row, column, r);
-
-            monitor.worked(1);
-        }
-
-
-        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
+        // Finish
         analysis.setStartTime(startTime);
-        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-
-		/* Multiple test correction */
-        MTC mtc = analysis.getMtc();
-
-        multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
-
-        analysis.setStartTime(startTime);
-        analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-
+        analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
         analysis.setResults(new ResourceReference<>("results", resultsMatrix));
-
         monitor.end();
-
     }
 
-    private int[] getColumnIndices(@NotNull IMatrix data, @NotNull ColumnGroup group, int row) {
+    private static IMatrixPredicate<Double> createFilter(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
+
+        // Group by label
         if (group.getColumns() != null && group.getColumns().length > 0) {
-            return group.getColumns();
+            return new GroupByLabelPredicate(dimension, group);
         }
 
-        int attrIndex = group.getCutoffAttributeIndex();
-        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
-        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
-        //TODO: place the cast in a different place: inside Group??
-
+        // Group by value
+        IMatrixLayer<Double> cutoffLayer = matrix.getLayers().get(group.getCutoffAttributeIndex());
         BinaryCutoff binaryCutoff = group.getBinaryCutoff();
+        Double nullValue = (Double.isNaN(noneConversion) ? null : noneConversion);
+        return new GroupByValuePredicate(cutoffLayer, binaryCutoff, nullValue);
 
-        double noneConversion = analysis.getNoneConversion();
-        List<Integer> columnIndicesList = new ArrayList<Integer>();
-        for (int col = 0; col < data.getColumns().size(); col++) {
-            Object value = data.getValue(row, col, attrIndex);
-            Double v = cast.getDoubleValue(value);
-
-            if (v == null || Double.isNaN(v)) {
-                if (!Double.isNaN(noneConversion)) {
-                    v = noneConversion;
-                }
-            }
-            if (v != null) {
-                double compliesCutoff = binaryCutoff.apply(v);
-                if (compliesCutoff == 1.0) {
-                    columnIndicesList.add(col);
-                }
-            }
-        }
-
-        Integer[] columnIndices = new Integer[columnIndicesList.size()];
-        return ArrayUtils.toPrimitive(columnIndicesList.toArray(columnIndices));
     }
 
 }

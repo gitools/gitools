@@ -72,7 +72,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
 
 
     @NotNull
-    private ColumnGroup[] getGrouping(@NotNull String groupingMethod, @NotNull String groups, @NotNull IMatrix data) throws IOException {
+    private ColumnGroup[] getGrouping(String groupingMethod, String groups, IMatrix data) throws IOException {
 
         ColumnGroup[] columnGroups;
         String[] groupDefs = groups.split(",");

@@ -21,9 +21,8 @@
  */
 package org.gitools.core.matrix.filter;
 
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.TransposedMatrixView;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.utils.MatrixUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,7 +97,7 @@ public class MatrixViewValueFilter {
                                       boolean allElements,        // All cells in a row/column should match
                                       boolean invertCriteria) {
 
-        final IMatrixView mv = new TransposedMatrixView(matrixView);
-        filterRows(mv, selection, criteriaList, allCriteria, allElements, invertCriteria);
+        //TODO final IMatrixView mv = new TransposedMatrixView(matrixView);
+        // filterRows(mv, selection, criteriaList, allCriteria, allElements, invertCriteria);
     }
 }

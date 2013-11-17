@@ -174,21 +174,19 @@ public class MatrixUtils {
 
     public static IMatrix moduleMapToMatrix(IModuleMap mmap) {
 
+        MatrixLayer<Double> valueLayer = new MatrixLayer("value", Double.class);
         IMatrix matrix = new HashMatrix(
-                new MatrixLayers(
-                        new MatrixLayer("value", double.class)
-                ),
-                new HashMatrixDimension(MatrixDimension.ROWS, mmap.getItems()),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, mmap.getModules())
+                new MatrixLayers<MatrixLayer>(valueLayer),
+                new HashMatrixDimension(MatrixDimensionKey.ROWS, mmap.getItems()),
+                new HashMatrixDimension(MatrixDimensionKey.COLUMNS, mmap.getModules())
         );
 
-        int col=0;
         for (String column : mmap.getModules()) {
-            for (int row : mmap.getItemIndices(column)) {
-                matrix.setValue(row, col, 0, 1.0);
+            for (String row : mmap.getMappingItems(column)) {
+                matrix.set(valueLayer, 1.0, row, column);
             }
-            col++;
         }
+
         return matrix;
     }
 

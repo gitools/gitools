@@ -23,7 +23,7 @@ package org.gitools.core.matrix.model;
 
 public interface IMatrixView extends IMatrix {
 
-    IMatrixViewDimension getIdentifiers(MatrixDimension dimension);
+    IMatrixViewDimension getIdentifiers(MatrixDimensionKey dimension);
 
     IMatrixViewLayers getLayers();
 

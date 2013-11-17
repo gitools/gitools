@@ -25,9 +25,9 @@ import org.gitools.core.persistence.IResource;
 
 public interface IMatrix extends IResource {
 
-    MatrixDimension[] getDimensions();
+    MatrixDimensionKey[] getDimensions();
 
-    IMatrixDimension getIdentifiers(MatrixDimension dimension);
+    IMatrixDimension getIdentifiers(MatrixDimensionKey dimension);
 
     IMatrixLayers<? extends IMatrixLayer> getLayers();
 
@@ -38,6 +38,8 @@ public interface IMatrix extends IResource {
     <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position);
 
     <T> void set(IMatrixLayer<T> layer, T value, String... identifiers);
+
+    IMatrixPosition newPosition();
 
     /**
      * This method is called when the matrix is not in use.

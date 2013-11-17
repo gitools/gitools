@@ -27,7 +27,7 @@ import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.Direction;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.jetbrains.annotations.NotNull;
 
@@ -97,7 +97,7 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public MatrixDimension getId() {
+    public MatrixDimensionKey getId() {
         return mirror.getId();
     }
 

@@ -24,13 +24,12 @@ package org.gitools.core.analysis.htest.oncozet;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.core.analysis.AnalysisException;
-import org.gitools.core.analysis.htest.HtestProcessor;
+import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
+import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.model.HashModuleMap;
 import org.gitools.core.model.IModuleMap;
 import org.gitools.core.persistence.ResourceReference;
@@ -51,7 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 import java.util.Iterator;
 
-public class OncodriveProcessor extends HtestProcessor {
+public class OncodriveProcessor extends MtcTestProcessor {
 
     private class RunSlot extends ThreadSlot {
         @Nullable
@@ -99,11 +98,11 @@ public class OncodriveProcessor extends HtestProcessor {
 
         Test test = testFactory.create();
 
-        final ElementAdapter adapter = new BeanElementAdapter(test.getResultClass());
+        final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
-                new HashMatrixDimension(MatrixDimension.ROWS, dataMatrix.getRows()),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, csmap.getModules())
+                new HashMatrixDimension(MatrixDimensionKey.ROWS, dataMatrix.getRows()),
+                new HashMatrixDimension(MatrixDimensionKey.COLUMNS, csmap.getModules())
         );
 
         int numProcs = ThreadManager.getNumThreads();
@@ -122,8 +121,7 @@ public class OncodriveProcessor extends HtestProcessor {
 
 		/* Test analysis */
         Iterator<String> modulesIterator = csmap.getModules().iterator();
-        for (int csetIndex = 0; modulesIterator.hasNext(); csetIndex++) {
-            final int csetIdx = csetIndex;
+        while (modulesIterator.hasNext()) {
             final String csetName = modulesIterator.next();
             final int[] columnIndices = csmap.getItemIndices(csetName);
 
@@ -144,21 +142,18 @@ public class OncodriveProcessor extends HtestProcessor {
 
                 population = population.viewSelection(notNaNProc);
 
-
                 final int[] cindices = new int[numColumns];
                 for (int i = 0; i < numColumns; i++)
                     cindices[i] = i;
 
                 for (int itemIndex = 0; itemIndex < numRows; itemIndex++) {
 
-                    final int itemIdx = itemIndex;
-
-                    final String itemName = dataMatrix.getRows().getLabel(itemIdx);
+                    final String itemName = dataMatrix.getRows().getLabel(itemIndex);
 
                     final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 
                     for (int j = 0; j < numColumns; j++)
-                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getValue(itemIdx, columnIndices[j], 0)));
+                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getValue(itemIndex, columnIndices[j], 0)));
 
                     final RunSlot slot;
                     try {
@@ -184,7 +179,7 @@ public class OncodriveProcessor extends HtestProcessor {
                             }
 
                             try {
-                                adapter.setCell(resultsMatrix, itemIdx, csetIdx, result);
+                                adapter.set(resultsMatrix, result, itemName, csetName);
                             } catch (Throwable cause) {
                                 cause.printStackTrace();
                             }

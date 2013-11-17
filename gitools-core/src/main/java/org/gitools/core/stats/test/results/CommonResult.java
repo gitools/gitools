@@ -43,9 +43,6 @@ public abstract class CommonResult implements Serializable {
         this.twoTailPvalue = twoTailPvalue;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     @LayerDef(id = "N", name = "N", description = "Number of elements")
     public int getN() {
         return N;

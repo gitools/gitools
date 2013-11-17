@@ -33,8 +33,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -166,7 +166,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
     }
 
     @Override
-    public HeatmapDimension getIdentifiers(MatrixDimension dimension) {
+    public HeatmapDimension getIdentifiers(MatrixDimensionKey dimension) {
 
         if (dimension == ROWS) {
             return getRows();
@@ -189,9 +189,14 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         getContents().set(layer, value, identifiers);
     }
 
-    private static MatrixDimension[] dimensions = new MatrixDimension[] { ROWS, COLUMNS };
     @Override
-    public MatrixDimension[] getDimensions() {
+    public IMatrixPosition newPosition() {
+        return getContents().newPosition();
+    }
+
+    private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[] { ROWS, COLUMNS };
+    @Override
+    public MatrixDimensionKey[] getDimensions() {
         return dimensions;
     }
 

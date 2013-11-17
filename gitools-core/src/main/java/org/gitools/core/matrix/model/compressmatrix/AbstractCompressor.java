@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -225,8 +225,8 @@ public abstract class AbstractCompressor {
         outBuffer = new byte[2 * (maxLineLength + 1) * columns.size()];
 
         // Initialize rows and columns
-        this.rows = new CompressDimension(MatrixDimension.ROWS, rows.toArray(new String[0]));
-        this.columns = new CompressDimension(MatrixDimension.COLUMNS, columns.toArray(new String[0]));
+        this.rows = new CompressDimension(MatrixDimensionKey.ROWS, rows.toArray(new String[0]));
+        this.columns = new CompressDimension(MatrixDimensionKey.COLUMNS, columns.toArray(new String[0]));
     }
 
     public interface IMatrixReader {

@@ -22,7 +22,7 @@
 package org.gitools.core.matrix.model.compressmatrix;
 
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class CompressDimension extends AbstractMatrixDimension {
      *
      * @param labels the identifier labels of this dimension
      */
-    public CompressDimension(MatrixDimension id, String[] labels) {
+    public CompressDimension(MatrixDimensionKey id, String[] labels) {
         super(id);
 
         this.labels = labels;
