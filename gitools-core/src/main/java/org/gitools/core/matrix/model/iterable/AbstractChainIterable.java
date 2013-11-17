@@ -11,10 +11,14 @@ public abstract class AbstractChainIterable<F, T> extends AbstractIterable<F> {
 
     private static String ERROR_MESSAGE = "You must limit the iterable before operate on it.";
 
-    private AbstractIterable<T> parentIterable;
+    private IMatrixIterable<T> parentIterable;
 
-    protected AbstractChainIterable(AbstractIterable<T> parentIterable) {
+    protected AbstractChainIterable(IMatrixIterable<T> parentIterable) {
         this.parentIterable = parentIterable;
+    }
+
+    protected IMatrixIterable<T> getParentIterable() {
+        return parentIterable;
     }
 
     protected Iterator<T> newParentIterator() {

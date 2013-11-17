@@ -29,10 +29,8 @@ public interface IMatrixView extends IMatrix {
 
     IMatrix getContents();
 
-    @Deprecated
     IMatrixViewDimension getRows();
 
-    @Deprecated
     IMatrixViewDimension getColumns();
 
 }

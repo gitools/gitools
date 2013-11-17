@@ -13,7 +13,6 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
     private List<String> identifiers;
 
-
     protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
         this.position = position;
         this.iterateDimension = position.getMatrix().getIdentifiers(iterateDimension);

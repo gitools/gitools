@@ -48,11 +48,8 @@ public interface IMatrix extends IResource {
      */
     void detach();
 
-
-    @Deprecated
     IMatrixDimension getRows();
 
-    @Deprecated
     IMatrixDimension getColumns();
 
     @Deprecated

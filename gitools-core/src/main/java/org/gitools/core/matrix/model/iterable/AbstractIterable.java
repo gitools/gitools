@@ -1,16 +1,23 @@
 package org.gitools.core.matrix.model.iterable;
 
+import com.google.common.collect.Iterators;
+import org.apache.commons.collections.comparators.ComparableComparator;
 import org.gitools.core.analysis.groupcomparison.NoMapping;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
+import java.util.Comparator;
+
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 
+    @Override
     public abstract int size();
 
+    @Override
     public abstract IMatrixDimension getIterateDimension();
 
+    @Override
     public abstract IMatrixPosition getPosition();
 
     @Override
@@ -26,6 +33,16 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     @Override
     public <F> IMatrixIterable<F> transform(IMatrixFunction<F, T> function) {
         return new TransformIterable<>(this, function);
+    }
+
+    @Override
+    public IMatrixIterable<T> sort() {
+        return sort(new ComparableComparator());
+    }
+
+    @Override
+    public IMatrixIterable<T> sort(Comparator<T> comparator) {
+        return new SortIterable<>(this, comparator);
     }
 
     @Override
@@ -53,7 +70,6 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
             output.set(layer, value, position);
         }
 
-
     }
 
     @Override
@@ -64,5 +80,10 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     @Override
     public void store(IMatrix output, IMatrixLayer<T> layer) {
         store(output, new NoMapping(), layer);
+    }
+
+    @Override
+    public int count() {
+        return Iterators.size(iterator());
     }
 }

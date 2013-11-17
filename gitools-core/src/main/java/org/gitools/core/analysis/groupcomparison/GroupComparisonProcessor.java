@@ -31,6 +31,8 @@ import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.persistence.ResourceReference;
+import org.gitools.core.stats.mtc.Bonferroni;
+import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
@@ -64,24 +66,26 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         // Prepare results data matrix
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
         MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
+
         HashMatrixDimension conditions = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
         HashMatrixDimension modules = new HashMatrixDimension(ROWS, rows);
+
         IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
                 modules,
                 conditions
         );
 
-        // Prepare groups filters and test
-        IMatrixPredicate<Double> group1Filter = createFilter(dataMatrix, columns, analysis.getGroups1(), analysis.getNoneConversion());
-        IMatrixPredicate<Double> group2Filter = createFilter(dataMatrix, columns, analysis.getGroups2(), analysis.getNoneConversion());
+        // Prepare group predicates
+        IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, analysis.getGroups1(), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, analysis.getGroups2(), analysis.getNoneConversion());
 
         // Run comparison
         dataMatrix.newPosition()
                 .iterate(rows)
                 .monitor(monitor, "Running group comparison analysis")
                 .transform(
-                        new GroupComparisonFunction(test, columns, layer, group1Filter, group2Filter)
+                        new GroupComparisonFunction(test, columns, layer, group1Predicate, group2Predicate)
                 )
                 .store(
                         resultsMatrix,
@@ -90,17 +94,23 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
                 );
 
         // Run multiple test correction
-        multipleTestCorrection(adapter, resultsMatrix, analysis.getMtc(), monitor);
+        IMatrixPosition position = resultsMatrix.newPosition().set(conditions, test.getName());
+        IMatrixFunction<Double, Double> mtcFunction = createMultipleTestCorrectionFunction(analysis.getMtc());
 
-        /*
-        resultsMatrix.newPosition()
-                .set(conditions, test.getName())
-                .iterate(adapter, modules)
-                .monitor(monitor.subtask(), "Running multiple test correction")
-                .transform(
-                        new MultipleTestCorrectionFunction<GroupComparisonResult>(analysis.getMtc(), modules)
-                ).store(resultsMatrix, adapter);
-                */
+        // Left p-Value
+        position.iterate(adapter.getLayer(Double.class, "left-p-value"), modules)
+                .transform( mtcFunction )
+                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-left-p-value"));
+
+        // Right p-Value
+        position.iterate(adapter.getLayer(Double.class, "right-p-value"), modules)
+                .transform( mtcFunction )
+                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-right-p-value"));
+
+        // Two-tail p-Value
+        position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), modules)
+                .transform( mtcFunction )
+                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
 
         // Finish
         analysis.setStartTime(startTime);
@@ -109,7 +119,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         monitor.end();
     }
 
-    private static IMatrixPredicate<Double> createFilter(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
+    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
 
         // Group by label
         if (group.getColumns() != null && group.getColumns().length > 0) {
@@ -122,6 +132,15 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         Double nullValue = (Double.isNaN(noneConversion) ? null : noneConversion);
         return new GroupByValuePredicate(cutoffLayer, binaryCutoff, nullValue);
 
+    }
+
+    private static IMatrixFunction<Double, Double> createMultipleTestCorrectionFunction(MTC mtc) {
+
+        if (mtc instanceof Bonferroni) {
+            return new BonferroniMtcFunction();
+        }
+
+        return new BenjaminiHochbergFdrMtcFunction();
     }
 
 }
