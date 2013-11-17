@@ -25,15 +25,14 @@ import org.gitools.core.matrix.model.MatrixLayer;
 
 import java.lang.reflect.Method;
 
-public class BeanMatrixLayer extends MatrixLayer {
+public class BeanMatrixLayer<T> extends MatrixLayer<T> {
 
     private static final long serialVersionUID = 1735870808859461498L;
 
     private Method getterMethod;
     private Method setterMethod;
 
-    public BeanMatrixLayer(String id, String name, String description, Class<?> valueClass, Method getterMethod, Method setterMethod) {
-
+    public BeanMatrixLayer(String id, String name, String description, Class<T> valueClass, Method getterMethod, Method setterMethod) {
         super(id, valueClass, name, description);
 
         this.getterMethod = getterMethod;

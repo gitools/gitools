@@ -50,6 +50,10 @@ public class LayerAdapter<T> implements Serializable {
         return matrixLayers;
     }
 
+    public <T> BeanMatrixLayer<T> getLayer(Class<T> layerClass, String layerName) {
+        return (BeanMatrixLayer<T>) getMatrixLayers().get(layerName);
+    }
+
     public void set(IMatrix matrix, T value, IMatrixPosition position) {
         set(matrix, value, position.toVector());
     }

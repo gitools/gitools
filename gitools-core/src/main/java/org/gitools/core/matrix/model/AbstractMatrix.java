@@ -76,13 +76,11 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Override
-    @Deprecated
     public MD getRows() {
         return getIdentifiers(dimensions[0]);
     }
 
     @Override
-    @Deprecated
     public MD getColumns() {
         return getIdentifiers(dimensions[1]);
     }

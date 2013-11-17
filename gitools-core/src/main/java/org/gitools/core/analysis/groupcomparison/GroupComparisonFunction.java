@@ -3,7 +3,7 @@ package org.gitools.core.analysis.groupcomparison;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 
-public class GroupComparisonFunction implements IMatrixFunction<GroupComparisonResult, String> {
+public class GroupComparisonFunction extends AbstractMatrixFunction<GroupComparisonResult, String> {
 
     private MannWhitneyWilxoxonTest test;
     private IMatrixLayer<Double> valueLayer;

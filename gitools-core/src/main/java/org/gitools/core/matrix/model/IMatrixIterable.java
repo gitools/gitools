@@ -3,7 +3,15 @@ package org.gitools.core.matrix.model;
 import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
+import java.util.Comparator;
+
 public interface IMatrixIterable<T> extends Iterable<T> {
+
+    int size();
+
+    IMatrixPosition getPosition();
+
+    IMatrixDimension getIterateDimension();
 
     IMatrixIterable<T> from(String fromIdentifier);
 
@@ -17,6 +25,10 @@ public interface IMatrixIterable<T> extends Iterable<T> {
 
     <F> IMatrixIterable<F> transform(IMatrixFunction<F, T> function);
 
+    IMatrixIterable<T> sort();
+
+    IMatrixIterable<T> sort(Comparator<T> comparator);
+
     IMatrixIterable<T> monitor(IProgressMonitor monitor, String title);
 
     void store(IMatrix output, IMatrixPositionMapping mapping, LayerAdapter<T> layerAdapter);
@@ -26,6 +38,8 @@ public interface IMatrixIterable<T> extends Iterable<T> {
     void store(IMatrix output, LayerAdapter<T> layerAdapter);
 
     void store(IMatrix output, IMatrixLayer<T> layer);
+
+    int count();
 
 
 }
