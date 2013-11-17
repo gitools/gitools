@@ -28,14 +28,19 @@ import java.util.Map;
 
 public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
 
-    private MatrixDimension[] dimensions;
-    private Map<MatrixDimension, MD> identifiers;
+    private MatrixDimensionKey[] dimensions;
+    private Map<MatrixDimensionKey, MD> identifiers;
     private ML layers;
+
+    @Override
+    public IMatrixPosition newPosition() {
+        return new MatrixPosition(this);
+    }
 
     public AbstractMatrix(ML layers, MD... identifiers) {
 
         this.layers = layers;
-        this.dimensions = new MatrixDimension[identifiers.length];
+        this.dimensions = new MatrixDimensionKey[identifiers.length];
         this.identifiers = new HashMap<>(identifiers.length);
 
         for (int i=0; i < identifiers.length; i++) {
@@ -51,12 +56,12 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Override
-    public MD getIdentifiers(MatrixDimension dimension) {
+    public MD getIdentifiers(MatrixDimensionKey dimension) {
         return identifiers.get(dimension);
     }
 
     @Override
-    public MatrixDimension[] getDimensions() {
+    public MatrixDimensionKey[] getDimensions() {
         return dimensions;
     }
 
@@ -85,13 +90,13 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     @Override
     @Deprecated
     public final Object getValue(int row, int column, int layerIndex) {
-        return get(getLayer(layerIndex), getPostion(row, column));
+        return get(getLayer(layerIndex), getPosition(row, column));
     }
 
     @Override
     @Deprecated
     public final void setValue(int row, int column, int layer, Object value) {
-        set(getLayer(layer), value, getPostion(row, column));
+        set(getLayer(layer), value, getPosition(row, column));
     }
 
     @Deprecated
@@ -100,15 +105,15 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Deprecated
-    private MatrixPosition getPostion(int row, int column) {
+    private String[] getPosition(int row, int column) {
 
-        MatrixDimension rowsDimension = getDimensions()[0];
+        MatrixDimensionKey rowsDimension = getDimensions()[0];
         String rowIdentifier = getIdentifiers(rowsDimension).getLabel(row);
 
-        MatrixDimension columnsDimensions = getDimensions()[1];
+        MatrixDimensionKey columnsDimensions = getDimensions()[1];
         String columnIdentifier = getIdentifiers(columnsDimensions).getLabel(column);
 
-        return new MatrixPosition(getDimensions()[0], getDimensions()[1]).set(rowIdentifier, columnIdentifier);
+        return new String[] { rowIdentifier, columnIdentifier };
     }
 
     @Override

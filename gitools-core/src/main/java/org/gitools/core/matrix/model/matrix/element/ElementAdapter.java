@@ -21,41 +21,13 @@
  */
 package org.gitools.core.matrix.model.matrix.element;
 
-import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.MatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayers;
 
 import java.io.Serializable;
 
 public abstract class ElementAdapter<T extends MatrixLayer> implements Serializable {
 
-    private Class<?> elementClass;
 
-    private MatrixLayers<T> matrixLayers;
 
-    protected ElementAdapter(Class<?> elementClass) {
-        this.elementClass = elementClass;
-    }
 
-    void setElementClass(Class<?> elementClass) {
-        this.elementClass = elementClass;
-    }
-
-    public Class<?> getElementClass() {
-        return elementClass;
-    }
-
-    public final MatrixLayers<T> getMatrixLayers() {
-        return matrixLayers;
-    }
-
-    final void setMatrixLayers(MatrixLayers<T> matrixLayers) {
-        this.matrixLayers = matrixLayers;
-    }
-
-    @Deprecated
-    public abstract void setCell(IMatrix resultsMatrix, int row, int column, Object result);
-
-    @Deprecated
-    public abstract Object getCell(IMatrix resultsMatrix, int row, int column);
 }

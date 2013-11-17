@@ -23,22 +23,19 @@ package org.gitools.core.analysis.overlapping;
 
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.AnalysisProcessor;
-import org.gitools.core.matrix.TransposedMatrixView;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.core.matrix.model.matrix.element.ElementAdapter;
-import org.gitools.core.matrix.model.matrix.element.BeanElementAdapter;
+import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.BitSet;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 
 public class OverlappingProcessor implements AnalysisProcessor {
@@ -50,92 +47,75 @@ public class OverlappingProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) throws AnalysisException {
         Date startTime = new Date();
 
         IMatrix data = analysis.getSourceData().get();
 
-        int attrIndex = 0;
-        String attrName = analysis.getAttributeName();
-        if (attrName != null && !attrName.isEmpty()) {
-            attrIndex = data.getLayers().indexOf(attrName);
+        IMatrixLayer<Double> layer = data.getLayers().get(analysis.getAttributeName());
+        if (layer == null) {
+            layer = data.getLayers().iterator().next();
         }
 
-        if (analysis.isTransposeData()) {
-            TransposedMatrixView mt = new TransposedMatrixView();
-            mt.setMatrix(data);
-            data = mt;
-        }
+        IMatrixDimension rows = (analysis.isTransposeData() ? data.getIdentifiers(COLUMNS) : data.getIdentifiers(ROWS) );
+        IMatrixDimension columns = (analysis.isTransposeData() ? data.getIdentifiers(ROWS) : data.getIdentifiers(COLUMNS) );
 
-        int numRows = data.getRows().size();
-        int numColumns = data.getColumns().size();
+        monitor.begin("Running Overlapping analysis ...", columns.size() * (columns.size() - 1) / 2);
 
-        monitor.begin("Running Overlapping analysis ...", numColumns * (numColumns - 1) / 2);
-
-        final ElementAdapter adapter = new BeanElementAdapter(OverlappingResult.class);
+        final LayerAdapter<OverlappingResult> adapter = new LayerAdapter<>(OverlappingResult.class);
         final IMatrix results = new HashMatrix(
                 adapter.getMatrixLayers(),
-                new HashMatrixDimension(MatrixDimension.ROWS, data.getColumns()),
-                new HashMatrixDimension(MatrixDimension.COLUMNS, data.getColumns())
+                new HashMatrixDimension(MatrixDimensionKey.ROWS, columns),
+                new HashMatrixDimension(MatrixDimensionKey.COLUMNS, columns)
         );
         analysis.setCellResults(new ResourceReference<>("results", results));
 
-        BitSet x = new BitSet(numRows);
-        BitSet xna = new BitSet(numRows);
+        Map<String, Boolean> x = new HashMap<>(rows.size());
+        Map<String, Boolean> xna = new HashMap<>(rows.size());
 
-        Double replaceNanValue = analysis.getReplaceNanValue();
-        if (replaceNanValue == null) {
-            replaceNanValue = Double.NaN;
-        }
+        IMatrixPosition positionX = data.newPosition();
+        IMatrixPosition positionY = data.newPosition();
 
-        boolean cutoffEnabled = analysis.isBinaryCutoffEnabled();
-        CutoffCmp cutoffCmp = analysis.getBinaryCutoffCmp();
-        Double cutoffValue = analysis.getBinaryCutoffValue();
+        for (String X : positionX.iterate(columns)) {
 
-        Class<?> valueClass = data.getLayers().get(attrIndex).getValueClass();
-        final MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(valueClass);
-
-        for (int i = 0; i < numColumns && !monitor.isCancelled(); i++) {
             int rowCount = 0;
+            for (String row : positionX.iterate(rows)) {
 
-            for (int row = 0; row < numRows; row++) {
-                Object value = data.getValue(row, i, attrIndex);
-                Double v = cast.getDoubleValue(value);
-                v = transformValue(v, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, i);
-                if (v == 1.0) {
+                Double value = transformValue(
+                        data.get(layer, positionX),
+                        analysis
+                );
+
+                if (value == 1.0) {
                     rowCount++;
                 }
 
-                x.set(row, v == 1.0);
-                xna.set(row, Double.isNaN(v));
+                x.put(row, value == 1.0);
+                xna.put(row, Double.isNaN(value));
             }
 
-            for (int j = i; j < numColumns && !monitor.isCancelled(); j++) {
-                monitor.info("Overlapping " + data.getColumns().getLabel(i) + " with " + data.getColumns().getLabel(j));
+            for (String Y : positionY.iterate(columns).from(X)) {
 
-                //TODO Parallelize
-                {
-                    int columnCount = 0;
-                    int bothCount = 0;
+                monitor.info("Overlapping " + X + " with " + Y);
 
-                    for (int row = 0; row < numRows; row++) {
-                        double v0 = xna.get(row) ? Double.NaN : (x.get(row) ? 1.0 : 0.0);
+                int columnCount = 0;
+                int bothCount = 0;
 
-                        Object value = data.getValue(row, j, attrIndex);
-                        Double v1 = cast.getDoubleValue(value);
-                        v1 = transformValue(v1, replaceNanValue, cutoffEnabled, cutoffCmp, cutoffValue, row, j);
+                for (String row : positionY.iterate(rows)) {
 
-                        if (v1 == 1.0) {
-                            columnCount++;
-                        }
-                        if (v0 == 1.0 && v1 == 1.0) {
-                            bothCount++;
-                        }
+                    double v0 = xna.get(row) ? Double.NaN : (x.get(row) ? 1.0 : 0.0);
+                    Double v1 = data.get(layer, positionY );
+                    v1 = transformValue(v1, analysis);
+
+                    if (v1 == 1.0) {
+                        columnCount++;
                     }
-
-                    adapter.setCell(results, i, j, new OverlappingResult(rowCount, columnCount, bothCount));
+                    if (v0 == 1.0 && v1 == 1.0) {
+                        bothCount++;
+                    }
                 }
 
+                adapter.set(results, new OverlappingResult(rowCount, columnCount, bothCount), X, Y);
                 monitor.worked(1);
             }
         }
@@ -146,21 +126,20 @@ public class OverlappingProcessor implements AnalysisProcessor {
         monitor.end();
     }
 
-    @Nullable
-    private Double transformValue(@Nullable Double v, double replaceNanValue, boolean binaryCutoffEnabled, @NotNull CutoffCmp cutoffCmp, Double cutoffValue, int row, int column) throws AnalysisException {
+    private Double transformValue(Double v, OverlappingAnalysis analysis) throws AnalysisException {
 
-        boolean isNaN = v != null ? Double.isNaN(v) : true;
+        boolean isNaN = (v == null || Double.isNaN(v));
 
         if (isNaN) {
-            v = replaceNanValue;
+            v = (analysis.getReplaceNanValue() == null ? Double.NaN : analysis.getReplaceNanValue());
         }
 
-        if (!isNaN && binaryCutoffEnabled) {
-            v = cutoffCmp.compare(v, cutoffValue) ? 1.0 : 0.0;
+        if (!isNaN && analysis.isBinaryCutoffEnabled()) {
+            v = analysis.getBinaryCutoffCmp().compare(v, analysis.getBinaryCutoffValue()) ? 1.0 : 0.0;
         }
 
         if (!isNaN && v != 1.0 && v != 0.0) {
-            throw new AnalysisException("Not binary value found at row " + row + " column " + column);
+            throw new AnalysisException("Not binary value found");
         }
 
         return v;

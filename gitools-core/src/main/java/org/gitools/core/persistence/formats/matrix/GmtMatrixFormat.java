@@ -37,8 +37,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class GmtMatrixFormat extends AbstractMatrixFormat {
 

@@ -28,8 +28,8 @@ import org.gitools.core.model.HashModuleMap;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class MatrixToModulesConversion implements ConversionDelegate {
 

@@ -35,7 +35,6 @@ public class GroupComparisonResult extends CommonResult {
     }
 
     public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue) {
-
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
     }
 

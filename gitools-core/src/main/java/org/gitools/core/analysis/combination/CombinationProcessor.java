@@ -35,8 +35,8 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Date;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class CombinationProcessor implements AnalysisProcessor {
 
@@ -59,10 +59,10 @@ public class CombinationProcessor implements AnalysisProcessor {
         IMatrix data = analysis.getData().get();
 
         // Dimension to combine using the module map
-        MatrixDimension combineDimension = (analysis.isTransposeData() ? ROWS : COLUMNS);
+        MatrixDimensionKey combineDimension = (analysis.isTransposeData() ? ROWS : COLUMNS);
 
         // Dimension to iterate
-        MatrixDimension iterateDimension = (analysis.isTransposeData() ? COLUMNS : ROWS);
+        MatrixDimensionKey iterateDimension = (analysis.isTransposeData() ? COLUMNS : ROWS);
 
         // The module map
         IModuleMap moduleMap ;
@@ -98,8 +98,7 @@ public class CombinationProcessor implements AnalysisProcessor {
         monitor.end();
     }
 
-    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimension combineDimension, MatrixDimension iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer,  IMatrixLayer<? extends Double> valueLayer) {
-
+    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimensionKey combineDimension, MatrixDimensionKey iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer,  IMatrixLayer<? extends Double> valueLayer) {
 
         final IMatrix results = new HashMatrix(
                 new MatrixLayers(LAYER_N, LAYER_Z_SCORE, LAYER_P_VALUE),

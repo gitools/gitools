@@ -1,12 +1,12 @@
 package org.gitools.core.matrix.model;
 
-public enum MatrixDimension {
+public enum MatrixDimensionKey {
 
     ROWS("rows"), COLUMNS("columns");
 
     private String label;
 
-    MatrixDimension(String label) {
+    MatrixDimensionKey(String label) {
         this.label = label;
     }
 

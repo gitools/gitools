@@ -25,8 +25,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.MatrixPosition;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
@@ -42,7 +42,7 @@ public class SortByValueComparator implements Comparator<Integer> {
     private IMatrixView matrixView;
     private int[] aggregatingIndices;
     private double[] valueBuffer;
-    private MatrixPosition position;
+    private IMatrixPosition position;
 
     private LoadingCache<Long, Double> cache;
 
@@ -54,7 +54,7 @@ public class SortByValueComparator implements Comparator<Integer> {
         this.matrixView = matrixView;
         this.progressMonitor = progressMonitor;
         this.valueBuffer = new double[aggregatingIndices.length];
-        this.position = new MatrixPosition(sortDimension.getId(), aggregationDimension.getId());
+        this.position = matrixView.newPosition();
 
         this.cache = CacheBuilder.newBuilder()
                 .maximumSize(totalItemsToSort + 10)
@@ -120,11 +120,11 @@ public class SortByValueComparator implements Comparator<Integer> {
             throw new CancellationException();
         }
 
-        position.set(sortDimension.getId(), sortDimension.getLabel(index));
+        position.set(sortDimension, sortDimension.getLabel(index));
         ValueSortCriteria criteria = criteriaArray[criteriaIndex];
 
         for (int i = 0; i < aggregatingIndices.length; i++) {
-            position.set(aggregationDimension.getId(), aggregationDimension.getLabel(aggregatingIndices[i]));
+            position.set(aggregationDimension, aggregationDimension.getLabel(aggregatingIndices[i]));
             valueBuffer[i] = MatrixUtils.doubleValue(matrixView.get(matrixView.getLayers().get(criteria.getAttributeIndex()), position));
         }
 

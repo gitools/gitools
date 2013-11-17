@@ -28,7 +28,7 @@ public interface IMatrixDimension extends Iterable<String> {
      *
      * @return the id
      */
-    MatrixDimension getId();
+    MatrixDimensionKey getId();
 
     /**
      * Total number of items in this dimension

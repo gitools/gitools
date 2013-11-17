@@ -30,7 +30,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
 
     private Map<String, Map> values;
 
-    public HashMatrix(MatrixDimension... dimensions) {
+    public HashMatrix(MatrixDimensionKey... dimensions) {
         this(new MatrixLayers(), createHashMatrixDimensions(dimensions));
     }
 
@@ -114,7 +114,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         set(layer, value, identifiers);
     }
 
-    private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimension[] identifiers) {
+    private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimensionKey[] identifiers) {
         HashMatrixDimension[] dimensions = new HashMatrixDimension[identifiers.length];
 
         for (int i=0; i<identifiers.length; i++) {

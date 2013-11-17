@@ -23,7 +23,7 @@ package org.gitools.core.persistence.formats.matrix;
 
 import org.apache.commons.io.IOUtils;
 import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressDimension;
 import org.gitools.core.matrix.model.compressmatrix.CompressMatrix;
@@ -79,8 +79,8 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<IMatrix> {
 
             in.close();
 
-            CompressDimension rowDim = new CompressDimension(MatrixDimension.ROWS, rows);
-            CompressDimension colDim = new CompressDimension(MatrixDimension.COLUMNS, columns);
+            CompressDimension rowDim = new CompressDimension(MatrixDimensionKey.ROWS, rows);
+            CompressDimension colDim = new CompressDimension(MatrixDimensionKey.COLUMNS, columns);
             return new CompressMatrix(rowDim, colDim, dictionary, headers, values);
 
         } catch (IOException e) {

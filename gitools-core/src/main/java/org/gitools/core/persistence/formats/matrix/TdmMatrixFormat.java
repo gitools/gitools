@@ -35,8 +35,8 @@ import org.gitools.utils.progressmonitor.IProgressMonitor;
 import java.io.*;
 import java.util.concurrent.CancellationException;
 
-import static org.gitools.core.matrix.model.MatrixDimension.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimension.ROWS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class TdmMatrixFormat extends AbstractMatrixFormat {
 

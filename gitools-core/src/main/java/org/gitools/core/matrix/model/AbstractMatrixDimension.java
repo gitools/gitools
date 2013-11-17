@@ -27,24 +27,24 @@ import java.util.Iterator;
 
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
-    private MatrixDimension id;
+    private MatrixDimensionKey id;
 
     protected AbstractMatrixDimension() {
         super();
     }
 
-    public AbstractMatrixDimension(MatrixDimension id) {
+    public AbstractMatrixDimension(MatrixDimensionKey id) {
         super();
 
         this.id = id;
     }
 
     @Override
-    public MatrixDimension getId() {
+    public MatrixDimensionKey getId() {
         return id;
     }
 
-    protected void setId(MatrixDimension id) {
+    protected void setId(MatrixDimensionKey id) {
         this.id = id;
     }
 

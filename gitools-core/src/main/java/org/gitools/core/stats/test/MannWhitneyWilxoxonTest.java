@@ -22,18 +22,20 @@
 package org.gitools.core.stats.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
+import com.google.common.collect.Iterables;
+import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.ConvergenceException;
 import org.apache.commons.math3.exception.MaxCountExceededException;
-import org.apache.commons.math3.exception.NoDataException;
-import org.apache.commons.math3.exception.NullArgumentException;
 import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.NaturalRanking;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.core.analysis.groupcomparison.GroupComparisonResult;
 import org.gitools.core.stats.test.results.CommonResult;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MannWhitneyWilxoxonTest extends AbstractTest {
 
@@ -43,80 +45,24 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
         naturalRanking = new NaturalRanking(NaNStrategy.FIXED, TiesStrategy.AVERAGE);
     }
 
-    @NotNull
     @Override
     public String getName() {
         return "mannWhitneyWilcoxon";
     }
 
-
-    @NotNull
     @Override
     public Class<? extends GroupComparisonResult> getResultClass() {
         return GroupComparisonResult.class;
     }
 
-    @Override
-    public void processPopulation(String name, DoubleMatrix1D population) {
-    }
+    public GroupComparisonResult processTest(Iterable<Double> group1, Iterable<Double> group2) {
 
+        final double[] x = removeNaNs(group1);
+        final double[] y = removeNaNs(group2);
 
-    @NotNull
-    public GroupComparisonResult processTest(@NotNull double[] group1, @NotNull double[] group2) {
-
-        int g1Nans = 0;
-        int g2Nans = 0;
-
-        for (int i = 0; i < group1.length; i++) {
-            if (Double.isNaN(group1[i])) {
-                g1Nans++;
-            }
+        if (x.length == 0 || y.length == 0) {
+            return new GroupComparisonResult(Iterables.size(group1) + Iterables.size(group2), x.length, y.length, Double.NaN, Double.NaN, Double.NaN);
         }
-        for (int i = 0; i < group2.length; i++) {
-            if (Double.isNaN(group2[i])) {
-                g2Nans++;
-            }
-        }
-
-        double[] group1NoNan = new double[group1.length - g1Nans];
-        double[] group2NoNan = new double[group2.length - g2Nans];
-
-        int offset = 0;
-        for (int i = 0; i < group1.length; i++) {
-            if (!Double.isNaN(group1[i])) {
-                group1NoNan[i - offset] = group1[i];
-            } else {
-                offset++;
-            }
-        }
-        offset = 0;
-        for (int i = 0; i < group2.length; i++) {
-            if (!Double.isNaN(group2[i])) {
-                group2NoNan[i - offset] = group2[i];
-            } else {
-                offset++;
-            }
-        }
-
-        if (group1NoNan.length > 1 && group2NoNan.length > 1) {
-            return mannWhitneyUTest(group1NoNan, group2NoNan);
-        } else {
-            return new GroupComparisonResult(group1NoNan.length + group2NoNan.length, group1NoNan.length, group2NoNan.length, Double.NaN, Double.NaN, Double.NaN);
-        }
-
-    }
-
-    @NotNull
-    @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
-        throw new UnsupportedOperationException("Not supported at all.");
-    }
-
-    public GroupComparisonResult mannWhitneyUTest(final double[] x, final double[] y)
-            throws NullArgumentException, NoDataException,
-            ConvergenceException, MaxCountExceededException {
-
-        ensureDataConformance(x, y);
 
         final double[] z = concatenateSamples(x, y);
         final double[] ranks = naturalRanking.rank(z);
@@ -156,6 +102,21 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 
     }
 
+    private double[] removeNaNs(Iterable<Double> values) {
+
+        List<Double> noNaNs = new ArrayList<>();
+
+        for (Double value : values) {
+
+            if (value != null) {
+                noNaNs.add(value);
+            }
+
+        }
+
+        return Doubles.toArray(noNaNs);
+    }
+
     /** Concatenate the samples into one array.
      * @param x first sample
      * @param y second sample
@@ -170,26 +131,6 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
         return z;
     }
 
-    /**
-     * Ensures that the provided arrays fulfills the assumptions.
-     *
-     * @param x first sample
-     * @param y second sample
-     * @throws NullArgumentException if {@code x} or {@code y} are {@code null}.
-     * @throws NoDataException if {@code x} or {@code y} are zero-length.
-     */
-    private void ensureDataConformance(final double[] x, final double[] y)
-            throws NullArgumentException, NoDataException {
-
-        if (x == null ||
-                y == null) {
-            throw new NullArgumentException();
-        }
-        if (x.length == 0 ||
-                y.length == 0) {
-            throw new NoDataException();
-        }
-    }
 
     private double calculateOneTailPValue(final double Umin, final int n1, final int n2) throws ConvergenceException, MaxCountExceededException {
 
@@ -208,6 +149,15 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
         final NormalDistribution standardNormal = new NormalDistribution(0, 1);
 
         return standardNormal.cumulativeProbability(z);
+    }
+
+    @Override
+    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
+        throw new UnsupportedOperationException("Not supported at all.");
+    }
+
+    @Override
+    public void processPopulation(String name, DoubleMatrix1D population) {
     }
 
 

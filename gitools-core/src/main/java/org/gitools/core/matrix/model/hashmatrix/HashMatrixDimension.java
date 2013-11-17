@@ -22,7 +22,7 @@
 package org.gitools.core.matrix.model.hashmatrix;
 
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
-import org.gitools.core.matrix.model.MatrixDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,14 +32,14 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     private Map<String, Integer> labelToIndex;
     private Map<Integer, String> indexToLabel;
 
-    public HashMatrixDimension(MatrixDimension id) {
+    public HashMatrixDimension(MatrixDimensionKey id) {
         super(id);
 
         this.labelToIndex = new HashMap<>();
         this.indexToLabel = new HashMap<>();
     }
 
-    public HashMatrixDimension(MatrixDimension id, Iterable<String> labels) {
+    public HashMatrixDimension(MatrixDimensionKey id, Iterable<String> labels) {
         this(id);
 
         for (String label : labels) {
