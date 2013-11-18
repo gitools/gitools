@@ -50,6 +50,11 @@ public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
         }
     }
 
+    @Override
+    public String[] getIds() {
+        return idToIndex.keySet().toArray(new String[size()]);
+    }
+
     public int indexOf(String label) {
         if (idToIndex.containsKey(label)) {
             return idToIndex.get(label);

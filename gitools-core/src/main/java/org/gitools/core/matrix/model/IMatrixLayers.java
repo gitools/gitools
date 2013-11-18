@@ -23,12 +23,15 @@ package org.gitools.core.matrix.model;
 
 public interface IMatrixLayers<L extends IMatrixLayer> extends Iterable<L> {
 
+    public String[] getIds();
+
     public L get(String layerId);
+
+    public int size();
 
     @Deprecated
     public L get(int layerIndex);
 
     public int indexOf(String layerId);
 
-    public int size();
 }

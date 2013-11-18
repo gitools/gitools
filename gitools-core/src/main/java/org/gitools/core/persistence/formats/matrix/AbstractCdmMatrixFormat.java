@@ -23,10 +23,11 @@ package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.datafilters.DoubleTranslator;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
@@ -128,32 +129,23 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            int numCols = matrix.getColumns().size();
+            IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
+            IMatrixDimension rows = matrix.getRows();
+            IMatrixDimension columns = matrix.getColumns();
 
-            final String[] colNames = MatrixUtils.createLabelArray(matrix.getColumns());
-
-            for (int i = 0; i < numCols; i++) {
-                final String name = i < colNames.length ? colNames[i] : "";
+            for (String column : columns) {
                 pw.print('\t');
-                pw.print(name);
+                pw.print(column);
             }
-
             pw.print('\n');
 
-            int numRows = matrix.getRows().size();
+            for (String row : rows) {
+                pw.print(row);
 
-            final String[] rowNames = MatrixUtils.createLabelArray(matrix.getRows());
-
-            for (int i = 0; i < numRows; i++) {
-                final String name = i < rowNames.length ? rowNames[i] : "";
-
-                pw.print(name);
-
-                for (int j = 0; j < numCols; j++) {
+                for (String column : columns) {
                     pw.print('\t');
-                    pw.print(DoubleTranslator.get().valueToString(MatrixUtils.doubleValue(matrix.getValue(i, j, 0))));
+                    pw.print(layer.getTranslator().valueToString(matrix.get(layer, row, column)));
                 }
-
                 pw.print('\n');
 
                 monitor.worked(1);

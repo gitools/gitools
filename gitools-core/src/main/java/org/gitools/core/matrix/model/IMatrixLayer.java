@@ -21,6 +21,8 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.core.datafilters.ValueTranslator;
+
 public interface IMatrixLayer<T> {
 
     String getId();
@@ -30,5 +32,7 @@ public interface IMatrixLayer<T> {
     String getDescription();
 
     Class<T> getValueClass();
+
+    ValueTranslator<T> getTranslator();
 
 }

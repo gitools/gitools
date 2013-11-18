@@ -26,6 +26,7 @@ import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
@@ -134,11 +135,14 @@ public class OncodriveProcessor extends MtcTestProcessor {
                 condMonitor.begin("Column set " + csetName + "...", numRows);
 
                 DoubleMatrix1D population = DoubleFactory1D.dense.make(numColumns * numRows);
+                IMatrixLayer layer = dataMatrix.getLayers().iterator().next();
 
                 int k = 0;
-                for (int i = 0; i < numRows; i++)
-                    for (int j = 0; j < numColumns; j++)
-                        population.setQuick(k++, MatrixUtils.doubleValue(dataMatrix.getValue(i, columnIndices[j], 0)));
+                for (int i = 0; i < numRows; i++) {
+                    for (int j = 0; j < numColumns; j++) {
+                        population.setQuick(k++, MatrixUtils.doubleValue(dataMatrix.get(layer, dataMatrix.getRows().getLabel(i), dataMatrix.getColumns().getLabel(columnIndices[j]))));
+                    }
+                }
 
                 population = population.viewSelection(notNaNProc);
 
@@ -153,7 +157,7 @@ public class OncodriveProcessor extends MtcTestProcessor {
                     final DoubleMatrix1D itemValues = DoubleFactory1D.dense.make(numColumns);
 
                     for (int j = 0; j < numColumns; j++)
-                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.getValue(itemIndex, columnIndices[j], 0)));
+                        itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.get(layer, dataMatrix.getRows().getLabel(itemIndex), dataMatrix.getColumns().getLabel(columnIndices[j]))));
 
                     final RunSlot slot;
                     try {

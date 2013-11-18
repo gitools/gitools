@@ -24,7 +24,8 @@ package org.gitools.core.matrix.model;
 
 public interface IMatrixViewLayers<L extends IMatrixLayer> extends IMatrixLayers<L> {
 
-    int getTopLayerIndex();
+    L getTopLayer();
 
-    void setTopLayerIndex(int index);
+    void setTopLayer(L topLayer);
+
 }

@@ -26,6 +26,7 @@ import org.gitools.core.clustering.ClusteringMethod;
 import org.gitools.core.clustering.ClusteringMethodDescriptor;
 import org.gitools.core.clustering.method.value.*;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
@@ -65,7 +66,7 @@ public class ClusteringValueWizard extends AbstractWizard {
         addPage(methodPage);
 
         IMatrixView mv = heatmap;
-        optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayerIndex());
+        optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayer());
         addPage(optionsPage);
 
         newickPage = new SaveFilePage();
@@ -153,7 +154,8 @@ public class ClusteringValueWizard extends AbstractWizard {
     public ClusteringData getClusterData() {
         int attr = optionsPage.getDataAttribute();
         IMatrixView mv = heatmap;
-        return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, attr) : new MatrixColumnClusteringData(mv, attr);
+        IMatrixLayer layer = heatmap.getLayers().get(attr);
+        return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, layer) : new MatrixColumnClusteringData(mv, layer);
     }
 
     public int getDataAttribute() {

@@ -23,8 +23,9 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.core.exporter.TextMatrixViewExporter;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IMatrixViewLayers;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -68,29 +69,21 @@ public class ExportMatrixAction extends BaseAction {
             return;
         }
 
-        final IMatrixLayers properties = matrixView.getLayers();
-        final String[] propNames = new String[properties.size()];
-        for (int i = 0; i < properties.size(); i++)
-            propNames[i] = properties.get(i).getName();
+        IMatrixViewLayers layers = matrixView.getLayers();
 
-        int selectedPropIndex = matrixView.getLayers().getTopLayerIndex();
-        selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
-        selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
+        String selectedId = (String) JOptionPane.showInputDialog(
+                AppFrame.get(),
+                "What do you want to export ?",
+                "Export table data", JOptionPane.QUESTION_MESSAGE, null,
+                layers.getIds(),
+                layers.getTopLayer().getId()
+        );
 
-        final String selected = (String) JOptionPane.showInputDialog(AppFrame.get(), "What do you want to export ?", "Export table data", JOptionPane.QUESTION_MESSAGE, null, propNames, propNames[selectedPropIndex]);
-
-        if (selected == null || selected.isEmpty()) {
+        if (selectedId == null || selectedId.isEmpty()) {
             return;
         }
 
-        int index = 0;
-        for (int j = 0; j < propNames.length; j++)
-            if (propNames[j].equals(selected)) {
-                index = j;
-            }
-
-        final int propIndex = index;
-
+        final IMatrixLayer selected = layers.get(selectedId);
         final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
@@ -106,7 +99,7 @@ public class ExportMatrixAction extends BaseAction {
                     monitor.begin("Exporting to image ...", 1);
                     monitor.info("File: " + file.getName());
 
-                    TextMatrixViewExporter.exportMatrix(matrixView, propIndex, file);
+                    TextMatrixViewExporter.exportMatrix(matrixView, selected, file);
 
                     monitor.end();
                 } catch (IOException ex) {

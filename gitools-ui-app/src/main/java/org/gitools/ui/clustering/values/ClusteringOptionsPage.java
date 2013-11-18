@@ -52,7 +52,7 @@ class ClusteringOptionsPage extends AbstractWizardPage {
         }
     }
 
-    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> layers, int index) {
+    public ClusteringOptionsPage(IMatrixLayers<? extends IMatrixLayer> layers, IMatrixLayer index) {
 
         initComponents();
 
@@ -64,7 +64,7 @@ class ClusteringOptionsPage extends AbstractWizardPage {
         }
 
         attributeCb.setModel(model);
-        attributeCb.setSelectedIndex(index);
+        attributeCb.setSelectedIndex(layers.indexOf(index.getId()));
 
         newickChk.setVisible(false);
 

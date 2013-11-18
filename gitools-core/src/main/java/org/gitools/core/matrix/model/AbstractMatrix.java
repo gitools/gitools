@@ -86,29 +86,6 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Override
-    @Deprecated
-    public final Object getValue(int row, int column, int layerIndex) {
-        return get(getLayer(layerIndex), getPosition(row, column));
-    }
-
-    @Deprecated
-    private IMatrixLayer<Object> getLayer(int layerIndex) {
-        return (IMatrixLayer<Object>) getLayers().get(layerIndex);
-    }
-
-    @Deprecated
-    private String[] getPosition(int row, int column) {
-
-        MatrixDimensionKey rowsDimension = getDimensions()[0];
-        String rowIdentifier = getIdentifiers(rowsDimension).getLabel(row);
-
-        MatrixDimensionKey columnsDimensions = getDimensions()[1];
-        String columnIdentifier = getIdentifiers(columnsDimensions).getLabel(column);
-
-        return new String[] { rowIdentifier, columnIdentifier };
-    }
-
-    @Override
     public void detach() {
     }
 

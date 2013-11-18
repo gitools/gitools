@@ -24,6 +24,7 @@ package org.gitools.ui.actions.data;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.filter.MatrixViewValueFilter;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.actions.ActionUtils;
@@ -72,11 +73,11 @@ public class FilterByValueAction extends BaseAction {
         for (int i = 0; i < attributes.size(); i++) {
             attrNames[i] = attributes.get(i).getName();
         }
-        int selectedLayer = matrixView.getLayers().getTopLayerIndex();
+        IMatrixLayer selectedLayer = matrixView.getLayers().getTopLayer();
 
 
         ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<ValueFilterCriteria>(1);
-        initialCriteria.add(new ValueFilterCriteria(attrNames[selectedLayer], selectedLayer, CutoffCmp.LT, 0.05));
+        initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
 
         final ValueFilterPage page = new ValueFilterPage(AppFrame.get(),
                 attrNames,

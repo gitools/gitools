@@ -22,20 +22,16 @@
 package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 
 import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
 import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
@@ -99,15 +95,16 @@ public class GmtMatrixFormat extends AbstractMatrixFormat {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            final int rowCount = matrix.getRows().size();
+            IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
+            IMatrixDimension rows = matrix.getRows();
+            IMatrixDimension columns = matrix.getColumns();
 
-            for (int ci = 0; ci < matrix.getColumns().size(); ci++) {
-                pw.append(matrix.getColumns().getLabel(ci));
+            for (String column : columns) {
+                pw.append(column);
                 pw.append('\t'); // description, but currently not used
-                for (int ri = 0; ri < rowCount; ri++) {
-                    Double value = MatrixUtils.doubleValue(matrix.getValue(ri, ci, 0));
-                    if (value == 1.0) {
-                        pw.append('\t').append(matrix.getRows().getLabel(ri));
+                for (String row : rows) {
+                    if (matrix.get(layer, row, column) == 1.0) {
+                        pw.append('\t').append(row);
                     }
                 }
                 pw.println();

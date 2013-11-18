@@ -22,6 +22,7 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.core.matrix.sort.ValueSortCriteria;
@@ -98,7 +99,7 @@ public class FastSortValueAction extends BaseAction {
             return;
         }
 
-        final int propIndex = matrixView.getLayers().getTopLayerIndex();
+        final IMatrixLayer layer = matrixView.getLayers().getTopLayer();
 
         final ValueSortCriteria.SortDirection sort = currentSort;
         currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);
@@ -107,7 +108,7 @@ public class FastSortValueAction extends BaseAction {
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
-                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{new ValueSortCriteria(propIndex, aggregator, sort)};
+                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{new ValueSortCriteria(layer, aggregator, sort)};
 
                 monitor.begin("Sorting ...", 1);
 

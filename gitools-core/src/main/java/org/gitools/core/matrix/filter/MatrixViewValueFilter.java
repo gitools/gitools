@@ -66,7 +66,7 @@ public class MatrixViewValueFilter {
                 boolean critOr = false;
                 for (int critIndex = 0; critIndex < criteriaList.size(); critIndex++) {
                     ValueFilterCriteria criteria = criteriaList.get(critIndex);
-                    double value = MatrixUtils.doubleValue(matrixView.getValue(row, selection[col], criteria.getAttributeIndex()));
+                    double value = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), matrixView.getRows().getLabel(row), matrixView.getColumns().getLabel(selection[col])));
                     boolean critRes = criteria.getComparator().compare(value, criteria.getValue());
                     critAnd &= critRes;
                     critOr |= critRes;

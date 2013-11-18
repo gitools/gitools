@@ -81,7 +81,7 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         for (int i = 0; i < selectedColumns.length; i++) {
             int col = selectedColumns[i];
 
-            Object valueObject = matrixView.getValue(idx, col, matrixView.getLayers().getTopLayerIndex());
+            Object valueObject = matrixView.get(matrixView.getLayers().getTopLayer(), matrixView.getRows().getLabel(idx), matrixView.getColumns().getLabel(col));
             valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
         }
 

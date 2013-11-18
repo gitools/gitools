@@ -109,8 +109,7 @@ public abstract class MatrixViewSorter {
         heatmap.getRows().setVisibleIndices(sortedVisibleRows);
 
         ValueSortCriteria[] criteriaArray = new ValueSortCriteria[1];
-        int index = heatmap.getLayers().getTopLayerIndex();
-        criteriaArray[0] = new ValueSortCriteria(index, SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
+        criteriaArray[0] = new ValueSortCriteria(heatmap.getLayers().getTopLayer(), SumAbsAggregator.INSTANCE, SortDirection.DESCENDING);
 
         monitor.begin("Sorting rows...", numRows);
 

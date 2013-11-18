@@ -24,6 +24,7 @@ package org.gitools.core.clustering.method.value;
 import org.gitools.core.clustering.ClusteringData;
 import org.gitools.core.clustering.ClusteringDataInstance;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.jetbrains.annotations.NotNull;
 
 public class MatrixColumnClusteringData implements ClusteringData {
@@ -48,33 +49,31 @@ public class MatrixColumnClusteringData implements ClusteringData {
 
         @Override
         public Class<?> getValueClass(int attribute) {
-            return attributeClass;
+            return layer.getValueClass();
         }
 
         @Override
         public Object getValue(int attribute) {
-            return matrix.getValue(attribute, index, matrixAttribute);
+            return matrix.get(layer, matrix.getRows().getLabel(attribute), matrix.getColumns().getLabel(index));
         }
 
         @NotNull
         @Override
-        public <T> T getTypedValue(int attribute, @NotNull Class<T> valueClass) {
+        public <T> T getTypedValue(int attribute, Class<T> valueClass) {
             if (!valueClass.equals(getValueClass(attribute))) {
                 throw new RuntimeException("Unsupported type: " + valueClass.getCanonicalName());
             }
 
-            return (T) matrix.getValue(attribute, index, matrixAttribute);
+            return (T) matrix.get(layer, matrix.getRows().getLabel(attribute), matrix.getColumns().getLabel(index));
         }
     }
 
     private IMatrix matrix;
-    private final int matrixAttribute;
-    private Class<?> attributeClass;
+    private IMatrixLayer layer;
 
-    public MatrixColumnClusteringData(@NotNull IMatrix matrix, int matrixAttribute) {
+    public MatrixColumnClusteringData(IMatrix matrix, IMatrixLayer layer) {
         this.matrix = matrix;
-        this.matrixAttribute = matrixAttribute;
-        this.attributeClass = matrix.getLayers().get(matrixAttribute).getValueClass();
+        this.layer = layer;
     }
 
     @Override
@@ -87,18 +86,9 @@ public class MatrixColumnClusteringData implements ClusteringData {
         return matrix.getColumns().getLabel(index);
     }
 
-    @NotNull
     @Override
     public ClusteringDataInstance getInstance(int index) {
         return new Instance(index);
-    }
-
-    public Class<?> getAttributeClass() {
-        return attributeClass;
-    }
-
-    public void setAttributeClass(Class<?> attributeClass) {
-        this.attributeClass = attributeClass;
     }
 
     public IMatrix getMatrix() {

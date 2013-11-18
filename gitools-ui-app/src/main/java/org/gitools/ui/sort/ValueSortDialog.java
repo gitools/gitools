@@ -21,10 +21,11 @@
  */
 package org.gitools.ui.sort;
 
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.sort.ValueSortCriteria;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -77,7 +78,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         }
     }
 
-    private final String[] attributeNames;
+    private final IMatrixLayers<IMatrixLayer> layers;
     private final IAggregator[] aggregators;
     private final ValueSortCriteria.SortDirection[] directions;
 
@@ -86,20 +87,18 @@ public class ValueSortDialog extends javax.swing.JDialog {
     /**
      * Creates new form FilterDialog
      */
-    public ValueSortDialog(java.awt.Frame parent, @NotNull String[] attributeNames, IAggregator[] aggregators, ValueSortCriteria.SortDirection[] directions, @Nullable List<ValueSortCriteria> initialCriteriaList) {
+    public ValueSortDialog(java.awt.Frame parent, IMatrixLayers<IMatrixLayer> layers, IAggregator[] aggregators, ValueSortCriteria.SortDirection[] directions, ValueSortCriteria... initialCriteriaList) {
 
         super(parent, true);
 
-        this.attributeNames = attributeNames;
+        this.layers = layers;
         this.aggregators = aggregators;
         this.directions = directions;
-
-        this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
+        this.criteriaModel = new ValueSortCriteriaTableModel(layers, initialCriteriaList);
 
         initComponents();
 
         table.setModel(criteriaModel);
-
         criteriaModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -107,12 +106,8 @@ public class ValueSortDialog extends javax.swing.JDialog {
             }
         });
 
-        if (initialCriteriaList != null) {
-            criteriaModel.addAllCriteria(initialCriteriaList);
-        }
-
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(layers.getIds()));
         columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
         columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
     }
@@ -245,7 +240,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueSortCriteria(attributeNames[0], 0, aggregators[0], directions[0]));
+        criteriaModel.addCriteria(new ValueSortCriteria(layers.get(0), aggregators[0], directions[0]));
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
     private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
