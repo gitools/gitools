@@ -22,6 +22,7 @@
 package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
 import org.gitools.core.persistence.PersistenceException;
@@ -97,6 +98,7 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
+            IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
             int numColumns = matrix.getColumns().size();
             int numRows = matrix.getRows().size();
 
@@ -119,15 +121,22 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
             while (finishedColumns < numColumns) {
                 boolean validLine = false;
                 for (int col = 0; col < numColumns; col++) {
+                    String colId = matrix.getColumns().getLabel(col);
+
                     if (col != 0) {
                         line.append('\t');
                     }
 
                     int row = positions[col];
                     if (row < numRows) {
-                        double value = MatrixUtils.doubleValue(matrix.getValue(row, col, 0));
-                        while (value != 1.0 && (row < numRows - 1))
-                            value = MatrixUtils.doubleValue(matrix.getValue(++row, col, 0));
+
+                        String rowId = matrix.getRows().getLabel(row);
+                        double value = MatrixUtils.doubleValue(matrix.get(layer, rowId, colId));
+                        while (value != 1.0 && (row < numRows - 1)) {
+                            row++;
+                            rowId = matrix.getRows().getLabel(row);
+                            value = MatrixUtils.doubleValue(matrix.get(layer, rowId, colId));
+                        }
 
                         if (value == 1.0) {
                             line.append(matrix.getRows().getLabel(row));

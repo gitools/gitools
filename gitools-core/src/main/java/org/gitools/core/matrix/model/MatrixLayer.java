@@ -22,6 +22,8 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.core.datafilters.ValueTranslator;
+import org.gitools.core.datafilters.ValueTranslatorFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -93,6 +95,11 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     @Override
     public Class<T> getValueClass() {
         return valueClass;
+    }
+
+    @Override
+    public ValueTranslator<T> getTranslator() {
+        return ValueTranslatorFactory.createValueTranslator(getValueClass());
     }
 
     public void setDescription(String description) {

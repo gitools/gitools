@@ -52,7 +52,4 @@ public interface IMatrix extends IResource {
 
     IMatrixDimension getColumns();
 
-    @Deprecated
-    Object getValue(int row, int column, int layer);
-
 }

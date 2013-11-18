@@ -22,7 +22,7 @@
 package org.gitools.core.exporter;
 
 import org.gitools.core.datafilters.ValueTranslator;
-import org.gitools.core.datafilters.ValueTranslatorFactory;
+import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.core.matrix.model.IMatrixView;
@@ -35,30 +35,24 @@ import java.io.PrintWriter;
 
 public class TextMatrixViewExporter {
 
-    public static void exportMatrix(@NotNull IMatrixView matrixView, int propIndex, File file) throws IOException {
+    public static void exportMatrix(@NotNull IMatrixView matrixView, IMatrixLayer layer, File file) throws IOException {
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
-        int rowCount = matrixView.getRows().size();
-        int colCount = matrixView.getColumns().size();
+        IMatrixDimension rows = matrixView.getRows();
+        IMatrixDimension columns = matrixView.getColumns();
 
         //header
-
-        for (int c = 0; c < colCount; c++)
-            pw.print("\t" + matrixView.getColumns().getLabel(c));
+        for (String column : columns)
+            pw.print("\t" + column);
         pw.println();
 
         // body
+        ValueTranslator translator = layer.getTranslator();
 
-        IMatrixLayer attr = matrixView.getContents().getLayers().get(propIndex);
-
-        ValueTranslator vt = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
-
-        for (int r = 0; r < rowCount; r++) {
-            pw.print(matrixView.getRows().getLabel(r).toString());
-            for (int c = 0; c < colCount; c++) {
-                Object value = matrixView.getValue(r, c, propIndex);
-                String valueString = vt.valueToString(value);
-                pw.print("\t" + valueString);
+        for (String row : rows) {
+            pw.print(row);
+            for (String column : columns) {
+                pw.print("\t" + translator.valueToString( matrixView.get(layer, row, column) ));
             }
             pw.println();
         }
@@ -66,47 +60,34 @@ public class TextMatrixViewExporter {
         pw.close();
     }
 
-    public static void exportTable(@NotNull IMatrixView matrixView, @NotNull int[] propIndices, File file) throws IOException {
+    public static void exportTable(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
+
         PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
 
-        IMatrixLayers attributes = matrixView.getLayers();
-
-        final int rowCount = matrixView.getRows().size();
-        final int colCount = matrixView.getColumns().size();
-
-        final int propCount = propIndices.length;
-
-        ValueTranslator[] vt = new ValueTranslator[propCount];
+        IMatrixLayers layers = matrixView.getLayers();
+        IMatrixDimension rows = matrixView.getRows();
+        IMatrixDimension columns = matrixView.getColumns();
 
         // header
-
         pw.print("column\trow");
-        for (int i = 0; i < propIndices.length; i++) {
-            IMatrixLayer attr = attributes.get(propIndices[i]);
-
-            vt[i] = ValueTranslatorFactory.createValueTranslator(attr.getValueClass());
-
-            pw.print("\t" + attr.getId());
+        for (int l : propIndices) {
+            IMatrixLayer layer = layers.get(l);
+            pw.print("\t" + layer.getId());
         }
         pw.println();
 
         // body
-
-        for (int i = 0; i < rowCount * colCount; i++) {
-            final int r = i / colCount;
-            final int c = i % colCount;
-
-            pw.print(matrixView.getColumns().getLabel(c));
-            pw.print("\t" + matrixView.getRows().getLabel(r));
-            for (int p = 0; p < propCount; p++) {
-                Object value = matrixView.getValue(r, c, propIndices[p]);
-                String valueString = vt[p].valueToString(value);
-                pw.print("\t" + valueString);
+        for (String column : columns) {
+            for (String row : rows) {
+                pw.print(column);
+                pw.print("\t" + row);
+                for (int l : propIndices) {
+                    IMatrixLayer layer = layers.get(l);
+                    pw.print("\t" + layer.getTranslator().valueToString( matrixView.get(layer, row, column )));
+                }
+                pw.println();
             }
-            pw.println();
-
         }
-
         pw.close();
     }
 }

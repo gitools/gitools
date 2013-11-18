@@ -30,6 +30,7 @@ import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
@@ -82,6 +83,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
         TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
 
         IMatrix dataMatrix = analysis.getData().get();
+        IMatrixLayer layer = dataMatrix.getLayers().iterator().next();
 
         if (analysis.isDiscardNonMappedRows()) {
 
@@ -144,7 +146,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
 
             final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
             for (int i = 0; i < numRows; i++) {
-                double value = MatrixUtils.doubleValue(dataMatrix.getValue(i, condIndex, 0));
+                double value = MatrixUtils.doubleValue(dataMatrix.get(layer, dataMatrix.getRows().getLabel(i), dataMatrix.getColumns().getLabel(condIndex)));
 
                 condItems.setQuick(i, value);
             }

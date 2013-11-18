@@ -65,10 +65,10 @@ public class MtcAction extends BaseAction {
             return;
         }
 
-        final int propIndex = matrixView.getLayers().getTopLayerIndex();
-        final int corrPropIndex = MatrixUtils.correctedValueIndex(matrixView.getLayers(), matrixView.getLayers().get(propIndex));
+        final IMatrixLayer<Double> valueLayer = matrixView.getLayers().getTopLayer();
+        final IMatrixLayer<Double> correctedLayer = MatrixUtils.correctedValueIndex(matrixView.getLayers(), valueLayer);
 
-        if (corrPropIndex < 0) {
+        if (correctedLayer == null) {
             JOptionPane.showMessageDialog(AppFrame.get(), "The property selected doesn't allow multiple test correction.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -80,8 +80,6 @@ public class MtcAction extends BaseAction {
                 IMatrix contents = matrixView.getContents();
                 IMatrixDimension rows = contents.getRows();
                 IMatrixDimension columns = contents.getColumns();
-                IMatrixLayer<Double> fromLayer = contents.getLayers().get(propIndex);
-                IMatrixLayer<Double> toLayer = contents.getLayers().get(corrPropIndex);
                 IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(mtc);
 
                 monitor.begin("Multiple test correction for  " + mtc.getName() + " ...", columns.size() * rows.size() * 3);
@@ -89,10 +87,10 @@ public class MtcAction extends BaseAction {
                 IMatrixPosition position = contents.newPosition();
                 for (String column : position.iterate(columns)) {
 
-                    position.iterate(fromLayer, rows)
+                    position.iterate(valueLayer, rows)
                             .monitor(monitor)
                             .transform( mtcFunction )
-                            .store( contents, toLayer );
+                            .store( contents, correctedLayer );
 
                 }
 

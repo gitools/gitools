@@ -21,6 +21,7 @@
  */
 package org.gitools.core.matrix.sort;
 
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,38 +49,23 @@ public final class ValueSortCriteria {
         }
     }
 
-    private String attributeName;
-    private int attributeIndex;
+    private IMatrixLayer layer;
     private IAggregator aggregator;
     private SortDirection direction;
 
-    public ValueSortCriteria(int attributeIndex, IAggregator aggregator, SortDirection direction) {
+    public ValueSortCriteria(IMatrixLayer layer, IAggregator aggregator, SortDirection direction) {
 
-        this(null, attributeIndex, aggregator, direction);
-    }
-
-    public ValueSortCriteria(String attributeName, int attributeIndex, IAggregator aggregator, SortDirection direction) {
-
-        this.attributeName = attributeName;
-        this.attributeIndex = attributeIndex;
+        this.layer = layer;
         this.direction = direction;
         this.aggregator = aggregator;
     }
 
-    public String getAttributeName() {
-        return attributeName;
+    public IMatrixLayer getLayer() {
+        return layer;
     }
 
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
-
-    public final int getAttributeIndex() {
-        return attributeIndex;
-    }
-
-    public final void setAttributeIndex(int propIndex) {
-        this.attributeIndex = propIndex;
+    public void setLayer(IMatrixLayer layer) {
+        this.layer = layer;
     }
 
     public final SortDirection getDirection() {
@@ -101,6 +87,6 @@ public final class ValueSortCriteria {
     @NotNull
     @Override
     public String toString() {
-        return attributeName + ", " + aggregator.toString() + ", " + direction.toString();
+        return layer.getId() + ", " + aggregator.toString() + ", " + direction.toString();
     }
 }

@@ -125,7 +125,7 @@ public class SortByValueComparator implements Comparator<Integer> {
 
         for (int i = 0; i < aggregatingIndices.length; i++) {
             position.set(aggregationDimension, aggregationDimension.getLabel(aggregatingIndices[i]));
-            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.get(matrixView.getLayers().get(criteria.getAttributeIndex()), position));
+            valueBuffer[i] = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), position));
         }
 
         return criteria.getAggregator().aggregate(valueBuffer);

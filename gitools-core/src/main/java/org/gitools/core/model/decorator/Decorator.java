@@ -23,6 +23,8 @@ package org.gitools.core.model.decorator;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.model.decorator.impl.*;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.IColorScale;
@@ -47,7 +49,16 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         super();
     }
 
-    public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer);
+    public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers);
+
+    public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, IMatrixPosition position) {
+        decorate(decoration, textFormatter, matrix, layer, position.toVector());
+    }
+
+    @Deprecated
+    public final void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
+        decorate(decoration, textFormatter, matrix, matrix.getLayers().get(layer), matrix.getRows().getLabel(row), matrix.getColumns().getLabel(column));
+    }
 
     public abstract C getScale();
 

@@ -21,6 +21,7 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -49,16 +50,18 @@ public class MatrixConversion extends AbstractCompressor {
         for (int r = 0; r < rows.size(); r++) {
             NotCompressRow notCompressRow = new NotCompressRow(r, totalProperties, columns);
 
-            int row = inputMatrix.getRows().indexOf(rows.getLabel(r));
+            String rowId = rows.getLabel(r);
+            int row = inputMatrix.getRows().indexOf(rowId);
             for (int c = 0; c < columns.size(); c++) {
-                int column = inputMatrix.getColumns().indexOf(columns.getLabel(c));
+                String columnId = columns.getLabel(c);
+                int column = inputMatrix.getColumns().indexOf(columnId);
 
                 StringBuilder line = new StringBuilder(totalProperties * 8);
                 line.append(inputMatrix.getColumns().getLabel(column)).append(SEPARATOR);
                 line.append(inputMatrix.getRows().getLabel(row)).append(SEPARATOR);
                 boolean allNull = true;
-                for (int p = 0; p < totalProperties; p++) {
-                    Object value = inputMatrix.getValue(row, column, p);
+                for (IMatrixLayer layer : inputMatrix.getLayers()) {
+                    Object value = inputMatrix.get(layer, rowId, columnId);
 
                     if (value == null) {
                         line.append(SEPARATOR);
@@ -127,7 +130,7 @@ public class MatrixConversion extends AbstractCompressor {
                 for (int i = 0; i < numProperties; i++) {
                     values[0] = matrix.getColumns().getLabel(col);
                     values[1] = matrix.getRows().getLabel(row);
-                    values[i + 2] = Double.toString(MatrixUtils.doubleValue(matrix.getValue(row, col, i)));
+                    values[i + 2] = Double.toString(MatrixUtils.doubleValue(matrix.get(matrix.getLayers().get(i), values[1], values[0])));
                 }
                 col++;
             }

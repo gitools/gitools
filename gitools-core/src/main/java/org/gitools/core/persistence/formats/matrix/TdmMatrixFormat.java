@@ -23,6 +23,7 @@ package org.gitools.core.persistence.formats.matrix;
 
 import org.gitools.core.datafilters.DoubleTranslator;
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.persistence.IResourceLocator;
@@ -61,7 +62,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             }
 
             // read body
-
             String fields[];
             while ((fields = parser.readNext()) != null) {
 
@@ -92,14 +92,12 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
-        boolean orderByColumn = true;
-
         monitor.begin("Saving results...", results.getRows().size() * results.getColumns().size());
 
         try {
             OutputStream out = resourceLocator.openOutputStream();
             Writer writer = new OutputStreamWriter(out);
-            writeCells(writer, results, orderByColumn, monitor);
+            writeCells(writer, results, monitor);
             writer.close();
             out.close();
         } catch (Exception e) {
@@ -109,7 +107,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         }
     }
 
-    private void writeCells(Writer writer, IMatrix resultsMatrix, boolean orderByColumn, IProgressMonitor progressMonitor) {
+    private void writeCells(Writer writer, IMatrix resultsMatrix, IProgressMonitor progressMonitor) {
 
         RawCsvWriter out = new RawCsvWriter(writer, '\t', '"');
 
@@ -124,38 +122,27 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         out.writeNewLine();
 
-        int numColumns = resultsMatrix.getColumns().size();
-        int numRows = resultsMatrix.getRows().size();
+        IMatrixDimension columns = resultsMatrix.getColumns();
+        IMatrixDimension rows = resultsMatrix.getRows();
 
-        if (orderByColumn) {
-            for (int colIndex = 0; colIndex < numColumns; colIndex++) {
-                for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
-                    writeLine(out, resultsMatrix, colIndex, rowIndex, progressMonitor);
-                }
-            }
-        } else {
-            for (int rowIndex = 0; rowIndex < numRows; rowIndex++) {
-                for (int colIndex = 0; colIndex < numColumns; colIndex++) {
-                    writeLine(out, resultsMatrix, colIndex, rowIndex, progressMonitor);
-                }
+        for (String column : columns) {
+            for (String row : rows) {
+                writeLine(out, resultsMatrix, column, row, progressMonitor);
             }
         }
+
     }
 
-    private void writeLine(RawCsvWriter out, IMatrix resultsMatrix, int colIndex, int rowIndex, IProgressMonitor progressMonitor) {
+    private void writeLine(RawCsvWriter out, IMatrix resultsMatrix, String column, String row, IProgressMonitor progressMonitor) {
 
-        final String colName = resultsMatrix.getColumns().getLabel(colIndex);
-        final String rowName = resultsMatrix.getRows().getLabel(rowIndex);
-
-        out.writeQuotedValue(colName);
+        out.writeQuotedValue(column);
         out.writeSeparator();
-        out.writeQuotedValue(rowName);
+        out.writeQuotedValue(row);
 
-        int numProperties = resultsMatrix.getLayers().size();
-        for (int propIndex = 0; propIndex < numProperties; propIndex++) {
+        for (IMatrixLayer layer : resultsMatrix.getLayers()) {
             out.writeSeparator();
 
-            Object value = resultsMatrix.getValue(rowIndex, colIndex, propIndex);
+            Object value = resultsMatrix.get(layer, row, column);
             if (value instanceof Double) {
                 Double v = (Double) value;
                 out.write(DoubleTranslator.get().valueToString(v));

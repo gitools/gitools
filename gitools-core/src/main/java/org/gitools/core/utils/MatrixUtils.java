@@ -160,16 +160,16 @@ public class MatrixUtils {
         return scale;
     }
 
-    public static int correctedValueIndex(IMatrixLayers layers, IMatrixLayer layer) {
+    public static IMatrixLayer<Double> correctedValueIndex(IMatrixLayers<IMatrixLayer> layers, IMatrixLayer<Double> valueLayer) {
 
-        String id = "corrected-" + layer.getId();
+        String id = "corrected-" + valueLayer.getId();
 
-        for (int i = 0; i < layers.size(); i++)
-            if (id.equals(layers.get(i).getId())) {
-                return i;
+        for (IMatrixLayer correctedLayer : layers)
+            if (id.equals(correctedLayer.getId())) {
+                return correctedLayer;
             }
 
-        return -1;
+        return null;
     }
 
     public static IMatrix moduleMapToMatrix(IModuleMap mmap) {
@@ -194,19 +194,14 @@ public class MatrixUtils {
 
         HashModuleMap moduleMap = new HashModuleMap();
 
-        for (int row=0; row < matrix.getRows().size(); row++) {
+        IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
 
-            String item = matrix.getRows().getLabel(row);
+        for (String item : matrix.getRows()) {
+            for (String module : matrix.getColumns()) {
 
-            for (int column=0; column < matrix.getColumns().size(); column++) {
-
-                String module = matrix.getColumns().getLabel(column);
-
-                double value = MatrixUtils.doubleValue(matrix.getValue(row, column, 0));
-                if (value == 1.0) {
+                if (matrix.get(layer, item, module) == 1.0) {
                     moduleMap.addMapping(module, item);
                 }
-
             }
         }
 
@@ -225,6 +220,7 @@ public class MatrixUtils {
         MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(data.getLayers().get(valueDimension).getValueClass());
         Double min = Double.POSITIVE_INFINITY;
         Double max = Double.NEGATIVE_INFINITY;
+        IMatrixLayer layer = data.getLayers().get(valueDimension);
 
         int colNb = data.getColumns().size();
         int rowNb = data.getRows().size();
@@ -244,9 +240,13 @@ public class MatrixUtils {
 
         submonitor.begin("Reading some values in data matrix for " + valueDimensionName, rowNb);
         for (int r = 0; r < rowNb; r++) {
+            String row = data.getRows().getLabel(r);
+
             monitor.worked(1);
             for (int c = 0; c < colNb; c++) {
-                Object v = data.getValue(r, c, valueDimension);
+                String column = data.getColumns().getLabel(c);
+
+                Object v = data.get(layer, row, column);
                 if (v == null) {
                     continue;
                 }

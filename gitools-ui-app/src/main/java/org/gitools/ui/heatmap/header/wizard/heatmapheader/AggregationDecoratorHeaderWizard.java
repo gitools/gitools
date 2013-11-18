@@ -31,6 +31,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -148,21 +149,29 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         // Compute the annotations and store the results.
         AnnotationMatrix annotations = headerDimension.getAnnotations();
         IAggregator aggregator = dataSourceAggregationPage.getAggregator();
-        int aggregationLayer = dataSourceAggregationPage.getAggregationLayer();
+        IMatrixLayer aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
 
         for (String annotationLabel : aggregationAnnotationLabels) {
 
             int[] indices = aggregationIndicesByAnnotation.get(annotationLabel);
             final double[] valueBuffer = new double[indices.length];
 
-            MatrixUtils.DoubleCast doubleCast = MatrixUtils.createDoubleCast(heatmap.getLayers().get(aggregationLayer).getValueClass());
+            MatrixUtils.DoubleCast doubleCast = MatrixUtils.createDoubleCast(aggregationLayer.getValueClass());
 
             for (int index = 0; index < headerDimension.size(); index++) {
 
                 // Full the buffer with the values in the
                 boolean useRows = (headerDimension == heatmap.getColumns());
                 for (int i = 0; i < indices.length; i++) {
-                    Object value = (useRows ? heatmap.getValue(indices[i], index, aggregationLayer) : heatmap.getValue(index, indices[i], aggregationLayer));
+                    Object value = (useRows ?
+                            heatmap.get( aggregationLayer,
+                                heatmap.getRows().getLabel(indices[i]),
+                                heatmap.getColumns().getLabel(index)
+                            ) :
+                            heatmap.get(aggregationLayer,
+                                heatmap.getRows().getLabel(index),
+                                heatmap.getColumns().getLabel(indices[i]))
+                    );
                     valueBuffer[i] = (value == null ? Double.NaN : doubleCast.getDoubleValue(value));
                 }
 

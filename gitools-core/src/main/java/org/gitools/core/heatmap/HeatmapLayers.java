@@ -112,11 +112,12 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         setTopLayerIndex(layers.indexOf(topLayer));
     }
 
-    @Override
+    @Deprecated
     public int getTopLayerIndex() {
         return topLayer;
     }
 
+    @Deprecated
     public void setTopLayerById(String id) {
         int layer = indexOf(id);
 
@@ -125,7 +126,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         }
     }
 
-    @Override
+    @Deprecated
     public void setTopLayerIndex(int layerIndex) {
         int old = this.topLayer;
         this.topLayer = layerIndex;
@@ -138,6 +139,11 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         HeatmapLayer newLayer = layers.get(layerIndex);
         EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
         EventUtils.moveListeners(oldLayer, newLayer);
+    }
+
+    @Override
+    public String[] getIds() {
+        return layersIdToIndex.keySet().toArray(new String[size()]);
     }
 
     @Override

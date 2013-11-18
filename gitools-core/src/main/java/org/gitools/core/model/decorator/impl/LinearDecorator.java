@@ -22,6 +22,7 @@
 package org.gitools.core.model.decorator.impl;
 
 import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
@@ -146,8 +147,8 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         firePropertyChange(PROPERTY_EMPTY_COLOR, old, color);
     }
 
-    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
-        Object value = matrix.getValue(row, column, layer);
+    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers) {
+        Object value = matrix.get(layer, identifiers);
 
         double v = toDouble(value);
 
