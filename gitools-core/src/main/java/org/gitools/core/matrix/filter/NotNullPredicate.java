@@ -1,4 +1,4 @@
-package org.gitools.core.analysis.groupcomparison;
+package org.gitools.core.matrix.filter;
 
 import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.IMatrixPredicate;

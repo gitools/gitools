@@ -27,10 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * @noinspection ALL
- */
 public class TextPattern {
 
     public static interface VariableValueResolver {
@@ -166,4 +162,5 @@ public class TextPattern {
             token.generate(resolver, sb);
         return sb.toString();
     }
+
 }

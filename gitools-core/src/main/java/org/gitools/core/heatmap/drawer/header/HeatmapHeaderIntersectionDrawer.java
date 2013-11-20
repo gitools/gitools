@@ -163,7 +163,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     @NotNull
     @Override
     public HeatmapPosition getPosition(Point p) {
-        return new HeatmapPosition(colDrawer.getSize().width, 0);
+        return new HeatmapPosition(getHeatmap(), colDrawer.getSize().width, 0);
     }
 
     @NotNull

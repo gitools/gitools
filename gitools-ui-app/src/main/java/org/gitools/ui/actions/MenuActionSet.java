@@ -84,8 +84,7 @@ public class MenuActionSet extends ActionSet {
                 new ActionSet("Edit",
                         new BaseAction[]{
                                 EditActions.selectAllAction,
-                                EditActions.unselectAllAction,
-                                EditActions.invertSelectionAction
+                                EditActions.unselectAllAction
                         }),
                 new ActionSet("Data",
                         new BaseAction[]{

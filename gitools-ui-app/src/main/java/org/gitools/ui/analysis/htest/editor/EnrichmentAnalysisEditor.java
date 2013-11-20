@@ -25,6 +25,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.model.decorator.impl.BinaryDecorator;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
@@ -34,7 +35,6 @@ import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.core.stats.test.factory.TestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
-import org.gitools.ui.analysis.htest.editor.actions.ViewRelatedDataFromRowAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
@@ -208,7 +208,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     //TODO
     @NotNull
     protected static List<BaseAction> createToolBar(@NotNull EnrichmentAnalysis analysis) {
-        ViewRelatedDataFromRowAction action = new ViewRelatedDataFromRowAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get());
+        ViewRelatedDataFromAction action = new ViewRelatedDataFromAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get(), MatrixDimensionKey.ROWS);
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);
         return tb;

@@ -152,13 +152,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             // Draw selected
             g.setColor(HeatmapBodyDrawer.SELECTED_COLOR);
             int cellSize = heatmapDimension.getFullSize();
-            for (int s : heatmapDimension.getSelected()) {
-                g.fillRect(box.x, box.y + (s * cellSize), box.width, cellSize);
+            for (String s : heatmapDimension.getSelected()) {
+                g.fillRect(box.x, box.y + (heatmapDimension.indexOf(s) * cellSize), box.width, cellSize);
             }
 
             // Draw row lead
             g.setColor(Color.DARK_GRAY);
-            int lead = heatmapDimension.getSelectionLead();
+            int lead = heatmapDimension.indexOf(heatmapDimension.getFocus());
             if (lead != -1) {
                 g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
                 g.fillRect(box.x, box.y + ((lead+1) * cellSize) - 1, box.width, 1);
@@ -192,7 +192,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 x += sz.width;
             }
         }
-        return new HeatmapPosition(-1, -1);
+        return new HeatmapPosition(getHeatmap(), -1, -1);
     }
 
     public HeatmapHeader getHeader(Point p) {

@@ -38,6 +38,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoricalDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
@@ -70,11 +72,9 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
         CategoricalColorScale scale = elementDecorator.getScale();
         ColorScalePoint[] scalePoints = scale.getPointObjects();
 
-        ColoredLabel[] coloredLabels = new ColoredLabel[scalePoints.length];
-        int index = 0;
+        List<ColoredLabel> coloredLabels = new ArrayList<>(scalePoints.length);
         for (ColorScalePoint sp : scalePoints) {
-            coloredLabels[index] = new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor());
-            index++;
+            coloredLabels.add(new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor()));
         }
 
         EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.get(), coloredLabels);
@@ -83,8 +83,8 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
         if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {
             coloredLabels = dialog.getPage().getColoredLabels();
 
-            ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.length];
-            index = 0;
+            ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.size()];
+            int index = 0;
             ColorRegistry cr = ColorRegistry.get();
             for (ColoredLabel cl : coloredLabels) {
                 newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());

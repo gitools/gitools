@@ -195,8 +195,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     private void selectRowsAndCols(MouseEvent e) {
-        int corner1Row = ip.getLeadRow();
-        int corner1Col = ip.getLeadColumn();
+        int corner1Row = ip.getLead(heatmap.getRows());
+        int corner1Col = ip.getLead(heatmap.getColumns());
 
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();

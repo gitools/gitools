@@ -8,6 +8,7 @@ import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Comparator;
+import java.util.Set;
 
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 
@@ -21,7 +22,7 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     public abstract IMatrixPosition getPosition();
 
     @Override
-    public IMatrixIterable<T> filter(Iterable<String> identifiers) {
+    public IMatrixIterable<T> filter(Set<String> identifiers) {
         return filter(new IdentifiersPredicate<T>(getIterateDimension(), identifiers));
     }
 

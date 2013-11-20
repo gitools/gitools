@@ -21,52 +21,53 @@
  */
 package org.gitools.core.matrix.filter;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Sets;
+import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.core.utils.MatrixUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MatrixViewValueFilter {
 
-    public static void filter(@NotNull IMatrixView matrixView, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
-                              boolean allElements,        // All cells in a row/column should match
-                              boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
+    public static void filter(IMatrixView matrixView, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
 
         if (applyToRows) {
-            filterRows(matrixView, matrixView.getColumns().getSelected(), criteriaList, allCriteria, allElements, invertCriteria);
+            filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria);
         }
 
         if (applyToColumns) {
-            filterColumns(matrixView, matrixView.getRows().getSelected(), criteriaList, allCriteria, allElements, invertCriteria);
+            filter(matrixView, matrixView.getRows(), matrixView.getColumns(), criteriaList, allCriteria, allElements, invertCriteria);
         }
     }
 
-    private static void filterRows(@NotNull IMatrixView matrixView, @Nullable int[] selection, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
-                                   boolean allElements,        // All cells in a row/column should match
-                                   boolean invertCriteria) {
+    private static void filter(IMatrixView matrixView, IMatrixViewDimension rows,  IMatrixViewDimension columns, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
 
-        if (selection == null || selection.length == 0) {
-            int numColumns = matrixView.getColumns().size();
-            int[] sel = new int[numColumns];
-            for (int i = 0; i < sel.length; i++)
-                sel[i] = i;
-            selection = sel;
+        Set<String> selection = columns.getSelected();
+        if (selection.isEmpty()) {
+            selection = Sets.newHashSet(columns);
         }
 
-        List<Integer> filterin = new ArrayList<Integer>();
+        Set<String> filterin = new HashSet<>();
 
-        for (int row = 0; row < matrixView.getRows().size(); row++) {
+        IMatrixPosition position = matrixView.newPosition();
+        for (String row : position.iterate(rows)) {
+
             boolean cellsAnd = true;
             boolean cellsOr = false;
-            for (int col = 0; col < selection.length; col++) {
+
+            for (String column : position.iterate(rows).filter(selection)) {
+
                 boolean critAnd = true;
                 boolean critOr = false;
-                for (int critIndex = 0; critIndex < criteriaList.size(); critIndex++) {
-                    ValueFilterCriteria criteria = criteriaList.get(critIndex);
-                    double value = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), matrixView.getRows().getLabel(row), matrixView.getColumns().getLabel(selection[col])));
+
+                for (ValueFilterCriteria criteria : criteriaList) {
+
+                    double value = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), position));
                     boolean critRes = criteria.getComparator().compare(value, criteria.getValue());
                     critAnd &= critRes;
                     critOr |= critRes;
@@ -85,19 +86,7 @@ public class MatrixViewValueFilter {
             }
         }
 
-        int[] visibleRows = matrixView.getRows().getVisibleIndices();
-        int[] filterRows = new int[filterin.size()];
-        for (int i = 0; i < filterin.size(); i++)
-            filterRows[i] = visibleRows[filterin.get(i)];
-
-        matrixView.getRows().setVisibleIndices(filterRows);
+        rows.show(Predicates.in(filterin));
     }
 
-    private static void filterColumns(IMatrixView matrixView, int[] selection, @NotNull List<ValueFilterCriteria> criteriaList, boolean allCriteria,        // For a given cell all criteria should match
-                                      boolean allElements,        // All cells in a row/column should match
-                                      boolean invertCriteria) {
-
-        //TODO final IMatrixView mv = new TransposedMatrixView(matrixView);
-        // filterRows(mv, selection, criteriaList, allCriteria, allElements, invertCriteria);
-    }
 }

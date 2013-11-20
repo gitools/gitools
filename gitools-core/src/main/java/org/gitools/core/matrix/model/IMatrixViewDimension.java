@@ -21,35 +21,41 @@
  */
 package org.gitools.core.matrix.model;
 
+import com.google.common.base.Predicate;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public interface IMatrixViewDimension extends IMatrixDimension {
 
-    List<String> getVisibleLabels();
+    List<String> toList();
 
-    int[] getVisibleIndices();
+    void sort(Comparator<String> comparator);
 
-    void setVisibleIndices(int[] indices);
+    public void move(Direction direction, Set<String> indices);
 
-    public void move(Direction direction, int[] indices);
+    void show(List<String> indices);
 
-    void hide(int[] indices);
+    void show(Predicate<String> predicate);
 
-    int[] getSelected();
+    void showAll();
 
-    void setSelected(int[] indices);
+    void hide(Set<String> indices);
 
-    boolean isSelected(int index);
+    void hide(Predicate<String> predicate);
+
+    Set<String> getSelected();
+
+    void select(Set<String> selected);
+
+    void select(Predicate<String> predicate);
 
     void selectAll();
 
-    void invertSelection();
+    String getFocus();
 
-    void clearSelection();
-
-    int getSelectionLead();
-
-    void setSelectionLead(int index);
+    void setFocus(String identifier);
 
 
 }

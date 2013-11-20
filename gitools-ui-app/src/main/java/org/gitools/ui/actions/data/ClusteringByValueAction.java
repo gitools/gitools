@@ -44,6 +44,8 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Collection;
+import java.util.Set;
 
 public class ClusteringByValueAction extends BaseAction {
 
@@ -97,29 +99,27 @@ public class ClusteringByValueAction extends BaseAction {
                         HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
                         for (int l = 0; l < hresults.getTree().getDepth(); l++) {
                             hresults.setLevel(l);
-                            String[] clusterTitles = results.getClusterTitles();
-                            for (int c=0; c < clusterTitles.length; c++) {
-                                int[] indices = results.getDataIndices(c);
-                                for (int i : indices) {
-                                    String identifier = hdim.getLabel(i);
-                                    annotationMatrix.setAnnotation(identifier, annotationLabel + " level " + l, clusterTitles[c]);
+                            Collection<String> clusters = results.getClusters();
+                            for (String cluster : clusters) {
+                                Set<String> items = results.getItems(cluster);
+
+                                for (String item : items) {
+                                    annotationMatrix.setAnnotation(item, annotationLabel + " level " + l, cluster);
                                 }
                             }
                         }
                     } else {
-                        String[] clusterTitles = results.getClusterTitles();
-                        for (int c=0; c < clusterTitles.length; c++) {
-                            int[] indices = results.getDataIndices(c);
-                            for (int i : indices) {
-                                String identifier = hdim.getLabel(i);
-                                annotationMatrix.setAnnotation(identifier, annotationLabel, clusterTitles[c]);
+                        Collection<String> clusters = results.getClusters();
+                        for (String cluster : clusters) {
+                           for (String item : results.getItems(cluster)) {
+                                annotationMatrix.setAnnotation(item, annotationLabel, cluster);
                             }
                         }
                     }
 
                     // Sort the matrix
                     if (wiz.isSortDataSelected()) {
-                        ClusterUtils.updateVisibility(hdim, results.getDataIndicesByClusterTitle());
+                        ClusterUtils.updateVisibility(hdim, results.getClustersMap());
                     }
 
                     // Export newick file

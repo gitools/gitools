@@ -4,6 +4,7 @@ import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Comparator;
+import java.util.Set;
 
 public interface IMatrixIterable<T> extends Iterable<T> {
 
@@ -19,7 +20,7 @@ public interface IMatrixIterable<T> extends Iterable<T> {
 
     IMatrixIterable<T> between(String fromIdentifier, String toIdentifier);
 
-    IMatrixIterable<T> filter(Iterable<String> identifiers);
+    IMatrixIterable<T> filter(Set<String> identifiers);
 
     IMatrixIterable<T> filter(IMatrixPredicate<T> filter);
 

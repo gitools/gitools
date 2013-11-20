@@ -24,9 +24,6 @@ package org.gitools.ui.wizard.common;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @noinspection ALL
- */
 public class ExportHeatmapLabelsPage extends AbstractWizardPage {
 
     public enum WhichLabels {

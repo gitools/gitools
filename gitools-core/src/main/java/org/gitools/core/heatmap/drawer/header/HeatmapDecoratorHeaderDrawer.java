@@ -53,6 +53,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         for (int index = firstIndex; index <= lastIndex; index++) {
 
+            String identifier = getHeatmapDimension().getLabel(index);
             int offset = getHeader().getMargin();
 
             // Paint border
@@ -62,7 +63,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
             for (String annotation : header.getAnnotationLabels()) {
                 decoration.reset();
-                header.decorate(decoration, index, annotation, false);
+                header.decorate(decoration, identifier, annotation, false);
                 paintCell(decoration, index, offset, annotationWidth, g, box);
                 offset += annotationWidth + 1;
             }
@@ -79,7 +80,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         int point = (isHorizontal() ? p.x : p.y);
         int index = getHeaderPosition(point);
-        HeatmapPosition position = (isHorizontal() ? new HeatmapPosition(-1, index) : new HeatmapPosition(index, -1));
+        HeatmapPosition position = (isHorizontal() ? new HeatmapPosition(getHeatmap(), -1, index) : new HeatmapPosition(getHeatmap(), index, -1));
 
         int annotationWidth = getAnnotationWidth() + 1;
         int offset = (isHorizontal() ? p.y : p.x);
@@ -98,7 +99,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
         position.headerAnnotation = annotation;
 
         Decoration decoration = new Decoration();
-        getHeader().decorate(decoration, index, annotation, true);
+        getHeader().decorate(decoration, getHeatmapDimension().getLabel(index), annotation, true);
         position.headerDecoration = decoration;
 
         return position;

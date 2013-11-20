@@ -21,18 +21,14 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.sort.MatrixViewSorter;
-import org.gitools.core.matrix.sort.ValueSortCriteria;
+import org.gitools.core.matrix.sort.SortByLabelComparator;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -40,18 +36,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
+import static org.gitools.core.matrix.model.SortDirection.ASCENDING;
+import static org.gitools.core.matrix.model.SortDirection.DESCENDING;
 
-public class SortByHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+
+public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
     public SortByHeaderAction() {
         super("Sort by header");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -67,13 +61,12 @@ public class SortByHeaderAction extends BaseAction implements IHeatmapHeaderActi
                 monitor.begin("Sorting ...", 1);
 
                 HeatmapDimension dimension = header.getHeatmapDimension();
-                LabelProvider labelProvider = header.getLabelProvider();
-                boolean numeric = header.isNumeric();
-                boolean ascending = header.isSortAscending();
-                dimension.setVisibleIndices(MatrixViewSorter.sortLabels(labelProvider, (ascending ? ValueSortCriteria.SortDirection.ASCENDING : ValueSortCriteria.SortDirection.DESCENDING), dimension.getVisibleIndices(), numeric));
 
-                // Invert sort direction for the next time
-                header.setSortAscending(!ascending);
+                dimension.sort( new SortByLabelComparator(
+                        header.isSortAscending() ? ASCENDING : DESCENDING,
+                        header.getIdentifierTransform(),
+                        header.isNumeric()
+                ));
 
                 monitor.end();
             }

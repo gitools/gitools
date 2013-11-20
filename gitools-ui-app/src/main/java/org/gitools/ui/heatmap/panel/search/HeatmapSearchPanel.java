@@ -285,8 +285,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
     private void searchPrev() {
         IMatrixView mv = hm;
-        int leadRow = mv.getRows().getSelectionLead();
-        int leadCol = mv.getColumns().getSelectionLead();
+        int leadRow = mv.getRows().indexOf(mv.getRows().getFocus());
+        int leadCol = mv.getColumns().indexOf(mv.getColumns().getFocus());
 
         boolean searchRows = searchRows();
         boolean found = false;
@@ -318,7 +318,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadRow) {
                 found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
-            mv.getRows().setSelectionLead(index);
+            mv.getRows().setFocus(hm.getRows().getLabel(index));
 
         } else if (!searchRows && leadCol != -1) {
 
@@ -343,7 +343,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadCol) {
                 found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
-            mv.getColumns().setSelectionLead(index);
+            mv.getColumns().setFocus(mv.getColumns().getLabel(index));
         }
 
         setNotFound(!found);
@@ -351,8 +351,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
     private void searchNext() {
         IMatrixView mv = hm;
-        int leadRow = mv.getRows().getSelectionLead();
-        int leadCol = mv.getColumns().getSelectionLead();
+        int leadRow = mv.getRows().indexOf(mv.getRows().getFocus());
+        int leadCol = mv.getColumns().indexOf(mv.getColumns().getFocus());
 
         boolean searchRows = searchRows();
         boolean found = false;
@@ -388,7 +388,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadRow) {
                 found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
-            mv.getRows().setSelectionLead(index);
+            mv.getRows().setFocus(mv.getRows().getLabel(index));
         } else if (!searchRows && leadCol != -1) {
 
             // Column search
@@ -412,7 +412,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadCol) {
                 found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
-            mv.getColumns().setSelectionLead(index);
+            mv.getColumns().setFocus(mv.getColumns().getLabel(index));
         }
 
         setNotFound(!found);

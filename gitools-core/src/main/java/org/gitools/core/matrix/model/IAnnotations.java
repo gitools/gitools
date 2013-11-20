@@ -27,7 +27,7 @@ public interface IAnnotations extends IMatrix {
 
     IMatrixDimension getIdentifiers();
 
-    IMatrixDimension getLabels();
+    Collection<String> getLabels();
 
     Collection<String> getMetadataKeys();
 

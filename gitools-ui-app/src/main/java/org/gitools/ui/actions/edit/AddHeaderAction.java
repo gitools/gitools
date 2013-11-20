@@ -21,64 +21,40 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.header.AddHeaderPage;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregationDecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.AnnotationDecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
-public class AddHeaderAction extends BaseAction {
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
 
+public class AddHeaderAction extends HeatmapDimensionAction {
 
-
-    private final HeaderEnum.Dimension dim;
-
-    public AddHeaderAction(HeaderEnum.Dimension dim) {
-        super("");
-        this.dim = dim;
+    public AddHeaderAction(MatrixDimensionKey dim) {
+        super(dim, "Add " + dim.getLabel() + " header");
 
         setSmallIconFromResource(IconNames.add16);
-
-        switch (dim) {
-            case COLUMN:
-                setName("Add column header");
-                setDesc("Add column header");
-                break;
-            case ROW:
-                setName("Add row header");
-                setDesc("Add row header");
-                break;
-        }
-    }
-
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Heatmap heatmap = ActionUtils.getHeatmap();
-        HeatmapDimension heatmapDimension = (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
+        HeatmapDimension heatmapDimension = getDimension();
 
         AddHeaderPage headerPage = new AddHeaderPage();
         PageDialog tdlg = new PageDialog(AppFrame.get(), headerPage);
@@ -100,15 +76,17 @@ public class AddHeaderAction extends BaseAction {
             HeatmapColoredLabelsHeader h = new HeatmapColoredLabelsHeader(heatmapDimension);
             wizard = new ColoredLabelsHeaderWizard(heatmapDimension, h);
             header = h;
-        } else if (cls.equals(HeatmapDecoratorHeader.class)) {
-            HeatmapDecoratorHeader h = new HeatmapDecoratorHeader(heatmapDimension);
-            header = h;
-            if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
-                wizard = new AnnotationDecoratorHeaderWizard(h, heatmapDimension);
-            } else {
-                wizard = new AggregationDecoratorHeaderWizard(h, heatmap, heatmapDimension, (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getRows() : heatmap.getColumns());
-            }
+        } else {
+            if (cls.equals(HeatmapDecoratorHeader.class)) {
+                HeatmapDecoratorHeader h = new HeatmapDecoratorHeader(heatmapDimension);
+                header = h;
+                if (headerTitle.equals(AddHeaderPage.ANNOTATION_HEATMAP)) {
+                    wizard = new AnnotationDecoratorHeaderWizard(h, heatmapDimension);
+                } else {
+                    wizard = new AggregationDecoratorHeaderWizard(h, getHeatmap(), heatmapDimension, (getDimensionKey() == COLUMNS) ? getHeatmap().getRows() : getHeatmap().getColumns());
+                }
 
+            }
         }
 
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);

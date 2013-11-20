@@ -137,6 +137,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         // Move listeners
         HeatmapLayer oldLayer = layers.get(old);
         HeatmapLayer newLayer = layers.get(layerIndex);
+
         EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
         EventUtils.moveListeners(oldLayer, newLayer);
     }
@@ -183,7 +184,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layerNames;
     }
 
-    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column) {
+    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
 
         int i=0;
         for (HeatmapLayer layer : layers) {

@@ -2,10 +2,9 @@ package org.gitools.core.analysis.groupcomparison.filters;
 
 import org.gitools.core.analysis.groupcomparison.ColumnGroup;
 import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixPredicate;
 import org.gitools.core.matrix.model.IMatrixPosition;
+import org.gitools.core.matrix.model.IMatrixPredicate;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
@@ -15,11 +14,7 @@ public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
 
     public GroupByLabelPredicate(IMatrixDimension dimension, ColumnGroup group) {
         this.dimension = dimension;
-        this.groupIdentifiers = new HashSet<>();
-
-        for (int c : group.getColumns()) {
-                groupIdentifiers.add( dimension.getLabel(c) );
-        }
+        this.groupIdentifiers = group.getColumns();
     }
 
     public boolean apply(Double value, IMatrixPosition position) {

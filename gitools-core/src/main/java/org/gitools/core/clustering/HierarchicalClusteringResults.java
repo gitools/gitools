@@ -28,10 +28,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class HierarchicalClusteringResults extends GenericClusteringResults {
@@ -92,18 +89,18 @@ public class HierarchicalClusteringResults extends GenericClusteringResults {
         DecimalFormat fmt = new DecimalFormat(fmtPat);
 
         int index = 0;
-        Map<String, List<Integer>> clusters = new HashMap<String, List<Integer>>();
+        Map<String, Set<String>> clusters = new HashMap<>();
         for (NewickNode cluster : clusterLeaves) {
             List<NewickNode> nodes = cluster.getLeaves();
-            List<Integer> indices = new ArrayList<Integer>(nodes.size());
+            Set<String> items = new HashSet<>(nodes.size());
             for (NewickNode node : nodes)
-                indices.add(Integer.parseInt(node.getName()));
+                items.add(labels[Integer.parseInt(node.getName())]);
 
             String name = fmt.format(index++);
-            clusters.put(name, indices);
+            clusters.put(name, items);
         }
 
-        init(labels, clusters);
+        init(clusters);
     }
 
 

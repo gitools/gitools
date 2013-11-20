@@ -21,8 +21,9 @@
  */
 package org.gitools.ui.actions.file;
 
+import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.ActionUtils;
 import org.gitools.ui.commands.AbstractCommand;
@@ -42,6 +43,7 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Set;
 
 /**
  * This actions sends a command to IGV (Integrative Genomic Viewer) to do a search
@@ -81,28 +83,21 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
         }
 
         Heatmap heatmap = (Heatmap) editor.getModel();
-        IMatrixView matrixView = heatmap;
 
         // No row selected
-        int[] rows = matrixView.getRows().getSelected();
-        if (matrixView.getRows().getSelectionLead() == -1 && rows.length == 0) {
+        Set<String> rows = heatmap.getRows().getSelected();
+        if (heatmap.getRows().getFocus() == null && rows.size() == 0) {
             showMessage("Please select one or more rows");
             return;
         }
 
-        // If there are no rows selected use the row of the current
-        // cell selection
-        if (rows.length == 0) {
-            rows = new int[]{matrixView.getRows().getSelectionLead()};
-        }
-
-        String rowQuery = "";
-        for (int i : rows) {
-            rowQuery = rowQuery + heatmap.getRows().getLabel(i) + " ";
+        // If there are no rows selected use the row of the current cell selection
+        if (rows.size() == 0) {
+            rows = Sets.newHashSet( heatmap.getRows().getFocus() );
         }
 
         // Execute the command
-        JobRunnable loadFile = new IgvCommand(rowQuery);
+        JobRunnable loadFile = new IgvCommand( StringUtils.join( rows, " ") );
         JobThread.execute(AppFrame.get(), loadFile);
         AppFrame.get().setStatusText("Done.");
 

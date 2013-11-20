@@ -29,5 +29,8 @@ public interface IAggregator {
      * @param data the data vector to aggregate
      * @return The aggregation. NaN if all are NaNs.
      */
+    @Deprecated
     double aggregate(double[] data);
+
+    Double aggregate(Iterable<Double> data);
 }

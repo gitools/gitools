@@ -22,10 +22,11 @@
 package org.gitools.ui.actions;
 
 import org.gitools.ui.actions.data.*;
-import org.gitools.ui.actions.data.HideSelectionAction.ElementType;
-import org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection;
-import org.gitools.ui.utils.HeaderEnum.Dimension;
 import org.gitools.ui.platform.actions.BaseAction;
+
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection.*;
 
 public final class DataActions {
 
@@ -35,11 +36,11 @@ public final class DataActions {
 
     public static final BaseAction filterByValueAction = new FilterByValueAction();
 
-    public static final BaseAction showAllRowsAction = new ShowAllAction(ShowAllAction.ElementType.ROWS);
+    public static final BaseAction showAllRowsAction = new ShowAllAction(ROWS);
 
-    public static final BaseAction showAllColumnsAction = new ShowAllAction(ShowAllAction.ElementType.COLUMNS);
+    public static final BaseAction showAllColumnsAction = new ShowAllAction(COLUMNS);
 
-    public static final BaseAction hideSelectedColumnsAction = new HideSelectionAction(ElementType.COLUMNS);
+    public static final BaseAction hideSelectedColumnsAction = new HideSelectionAction(COLUMNS);
 
     public static final BaseAction hideThisLabelHeaderAction = new HideThisLabelHeaderAction();
 
@@ -47,15 +48,11 @@ public final class DataActions {
 
     public static final BaseAction hideSmallerThanHeaderAction = new HideNumericHeaderAction(false, "smaller");
 
-    public static final BaseAction fastSortRowsAction = new FastSortValueAction(Dimension.ROW);
+    public static final BaseAction fastSortRowsAction = new FastSortValueAction(ROWS);
 
-    public static final BaseAction fastSortColumnsAction = new FastSortValueAction(Dimension.COLUMN);
+    public static final BaseAction fastSortColumnsAction = new FastSortValueAction(COLUMNS);
 
-    public static final BaseAction sortByAnnotationAction = new SortByAnnotationAction(Dimension.NONE_SPECIFIED);
-
-    public static final BaseAction sortByRowAnnotationAction = new SortByAnnotationAction(Dimension.ROW);
-
-    public static final BaseAction sortByColumnAnnotationAction = new SortByAnnotationAction(Dimension.COLUMN);
+    public static final BaseAction sortByAnnotationAction = new SortByAnnotationAction(ROWS);
 
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
@@ -63,19 +60,19 @@ public final class DataActions {
 
     public static final BaseAction sortByMutualExclusionAction = new SortByMutualExclusionAction();
 
-    public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ElementType.ROWS);
+    public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
 
     public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 
-    public static final BaseAction moveRowsUpAction = new MoveSelectionAction(MoveDirection.ROW_UP);
+    public static final BaseAction moveRowsUpAction = new MoveSelectionAction(ROW_UP);
 
-    public static final BaseAction moveRowsDownAction = new MoveSelectionAction(MoveDirection.ROW_DOWN);
+    public static final BaseAction moveRowsDownAction = new MoveSelectionAction(ROW_DOWN);
 
-    public static final BaseAction moveColsLeftAction = new MoveSelectionAction(MoveDirection.COL_LEFT);
+    public static final BaseAction moveColsLeftAction = new MoveSelectionAction(COL_LEFT);
 
-    public static final BaseAction moveColsRightAction = new MoveSelectionAction(MoveDirection.COL_RIGHT);
+    public static final BaseAction moveColsRightAction = new MoveSelectionAction(COL_RIGHT);
 
     public static final BaseAction clusteringByValueAction = new ClusteringByValueAction();
 

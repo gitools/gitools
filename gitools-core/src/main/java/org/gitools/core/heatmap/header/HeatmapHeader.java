@@ -21,9 +21,9 @@
  */
 package org.gitools.core.heatmap.header;
 
+import com.google.common.base.Function;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.label.LabelProvider;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
@@ -306,10 +306,10 @@ public abstract class HeatmapHeader extends Model {
 
     }
 
-    public void populateDetails(List<DetailsDecoration> details, int index) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier) {
     }
 
-    public abstract LabelProvider getLabelProvider();
+    public abstract Function<String, String> getIdentifierTransform();
 
     /**
      * Override this method if you want that the sort by label related to this header

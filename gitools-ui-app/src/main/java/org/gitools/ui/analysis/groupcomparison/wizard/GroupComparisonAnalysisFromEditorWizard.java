@@ -66,7 +66,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         attrSelectPage.setAttributes(heatmap.getLayers());
         addPage(attrSelectPage);
 
-        groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap);
+        groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap.getColumns());
         addPage(groupByLabelPage);
 
         groupByValuePage = new GroupComparisonGroupingByValuePage();
@@ -91,10 +91,10 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         }
         //Group by label page
         else if (page == groupByLabelPage) {
-            if (groupByLabelPage.getGroup1().length == 0) {
+            if (groupByLabelPage.getGroup1().size() == 0) {
                 groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 1");
                 return page;
-            } else if (groupByLabelPage.getGroup2().length == 0) {
+            } else if (groupByLabelPage.getGroup2().size() == 0) {
                 groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 2");
                 return page;
             } else {

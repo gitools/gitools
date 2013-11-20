@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import com.google.common.primitives.Ints;
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.matrix.model.Direction;
@@ -173,140 +171,68 @@ public class HeatmapPanelInputProcessor {
         return lastSelectedCol;
     }
 
+    public void addToSelected(int start, int end, IMatrixViewDimension dim) {
+        addToSelected( dim.toList().subList( start, end+1 ), dim );
+    }
+
+    public void addToSelected(Collection<String> toAdd, IMatrixViewDimension dim) {
+        dim.getSelected().addAll(toAdd);
+    }
 
     public void addToSelected(int toAdd, IMatrixViewDimension dim) {
-
-        int[] prevSel = dim.getSelected();
-        if (ArrayUtils.contains(prevSel, toAdd) ||
-                dim.size() < toAdd + 1 ||
-                toAdd < 0) {
-            return;
-        }
-
-        int[] sel;
-        sel = new int[prevSel.length + 1];
-        System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
-        sel[sel.length - 1] = toAdd;
-        Arrays.sort(sel);
-        dim.setSelected(sel);
-    }
-
-    public void addToSelected(int start, int end, IMatrixViewDimension dim) {
-        int[] prevSel = dim.getSelected();
-
-        if (end < start) {
-            int temp = end;
-            end = start;
-            start = temp;
-        }
-
-        if (start >= dim.size() || end < 0) {
-            return;
-        }
-        if (start < 0) {
-            start = 0;
-        }
-        if (end >= dim.size()) {
-            end = dim.size() - 1;
-        }
-
-        Set<Integer> newSet = new HashSet<Integer>();
-        for (int i = start; i <= end; i++) {
-            if (!ArrayUtils.contains(prevSel, i)) {
-                newSet.add(i);
-            }
-        }
-        addToSelected(Ints.toArray(newSet), dim);
-    }
-
-    private void addToSelected(int[] toAdd, IMatrixViewDimension dim) {
-        int[] prevSel = dim.getSelected();
-
-        int[] sel;
-        sel = new int[prevSel.length + toAdd.length];
-        System.arraycopy(prevSel, 0, sel, 0, prevSel.length);
-        System.arraycopy(toAdd, 0, sel, prevSel.length, toAdd.length);
-        Arrays.sort(sel);
-        dim.setSelected(sel);
+        dim.getSelected().add(dim.getLabel(toAdd));
     }
 
     public void removeFromSelected(int toRemove, IMatrixViewDimension dim) {
-        int[] prevSel = dim.getSelected();
-        int[] sel;
-        int posInArray = ArrayUtils.indexOf(prevSel, toRemove);
-        if (posInArray != -1) {
-            sel = ArrayUtils.remove(prevSel, posInArray);
-            dim.setSelected(sel);
-        }
+        dim.getSelected().remove(dim.getLabel(toRemove));
     }
 
-    public void removeFromSelected(int[] toRemove, IMatrixViewDimension dim) {
-        int[] prevSel = dim.getSelected();
-        int[] sel = prevSel;
-        for (int i = 0; i < toRemove.length; i++) {
-            int posInArray = ArrayUtils.indexOf(sel, toRemove[i]);
-            if (posInArray != -1) {
-                sel = ArrayUtils.remove(sel, posInArray);
-            }
-        }
-        dim.setSelected(sel);
+    public void removeFromSelected(Set<String> toRemove, IMatrixViewDimension dim) {
+        dim.getSelected().removeAll(toRemove);
     }
 
-    public void setLeadRow(int i) {
+    public void setLead(int i, IMatrixViewDimension dim) {
         if (i >= getRowMax()) {
-            mv.getRows().setSelectionLead(getRowMax());
+            dim.setFocus(dim.getLabel(getRowMax()));
         } else if (i < 0) {
-            mv.getRows().setSelectionLead(0);
+            dim.setFocus(dim.getLabel(0));
         } else {
-            mv.getRows().setSelectionLead(i);
-        }
-    }
-
-    public void setLeadColumn(int i) {
-        if (i >= getColumnMax()) {
-            mv.getColumns().setSelectionLead(getColumnMax());
-        } else if (i < 0) {
-            mv.getRows().setSelectionLead(0);
-        } else {
-            mv.getColumns().setSelectionLead(i);
+            dim.setFocus(dim.getLabel(i));
         }
     }
 
     public void setLead(int row, int col) {
-        setLeadRow(row);
-        setLeadColumn(col);
+        setLead(row, mv.getRows());
+        setLead(col, mv.getColumns());
     }
 
-    public int getLeadRow() {
-        return mv.getRows().getSelectionLead();
+    public int getLead(IMatrixViewDimension dim) {
+        return dim.indexOf(dim.getFocus());
     }
 
-    public int getLeadColumn() {
-        return mv.getColumns().getSelectionLead();
-    }
+    void hideSelected(Set<String> rows, Set<String> cols) {
 
-    void hideSelected(int[] rows, int[] cols) {
-
-        if (rows.length > 0 && !isKeyPressed(KeyEvent.VK_C)) {
+        if (rows.size() > 0 && !isKeyPressed(KeyEvent.VK_C)) {
             mv.getRows().hide(rows);
         }
 
-        if (cols.length > 0 && !isKeyPressed(KeyEvent.VK_R)) {
+        if (cols.size() > 0 && !isKeyPressed(KeyEvent.VK_R)) {
             mv.getColumns().hide(cols);
         }
     }
 
     void hideSelected() {
-        int[] rows = mv.getRows().getSelected();
-        int[] cols = mv.getColumns().getSelected();
+
+        Set<String> rows = mv.getRows().getSelected();
+        Set<String> cols = mv.getColumns().getSelected();
 
         hideSelected(rows, cols);
 
     }
 
     public void moveSelection(@NotNull KeyEvent e) {
-        int row = mv.getRows().getSelectionLead();
-        int col = mv.getColumns().getSelectionLead();
+        int row = getLead(mv.getRows());
+        int col = getLead(mv.getColumns());
         int shift = 0;
         Direction dir = null;
         IMatrixViewDimension dimension = null;
@@ -341,8 +267,8 @@ public class HeatmapPanelInputProcessor {
                 }
                 break;
         }
-        int[] sel = dimension.getSelected();
-        if (sel.length > 0) {
+        Set<String> sel = dimension.getSelected();
+        if (sel.size() > 0) {
             dimension.move(dir, sel);
             shiftSelStart(dimension, shift);
         }
@@ -371,9 +297,9 @@ public class HeatmapPanelInputProcessor {
     }
 
     void switchSelection(IMatrixViewDimension dim, int index, boolean groupSelection) {
-        if (ArrayUtils.contains(dim.getSelected(), index)) {
+        if (dim.getSelected().contains(dim.getLabel(index))) {
             if (groupSelection) {
-                int[] selectedNeighbours = getSelectedNeighbours(dim.getSelected(), index);
+                Set<String> selectedNeighbours = getSelectedNeighbours(dim, index);
                 removeFromSelected(selectedNeighbours, dim);
             } else {
                 removeFromSelected(index, dim);
@@ -384,37 +310,26 @@ public class HeatmapPanelInputProcessor {
         }
     }
 
-    private int[] getSelectedNeighbours(int[] selected, int index) {
-        int rightNeighbour = index;
-        int leftNeighbour = index;
-        boolean isRightNeighbour = true;
-        boolean isLeftNeighbour = true;
-        Set<Integer> neighbours = new HashSet<Integer>();
+    private Set<String> getSelectedNeighbours(IMatrixViewDimension dim, int i) {
 
-        while (isLeftNeighbour) {
-            --leftNeighbour;
-            if (ArrayUtils.contains(selected, leftNeighbour)) {
-                neighbours.add(leftNeighbour);
-            } else {
-                isLeftNeighbour = false;
-                break;
-            }
+        Set<String> neighbours = new HashSet<>();
+
+        int n = i - 1;
+        String neighbour = dim.getLabel(n);
+        while (dim.getSelected().contains(neighbour)) {
+            n--;
+            neighbours.add(neighbour);
+        }
+        neighbours.add(dim.getLabel(i));
+
+        n = i + 1;
+        neighbour = dim.getLabel(n);
+        while (dim.getSelected().contains(neighbour)) {
+            n++;
+            neighbours.add(neighbour);
         }
 
-        neighbours.add(index);
-
-        while (isRightNeighbour) {
-            ++rightNeighbour;
-            if (ArrayUtils.contains(selected, rightNeighbour)) {
-                neighbours.add(rightNeighbour);
-            } else {
-                isRightNeighbour = false;
-                break;
-            }
-        }
-        return Ints.toArray(neighbours);
-
-
+        return neighbours;
     }
 
 

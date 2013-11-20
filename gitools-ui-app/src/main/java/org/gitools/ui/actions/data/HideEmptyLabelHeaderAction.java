@@ -21,22 +21,18 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
+import com.google.common.base.Predicate;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 
-public class HideEmptyLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideEmptyLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
@@ -45,26 +41,15 @@ public class HideEmptyLabelHeaderAction extends BaseAction implements IHeatmapHe
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        List<Integer> toHide = new ArrayList<>();
-        HeatmapDimension dimension = header.getHeatmapDimension();
-        LabelProvider labelProvider = header.getLabelProvider();
-        for (int i=0; i < dimension.size(); i++) {
-            String value = labelProvider.getLabel(i);
-            if (value == null || value.isEmpty()) {
-                toHide.add(i);
+        header.getHeatmapDimension().show(new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return !isNullOrEmpty(header.getIdentifierTransform().apply(input));
             }
-        }
+        });
 
-        if (toHide.size() < dimension.size()) {
-            dimension.hide(ArrayUtils.toPrimitive(toHide.toArray(new Integer[toHide.size()])));
-        }
     }
 
     @Override

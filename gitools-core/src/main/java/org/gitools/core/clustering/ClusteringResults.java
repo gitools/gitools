@@ -21,76 +21,20 @@
  */
 package org.gitools.core.clustering;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public interface ClusteringResults {
 
-    /**
-     * Returns the number of clusters
-     */
-    int getNumClusters();
+    int size();
 
-    /**
-     * Returns the cluster titles
-     */
-    String[] getClusterTitles();
+    Collection<String> getClusters();
 
-    /**
-     * Returns the cluster index by its title
-     */
-    int getClusterTitleIndex(String clusterTitle);
+    Set<String> getItems(String cluster);
 
-    /**
-     * Returns the number of data labels
-     */
-    int getNumDataLabels();
+    String clusterOf(String item);
 
-    /**
-     * Returns data labels for which there are cluster results
-     */
-    String[] getDataLabels();
+    Map<String, Set<String>> getClustersMap();
 
-    /**
-     * Returns the data label index
-     */
-    int getDataLabelIndex(String dataLabel);
-
-    /**
-     * Returns the data indicess for a given cluster
-     */
-    int[] getDataIndices(int clusterIndex);
-
-    int[] getDataIndices(String clusterTitle);
-
-    /**
-     * Returns the data labels for a given cluster
-     */
-    @NotNull
-    String[] getDataLabels(int clusterIndex);
-
-    @NotNull
-    String[] getDataLabels(String clusterTitle);
-
-    /**
-     * Returns the cluster the data belongs to
-     *
-     * @noinspection UnusedDeclaration
-     */
-    int getClusterIndex(int dataIndex);
-
-    int getClusterIndex(String dataLabel);
-
-    /**
-     * Returns a map from cluster title to an array of data indices included in the cluster
-     */
-    @NotNull
-    Map<String, int[]> getDataIndicesByClusterTitle();
-
-    /**
-     * Returns a map from the data label to the cluster index the data belongs to
-     */
-    @NotNull
-    Map<String, Integer> getClusterIndexByDataLabel();
 }

@@ -21,13 +21,11 @@
  */
 package org.gitools.ui.sort;
 
-import org.apache.commons.lang.ArrayUtils;
+import com.google.common.base.Function;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.matrix.filter.PatternFunction;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -42,16 +40,38 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class MutualExclusionSortPage extends AbstractWizardPage {
 
     private final Heatmap hm;
-
     private String rowsPatt;
     private String colsPatt;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup applyGroup;
+    private javax.swing.JButton colsPattBtn;
+    private javax.swing.JTextField colsPattFld;
+    private javax.swing.JRadioButton colsRb;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadBtn;
+    private javax.swing.JButton pasteSelected1;
+    private javax.swing.JButton pasteUnselected1;
+    private javax.swing.JTextArea patterns;
+    private javax.swing.JButton rowsPattBtn;
+    private javax.swing.JTextField rowsPattFld;
+    private javax.swing.JRadioButton rowsRb;
+    private javax.swing.JButton saveBtn;
+    private javax.swing.JCheckBox useRegexCheck;
 
     public MutualExclusionSortPage(Heatmap hm) {
         this.hm = hm;
@@ -152,19 +172,19 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     }
 
     @NotNull
-    public FilterDimension getFilterDimension() {
+    public MatrixDimensionKey getDimension() {
         if (rowsRb.isSelected()) {
-            return FilterDimension.ROWS;
+            return ROWS;
         } else {
-            return FilterDimension.COLUMNS;
+            return COLUMNS;
         }
     }
 
-    public void setFilterDimension(@NotNull FilterDimension fd) {
-        if (fd.equals(FilterDimension.COLUMNS)) {
+    public void setDimension(MatrixDimensionKey fd) {
+        if (fd.equals(COLUMNS)) {
             colsRb.setSelected(true);
             rowsRb.setSelected(false);
-        } else if (fd.equals(FilterDimension.ROWS)) {
+        } else if (fd.equals(ROWS)) {
             colsRb.setSelected(false);
             rowsRb.setSelected(true);
         }
@@ -181,60 +201,24 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
     @NotNull
     private ArrayList<String> getSelected() {
-        FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
-        ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixDimensionLabelProvider(hm.getRows()) : new MatrixDimensionLabelProvider(hm.getColumns());
-        if (!getPattern().equalsIgnoreCase("${id}")) {
-            IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
-            labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
-        }
 
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected() : hm.getColumns().getSelected();
-        for (int i = 0; i < selectedIndices.length; i++)
-            selected.add(labelProvider.getLabel(selectedIndices[i]));
+        HeatmapDimension dimension = hm.getIdentifiers(getDimension());
+        Function<String, String> patternFunction = new PatternFunction(getPattern(), dimension.getAnnotations());
 
-        return selected;
+        return newArrayList(transform(dimension.getSelected(), patternFunction));
     }
 
     @NotNull
     private ArrayList<String> getUnselected() {
-        FilterDimension dim = rowsRb.isSelected() ? FilterDimension.ROWS : FilterDimension.COLUMNS;
-        ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = dim == FilterDimension.ROWS ? new MatrixDimensionLabelProvider(hm.getRows()) : new MatrixDimensionLabelProvider(hm.getColumns());
-        if (!getPattern().equalsIgnoreCase("${id}")) {
-            IAnnotations am = dim == FilterDimension.ROWS ? hm.getRows().getAnnotations() : hm.getColumns().getAnnotations();
-            labelProvider = new AnnotationsPatternProvider(labelProvider, am, getPattern());
-        }
-
-        int[] selectedIndices = dim == FilterDimension.ROWS ? hm.getRows().getSelected() : hm.getColumns().getSelected();
-        int visibleCount = dim == FilterDimension.ROWS ? hm.getRows().size() : hm.getColumns().size();
-
-
-        int[] unselectedIndices = new int[visibleCount - selectedIndices.length];
-        int count = 0;
-        for (int i = 0; i < visibleCount; i++) {
-            if (!(ArrayUtils.contains(selectedIndices, i))) {
-                unselectedIndices[count] = i;
-                count++;
-            }
-        }
-
-        for (int i = 0; i < unselectedIndices.length; i++)
-            unselected.add(labelProvider.getLabel(unselectedIndices[i]));
-        return unselected;
-    }
-
-    void setValues(@NotNull List<String> values) {
-        Iterator<String> it = values.iterator();
-        while (it.hasNext()) {
-            patterns.append(it.next() + "\n");
-        }
-
+        HeatmapDimension dimension = hm.getIdentifiers(getDimension());
+        Function<String, String> patternFunction = new PatternFunction(getPattern(), dimension.getAnnotations());
+        Iterable<String> unselected = filter(dimension, not(in(dimension.getSelected())));
+        return newArrayList(transform(unselected, patternFunction));
     }
 
     @NotNull
-    public List<String> getValues() {
-        List<String> values = new ArrayList<String>();
+    public Set<String> getValues() {
+        Set<String> values = new HashSet<>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;
@@ -251,6 +235,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         }
 
         return values;
+    }
+
+    void setValues(@NotNull List<String> values) {
+        Iterator<String> it = values.iterator();
+        while (it.hasNext()) {
+            patterns.append(it.next() + "\n");
+        }
+
     }
 
     public boolean isUseRegexChecked() {
@@ -391,24 +383,6 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         ArrayList<String> unselectedColsLabels = getUnselected();
         setValues(unselectedColsLabels);
     }//GEN-LAST:event_pasteUnselected1ActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup applyGroup;
-    private javax.swing.JButton colsPattBtn;
-    private javax.swing.JTextField colsPattFld;
-    private javax.swing.JRadioButton colsRb;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton loadBtn;
-    private javax.swing.JButton pasteSelected1;
-    private javax.swing.JButton pasteUnselected1;
-    private javax.swing.JTextArea patterns;
-    private javax.swing.JButton rowsPattBtn;
-    private javax.swing.JTextField rowsPattFld;
-    private javax.swing.JRadioButton rowsRb;
-    private javax.swing.JButton saveBtn;
-    private javax.swing.JCheckBox useRegexCheck;
     // End of variables declaration//GEN-END:variables
 
 }

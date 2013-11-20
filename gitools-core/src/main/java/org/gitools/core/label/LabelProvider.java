@@ -21,7 +21,7 @@
  */
 package org.gitools.core.label;
 
-public interface LabelProvider {
+public interface LabelProvider extends Iterable<String> {
 
     int getCount();
 

@@ -60,8 +60,8 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         IMatrixView mv = this.mv;
 
-        int row = mv.getRows().getSelectionLead();
-        int col = mv.getColumns().getSelectionLead();
+        int row = mv.getRows().indexOf(mv.getRows().getFocus());
+        int col = mv.getColumns().indexOf(mv.getColumns().getFocus());
 
         int key = e.getKeyCode();
 
@@ -105,7 +105,7 @@ class HeatmapKeyboardController extends KeyAdapter {
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectRows();
                     } else if (selectingRange) {
-                        ip.selectRange(mv.getColumns().getSelectionLead(), false);
+                        ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), false);
                     } else {
                         switchLeadRowSelection(e);
                     }
@@ -116,7 +116,7 @@ class HeatmapKeyboardController extends KeyAdapter {
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectColumns();
                     } else if (selectingRange) {
-                        ip.selectRange(mv.getColumns().getSelectionLead(), true);
+                        ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), true);
                     } else {
                         switchLeadColSelection(e);
                     }
@@ -128,8 +128,8 @@ class HeatmapKeyboardController extends KeyAdapter {
                         unselectColumns();
                         unselectRows();
                     } else if (selectingRange) {
-                        ip.selectRange(mv.getColumns().getSelectionLead(), true);
-                        ip.selectRange(mv.getRows().getSelectionLead(), false);
+                        ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), true);
+                        ip.selectRange(mv.getColumns().indexOf(mv.getRows().getFocus()), false);
                     } else {
                         switchLeadColSelection(e);
                         switchLeadRowSelection(e);
@@ -152,11 +152,11 @@ class HeatmapKeyboardController extends KeyAdapter {
     }
 
     private void unselectRows() {
-        mv.getRows().setSelected(new int[]{});
+        mv.getRows().getSelected().clear();
     }
 
     private void unselectColumns() {
-        mv.getColumns().setSelected(new int[]{});
+        mv.getColumns().getSelected().clear();
     }
 
     private void moveLead(KeyEvent e) {
@@ -165,8 +165,8 @@ class HeatmapKeyboardController extends KeyAdapter {
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
         IMatrixView mv = this.mv;
-        int row = mv.getRows().getSelectionLead();
-        int col = mv.getColumns().getSelectionLead();
+        int row = mv.getRows().indexOf(mv.getRows().getFocus());
+        int col = mv.getColumns().indexOf(mv.getColumns().getFocus());
 
         final int rowPageSize = 10; //TODO should depend on screen size
         final int colPageSize = 10; //TODO should depend on screen size
@@ -176,28 +176,28 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_DOWN:
-                ip.setLeadRow(++row);
+                ip.setLead(++row, mv.getRows());
                 if (selectingRows) {
                     ip.addToSelected(row, mv.getRows());
                     ip.setLastSelectedRow(row);
                 }
                 break;
             case KeyEvent.VK_UP:
-                ip.setLeadRow(--row);
+                ip.setLead(--row, mv.getRows());
                 if (selectingRows) {
                     ip.addToSelected(row, mv.getRows());
                     ip.setLastSelectedRow(row);
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                ip.setLeadColumn(++col);
+                ip.setLead(++col, mv.getColumns());
                 if (selectingColumns) {
                     ip.addToSelected(col, mv.getColumns());
                     ip.setLastSelectedCol(col);
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                ip.setLeadColumn(--col);
+                ip.setLead(--col, mv.getColumns());
                 if (selectingColumns) {
                     ip.addToSelected(col, mv.getColumns());
                     ip.setLastSelectedCol(col);
@@ -206,14 +206,14 @@ class HeatmapKeyboardController extends KeyAdapter {
             case KeyEvent.VK_PAGE_UP:
                 if (shiftDown) {
                     col -= colPageSize;
-                    ip.setLeadColumn(++col);
+                    ip.setLead(++col, mv.getColumns());
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
                         ip.setLastSelectedCol(col);
                     }
                 } else {
                     row -= rowPageSize;
-                    ip.setLeadRow(row);
+                    ip.setLead(row, mv.getRows());
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
                         ip.setLastSelectedRow(row);
@@ -223,14 +223,14 @@ class HeatmapKeyboardController extends KeyAdapter {
             case KeyEvent.VK_PAGE_DOWN:
                 if (shiftDown) {
                     col += colPageSize;
-                    ip.setLeadColumn(++col);
+                    ip.setLead(++col, mv.getColumns());
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
                         ip.setLastSelectedCol(col);
                     }
                 } else {
                     row += rowPageSize;
-                    ip.setLeadRow(row);
+                    ip.setLead(row, mv.getRows());
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
                         ip.setLastSelectedRow(row);
@@ -240,14 +240,14 @@ class HeatmapKeyboardController extends KeyAdapter {
             case KeyEvent.VK_HOME:
                 if (shiftDown) {
                     col = 0;
-                    ip.setLeadColumn(++col);
+                    ip.setLead(++col, mv.getColumns());
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
                         ip.setLastSelectedCol(col);
                     }
                 } else {
                     row = 0;
-                    ip.setLeadRow(row);
+                    ip.setLead(row, mv.getRows());
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
                         ip.setLastSelectedRow(row);
@@ -257,14 +257,14 @@ class HeatmapKeyboardController extends KeyAdapter {
             case KeyEvent.VK_END:
                 if (shiftDown) {
                     col = ip.getColumnMax();
-                    ip.setLeadColumn(++col);
+                    ip.setLead(++col, mv.getColumns());
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
                         ip.setLastSelectedCol(col);
                     }
                 } else {
                     row = ip.getRowMax();
-                    ip.setLeadRow(row);
+                    ip.setLead(row, mv.getRows());
                     if (selectingRows) {
                         ip.addToSelected(row, mv.getRows());
                         ip.setLastSelectedRow(row);
@@ -284,13 +284,13 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         IMatrixView mv = this.mv;
         IMatrixViewDimension dim = mv.getRows();
-        int leadIndex = dim.getSelectionLead();
+        String lead = dim.getFocus();
 
-        if (leadIndex == -1) {
+        if (lead == null) {
             return;
         }
 
-        ip.switchSelection(dim, leadIndex, altDown);
+        ip.switchSelection(dim, dim.indexOf(lead), altDown);
     }
 
     private void switchLeadColSelection(@NotNull KeyEvent e) {
@@ -304,12 +304,12 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         IMatrixView mv = this.mv;
         IMatrixViewDimension dim = mv.getColumns();
-        int leadIndex = dim.getSelectionLead();
-        if (leadIndex == -1) {
+        String lead = dim.getFocus();
+        if (lead == null) {
             return;
         }
 
-        ip.switchSelection(dim, leadIndex, altDown);
+        ip.switchSelection(dim, dim.indexOf(lead), altDown);
     }
 
 

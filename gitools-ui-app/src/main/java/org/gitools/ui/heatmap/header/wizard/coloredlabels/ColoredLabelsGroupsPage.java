@@ -164,9 +164,9 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     }
 
 
-    private ColoredLabel[] coloredLabels;
+    private java.util.List<ColoredLabel> coloredLabels;
 
-    public ColoredLabelsGroupsPage(@NotNull ColoredLabel[] coloredLabels) {
+    public ColoredLabelsGroupsPage(java.util.List<ColoredLabel> coloredLabels) {
 
         this.coloredLabels = coloredLabels;
 
@@ -192,18 +192,16 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         updateButtons();
     }
 
-    public void setColoredLabels(@NotNull ColoredLabel[] coloredLabels) {
+    public void setColoredLabels(java.util.List<ColoredLabel> coloredLabels) {
         this.coloredLabels = coloredLabels;
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         model.addAllLabels(coloredLabels);
     }
 
     @NotNull
-    public ColoredLabel[] getColoredLabels() {
+    public java.util.List<ColoredLabel> getColoredLabels() {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
-        ColoredLabel[] coloredLabels = new ColoredLabel[model.getList().size()];
-        model.getList().toArray(coloredLabels);
-        return coloredLabels;
+        return model.getList();
     }
 
     public void setValueEditable(boolean editable) {
@@ -341,7 +339,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void syncBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncBtnActionPerformed
-        ColoredLabel[] cls = getColoredLabels();
+        java.util.List<ColoredLabel> cls = getColoredLabels();
         ColorRegistry cr = ColorRegistry.get();
         for (ColoredLabel cl : cls) {
             cl.setColor(cr.getColor(cl.getValue(), cl.getColor()));

@@ -21,6 +21,7 @@
  */
 package org.gitools.core.clustering.method.value;
 
+import com.google.common.collect.Sets;
 import org.gitools.core.clustering.ClusteringData;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -32,10 +33,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ClusterUtils {
@@ -117,24 +115,22 @@ public class ClusterUtils {
      * @param dimension
      * @param clusterResults
      */
-    public static void updateVisibility(@NotNull IMatrixViewDimension dimension, @NotNull Map<String, int[]> clusterResults) {
+    public static void updateVisibility(IMatrixViewDimension dimension, Map<String, Set<String>> clusterResults) {
 
-        int[] visibleData = dimension.getVisibleIndices();
+        List<String> clustersSorted = new ArrayList<>(clusterResults.keySet());
+        Collections.sort(clustersSorted);
 
-        final int[] sortedVisibleData = new int[dimension.getVisibleIndices().length];
+        Set<String> visible = Sets.newHashSet(dimension);
+        List<String> identifiers = new ArrayList<>();
+        for (String cluster : clustersSorted) {
+            for (String identifier : clusterResults.get(cluster)) {
+                if (visible.contains(identifier)) {
+                    identifiers.add(identifier);
+                }
+            }
+        }
 
-        int index = 0;
-
-
-        String[] clustersSorted = clusterResults.keySet().toArray(new String[clusterResults.keySet().size()]);
-
-        Arrays.sort(clustersSorted);
-
-        for (String i : clustersSorted)
-            for (Integer val : clusterResults.get(i))
-                sortedVisibleData[index++] = visibleData[val];
-
-        dimension.setVisibleIndices(sortedVisibleData);
+        dimension.show(identifiers);
 
     }
 

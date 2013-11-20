@@ -22,32 +22,11 @@
 package org.gitools.core.matrix.sort;
 
 import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 
 public final class ValueSortCriteria {
-
-    public enum SortDirection {
-        ASCENDING("Ascending", 1),
-        DESCENDING("Descending", -1);
-
-        private final String title;
-        private final int factor;
-
-        private SortDirection(String title, int factor) {
-            this.title = title;
-            this.factor = factor;
-        }
-
-        public int getFactor() {
-            return factor;
-        }
-
-        @Override
-        public String toString() {
-            return title;
-        }
-    }
 
     private IMatrixLayer layer;
     private IAggregator aggregator;

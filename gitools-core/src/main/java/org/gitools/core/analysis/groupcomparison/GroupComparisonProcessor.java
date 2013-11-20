@@ -31,8 +31,6 @@ import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.stats.mtc.Bonferroni;
-import org.gitools.core.stats.mtc.MTC;
 import org.gitools.core.stats.mtc.MTCFactory;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -123,7 +121,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
     private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
 
         // Group by label
-        if (group.getColumns() != null && group.getColumns().length > 0) {
+        if (group.getColumns() != null && group.getColumns().size() > 0) {
             return new GroupByLabelPredicate(dimension, group);
         }
 

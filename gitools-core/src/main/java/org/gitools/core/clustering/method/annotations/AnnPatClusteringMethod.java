@@ -26,13 +26,9 @@ import org.gitools.core.clustering.ClusteringMethod;
 import org.gitools.core.clustering.ClusteringResults;
 import org.gitools.core.clustering.GenericClusteringResults;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnnPatClusteringMethod implements ClusteringMethod {
 
@@ -61,14 +57,13 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
      */
     @Nullable
     @Override
-    public ClusteringResults cluster(@NotNull ClusteringData data, @NotNull IProgressMonitor monitor) {
+    public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
 
-        String[] dataLabels = new String[data.getSize()];
-        Map<String, List<Integer>> clusters = new HashMap<>();
+        Map<String, Set<String>> clusters = new HashMap<>();
         for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
-            String label = data.getLabel(i);
-            dataLabels[i] = label;
+
+            String item = data.getLabel(i);
 
             String clusterName = data.getInstance(i).getTypedValue(0, String.class);
 
@@ -79,12 +74,12 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
 
             clusterName = labelPrefix + clusterName;
 
-            List<Integer> indices = clusters.get(clusterName);
-            if (indices == null) {
-                indices = new ArrayList<>();
-                clusters.put(clusterName, indices);
+            Set<String> items = clusters.get(clusterName);
+            if (items == null) {
+                items = new HashSet<>();
+                clusters.put(clusterName, items);
             }
-            indices.add(i);
+            items.add(item);
 
             monitor.worked(1);
         }
@@ -95,6 +90,6 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
 
         monitor.end();
 
-        return new GenericClusteringResults(dataLabels, clusters);
+        return new GenericClusteringResults(clusters);
     }
 }

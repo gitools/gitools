@@ -21,7 +21,10 @@
  */
 package org.gitools.ui.heatmap.panel.details;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
@@ -29,7 +32,6 @@ import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -42,9 +44,6 @@ import java.util.List;
  */
 public class DetailsPanel extends JXTaskPaneContainer {
 
-    @NotNull
-    private final Heatmap heatmap;
-
     private DetailsBox columnsBox;
     private DetailsBox rowsBox;
     private DetailsBox layersBox;
@@ -55,7 +54,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
      *
      * @param heatmap the heatmap
      */
-    public DetailsPanel(Heatmap heatmap) {
+    public DetailsPanel(final Heatmap heatmap) {
         super();
 
         try {
@@ -66,30 +65,29 @@ public class DetailsPanel extends JXTaskPaneContainer {
             e.printStackTrace();
         }
 
-        this.heatmap = heatmap;
-
         setBackground(Color.WHITE);
 
         // Changes to track
         heatmap.getRows().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                updateRows();
-                updateLayers();
+                update(heatmap.getRows(), rowsBox);
+                updateLayers(heatmap, layersBox);
             }
         });
 
         heatmap.getColumns().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                updateColumns();
-                updateLayers();
+                update(heatmap.getColumns(), columnsBox);
+                updateLayers(heatmap, layersBox);
             }
         });
+
         PropertyChangeListener updateLayers = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                updateLayers();
+                updateLayers(heatmap, layersBox);
             }
         };
         heatmap.getLayers().addPropertyChangeListener(updateLayers);
@@ -104,53 +102,43 @@ public class DetailsPanel extends JXTaskPaneContainer {
         add(layersBox = new DetailsBox("Values") {
             @Override
             protected void onMouseClick(DetailsDecoration detail) {
-                DetailsPanel.this.heatmap.getLayers().setTopLayerIndex(detail.getIndex());
+                heatmap.getLayers().setTopLayerIndex(detail.getIndex());
             }
         });
 
-        updateRows();
-        updateColumns();
-        updateLayers();
+        update(heatmap.getRows(), rowsBox);
+        update(heatmap.getColumns(), columnsBox);
+        updateLayers(heatmap, layersBox);
     }
 
-    private void updateRows() {
+    private static void update(HeatmapDimension rows, DetailsBox rowsBox) {
 
-        int lead = heatmap.getRows().getSelectionLead();
-        if (lead != -1) {
-            rowsBox.setTitle("Row: " + heatmap.getRows().getLabel(lead) + " [" + (lead + 1) + "]");
+        String lead = rows.getFocus();
+        String label = StringUtils.capitalize(rows.getId().getLabel());
+
+        if (lead != null) {
+            rowsBox.setTitle(label + ": " + lead + " [" + (rows.indexOf(lead) + 1) + "]");
         } else {
-            rowsBox.setTitle("Row");
+            rowsBox.setTitle(label);
         }
-        List<DetailsDecoration> rowsDetails = new ArrayList<DetailsDecoration>();
-        heatmap.getRows().populateDetails(rowsDetails);
-        rowsBox.draw(rowsDetails);
+        List<DetailsDecoration> details = new ArrayList<DetailsDecoration>();
+        rows.populateDetails(details);
+        rowsBox.draw(details);
     }
 
-    private void updateColumns() {
-        int lead = heatmap.getColumns().getSelectionLead();
-        if (lead != -1) {
-            columnsBox.setTitle("Column: " + heatmap.getColumns().getLabel(lead) + " [" + (lead+1) + "]");
-        } else {
-            columnsBox.setTitle("Column");
-        }
-        List<DetailsDecoration> columnsDetails = new ArrayList<>();
-        heatmap.getColumns().populateDetails(columnsDetails);
-        columnsBox.draw(columnsDetails);
-    }
+    private static void updateLayers(Heatmap heatmap, DetailsBox layersBox) {
+        String col = heatmap.getColumns().getFocus();
+        String row = heatmap.getRows().getFocus();
 
-    private void updateLayers() {
-        int col = heatmap.getColumns().getSelectionLead();
-        int row = heatmap.getRows().getSelectionLead();
-
-        if (col != -1 && row != -1) {
+        if (col != null && row != null) {
 
             Decorator decorator = heatmap.getLayers().getTopLayer().getDecorator();
             Decoration decoration = new Decoration();
             boolean showValue = decorator.isShowValue();
             decorator.setShowValue(true);
             decoration.reset();
-            int layerIdx = heatmap.getLayers().getTopLayerIndex();
-            decorator.decorate(decoration, heatmap.getLayers().get(layerIdx).getLongFormatter(), heatmap, row, col, layerIdx);
+            HeatmapLayer layer = heatmap.getLayers().getTopLayer();
+            decorator.decorate(decoration, layer.getLongFormatter(), heatmap, layer, row, col);
             decorator.setShowValue(showValue);
 
             layersBox.setTitle("Values: " + decoration.getFormatedValue());
@@ -159,7 +147,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         }
 
         List<DetailsDecoration> layersDetails = new ArrayList<DetailsDecoration>();
-        heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getSelectionLead(), heatmap.getColumns().getSelectionLead());
+        heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getFocus(), heatmap.getColumns().getFocus());
         layersBox.draw(layersDetails);
     }
 

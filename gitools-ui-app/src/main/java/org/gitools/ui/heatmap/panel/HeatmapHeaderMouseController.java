@@ -145,7 +145,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         if (!isValidIndex(index)) {
             return false;
         }
-        return dimension.isSelected(index);
+        return dimension.getSelected().contains(dimension.getLabel(index));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private void setLeading(@NotNull MouseEvent e) {
         int index = convertToIndex(e);
         if (isValidIndex(index)) {
-            dimension.setSelectionLead(index);
+            dimension.setFocus(dimension.getLabel(index));
             //horizontal ? ip.setLastSelectedCol(index) : ip.setLastSelectedRow(index);
         }
     }
@@ -332,9 +332,10 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
         } else if (dragging) {
 
-            int[] prevSel = dimension.getSelected();
+            /*TODO
+            Set<String> prevSel = dimension.getSelected();
             selStart = prevSel[0];
-            selEnd = prevSel[prevSel.length - 1];
+            selEnd = prevSel[prevSel.size() - 1];
 
             int start = selStart <= selEnd ? selStart : selEnd;
             int end = selStart <= selEnd ? selEnd : selStart;
@@ -349,7 +350,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 dimension.setSelected(sel);
             } else {
                 dimension.setSelected(sel);
-            }
+            }*/
 
         }
 

@@ -23,7 +23,8 @@ package org.gitools.core.analysis.groupcomparison;
 
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.*;
+import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.ResourceReference;
@@ -40,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -168,11 +170,11 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         return group2;
     }
 
-    public void setGroup1(int[] group1) {
+    public void setGroup1(Set<String> group1) {
         this.group1.setColumns(group1);
     }
 
-    public void setGroup2(int[] group2) {
+    public void setGroup2(Set<String> group2) {
         this.group2.setColumns(group2);
     }
 

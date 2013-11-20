@@ -21,20 +21,19 @@
  */
 package org.gitools.core.heatmap.header;
 
+import com.google.common.base.Function;
 import org.gitools.core.clustering.ClusteringData;
 import org.gitools.core.clustering.ClusteringException;
 import org.gitools.core.clustering.ClusteringMethod;
 import org.gitools.core.clustering.ClusteringResults;
 import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
+import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -42,9 +41,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
@@ -65,7 +63,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     private boolean forceLabelColor;
 
     @XmlElement
-    private ColoredLabel[] coloredLabels;
+    private List<ColoredLabel> coloredLabels;
 
     private transient Map<String, Integer> dataColoredLabelIndices;
 
@@ -87,7 +85,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         forceLabelColor = true;
         labelColor = Color.black;
 
-        coloredLabels = new ColoredLabel[0];
+        coloredLabels = new ArrayList<>();
     }
 
     /* The thickness of the color band */
@@ -117,17 +115,16 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     /**
      * The list of clusters in this set
      */
-    public ColoredLabel[] getClusters() {
+    public List<ColoredLabel> getClusters() {
         return coloredLabels;
     }
 
     /**
      * The list of clusters in this set
      */
-    public void setClusters(ColoredLabel[] clusters) {
-        ColoredLabel[] old = this.coloredLabels;
+    public void setClusters(List<ColoredLabel> clusters) {
         this.coloredLabels = clusters;
-        firePropertyChange(CLUSTERS_CHANGED, old, clusters);
+        firePropertyChange(CLUSTERS_CHANGED, null, clusters);
     }
 
     /**
@@ -139,14 +136,14 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         if (index == null) {
             return null;
         }
-        return coloredLabels[index];
+        return coloredLabels.get(index);
     }
 
     private Map<String, Integer> getAssignedColoredLabels() {
         if (dataColoredLabelIndices == null) {
-            dataColoredLabelIndices = new HashMap<String, Integer>(coloredLabels.length);
-            for (int i = 0; i < coloredLabels.length; i++) {
-                dataColoredLabelIndices.put(coloredLabels[i].getValue(), i);
+            dataColoredLabelIndices = new HashMap<>(coloredLabels.size());
+            for (int i = 0; i < coloredLabels.size(); i++) {
+                dataColoredLabelIndices.put(coloredLabels.get(i).getValue(), i);
             }
         }
         return this.dataColoredLabelIndices;
@@ -156,37 +153,40 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         return forceLabelColor;
     }
 
-    /*Use the same color for all labels instead of inverted*/
     public void setForceLabelColor(boolean forceLabelColor) {
         boolean old = this.forceLabelColor;
         this.forceLabelColor = forceLabelColor;
         firePropertyChange(FORCE_LABEL_COLOR, old, forceLabelColor);
     }
 
-    public void updateFromClusterResults(@NotNull ClusteringResults results) {
+    public void updateFromClusterResults(ClusteringResults results) {
         ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
 
-        String[] clusterTitles = results.getClusterTitles();
-        coloredLabels = new ColoredLabel[results.getNumClusters()];
-        for (int i = 0; i < results.getNumClusters(); i++) {
-            ColoredLabel cluster = coloredLabels[i] = new ColoredLabel(clusterTitles[i], cg.next(clusterTitles[i]));
+        Collection<String> clusters = results.getClusters();
+        coloredLabels = new ArrayList<>(results.size());
+        for (String cluster : clusters) {
+            coloredLabels.add( new ColoredLabel(cluster, cg.next(cluster)));
         }
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, int index) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier) {
 
         DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
 
-        if (index != -1) {
-            decorate(decoration, getColoredLabel(index), true);
+        if (identifier != null) {
+            decorate(decoration, getColoredLabel(identifier), true);
         }
 
         details.add(decoration);
     }
 
     public ColoredLabel getColoredLabel(int index) {
-        ColoredLabel label = getAssignedColoredLabel(getLabelProvider().getLabel(index));
+        return getColoredLabel(getHeatmapDimension().getLabel(index));
+    }
+
+    public ColoredLabel getColoredLabel(String identifier) {
+        ColoredLabel label = getAssignedColoredLabel(getIdentifierTransform().apply(identifier));
 
         if (label == null) {
             label = new ColoredLabel("", getBackgroundColor());
@@ -206,14 +206,14 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         }
     }
 
-    private transient LabelProvider labelProvider;
+    private transient Function<String, String> identifierTransform;
 
-    public LabelProvider getLabelProvider() {
-        if (labelProvider == null) {
-            labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getAnnotationPattern());
+    public Function<String, String> getIdentifierTransform() {
+        if (identifierTransform == null) {
+            identifierTransform = new PatternFunction(getAnnotationPattern(), getHeatmapDimension().getAnnotations());
         }
 
-        return labelProvider;
+        return identifierTransform;
     }
 
     public void autoGenerateColoredLabels(ClusteringMethod clusteringMethod) {

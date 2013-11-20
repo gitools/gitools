@@ -22,12 +22,12 @@
 package org.gitools.ui.sort;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.sort.ValueSortCriteria.SortDirection;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.gitools.ui.utils.HeaderEnum;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +36,9 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+
 public class AnnotationSortPage extends AbstractWizardPage {
 
     private final Heatmap hm;
@@ -43,12 +46,7 @@ public class AnnotationSortPage extends AbstractWizardPage {
     private String rowsPat;
     private String colsPat;
 
-
-    public AnnotationSortPage(Heatmap hm) {
-        this(hm, HeaderEnum.Dimension.NONE_SPECIFIED);
-    }
-
-    public AnnotationSortPage(Heatmap hm, HeaderEnum.Dimension dim) {
+    public AnnotationSortPage(Heatmap hm, MatrixDimensionKey dim) {
 
         this.hm = hm;
 
@@ -102,12 +100,12 @@ public class AnnotationSortPage extends AbstractWizardPage {
 
         colsDirCb.setModel(new DefaultComboBoxModel(SortDirection.values()));
 
-        if (dim.equals(HeaderEnum.Dimension.COLUMN)) {
+        if (dim == COLUMNS) {
             colsChk.setSelected(true);
             rowsChk.setSelected(false);
             dimChanged();
             rowsChk.setEnabled(false);
-        } else if (dim.equals(HeaderEnum.Dimension.ROW)) {
+        } else if (dim == ROWS) {
             colsChk.setSelected(false);
             rowsChk.setSelected(true);
             dimChanged();
