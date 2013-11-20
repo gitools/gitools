@@ -22,8 +22,8 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.datafilters.ValueTranslator;
-import org.gitools.core.datafilters.ValueTranslatorFactory;
+import org.gitools.utils.datafilters.ValueTranslator;
+import org.gitools.utils.datafilters.ValueTranslatorFactory;
 import org.gitools.utils.aggregation.IAggregator;
 
 import javax.xml.bind.annotation.XmlAccessType;

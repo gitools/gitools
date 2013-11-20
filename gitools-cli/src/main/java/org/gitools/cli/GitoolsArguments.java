@@ -21,7 +21,7 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.args.BaseArguments;
 import org.kohsuke.args4j.Option;
 

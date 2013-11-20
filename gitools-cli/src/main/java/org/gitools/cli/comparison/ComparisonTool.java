@@ -33,7 +33,7 @@ import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.core.stats.test.Test;
 import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.IProgressMonitor;

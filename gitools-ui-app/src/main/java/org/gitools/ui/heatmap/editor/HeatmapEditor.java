@@ -36,7 +36,7 @@ import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.FileFormat;
 import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
-import org.gitools.core.utils.MemoryUtils;
+import org.gitools.utils.MemoryUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;

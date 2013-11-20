@@ -31,7 +31,7 @@ import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.NaturalRanking;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
 import org.apache.commons.math3.util.FastMath;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonResult;
+import org.gitools.core.stats.test.results.GroupComparisonResult;
 import org.gitools.core.stats.test.results.CommonResult;
 
 import java.util.ArrayList;

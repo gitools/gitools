@@ -31,17 +31,7 @@
 
         <dependency>
             <groupId>org.gitools</groupId>
-            <artifactId>gitools-biomart</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.gitools</groupId>
-            <artifactId>gitools-kegg</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.gitools</groupId>
-            <artifactId>gitools-intogen</artifactId>
+            <artifactId>gitools-datasources</artifactId>
         </dependency>
 
         <dependency>

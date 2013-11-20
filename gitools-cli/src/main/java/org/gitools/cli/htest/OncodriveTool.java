@@ -29,7 +29,7 @@ import org.gitools.core.model.ToolConfig;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;

@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model;
 
-import org.gitools.core.datafilters.ValueTranslator;
+import org.gitools.utils.datafilters.ValueTranslator;
 import org.gitools.utils.aggregation.IAggregator;
 
 public interface IMatrixLayer<T> {

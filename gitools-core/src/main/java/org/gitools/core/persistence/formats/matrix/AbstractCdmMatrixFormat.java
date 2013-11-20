@@ -21,7 +21,7 @@
  */
 package org.gitools.core.persistence.formats.matrix;
 
-import org.gitools.core.datafilters.DoubleTranslator;
+import org.gitools.utils.datafilters.DoubleTranslator;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayer;
