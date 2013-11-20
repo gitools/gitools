@@ -21,7 +21,7 @@
  */
 package org.gitools.core.analysis.groupcomparison;
 
-import org.gitools.core.datafilters.BinaryCutoff;
+import org.gitools.utils.datafilters.BinaryCutoff;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;

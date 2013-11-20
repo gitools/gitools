@@ -21,7 +21,7 @@
  */
 package org.gitools.core.exporter;
 
-import org.gitools.core.datafilters.ValueTranslator;
+import org.gitools.utils.datafilters.ValueTranslator;
 import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;

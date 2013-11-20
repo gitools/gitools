@@ -30,7 +30,7 @@ import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.core.persistence.locators.UrlResourceLocator;
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;

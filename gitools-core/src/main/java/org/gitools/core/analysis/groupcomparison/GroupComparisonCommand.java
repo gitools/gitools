@@ -24,7 +24,7 @@ package org.gitools.core.analysis.groupcomparison;
 import org.gitools.core.analysis.AnalysisCommand;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
-import org.gitools.core.datafilters.BinaryCutoff;
+import org.gitools.utils.datafilters.BinaryCutoff;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.Property;
 import org.gitools.core.persistence.IResourceFormat;

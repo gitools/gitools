@@ -29,7 +29,7 @@ import org.gitools.cli.AnalysisTool;
 import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.persistence.IResourceFormat;
 import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;

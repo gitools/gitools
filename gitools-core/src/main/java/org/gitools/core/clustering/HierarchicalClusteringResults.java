@@ -21,8 +21,8 @@
  */
 package org.gitools.core.clustering;
 
-import org.gitools.core.newick.NewickNode;
-import org.gitools.core.newick.NewickTree;
+import org.gitools.core.clustering.newick.NewickNode;
+import org.gitools.core.clustering.newick.NewickTree;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

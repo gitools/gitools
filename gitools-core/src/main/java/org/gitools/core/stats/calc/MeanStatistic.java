@@ -22,18 +22,16 @@
 package org.gitools.core.stats.calc;
 
 import cern.colt.matrix.DoubleMatrix1D;
-import org.jetbrains.annotations.NotNull;
 
 public class MeanStatistic implements Statistic {
 
-    @NotNull
     @Override
     public String getName() {
         return "mean";
     }
 
     @Override
-    public double calc(@NotNull DoubleMatrix1D values) {
+    public double calc(DoubleMatrix1D values) {
         return values.zSum() / values.size();
     }
 }

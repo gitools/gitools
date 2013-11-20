@@ -25,7 +25,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
 import org.gitools.core.matrix.model.compressmatrix.NotCompressRow;
-import org.gitools.core.utils.MemoryUtils;
+import org.gitools.utils.MemoryUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;

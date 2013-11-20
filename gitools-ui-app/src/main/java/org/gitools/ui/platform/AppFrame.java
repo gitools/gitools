@@ -137,7 +137,7 @@ public class AppFrame extends JFrame {
                         JOptionPane.showMessageDialog(AppFrame.get(), "You are using Java 7 build 25. This build has some important bugs, please update to the latest Java 7 build.");
                     }
 
-                    if (!isLatestGitools()) {
+                    if (isNewerGitoolsAvailable()) {
                         JOptionPane.showMessageDialog(AppFrame.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
                     }
 
@@ -152,11 +152,11 @@ public class AppFrame extends JFrame {
 
     }
 
-    boolean isLatestGitools() throws Exception {
+    boolean isNewerGitoolsAvailable() throws Exception {
 
         String thisVersion = AppFrame.getAppVersion();
         if (thisVersion.toLowerCase().contains("snapshot")) {
-            return true;
+            return false;
         }
 
         URL latestUrl = new URL("http://www.gitools.org/downloads/latest.txt");
@@ -171,10 +171,8 @@ public class AppFrame extends JFrame {
         latestVersion = in.readLine();
         in.close();
 
-        if (latestUrl != null && !latestVersion.equals(thisVersion)) {
-            return false;
-        }
-        return true;
+
+        return !latestVersion.equals(thisVersion);
     }
 
     public EditorsPanel getEditorsPanel() {

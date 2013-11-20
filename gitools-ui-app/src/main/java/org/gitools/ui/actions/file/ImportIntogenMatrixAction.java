@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.intogen.dialog.IntogenImportDialog;
+import org.gitools.ui.datasources.intogen.dialog.IntogenImportDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 

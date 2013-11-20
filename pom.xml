@@ -31,11 +31,8 @@
     <modules>
         <module>gitools-utils</module>
         <module>gitools-core</module>
+        <module>gitools-datasources</module>
         <module>gitools-cli</module>
-        <module>gitools-obo</module>
-        <module>gitools-biomart</module>
-        <module>gitools-intogen</module>
-        <module>gitools-kegg</module>
         <module>gitools-ui-platform</module>
         <module>gitools-ui-app</module>
     </modules>
@@ -91,25 +88,7 @@
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-biomart</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>gitools-obo</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>gitools-kegg</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>gitools-intogen</artifactId>
+                <artifactId>gitools-datasources</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

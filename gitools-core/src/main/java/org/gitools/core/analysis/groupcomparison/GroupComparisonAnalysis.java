@@ -21,7 +21,7 @@
  */
 package org.gitools.core.analysis.groupcomparison;
 
-import org.gitools.core.datafilters.BinaryCutoff;
+import org.gitools.utils.datafilters.BinaryCutoff;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.matrix.model.IMatrix;

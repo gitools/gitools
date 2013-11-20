@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.biomart.idmapper.EnsemblIds;
+import org.gitools.datasources.biomart.idmapper.EnsemblIds;
 import org.gitools.core.modules.importer.FeatureCategory;
 import org.gitools.core.modules.importer.ModulesImporter;
 import org.gitools.core.modules.importer.Organism;

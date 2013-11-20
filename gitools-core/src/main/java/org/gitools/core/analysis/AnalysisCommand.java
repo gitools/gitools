@@ -21,10 +21,10 @@
  */
 package org.gitools.core.analysis;
 
-import org.gitools.core.datafilters.BinaryCutoff;
-import org.gitools.core.datafilters.BinaryCutoffTranslator;
-import org.gitools.core.datafilters.DoubleTranslator;
-import org.gitools.core.datafilters.ValueTranslator;
+import org.gitools.utils.datafilters.BinaryCutoff;
+import org.gitools.utils.datafilters.BinaryCutoffTranslator;
+import org.gitools.utils.datafilters.DoubleTranslator;
+import org.gitools.utils.datafilters.ValueTranslator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;

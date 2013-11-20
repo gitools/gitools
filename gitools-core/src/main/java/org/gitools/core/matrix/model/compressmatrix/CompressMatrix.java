@@ -27,7 +27,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.gitools.core.matrix.model.*;
 import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.utils.MemoryUtils;
+import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

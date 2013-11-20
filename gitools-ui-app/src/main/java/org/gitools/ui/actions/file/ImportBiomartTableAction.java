@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.Query;
+import org.gitools.datasources.biomart.BiomartService;
+import org.gitools.datasources.biomart.restful.model.Query;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
-import org.gitools.ui.biomart.wizard.BiomartTableWizard;
+import org.gitools.ui.datasources.biomart.wizard.BiomartModulesWizard;
+import org.gitools.ui.datasources.biomart.wizard.BiomartTableWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
