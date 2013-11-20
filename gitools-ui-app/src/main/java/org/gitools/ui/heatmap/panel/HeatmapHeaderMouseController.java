@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.heatmap.panel;
 
+import org.gitools.api.matrix.view.Direction;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private final JViewport viewPort;
     private final HeatmapHeaderPanel headerPanel;
-    @NotNull
+
     private final HeatmapPanel panel;
     private final boolean horizontal;
     private Mode mode;
@@ -48,7 +48,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private Point startPoint;
     private Point startScrollValue;
     private final IMatrixViewDimension dimension;
-    @NotNull
+
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
     private int selectionMoveLastIndex;
     private boolean selectionHasMoved = false;
@@ -60,7 +60,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private HeatmapPanelInputProcessor ip;
 
-    public HeatmapHeaderMouseController(@NotNull HeatmapPanel panel,
+    public HeatmapHeaderMouseController(HeatmapPanel panel,
                                         HeatmapPanelInputProcessor inputProcessor,
                                         boolean horizontal) {
         this.viewPort = horizontal ? panel.getColumnViewPort() : panel.getRowViewPort();
@@ -82,7 +82,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseClicked(@NotNull MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
         // Skip right click
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             return;
@@ -102,7 +102,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             l.mouseClicked(row, col, e);
     }
 
-    private int convertToIndex(@NotNull MouseEvent e) {
+    private int convertToIndex(MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
@@ -112,7 +112,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mousePressed(@NotNull MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         // Skip right click
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             return;
@@ -142,14 +142,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     private boolean isSelectedIndex(int index) {
-        if (!isValidIndex(index)) {
-            return false;
-        }
-        return dimension.getSelected().contains(dimension.getLabel(index));
+        return isValidIndex(index) && dimension.getSelected().contains(dimension.getLabel(index));
     }
 
     @Override
-    public void mouseReleased(@NotNull MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         panel.mouseReleased(e);
         int modifiers = e.getModifiers();
         boolean altDown = ((modifiers & altMask) != 0);
@@ -168,7 +165,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         mode = Mode.none;
     }
 
-    private void setLeading(@NotNull MouseEvent e) {
+    private void setLeading(MouseEvent e) {
         int index = convertToIndex(e);
         if (isValidIndex(index)) {
             dimension.setFocus(dimension.getLabel(index));
@@ -185,7 +182,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseDragged(@NotNull MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
         switch (mode) {
             case selectingRowsAndCols:
                 updateSelection(e, true);
@@ -200,7 +197,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseMoved(@NotNull MouseEvent e) {
+    public void mouseMoved(MouseEvent e) {
         int index = convertToIndex(e);
         if (!isValidIndex(index)) {
             return;
@@ -214,7 +211,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     @Override
-    public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
+    public void mouseWheelMoved(MouseWheelEvent e) {
         int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
@@ -255,7 +252,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         }
     }
 
-    private void updateSelectionMove(@NotNull MouseEvent e, boolean dragging) {
+    private void updateSelectionMove(MouseEvent e, boolean dragging) {
         int index = convertToIndex(e);
 
         if (!isValidIndex(index)) {
@@ -273,12 +270,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 if (horizontal) {
                     for (int i = 0; i < indexDiff; i++) {
-                        dimension.move(org.gitools.core.matrix.model.Direction.LEFT, dimension.getSelected());
+                        dimension.move(Direction.LEFT, dimension.getSelected());
                         ip.shiftSelStart(dimension, -1);
                     }
                 } else {
                     for (int i = 0; i < indexDiff; i++) {
-                        dimension.move(org.gitools.core.matrix.model.Direction.UP, dimension.getSelected());
+                        dimension.move(Direction.UP, dimension.getSelected());
                         ip.shiftSelStart(dimension, -1);
                     }
                 }
@@ -288,12 +285,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 if (horizontal) {
                     for (int i = 0; i > indexDiff; i--) {
-                        dimension.move(org.gitools.core.matrix.model.Direction.RIGHT, dimension.getSelected());
+                        dimension.move(Direction.RIGHT, dimension.getSelected());
                         ip.shiftSelStart(dimension, 1);
                     }
                 } else {
                     for (int i = 0; i > indexDiff; i--) {
-                        dimension.move(org.gitools.core.matrix.model.Direction.DOWN, dimension.getSelected());
+                        dimension.move(Direction.DOWN, dimension.getSelected());
                         ip.shiftSelStart(dimension, 1);
                     }
                 }
@@ -303,7 +300,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         setLeading(e);
     }
 
-    private void updateSelection(@NotNull MouseEvent e, boolean dragging) {
+    private void updateSelection(MouseEvent e, boolean dragging) {
         int index = convertToIndex(e);
         int selStart = 0;
         int selEnd;
@@ -367,7 +364,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         return true;
     }
 
-    private void updateScroll(@NotNull MouseEvent e, boolean dragging) {
+    private void updateScroll(MouseEvent e, boolean dragging) {
         point = e.getPoint();
 
         if (!dragging) {

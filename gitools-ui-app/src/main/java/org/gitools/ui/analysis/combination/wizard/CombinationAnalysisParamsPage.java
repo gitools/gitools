@@ -21,17 +21,16 @@
  */
 package org.gitools.ui.analysis.combination.wizard;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
 public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 
-    @Nullable
+
     private String[] attrs;
 
     private static class AttrOption {
@@ -79,7 +78,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         pvalueAttrCb.setEnabled(false);
     }
 
-    public void setAttributes(@Nullable String[] attrs) {
+    public void setAttributes(String[] attrs) {
         this.attrs = attrs;
 
         if (attrs != null) {
@@ -130,13 +129,13 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         this.preferredPvalueAttr = preferredPvalueAttr;
     }
 
-    @Nullable
+
     public IMatrixLayer getSizeAttribute() {
         AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;
     }
 
-    @Nullable
+
     public IMatrixLayer getPvalueAttribute() {
         AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
         return option != null ? option.getAttr() : null;

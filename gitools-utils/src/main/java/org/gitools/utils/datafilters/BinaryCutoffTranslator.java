@@ -22,6 +22,7 @@
 package org.gitools.utils.datafilters;
 
 import cern.colt.function.DoubleFunction;
+import org.gitools.api.matrix.ValueTranslator;
 
 public class BinaryCutoffTranslator implements ValueTranslator<Double> {
 

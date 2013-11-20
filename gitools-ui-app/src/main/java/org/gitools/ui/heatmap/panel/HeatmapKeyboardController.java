@@ -21,10 +21,9 @@
  */
 package org.gitools.ui.heatmap.panel;
 
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.ui.platform.os.OSProperties;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -39,24 +38,24 @@ class HeatmapKeyboardController extends KeyAdapter {
     final HeatmapPanelInputProcessor ip;
 
 
-    HeatmapKeyboardController(@NotNull IMatrixView matrixView, HeatmapPanelInputProcessor inputProcessor) {
+    HeatmapKeyboardController(IMatrixView matrixView, HeatmapPanelInputProcessor inputProcessor) {
         this.mv = matrixView;
         this.ip = inputProcessor;
     }
 
 
     @Override
-    public void keyTyped(@NotNull KeyEvent e) {
+    public void keyTyped(KeyEvent e) {
         return;
     }
 
     @Override
-    public void keyReleased(@NotNull KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
         ip.clearPressedStates(e);
     }
 
     @Override
-    public void keyPressed(@NotNull KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
 
         IMatrixView mv = this.mv;
 
@@ -89,8 +88,6 @@ class HeatmapKeyboardController extends KeyAdapter {
 
         } else {
 
-            boolean selectingRange = shiftDown ? true : false;
-
             switch (key) {
                 case KeyEvent.VK_DELETE:
                     ip.hideSelected();
@@ -104,7 +101,7 @@ class HeatmapKeyboardController extends KeyAdapter {
                     ip.savePressedState(e);
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectRows();
-                    } else if (selectingRange) {
+                    } else if (shiftDown) {
                         ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), false);
                     } else {
                         switchLeadRowSelection(e);
@@ -115,7 +112,7 @@ class HeatmapKeyboardController extends KeyAdapter {
                     ip.savePressedState(e);
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectColumns();
-                    } else if (selectingRange) {
+                    } else if (shiftDown) {
                         ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), true);
                     } else {
                         switchLeadColSelection(e);
@@ -127,7 +124,7 @@ class HeatmapKeyboardController extends KeyAdapter {
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {
                         unselectColumns();
                         unselectRows();
-                    } else if (selectingRange) {
+                    } else if (shiftDown) {
                         ip.selectRange(mv.getColumns().indexOf(mv.getColumns().getFocus()), true);
                         ip.selectRange(mv.getColumns().indexOf(mv.getRows().getFocus()), false);
                     } else {
@@ -273,7 +270,7 @@ class HeatmapKeyboardController extends KeyAdapter {
         }
     }
 
-    private void switchLeadRowSelection(@NotNull KeyEvent e) {
+    private void switchLeadRowSelection(KeyEvent e) {
 
         int modifiers = e.getModifiers();
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
@@ -293,7 +290,7 @@ class HeatmapKeyboardController extends KeyAdapter {
         ip.switchSelection(dim, dim.indexOf(lead), altDown);
     }
 
-    private void switchLeadColSelection(@NotNull KeyEvent e) {
+    private void switchLeadColSelection(KeyEvent e) {
 
         int modifiers = e.getModifiers();
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);

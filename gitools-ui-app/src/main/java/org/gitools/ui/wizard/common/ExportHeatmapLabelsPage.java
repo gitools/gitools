@@ -22,7 +22,6 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 public class ExportHeatmapLabelsPage extends AbstractWizardPage {
 
@@ -38,7 +37,7 @@ public class ExportHeatmapLabelsPage extends AbstractWizardPage {
         setComplete(true);
     }
 
-    @NotNull
+
     public WhichLabels getWhichLabels() {
         if (vRowsRb.isSelected()) {
             return WhichLabels.VISIBLE_ROWS;

@@ -21,10 +21,9 @@
  */
 package org.gitools.ui.commands;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
@@ -36,7 +35,7 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
+    public void execute(IProgressMonitor monitor) throws CommandException {
 
         super.execute(monitor);
         if (getExitStatus() > 0) {

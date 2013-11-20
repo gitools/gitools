@@ -23,10 +23,12 @@ package org.gitools.core.matrix.model.iterable;
 
 import com.google.common.collect.Iterators;
 import org.apache.commons.collections.comparators.ComparableComparator;
-import org.gitools.core.analysis.groupcomparison.NoMapping;
-import org.gitools.core.matrix.model.*;
-import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.ILayerAdapter;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.*;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -78,7 +80,7 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     }
 
     @Override
-    public void store(IMatrix output, IMatrixPositionMapping mapping, LayerAdapter<T> layerAdapter) {
+    public void store(IMatrix output, IMatrixPositionMapping mapping, ILayerAdapter<T> layerAdapter) {
 
         IMatrixPosition position = output.newPosition();
         for (T value : this) {
@@ -100,7 +102,7 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     }
 
     @Override
-    public void store(IMatrix output, LayerAdapter<T> layerAdapter) {
+    public void store(IMatrix output, ILayerAdapter<T> layerAdapter) {
         store(output, new NoMapping(), layerAdapter);
     }
 

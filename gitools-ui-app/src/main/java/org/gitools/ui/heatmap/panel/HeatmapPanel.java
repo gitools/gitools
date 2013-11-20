@@ -31,7 +31,6 @@ import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +38,7 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import static org.gitools.core.utils.EventUtils.isAny;
+import static org.gitools.utils.events.EventUtils.isAny;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -268,7 +267,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         return bodyPanel.getDrawer().getPosition(pos);
     }
 
-    @NotNull
+
     public Point getScrollValue() {
         return new Point(colSB.getValue(), rowSB.getValue());
     }
@@ -294,7 +293,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension sz = getSize();
         Rectangle r = new Rectangle(new Point(0, 0), sz);
@@ -306,13 +305,13 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         inputProcessor.addHeatmapMouseListener(listener);
     }
 
-    public void mouseReleased(@NotNull MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             showPopup(e);
         }
     }
 
-    private void showPopup(@NotNull MouseEvent e) {
+    private void showPopup(MouseEvent e) {
 
         if (e.getComponent() == this.rowVP) {
 

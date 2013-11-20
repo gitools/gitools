@@ -21,12 +21,9 @@
  */
 package org.gitools.ui.wizard.add.data;
 
-import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -83,7 +80,7 @@ class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
      *
      * @noinspection UnusedDeclaration
      */
-    public DataIntegrationCriteriaDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, String[] operators, @Nullable List<DataIntegrationCriteria> initialCriteriaList, String setToValue) {
+    public DataIntegrationCriteriaDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, String[] operators, List<DataIntegrationCriteria> initialCriteriaList, String setToValue) {
 
         super(parent, true);
 
@@ -194,7 +191,7 @@ class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
         }, new String[]{"Operator", "Attribute", "Condition", "Value"}) {
-            @NotNull
+
             final Class[] types = new Class[]{java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
             public Class getColumnClass(int columnIndex) {

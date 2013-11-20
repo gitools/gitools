@@ -23,8 +23,6 @@ package org.gitools.core.matrix.filter;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import org.gitools.core.matrix.NoTransformFunction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,7 @@ public class FilterByLabelPredicate implements Predicate<String> {
 
     @Override
     public boolean apply(String input) {
-        return filter.apply( transformFunction.apply(input) );
+        return filter.apply(transformFunction.apply(input));
     }
 
 
@@ -57,6 +55,7 @@ public class FilterByLabelPredicate implements Predicate<String> {
 
     private static class StringFilter implements LabelFilter {
         private final Set<String> values;
+
         public StringFilter(Set<String> values) {
             this.values = values;
         }
@@ -69,7 +68,8 @@ public class FilterByLabelPredicate implements Predicate<String> {
 
     private static class RegexFilter implements LabelFilter {
         private final List<Pattern> patterns;
-        public RegexFilter(@NotNull Set<String> values) {
+
+        public RegexFilter(Set<String> values) {
             patterns = new ArrayList<>(values.size());
             for (String value : values)
                 if (!value.trim().isEmpty()) {

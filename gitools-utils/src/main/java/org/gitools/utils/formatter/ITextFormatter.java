@@ -21,9 +21,6 @@
  */
 package org.gitools.utils.formatter;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 
 /**
@@ -34,6 +31,6 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITextFormatter extends Serializable {
-    @NotNull
-    String format(@Nullable Object value);
+
+    String format(Object value);
 }

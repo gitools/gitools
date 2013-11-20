@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.platform.help;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * @noinspection ALL
  */
@@ -34,7 +32,7 @@ public class HelpContext {
         this.id = id;
     }
 
-    public HelpContext(@NotNull Class<?> cls) {
+    public HelpContext(Class<?> cls) {
         this.id = cls.getCanonicalName();
     }
 

@@ -22,7 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 /**
  * Multiplication
@@ -39,7 +39,7 @@ public class MinAggregator extends AbstractAggregator {
         return aggregate(data, Functions.min);
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Min";

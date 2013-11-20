@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.aggregation;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 /**
  * Multiplication
@@ -34,7 +34,7 @@ public class NonZeroCountAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
 
         double length = (double) data.length;
         double events = 0.0;
@@ -48,7 +48,7 @@ public class NonZeroCountAggregator extends AbstractAggregator {
         return events;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Count (Non-zero)";

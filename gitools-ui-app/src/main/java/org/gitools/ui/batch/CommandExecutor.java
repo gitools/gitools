@@ -22,13 +22,12 @@
 package org.gitools.ui.batch;
 
 import org.gitools.ui.batch.tools.ITool;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintWriter;
 
 public class CommandExecutor {
 
-    public boolean checkArguments(@NotNull String[] args, @NotNull PrintWriter out) {
+    public boolean checkArguments(String[] args, PrintWriter out) {
 
         if (args.length == 0) {
             out.println(errorMsg());
@@ -51,12 +50,12 @@ public class CommandExecutor {
         return tool.check(toolArgs, out);
     }
 
-    @NotNull
+
     public String printUsage() {
         return errorMsg();
     }
 
-    public void execute(@NotNull String[] args, @NotNull PrintWriter out) {
+    public void execute(String[] args, PrintWriter out) {
 
         if (args.length == 0) {
             out.println(errorMsg());
@@ -86,7 +85,7 @@ public class CommandExecutor {
 
     }
 
-    @NotNull
+
     private static String errorMsg() {
         StringBuilder msg = new StringBuilder();
         msg.append("ERROR | Unknown command. Valid commands: ");

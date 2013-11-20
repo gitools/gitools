@@ -104,7 +104,7 @@ public class HashModuleMap extends Resource implements IModuleMap {
                 List<String> mappings = map.get(module);
                 int[] mappingIndices = new int[mappings.size()];
 
-                for (int i=0; i < mappings.size(); i++) {
+                for (int i = 0; i < mappings.size(); i++) {
                     mappingIndices[i] = items.indexOf(mappings.get(i));
                 }
 

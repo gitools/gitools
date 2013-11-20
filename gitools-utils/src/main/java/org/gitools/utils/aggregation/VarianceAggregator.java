@@ -22,7 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 import static cern.jet.stat.Descriptive.sampleVariance;
 
@@ -37,7 +37,7 @@ public class VarianceAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
         double sum = aggregate(data, Functions.plus);
 
         if (Double.isNaN(sum)) {
@@ -48,7 +48,7 @@ public class VarianceAggregator extends AbstractAggregator {
         return sampleVariance(data.length, sum, sumOfSquares);
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Variance";

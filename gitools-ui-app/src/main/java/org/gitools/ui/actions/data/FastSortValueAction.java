@@ -22,26 +22,25 @@
 package org.gitools.ui.actions.data;
 
 import com.google.common.collect.Lists;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
-import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class FastSortValueAction extends HeatmapDimensionAction {
 
@@ -89,7 +88,7 @@ public class FastSortValueAction extends HeatmapDimensionAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
 
                 layer.setAggregator(aggregator);
                 layer.setSortDirection(sort);

@@ -21,17 +21,16 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.filter.PatternFunction;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.common.ExportHeatmapLabelsWizard;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -69,7 +68,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting labels ...", 1);
                     monitor.info("File: " + file.getName());
@@ -101,7 +100,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
                             break;
                     }
 
-                    for (String identifier : transform( identifiers , new PatternFunction(wiz.getPattern(), annMatrix))) {
+                    for (String identifier : transform(identifiers, new PatternFunction(wiz.getPattern(), annMatrix))) {
                         pw.println(identifier);
                     }
 

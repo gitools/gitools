@@ -21,8 +21,6 @@
  */
 package org.gitools.core.model.decorator;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 import java.io.Serializable;
 
@@ -46,7 +44,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
      * @param name  the name
      * @param value the value
      */
-    public DetailsDecoration(@NotNull String name, @NotNull String value) {
+    public DetailsDecoration(String name, String value) {
         this(name, null, value);
     }
 
@@ -57,7 +55,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
      * @param description the description
      * @param value       the value
      */
-    public DetailsDecoration(@NotNull String name, String description, @NotNull String value) {
+    public DetailsDecoration(String name, String description, String value) {
         this(name, description, null, value, null);
     }
 
@@ -69,7 +67,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
      * @param value       the value
      * @param valueLink   the value link
      */
-    public DetailsDecoration(@NotNull String name, String description, String descriptionLink, String value, String valueLink) {
+    public DetailsDecoration(String name, String description, String descriptionLink, String value, String valueLink) {
         super(value, Color.WHITE);
 
         this.description = description;

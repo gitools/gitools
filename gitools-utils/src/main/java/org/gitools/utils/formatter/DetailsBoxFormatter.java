@@ -46,7 +46,7 @@ public class DetailsBoxFormatter extends HeatmapTextFormatter {
     @Override
     protected String decimal(double value) {
 
-        if (value!=0 && value < 1e-99 && value > -1e-99) {
+        if (value != 0 && value < 1e-99 && value > -1e-99) {
             return "~0.00";
         }
 
@@ -55,7 +55,7 @@ public class DetailsBoxFormatter extends HeatmapTextFormatter {
             fmt.format("%.2g", value);
             return sb.toString();
         } else {
-            return  countFormat.format(value);
+            return countFormat.format(value);
         }
     }
 

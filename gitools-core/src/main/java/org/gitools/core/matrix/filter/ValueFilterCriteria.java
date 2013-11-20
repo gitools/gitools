@@ -21,10 +21,9 @@
  */
 package org.gitools.core.matrix.filter;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
 
 public class ValueFilterCriteria {
 
@@ -79,7 +78,7 @@ public class ValueFilterCriteria {
         this.value = value;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return layer.getId() + " " + comparator.toString() + " " + value;

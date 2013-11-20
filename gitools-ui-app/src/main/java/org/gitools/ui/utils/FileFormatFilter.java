@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.utils;
 
-import org.gitools.core.persistence.formats.FileFormat;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.persistence.formats.FileFormat;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
@@ -44,13 +43,13 @@ public class FileFormatFilter extends FileFilter {
         this.formats = formats;
     }
 
-    public FileFormatFilter(@NotNull FileFormat format) {
+    public FileFormatFilter(FileFormat format) {
         this(format.getTitleWithExtension());
         this.format = format;
     }
 
     @Override
-    public final boolean accept(@NotNull File f) {
+    public final boolean accept(File f) {
         return accept(f.isDirectory(), f.getName());
     }
 

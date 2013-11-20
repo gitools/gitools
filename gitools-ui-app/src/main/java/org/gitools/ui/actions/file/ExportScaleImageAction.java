@@ -22,14 +22,13 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -37,8 +36,6 @@ import org.gitools.ui.scale.ScaleExportWizard;
 import org.gitools.ui.settings.Settings;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,10 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
-public class ExportScaleImageAction extends BaseAction {
+public class ExportScaleImageAction extends HeatmapAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
@@ -60,33 +54,9 @@ public class ExportScaleImageAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        AbstractEditor editor = ActionUtils.getSelectedEditor();
-        if (editor == null) {
-            return;
-        }
-
-        final Object model = editor.getModel();
-        if (!(model instanceof Heatmap)) {
-            return;
-        }
-
-		/*SaveFileWizard saveWiz = SaveFileWizard.createSimple(
-                "Export scale to image ...",
-				PersistenceUtils.getFileName(editor.getName()) + "-scale",
-				Settings.getDefault().getLastExportPath(),
-				new FileFormat[] {
-					FileFormats.PNG,
-					FileFormats.JPG
-				});*/
-
-        Heatmap hm = (Heatmap) model;
+        Heatmap hm = getHeatmap();
         Decorator cd = hm.getLayers().getTopLayer().getDecorator();
         final IColorScale scale = cd != null ? cd.getScale() : null;
 
@@ -96,7 +66,7 @@ public class ExportScaleImageAction extends BaseAction {
 
         final ScaleExportWizard wz = new ScaleExportWizard();
         wz.setTitle("Export scale to image ...");
-        wz.getSavePage().setFileNameWithoutExtension(FilenameUtils.getName(editor.getName()) + "-scale");
+        wz.getSavePage().setFileNameWithoutExtension(FilenameUtils.getName(getSelectedEditor().getName()) + "-scale");
         wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
         wz.getSavePage().setFormats(new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
         wz.setScale(scale);
@@ -118,7 +88,7 @@ public class ExportScaleImageAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting scale to image ...", 1);
                     monitor.info("File: " + file.getName());

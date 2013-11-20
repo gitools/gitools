@@ -22,11 +22,12 @@
 package org.gitools.ui.actions.data;
 
 import com.google.common.collect.Sets;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.core.matrix.filter.FilterByLabelPredicate;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.ui.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -34,8 +35,6 @@ import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -74,10 +73,10 @@ public class FilterByAnnotations extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
-                HeatmapDimension heatmapDimension = hm.getIdentifiers(page.getFilterDimension());
+                HeatmapDimension heatmapDimension = hm.getDimension(page.getFilterDimension());
 
                 heatmapDimension.show(
                         new FilterByLabelPredicate(

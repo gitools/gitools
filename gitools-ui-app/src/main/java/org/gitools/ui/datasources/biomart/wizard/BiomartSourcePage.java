@@ -33,8 +33,6 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.wizard.common.FilteredListPanel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -110,12 +108,11 @@ public class BiomartSourcePage extends AbstractWizardPage {
     }
 
 
-    @Nullable
     private BiomartService biomartService;
 
     private boolean updated;
     private FilteredListPanel datasetPanel;
-    @Nullable
+
     private MartLocation lastMartSelected;
 
     public BiomartSourcePage() {
@@ -125,7 +122,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
         portalCombo.addItemListener(new ItemListener() {
             @Override
-            public void itemStateChanged(@NotNull ItemEvent e) {
+            public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     updateDatabase();
                 }
@@ -233,7 +230,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
     private javax.swing.JComboBox portalCombo;
     // End of variables declaration//GEN-END:variables
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -305,7 +302,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
                     databaseList.setModel(model);
                     updated = true;
                     setMessage(MessageStatus.INFO, "");
-                } catch (@NotNull final Exception ex) {
+                } catch (final Exception ex) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -353,7 +350,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
 
                     updated = true;
                     setMessage(MessageStatus.INFO, "");
-                } catch (@NotNull final Exception ex) {
+                } catch (final Exception ex) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -369,22 +366,22 @@ public class BiomartSourcePage extends AbstractWizardPage {
     }
 
     // GETTERS
-    @Nullable
+
     BiomartSource getSource() {
         return portalCombo.getSelectedItem() != null ? ((BiomartSourceWrapper) portalCombo.getSelectedItem()).getBiomartSource() : null;
     }
 
-    @Nullable
+
     public MartLocation getDataBase() {
         return databaseList.getSelectedValue() != null ? ((DatabaseListWrapper) databaseList.getSelectedValue()).getMart() : null;
     }
 
-    @Nullable
+
     public DatasetInfo getDataset() {
         return datasetPanel.getSelectedValue() != null ? ((DatasetListWrapper) datasetPanel.getSelectedValue()).getDataset() : null;
     }
 
-    @Nullable
+
     public BiomartService getBiomartService() {
         return biomartService;
     }

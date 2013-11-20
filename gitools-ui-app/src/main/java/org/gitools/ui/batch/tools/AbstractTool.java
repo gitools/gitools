@@ -25,7 +25,6 @@ import org.gitools.ui.commands.Command;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -37,7 +36,7 @@ public abstract class AbstractTool implements ITool {
 
 
     @Override
-    public boolean check(String[] args, @NotNull PrintWriter out) {
+    public boolean check(String[] args, PrintWriter out) {
 
         CmdLineParser parser = new CmdLineParser(this);
         try {
@@ -55,7 +54,7 @@ public abstract class AbstractTool implements ITool {
     }
 
     @Override
-    public boolean run(String[] args, @NotNull PrintWriter out) {
+    public boolean run(String[] args, PrintWriter out) {
 
         CmdLineParser parser = new CmdLineParser(this);
         try {
@@ -99,6 +98,5 @@ public abstract class AbstractTool implements ITool {
     }
 
 
-    @NotNull
     protected abstract Command newJob();
 }

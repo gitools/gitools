@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
@@ -39,7 +39,6 @@ public class ShowAllAction extends HeatmapDimensionAction {
         setSmallIconFromResource(IconNames.get(key).getShowAll16());
         setLargeIconFromResource(IconNames.get(key).getShowAll24());
     }
-
 
 
     @Override

@@ -21,8 +21,8 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.position.IMatrixPosition;
 
 public class IdentifierSourceIterable extends AbstractSourceIterable<String> {
 

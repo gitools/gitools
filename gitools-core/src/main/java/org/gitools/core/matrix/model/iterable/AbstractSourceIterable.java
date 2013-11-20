@@ -21,7 +21,11 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.position.IMatrixIterable;
+import org.gitools.api.matrix.position.IMatrixPosition;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +40,7 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
     protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
         this.position = position;
-        this.iterateDimension = position.getMatrix().getIdentifiers(iterateDimension);
+        this.iterateDimension = position.getMatrix().getDimension(iterateDimension);
 
         this.identifiers = new ArrayList<>(this.iterateDimension.size());
         for (String id : this.iterateDimension) {
@@ -81,7 +85,7 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
         identifiers = new ArrayList<>(to - from + 1);
 
-        for (int i=from; i <= to; i++) {
+        for (int i = from; i <= to; i++) {
             identifiers.add(iterateDimension.getLabel(i));
         }
 
@@ -90,7 +94,7 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-         return new ValueIterator(identifiers.iterator());
+        return new ValueIterator(identifiers.iterator());
     }
 
     protected abstract T getValue(IMatrixPosition position);

@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.platform;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,18 +30,18 @@ public class IconUtils {
 
     public static final String nullResourceImage = "/img/null.gif";
 
-    @NotNull
+
     public static Icon getIconResource(String name) {
         return getImageIconResource(name);
     }
 
-    @NotNull
+
     public static Image getImageResource(String name) {
         Icon icon = getImageIconResource(name);
         return iconToImage(icon, icon.getIconWidth(), icon.getIconHeight());
     }
 
-    @NotNull
+
     public static ImageIcon getImageIconResource(String name) {
         URL url = IconUtils.class.getResource(name);
         if (url == null) {
@@ -53,7 +51,7 @@ public class IconUtils {
         return new ImageIcon(url);
     }
 
-    @NotNull
+
     public static ImageIcon getImageIconResourceScaledByHeight(String name, int height) {
 
         ImageIcon icon = getImageIconResource(name);
@@ -65,7 +63,7 @@ public class IconUtils {
         return new ImageIcon(iconToImage(icon, width, height));
     }
 
-    private static Image iconToImage(@NotNull Icon icon, int width, int height) {
+    private static Image iconToImage(Icon icon, int width, int height) {
 
         int w = icon.getIconWidth();
         int h = icon.getIconHeight();

@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.benchmark;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * @noinspection ALL
  */
@@ -65,7 +63,7 @@ public class TimeCounter {
         return getElapsed() / 1000000000.0f;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         long e = getElapsed();

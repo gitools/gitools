@@ -134,7 +134,7 @@ public class DecoratorPanelContainer extends JPanel {
         Class<? extends Decorator> decoratorClass = getCurrentPanel().getDecoratorClass();
         Decorator currentDecorator = getCurrentDecorator();
 
-        if (currentDecorator==null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
+        if (currentDecorator == null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
             Decorator newDecorator = getCurrentPanel().newDecorator();
             setCurrentDecorator(newDecorator);
             getCurrentPanel().setValue(newDecorator);

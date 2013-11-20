@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.actions;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 
 public abstract class HeatmapDimensionAction extends HeatmapAction {
 
@@ -43,6 +43,6 @@ public abstract class HeatmapDimensionAction extends HeatmapAction {
     }
 
     protected HeatmapDimension getDimension() {
-        return getHeatmap().getIdentifiers(dimensionKey);
+        return getHeatmap().getDimension(dimensionKey);
     }
 }

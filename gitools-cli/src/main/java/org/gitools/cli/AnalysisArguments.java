@@ -21,7 +21,6 @@
  */
 package org.gitools.cli;
 
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Option;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import java.util.List;
  */
 public class AnalysisArguments extends GitoolsArguments {
 
-    @NotNull
+
     @Option(name = "-N", aliases = "-name", metaVar = "<name>",
             usage = "Analysis name. A folder with this name will be created\n" + "in the workdir. (default: unnamed).")
     public final String analysisName = "unnamed";
@@ -45,7 +44,7 @@ public class AnalysisArguments extends GitoolsArguments {
             usage = "Set analysis description and notes.")
     public String analysisNotes;
 
-    @NotNull
+
     @Option(name = "-A", aliases = "-attribute", metaVar = "<name=value>",
             usage = "Define an analysis attribute.")
     public final List<String> analysisAttributes = new ArrayList<String>(0);

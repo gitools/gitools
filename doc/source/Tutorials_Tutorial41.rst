@@ -64,4 +64,4 @@ Explore the results
 
 
 .. image:: img/T4.1.png
-   :width: 70%
+:width: 70%

@@ -21,10 +21,10 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.HashMap;
 import java.util.Map;

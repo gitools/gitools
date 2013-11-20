@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
-import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;

@@ -21,10 +21,12 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.SortDirection;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
@@ -32,10 +34,7 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.sort.ValueSortDialog;
 import org.gitools.utils.aggregation.AggregatorFactory;
-import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -88,7 +87,7 @@ public class SortByValueAction extends HeatmapAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 MatrixViewSorter.sortByValue(matrixView, criteriaList, dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked(), monitor);

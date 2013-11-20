@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.aggregation;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 import java.util.*;
 
@@ -46,7 +46,7 @@ public class AggregatorFactory {
 
     }
 
-    private static void put(@NotNull IAggregator aggregator) {
+    private static void put(IAggregator aggregator) {
         aggregators.add(aggregator);
         aggregatorsMap.put(aggregator.toString(), aggregator);
     }
@@ -55,11 +55,6 @@ public class AggregatorFactory {
         return aggregatorsMap.get(name);
     }
 
-    public static Collection<IAggregator> getAggregators() {
-        return Collections.unmodifiableCollection(aggregators);
-    }
-
-    @NotNull
     public static IAggregator[] getAggregatorsArray() {
         final IAggregator[] aggregatorsArray = new IAggregator[aggregators.size()];
         aggregators.toArray(aggregatorsArray);

@@ -21,8 +21,9 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
@@ -30,8 +31,6 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.sort.AnnotationSortPage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -61,7 +60,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 MatrixViewSorter.sortByLabel(hm, page.isApplyToRowsSelected(), page.getRowsPattern(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), page.getColumnsDirection(), page.getColumnsNumeric());

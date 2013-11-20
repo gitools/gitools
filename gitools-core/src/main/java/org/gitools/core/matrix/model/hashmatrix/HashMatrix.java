@@ -21,7 +21,11 @@
  */
 package org.gitools.core.matrix.model.hashmatrix;
 
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.core.matrix.model.AbstractMatrix;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,7 +56,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         }
 
         String identifier = identifiers[0];
-        for (int i=1; i < identifiers.length; i++) {
+        for (int i = 1; i < identifiers.length; i++) {
 
             if (identifier == null || !result.containsKey(identifier)) {
                 return null;
@@ -66,7 +70,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
     }
 
     public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
-        assert identifiers.length == getDimensions().length : "Matrix of dimension " + getDimensions().length + " and position of " + identifiers.length + " elements";
+        assert identifiers.length == getDimensionKeys().length : "Matrix of dimension " + getDimensionKeys().length + " and position of " + identifiers.length + " elements";
 
         if (value == null) {
             return;
@@ -78,9 +82,9 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         }
 
         String identifier = identifiers[0];
-        HashMatrixDimension dimension = getIdentifiers(getDimensions()[0]);
+        HashMatrixDimension dimension = getDimension(getDimensionKeys()[0]);
 
-        for (int i=1; i < identifiers.length; i++) {
+        for (int i = 1; i < identifiers.length; i++) {
 
             if (!result.containsKey(identifier)) {
                 result.put(identifier, new ConcurrentHashMap());
@@ -90,11 +94,11 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
             result = (Map) result.get(identifier);
 
             identifier = identifiers[i];
-            dimension = getIdentifiers(getDimensions()[i]);
+            dimension = getDimension(getDimensionKeys()[i]);
         }
 
         if (!result.containsKey(identifier)) {
-           dimension.add(identifier);
+            dimension.add(identifier);
         }
 
         result.put(identifier, value);
@@ -117,7 +121,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
     private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimensionKey[] identifiers) {
         HashMatrixDimension[] dimensions = new HashMatrixDimension[identifiers.length];
 
-        for (int i=0; i<identifiers.length; i++) {
+        for (int i = 0; i < identifiers.length; i++) {
             dimensions[i] = new HashMatrixDimension(identifiers[i]);
         }
 

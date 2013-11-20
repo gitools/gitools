@@ -21,10 +21,9 @@
  */
 package org.gitools.ui.commands;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 
 public abstract class AbstractCommand implements Command, JobRunnable, Runnable {
@@ -35,7 +34,7 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
     private int exitStatus = -1;
 
     @Override
-    public void run(@NotNull IProgressMonitor monitor) {
+    public void run(IProgressMonitor monitor) {
         try {
             execute(monitor);
             monitor.end();

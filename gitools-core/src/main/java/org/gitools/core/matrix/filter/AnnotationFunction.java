@@ -22,7 +22,7 @@
 package org.gitools.core.matrix.filter;
 
 import com.google.common.base.Function;
-import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.api.matrix.IAnnotations;
 
 public class AnnotationFunction implements Function<String, String> {
 

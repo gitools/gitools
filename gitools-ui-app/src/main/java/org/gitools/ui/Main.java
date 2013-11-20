@@ -23,7 +23,7 @@ package org.gitools.ui;
 
 import com.alee.laf.WebLookAndFeel;
 import com.apple.eawt.Application;
-import org.gitools.core.persistence.PersistenceInitialization;
+import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
@@ -33,7 +33,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.os.OperatingSystemUtils;
 import org.gitools.ui.settings.Settings;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -42,7 +41,7 @@ import java.util.logging.LogManager;
 
 public class Main {
 
-    public static void main(@NotNull String[] args) {
+    public static void main(String[] args) {
 
         CommandExecutor cmdExecutor = new CommandExecutor();
         if (args.length > 0) {

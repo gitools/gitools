@@ -21,11 +21,10 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.SortDirection;
-import org.gitools.utils.aggregation.IAggregator;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.SortDirection;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -51,9 +50,9 @@ public class ValueSortDialog extends javax.swing.JDialog {
             super(values);
         }
 
-        @NotNull
+
         @Override
-        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -166,7 +165,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
         }, new String[]{"Attribute", "Condition", "Value"}) {
-            @NotNull
+
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
             public Class getColumnClass(int columnIndex) {

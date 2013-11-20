@@ -22,6 +22,8 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
 import java.util.Iterator;
 
@@ -94,9 +96,8 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
 
         AbstractMatrixDimension strings = (AbstractMatrixDimension) o;
 
-        if (!id.equals(strings.id)) return false;
+        return id.equals(strings.id);
 
-        return true;
     }
 
     @Override

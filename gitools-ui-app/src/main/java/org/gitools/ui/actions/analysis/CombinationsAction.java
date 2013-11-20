@@ -22,56 +22,38 @@
 package org.gitools.ui.actions.analysis;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.combination.CombinationAnalysis;
-import org.gitools.core.analysis.combination.CombinationCommand;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.combination.CombinationCommand;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class CombinationsAction extends BaseAction {
+public class CombinationsAction extends HeatmapAction {
 
     public CombinationsAction() {
         super("Combinations");
-        setDesc("Combinations");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        final IEditor currentEditor = editorPanel.getSelectedEditor();
-
-        IMatrixView matrixView = ActionUtils.getMatrixView();
-
-        if (matrixView == null) {
-            return;
-        }
+        IMatrixView matrixView = getHeatmap();
 
         final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
         wizard.setExamplePageEnabled(false);
@@ -107,7 +89,7 @@ public class CombinationsAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     cmd.run(monitor);
 
@@ -117,13 +99,13 @@ public class CombinationsAction extends BaseAction {
 
                     final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
 
-                    String ext = FilenameUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(getSelectedEditor().getName());
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals("")) {
                         editor.setName(analysis.getTitle() + "." + CombinationAnalysisFormat.EXTENSION);
                     } else {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", CombinationAnalysisFormat.EXTENSION));
+                        editor.setName(getEditorsPanel().deriveName(getSelectedEditor().getName(), ext, "", CombinationAnalysisFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable() {

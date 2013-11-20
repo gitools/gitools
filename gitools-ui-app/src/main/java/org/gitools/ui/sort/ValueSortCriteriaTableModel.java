@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.SortDirection;
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import javax.swing.event.TableModelEvent;

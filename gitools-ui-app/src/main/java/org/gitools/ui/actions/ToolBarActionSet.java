@@ -27,9 +27,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public final class ToolBarActionSet extends ActionSet {
 
     private static final long serialVersionUID = 6924230823891805344L;

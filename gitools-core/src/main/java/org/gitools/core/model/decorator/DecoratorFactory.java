@@ -21,15 +21,8 @@
  */
 package org.gitools.core.model.decorator;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.decorator.impl.BinaryDecorator;
-import org.gitools.core.model.decorator.impl.CategoricalDecorator;
-import org.gitools.core.model.decorator.impl.CorrelationDecorator;
-import org.gitools.core.model.decorator.impl.LinearDecorator;
-import org.gitools.core.model.decorator.impl.PValueDecorator;
-import org.gitools.core.model.decorator.impl.ZScoreDecorator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.core.model.decorator.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +46,7 @@ public class DecoratorFactory {
         descriptors.add(new DecoratorDescriptor(DecoratorNames.CATEGORICAL, CategoricalDecorator.class));
     }
 
-    @Nullable
+
     public static <D extends Decorator> D create(Class<D> decoratorClass) {
         D decorator;
         try {
@@ -65,7 +58,7 @@ public class DecoratorFactory {
         return decorator;
     }
 
-    @Nullable
+
     public static DecoratorDescriptor getDescriptor(Class<? extends Decorator> decoratorClass) {
 
         for (DecoratorDescriptor desc : descriptors)
@@ -76,7 +69,7 @@ public class DecoratorFactory {
         return null;
     }
 
-    @NotNull
+
     public static List<DecoratorDescriptor> getDescriptors() {
         return descriptors;
     }

@@ -27,7 +27,6 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -108,7 +107,7 @@ public class CorrelationFromFilePage extends AbstractWizardPage {
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(replaceEmptyValuesCheck).addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(applyToColumnsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(applyToRowsRb).addContainerGap(161, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;

@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.datafilters;
 
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.matrix.ValueTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +31,7 @@ public class DoubleTranslator implements ValueTranslator<Double> {
 
     // Singleton pattern
     private static final DoubleTranslator INSTANCE = new DoubleTranslator();
+
     public static DoubleTranslator get() {
         return INSTANCE;
     }
@@ -38,14 +39,14 @@ public class DoubleTranslator implements ValueTranslator<Double> {
     private DoubleTranslator() {
     }
 
-    @Nullable
+
     @Override
     public Double stringToValue(String str) {
         return stringToValue(str, true);
     }
 
-    @Nullable
-    public Double stringToValue(@Nullable String str, boolean allowNull) {
+
+    public Double stringToValue(String str, boolean allowNull) {
         if (allowNull) {
             if (str == null || str.isEmpty() || str.equals("-")) {
                 return null;
@@ -56,13 +57,13 @@ public class DoubleTranslator implements ValueTranslator<Double> {
         try {
             value = Double.parseDouble(str);
         } catch (NumberFormatException e) {
-            log.error("Malformed number '" + str +"'");
+            log.error("Malformed number '" + str + "'");
         }
         return value;
     }
 
     @Override
-    public String valueToString(@Nullable Double value) {
+    public String valueToString(Double value) {
         if (value == null) {
             return "";
         }

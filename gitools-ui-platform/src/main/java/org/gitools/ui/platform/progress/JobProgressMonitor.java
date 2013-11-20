@@ -21,9 +21,8 @@
  */
 package org.gitools.ui.platform.progress;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.PrintStream;
@@ -125,7 +124,7 @@ public class JobProgressMonitor extends StreamProgressMonitor {
         super.print(text);
     }
 
-    @NotNull
+
     @Override
     protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
         return new JobProgressMonitor(parentMonitor, dlg, out, verbose, debug);

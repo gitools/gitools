@@ -22,7 +22,6 @@
 package org.gitools.ui.analysis.wizard;
 
 import org.gitools.core.model.Property;
-import org.jetbrains.annotations.NotNull;
 
 class AttributeDialog extends javax.swing.JDialog {
     /**
@@ -44,12 +43,12 @@ class AttributeDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void setAttribute(@NotNull Property attr) {
+    public void setAttribute(Property attr) {
         name.setText(attr.getName());
         value.setText(attr.getValue());
     }
 
-    @NotNull
+
     public Property getAttribute() {
         return new Property(name.getText(), value.getText());
     }

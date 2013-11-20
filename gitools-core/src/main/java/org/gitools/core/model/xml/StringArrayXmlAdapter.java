@@ -21,8 +21,6 @@
  */
 package org.gitools.core.model.xml;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +29,9 @@ public class StringArrayXmlAdapter extends XmlAdapter<String, List<String>> {
 
     private static final String elemSeparator = ",";
 
-    @NotNull
+
     @Override
-    public String marshal(@NotNull List<String> v) throws Exception {
+    public String marshal(List<String> v) throws Exception {
 
         StringBuilder output = new StringBuilder();
 
@@ -50,9 +48,9 @@ public class StringArrayXmlAdapter extends XmlAdapter<String, List<String>> {
         return output.toString();
     }
 
-    @NotNull
+
     @Override
-    public List<String> unmarshal(@NotNull String v) throws Exception {
+    public List<String> unmarshal(String v) throws Exception {
 
         String values[] = v.split(elemSeparator);
         List<String> result = new ArrayList<>(values.length);

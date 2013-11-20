@@ -22,9 +22,9 @@
 package org.gitools.core.matrix.model.matrix;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 
 import java.util.AbstractList;
@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
@@ -69,7 +69,7 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
     @Override
     public IMatrixDimension getIdentifiers() {
-        return getIdentifiers(ROWS);
+        return getDimension(ROWS);
     }
 
     @Override

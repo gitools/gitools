@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.core.matrix.model.IMatrixFunction;
+import org.gitools.api.matrix.position.IMatrixFunction;
 
 import java.util.Iterator;
 

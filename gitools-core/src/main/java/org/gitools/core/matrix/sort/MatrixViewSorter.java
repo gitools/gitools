@@ -22,13 +22,17 @@
 package org.gitools.core.matrix.sort;
 
 import com.google.common.collect.Lists;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.PatternFunction;
-import org.gitools.core.matrix.model.*;
 import org.gitools.core.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.core.matrix.sort.mutualexclusion.MutualExclusionComparator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import java.beans.PropertyChangeListener;
@@ -66,7 +70,7 @@ public abstract class MatrixViewSorter {
         }
 
         IMatrixPosition position = heatmap.newPosition();
-        for (String row : Lists.reverse( Lists.newArrayList( rows ))) {
+        for (String row : Lists.reverse(Lists.newArrayList(rows))) {
             monitor.worked(1);
 
             if (monitor.isCancelled()) {
@@ -114,7 +118,7 @@ public abstract class MatrixViewSorter {
     ) {
 
 
-        sortDimension.sort( new AggregationSortByValueComparator(
+        sortDimension.sort(new AggregationSortByValueComparator(
                 matrixView,
                 sortDimension,
                 sortSelection,
@@ -129,16 +133,16 @@ public abstract class MatrixViewSorter {
     public static void sortByLabel(Heatmap heatmap, boolean sortRows, String rowsPattern, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, String colsPattern, SortDirection colsDirection, boolean colsNumeric) {
 
         if (sortRows) {
-            sortByLabel( heatmap.getRows(), rowsDirection, rowsPattern, rowsNumeric );
+            sortByLabel(heatmap.getRows(), rowsDirection, rowsPattern, rowsNumeric);
         }
 
         if (sortCols) {
-            sortByLabel( heatmap.getColumns(), colsDirection, colsPattern, colsNumeric );
+            sortByLabel(heatmap.getColumns(), colsDirection, colsPattern, colsNumeric);
         }
     }
 
-    private static void sortByLabel( HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric ) {
-        sortDimension.sort( new SortByLabelComparator( direction, new PatternFunction(pattern, sortDimension.getAnnotations()), asNumeric ));
+    private static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
+        sortDimension.sort(new SortByLabelComparator(direction, new PatternFunction(pattern, sortDimension.getAnnotations()), asNumeric));
     }
 
 }

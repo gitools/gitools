@@ -35,8 +35,6 @@ import java.awt.event.ActionListener;
 
 public class AboutDialog extends JDialog {
 
-    private static final long serialVersionUID = -5869809986725283792L;
-
     private final String appName;
     private final String appVersion;
     private final String javaRuntimeVersion;
@@ -47,7 +45,7 @@ public class AboutDialog extends JDialog {
 
         appName = AppFrame.getAppName();
         appVersion = AppFrame.getAppVersion();
-        javaRuntimeVersion = System.getProperty("java.vm.name") + " " +System.getProperty("java.version");
+        javaRuntimeVersion = System.getProperty("java.vm.name") + " " + System.getProperty("java.version");
         javaVendor = System.getProperty("java.vm.vendor");
 
         setModal(true);

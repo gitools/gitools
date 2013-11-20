@@ -22,10 +22,10 @@
 package org.gitools.ui.sort;
 
 import com.google.common.base.Function;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.PatternFunction;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -34,7 +34,6 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -47,8 +46,8 @@ import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MutualExclusionSortPage extends AbstractWizardPage {
 
@@ -131,7 +130,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         colsPattBtn.setEnabled(cs);
     }
 
-    @NotNull
+
     String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
@@ -171,7 +170,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         colsPattFld.setText(page.getPatternTitle());
     }
 
-    @NotNull
+
     public MatrixDimensionKey getDimension() {
         if (rowsRb.isSelected()) {
             return ROWS;
@@ -199,24 +198,24 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         }
     }
 
-    @NotNull
+
     private ArrayList<String> getSelected() {
 
-        HeatmapDimension dimension = hm.getIdentifiers(getDimension());
+        HeatmapDimension dimension = hm.getDimension(getDimension());
         Function<String, String> patternFunction = new PatternFunction(getPattern(), dimension.getAnnotations());
 
         return newArrayList(transform(dimension.getSelected(), patternFunction));
     }
 
-    @NotNull
+
     private ArrayList<String> getUnselected() {
-        HeatmapDimension dimension = hm.getIdentifiers(getDimension());
+        HeatmapDimension dimension = hm.getDimension(getDimension());
         Function<String, String> patternFunction = new PatternFunction(getPattern(), dimension.getAnnotations());
         Iterable<String> unselected = filter(dimension, not(in(dimension.getSelected())));
         return newArrayList(transform(unselected, patternFunction));
     }
 
-    @NotNull
+
     public Set<String> getValues() {
         Set<String> values = new HashSet<>();
         StringReader sr = new StringReader(patterns.getText());
@@ -237,7 +236,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         return values;
     }
 
-    void setValues(@NotNull List<String> values) {
+    void setValues(List<String> values) {
         Iterator<String> it = values.iterator();
         while (it.hasNext()) {
             patterns.append(it.next() + "\n");

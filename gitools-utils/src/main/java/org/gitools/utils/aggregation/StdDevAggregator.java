@@ -22,7 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 import static cern.jet.stat.Descriptive.sampleVariance;
 import static cern.jet.stat.Descriptive.standardDeviation;
@@ -38,7 +38,7 @@ public class StdDevAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
 
         double sum = aggregate(data, Functions.plus);
 
@@ -52,7 +52,7 @@ public class StdDevAggregator extends AbstractAggregator {
         return standardDeviation(variance);
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Standard deviation";

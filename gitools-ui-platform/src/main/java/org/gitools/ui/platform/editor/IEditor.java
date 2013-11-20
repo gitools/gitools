@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.platform.editor;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.view.IView;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 public interface IEditor extends IView {
 

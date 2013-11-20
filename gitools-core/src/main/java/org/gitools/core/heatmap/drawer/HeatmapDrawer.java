@@ -24,7 +24,6 @@ package org.gitools.core.heatmap.drawer;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.core.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -32,11 +31,11 @@ import java.awt.geom.AffineTransform;
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
     private final HeatmapBodyDrawer body;
-    @NotNull
+
     private final HeatmapHeaderDrawer rowsHeader;
-    @NotNull
+
     private final HeatmapHeaderDrawer colsHeader;
-    @NotNull
+
     private final HeatmapHeaderIntersectionDrawer headerIntersection;
 
     public HeatmapDrawer(Heatmap heatmap) {
@@ -49,7 +48,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
     }
 
     @Override
-    public void draw(@NotNull Graphics2D g, Rectangle box, Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
         Dimension bodySize = body.getSize();
         Dimension rowsSize = rowsHeader.getSize();
         Dimension columnsSize = colsHeader.getSize();
@@ -78,7 +77,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
     }
 
-    @NotNull
+
     @Override
     public Dimension getSize() {
         Dimension bodySize = body.getSize();
@@ -87,13 +86,13 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         return new Dimension(bodySize.width + rowsSize.width, bodySize.height + columnsSize.height);
     }
 
-    @NotNull
+
     @Override
     public HeatmapPosition getPosition(Point p) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @NotNull
+
     @Override
     public Point getPoint(HeatmapPosition p) {
         throw new UnsupportedOperationException("Not supported yet.");

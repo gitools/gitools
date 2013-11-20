@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.analysis.wizard;
 
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -32,8 +32,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -102,7 +100,7 @@ public class ModulesPage extends AbstractWizardPage {
         maxSizeValueCb.addActionListener(al);
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -233,7 +231,7 @@ public class ModulesPage extends AbstractWizardPage {
     private javax.swing.JComboBox minSizeValueCb;
     // End of variables declaration//GEN-END:variables
 
-    @NotNull
+
     FileFormat getFileFormat() {
         return (FileFormat) fileFormatCb.getSelectedItem();
     }
@@ -242,13 +240,13 @@ public class ModulesPage extends AbstractWizardPage {
         return ((FileFormat) fileFormatCb.getSelectedItem()).getFormat(IModuleMap.class);
     }
 
-    @Nullable
+
     public File getSelectedFile() {
         String path = filePath.getText();
         return path.isEmpty() ? null : new File(path);
     }
 
-    public void setSelectedFile(@NotNull File file) {
+    public void setSelectedFile(File file) {
         String fileName = file.getName();
         for (FileFormat ff : formats) {
             if (ff.checkExtension(fileName)) {

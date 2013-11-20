@@ -21,20 +21,17 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.core.exporter.TextMatrixViewExporter;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.dialog.attributes.AttributesSelectionDialog;
+import org.gitools.ui.export.TextMatrixViewExporter;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -42,32 +39,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class ExportTableAction extends BaseAction {
+public class ExportTableAction extends HeatmapAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportTableAction() {
         super("Export table ...");
-
-        setDesc("Export a table");
         setMnemonic(KeyEvent.VK_A);
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null) {
-            return;
-        }
+        final IMatrixView matrixView = getHeatmap();
 
         final IMatrixLayers properties = matrixView.getLayers();
         final String[] attributeNames = new String[properties.size()];
@@ -94,7 +78,7 @@ public class ExportTableAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting table ...", 1);
                     monitor.info("File: " + file.getName());

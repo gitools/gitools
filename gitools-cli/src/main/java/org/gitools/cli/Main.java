@@ -21,12 +21,11 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.persistence.PersistenceInitialization;
+import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.utils.tools.ToolManager;
 import org.gitools.utils.tools.ToolSet;
 import org.gitools.utils.tools.XmlToolSetResource;
 import org.gitools.utils.tools.exception.ToolException;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.InputStreamReader;
@@ -58,7 +57,7 @@ public class Main {
         System.exit(0);
     }
 
-    private static void printUsage(PrintStream out, @NotNull CmdLineParser parser, String toolName) {
+    private static void printUsage(PrintStream out, CmdLineParser parser, String toolName) {
         System.err.println("Usage: " + toolName + " [options]");
         parser.printUsage(System.err);
         System.err.println();

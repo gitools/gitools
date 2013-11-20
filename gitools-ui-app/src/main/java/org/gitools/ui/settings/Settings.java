@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.settings;
 
-import org.jetbrains.annotations.Nullable;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -51,10 +49,10 @@ public class Settings {
 
     private static final String configFile = CONFIG_PATH + File.separator + configFileName;
 
-    @Nullable
+
     private static Settings instance;
 
-    @Nullable
+
     public static Settings getDefault() {
         if (instance == null) {
             instance = load();
@@ -62,7 +60,7 @@ public class Settings {
         return instance;
     }
 
-    @Nullable
+
     private static Settings load() {
         Settings settings = null;
         try {

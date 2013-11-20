@@ -21,8 +21,8 @@
  */
 package org.gitools.core.model.decorator.impl;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.ColorScalePoint;

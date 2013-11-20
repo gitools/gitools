@@ -21,20 +21,19 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.core.modules.importer.ModulesImporter;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.datasources.modules.importer.ModulesImporter;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.jetbrains.annotations.NotNull;
 
 public class ModulesImportWizard extends AbstractWizard {
 
-    @NotNull
+
     private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.MODULES_2C_MAP, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED,};
 
     private final ModulesImporter importer;
@@ -85,8 +84,8 @@ public class ModulesImportWizard extends AbstractWizard {
         }
     }
 
-    @NotNull
-    private String automaticFileName(@NotNull ModulesImporter importer) {
+
+    private String automaticFileName(ModulesImporter importer) {
         StringBuilder sb = new StringBuilder();
         sb.append(importer.getOrganism().getName().replace(' ', '_'));
         sb.append("__");

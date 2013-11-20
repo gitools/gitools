@@ -21,18 +21,18 @@
  */
 package org.gitools.cli.htest;
 
-import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.core.analysis.htest.oncozet.OncodriveCommand;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveCommand;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.core.model.IModuleMap;
 import org.gitools.core.model.ToolConfig;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.utils.threads.ThreadManager;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.kohsuke.args4j.Option;

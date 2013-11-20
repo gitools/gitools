@@ -23,7 +23,6 @@ package org.gitools.datasources.biomart;
 
 import org.gitools.datasources.biomart.restful.BiomartRestfulService;
 import org.gitools.datasources.biomart.settings.BiomartSource;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @noinspection ALL
@@ -49,7 +48,7 @@ public class BiomartServiceFactory {
      * @param source
      * @return biomart service
      */
-    @NotNull
+
     public static BiomartService createService(BiomartSource source) throws BiomartServiceException {
         BiomartService bs = new BiomartRestfulService(source);
         return bs;

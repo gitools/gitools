@@ -25,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -43,13 +42,13 @@ public class EditorTabComponent extends JPanel {
     private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
     private final EditorsPanel editorPanel;
-    @NotNull
+
     private final AbstractEditor editor;
 
-    @NotNull
+
     private final JLabel label;
 
-    public EditorTabComponent(EditorsPanel editorPanel, @NotNull AbstractEditor editor) {
+    public EditorTabComponent(EditorsPanel editorPanel, AbstractEditor editor) {
 
         this.editorPanel = editorPanel;
         this.editor = editor;
@@ -131,7 +130,7 @@ public class EditorTabComponent extends JPanel {
         label.setToolTipText(toolTip);
     }
 
-    @NotNull
+
     public AbstractEditor getEditor() {
         return editor;
     }
@@ -170,7 +169,7 @@ public class EditorTabComponent extends JPanel {
 
         //paint the cross
         @Override
-        protected void paintComponent(@NotNull Graphics g) {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
             //shift the image for pressed buttons
@@ -192,7 +191,7 @@ public class EditorTabComponent extends JPanel {
     private final static MouseListener buttonMouseListener = new MouseAdapter() {
 
         @Override
-        public void mouseEntered(@NotNull MouseEvent e) {
+        public void mouseEntered(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;
@@ -201,7 +200,7 @@ public class EditorTabComponent extends JPanel {
         }
 
         @Override
-        public void mouseExited(@NotNull MouseEvent e) {
+        public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
                 AbstractButton button = (AbstractButton) component;

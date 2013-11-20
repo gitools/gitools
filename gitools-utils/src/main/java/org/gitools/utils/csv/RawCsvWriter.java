@@ -68,7 +68,7 @@ public class RawCsvWriter {
         out.println();
     }
 
-   public void writePropertyList(String name, String[] values) {
+    public void writePropertyList(String name, String[] values) {
         writePropertyList(name, Arrays.asList(values));
     }
 

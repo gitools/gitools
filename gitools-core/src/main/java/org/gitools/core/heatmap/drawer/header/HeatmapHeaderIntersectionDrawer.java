@@ -31,7 +31,6 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;
@@ -51,7 +50,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     /* Map that contains the header that are responsible for drawing the
     * legend of a header from the other dimension (row,cols) as for example:
     * HeatmapColoredLabelsHeader --> draws for --> HeatmapDataHeatmapHeader */
-    @NotNull
+
     private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
 
     static {
@@ -70,7 +69,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
         updateDrawers(null);
     }
 
-    private boolean isCompatiblePair(@NotNull HeatmapHeader thisHeader, @NotNull HeatmapHeader oppositeHeader) {
+    private boolean isCompatiblePair(HeatmapHeader thisHeader, HeatmapHeader oppositeHeader) {
         boolean answer = false;
         if (headerRelationsMap.get(thisHeader.getClass()) == oppositeHeader.getClass()) {
             String pattern1 = thisHeader.getAnnotationPattern();
@@ -135,14 +134,13 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     }
 
 
-    @NotNull
     @Override
     public Dimension getSize() {
         return new Dimension(rowDrawer.getSize().width, colDrawer.getSize().height);
     }
 
     @Override
-    public void draw(Graphics2D g, @NotNull Rectangle box, Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         // Clear background
         g.setColor(Color.WHITE);
@@ -160,20 +158,20 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 
     }
 
-    @NotNull
+
     @Override
     public HeatmapPosition getPosition(Point p) {
         return new HeatmapPosition(getHeatmap(), colDrawer.getSize().width, 0);
     }
 
-    @NotNull
+
     @Override
     public Point getPoint(HeatmapPosition p) {
         return new Point(0, 0);
     }
 
 
-    void drawHeaderIntersection(Graphics2D g, @NotNull Rectangle headerIntersection) {
+    void drawHeaderIntersection(Graphics2D g, Rectangle headerIntersection) {
 
         getHeaderDrawers();
 

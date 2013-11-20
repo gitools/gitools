@@ -23,19 +23,15 @@ package org.gitools.ui.actions.file;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.commands.AbstractCommand;
-import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,7 +46,7 @@ import java.util.Set;
  * of the current selected row identifiers. The user must have IGV running and a
  * track with the row identifiers loaded.
  */
-public class OpenIntegrativeGenomicViewerAction extends BaseAction {
+public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
 
     /**
      * Instantiates a new Open integrative genomic viewer action.
@@ -74,15 +70,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AbstractEditor editor = ActionUtils.getSelectedEditor();
-
-        // No heatmap editor
-        if (!(editor instanceof HeatmapEditor)) {
-            showMessage("This feature only works on a heatmap editor");
-            return;
-        }
-
-        Heatmap heatmap = (Heatmap) editor.getModel();
+        Heatmap heatmap = getHeatmap();
 
         // No row selected
         Set<String> rows = heatmap.getRows().getSelected();
@@ -93,11 +81,11 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
 
         // If there are no rows selected use the row of the current cell selection
         if (rows.size() == 0) {
-            rows = Sets.newHashSet( heatmap.getRows().getFocus() );
+            rows = Sets.newHashSet(heatmap.getRows().getFocus());
         }
 
         // Execute the command
-        JobRunnable loadFile = new IgvCommand( StringUtils.join( rows, " ") );
+        JobRunnable loadFile = new IgvCommand(StringUtils.join(rows, " "));
         JobThread.execute(AppFrame.get(), loadFile);
         AppFrame.get().setStatusText("Done.");
 
@@ -112,7 +100,7 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
         }
 
         @Override
-        public void execute(@NotNull IProgressMonitor monitor) {
+        public void execute(IProgressMonitor monitor) {
 
             Socket socket = null;
             try {
@@ -160,10 +148,9 @@ public class OpenIntegrativeGenomicViewerAction extends BaseAction {
                 }
             }
             setExitStatus(0);
-            return;
         }
 
-        private void waitServerResponse(@NotNull InputStream in, @NotNull IProgressMonitor monitor) throws UnsupportedOperationException, IOException {
+        private void waitServerResponse(InputStream in, IProgressMonitor monitor) throws UnsupportedOperationException, IOException {
             while (in.available() == 0) {
                 try {
                     Thread.sleep(1000);

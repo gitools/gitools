@@ -21,6 +21,8 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.model.Resource;
 
 import java.util.HashMap;
@@ -43,10 +45,10 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
         this.dimensions = new MatrixDimensionKey[identifiers.length];
         this.identifiers = new HashMap<>(identifiers.length);
 
-        for (int i=0; i < identifiers.length; i++) {
+        for (int i = 0; i < identifiers.length; i++) {
             MD identifier = identifiers[i];
             this.dimensions[i] = identifier.getId();
-            this.identifiers.put( identifier.getId(), identifier);
+            this.identifiers.put(identifier.getId(), identifier);
         }
     }
 
@@ -56,12 +58,12 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
     }
 
     @Override
-    public MD getIdentifiers(MatrixDimensionKey dimension) {
+    public MD getDimension(MatrixDimensionKey dimension) {
         return identifiers.get(dimension);
     }
 
     @Override
-    public MatrixDimensionKey[] getDimensions() {
+    public MatrixDimensionKey[] getDimensionKeys() {
         return dimensions;
     }
 
@@ -77,12 +79,12 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
 
     @Override
     public MD getRows() {
-        return getIdentifiers(dimensions[0]);
+        return getDimension(dimensions[0]);
     }
 
     @Override
     public MD getColumns() {
-        return getIdentifiers(dimensions[1]);
+        return getDimension(dimensions[1]);
     }
 
     @Override

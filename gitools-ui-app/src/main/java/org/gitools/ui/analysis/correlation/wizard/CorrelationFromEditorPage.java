@@ -26,7 +26,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -34,8 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CorrelationFromEditorPage extends AbstractWizardPage {
-
-    private final String[] attributeNames;
 
     /**
      * Creates new form CorrelationPage
@@ -50,8 +47,6 @@ public class CorrelationFromEditorPage extends AbstractWizardPage {
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
         setComplete(true);
-
-        this.attributeNames = attributeNames;
 
         attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
 
@@ -120,7 +115,7 @@ public class CorrelationFromEditorPage extends AbstractWizardPage {
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(attributeCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(replaceEmptyValuesCheck).addComponent(replaceValueField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(applyToColumnsRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(applyToRowsRb).addContainerGap(116, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;

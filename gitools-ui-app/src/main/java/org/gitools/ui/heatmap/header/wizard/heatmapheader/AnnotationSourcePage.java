@@ -21,20 +21,19 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.annotations.TsvAnnotationMatrixFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.annotations.TsvAnnotationMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.AnnotationOption;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -99,7 +98,7 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         super.updateModel();
     }
 
-    @NotNull
+
     public String getSelectedPattern() {
 
         StringBuilder sb = new StringBuilder();
@@ -115,7 +114,7 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         return sb.toString();
     }
 
-    @NotNull
+
     public String getSelectedAnnotation() {
         if (annList.getSelectedIndex() != -1) {
             return annotationOptions.get(annList.getSelectedIndex()).getKey();
@@ -196,7 +195,6 @@ public class AnnotationSourcePage extends AbstractWizardPage {
         if (complete) {
             int oldvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
             selectedIndices = annList.getSelectedIndices();
-            int newvalue = selectedIndices.length > 0 ? selectedIndices[0] : -1;
             if (oldvalue != selectedIndices[0]) {
                 setMessage(MessageStatus.INFO, this.infoMessage);
             }

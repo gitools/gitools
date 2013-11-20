@@ -27,7 +27,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 abstract class AbstractAggregator implements IAggregator {
 
@@ -37,12 +37,12 @@ abstract class AbstractAggregator implements IAggregator {
                 Doubles.toArray(
                         Lists.newArrayList(
                                 Iterables.filter(data, Predicates.notNull())
-                    )
+                        )
                 )
         );
     }
 
-    double aggregate(double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc) {
+    double aggregate(double[] data, DoubleDoubleFunction reduceFunc, DoubleFunction mapFunc) {
 
         // Look for the first non-NaN value
         int first = 0;
@@ -93,8 +93,8 @@ abstract class AbstractAggregator implements IAggregator {
         }
     };
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc) {
-         return aggregate(data, reduceFunc, NO_MAPPING);
+    double aggregate(double[] data, DoubleDoubleFunction reduceFunc) {
+        return aggregate(data, reduceFunc, NO_MAPPING);
     }
 
 

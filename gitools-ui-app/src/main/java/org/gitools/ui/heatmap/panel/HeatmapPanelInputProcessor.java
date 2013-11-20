@@ -21,12 +21,11 @@
  */
 package org.gitools.ui.heatmap.panel;
 
+import org.gitools.api.matrix.view.Direction;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.Direction;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -35,7 +34,6 @@ import java.util.*;
 public class HeatmapPanelInputProcessor {
 
 
-    @NotNull
     private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
 
     private IMatrixView mv;
@@ -172,7 +170,7 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void addToSelected(int start, int end, IMatrixViewDimension dim) {
-        addToSelected( dim.toList().subList( start, end+1 ), dim );
+        addToSelected(dim.toList().subList(start, end + 1), dim);
     }
 
     public void addToSelected(Collection<String> toAdd, IMatrixViewDimension dim) {
@@ -230,7 +228,7 @@ public class HeatmapPanelInputProcessor {
 
     }
 
-    public void moveSelection(@NotNull KeyEvent e) {
+    public void moveSelection(KeyEvent e) {
         int row = getLead(mv.getRows());
         int col = getLead(mv.getColumns());
         int shift = 0;

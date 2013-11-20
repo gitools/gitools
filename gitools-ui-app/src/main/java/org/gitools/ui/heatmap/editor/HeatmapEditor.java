@@ -27,16 +27,16 @@ import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
-import org.gitools.utils.MemoryUtils;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
@@ -52,8 +52,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.utils.MemoryUtils;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -80,7 +79,7 @@ public class HeatmapEditor extends AbstractEditor {
     private int lastMouseCol = -1;
     private Timer timer;
 
-    public HeatmapEditor(@NotNull Heatmap heatmap) {
+    public HeatmapEditor(Heatmap heatmap) {
 
         IResourceLocator locator = heatmap.getLocator();
         if (locator != null && locator.getURL().getProtocol().equals("file")) {
@@ -134,7 +133,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
 
-    private void createComponents(@NotNull JComponent container) {
+    private void createComponents(JComponent container) {
 
         WebAccordion leftPanel = new WebAccordion(WebAccordionStyle.accordionStyle);
         leftPanel.setMultiplySelectionAllowed(false);
@@ -246,7 +245,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     @Override
-    public void doSave(@NotNull IProgressMonitor monitor) {
+    public void doSave(IProgressMonitor monitor) {
 
         File file = getFile();
         if (file == null) {
@@ -286,7 +285,7 @@ public class HeatmapEditor extends AbstractEditor {
 
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
                         doSave(monitor);
                     }
                 });

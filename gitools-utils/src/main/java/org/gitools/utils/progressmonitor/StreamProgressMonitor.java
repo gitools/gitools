@@ -22,7 +22,7 @@
 package org.gitools.utils.progressmonitor;
 
 import cern.colt.Timer;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IProgressMonitor;
 
 import java.io.PrintStream;
 
@@ -97,7 +97,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         print(bar.toString());
     }
 
-    @NotNull
+
     @Override
     public IProgressMonitor subtask() {
         IProgressMonitor subtask = createSubtaskMonitor(this, out, verbose, debug);
@@ -106,7 +106,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         return subtask;
     }
 
-    @NotNull
+
     protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
 
         return new StreamProgressMonitor(parentMonitor, out, verbose, debug);
@@ -139,7 +139,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     }
 
     @Override
-    public void exception(@NotNull Throwable cause) {
+    public void exception(Throwable cause) {
         super.exception(cause);
 
         print("\n\nEXCEPTION: " + cause.getLocalizedMessage());
@@ -168,7 +168,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         out.print(text);
     }
 
-    @NotNull
+
     private String tabbulate(int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++)

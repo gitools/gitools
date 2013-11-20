@@ -21,12 +21,11 @@
  */
 package org.gitools.utils.datafilters;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.matrix.ValueTranslator;
 
 public class IntegerTranslator implements ValueTranslator<Integer> {
 
-    @Nullable
+
     @Override
     public Integer stringToValue(String str) {
         Integer value = null;
@@ -37,9 +36,9 @@ public class IntegerTranslator implements ValueTranslator<Integer> {
         return value;
     }
 
-    @NotNull
+
     @Override
-    public String valueToString(@Nullable Integer value) {
+    public String valueToString(Integer value) {
         return value != null ? value.toString() : "";
     }
 

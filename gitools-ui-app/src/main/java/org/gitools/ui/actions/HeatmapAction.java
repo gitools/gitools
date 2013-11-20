@@ -53,7 +53,7 @@ public abstract class HeatmapAction extends BaseAction {
         IEditor editor = getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap)) {
+        if (!(model instanceof Heatmap)) {
             throw new UnsupportedOperationException("This action is only valid on a heatmap editor");
         }
 

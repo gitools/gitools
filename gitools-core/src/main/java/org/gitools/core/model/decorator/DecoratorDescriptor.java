@@ -21,8 +21,6 @@
  */
 package org.gitools.core.model.decorator;
 
-import org.jetbrains.annotations.Nullable;
-
 public class DecoratorDescriptor {
 
     private String name;
@@ -42,7 +40,7 @@ public class DecoratorDescriptor {
     }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         } else if (!(obj instanceof DecoratorDescriptor)) {

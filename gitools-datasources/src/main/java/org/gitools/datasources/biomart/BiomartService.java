@@ -21,10 +21,10 @@
  */
 package org.gitools.datasources.biomart;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.restful.model.*;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.formats.FileFormat;
 
 import java.io.File;
 import java.io.InputStream;

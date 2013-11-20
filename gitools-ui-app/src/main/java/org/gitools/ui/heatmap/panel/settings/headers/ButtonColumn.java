@@ -169,7 +169,7 @@ public class ButtonColumn extends AbstractCellEditor
 //  Implement ActionListener interface
 //
     /*
-	 *	The button has been pressed. Stop editing and invoke the custom Action
+     *	The button has been pressed. Stop editing and invoke the custom Action
 	 */
     public void actionPerformed(ActionEvent e) {
         int row = table.convertRowIndexToModel(table.getEditingRow());

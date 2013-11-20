@@ -21,8 +21,8 @@
  */
 package org.gitools.core.matrix.filter;
 
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.core.matrix.model.IMatrixPredicate;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.position.IMatrixPredicate;
 
 public class NullPredicate<T> implements IMatrixPredicate<T> {
 

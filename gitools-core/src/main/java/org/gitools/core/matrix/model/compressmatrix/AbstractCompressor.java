@@ -21,16 +21,13 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
-import org.gitools.core.matrix.model.MatrixDimensionKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.zip.Deflater;
 
 public abstract class AbstractCompressor {
-    private static final Logger log = LoggerFactory.getLogger(AbstractCompressor.class);
     protected static final char SEPARATOR = '\t';
 
     private static final int MAX_LINES_TO_DICTIONARY = 5000000;
@@ -120,9 +117,8 @@ public abstract class AbstractCompressor {
         int length = compressDeflater(input);
 
         byte[] content = Arrays.copyOf(outBuffer, length);
-        CompressRow compressRow = new CompressRow(input.length, content);
+        return new CompressRow(input.length, content);
 
-        return compressRow;
     }
 
 

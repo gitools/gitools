@@ -21,27 +21,26 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.model.HashModuleMap;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MatrixToModulesConversion implements ConversionDelegate {
 
-    @NotNull
+
     @Override
     public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
 
         HashModuleMap moduleMap = new HashModuleMap();
 
         IMatrix matrix = (IMatrix) src;
-        IMatrixDimension rows = matrix.getIdentifiers(ROWS);
-        IMatrixDimension columns = matrix.getIdentifiers(COLUMNS);
+        IMatrixDimension rows = matrix.getDimension(ROWS);
+        IMatrixDimension columns = matrix.getDimension(COLUMNS);
 
         IMatrixLayer<Double> firstLayer = matrix.getLayers().iterator().next();
 

@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
@@ -58,8 +58,8 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
 
     private void groupSelected(IMatrixViewDimension dimension, String identifier) {
 
-        List<String> selected = newArrayList( dimension.getSelected());
-        List<String> notSelected = newArrayList( filter( dimension, not( in (dimension.getSelected()))));
+        List<String> selected = newArrayList(dimension.getSelected());
+        List<String> notSelected = newArrayList(filter(dimension, not(in(dimension.getSelected()))));
 
         int split = dimension.indexOf(identifier) - selected.indexOf(identifier);
 

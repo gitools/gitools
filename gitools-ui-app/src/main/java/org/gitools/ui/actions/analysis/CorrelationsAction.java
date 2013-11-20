@@ -22,14 +22,15 @@
 package org.gitools.ui.actions.analysis;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
-import org.gitools.core.analysis.correlation.CorrelationProcessor;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.correlation.CorrelationProcessor;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
@@ -37,8 +38,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,13 +72,13 @@ public class CorrelationsAction extends HeatmapAction {
         if (!analysis.isTransposeData()) {
             if (matrixView.getColumns().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getColumns().show( in(mv.getColumns().getSelected()));
+                mv.getColumns().show(in(mv.getColumns().getSelected()));
                 matrixView = mv;
             }
         } else {
             if (matrixView.getRows().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getRows().show( in(mv.getRows().getSelected()));
+                mv.getRows().show(in(mv.getRows().getSelected()));
                 matrixView = mv;
             }
         }
@@ -88,7 +87,7 @@ public class CorrelationsAction extends HeatmapAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     new CorrelationProcessor(analysis).run(monitor);
 

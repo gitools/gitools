@@ -21,15 +21,13 @@
  */
 package org.gitools.datasources.kegg.idmapper;
 
-import org.gitools.core.idmapper.MappingContext;
-import org.gitools.core.idmapper.MappingData;
-import org.gitools.core.idmapper.MappingException;
-import org.gitools.core.idmapper.MappingNode;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.datasources.idmapper.MappingContext;
+import org.gitools.datasources.idmapper.MappingData;
+import org.gitools.datasources.idmapper.MappingException;
+import org.gitools.datasources.idmapper.MappingNode;
 import org.gitools.datasources.kegg.service.KeggService;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -39,9 +37,9 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
         super("KeggPathways", false, true, service, organismId);
     }
 
-    @Nullable
+
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
+    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
         if (!KEGG_PATHWAYS.equals(src.getId())) {
             throw new MappingException("Unsupported mapping from " + src + " to " + dst);
         }

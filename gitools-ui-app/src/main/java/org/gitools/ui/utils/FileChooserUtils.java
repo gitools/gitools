@@ -28,8 +28,6 @@ import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileType;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.File;
@@ -45,17 +43,17 @@ public class FileChooserUtils {
     private final static String tif = "tif";
     private final static String png = "png";
 
-    @Nullable
+
     public static FileChoose selectFile(String title, int mode) {
         return selectFile(title, Settings.getDefault().getLastPath(), mode);
     }
 
-    @Nullable
+
     public static FileChoose selectFile(String title, String currentPath, int mode) {
         return selectFile(title, currentPath, mode, null);
     }
 
-    @Nullable
+
     public static FileChoose selectFile(String title, int mode, FileFormatFilter[] filters) {
         return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
     }
@@ -69,13 +67,12 @@ public class FileChooserUtils {
      * @param filters
      * @return {file, filter}
      */
-    public static FileChoose selectFile(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
+    public static FileChoose selectFile(String title, String currentPath, int mode, FileFormatFilter[] filters) {
         return selectFileVFS(title, currentPath, mode, filters);
     }
 
 
-    @Nullable
-    private static FileChoose selectFileVFS(String title, String currentPath, int mode, @Nullable FileFormatFilter[] filters) {
+    private static FileChoose selectFileVFS(String title, String currentPath, int mode, FileFormatFilter[] filters) {
         /*TODO
         try
         {
@@ -129,7 +126,7 @@ public class FileChooserUtils {
         return null;
     }
 
-    @Nullable
+
     public static File selectPath(String title, String currentPath) {
         return selectPathVFS(title, currentPath);
     }
@@ -160,20 +157,19 @@ public class FileChooserUtils {
 
         VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(AppFrame.get());
         if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
-            File file = fileChooser.getSelectedFile();
-            return file;
+            return fileChooser.getSelectedFile();
         }
 
         return null;
     }
 
-    @Nullable
-    public static String getExtension(@NotNull File file) {
+
+    public static String getExtension(File file) {
         return getExtension(file.getName());
     }
 
-    @Nullable
-    private static String getExtension(@NotNull String fileName) {
+
+    private static String getExtension(String fileName) {
         String ext = null;
         int i = fileName.lastIndexOf('.');
 

@@ -22,11 +22,11 @@
 package org.gitools.core.matrix.sort.mutualexclusion;
 
 import com.google.common.collect.Sets;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.matrix.model.AbstractMatrixFunction;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.utils.aggregation.IAggregator;
 
 import java.util.Set;
 
@@ -37,10 +37,6 @@ public class AggregationFunction extends AbstractMatrixFunction<Double, String> 
     private IAggregator aggregator;
     private IMatrixDimension aggregationDimension;
     private Set<String> aggregationIdentifiers;
-
-    public AggregationFunction(IMatrixLayer<Double> layer, IMatrixDimension aggregationDimension) {
-        this(layer, layer.getAggregator(), aggregationDimension);
-    }
 
     public AggregationFunction(IMatrixLayer<Double> layer, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers) {
         this(layer, layer.getAggregator(), aggregationDimension, aggregationIdentifiers);

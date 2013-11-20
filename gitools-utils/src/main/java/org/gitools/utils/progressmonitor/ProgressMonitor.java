@@ -21,13 +21,13 @@
  */
 package org.gitools.utils.progressmonitor;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IProgressMonitor;
 
 public class ProgressMonitor {
 
-    @NotNull
+
     private static final ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>() {
-        @NotNull
+
         @Override
         protected IProgressMonitor initialValue() {
             return new NullProgressMonitor();

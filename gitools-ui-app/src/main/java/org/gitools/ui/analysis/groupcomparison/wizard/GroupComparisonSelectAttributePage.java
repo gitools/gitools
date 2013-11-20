@@ -21,19 +21,17 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.core.stats.mtc.Bonferroni;
-import org.gitools.core.stats.mtc.MTC;
-import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.core.stats.test.Test;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.analysis.stats.mtc.Bonferroni;
+import org.gitools.analysis.stats.mtc.MTC;
+import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.analysis.stats.test.Test;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -130,7 +128,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         return mtcElement.getMTC();
     }
 
-    @NotNull
+
     public String getColumnGrouping() {
         return (String) columnGroupingCb.getSelectedItem();
     }
@@ -190,14 +188,14 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         // TODO add your handling code here:
     }//GEN-LAST:event_testCboxActionPerformed
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
     }
 
 
-    public void setAttributes(@Nullable IMatrixLayers attrs) {
+    public void setAttributes(IMatrixLayers attrs) {
 
         if (attrs != null) {
             AttrOption[] attrOptions = new AttrOption[attrs.size()];

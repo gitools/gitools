@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
@@ -31,13 +32,11 @@ import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
-import static org.gitools.core.matrix.model.SortDirection.ASCENDING;
-import static org.gitools.core.matrix.model.SortDirection.DESCENDING;
+import static org.gitools.api.matrix.SortDirection.ASCENDING;
+import static org.gitools.api.matrix.SortDirection.DESCENDING;
 
 
 public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
@@ -57,12 +56,12 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 HeatmapDimension dimension = header.getHeatmapDimension();
 
-                dimension.sort( new SortByLabelComparator(
+                dimension.sort(new SortByLabelComparator(
                         header.isSortAscending() ? ASCENDING : DESCENDING,
                         header.getIdentifierTransform(),
                         header.isNumeric()
@@ -84,6 +83,6 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
         }
 
-        setName("Sort " + (header.isSortAscending()?"ascending":"descending") + " by '" + header.getTitle() + "'");
+        setName("Sort " + (header.isSortAscending() ? "ascending" : "descending") + " by '" + header.getTitle() + "'");
     }
 }

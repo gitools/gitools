@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.batch.tools;
 
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Option;
 
 public abstract class AddHeaderTool extends AbstractTool {
@@ -30,7 +29,8 @@ public abstract class AddHeaderTool extends AbstractTool {
             usage = "Heatmap ")
     protected String heatmap;
 
-    enum Side { ROWS,COLUMNS }
+    enum Side {ROWS, COLUMNS}
+
     @Option(name = "-s", aliases = "--side", metaVar = "<side>", required = true,
             usage = "Indicate where to add the header: 'rows' or 'columns'.")
     protected Side side;
@@ -39,7 +39,7 @@ public abstract class AddHeaderTool extends AbstractTool {
         super();
     }
 
-    @NotNull
+
     @Override
     public String getName() {
         return "add-header";

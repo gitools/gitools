@@ -21,15 +21,17 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.ILayerAdapter;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.matrix.model.iterable.AbstractSourceIterable;
-import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 
 
 public class AdapterSourceIterable<T> extends AbstractSourceIterable<T> {
 
-    private LayerAdapter<T> adapter;
+    private ILayerAdapter<T> adapter;
 
-    public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, LayerAdapter<T> adapter) {
+    public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, ILayerAdapter<T> adapter) {
         super(matrixPosition, dimensionKey);
 
         this.adapter = adapter;

@@ -36,7 +36,6 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.ui.IconNames;
 import org.jdesktop.swingx.JXTaskPane;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +53,7 @@ public class DetailsBox extends JXTaskPane {
     private WebPanel container;
 
     /**
-     * @param title     Optional title of the details table
+     * @param title Optional title of the details table
      */
     public DetailsBox(String title) {
         super();
@@ -114,30 +113,31 @@ public class DetailsBox extends JXTaskPane {
 
     }
 
-    @NotNull
+
     private static WebSeparator createHorizontalSeparator() {
         WebSeparator separator = new WebSeparator(WebSeparator.HORIZONTAL);
         separator.setDrawSideLines(false);
         return separator;
     }
 
-    @NotNull
+
     private static WebSeparator createVerticalSeparator() {
         WebSeparator separator = new WebSeparator(WebSeparator.VERTICAL);
         separator.setDrawSideLines(false);
         return separator;
     }
 
-    @NotNull
-    private Component createNameLabel(@NotNull DetailsDecoration detail) {
 
-        WebLabel label = new WebLabel(StringUtils.capitalize(detail.getName()), JLabel.TRAILING);;
+    private Component createNameLabel(DetailsDecoration detail) {
+
+        WebLabel label = new WebLabel(StringUtils.capitalize(detail.getName()), JLabel.TRAILING);
+
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
 
 
         if (StringUtils.isNotEmpty(detail.getDescription())) {
-            String description = "<html><body width=\"300px\">" +  detail.getDescription() + "</body></html>";
+            String description = "<html><body width=\"300px\">" + detail.getDescription() + "</body></html>";
             TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
         }
 
@@ -160,14 +160,14 @@ public class DetailsBox extends JXTaskPane {
         return label;
     }
 
-    private Component createValueLabel(@NotNull DetailsDecoration property, int maxLength) {
+    private Component createValueLabel(DetailsDecoration property, int maxLength) {
 
         String value = property.getFormatedValue();
         boolean abbreviate = (value.length() > maxLength);
         String abbreviatedValue;
 
         if (value.matches("[0-9\\.]+e-?[0-9]+")) {
-            value = "<html><body>" + value.replaceAll("e(-?[0-9]+)", "·10<sup>$1</sup>")  + "</body></html>";
+            value = "<html><body>" + value.replaceAll("e(-?[0-9]+)", "·10<sup>$1</sup>") + "</body></html>";
         }
 
         if (abbreviate) {

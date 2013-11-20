@@ -76,8 +76,8 @@ public abstract class AbstractHeatmapDrawer {
      * Paint background.
      *
      * @param backgroundColor the background color
-     * @param g the g
-     * @param box the box
+     * @param g               the g
+     * @param box             the box
      */
     protected static void paintBackground(Color backgroundColor, Graphics2D g, Rectangle box) {
         g.setColor(backgroundColor);
@@ -87,8 +87,8 @@ public abstract class AbstractHeatmapDrawer {
     /**
      * Automatically change the font size to fit in the cell height.
      *
-     * @param g the Graphics2D object
-     * @param cellHeight the cell height
+     * @param g           the Graphics2D object
+     * @param cellHeight  the cell height
      * @param minFontSize the min font size
      * @return Returns true if the new font size fits in the cell height, false if it doesn't fit.
      */

@@ -23,15 +23,14 @@ package org.gitools.ui.datasources.biomart.wizard;
 
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -59,7 +58,7 @@ public class BiomartModulesWizard extends AbstractWizard {
     public static final String FORMAT_PLAIN = "TSV";
     public static final String FORMAT_COMPRESSED_GZ = "GZ";
 
-    @NotNull
+
     private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat(FileFormats.MODULES_2C_MAP.getTitle(), FileFormats.MODULES_2C_MAP.getExtension(), true, false), new FileFormat(FileFormats.MODULES_2C_MAP.getTitle() + " compressed", FileFormats.MODULES_2C_MAP.getExtension() + ".gz", true, false)};
 
     public BiomartModulesWizard() {/*BiomartRestfulService biomartService/*IBiomartService biomartService*/
@@ -134,7 +133,7 @@ public class BiomartModulesWizard extends AbstractWizard {
         return saveFilePage.getPathAsFile();
     }
 
-    @NotNull
+
     public Query getQuery() {
         MartLocation mart = getDatabase();
 

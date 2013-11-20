@@ -41,12 +41,12 @@ public abstract class ObservableSet<T> extends ForwardingSet<T> {
 
     @Override
     public boolean add(T element) {
-        return fire( delegate().add(element) );
+        return fire(delegate().add(element));
     }
 
     @Override
     public boolean addAll(Collection<? extends T> collection) {
-        return fire( delegate().addAll(collection) );
+        return fire(delegate().addAll(collection));
     }
 
     @Override
@@ -57,17 +57,17 @@ public abstract class ObservableSet<T> extends ForwardingSet<T> {
 
     @Override
     public boolean remove(Object object) {
-        return fire( delegate().remove(object) );
+        return fire(delegate().remove(object));
     }
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        return fire( delegate().removeAll( collection) );
+        return fire(delegate().removeAll(collection));
     }
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        return fire( delegate().retainAll( collection));
+        return fire(delegate().retainAll(collection));
     }
 
     private <T> T fire(T result) {

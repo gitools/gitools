@@ -21,14 +21,12 @@
  */
 package org.gitools.utils.color.utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 
 public class ColorUtils {
 
-    @NotNull
-    public static Color mix(@NotNull Color src, @NotNull Color dst, double factor) {
+
+    public static Color mix(Color src, Color dst, double factor) {
 
         double fs = factor / 255.0;
         double fd = (1.0 - factor) / 255.0;
@@ -44,8 +42,8 @@ public class ColorUtils {
         return new Color(ir, ig, ib);
     }
 
-    @NotNull
-    public static String colorToRGBHtml(@NotNull Color color) {
+
+    public static String colorToRGBHtml(Color color) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("rgb(");
@@ -56,13 +54,13 @@ public class ColorUtils {
         return sb.toString();
     }
 
-    @NotNull
-    public static String colorToHexHtml(@NotNull Color color) {
+
+    public static String colorToHexHtml(Color color) {
         return "#" + Integer.toHexString((color.getRGB() & 0xffffff) | 0x1000000).substring(1);
     }
 
-    @NotNull
-    public static Color invert(@NotNull Color color) {
+
+    public static Color invert(Color color) {
         int r = 255 - color.getRed();
         int g = 255 - color.getGreen();
         int b = 255 - color.getBlue();

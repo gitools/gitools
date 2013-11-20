@@ -24,8 +24,6 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.color.generator.ColorRegistry;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -41,10 +39,10 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
     class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
-        @NotNull
+
         private final JButton delegate = new JButton();
 
-        @Nullable
+
         Color savedColor;
 
         public ColorChooserEditor() {
@@ -68,7 +66,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                 }
 
                 @Override
-                public void mousePressed(@NotNull MouseEvent e) {
+                public void mousePressed(MouseEvent e) {
                     Component c = e.getComponent();
                     Point p = new Point(c.getX(), c.getY());
                     int clickedRowIndex = table.rowAtPoint(p);
@@ -114,7 +112,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                 }
 
                 @Override
-                public void keyReleased(@NotNull KeyEvent e) {
+                public void keyReleased(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                         int row = table.getSelectedRow();
                         int col = table.getSelectedColumn();
@@ -127,12 +125,12 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
             delegate.addKeyListener(keyListener);
         }
 
-        @Nullable
+
         public Object getCellEditorValue() {
             return savedColor;
         }
 
-        private void changeColor(@Nullable Color color, int row, int col) {
+        private void changeColor(Color color, int row, int col) {
             if (color != null) {
                 savedColor = color;
                 delegate.setBackground(color);
@@ -141,7 +139,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
             }
         }
 
-        @NotNull
+
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             changeColor((Color) value, row, column);
             return delegate;
@@ -198,7 +196,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         model.addAllLabels(coloredLabels);
     }
 
-    @NotNull
+
     public java.util.List<ColoredLabel> getColoredLabels() {
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
         return model.getList();
@@ -287,41 +285,41 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(tableAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(syncBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(removeBtn, javax.swing.GroupLayout.Alignment.TRAILING))))))
-                .addContainerGap())
+                                        .addComponent(jLabel5)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(3, 3, 3)
+                                                                .addComponent(tableAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(syncBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(removeBtn, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableAddBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removeBtn)
-                        .addGap(12, 12, 12)
-                        .addComponent(syncBtn)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
-                        .addGap(58, 58, 58))))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(tableAddBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(removeBtn)
+                                                .addGap(12, 12, 12)
+                                                .addComponent(syncBtn)
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                                                .addGap(58, 58, 58))))
         );
     }// </editor-fold>//GEN-END:initComponents
 

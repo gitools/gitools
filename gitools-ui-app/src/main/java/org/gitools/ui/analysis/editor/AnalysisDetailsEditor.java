@@ -22,12 +22,13 @@
 package org.gitools.ui.analysis.editor;
 
 import org.apache.velocity.VelocityContext;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResource;
 import org.gitools.core.model.Analysis;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.analysis.AbstractXmlFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
@@ -40,8 +41,6 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.LogUtils;
 import org.gitools.ui.wizard.common.SaveFileWizard;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,12 +58,10 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
     private final String template;
 
-    @Nullable
     private ActionSet toolBar = null;
 
     private TemplatePanel templatePanel;
 
-    @Nullable
     protected AbstractXmlFormat xmlPersistance = null;
 
     protected FileFormat fileformat;

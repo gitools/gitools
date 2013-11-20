@@ -21,16 +21,14 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -134,7 +132,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         return cutoffAttributeSelect.getSelectedItem().toString();
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -277,7 +275,6 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
 
-    @NotNull
     public CutoffCmp[] getGroupCutoffCmps() {
         return new CutoffCmp[]{CutoffCmp.getFromName((String) cutoffCmpGroup1Cb.getSelectedItem()), CutoffCmp.getFromName((String) cutoffCmpGroup2Cb.getSelectedItem())};
     }
@@ -286,7 +283,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         cutoffCmpGroup1Cb.setSelectedItem(cmp.getLongName());
 	}*/
 
-    @NotNull
+
     public double[] getGroupCutoffValues() {
         return new double[]{Double.parseDouble(cutoffValueGroup1.getText()), Double.parseDouble(cutoffValueGroup2.getText())};
     }
@@ -299,7 +296,7 @@ public class GroupComparisonGroupingByValuePage extends AbstractWizardPage {
         return Double.parseDouble(noneConversionText.getText());
     }
 
-    public void setAttributes(@Nullable IMatrixLayers attrs) {
+    public void setAttributes(IMatrixLayers attrs) {
 
         if (attrs != null) {
             AttrOption[] attrOptions = new AttrOption[attrs.size()];

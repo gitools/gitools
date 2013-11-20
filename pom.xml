@@ -35,6 +35,7 @@
         <module>gitools-cli</module>
         <module>gitools-ui-platform</module>
         <module>gitools-ui-app</module>
+        <module>gitools-api</module>
     </modules>
 
     <properties>
@@ -73,6 +74,12 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.gitools</groupId>
+                <artifactId>gitools-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.gitools</groupId>
@@ -212,11 +219,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>annotations</artifactId>
-            <version>12.0</version>
-        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>

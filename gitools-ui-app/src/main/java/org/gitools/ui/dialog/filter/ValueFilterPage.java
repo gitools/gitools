@@ -21,13 +21,11 @@
  */
 package org.gitools.ui.dialog.filter;
 
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
-import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -56,9 +54,9 @@ public class ValueFilterPage extends AbstractWizardPage {
             super(values);
         }
 
-        @NotNull
+
         @Override
-        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -91,7 +89,7 @@ public class ValueFilterPage extends AbstractWizardPage {
     public ValueFilterPage(Frame parent,
                            String[] attributeNames,
                            CutoffCmp[] comparators,
-                           @Nullable List<ValueFilterCriteria> initialCriteriaList,
+                           List<ValueFilterCriteria> initialCriteriaList,
                            IMatrixLayer visibleLayer) {
 
         this.attributeNames = attributeNames;

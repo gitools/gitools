@@ -13,7 +13,7 @@ Having a the expression data of a cohort of patients, it is not very convenient 
 To see how it is done, watch the  `video tutorial <http://www.youtube.com/watch?v=EADA6TsGrVw>`__    and/or read the instructions below
 
 .. image:: img/youtube-slea.png
-    :target: http://www.youtube.com/watch?v=EADA6TsGrVw
+:target: http://www.youtube.com/watch?v=EADA6TsGrVw
 
 How to use Gitools for this task
 -------------------------------------------------

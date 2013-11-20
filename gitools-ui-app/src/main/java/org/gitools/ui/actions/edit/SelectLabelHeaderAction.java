@@ -22,13 +22,13 @@
 package org.gitools.ui.actions.edit;
 
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
@@ -58,7 +58,7 @@ public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeade
 
         HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
 
-        for (String identifier :  dimension) {
+        for (String identifier : dimension) {
 
             String value = coloredHeader.getColoredLabel(identifier).getValue();
 

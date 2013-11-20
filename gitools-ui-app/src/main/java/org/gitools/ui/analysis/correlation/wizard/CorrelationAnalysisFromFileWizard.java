@@ -21,12 +21,13 @@
  */
 package org.gitools.ui.analysis.correlation.wizard;
 
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -41,15 +42,10 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
 
     private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CorrelationAnalysisFormat.EXTENSION;
@@ -113,7 +109,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
             if (examplePage.isExampleEnabled()) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("correlations", monitor);
 
@@ -184,7 +180,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
         return dataFilterPage.getRowsFilterFile();
     }
 
-    @NotNull
+
     public CorrelationAnalysis getAnalysis() {
         CorrelationAnalysis a = new CorrelationAnalysis();
 
@@ -199,7 +195,7 @@ public class CorrelationAnalysisFromFileWizard extends AbstractWizard {
         return a;
     }
 
-    private void setAnalysis(@NotNull CorrelationAnalysis a) {
+    private void setAnalysis(CorrelationAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());

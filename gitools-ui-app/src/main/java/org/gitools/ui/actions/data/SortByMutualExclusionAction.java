@@ -21,8 +21,9 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
@@ -31,8 +32,6 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.sort.MutualExclusionSortPage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
@@ -62,7 +61,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 MatrixViewSorter.sortByMutualExclusion(

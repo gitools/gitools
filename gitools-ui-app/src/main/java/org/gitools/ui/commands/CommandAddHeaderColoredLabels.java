@@ -21,12 +21,11 @@
  */
 package org.gitools.ui.commands;
 
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
+    public void execute(IProgressMonitor monitor) throws CommandException {
 
 
         super.execute(monitor);
@@ -71,10 +70,9 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         }
 
         if (autoGenerateColors) {
-            cls =  header.getClusters();
+            cls = header.getClusters();
             header.autoGenerateColoredLabels(new AnnPatClusteringMethod());
         }
-
 
 
         if (!(colors == null || ids == null)) {
@@ -89,7 +87,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
                 cls = addCluster(cls, cl);
             }
 
-            if (cls.size() == 0)  {
+            if (cls.size() == 0) {
                 throw new CommandException("No color labels have been created.");
             }
 
@@ -108,7 +106,6 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
 
         setExitStatus(0);
-        return;
     }
 
     @Deprecated

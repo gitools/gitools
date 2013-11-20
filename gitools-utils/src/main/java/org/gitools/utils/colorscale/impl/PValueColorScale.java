@@ -21,14 +21,13 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.color.utils.ColorUtils;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -80,7 +79,7 @@ public class PValueColorScale extends NumericColorScale {
 
     }
 
-    @NotNull
+
     @Override
     public double[] getPoints() {
         return new double[]{0, significanceLevel, 1};
@@ -143,7 +142,7 @@ public class PValueColorScale extends NumericColorScale {
 
     }
 
-    @NotNull
+
     @Override
     public IAggregator defaultAggregator() {
         return MultAggregator.INSTANCE;

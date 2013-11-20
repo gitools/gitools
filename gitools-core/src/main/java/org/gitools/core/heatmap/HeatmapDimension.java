@@ -21,13 +21,13 @@
  */
 package org.gitools.core.heatmap;
 
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrixDimension;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.*;
@@ -148,10 +148,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     }
 
     public boolean showGrid() {
-        if (getCellSize() > 1) {
-            return true;
-        }
-        return false;
+        return getCellSize() > 1;
     }
 
     public int getFullSize() {

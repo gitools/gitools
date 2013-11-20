@@ -21,14 +21,13 @@
  */
 package org.gitools.datasources.biomart.idmapper;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.restful.model.Attribute;
 import org.gitools.datasources.biomart.restful.model.Dataset;
 import org.gitools.datasources.biomart.restful.model.Query;
-import org.gitools.core.idmapper.*;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.datasources.idmapper.*;
 
 import java.util.*;
 
@@ -45,9 +44,9 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         this.dataset = dataset;
     }
 
-    @NotNull
+
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
+    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
         String srcInternalName = getInternalName(src.getId());
         String dstInternalName = getInternalName(dst.getId());
         if (srcInternalName == null || dstInternalName == null) {
@@ -119,7 +118,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         inameMap.put(GO_ID, "go_id");
     }
 
-    public static String getInternalName(@NotNull String id) {
+    public static String getInternalName(String id) {
         String iname = inameMap.get(id);
         if (iname == null && id.startsWith("ensembl:")) {
             return id.substring(8);
@@ -127,7 +126,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         return iname;
     }
 
-    @NotNull
+
     public static Query createQuery(String dataset, String srcInternalName, String dstInternalName) {
         Query q = new Query();
         q.setVirtualSchemaName("default");

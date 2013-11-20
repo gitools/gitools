@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.textpatt;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
@@ -30,14 +28,14 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public class TextPatternXmlAdapter extends XmlAdapter<String, TextPattern> {
 
-    @NotNull
+
     @Override
     public TextPattern unmarshal(String v) throws Exception {
         return new TextPattern(v);
     }
 
     @Override
-    public String marshal(@NotNull TextPattern v) throws Exception {
+    public String marshal(TextPattern v) throws Exception {
         return v.getText();
     }
 

@@ -23,16 +23,17 @@ package org.gitools.ui.analysis.htest.editor;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.model.decorator.impl.BinaryDecorator;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.core.model.decorator.impl.ZScoreDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
-import org.gitools.core.stats.test.factory.TestFactory;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -43,8 +44,6 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -134,7 +133,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
@@ -169,7 +168,7 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
@@ -188,8 +187,8 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
         });
     }
 
-    @NotNull
-    private static Heatmap createHeatmap(@NotNull EnrichmentAnalysis analysis) {
+
+    private static Heatmap createHeatmap(EnrichmentAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
 
@@ -206,8 +205,8 @@ public class EnrichmentAnalysisEditor extends AnalysisDetailsEditor<EnrichmentAn
     }
 
     //TODO
-    @NotNull
-    protected static List<BaseAction> createToolBar(@NotNull EnrichmentAnalysis analysis) {
+
+    protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis) {
         ViewRelatedDataFromAction action = new ViewRelatedDataFromAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get(), MatrixDimensionKey.ROWS);
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);

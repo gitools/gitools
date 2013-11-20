@@ -24,8 +24,8 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.data.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import static org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection.*;
 
 public final class DataActions {

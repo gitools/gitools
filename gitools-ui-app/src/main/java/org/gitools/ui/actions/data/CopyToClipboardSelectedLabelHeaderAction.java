@@ -58,7 +58,7 @@ public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction impl
             }
         }
 
-        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard ();
+        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipBoard.setContents(new StringSelection(content.toString()), null);
 
 

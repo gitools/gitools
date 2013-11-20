@@ -1,4 +1,3 @@
-
 ================================================================
 External data sources
 ================================================================
@@ -7,7 +6,7 @@ It is possible to import data from different sources. There are wizards that gui
 
 
 .. list-table:: Gitools allows direct data-import from various external sources:
-   :header-rows: 1
+:header-rows: 1
    
    * - Source
      - Data

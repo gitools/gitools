@@ -22,9 +22,9 @@
 package org.gitools.core.heatmap.header;
 
 import com.google.common.base.Function;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.AnnotationFunction;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;

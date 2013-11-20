@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.editor.IEditor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -47,10 +46,6 @@ public class ActionSet extends BaseAction {
         super(name, icon);
         this.actions = Arrays.asList(actions);
         setEnabled(true);
-    }
-
-    public ActionSet(@NotNull List<BaseAction> actions) {
-        this(actions.toArray(new BaseAction[actions.size()]));
     }
 
     public List<BaseAction> getActions() {

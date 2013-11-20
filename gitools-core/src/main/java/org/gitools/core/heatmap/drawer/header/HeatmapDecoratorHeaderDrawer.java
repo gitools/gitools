@@ -72,7 +72,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
     private int getAnnotationWidth() {
         int totalWidth = getHeader().getSize() - getHeader().getMargin();
-        return  (totalWidth / getHeader().getAnnotationLabels().size()) - 1;
+        return (totalWidth / getHeader().getAnnotationLabels().size()) - 1;
     }
 
     @Override

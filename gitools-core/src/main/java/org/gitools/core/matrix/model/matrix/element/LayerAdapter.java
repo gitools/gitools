@@ -21,9 +21,12 @@
  */
 package org.gitools.core.matrix.model.matrix.element;
 
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.matrix.ILayerAdapter;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LayerAdapter<T> implements Serializable {
+public class LayerAdapter<T> implements ILayerAdapter<T> {
 
     private Class<? extends T> elementClass;
     private MatrixLayers<BeanMatrixLayer> matrixLayers;
@@ -42,22 +45,27 @@ public class LayerAdapter<T> implements Serializable {
         createLayers();
     }
 
+    @Override
     public Class<? extends T> getElementClass() {
         return elementClass;
     }
 
+    @Override
     public MatrixLayers<BeanMatrixLayer> getMatrixLayers() {
         return matrixLayers;
     }
 
+    @Override
     public <T> BeanMatrixLayer<T> getLayer(Class<T> layerClass, String layerName) {
         return (BeanMatrixLayer<T>) getMatrixLayers().get(layerName);
     }
 
+    @Override
     public void set(IMatrix matrix, T value, IMatrixPosition position) {
         set(matrix, value, position.toVector());
     }
 
+    @Override
     public void set(IMatrix matrix, T value, String... identifiers) {
 
         if (value == null) {
@@ -79,10 +87,12 @@ public class LayerAdapter<T> implements Serializable {
 
     }
 
+    @Override
     public T get(IMatrix matrix, IMatrixPosition position) {
         return get(matrix, position.toVector());
     }
 
+    @Override
     public T get(IMatrix matrix, String... identifiers) {
 
         T value = null;

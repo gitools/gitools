@@ -21,20 +21,14 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
-import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
-import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
-import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
-import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
-import org.gitools.core.persistence.formats.matrix.CdmMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.analysis.*;
+import org.gitools.persistence.formats.matrix.CdmMatrixFormat;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;

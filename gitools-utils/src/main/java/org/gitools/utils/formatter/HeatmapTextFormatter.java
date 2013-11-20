@@ -21,9 +21,6 @@
  */
 package org.gitools.utils.formatter;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.text.DecimalFormat;
 import java.util.Formatter;
 
@@ -39,10 +36,10 @@ public class HeatmapTextFormatter implements ITextFormatter {
         countFormat = new DecimalFormat("#####.##");
     }
 
-    @NotNull
+
     protected String decimal(double value) {
 
-        if (value!=0 && value < 1e-99 && value > -1e-99) {
+        if (value != 0 && value < 1e-99 && value > -1e-99) {
             return "~0.00";
         }
 
@@ -56,8 +53,8 @@ public class HeatmapTextFormatter implements ITextFormatter {
     }
 
     @Override
-    @NotNull
-    public String format(@Nullable Object value) {
+
+    public String format(Object value) {
 
         if (value == null) {
             return "None";

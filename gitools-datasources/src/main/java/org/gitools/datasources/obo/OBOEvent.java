@@ -21,8 +21,6 @@
  */
 package org.gitools.datasources.obo;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.lang.reflect.Field;
 
 /**
@@ -83,7 +81,7 @@ public class OBOEvent implements OBOEventTypes {
         return tagContents;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

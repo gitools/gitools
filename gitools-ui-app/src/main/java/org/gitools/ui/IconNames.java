@@ -21,14 +21,14 @@
  */
 package org.gitools.ui;
 
-import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class IconNames {
 

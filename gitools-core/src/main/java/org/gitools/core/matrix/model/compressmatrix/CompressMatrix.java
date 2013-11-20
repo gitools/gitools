@@ -25,8 +25,10 @@ package org.gitools.core.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.gitools.core.matrix.model.*;
-import org.gitools.core.persistence.PersistenceException;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.core.matrix.model.AbstractMatrix;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
@@ -79,7 +81,7 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimensi
         // Calculate rows cache size
         double fact = (double) availableMemory / (double) matrixSize;
         int cacheSize = (int) ((double) values.size() * fact);
-        cacheSize = (cacheSize > values.size() ? values.size() + (values.size()/2) : cacheSize);
+        cacheSize = (cacheSize > values.size() ? values.size() + (values.size() / 2) : cacheSize);
         cacheSize = (cacheSize < 40 ? 40 : cacheSize);
 
         // Create the rows cache
@@ -173,7 +175,7 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimensi
             return values;
 
         } catch (Exception e) {
-            throw new PersistenceException(e);
+            throw new RuntimeException("Error extracting the matrix", e);
         }
     }
 

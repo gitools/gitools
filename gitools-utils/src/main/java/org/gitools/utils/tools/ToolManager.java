@@ -24,8 +24,6 @@ package org.gitools.utils.tools;
 import org.gitools.utils.tools.args.BaseArguments;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
@@ -105,14 +103,14 @@ public class ToolManager {
     /**
      * Launches a tool from the raw java arguments.
      */
-    public int launch(@NotNull String[] args) throws ToolException {
+    public int launch(String[] args) throws ToolException {
         return launch(args, null);
     }
 
     /**
      * Launches a tool from the raw java arguments.
      */
-    int launch(@NotNull String[] args, Object context) throws ToolException {
+    int launch(String[] args, Object context) throws ToolException {
         if (args.length < 1) {
             printUsage(errorStream);
             return -1;
@@ -142,7 +140,7 @@ public class ToolManager {
     /**
      * Launches a tool from its name and the arguments passed to it
      */
-    int launch(String name, @NotNull String[] args, Object context) throws ToolException {
+    int launch(String name, String[] args, Object context) throws ToolException {
 
         // look for the tool
 
@@ -245,7 +243,7 @@ public class ToolManager {
         return code;
     }
 
-    private void logExceptionError(@NotNull ToolDescriptor toolDesc, @NotNull String[] args, @NotNull Throwable e, @NotNull PrintStream err, @Nullable String logName) {
+    private void logExceptionError(ToolDescriptor toolDesc, String[] args, Throwable e, PrintStream err, String logName) {
 
         err.println("ERROR " + getErrorLine(e));
 
@@ -298,8 +296,8 @@ public class ToolManager {
         }
     }
 
-    @NotNull
-    private String getErrorLine(@NotNull Throwable t) {
+
+    private String getErrorLine(Throwable t) {
         final StringBuilder sb = new StringBuilder();
         sb.append(t.getClass().getSimpleName());
         final String msg = t.getMessage();
@@ -343,7 +341,7 @@ public class ToolManager {
         tool.printUsage(outputStream, appName, toolDesc, parser);
     }
 
-    private void printUsage(@NotNull PrintStream out) {
+    private void printUsage(PrintStream out) {
         out.println(appName + " version " + appVersion);
         out.println("\nUsage: " + appName + " <tool-name> <tool-arguments>\n");
         out.println("To get the list of availables tools write:");
@@ -353,7 +351,7 @@ public class ToolManager {
         out.println();
     }
 
-    private void printAvailableTools(@NotNull PrintStream out, @NotNull ToolSet toolSet) {
+    private void printAvailableTools(PrintStream out, ToolSet toolSet) {
         out.println("The list of available tools:\n");
         for (ToolDescriptor toolDesc : toolSet.getToolDescriptors()) {
             final String name = toolDesc.getName();
@@ -364,7 +362,7 @@ public class ToolManager {
         }
     }
 
-    @Nullable
+
     private ToolDescriptor getToolDescriptorFromName(String name) {
         for (ToolDescriptor desc : toolSet.getToolDescriptors())
             if (desc.getName().equalsIgnoreCase(name)) {
