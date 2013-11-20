@@ -22,8 +22,6 @@
 package org.gitools.datasources.obo;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +36,7 @@ class OBOStream {
 
     private URL baseUrl;
 
-    @Nullable
+
     private BufferedReader reader;
 
     private int linePos;
@@ -48,7 +46,7 @@ class OBOStream {
         this.linePos = 0;
     }
 
-    public OBOStream(@NotNull URL baseUrl) throws IOException {
+    public OBOStream(URL baseUrl) throws IOException {
         this.baseUrl = baseUrl;
 
         // Workaround for FTP problem connecting ftp.geneontology.org with URL.openStream()
@@ -78,7 +76,7 @@ class OBOStream {
         return baseUrl;
     }
 
-    @Nullable
+
     public BufferedReader getReader() {
         return reader;
     }
@@ -90,7 +88,7 @@ class OBOStream {
     /**
      * returns a non empty line or null if EOF
      */
-    @Nullable
+
     public String nextLine() throws IOException {
         String line = readLine();
         while (line != null && isEmptyLine(line))
@@ -109,7 +107,7 @@ class OBOStream {
     /**
      * returns the next line or null if EOF
      */
-    @Nullable
+
     private String readLine() throws IOException {
         if (reader == null) {
             return null;
@@ -147,7 +145,7 @@ class OBOStream {
         return completeLine.toString();
     }
 
-    private boolean isEmptyLine(@NotNull String line) {
+    private boolean isEmptyLine(String line) {
         return line.replaceAll("\\s", "").isEmpty();
     }
 }

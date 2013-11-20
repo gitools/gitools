@@ -21,10 +21,10 @@
  */
 package org.gitools.core.matrix.sort;
 
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.core.matrix.model.SortDirection;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.position.IMatrixPosition;
 
 import java.util.Comparator;
 
@@ -48,15 +48,15 @@ public class SingleSortByValueComparator implements Comparator<String> {
         Comparable v1 = position.getMatrix().get(layer, position.set(dimension, o1));
         Comparable v2 = position.getMatrix().get(layer, position.set(dimension, o2));
 
-        if (v1==null && v2==null) {
+        if (v1 == null && v2 == null) {
             return 0;
         }
 
-        if (v1==null) {
+        if (v1 == null) {
             return -1 * sortDirection.getFactor();
         }
 
-        if (v2==null) {
+        if (v2 == null) {
             return sortDirection.getFactor();
         }
 

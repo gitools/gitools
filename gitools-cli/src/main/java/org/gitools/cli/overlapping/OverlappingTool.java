@@ -21,20 +21,20 @@
  */
 package org.gitools.cli.overlapping;
 
-import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.core.analysis.overlapping.OverlappingCommand;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingCommand;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
-import org.gitools.utils.threads.ThreadManager;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.kohsuke.args4j.Option;

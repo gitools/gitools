@@ -22,8 +22,9 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.core.analysis.htest.enrichment.EnrichmentCommand;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -31,8 +32,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -75,7 +74,7 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     cmd.run(monitor);
 

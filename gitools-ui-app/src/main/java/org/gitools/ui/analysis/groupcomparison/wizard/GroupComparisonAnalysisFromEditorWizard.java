@@ -21,22 +21,21 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.utils.datafilters.BinaryCutoff;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.Property;
 import org.gitools.core.model.ToolConfig;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.utils.CloneUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.utils.CloneUtils;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.utils.datafilters.BinaryCutoff;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +136,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         return canFinish;
     }
 
-    @NotNull
+
     public GroupComparisonAnalysis getAnalysis() {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();
 

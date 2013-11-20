@@ -22,26 +22,24 @@
 package org.gitools.cli.convert;
 
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence._DEPRECATED.MimeTypes;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.matrix.CmatrixMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.TdmMatrixFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -184,40 +182,47 @@ public class ConvertTool extends AbstractTool {
         monitor.end();
     }
 
-    private void initConversionList(@NotNull List<Conversion> vc) {
+    private static final String DOUBLE_MATRIX = "application/gitools-matrix-double";
+    private static final String DOUBLE_BINARY_MATRIX = "application/gitools-matrix-binary";
+    private static final String GENE_MATRIX = "application/gitools-gmx";
+    private static final String GENE_MATRIX_TRANSPOSED = "application/gitools-gmt";
+    private static final String MODULES_INDEXED_MAP = "application/gitools-modules-indexed";
+    private static final String MODULES_2C_MAP = "application/gitools-modules-2c";
+
+    private void initConversionList(List<Conversion> vc) {
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-        vc.add(new Conversion(MimeTypes.DOUBLE_BINARY_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(DOUBLE_BINARY_MATRIX, MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(DOUBLE_BINARY_MATRIX, MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.GENE_MATRIX_TRANSPOSED, new MatrixConversion()));
-        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-        vc.add(new Conversion(MimeTypes.DOUBLE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(DOUBLE_MATRIX, MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(DOUBLE_MATRIX, MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
         //TODO vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-        vc.add(new Conversion(MimeTypes.GENE_MATRIX, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(GENE_MATRIX, MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(GENE_MATRIX, MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
         //TODO vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_BINARY_MATRIX, new MatrixConversion()));
         //TODO vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.DOUBLE_MATRIX, new MatrixConversion()));
-        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_2C_MAP, new MatrixToModulesConversion()));
-        vc.add(new Conversion(MimeTypes.GENE_MATRIX_TRANSPOSED, MimeTypes.MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(GENE_MATRIX_TRANSPOSED, MODULES_2C_MAP, new MatrixToModulesConversion()));
+        vc.add(new Conversion(GENE_MATRIX_TRANSPOSED, MODULES_INDEXED_MAP, new MatrixToModulesConversion()));
 
-        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.MODULES_INDEXED_MAP, new ModulesConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_2C_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_2C_MAP, MODULES_INDEXED_MAP, new ModulesConversion()));
+        vc.add(new Conversion(MODULES_2C_MAP, DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_2C_MAP, DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_2C_MAP, GENE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_2C_MAP, GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
 
-        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.MODULES_2C_MAP, new ModulesConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX, new ModulesToMatrixConversion()));
-        vc.add(new Conversion(MimeTypes.MODULES_INDEXED_MAP, MimeTypes.GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_INDEXED_MAP, MODULES_2C_MAP, new ModulesConversion()));
+        vc.add(new Conversion(MODULES_INDEXED_MAP, DOUBLE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_INDEXED_MAP, DOUBLE_BINARY_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_INDEXED_MAP, GENE_MATRIX, new ModulesToMatrixConversion()));
+        vc.add(new Conversion(MODULES_INDEXED_MAP, GENE_MATRIX_TRANSPOSED, new ModulesToMatrixConversion()));
     }
 
     private static final String LIST_L_FMT = "\t* %-48s%s";
@@ -231,7 +236,7 @@ public class ConvertTool extends AbstractTool {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();

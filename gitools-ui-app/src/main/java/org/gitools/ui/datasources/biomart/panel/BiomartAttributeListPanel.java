@@ -27,8 +27,6 @@ import org.gitools.datasources.biomart.restful.model.AttributeGroup;
 import org.gitools.datasources.biomart.restful.model.AttributePage;
 import org.gitools.ui.datasources.biomart.dialog.BiomartAttributeDialog;
 import org.gitools.ui.platform.AppFrame;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
@@ -67,10 +65,10 @@ public class BiomartAttributeListPanel extends JPanel {
         }
     }
 
-    @Nullable
+
     private List<AttributePage> attrPages;
 
-    @NotNull
+
     private final List<AttributeListChangeListener> attributeListChangeListeners = new ArrayList<AttributeListChangeListener>();
 
     public BiomartAttributeListPanel() {
@@ -107,12 +105,12 @@ public class BiomartAttributeListPanel extends JPanel {
         updateButtons();
     }
 
-    @Nullable
+
     public List<AttributePage> getAttributePages() {
         return attrPages;
     }
 
-    public void setAttributePages(@Nullable List<AttributePage> attrPages) {
+    public void setAttributePages(List<AttributePage> attrPages) {
         this.attrPages = attrPages;
 
         DefaultListModel model = (DefaultListModel) attrList.getModel();
@@ -162,7 +160,7 @@ public class BiomartAttributeListPanel extends JPanel {
         return attrList.getModel().getSize();
     }
 
-    @NotNull
+
     public List<AttributeDescription> getAttributeList() {
         DefaultListModel model = (DefaultListModel) attrList.getModel();
         Enumeration<?> e = model.elements();

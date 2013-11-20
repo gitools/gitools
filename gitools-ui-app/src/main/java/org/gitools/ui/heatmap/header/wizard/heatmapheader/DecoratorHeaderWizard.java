@@ -65,7 +65,7 @@ public class DecoratorHeaderWizard extends AbstractWizard {
 
     @Override
     public boolean canFinish() {
-        return (currentPage==colorScalePage) || (currentPage==textConfigPage);
+        return (currentPage == colorScalePage) || (currentPage == textConfigPage);
     }
 
     @Override

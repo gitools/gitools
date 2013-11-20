@@ -22,12 +22,12 @@
 package org.gitools.cli.convert;
 
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.matrix.model.compressmatrix.AbstractCompressor;
 import org.gitools.core.matrix.model.compressmatrix.CompressRow;
 import org.gitools.core.matrix.model.compressmatrix.NotCompressRow;
 import org.gitools.utils.MemoryUtils;
 import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.exception.ToolException;
 
@@ -90,7 +90,7 @@ public class FileCompressMatrixConversion extends AbstractCompressor {
             // A round consist of load all the values in memory and
             // group them by row.
             System.gc();
-            long estimatedMemoryUsage = (((1 + 8*getHeader().length) * getColumns().size()) + 32) * 7 / 5;
+            long estimatedMemoryUsage = (((1 + 8 * getHeader().length) * getColumns().size()) + 32) * 7 / 5;
 
             progressMonitor.debug("Max line length " + getMaxLineLength());
             progressMonitor.debug("Columns " + getColumns().size());

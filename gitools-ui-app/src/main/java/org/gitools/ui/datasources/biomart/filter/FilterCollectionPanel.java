@@ -25,7 +25,6 @@ import org.gitools.datasources.biomart.restful.model.Filter;
 import org.gitools.datasources.biomart.restful.model.FilterCollection;
 import org.gitools.datasources.biomart.restful.model.FilterDescription;
 import org.gitools.ui.datasources.biomart.wizard.BiomartFilterConfigurationPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +39,7 @@ public class FilterCollectionPanel extends JPanel {
     private BiomartFilterConfigurationPage filterConfigurationPage;
 
     private Integer currentHeight = 0;
-    @NotNull
+
     private final Integer DEFAULT_COLLECTION_PANEL_HEIGHT = 60;
 
     private Boolean rendered; //Controls if collectionPanel contains any component
@@ -48,7 +47,7 @@ public class FilterCollectionPanel extends JPanel {
     /**
      * Creates new form FilterCollectionPanel1
      */
-    public FilterCollectionPanel(@NotNull FilterCollection fc, BiomartFilterConfigurationPage parent) {
+    public FilterCollectionPanel(FilterCollection fc, BiomartFilterConfigurationPage parent) {
 
         initComponents();
 
@@ -60,7 +59,7 @@ public class FilterCollectionPanel extends JPanel {
 
     }
 
-    private void buildDescriptions(@NotNull FilterCollection fc) {
+    private void buildDescriptions(FilterCollection fc) {
 
         collectionCheckBox.setText(fc.getDisplayName());
 
@@ -98,8 +97,8 @@ public class FilterCollectionPanel extends JPanel {
      * @param fc
      * @return
      */
-    @NotNull
-    private Boolean renderLabelDescription(@NotNull FilterCollection fc) {
+
+    private Boolean renderLabelDescription(FilterCollection fc) {
         Integer components = 0;
 
         for (FilterDescription d : fc.getFilterDescriptions())
@@ -121,12 +120,12 @@ public class FilterCollectionPanel extends JPanel {
         initComponents();
     }
 
-    @NotNull
+
     public Integer getCurrentHeigh() {
         return currentHeight + DEFAULT_COLLECTION_PANEL_HEIGHT;
     }
 
-    @NotNull
+
     public List<Filter> getFilters() {
 
         List<Filter> filters = new ArrayList<Filter>();

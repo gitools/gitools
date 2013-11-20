@@ -21,9 +21,6 @@
  */
 package org.gitools.ui.platform;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -80,7 +77,7 @@ public class PropertiesExpansion extends Properties {
      * @return the value in this property list with the specified key value or
      *         null if not found.
      */
-    @Nullable
+
     public String getProperty(String key) {
         return replace(super.getProperty(replace(key)));
     }
@@ -95,7 +92,7 @@ public class PropertiesExpansion extends Properties {
      * @return the value in this property list within the specified section and
      *         with the specified key value or null if not found.
      */
-    @Nullable
+
     public String getProperty(String section, String key) {
         Properties p = (Properties) get(replace(section));
         if (p == null) {
@@ -111,7 +108,7 @@ public class PropertiesExpansion extends Properties {
      * @return the value in this property list within the specified section and
      *         with the specified key value or this default value.
      */
-    @Nullable
+
     public String getProperty(String section, String key, String def) {
         String s = getProperty(section, key);
         if (s == null) {
@@ -129,7 +126,7 @@ public class PropertiesExpansion extends Properties {
      * @return the found value cast to integer or the default value
      * @see #getProperty
      */
-    public static int getInt(@NotNull Properties prop, String key, int def) {
+    public static int getInt(Properties prop, String key, int def) {
         int out = def;
         try {
             out = getInt(prop, key);
@@ -141,7 +138,7 @@ public class PropertiesExpansion extends Properties {
     /**
      * @see #getProperty
      */
-    private static int getInt(@NotNull Properties prop, String key) {
+    private static int getInt(Properties prop, String key) {
         String s = prop.getProperty(key);
         if (s == null) {
             throw new NoSuchElementException("No key " + key + " found");
@@ -149,7 +146,7 @@ public class PropertiesExpansion extends Properties {
         return Integer.parseInt(s);
     }
 
-    public static long getLong(@NotNull Properties prop, String key, long def) {
+    public static long getLong(Properties prop, String key, long def) {
         long out = def;
         try {
             out = getLong(prop, key);
@@ -158,7 +155,7 @@ public class PropertiesExpansion extends Properties {
         return out;
     }
 
-    private static long getLong(@NotNull Properties prop, String key) {
+    private static long getLong(Properties prop, String key) {
         String s = prop.getProperty(key);
         if (s == null) {
             throw new NoSuchElementException("No key " + key + " found");
@@ -166,7 +163,7 @@ public class PropertiesExpansion extends Properties {
         return Long.parseLong(s);
     }
 
-    public static float getFloat(@NotNull Properties prop, String key, float def) {
+    public static float getFloat(Properties prop, String key, float def) {
         float out = def;
         try {
             out = getFloat(prop, key);
@@ -175,7 +172,7 @@ public class PropertiesExpansion extends Properties {
         return out;
     }
 
-    private static float getFloat(@NotNull Properties prop, String key) {
+    private static float getFloat(Properties prop, String key) {
         String s = prop.getProperty(key);
         if (s == null) {
             throw new NoSuchElementException("No key " + key + " found");
@@ -183,7 +180,7 @@ public class PropertiesExpansion extends Properties {
         return Float.parseFloat(s);
     }
 
-    public static double getDouble(@NotNull Properties prop, String key, double def) {
+    public static double getDouble(Properties prop, String key, double def) {
         double out = def;
         try {
             out = getDouble(prop, key);
@@ -192,7 +189,7 @@ public class PropertiesExpansion extends Properties {
         return out;
     }
 
-    private static double getDouble(@NotNull Properties prop, String key) {
+    private static double getDouble(Properties prop, String key) {
         String s = prop.getProperty(key);
         if (s == null) {
             throw new NoSuchElementException("No key " + key + " found");
@@ -200,7 +197,7 @@ public class PropertiesExpansion extends Properties {
         return Double.parseDouble(s);
     }
 
-    public static boolean getBoolean(@NotNull Properties prop, String key, boolean def) {
+    public static boolean getBoolean(Properties prop, String key, boolean def) {
         boolean out = def;
         try {
             out = getBoolean(prop, key);
@@ -209,7 +206,7 @@ public class PropertiesExpansion extends Properties {
         return out;
     }
 
-    private static boolean getBoolean(@NotNull Properties prop, String key) {
+    private static boolean getBoolean(Properties prop, String key) {
         String s = prop.getProperty(key);
         if (s == null) {
             throw new NoSuchElementException("No key " + key + " found");
@@ -332,7 +329,7 @@ public class PropertiesExpansion extends Properties {
     /**
      * @return an enumeration of the sections in this property list.
      */
-    @Nullable
+
     public synchronized Enumeration sections() {
         final int len = keySet().size();
         final String[] all = (String[]) keySet().toArray(new String[len]);
@@ -352,7 +349,7 @@ public class PropertiesExpansion extends Properties {
                 return next != null;
             }
 
-            @Nullable
+
             public Object nextElement() {
                 if (next == null) {
                     throw new NoSuchElementException();
@@ -360,7 +357,7 @@ public class PropertiesExpansion extends Properties {
                 return next;
             }
 
-            @Nullable
+
             private Object next = null;
             private int i = 0;
         };
@@ -372,7 +369,7 @@ public class PropertiesExpansion extends Properties {
      *         empty enumeration if there is no such section or the section
      *         does not contain any keys.
      */
-    @Nullable
+
     public synchronized Enumeration sectionKeys(String section) {
         Properties p = (Properties) get(replace(section));
         Enumeration en = null;
@@ -383,7 +380,7 @@ public class PropertiesExpansion extends Properties {
                     return false;
                 }
 
-                @NotNull
+
                 public Object nextElement() {
                     throw new NoSuchElementException();
                 }
@@ -400,8 +397,8 @@ public class PropertiesExpansion extends Properties {
      * @see java.util.Hashtable#put
      * @see #setProperty
      */
-    @Nullable
-    public Object put(@Nullable Object key, @Nullable Object val) {
+
+    public Object put(Object key, Object val) {
         if (key == null || val == null) {
             throw new NullPointerException();
         }
@@ -450,7 +447,7 @@ public class PropertiesExpansion extends Properties {
      * @param os     an output stream.
      * @param header a description of the property list.
      */
-    public synchronized void store(@NotNull OutputStream os, String header) throws IOException {
+    public synchronized void store(OutputStream os, String header) throws IOException {
         Properties p = null;
         for (Enumeration en = keys(); en.hasMoreElements(); ) {
             String k = (String) en.nextElement();
@@ -483,8 +480,8 @@ public class PropertiesExpansion extends Properties {
      * @param keys the hashtable of keys
      * @return the substituted string
      */
-    @Nullable
-    public static String replace(@Nullable String in, @Nullable Hashtable keys) {
+
+    public static String replace(String in, Hashtable keys) {
         if (in == null) {
             return null;
         }
@@ -512,8 +509,8 @@ public class PropertiesExpansion extends Properties {
      * @param in the key which string value to be replaced with values from
      *           this property list
      */
-    @Nullable
-    String replace(@Nullable String in) {
+
+    String replace(String in) {
         if (in == null) {
             return null;
         }
@@ -539,7 +536,7 @@ public class PropertiesExpansion extends Properties {
     /**
      * Replaces all occurrences of the substitution tag in the given Properties.
      */
-    void replaceAll(@NotNull Properties p) {
+    void replaceAll(Properties p) {
         for (Enumeration en = p.keys(); en.hasMoreElements(); ) {
             String k = (String) en.nextElement();
             Object v = p.get(k);
@@ -555,10 +552,10 @@ public class PropertiesExpansion extends Properties {
 
     private static final char startSecSep = '[';
     private static final char endSecSep = ']';
-    @NotNull
+
     private static final String startTag = "${";
-    @NotNull
+
     private static final String endTag = "}";
-    @Nullable
+
     private String curSec = "";
 }

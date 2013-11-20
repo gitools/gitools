@@ -22,7 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 /**
  * Mean
@@ -35,7 +35,7 @@ public class MeanAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
         double sum = aggregate(data, Functions.plus);
 
         if (Double.isNaN(sum)) {
@@ -45,7 +45,7 @@ public class MeanAggregator extends AbstractAggregator {
         return sum / data.length;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Mean";

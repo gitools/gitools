@@ -25,8 +25,6 @@ import org.gitools.core.model.decorator.Decorator;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -68,16 +66,15 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog {
     private static final String MESSAGE = "Select a scale";
 
 
-    @NotNull
     private final List<T> listObjects = new ArrayList<T>();
 
     private final DefaultListModel model;
 
-    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects) {
+    public LoadDecoratorDialog(java.awt.Window parent, T[] objects) {
         this(parent, objects, null);
     }
 
-    public LoadDecoratorDialog(java.awt.Window parent, @NotNull T[] objects, @Nullable Class<? extends Decorator> decoratorClass) {
+    public LoadDecoratorDialog(java.awt.Window parent, T[] objects, Class<? extends Decorator> decoratorClass) {
 
 
         super(parent);
@@ -158,13 +155,13 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog {
         return headerPanel;
     }
 
-    @NotNull
+
     public Decorator getSelectedDecorator() {
         Decorator d = (Decorator) list.getSelectedValue();
         return d;
     }
 
-    private int resetList(@NotNull String filter) {
+    private int resetList(String filter) {
         model.clear();
         for (T o : listObjects) {
             if (filter.isEmpty()) {

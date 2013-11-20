@@ -22,17 +22,18 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
-import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.core.analysis.overlapping.OverlappingCommand;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.analysis.combination.ConvertModuleMapToMatrixResourceReference;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingCommand;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -40,8 +41,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -92,7 +91,7 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     cmd.run(monitor);
 

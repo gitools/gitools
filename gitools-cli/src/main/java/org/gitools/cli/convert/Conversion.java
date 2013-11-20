@@ -21,8 +21,6 @@
  */
 package org.gitools.cli.convert;
 
-import org.jetbrains.annotations.Nullable;
-
 class Conversion {
 
     private final String src;
@@ -41,7 +39,7 @@ class Conversion {
     }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         } else if (!(obj instanceof Conversion)) {

@@ -22,18 +22,17 @@
 package org.gitools.cli;
 
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.core.model.Analysis;
 import org.gitools.core.model.KeyValue;
 import org.gitools.core.model.Property;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class AnalysisTool extends AbstractTool {
     protected static final String LIST_S_FMT = "\t* %-16s%s";
     protected static final String LIST_L_FMT = "\t* %-48s%s";
 
-    @NotNull
+
     private final List<Property> analysisAttributes = new ArrayList<Property>(0);
 
     @Override
@@ -84,8 +83,8 @@ public class AnalysisTool extends AbstractTool {
         return PersistenceManager.get().getFormat(extension, resourceClass);
     }
 
-    @NotNull
-    protected List<KeyValue> parseConfiguration(@NotNull List<String> config) throws ToolValidationException {
+
+    protected List<KeyValue> parseConfiguration(List<String> config) throws ToolValidationException {
         List<KeyValue> kv = new ArrayList<KeyValue>(config.size());
         for (String conf : config) {
             final String[] c = conf.split("=", 2);
@@ -97,8 +96,8 @@ public class AnalysisTool extends AbstractTool {
         return kv;
     }
 
-    @NotNull
-    protected Properties parseProperties(@NotNull List<String> config) throws ToolValidationException {
+
+    protected Properties parseProperties(List<String> config) throws ToolValidationException {
         Properties properties = new Properties();
         for (String conf : config) {
             final String[] c = conf.split("=", 2);
@@ -110,13 +109,13 @@ public class AnalysisTool extends AbstractTool {
         return properties;
     }
 
-    protected void prepareGeneralAnalysisAttributes(@NotNull Analysis analysis, @NotNull AnalysisArguments args) {
+    protected void prepareGeneralAnalysisAttributes(Analysis analysis, AnalysisArguments args) {
         analysis.setTitle(args.analysisTitle);
         analysis.setDescription(args.analysisNotes);
         analysis.setProperties(analysisAttributes);
     }
 
-    protected void printDataFormats(@NotNull PrintStream out) {
+    protected void printDataFormats(PrintStream out) {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 
@@ -124,7 +123,7 @@ public class AnalysisTool extends AbstractTool {
             out.println(String.format(LIST_L_FMT, f.getExtension(), f.getTitle()));
     }
 
-    protected void printModulesFormats(@NotNull PrintStream out) {
+    protected void printModulesFormats(PrintStream out) {
         out.println("Supported modules formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP, FileFormats.DOUBLE_BINARY_MATRIX};
 

@@ -23,7 +23,6 @@ package org.gitools.ui.datasources.biomart.filter;
 
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.datasources.biomart.wizard.BiomartFilterConfigurationPage.CollectionsPanelsCache;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +82,7 @@ public class FilterSelectComponent extends FilterComponent {
         if (component.equals("ComboBox") && pushActions.size() > 0) {
             comboComponent.addItemListener(new ItemListener() {
                 @Override
-                public void itemStateChanged(@NotNull ItemEvent e) {
+                public void itemStateChanged(ItemEvent e) {
                     if (e.getStateChange() == ItemEvent.SELECTED) {
 
                         setPushOptionsComponent(((OptionListWrapper) comboComponent.getSelectedItem()).getOption());
@@ -224,7 +223,6 @@ public class FilterSelectComponent extends FilterComponent {
     }
 
 
-    @NotNull
     private List<OptionListWrapper> InitListOptions() {
 
         List<OptionListWrapper> res = new ArrayList<OptionListWrapper>();
@@ -272,7 +270,7 @@ public class FilterSelectComponent extends FilterComponent {
 
     }
 
-    @NotNull
+
     @Override
     // FIXME : get Filter for selected value/s in list
     public List<Filter> getFilters() {
@@ -335,7 +333,7 @@ public class FilterSelectComponent extends FilterComponent {
         return filters;
     }
 
-    @NotNull
+
     @Override
     //Always render filter from select component filter
     public Boolean hasChanged() {
@@ -343,7 +341,7 @@ public class FilterSelectComponent extends FilterComponent {
     }
 
     @Override
-    public void setListOptions(@NotNull List<Option> optionList) {
+    public void setListOptions(List<Option> optionList) {
 
         if (this.component.equals("ComboBox")) {
 

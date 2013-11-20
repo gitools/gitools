@@ -22,22 +22,22 @@
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
 import com.google.common.collect.Sets;
-import org.gitools.core.clustering.ClusteringData;
-import org.gitools.core.clustering.ClusteringException;
-import org.gitools.core.clustering.ClusteringMethod;
-import org.gitools.core.clustering.ClusteringResults;
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.ClusteringException;
+import org.gitools.analysis.clustering.ClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.progressmonitor.ProgressMonitor;
 
 import java.util.*;
@@ -128,7 +128,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         Set<String> indicesToAggregate = aggregationDimension.getSelected();
 
         if (dataSourceAggregationPage.useAllColumnsOrRows()) {
-            indicesToAggregate = Sets.newHashSet( aggregationDimension );
+            indicesToAggregate = Sets.newHashSet(aggregationDimension);
         }
 
         annotationLabel += " " + dataSourceAggregationPage.getSelectedDataValueName();
@@ -153,10 +153,10 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
             IMatrixPosition position = heatmap.newPosition();
             for (String identifier : position.iterate(headerDimension)) {
 
-                Double aggregatedValue = aggregator.aggregate( position.iterate(aggregationLayer, aggregationDimension).filter(aggregationIdentifiers));
+                Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension).filter(aggregationIdentifiers));
 
                 if (aggregatedValue != null) {
-                    annotations.setAnnotation( identifier, annotationLabel, Double.toString(aggregatedValue));
+                    annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));
                 }
             }
         }

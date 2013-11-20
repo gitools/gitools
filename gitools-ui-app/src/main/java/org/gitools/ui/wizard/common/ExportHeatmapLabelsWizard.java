@@ -22,16 +22,15 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
-import org.jetbrains.annotations.NotNull;
 
 public class ExportHeatmapLabelsWizard extends AbstractWizard {
 
-    @NotNull
+
     private final FileFormat[] supportedFormats = new FileFormat[]{FileFormats.TEXT};
 
     private final Heatmap hm;
@@ -84,7 +83,7 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard {
         }
     }
 
-    @NotNull
+
     public ExportHeatmapLabelsPage.WhichLabels getWhichLabels() {
         return sourcePage.getWhichLabels();
     }

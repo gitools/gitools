@@ -21,14 +21,13 @@
  */
 package org.gitools.datasources.kegg.idmapper;
 
-import org.gitools.core.idmapper.MappingContext;
-import org.gitools.core.idmapper.MappingData;
-import org.gitools.core.idmapper.MappingException;
-import org.gitools.core.idmapper.MappingNode;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.datasources.idmapper.MappingContext;
+import org.gitools.datasources.idmapper.MappingData;
+import org.gitools.datasources.idmapper.MappingException;
+import org.gitools.datasources.idmapper.MappingNode;
 import org.gitools.datasources.kegg.service.KeggService;
 import org.gitools.datasources.kegg.service.domain.IdConversion;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -52,9 +51,9 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
         super("KeggGenes", false, true, service, organismId);
     }
 
-    @NotNull
+
     @Override
-    public MappingData map(MappingContext context, @NotNull MappingData data, @NotNull MappingNode src, @NotNull MappingNode dst, @NotNull IProgressMonitor monitor) throws MappingException {
+    public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
         Map<String, Set<String>> map = new HashMap<String, Set<String>>();
 
         monitor.begin("Getting mapping information from KEGG ...", 1);

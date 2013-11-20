@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
@@ -32,13 +32,13 @@ import org.gitools.ui.platform.AppFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class HideSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
     private static final long serialVersionUID = 1453040322414160605L;
 
-    public HideSelectionAction( MatrixDimensionKey key) {
+    public HideSelectionAction(MatrixDimensionKey key) {
         super(key, "Hide selected " + key.getLabel());
 
         setSmallIconFromResource(IconNames.get(key).getHide16());

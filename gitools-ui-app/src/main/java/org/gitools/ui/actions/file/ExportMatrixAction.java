@@ -21,20 +21,17 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.core.exporter.TextMatrixViewExporter;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewLayers;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.export.TextMatrixViewExporter;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,10 +39,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @noinspection ALL
- */
-public class ExportMatrixAction extends BaseAction {
+public class ExportMatrixAction extends HeatmapAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
@@ -57,18 +51,9 @@ public class ExportMatrixAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
-        if (matrixView == null) {
-            return;
-        }
-
+        final IMatrixView matrixView = getHeatmap();
         IMatrixViewLayers layers = matrixView.getLayers();
 
         String selectedId = (String) JOptionPane.showInputDialog(
@@ -94,7 +79,7 @@ public class ExportMatrixAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting to image ...", 1);
                     monitor.info("File: " + file.getName());

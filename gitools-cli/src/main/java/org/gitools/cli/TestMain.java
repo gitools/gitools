@@ -21,11 +21,10 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.persistence.formats.matrix.BdmMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.CdmMatrixFormat;
-import org.gitools.core.persistence.formats.modulemap.TcmModuleMapFormat;
+import org.gitools.persistence.formats.matrix.BdmMatrixFormat;
+import org.gitools.persistence.formats.matrix.CdmMatrixFormat;
+import org.gitools.persistence.formats.modulemap.TcmModuleMapFormat;
 import org.gitools.utils.tools.exception.ToolException;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +66,9 @@ public class TestMain {
         Main.main(args);
     }
 
-    @NotNull
+
     @SuppressWarnings("empty-statement")
-    private static String[] cmdLineSplit(@NotNull String cmd) {
+    private static String[] cmdLineSplit(String cmd) {
         List<String> args = new ArrayList<String>();
 
         int lastPos = 0;

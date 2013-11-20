@@ -22,11 +22,12 @@
 package org.gitools.ui.analysis.combination.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -35,8 +36,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
         String combOf = "columns";
         if (analysis.isTransposeData()) {
             combOf = "rows";
@@ -105,7 +104,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Creating new heatmap from data ...", 1);
 
@@ -142,7 +141,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 try {
@@ -170,8 +169,8 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
         });
     }
 
-    @NotNull
-    private static Heatmap createHeatmap(@NotNull CombinationAnalysis analysis) {
+
+    private static Heatmap createHeatmap(CombinationAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;

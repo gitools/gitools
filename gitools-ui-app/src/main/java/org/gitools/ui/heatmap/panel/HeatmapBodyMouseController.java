@@ -21,11 +21,10 @@
  */
 package org.gitools.ui.heatmap.panel;
 
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
     private final IMatrixView heatmap;
     private final JViewport viewPort;
-    @NotNull
+
     private final HeatmapPanel panel;
     private final HeatmapBodyPanel bodyPanel;
 
@@ -58,10 +57,10 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private int altMask = OSProperties.get().getAltMask();
     private int metaMask = OSProperties.get().getMetaMask();
 
-    @NotNull
+
     private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
 
-    public HeatmapBodyMouseController(@NotNull HeatmapPanel panel, @NotNull HeatmapPanelInputProcessor inputProcessor) {
+    public HeatmapBodyMouseController(HeatmapPanel panel, HeatmapPanelInputProcessor inputProcessor) {
         this.heatmap = panel.getHeatmap();
         this.viewPort = panel.getBodyViewPort();
         this.bodyPanel = panel.getBodyPanel();
@@ -87,7 +86,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseClicked(@NotNull MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
         panel.requestFocusInWindow();
 
         point = e.getPoint();
@@ -100,7 +99,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mousePressed(@NotNull MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
@@ -119,7 +118,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
 
 
     @Override
-    public void mouseReleased(@NotNull MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         panel.mouseReleased(e);
         mode = Mode.none;
     }
@@ -133,12 +132,12 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
     @Override
-    public void mouseDragged(@NotNull MouseEvent e) {
+    public void mouseDragged(MouseEvent e) {
         dragHeatmap(e, false);
     }
 
     @Override
-    public void mouseMoved(@NotNull MouseEvent e) {
+    public void mouseMoved(MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
@@ -152,7 +151,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     public static Point wheelPoint;
 
     @Override
-    public void mouseWheelMoved(@NotNull MouseWheelEvent e) {
+    public void mouseWheelMoved(MouseWheelEvent e) {
         int unitsToScroll = e.getUnitsToScroll();
 
         int modifiers = e.getModifiers();
@@ -185,7 +184,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     }
 
 
-    private void updateLeadSelection(@NotNull MouseEvent e) {
+    private void updateLeadSelection(MouseEvent e) {
         point = e.getPoint();
         Point viewPosition = viewPort.getViewPosition();
         point.translate(viewPosition.x, viewPosition.y);
@@ -209,7 +208,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         ip.setLastSelectedRow(coord.row);
     }
 
-    private void dragHeatmap(@NotNull MouseEvent e, boolean initStartPoint) {
+    private void dragHeatmap(MouseEvent e, boolean initStartPoint) {
         point = e.getPoint();
 
         if (initStartPoint) {

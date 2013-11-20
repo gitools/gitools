@@ -21,17 +21,15 @@
  */
 package org.gitools.datasources.biomart.restful;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.BiomartServiceException;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.queryhandler.TsvFileQueryHandler;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.datasources.biomart.settings.BiomartSource;
-import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormat;
 import org.gitools.utils.benchmark.TimeCounter;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,13 +57,13 @@ public class BiomartRestfulService implements BiomartService {
     public static final String SERVICE_NAME = "BioMartSoapService";
     public static final String NAMESPACE = "MartServiceSoap";
 
-    @NotNull
+
     private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat("Tab Separated Fields", "tsv", true, false), new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", true, false)};
 
     private final BiomartSource source;
     private final String restUrl;
 
-    public BiomartRestfulService(@NotNull BiomartSource source) throws BiomartServiceException {
+    public BiomartRestfulService(BiomartSource source) throws BiomartServiceException {
         this.source = source;
 
         restUrl = composeUrl(source.getHost(), source.getPort(), source.getRestPath());
@@ -75,8 +73,8 @@ public class BiomartRestfulService implements BiomartService {
     /**
      * Method for building full url string from a host, port, and a destPath
      */
-    @NotNull
-    private String composeUrl(@Nullable String host, @Nullable String port, @Nullable String destPath) {
+
+    private String composeUrl(String host, String port, String destPath) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -98,7 +96,7 @@ public class BiomartRestfulService implements BiomartService {
         return sb.toString();
     }
 
-    @NotNull
+
     private <T> T xmlGET(String url, Class<T> responseClass) throws IOException, JAXBException {
 
         URL u = new URL(url);
@@ -121,9 +119,9 @@ public class BiomartRestfulService implements BiomartService {
      * @throws IOException
      * @throws JAXBException
      */
-    @Nullable
+
     @Override
-    public DatasetConfig getConfiguration(@NotNull DatasetInfo d) throws BiomartServiceException {
+    public DatasetConfig getConfiguration(DatasetInfo d) throws BiomartServiceException {
 
         final String urlString = restUrl + "?type=configuration&dataset=" + d.getName() + "&virtualSchema=" + d.getInterface();
         DatasetConfig ds = null;
@@ -156,9 +154,9 @@ public class BiomartRestfulService implements BiomartService {
         return reg.getLocations();
     }
 
-    @NotNull
+
     @Override
-    public List<DatasetInfo> getDatasets(@NotNull MartLocation mart) throws BiomartServiceException {
+    public List<DatasetInfo> getDatasets(MartLocation mart) throws BiomartServiceException {
 
         final String urlString = restUrl + "?type=datasets&mart=" + mart.getName();
 
@@ -194,14 +192,14 @@ public class BiomartRestfulService implements BiomartService {
     }
 
     @Override
-    public List<AttributePage> getAttributes(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException {
+    public List<AttributePage> getAttributes(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException {
 
         DatasetConfig dc = getConfiguration(dataset);
         return dc.getAttributePages();
     }
 
     @Override
-    public List<FilterPage> getFilters(MartLocation mart, @NotNull DatasetInfo dataset) throws BiomartServiceException {
+    public List<FilterPage> getFilters(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException {
 
         DatasetConfig dc = getConfiguration(dataset);
 
@@ -212,7 +210,7 @@ public class BiomartRestfulService implements BiomartService {
         }
     }
 
-    @NotNull
+
     @Override
     public FileFormat[] getSupportedFormats() {
         return supportedFormats;
@@ -220,7 +218,7 @@ public class BiomartRestfulService implements BiomartService {
 
     //FIXME Use JAXB !!!
     //FIXME review filter xml parsing
-    private String createQueryXml(@NotNull Query query, String format, boolean encoded) {
+    private String createQueryXml(Query query, String format, boolean encoded) {
         /*JAXBContext context = JAXBContext.newInstance(Query.class);
         Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
@@ -277,7 +275,7 @@ public class BiomartRestfulService implements BiomartService {
     }
 
     @Override
-    public InputStream queryAsStream(@NotNull Query query, String format) throws BiomartServiceException {
+    public InputStream queryAsStream(Query query, String format) throws BiomartServiceException {
         final String queryString = createQueryXml(query, format, true);
         final String urlString = restUrl + "?query=" + queryString;
 
@@ -296,7 +294,7 @@ public class BiomartRestfulService implements BiomartService {
     }
 
     @Override
-    public void queryModule(@NotNull Query query, @NotNull File file, @NotNull String format, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
+    public void queryModule(Query query, File file, String format, IProgressMonitor monitor) throws BiomartServiceException {
         BiomartQueryHandler tableWriter = null;
 
         if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
@@ -315,7 +313,7 @@ public class BiomartRestfulService implements BiomartService {
     }
 
     @Override
-    public void queryModule(@NotNull Query query, @NotNull BiomartQueryHandler writer, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
+    public void queryModule(Query query, BiomartQueryHandler writer, IProgressMonitor monitor) throws BiomartServiceException {
         InputStream in = queryAsStream(query, FORMAT_TSV);
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -367,7 +365,7 @@ public class BiomartRestfulService implements BiomartService {
      * @throws BiomartServiceException
      */
     @Override
-    public void queryTable(@NotNull Query query, @NotNull File file, @NotNull String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
+    public void queryTable(Query query, File file, String format, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, IProgressMonitor monitor) throws BiomartServiceException {
 
         BiomartQueryHandler tableWriter = null;
         if (format.equals(FORMAT_TSV) || format.equals(FORMAT_TSV_GZ)) {
@@ -386,7 +384,7 @@ public class BiomartRestfulService implements BiomartService {
     }
 
     @Override
-    public void queryTable(@NotNull Query query, @NotNull BiomartQueryHandler writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, @NotNull IProgressMonitor monitor) throws BiomartServiceException {
+    public void queryTable(Query query, BiomartQueryHandler writer, boolean skipRowsWithEmptyValues, String emptyValuesReplacement, IProgressMonitor monitor) throws BiomartServiceException {
 
         TimeCounter time = new TimeCounter();
 

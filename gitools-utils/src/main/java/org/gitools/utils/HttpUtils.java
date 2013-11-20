@@ -21,15 +21,13 @@
  */
 package org.gitools.utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpUtils {
 
-    public static void downloadFile(InputStream is, @NotNull File outputFile) throws IOException {
+    public static void downloadFile(InputStream is, File outputFile) throws IOException {
 
 
         OutputStream out = null;

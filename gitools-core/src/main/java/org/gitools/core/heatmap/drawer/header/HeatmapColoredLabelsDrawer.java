@@ -30,7 +30,6 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.Decoration;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -119,7 +118,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     }
 
     @Override
-    public void drawHeaderLegend(@NotNull Graphics2D g, @NotNull Rectangle rect, @NotNull HeatmapHeader oppositeHeatmapHeader) {
+    public void drawHeaderLegend(Graphics2D g, Rectangle rect, HeatmapHeader oppositeHeatmapHeader) {
 
 
         if (oppositeHeatmapHeader instanceof HeatmapDecoratorHeader) {
@@ -149,7 +148,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
                 int equal = v.indexOf("=");
                 if (equal != -1) {
-                    v = v.substring(equal+1).trim();
+                    v = v.substring(equal + 1).trim();
                 }
 
                 for (ColoredLabel cl : clusters) {

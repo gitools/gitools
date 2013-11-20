@@ -23,11 +23,11 @@ package org.gitools.ui.analysis.htest.editor;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -69,7 +69,7 @@ public class ViewRelatedDataFromAction extends HeatmapDimensionAction {
         if ((selection == null || selection.size() == 0) && lead != null) {
             selection = Sets.newHashSet(lead);
         } else if (lead == null) {
-            JOptionPane.showMessageDialog(AppFrame.get(), "You must select some "+getDimensionLabel()+"s before.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(AppFrame.get(), "You must select some " + getDimensionLabel() + "s before.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -77,7 +77,7 @@ public class ViewRelatedDataFromAction extends HeatmapDimensionAction {
         Heatmap heatmap = new Heatmap(matrix);
         getDimension().show(in(selection));
         heatmap.setTitle(title);
-        heatmap.setDescription("Annotated elements for "+getDimensionLabel()+" sets: " + StringUtils.join(selection, ", "));
+        heatmap.setDescription("Annotated elements for " + getDimensionLabel() + " sets: " + StringUtils.join(selection, ", "));
 
         // Open new editor
         HeatmapEditor editor = new HeatmapEditor(heatmap);

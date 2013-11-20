@@ -22,14 +22,15 @@
 package org.gitools.ui.analysis.groupcomparison.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -38,8 +39,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -54,7 +53,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -100,7 +99,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
@@ -135,7 +134,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
 
-    private void copyHeaders(@NotNull HeatmapDimension dim, @NotNull List<HeatmapHeader> headers) {
+    private void copyHeaders(HeatmapDimension dim, List<HeatmapHeader> headers) {
         for (HeatmapHeader hh : headers) {
             dim.addHeader(hh);
         }
@@ -151,7 +150,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());

@@ -25,7 +25,6 @@ import org.gitools.datasources.kegg.service.domain.IdConversion;
 import org.gitools.datasources.kegg.service.domain.KeggOrganism;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
 import org.gitools.utils.csv.CSVReader;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class KeggService {
      * @return The list of available organism
      * @throws IOException
      */
-    @NotNull
+
     public List<KeggOrganism> getOrganisms() throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/list/organism");
@@ -67,7 +66,7 @@ public class KeggService {
      * @return List of Ids relations.
      * @throws IOException
      */
-    @NotNull
+
     public List<IdConversion> getConvert(String sourceDatabase, String targetDatabase) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/conv/" + targetDatabase + "/" + sourceDatabase);
@@ -89,7 +88,7 @@ public class KeggService {
      * @return List of KEGG pathways
      * @throws IOException
      */
-    @NotNull
+
     public List<KeggPathway> getPathways(String organismId) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/list/pathway/" + organismId);
@@ -111,7 +110,7 @@ public class KeggService {
      * @return List of genes within the pathway
      * @throws IOException
      */
-    @NotNull
+
     public List<String> getGenesByPathway(String pathwayId) throws IOException {
 
         CSVReader reader = createReader(REST_SERVER + "/link/genes/" + pathwayId);
@@ -133,7 +132,7 @@ public class KeggService {
      * @return A CSVReader to read the input as a tab-separated file
      * @throws IOException
      */
-    @NotNull
+
     private static CSVReader createReader(String url) throws IOException {
         URL restUrl = new URL(url);
         return new CSVReader(new BufferedReader(new InputStreamReader(restUrl.openStream())));

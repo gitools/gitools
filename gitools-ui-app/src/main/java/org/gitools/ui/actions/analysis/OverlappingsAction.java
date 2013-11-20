@@ -22,13 +22,14 @@
 package org.gitools.ui.actions.analysis;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.core.analysis.overlapping.OverlappingProcessor;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingProcessor;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
@@ -36,8 +37,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,13 +72,13 @@ public class OverlappingsAction extends HeatmapAction {
         if (!analysis.isTransposeData()) {
             if (matrixView.getColumns().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getColumns().show( in(mv.getColumns().getSelected()));
+                mv.getColumns().show(in(mv.getColumns().getSelected()));
                 matrixView = mv;
             }
         } else {
             if (matrixView.getRows().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getRows().show( in( mv.getRows().getSelected() ));
+                mv.getRows().show(in(mv.getRows().getSelected()));
                 matrixView = mv;
             }
         }
@@ -88,7 +87,7 @@ public class OverlappingsAction extends HeatmapAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     new OverlappingProcessor(analysis).run(monitor);
 

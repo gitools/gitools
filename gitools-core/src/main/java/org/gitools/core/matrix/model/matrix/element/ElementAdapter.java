@@ -28,6 +28,4 @@ import java.io.Serializable;
 public abstract class ElementAdapter<T extends MatrixLayer> implements Serializable {
 
 
-
-
 }

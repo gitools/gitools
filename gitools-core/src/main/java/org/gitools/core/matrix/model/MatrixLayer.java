@@ -22,9 +22,11 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.utils.datafilters.ValueTranslator;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.ValueTranslator;
 import org.gitools.utils.datafilters.ValueTranslatorFactory;
-import org.gitools.utils.aggregation.IAggregator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -174,9 +176,8 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
         MatrixLayer that = (MatrixLayer) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return !(id != null ? !id.equals(that.id) : that.id != null);
 
-        return true;
     }
 
     @Override

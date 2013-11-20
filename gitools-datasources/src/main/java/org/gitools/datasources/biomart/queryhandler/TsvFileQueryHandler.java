@@ -21,8 +21,6 @@
  */
 package org.gitools.datasources.biomart.queryhandler;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -52,7 +50,7 @@ public class TsvFileQueryHandler implements BiomartQueryHandler {
     }
 
     @Override
-    public void line(@NotNull String[] rowFields) {
+    public void line(String[] rowFields) {
         if (rowFields.length > 0) {
             writer.print(rowFields[0]);
             for (int i = 1; i < rowFields.length; i++) {

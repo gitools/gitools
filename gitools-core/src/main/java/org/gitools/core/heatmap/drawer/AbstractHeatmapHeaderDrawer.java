@@ -25,7 +25,6 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.Decoration;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -69,7 +68,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     }
 
     protected String getLabel(int index) {
-        return getHeader().getIdentifierTransform().apply( getHeatmapDimension().getLabel(index) );
+        return getHeader().getIdentifierTransform().apply(getHeatmapDimension().getLabel(index));
     }
 
     @Override
@@ -90,12 +89,12 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return index;
     }
 
-    @NotNull
+
     @Override
     public Dimension getSize() {
         HeatmapDimension hdim = getHeatmapDimension();
         int total = (hdim.getFullSize()) * hdim.size();
-        return (isHorizontal()? new Dimension(total, getHeader().getSize()) : new Dimension(getHeader().getSize(), total));
+        return (isHorizontal() ? new Dimension(total, getHeader().getSize()) : new Dimension(getHeader().getSize(), total));
     }
 
     @Deprecated
@@ -104,7 +103,6 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     }
 
     public void drawHeaderLegend(Graphics2D g, Rectangle headerIntersection, HeatmapHeader heatmapHeader) {
-        return;
     }
 
     public HeatmapDimension getHeatmapDimension() {
@@ -116,7 +114,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     }
 
     protected boolean isSelected(String identifier) {
-        return !isPictureMode() &&  heatmapDimension.getSelected().contains(identifier);
+        return !isPictureMode() && heatmapDimension.getSelected().contains(identifier);
     }
 
     protected void prepareDraw(Graphics2D g, Rectangle box) {
@@ -132,7 +130,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
                 decoration,
                 header.getBackgroundColor(),
                 gridSize,
-                offset, index*(heatmapDimension.getFullSize()),
+                offset, index * (heatmapDimension.getFullSize()),
                 width,
                 heatmapDimension.getCellSize(),
                 g,

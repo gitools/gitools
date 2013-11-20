@@ -22,9 +22,14 @@
 package org.gitools.core.matrix.sort.mutualexclusion;
 
 
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.position.IMatrixPredicate;
 import org.gitools.utils.aggregation.SumAbsAggregator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Comparator;
 import java.util.HashMap;

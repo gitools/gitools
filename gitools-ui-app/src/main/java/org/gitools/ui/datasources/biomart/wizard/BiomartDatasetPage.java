@@ -27,7 +27,6 @@ import org.gitools.datasources.biomart.restful.model.MartLocation;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.wizard.common.FilteredListPanel;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -60,7 +59,7 @@ public class BiomartDatasetPage extends AbstractWizardPage {
 
     private final BiomartService biomartService;
 
-    @Nullable
+
     private MartLocation mart;
 
     private FilteredListPanel panelDataset;

@@ -21,23 +21,22 @@
  */
 package org.gitools.ui.sort;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
-import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AnnotationSortPage extends AbstractWizardPage {
 
@@ -173,7 +172,7 @@ public class AnnotationSortPage extends AbstractWizardPage {
         return rowsPat;
     }
 
-    @NotNull
+
     public SortDirection getRowsDirection() {
         return (SortDirection) rowsDirCb.getSelectedItem();
     }
@@ -190,7 +189,7 @@ public class AnnotationSortPage extends AbstractWizardPage {
         return colsPat;
     }
 
-    @NotNull
+
     public SortDirection getColumnsDirection() {
         return (SortDirection) colsDirCb.getSelectedItem();
     }

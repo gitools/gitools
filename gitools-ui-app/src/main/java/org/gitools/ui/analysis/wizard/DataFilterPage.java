@@ -29,8 +29,6 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -134,7 +132,7 @@ public class DataFilterPage extends AbstractWizardPage {
         setComplete(complete);
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -227,7 +225,7 @@ public class DataFilterPage extends AbstractWizardPage {
         populationNote.setVisible(visible);
     }
 
-    @Nullable
+
     public File getRowsFilterFile() {
         String text = populationFilePath.getText();
         return populationCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
@@ -245,7 +243,7 @@ public class DataFilterPage extends AbstractWizardPage {
         return CutoffCmp.getFromName((String) cutoffCmpCb.getSelectedItem());
     }
 
-    public void setBinaryCutoffCmp(@NotNull CutoffCmp cmp) {
+    public void setBinaryCutoffCmp(CutoffCmp cmp) {
         cutoffCmpCb.setSelectedItem(cmp.getLongName());
     }
 

@@ -25,7 +25,6 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.font.LineMetrics;
@@ -38,7 +37,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
     }
 
     @Override
-    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         HeatmapTextLabelsHeader header = getHeader();
 
@@ -85,23 +84,20 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         int y = box.y + start * height;
         int padding = 5;
         for (int index = start; index < end; index++) {
-            Color bgColor = header.getBackgroundColor();
-            Color fgColor = header.getLabelColor();
-            Color gColor = gridColor;
+
 
             String label = getLabel(index);
             String matrixLabel = heatmapDimension.getLabel(index);
-            if (heatmapDimension.isHighlighted(matrixLabel)) {
-                bgColor = highlightingColor;
-            }
 
-            g.setColor(gColor);
+            Color bgColor = heatmapDimension.isHighlighted(matrixLabel) ? highlightingColor : header.getBackgroundColor();
+
+            g.setColor(gridColor);
             g.fillRect(x, y + cellHeight, width, gridSize);
 
             g.setColor(bgColor);
             g.fillRect(x, y, width, cellHeight);
 
-            g.setColor(fgColor);
+            g.setColor(header.getLabelColor());
             g.drawString(label, x + padding, y + fontOffset);
 
             y += height;

@@ -21,24 +21,21 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.clustering.ClusteringMethod;
-import org.gitools.core.clustering.ClusteringResults;
-import org.gitools.core.clustering.HierarchicalClusteringResults;
-import org.gitools.core.clustering.method.value.ClusterUtils;
+import org.gitools.analysis.clustering.ClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.HierarchicalClusteringResults;
+import org.gitools.analysis.clustering.method.value.ClusterUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.clustering.values.ClusteringValueWizard;
+import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.analysis.clustering.values.ClusteringValueWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
@@ -47,7 +44,7 @@ import java.io.FileWriter;
 import java.util.Collection;
 import java.util.Set;
 
-public class ClusteringByValueAction extends BaseAction {
+public class ClusteringByValueAction extends HeatmapAction {
 
     public ClusteringByValueAction() {
         super("Clustering");
@@ -55,18 +52,8 @@ public class ClusteringByValueAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-
-        final Heatmap heatmap = ActionUtils.getHeatmap();
-
-        if (heatmap == null) {
-            return;
-        }
+        final Heatmap heatmap = getHeatmap();
 
         final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wiz);
@@ -79,7 +66,7 @@ public class ClusteringByValueAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Clustering  ...", 1);
 
@@ -111,7 +98,7 @@ public class ClusteringByValueAction extends BaseAction {
                     } else {
                         Collection<String> clusters = results.getClusters();
                         for (String cluster : clusters) {
-                           for (String item : results.getItems(cluster)) {
+                            for (String item : results.getItems(cluster)) {
                                 annotationMatrix.setAnnotation(item, annotationLabel, cluster);
                             }
                         }
@@ -144,14 +131,14 @@ public class ClusteringByValueAction extends BaseAction {
                                 header.updateFromClusterResults(hresults);
                                 header.setTitle(annotationLabel + " level " + l);
                                 header.setSize(4);
-                                header.setAnnotationPattern("${" + annotationLabel + " level " + l +"}");
+                                header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
                                 hdim.addHeader(header);
                             }
                         } else {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
                             header.updateFromClusterResults(results);
                             header.setTitle(annotationLabel);
-                            header.setAnnotationPattern("${"+annotationLabel+"}");
+                            header.setAnnotationPattern("${" + annotationLabel + "}");
                             hdim.addHeader(header);
                         }
 

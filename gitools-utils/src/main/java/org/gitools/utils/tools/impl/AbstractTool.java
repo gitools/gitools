@@ -29,7 +29,6 @@ import org.gitools.utils.tools.args.BaseArguments;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolUsageException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.PrintStream;
@@ -101,7 +100,7 @@ public abstract class AbstractTool<Context> implements ToolLifeCycle<Context> {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, @NotNull ToolDescriptor toolDesc, @NotNull CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         outputStream.print(toolDesc.getName() + " usage:\n\t" +
                 appName + " " + toolDesc.getName());
 

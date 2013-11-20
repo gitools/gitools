@@ -27,7 +27,6 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -84,7 +83,7 @@ public abstract class HeatmapHeader extends Model {
     @XmlElement(name = "label-rotated")
     protected boolean labelRotated;
 
-    @Nullable
+
     @XmlElement(name = "annotation-pattern")
     private String annotationPattern;
 
@@ -262,7 +261,7 @@ public abstract class HeatmapHeader extends Model {
         firePropertyChange(PROPERTY_LABEL_COLOR, old, labelColor);
     }
 
-    @Nullable
+
     public String getAnnotationPattern() {
         return annotationPattern;
     }
@@ -315,7 +314,7 @@ public abstract class HeatmapHeader extends Model {
      * Override this method if you want that the sort by label related to this header
      * uses numeric sort.
      *
-     * @return  If the header contains numbers.
+     * @return If the header contains numbers.
      */
     public boolean isNumeric() {
         return false;
@@ -329,7 +328,7 @@ public abstract class HeatmapHeader extends Model {
         this.sortAscending = ascending;
     }
 
-    public String deriveTitleFromPattern () {
+    public String deriveTitleFromPattern() {
         String title = "";
 
         title = annotationPattern.replaceAll("[{}$]", "");

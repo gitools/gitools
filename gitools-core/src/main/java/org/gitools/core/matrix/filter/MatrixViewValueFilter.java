@@ -23,9 +23,9 @@ package org.gitools.core.matrix.filter;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Sets;
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IMatrixViewDimension;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.utils.MatrixUtils;
 
 import java.util.HashSet;
@@ -45,7 +45,7 @@ public class MatrixViewValueFilter {
         }
     }
 
-    private static void filter(IMatrixView matrixView, IMatrixViewDimension rows,  IMatrixViewDimension columns, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
+    private static void filter(IMatrixView matrixView, IMatrixViewDimension rows, IMatrixViewDimension columns, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
 
         Set<String> selection = columns.getSelected();
         if (selection.isEmpty()) {

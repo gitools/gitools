@@ -32,7 +32,6 @@ import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,7 +89,7 @@ public class ColorScalePage extends AbstractWizardPage {
         });
     }
 
-    @Nullable
+
     @Override
     public JComponent createControls() {
         return mainPanel;

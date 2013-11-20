@@ -25,7 +25,6 @@ import org.gitools.datasources.biomart.restful.model.AttributeCollection;
 import org.gitools.datasources.biomart.restful.model.AttributeDescription;
 import org.gitools.datasources.biomart.restful.model.AttributeGroup;
 import org.gitools.datasources.biomart.restful.model.AttributePage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -60,7 +59,7 @@ public class AttributesTreeModel extends DefaultTreeModel {
             }
         }
 
-        @NotNull
+
         private NodeType nodeType(Object o) {
             if (o == this) {
                 return NodeType.ROOT;
@@ -74,7 +73,7 @@ public class AttributesTreeModel extends DefaultTreeModel {
             return NodeType.ATTRIBUTE;
         }
 
-        private String nodeName(Object o, @NotNull NodeType type) {
+        private String nodeName(Object o, NodeType type) {
             String nodeName = "unknown type";
             switch (type) {
                 case ROOT:
@@ -154,11 +153,11 @@ public class AttributesTreeModel extends DefaultTreeModel {
         }
     }
 
-    public AttributesTreeModel(@NotNull List<AttributePage> pages) {
+    public AttributesTreeModel(List<AttributePage> pages) {
         this(pages, "");
     }
 
-    public AttributesTreeModel(@NotNull List<AttributePage> pages, String filterText) {
+    public AttributesTreeModel(List<AttributePage> pages, String filterText) {
         super(new DefaultMutableTreeNode("root"));
 
         filterText = filterText.toLowerCase();
@@ -177,7 +176,7 @@ public class AttributesTreeModel extends DefaultTreeModel {
         }
     }
 
-    private int populatePage(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeGroup> groups, @NotNull String filterText) {
+    private int populatePage(DefaultMutableTreeNode node, List<AttributeGroup> groups, String filterText) {
 
         for (AttributeGroup group : groups) {
             DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(new AttributeWrapper(group));
@@ -190,7 +189,7 @@ public class AttributesTreeModel extends DefaultTreeModel {
         return node.getChildCount();
     }
 
-    private int populateGroup(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeCollection> collections, @NotNull String filterText) {
+    private int populateGroup(DefaultMutableTreeNode node, List<AttributeCollection> collections, String filterText) {
 
         for (AttributeCollection coll : collections) {
             DefaultMutableTreeNode collNode = new DefaultMutableTreeNode(new AttributeWrapper(coll));
@@ -203,7 +202,7 @@ public class AttributesTreeModel extends DefaultTreeModel {
         return node.getChildCount();
     }
 
-    private int populateCollection(@NotNull DefaultMutableTreeNode node, @NotNull List<AttributeDescription> attrs, @NotNull String filterText) {
+    private int populateCollection(DefaultMutableTreeNode node, List<AttributeDescription> attrs, String filterText) {
 
         for (AttributeDescription attr : attrs) {
             if (attr.getDisplayName() != null) //xrp: identified null displayNames

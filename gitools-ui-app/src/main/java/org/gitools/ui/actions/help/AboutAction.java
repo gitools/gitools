@@ -29,9 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-/**
- * @noinspection ALL
- */
 public class AboutAction extends BaseAction {
 
     private static final long serialVersionUID = 8302818623988394433L;

@@ -12,15 +12,15 @@ Data import: file formats
 Various formats are accepted in Gitools to represent each of these data types. The following table list the file formats accepted for each data type and in the following sections each file format is described.
 
 =============================== ================================================ 
-In Gitools                      Accepted format         
+In Gitools                      Accepted format
 =============================== ================================================ 
-Matrix Heatmap (single-value)         
+Matrix Heatmap (single-value)
                                 - ``.bdm, .bdm.gz`` (Binary matrix)
                                 - ``.cdm, .cdm.gz`` (Continuous data matrix)
                                 - ``.gmx, .gmz.gz`` (Gene matrix)
                                 - ``.gmt, .gmt.gz`` (Gene matrix transposed)
                                 - ``.tcm, .tcm.gz`` (Two columns mapping)
-Matrix Heatmap (multipe values)  
+Matrix Heatmap (multipe values)
                                 - ``.cmatrix, .cmatrix.gz`` (Compressed Heatmap)
                                 - ``.tdm, .tdm.gz`` (Multi-value data matrix)
                                 - ``.xls, .xlsx`` (Excel, table format)
@@ -97,9 +97,9 @@ It is useful for representing matrices (i.e. expression data for a microarray).
 
 
 .. image:: img/formatCDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: cdm file format 
+       :alt: cdm file format
 
 
 Binary data matrix (BDM)
@@ -114,9 +114,9 @@ When representing matrices a 1 means that this item (row) presents a positive ev
 When representing modules, rows correspond to genes or biological elements and each column a different module, then a 1 is used to specify that a given gene or biological element is related to a given module and 0 otherwise.
 
 .. image:: img/formatBDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: bdm file format 
+       :alt: bdm file format
 
 .. _tdm:
 
@@ -128,9 +128,9 @@ TDM file format is a tab delimited file that has contains multiple values per ro
 In this following example we see a .tdm-file that contains three columns and two rows.
 
 .. image:: img/formatTDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: tdm file format 
+       :alt: tdm file format
 
 Gene matrix transposed (GMT)
 ..................................................
@@ -142,9 +142,9 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMT.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: GMT file format 
+       :alt: GMT file format
 
 Gene matrix (GMX)
 ..................................................
@@ -158,9 +158,9 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMX.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: gmx file format 
+       :alt: gmx file format
 
 
 Two columns mapping (TCM)

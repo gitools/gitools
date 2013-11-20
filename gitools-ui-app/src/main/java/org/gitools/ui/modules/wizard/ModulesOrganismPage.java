@@ -21,16 +21,15 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.core.modules.importer.ModuleCategory;
-import org.gitools.core.modules.importer.ModulesImporter;
-import org.gitools.core.modules.importer.Organism;
-import org.gitools.core.modules.importer.Version;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.datasources.modules.importer.ModuleCategory;
+import org.gitools.datasources.modules.importer.ModulesImporter;
+import org.gitools.datasources.modules.importer.Organism;
+import org.gitools.datasources.modules.importer.Version;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -57,7 +56,7 @@ public class ModulesOrganismPage extends FilteredListPage {
 
             JobThread.execute(AppFrame.get(), new JobRunnable() {
                 @Override
-                public void run(@NotNull IProgressMonitor monitor) {
+                public void run(IProgressMonitor monitor) {
                     try {
                         monitor.begin("Getting available organisms ...", 1);
 
@@ -90,7 +89,7 @@ public class ModulesOrganismPage extends FilteredListPage {
         importer.setOrganism(getOrganism());
     }
 
-    @NotNull
+
     private Organism getOrganism() {
         return (Organism) getSelectedValue();
     }

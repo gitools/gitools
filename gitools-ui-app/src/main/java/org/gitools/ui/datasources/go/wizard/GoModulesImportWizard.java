@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.datasources.go.wizard;
 
-import org.gitools.core.modules.importer.ModulesImporter;
+import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.IconUtils;

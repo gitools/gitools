@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.platform.editor;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -53,7 +51,7 @@ public class HtmlEditor extends AbstractEditor {
         }
 
         @Override
-        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
+        public void onMouseOver(HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
@@ -74,7 +72,7 @@ public class HtmlEditor extends AbstractEditor {
         }
 
         @Override
-        public void linkClicked(@NotNull HTMLElement linkNode, URL url, String target) {
+        public void linkClicked(HTMLElement linkNode, URL url, String target) {
             try {
                 HtmlEditor.this.linkClicked(linkNode, url, target);
                 super.linkClicked(linkNode, url, target);
@@ -119,7 +117,7 @@ public class HtmlEditor extends AbstractEditor {
         this.title = title;
     }
 
-    @Nullable
+
     @Override
     public Object getModel() {
         return null;
@@ -134,7 +132,7 @@ public class HtmlEditor extends AbstractEditor {
         add(panel, BorderLayout.CENTER);
     }
 
-    void linkClicked(@NotNull HTMLElement linkNode, URL url, @Nullable String target) throws LinkVetoException {
+    void linkClicked(HTMLElement linkNode, URL url, String target) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
         if ("action".equalsIgnoreCase(rel)) {
@@ -160,7 +158,7 @@ public class HtmlEditor extends AbstractEditor {
 
             performUrlAction(name, params);
             throw new LinkVetoException();
-        } else if (target != null && target.equalsIgnoreCase("_external")) {
+        } else if (target.equalsIgnoreCase("_external")) {
             try {
                 URI uri = new URI(href);
                 if (Desktop.isDesktopSupported()) {

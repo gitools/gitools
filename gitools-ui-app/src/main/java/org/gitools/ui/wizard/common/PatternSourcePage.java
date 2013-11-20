@@ -23,10 +23,10 @@ package org.gitools.ui.wizard.common;
 
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.annotations.TsvAnnotationMatrixFormat;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.annotations.TsvAnnotationMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -35,11 +35,7 @@ import org.gitools.ui.utils.LogUtils;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -21,12 +21,10 @@
  */
 package org.gitools.ui.heatmap.panel.search;
 
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;
@@ -43,12 +41,12 @@ import java.util.regex.Pattern;
 
 public class HeatmapSearchPanel extends javax.swing.JPanel {
 
-    @NotNull
+
     private static Highlighter.HighlightPainter redHighlightPainter = new DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 
     private final Heatmap hm;
 
-    @Nullable
+
     private Pattern searchPat;
 
     private final Color defaultSearchTextBgColor;
@@ -170,7 +168,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         }
     }
 
-    private boolean checkMatch(IMatrixView mv, @Nullable IAnnotations am, String label) {
+    private boolean checkMatch(IMatrixView mv, IAnnotations am, String label) {
 
         if (searchPat == null) {
             return false;

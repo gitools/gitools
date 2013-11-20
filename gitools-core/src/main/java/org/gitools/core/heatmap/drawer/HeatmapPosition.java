@@ -21,8 +21,8 @@
  */
 package org.gitools.core.heatmap.drawer;
 
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.MatrixPosition;
 import org.gitools.core.model.decorator.Decoration;
 
@@ -49,7 +49,7 @@ public class HeatmapPosition extends MatrixPosition implements IMatrixPosition {
     public HeatmapPosition(Heatmap heatmap, int row, int column, String headerAnnotation, Decoration headerDecoration) {
         super(heatmap);
 
-        set( heatmap.getRows().getLabel(row), heatmap.getColumns().getLabel(column) );
+        set(heatmap.getRows().getLabel(row), heatmap.getColumns().getLabel(column));
 
         this.row = row;
         this.column = column;

@@ -26,26 +26,26 @@ Moreover, after computing p-values for alteration events seen in individual stud
 To start the import of these IntOGen arrays data go to the main menu and select the menu :code:`File > Import > IntOGen > Matrix ...`
 
 .. image:: img/importintogenmatrixselecttype.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: select type
+       :alt: select type
 
-A window like the one shown before will appear asking for selecting a type, then select Onco Experiments or Onco Combinations depending on the data of your interest. Once the type is selected, you should select the alteration of interest, currently it can be gain and loss for genomic alterations and upreg and downreg for upregulated and downregulated transcriptomic data.
+    A window like the one shown before will appear asking for selecting a type, then select Onco Experiments or Onco Combinations depending on the data of your interest. Once the type is selected, you should select the alteration of interest, currently it can be gain and loss for genomic alterations and upreg and downreg for upregulated and downregulated transcriptomic data.
 
-The next step consists on filtering the data by topography, morphology, platform and authors if Onco Experiments was selected, or topography and morphology if Onco Combinations was selected. It is possible to select many options for each filter. To do this maintain the CTRL key (or ⌘ in Mac) and select different options.
+    The next step consists on filtering the data by topography, morphology, platform and authors if Onco Experiments was selected, or topography and morphology if Onco Combinations was selected. It is possible to select many options for each filter. To do this maintain the CTRL key (or ⌘ in Mac) and select different options.
 
 .. image:: img/importintogenmatrixexperiments.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: select type
+       :alt: select type
 
 .. image:: img/importintogenmatrixcombinations.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: select type
+       :alt: select type
 
 
-The total number of columns that will be downloaded will be shown in red. There are some restrictions regarding the maximum number of columns that can be downloaded at the same time (a message will appear in red warning on that), so filters have to be applied to reduce the number of columns.
+    The total number of columns that will be downloaded will be shown in red. There are some restrictions regarding the maximum number of columns that can be downloaded at the same time (a message will appear in red warning on that), so filters have to be applied to reduce the number of columns.
 
 Modules (gene sets) of genes susceptible to be altered in cancer.
 ------------------------------------------------------------------

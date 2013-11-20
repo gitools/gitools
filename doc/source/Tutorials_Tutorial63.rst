@@ -13,7 +13,7 @@ In the matrix we have loaded in step one of the case study we have homozygous lo
 Watch the  `video tutorial <http://www.youtube.com/watch?v=HPPHy5LNSBY>`__  and/or read the instructions below
 
 .. image:: img/youtube-ciseffect.png
-    :target: http://www.youtube.com/watch?v=HPPHy5LNSBY
+:target: http://www.youtube.com/watch?v=HPPHy5LNSBY
 
 How to use Gitools for this task
 -------------------------------------------------

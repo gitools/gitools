@@ -1,4 +1,3 @@
-
 ================================================================
 Export heatmaps, data and images
 ================================================================
@@ -9,4 +8,4 @@ Gitools allows to export a the following things:
 
 
  .. commented out: html reports from your results.
-  .. comment `Tables of data and results in html <UserGuide_ExportHeatmapReports.rst>`__
+.. comment `Tables of data and results in html <UserGuide_ExportHeatmapReports.rst>`__

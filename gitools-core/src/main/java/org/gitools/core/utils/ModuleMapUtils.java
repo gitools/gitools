@@ -34,8 +34,8 @@ public class ModuleMapUtils {
      * Returns a new module map that only contains the modules with a total number of items between minSize and maxSize (both included)
      *
      * @param srcModuleMap the source module map
-     * @param minSize the min size
-     * @param maxSize the max size
+     * @param minSize      the min size
+     * @param maxSize      the max size
      * @return the new module map
      */
     public static IModuleMap filterByModuleSize(IModuleMap srcModuleMap, int minSize, int maxSize) {
@@ -59,34 +59,10 @@ public class ModuleMapUtils {
     }
 
     /**
-     * Returns a new module map with only the modules mappings at 'modules' iterable.
-     *
-     * @param srcModuleMap the src module map
-     * @param modules the valid modules
-     * @return the i module map
-     */
-    public static IModuleMap filterByModules(IModuleMap srcModuleMap, Iterable<String> modules) {
-
-        HashModuleMap dstModuleMap = new HashModuleMap();
-
-        for (String module : modules) {
-            Collection<String> items = srcModuleMap.getMappingItems(module);
-
-            if (items != null) {
-                for (String item : items) {
-                    dstModuleMap.addMapping(module, item);
-                }
-            }
-        }
-
-        return dstModuleMap;
-    }
-
-    /**
      * Returns a new module map removing all items no present in 'items'
      *
      * @param srcModuleMap the src module map
-     * @param items the items
+     * @param items        the items
      * @return the i module map
      */
     public static IModuleMap filterByItems(IModuleMap srcModuleMap, Iterable<String> items) {
@@ -108,9 +84,6 @@ public class ModuleMapUtils {
 
         return dstModuleMap;
     }
-
-
-
 
 
 }

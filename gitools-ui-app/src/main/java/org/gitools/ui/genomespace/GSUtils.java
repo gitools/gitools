@@ -12,8 +12,6 @@
 package org.gitools.ui.genomespace;
 
 import org.apache.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.*;
@@ -32,21 +30,21 @@ public class GSUtils {
     /*
     * Directory and filenames to save the token and username to facilitate SSO
     */
-    @NotNull
+
     private static final String tokenSaveDir = ".gs";
-    @NotNull
+
     private static final String tokenSaveFileName = ".gstoken";
-    @NotNull
+
     private static final String usernameSaveFileName = ".gsusername";
-    @Nullable
+
     private static String gsUser = null;
-    @Nullable
+
     private static String gsToken = null;
 
     public static final String DEFAULT_GS_DM_SERVER = "https://dm.genomespace.org/datamanager/v1.0/";
     public static final String DEFAULT_GS_IDENTITY_SERVER = "https://identity.genomespace.org/identityServer/basic";
 
-    @NotNull
+
     private static File getTokenSaveDir() {
         String userDir = System.getProperty("user.home");
         File gsDir = new File(userDir, tokenSaveDir);
@@ -56,13 +54,13 @@ public class GSUtils {
         return gsDir;
     }
 
-    @Nullable
+
     private static File getTokenFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, tokenSaveFileName) : null;
     }
 
-    @Nullable
+
     private static File getUsernameFile() {
         File gsDir = getTokenSaveDir();
         return (gsDir != null && gsDir.exists()) ? new File(gsDir, usernameSaveFileName) : null;
@@ -86,7 +84,7 @@ public class GSUtils {
         }
     }
 
-    @Nullable
+
     public static String getGSToken() {
         if (gsToken == null) {
             File file = GSUtils.getTokenFile();
@@ -130,7 +128,6 @@ public class GSUtils {
     }
 
 
-    @Nullable
     public static String getGSUser() throws IOException {
         if (gsUser == null) {
             BufferedReader br = null;
@@ -212,7 +209,7 @@ public class GSUtils {
     }
 
 
-    public static boolean isGenomeSpace(@NotNull URL url) {
+    public static boolean isGenomeSpace(URL url) {
         return url.getHost().contains("genomespace");
     }
 

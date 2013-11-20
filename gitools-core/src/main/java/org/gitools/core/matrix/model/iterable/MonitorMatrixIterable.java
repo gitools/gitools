@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.api.analysis.IProgressMonitor;
 
 import java.util.Iterator;
 import java.util.concurrent.CancellationException;
@@ -41,7 +41,7 @@ public class MonitorMatrixIterable<T> extends AbstractChainIterable<T, T> {
     @Override
     public Iterator<T> iterator() {
 
-        if (title!=null) {
+        if (title != null) {
             monitor.begin(title, size());
         }
 

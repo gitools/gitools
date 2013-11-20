@@ -169,7 +169,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
         return newArrayList(
                 transform(
-                        filter(dimension, not( in( dimension.getSelected() ))),
+                        filter(dimension, not(in(dimension.getSelected()))),
                         new PatternFunction(pattern, dimension.getAnnotations())
                 )
         );

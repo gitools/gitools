@@ -21,12 +21,12 @@
  */
 package org.gitools.core.heatmap;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.utils.EventUtils;
+import org.gitools.utils.events.EventUtils;
 import org.gitools.utils.formatter.DetailsBoxFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
@@ -77,7 +77,6 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public ITextFormatter getLongFormatter() {
         return LONG_FORMATTER;
     }
-
 
 
     @Override

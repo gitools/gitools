@@ -31,8 +31,6 @@ import org.gitools.datasources.biomart.settings.BiomartSource;
 import org.gitools.datasources.biomart.settings.BiomartSourceManager;
 import org.gitools.ui.datasources.biomart.panel.AttributesTreeModel.AttributeWrapper;
 import org.gitools.ui.wizard.common.FilteredTreePanel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -48,14 +46,14 @@ import java.util.Set;
  */
 public class BiomartAttributePanel extends FilteredTreePanel {
 
-    @Nullable
+
     private BiomartService port;
-    @Nullable
+
     private MartLocation mart;
-    @Nullable
+
     private DatasetInfo dataset;
 
-    @Nullable
+
     private List<AttributePage> attrPages;
 
     private final List<AttributeDescription> selectedAttr;
@@ -66,7 +64,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         void selectionChanged();
     }
 
-    @NotNull
+
     private final List<AttributeSelectionListener> attributeSelectionListeners = new ArrayList<AttributeSelectionListener>();
 
     public BiomartAttributePanel() {
@@ -84,7 +82,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         tree.setRootVisible(false);
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
-            public void valueChanged(@NotNull TreeSelectionEvent e) {
+            public void valueChanged(TreeSelectionEvent e) {
                 selectionChanged(e);
             }
         });
@@ -165,7 +163,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         }
     }
 
-    private void selectionChanged(@NotNull TreeSelectionEvent e) {
+    private void selectionChanged(TreeSelectionEvent e) {
         TreePath[] paths = e.getPaths();
         if (paths == null) {
             return;
@@ -226,7 +224,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         //collapseBtn.setEnabled(enabled);
     }
 
-    @Nullable
+
     @Override
     protected TreeModel updateModel(String filterText) {
         if (attrPages == null) {
@@ -236,7 +234,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         return new AttributesTreeModel(attrPages, filterText);
     }
 
-    public synchronized void setAttributePages(@Nullable List<AttributePage> attrPages) {
+    public synchronized void setAttributePages(List<AttributePage> attrPages) {
         this.attrPages = attrPages;
 
         final AttributesTreeModel model = attrPages == null ? null : new AttributesTreeModel(attrPages);
@@ -245,7 +243,7 @@ public class BiomartAttributePanel extends FilteredTreePanel {
         expandAll();
     }
 
-    @Nullable
+
     public synchronized List<AttributePage> getAttributePages() {
         return attrPages;
     }

@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.aggregation;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 /**
  * Multiplication
@@ -34,7 +34,7 @@ public class FrequencyAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
 
         double length = (double) data.length;
         double events = 0.0;
@@ -53,7 +53,7 @@ public class FrequencyAggregator extends AbstractAggregator {
         }
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Frequency (Non-zero)";

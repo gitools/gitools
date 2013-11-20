@@ -21,10 +21,10 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixIterable;
-import org.gitools.core.matrix.model.IMatrixPosition;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.position.IMatrixIterable;
+import org.gitools.api.matrix.position.IMatrixPosition;
 
 import java.util.Iterator;
 

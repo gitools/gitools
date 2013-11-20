@@ -32,7 +32,6 @@ import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.utils.collections.ReverseListIterator;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         return getHeatmap().getColumns() == heatmapDimension;
     }
 
-    @NotNull
+
     @Override
     public Dimension getSize() {
         int w = 0;
@@ -111,7 +110,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     private static final double radianAngle90 = (-90.0 / 180.0) * Math.PI;
 
     @Override
-    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         // Clear background
         g.setColor(Color.WHITE);
@@ -161,14 +160,14 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             int lead = heatmapDimension.indexOf(heatmapDimension.getFocus());
             if (lead != -1) {
                 g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
-                g.fillRect(box.x, box.y + ((lead+1) * cellSize) - 1, box.width, 1);
+                g.fillRect(box.x, box.y + ((lead + 1) * cellSize) - 1, box.width, 1);
             }
 
         }
     }
 
     @Override
-    public HeatmapPosition getPosition(@NotNull Point p) {
+    public HeatmapPosition getPosition(Point p) {
         int x = 0;
         int y = 0;
         if (isHorizontal()) {
@@ -221,7 +220,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         return null;
     }
 
-    @NotNull
+
     @Override
     public Point getPoint(HeatmapPosition p) {
         return new Point(0, 0);

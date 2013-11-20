@@ -24,7 +24,6 @@ package org.gitools.core.heatmap.drawer;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -37,7 +36,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
     }
 
     @Override
-    public void draw(@NotNull Graphics2D g, @NotNull Rectangle box, @NotNull Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         Heatmap heatmap = getHeatmap();
 
@@ -128,7 +127,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
     }
 
-    @NotNull
+
     @Override
     public Dimension getSize() {
 
@@ -140,9 +139,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         return new Dimension(cellWidth * columnCount, cellHeight * rowCount);
     }
 
-    @NotNull
+
     @Override
-    public HeatmapPosition getPosition(@NotNull Point p) {
+    public HeatmapPosition getPosition(Point p) {
 
         Heatmap heatmap = getHeatmap();
 
@@ -160,9 +159,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         return new HeatmapPosition(heatmap, row, column);
     }
 
-    @NotNull
+
     @Override
-    public Point getPoint(@NotNull HeatmapPosition p) {
+    public Point getPoint(HeatmapPosition p) {
 
         Heatmap heatmap = getHeatmap();
 

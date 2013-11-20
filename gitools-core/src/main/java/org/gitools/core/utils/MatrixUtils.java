@@ -22,7 +22,10 @@
 package org.gitools.core.utils;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.*;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.model.HashModuleMap;
@@ -30,7 +33,6 @@ import org.gitools.core.model.IModuleMap;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.*;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class MatrixUtils {
     public static String[] createLabelArray(IMatrixDimension dimension) {
         String[] labels = new String[dimension.size()];
 
-        for (int i=0; i < dimension.size(); i++) {
+        for (int i = 0; i < dimension.size(); i++) {
             labels[i] = dimension.getLabel(i);
         }
 

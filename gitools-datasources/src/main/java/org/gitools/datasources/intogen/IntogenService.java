@@ -21,9 +21,8 @@
  */
 package org.gitools.datasources.intogen;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.utils.fileutils.IOUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -53,7 +52,7 @@ public class IntogenService {
         return service;
     }
 
-    public void queryFromPOST(File folder, String prefix, @NotNull URL action, @NotNull List<String[]> properties, @NotNull IProgressMonitor monitor) throws IntogenServiceException {
+    public void queryFromPOST(File folder, String prefix, URL action, List<String[]> properties, IProgressMonitor monitor) throws IntogenServiceException {
 
         try {
             monitor.begin("Querying for data ...", 1);

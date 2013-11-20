@@ -30,8 +30,6 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredTreePage;
 import org.gitools.ui.wizard.common.FilteredTreePanel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -47,13 +45,13 @@ import java.util.List;
  */
 public class BiomartAttributePage extends FilteredTreePage {
 
-    @Nullable
+
     private MartLocation mart;
 
-    @Nullable
+
     private DatasetInfo dataset;
 
-    @Nullable
+
     private List<AttributePage> attrPages;
 
     private AttributeDescription attribute;
@@ -121,7 +119,7 @@ public class BiomartAttributePage extends FilteredTreePage {
                         }
                     });
 
-                } catch (@NotNull final Throwable cause) {
+                } catch (final Throwable cause) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -152,7 +150,7 @@ public class BiomartAttributePage extends FilteredTreePage {
         setComplete(complete);
     }
 
-    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo dataset) {
+    public void setSource(BiomartService biomartService, MartLocation mart, DatasetInfo dataset) {
 
         if (this.dataset != null && this.dataset.getName().equals(dataset.getName())) {
             reloadData = false;
@@ -170,7 +168,7 @@ public class BiomartAttributePage extends FilteredTreePage {
         reloadData = false;
     }
 
-    @Nullable
+
     public synchronized List<AttributePage> getAttributePages() {
         return attrPages;
     }
@@ -179,7 +177,7 @@ public class BiomartAttributePage extends FilteredTreePage {
         return attribute;
     }
 
-    @Nullable
+
     @Override
     protected TreeModel createModel(String filterText) {
         return new AttributesTreeModel(attrPages, filterText);

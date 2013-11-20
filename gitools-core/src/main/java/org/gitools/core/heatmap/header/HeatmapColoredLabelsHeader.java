@@ -22,11 +22,11 @@
 package org.gitools.core.heatmap.header;
 
 import com.google.common.base.Function;
-import org.gitools.core.clustering.ClusteringData;
-import org.gitools.core.clustering.ClusteringException;
-import org.gitools.core.clustering.ClusteringMethod;
-import org.gitools.core.clustering.ClusteringResults;
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.ClusteringException;
+import org.gitools.analysis.clustering.ClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.core.model.decorator.Decoration;
@@ -34,7 +34,6 @@ import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.utils.color.generator.ColorGenerator;
 import org.gitools.utils.color.generator.ColorGeneratorFactory;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -130,7 +129,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     /**
      * Return the corresponding matrix row/column cluster. Null if there is not cluster assigned.
      */
-    @Nullable
+
     public ColoredLabel getAssignedColoredLabel(String id) {
         Integer index = getAssignedColoredLabels().get(id);
         if (index == null) {
@@ -165,7 +164,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         Collection<String> clusters = results.getClusters();
         coloredLabels = new ArrayList<>(results.size());
         for (String cluster : clusters) {
-            coloredLabels.add( new ColoredLabel(cluster, cg.next(cluster)));
+            coloredLabels.add(new ColoredLabel(cluster, cg.next(cluster)));
         }
     }
 

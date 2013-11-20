@@ -21,7 +21,8 @@
  */
 package org.gitools.core.model;
 
-import org.gitools.core.persistence.IResource;
+
+import org.gitools.api.resource.IResource;
 
 import java.util.Collection;
 

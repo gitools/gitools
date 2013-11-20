@@ -22,8 +22,6 @@
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.core.heatmap.header.ColoredLabel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -43,12 +41,12 @@ class ColoredLabelsTableModel implements TableModel {
 
     private List<ColoredLabel> labelList;
 
-    @NotNull
+
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
     private boolean valueEditable = true;
     private boolean valueMustBeNumeric = false;
 
-    public ColoredLabelsTableModel(@NotNull ColoredLabel[] coloredLabels) {
+    public ColoredLabelsTableModel(ColoredLabel[] coloredLabels) {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
             list.add(cl);
@@ -107,7 +105,7 @@ class ColoredLabelsTableModel implements TableModel {
         return true;
     }
 
-    @Nullable
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
@@ -156,13 +154,13 @@ class ColoredLabelsTableModel implements TableModel {
         fireContentChanged();
     }
 
-    void addAllLabels(@NotNull List<ColoredLabel> list) {
+    void addAllLabels(List<ColoredLabel> list) {
         int initialRow = labelList.size();
         labelList.addAll(list);
         fireContentChanged();
     }
 
-    void addAllLabels(@NotNull ColoredLabel[] coloredLabels) {
+    void addAllLabels(ColoredLabel[] coloredLabels) {
         List<ColoredLabel> list = new ArrayList<ColoredLabel>();
         for (ColoredLabel cl : coloredLabels)
             list.add(cl);
@@ -170,7 +168,7 @@ class ColoredLabelsTableModel implements TableModel {
         fireContentChanged();
     }
 
-    void removeLabel(@NotNull int[] rowsToRemove) {
+    void removeLabel(int[] rowsToRemove) {
         List<Object> objects = new ArrayList<Object>(rowsToRemove.length);
         for (int index : rowsToRemove)
             objects.add(labelList.get(index));

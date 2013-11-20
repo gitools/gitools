@@ -152,7 +152,4 @@ public class DetailsPanel extends JXTaskPaneContainer {
     }
 
 
-
-
-
 }

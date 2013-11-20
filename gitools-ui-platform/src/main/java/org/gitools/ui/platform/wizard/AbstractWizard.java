@@ -22,8 +22,6 @@
 package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.help.HelpContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -44,13 +42,13 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     protected IWizardPage currentPage;
 
-    @NotNull
+
     private final List<IWizardPage> pages = new ArrayList<IWizardPage>();
 
-    @NotNull
+
     private final Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
 
-    @NotNull
+
     private final List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
 
     protected AbstractWizard() {
@@ -89,7 +87,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         this.helpContext = new HelpContext(helpContextId);
     }
 
-    protected void addPage(@NotNull IWizardPage page) {
+    protected void addPage(IWizardPage page) {
         String id = page.getId();
         if (id == null) {
             id = "Page" + pages.size();
@@ -98,7 +96,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         addPage(id, page);
     }
 
-    protected void addPage(String id, @NotNull IWizardPage page) {
+    protected void addPage(String id, IWizardPage page) {
         page.setId(id);
         page.setWizard(this);
         pages.add(page);
@@ -107,7 +105,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         page.addPageUpdateListener(this);
     }
 
-    @Nullable
+
     @Override
     public IWizardPage getStartingPage() {
         return pages.size() > 0 ? pages.get(0) : null;
@@ -123,7 +121,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         this.currentPage = currentPage;
     }
 
-    @Nullable
+
     @Override
     public IWizardPage getNextPage(IWizardPage page) {
         int idx = pages.indexOf(page);
@@ -131,7 +129,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         return idx == -1 || idx == pages.size() - 1 ? null : pages.get(idx + 1);
     }
 
-    @Nullable
+
     @Override
     public IWizardPage getPreviousPage(IWizardPage page) {
         int idx = pages.indexOf(page);
@@ -140,7 +138,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
     }
 
     @Override
-    public boolean isLastPage(@NotNull IWizardPage page) {
+    public boolean isLastPage(IWizardPage page) {
         return page.equals(pages.get(pages.size() - 1));
     }
 
@@ -149,7 +147,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         return pageIdMap.get(id);
     }
 
-    @NotNull
+
     @Override
     public IWizardPage[] getPages() {
         final IWizardPage[] pagesArray = new IWizardPage[pages.size()];

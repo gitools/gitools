@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.welcome;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.actions.help.ShortcutsAction;
 import org.gitools.ui.platform.AppFrame;
@@ -30,8 +31,6 @@ import org.gitools.ui.platform.editor.HtmlEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
@@ -62,7 +61,7 @@ public class WelcomeEditor extends HtmlEditor {
     }
 
     @Override
-    protected void performUrlAction(@NotNull String name, @NotNull Map<String, String> params) {
+    protected void performUrlAction(String name, Map<String, String> params) {
         if (name.equals("goHome")) {
             try {
                 Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
@@ -130,7 +129,6 @@ public class WelcomeEditor extends HtmlEditor {
                 new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
             } else if (ref.equals("Shortcuts")) {
                 new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
-                ;
             }
         } else if (name.equals("example")) {
             LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
@@ -152,7 +150,7 @@ public class WelcomeEditor extends HtmlEditor {
     private void downloadExamples(final String path) {
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Connecting ...", 1);
 

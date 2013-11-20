@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.platform.progress;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.api.analysis.IProgressMonitor;
 
 public interface JobRunnable {
 

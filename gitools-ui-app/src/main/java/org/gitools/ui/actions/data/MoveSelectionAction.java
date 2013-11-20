@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.view.Direction;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.Direction;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.DimensionIcons;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
@@ -31,9 +31,9 @@ import org.gitools.ui.actions.HeatmapDimensionAction;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import static org.gitools.core.matrix.model.Direction.*;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.view.Direction.*;
 
 public class MoveSelectionAction extends HeatmapDimensionAction {
 
@@ -63,8 +63,8 @@ public class MoveSelectionAction extends HeatmapDimensionAction {
         this.dir = dir;
         DimensionIcons icons = IconNames.get(dir.dimension);
 
-        setSmallIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward16() : icons.getMoveBackward16() );
-        setLargeIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward24() : icons.getMoveBackward24() );
+        setSmallIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward16() : icons.getMoveBackward16());
+        setLargeIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward24() : icons.getMoveBackward24());
 
         setMnemonic(dir.mnemonic);
     }

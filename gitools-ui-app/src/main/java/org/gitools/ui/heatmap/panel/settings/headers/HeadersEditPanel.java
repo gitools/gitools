@@ -26,7 +26,10 @@ import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.*;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.EditActions;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
@@ -282,8 +285,7 @@ public class HeadersEditPanel extends JDialog {
             wiz.setEditionMode(true);
             wizard = wiz;
         } else if (HeatmapDecoratorHeader.class.equals(cls)) {
-            DecoratorHeaderWizard wiz = new DecoratorHeaderWizard((HeatmapDecoratorHeader) h);
-            wizard = wiz;
+            wizard = new DecoratorHeaderWizard((HeatmapDecoratorHeader) h);
         }
 
         if (wizard == null)

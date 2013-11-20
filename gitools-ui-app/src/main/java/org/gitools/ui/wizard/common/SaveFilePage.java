@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.wizard.common;
 
-import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -29,8 +29,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -89,7 +87,7 @@ public class SaveFilePage extends AbstractWizardPage {
         }
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -123,7 +121,7 @@ public class SaveFilePage extends AbstractWizardPage {
         updateGeneratedFile();
     }
 
-    @Nullable
+
     public FileFormat getFormat() {
         return (FileFormat) format.getSelectedItem();
     }
@@ -134,7 +132,7 @@ public class SaveFilePage extends AbstractWizardPage {
     }
 
     /* Returns the file name with extension appended */
-    @NotNull
+
     public String getFileName() {
         StringBuilder sb = new StringBuilder();
         String name = getFileNameWithoutExtension();
@@ -156,7 +154,7 @@ public class SaveFilePage extends AbstractWizardPage {
     /**
      * Returns the full path as a file
      */
-    @NotNull
+
     public File getPathAsFile() {
         String folderName = folder.getText();
         if (folderName.isEmpty()) {
@@ -243,7 +241,7 @@ public class SaveFilePage extends AbstractWizardPage {
                 return false;
             }
 
-            @NotNull
+
             @Override
             public String getDescription() {
                 StringBuilder sb = new StringBuilder();

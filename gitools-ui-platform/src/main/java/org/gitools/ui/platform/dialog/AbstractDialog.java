@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.platform.dialog;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -49,7 +47,7 @@ public abstract class AbstractDialog extends JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-    protected AbstractDialog(Window owner, String title, String header, String message, @NotNull MessageStatus status, Icon logo) {
+    protected AbstractDialog(Window owner, String title, String header, String message, MessageStatus status, Icon logo) {
 
         super(owner, title);
         setModal(true);
@@ -79,7 +77,7 @@ public abstract class AbstractDialog extends JDialog {
         this.container = container;
     }
 
-    protected void createComponents(String header, String message, @NotNull MessageStatus status, Icon logo) {
+    protected void createComponents(String header, String message, MessageStatus status, Icon logo) {
 
         hdrPanel = new DialogHeaderPanel();
         hdrPanel.setTitle(header);

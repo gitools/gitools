@@ -21,7 +21,7 @@
  */
 package org.gitools.cli.htest;
 
-import org.gitools.core.analysis.htest.HtestAnalysis;
+import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
 import org.gitools.core.model.ToolConfig;
@@ -29,8 +29,6 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -54,12 +52,12 @@ public abstract class HtestTool extends AnalysisTool {
                 usage = "Statistical test to use.")
         public String testName;
 
-        @NotNull
+
         @Option(name = "-tc", aliases = "-test-conf", metaVar = "<param=value>",
                 usage = "Define a test configuration parameter." + " This allows to configure the behaviour of the test.")
         public final List<String> testConf = new ArrayList<String>(0);
 
-        @NotNull
+
         @Option(name = "-mtc", metaVar = "<name>",
                 usage = "Multiple test correxction method.\n" + "Available: bonferroni, bh. (default: bh)")
         public final String mtc = "bh";
@@ -80,7 +78,7 @@ public abstract class HtestTool extends AnalysisTool {
                 usage = "File with background population elements.")
         public String populationFile;
 
-        @NotNull
+
         @Option(name = "-Pv", aliases = "-population-default-value", metaVar = "<value>",
                 usage = "Default value to use when a population element" + "\ndoesn't exist in the data.\nIt can be a number, 'empty' or 'nan'. (default: 0)")
         public final String populationDefaultValue = "0.0";
@@ -103,11 +101,11 @@ public abstract class HtestTool extends AnalysisTool {
     private CutoffCmp binaryCutoffCmp;
     private double binaryCutoffValue;
 
-    @Nullable
+
     Double populationDefaultValue;
 
     ToolConfig testConfig;
-    @NotNull
+
     private final List<String[]> testConfigParams = new ArrayList<String[]>(0);
 
     @Override
@@ -164,7 +162,7 @@ public abstract class HtestTool extends AnalysisTool {
         }
     }
 
-    void prepareAnalysis(@NotNull HtestAnalysis analysis, @NotNull HtestArguments args) {
+    void prepareAnalysis(HtestAnalysis analysis, HtestArguments args) {
         prepareGeneralAnalysisAttributes(analysis, args);
 
         analysis.setBinaryCutoffEnabled(binaryCutoffEnabled);
@@ -180,7 +178,7 @@ public abstract class HtestTool extends AnalysisTool {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -195,7 +193,7 @@ public abstract class HtestTool extends AnalysisTool {
         outputStream.println();
     }
 
-    private void printTests(@NotNull PrintStream o) {
+    private void printTests(PrintStream o) {
         o.println("Available tests:");
         o.println(String.format(LIST_S_FMT, "zscore", "Z-score test"));
         o.println(String.format(LIST_S_FMT, "binomial", "Binomial test"));

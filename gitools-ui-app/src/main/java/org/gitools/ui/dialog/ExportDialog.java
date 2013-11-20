@@ -23,7 +23,6 @@ package org.gitools.ui.dialog;
 
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -48,7 +47,7 @@ public class ExportDialog extends AbstractDialog {
         setMinimumSize(new Dimension(500, 300));
     }
 
-    @NotNull
+
     @Override
     protected JComponent createContainer() {
         DefaultMutableTreeNode model = new DefaultMutableTreeNode();
@@ -74,7 +73,7 @@ public class ExportDialog extends AbstractDialog {
         return scrollPane;
     }
 
-    @NotNull
+
     @Override
     protected List<JButton> createButtons() {
         List<JButton> buttons = new ArrayList<JButton>();

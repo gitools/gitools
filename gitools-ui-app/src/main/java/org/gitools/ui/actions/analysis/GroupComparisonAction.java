@@ -22,41 +22,32 @@
 package org.gitools.ui.actions.analysis;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonProcessor;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.analysis.groupcomparison.wizard.GroupComparisonAnalysisFromEditorWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class GroupComparisonAction extends BaseAction {
+public class GroupComparisonAction extends HeatmapAction {
 
     public GroupComparisonAction() {
-        super("Group Comparison");
-        setDesc("Group Comparison analysis");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
+        super("Group Comparison analysis");
     }
 
     @Override
@@ -65,14 +56,9 @@ public class GroupComparisonAction extends BaseAction {
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
-        Heatmap heatmap = ActionUtils.getHeatmap();
-        IMatrixView matrixView = ActionUtils.getMatrixView();
+        Heatmap heatmap = getHeatmap();
 
-        if (heatmap == null) {
-            return;
-        }
-
-        IMatrixLayers attributes = matrixView.getLayers();
+        IMatrixLayers attributes = heatmap.getLayers();
         String[] attributeNames = new String[attributes.size()];
         for (int i = 0; i < attributes.size(); i++)
             attributeNames[i] = attributes.get(i).getName();
@@ -87,11 +73,11 @@ public class GroupComparisonAction extends BaseAction {
 
         final GroupComparisonAnalysis analysis = wiz.getAnalysis();
 
-        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
+        analysis.setData(new ResourceReference<IMatrix>("data", heatmap));
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     new GroupComparisonProcessor(analysis).run(monitor);
 

@@ -21,20 +21,23 @@
  */
 package org.gitools.core.heatmap;
 
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.MirrorDimension;
-import org.gitools.core.matrix.model.*;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.core.matrix.model.AbstractMatrix;
+import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -71,8 +74,8 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
 
     public Heatmap(IMatrix data, boolean diagonal) {
         super(new HeatmapLayers(data));
-        this.rows = new HeatmapDimension(data.getIdentifiers(ROWS));
-        this.columns = new HeatmapDimension(data.getIdentifiers(COLUMNS));
+        this.rows = new HeatmapDimension(data.getDimension(ROWS));
+        this.columns = new HeatmapDimension(data.getDimension(COLUMNS));
         this.data = new ResourceReference<>("data", data);
         this.diagonal = diagonal;
     }
@@ -86,7 +89,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         return rows;
     }
 
-    public void setRows(@NotNull HeatmapDimension rows) {
+    public void setRows(HeatmapDimension rows) {
         this.rows.removePropertyChangeListener(propertyListener);
         rows.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.rows;
@@ -98,7 +101,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         return columns;
     }
 
-    public void setColumns(@NotNull HeatmapDimension columns) {
+    public void setColumns(HeatmapDimension columns) {
         this.columns.removePropertyChangeListener(propertyListener);
         columns.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.columns;
@@ -124,8 +127,8 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         getLayers().addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
-        this.rows.init(matrix.getIdentifiers(ROWS));
-        this.columns.init(matrix.getIdentifiers(COLUMNS));
+        this.rows.init(matrix.getDimension(ROWS));
+        this.columns.init(matrix.getDimension(COLUMNS));
 
         if (this.rows.getHeaderSize() == 0) {
             this.rows.addHeader(new HeatmapTextLabelsHeader());
@@ -166,7 +169,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
     }
 
     @Override
-    public HeatmapDimension getIdentifiers(MatrixDimensionKey dimension) {
+    public HeatmapDimension getDimension(MatrixDimensionKey dimension) {
 
         if (dimension == ROWS) {
             return getRows();
@@ -194,9 +197,10 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         return getContents().newPosition();
     }
 
-    private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[] { ROWS, COLUMNS };
+    private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[]{ROWS, COLUMNS};
+
     @Override
-    public MatrixDimensionKey[] getDimensions() {
+    public MatrixDimensionKey[] getDimensionKeys() {
         return dimensions;
     }
 

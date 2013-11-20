@@ -27,8 +27,7 @@ import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.core.utils.EventUtils;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.utils.events.EventUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +39,7 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
     private final AbstractHeatmapDrawer drawer;
     private Heatmap heatmap;
 
-    AbstractHeatmapPanel(Heatmap heatmap, @NotNull AbstractHeatmapDrawer drawer) {
+    AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer) {
         this.heatmap = heatmap;
         this.drawer = drawer;
         this.drawer.setHeatmap(heatmap);
@@ -65,7 +64,7 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g) {
+    protected void paintComponent(Graphics g) {
         Dimension size = drawer.getSize();
         Rectangle box = new Rectangle(0, 0, size.width, size.height);
         Rectangle clip = g.getClipBounds();

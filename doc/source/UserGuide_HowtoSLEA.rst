@@ -1,4 +1,3 @@
-
 ================================================================
 How to run Sample Level Enrichment Analysis (SLEA) in Gitools
 ================================================================
@@ -47,5 +46,5 @@ Explore the results
 The results are presented in the form of interactive heatmaps. See `Gitools Help <http://help.gitools.org>` to learn how to explore the results
 
     .. image:: img/SLEAexample.png
-        :width: 75%
+:width: 75%
         :align: center

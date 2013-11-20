@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;

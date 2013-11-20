@@ -23,11 +23,15 @@ package org.gitools.core.heatmap;
 
 import com.jgoodies.binding.beans.Model;
 import org.apache.commons.lang.StringUtils;
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DecoratorFactory;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.utils.EventUtils;
+import org.gitools.utils.events.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -186,7 +190,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
 
-        int i=0;
+        int i = 0;
         for (HeatmapLayer layer : layers) {
             layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
             i++;

@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.help;
 
 import org.gitools.ui.platform.PropertiesExpansion;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,7 +77,7 @@ public abstract class Help {
         return instance;
     }
 
-    public void loadProperties(@NotNull InputStream in) throws IOException {
+    public void loadProperties(InputStream in) throws IOException {
         properties.load(in);
         in.close();
     }
@@ -104,8 +103,8 @@ public abstract class Help {
         br.close();
     }
 
-    @NotNull
-    URL getHelpUrl(@NotNull HelpContext context) throws MalformedURLException {
+
+    URL getHelpUrl(HelpContext context) throws MalformedURLException {
         String id = context.getId();
         String urlStr = null; // FIXME Use a default url
         for (UrlMap map : urlMap) {
@@ -124,8 +123,8 @@ public abstract class Help {
 
     public abstract void showHelp(HelpContext context) throws HelpException;
 
-    @NotNull
-    private String expandPattern(@NotNull Properties properties, @NotNull String pattern) {
+
+    private String expandPattern(Properties properties, String pattern) {
 
         final StringBuilder output = new StringBuilder();
         final StringBuilder var = new StringBuilder();

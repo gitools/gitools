@@ -21,14 +21,13 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -44,7 +43,7 @@ public class SaveAsAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByEditor(@Nullable IEditor editor) {
+    public boolean isEnabledByEditor(IEditor editor) {
 
         if (editor == null) {
             return false;

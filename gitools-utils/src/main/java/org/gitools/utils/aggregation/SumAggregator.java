@@ -22,7 +22,7 @@
 package org.gitools.utils.aggregation;
 
 import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
 public class SumAggregator extends AbstractAggregator {
 
@@ -32,11 +32,11 @@ public class SumAggregator extends AbstractAggregator {
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
+    public double aggregate(double[] data) {
         return aggregate(data, Functions.plus);
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return "Sum";

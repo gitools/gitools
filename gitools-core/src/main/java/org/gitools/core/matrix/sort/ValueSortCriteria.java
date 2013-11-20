@@ -21,10 +21,9 @@
  */
 package org.gitools.core.matrix.sort;
 
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.SortDirection;
-import org.gitools.utils.aggregation.IAggregator;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
 
 public final class ValueSortCriteria {
 
@@ -63,7 +62,7 @@ public final class ValueSortCriteria {
         this.aggregator = aggregator;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
         return layer.getId() + ", " + aggregator.toString() + ", " + direction.toString();

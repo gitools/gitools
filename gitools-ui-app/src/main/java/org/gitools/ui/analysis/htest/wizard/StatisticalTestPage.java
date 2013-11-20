@@ -21,14 +21,13 @@
  */
 package org.gitools.ui.analysis.htest.wizard;
 
+import org.gitools.analysis.stats.test.factory.BinomialTestFactory;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.analysis.stats.test.factory.ZscoreTestFactory;
 import org.gitools.core.model.ToolConfig;
-import org.gitools.core.stats.test.factory.BinomialTestFactory;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.stats.test.factory.ZscoreTestFactory;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -91,7 +90,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
         estimatorCbox.setModel(new DefaultComboBoxModel(new String[]{ZscoreTestFactory.MEAN_ESTIMATOR, ZscoreTestFactory.MEDIAN_ESTIMATOR}));
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -151,7 +150,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
     private javax.swing.JComboBox testCbox;
     // End of variables declaration//GEN-END:variables
 
-    @NotNull
+
     public ToolConfig getTestConfig() {
         ToolConfig config = new ToolConfig(ToolConfig.ENRICHMENT);
 
@@ -175,7 +174,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
         return config;
     }
 
-    public void setTestConfig(@NotNull ToolConfig testConfig) {
+    public void setTestConfig(ToolConfig testConfig) {
         Map<String, String> cfg = testConfig.getConfiguration();
         String testName = cfg.get(TestFactory.TEST_NAME_PROPERTY);
         int index = 0;
@@ -198,7 +197,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
     }
 
     // FIXME
-    @NotNull
+
     public String getMtc() {
         switch (mtcCb.getSelectedIndex()) {
             case 0:
@@ -210,7 +209,7 @@ public class StatisticalTestPage extends AbstractWizardPage {
     }
 
     // FIXME
-    public void setMtc(@NotNull String mtc) {
+    public void setMtc(String mtc) {
         if (mtc.equals("bonferroni")) {
             mtcCb.setSelectedIndex(0);
         } else if (mtc.equals("bh")) {

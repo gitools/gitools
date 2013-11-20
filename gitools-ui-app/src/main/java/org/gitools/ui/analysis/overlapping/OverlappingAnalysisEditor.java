@@ -22,14 +22,15 @@
 package org.gitools.ui.analysis.overlapping;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.model.decorator.impl.LinearDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -39,9 +40,6 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +53,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
 
 
         ResourceReference<IMatrix> resourceRef = analysis.getFilteredData();
@@ -110,7 +108,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getSourceData().get());
@@ -141,7 +139,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getCellResults().get());
@@ -165,8 +163,8 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
 
     }
 
-    @Nullable
-    private static Heatmap createHeatmap(@NotNull OverlappingAnalysis analysis) {
+
+    private static Heatmap createHeatmap(OverlappingAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getCellResults().get(), true);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         for (HeatmapLayer layer : heatmap.getLayers()) {

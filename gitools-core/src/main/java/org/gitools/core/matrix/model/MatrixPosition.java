@@ -21,9 +21,11 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.position.IMatrixIterable;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.matrix.model.iterable.IdentifierSourceIterable;
 import org.gitools.core.matrix.model.iterable.ValueSourceIterable;
-import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,11 +42,11 @@ public class MatrixPosition implements IMatrixPosition {
         super();
 
         this.matrix = matrix;
-        this.dimensions = matrix.getDimensions();
+        this.dimensions = matrix.getDimensionKeys();
         this.identifiers = new String[dimensions.length];
         this.positions = new HashMap<>(dimensions.length);
 
-        for (int i=0; i < dimensions.length; i++) {
+        for (int i = 0; i < dimensions.length; i++) {
             this.positions.put(dimensions[i], i);
         }
     }
@@ -101,7 +103,7 @@ public class MatrixPosition implements IMatrixPosition {
     }
 
     @Override
-    public <T> IMatrixIterable<T> iterate(LayerAdapter<T> layerAdapter, IMatrixDimension dimension) {
+    public <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension) {
         return new AdapterSourceIterable<>(this, dimension.getId(), layerAdapter);
     }
 

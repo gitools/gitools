@@ -22,21 +22,18 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.drawer.HeatmapDrawer;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFileWizard;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -45,7 +42,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class ExportHeatmapImageAction extends BaseAction {
+public class ExportHeatmapImageAction extends HeatmapAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
@@ -57,24 +54,14 @@ public class ExportHeatmapImageAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        AbstractEditor editor = ActionUtils.getSelectedEditor();
-        if (editor == null) {
-            return;
-        }
-
-        final Object model = editor.getModel();
-        if (!(model instanceof Heatmap)) {
-            return;
-        }
-
-        SaveFileWizard saveWiz = SaveFileWizard.createSimple("Export heatmap to image ...", FilenameUtils.getName(editor.getName()), Settings.getDefault().getLastExportPath(), new FileFormat[]{FileFormats.PNG});
+        SaveFileWizard saveWiz = SaveFileWizard.createSimple(
+                "Export heatmap to image ...",
+                FilenameUtils.getName(getSelectedEditor().getName()),
+                Settings.getDefault().getLastExportPath(),
+                new FileFormat[]{FileFormats.PNG}
+        );
 
         WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
         dlg.setVisible(true);
@@ -90,12 +77,12 @@ public class ExportHeatmapImageAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting heatmap to image ...", 1);
                     monitor.info("File: " + file.getName());
 
-                    Heatmap hm = (Heatmap) model;
+                    Heatmap hm = getHeatmap();
 
                     HeatmapDrawer drawer = new HeatmapDrawer(hm);
                     drawer.setPictureMode(true);
@@ -119,7 +106,6 @@ public class ExportHeatmapImageAction extends BaseAction {
 
         AppFrame.get().setStatusText("Image created.");
     }
-
 
 
 }

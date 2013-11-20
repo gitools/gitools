@@ -22,15 +22,17 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence._DEPRECATED.MimeTypes;
-import org.gitools.core.persistence.locators.UrlResourceLocator;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.datasources.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.matrix.GmtMatrixFormat;
+import org.gitools.persistence.formats.matrix.GmxMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.datasources.kegg.wizard.KeggModulesImportWizard;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
@@ -39,8 +41,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -74,7 +74,7 @@ public class ImportKeggModulesAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     Map<String, String> descriptions = new HashMap<>();
                     IModuleMap mmap = importer.importMap(monitor, descriptions);
@@ -82,7 +82,7 @@ public class ImportKeggModulesAction extends BaseAction {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (MimeTypes.GENE_MATRIX.equals(extension) || MimeTypes.GENE_MATRIX_TRANSPOSED.equals(extension)) {
+                        if (GmxMatrixFormat.EXTENSION.equals(extension) || GmtMatrixFormat.EXTENSION.equals(extension)) {
 
                             IMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
                             IResourceFormat format = PersistenceManager.get().getFormat(extension, mat.getClass());

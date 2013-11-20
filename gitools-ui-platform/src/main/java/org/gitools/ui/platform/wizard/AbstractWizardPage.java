@@ -23,8 +23,6 @@ package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private static final long serialVersionUID = -4330234851091328953L;
 
-    @Nullable
+
     private String id;
 
     private IWizard wizard;
@@ -51,20 +49,20 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private HelpContext helpContext;
 
-    @NotNull
+
     private final List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
 
     protected AbstractWizardPage() {
         this(null);
     }
 
-    protected AbstractWizardPage(@Nullable String id) {
+    protected AbstractWizardPage(String id) {
         this.id = id != null ? id : this.getClass().getCanonicalName();
         this.pageComplete = false;
         //this.helpContext = new HelpContext(this.getClass());
     }
 
-    @Nullable
+
     @Override
     public String getId() {
         return id;
@@ -95,7 +93,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
         fireUpdated();
     }
 
-    @Nullable
+
     @Override
     public JComponent createControls() {
         return this;

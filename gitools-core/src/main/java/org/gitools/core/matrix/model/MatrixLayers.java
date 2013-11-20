@@ -21,6 +21,9 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+
 import java.util.*;
 
 public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {

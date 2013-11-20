@@ -27,7 +27,6 @@ import org.gitools.datasources.biomart.restful.model.Option;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -222,7 +221,7 @@ public class FilterTextComponent extends FilterComponent {
 
     }
 
-    @NotNull
+
     @Override
     public List<Filter> getFilters() {
 
@@ -276,7 +275,7 @@ public class FilterTextComponent extends FilterComponent {
      * @return
      * @throws java.io.IOException
      */
-    @NotNull
+
     private static String readFileAsString(String filePath) throws java.io.IOException {
         byte[] buffer = new byte[(int) new File(filePath).length()];
         BufferedInputStream f = new BufferedInputStream(new FileInputStream(filePath));
@@ -286,6 +285,5 @@ public class FilterTextComponent extends FilterComponent {
 
     @Override
     public void setListOptions(List<Option> optionList) {
-        return;
     }
 }

@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.progress;
 
 import org.gitools.ui.platform.help.GitoolsTips;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +40,7 @@ class JobProgressDialog extends javax.swing.JDialog {
         void cancelled();
     }
 
-    @NotNull
+
     private final List<CancelListener> listeners = new ArrayList<CancelListener>();
 
     /**

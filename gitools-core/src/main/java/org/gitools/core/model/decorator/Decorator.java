@@ -22,9 +22,9 @@
 package org.gitools.core.model.decorator;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixPosition;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.model.decorator.impl.*;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.IColorScale;

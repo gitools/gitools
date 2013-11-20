@@ -21,8 +21,8 @@
  */
 package org.gitools.datasources.kegg.modules;
 
-import org.gitools.core.modules.importer.Category;
-import org.gitools.core.modules.importer.ModuleCategory;
+import org.gitools.datasources.modules.importer.Category;
+import org.gitools.datasources.modules.importer.ModuleCategory;
 
 public class EnsemblKeggModuleCategory extends Category implements ModuleCategory {
 

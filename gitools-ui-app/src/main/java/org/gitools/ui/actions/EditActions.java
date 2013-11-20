@@ -25,8 +25,8 @@ import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.edit.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public final class EditActions {
 

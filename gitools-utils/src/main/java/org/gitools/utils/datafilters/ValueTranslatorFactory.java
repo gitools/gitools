@@ -21,12 +21,11 @@
  */
 package org.gitools.utils.datafilters;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.matrix.ValueTranslator;
 
 public class ValueTranslatorFactory {
 
-    @Nullable
+
     public static ValueTranslator createValueTranslator(Class<?> cls) {
         ValueTranslator vt = null;
 
@@ -41,9 +40,9 @@ public class ValueTranslatorFactory {
                     return str;
                 }
 
-                @NotNull
+
                 @Override
-                public String valueToString(@Nullable Object value) {
+                public String valueToString(Object value) {
                     return value != null ? value.toString() : "";
                 }
             };

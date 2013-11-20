@@ -22,27 +22,27 @@
 package org.gitools.core.matrix.sort;
 
 import com.google.common.collect.Sets;
-import org.gitools.core.analysis.groupcomparison.PositionMapping;
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.core.matrix.model.iterable.PositionMapping;
 import org.gitools.core.matrix.sort.mutualexclusion.AggregationFunction;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AggregationSortByValueComparator implements Comparator<String> {
 
     private MatrixLayers<IMatrixLayer<Double>> aggregationLayers;
     private IMatrix aggregationMatrix;
 
-    public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, IMatrixLayer<Double>... layers) {
-        this(matrix, sortDimension, sortIdentifiers, aggregationDimension, aggregationIdentifiers, progressMonitor, Arrays.asList(layers));
-    }
     public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, Iterable<IMatrixLayer<Double>> layers) {
 
         aggregationLayers = createLayers(layers);
@@ -62,15 +62,15 @@ public class AggregationSortByValueComparator implements Comparator<String> {
         for (IMatrixLayer<Double> layer : layers) {
 
             matrix.newPosition()
-                .iterate(sortDimension)
-                .monitor(progressMonitor, "Aggregating values of layer '" + layer.getId() + "'")
-                .filter(sortIdentifiers)
-                .transform(new AggregationFunction(layer, aggregationDimension, aggregationIdentifiers))
-                .store(
-                        aggregationMatrix,
-                        new PositionMapping().map(sortDimension, ROWS),
-                        aggregationLayers.get(layer.getId())
-                );
+                    .iterate(sortDimension)
+                    .monitor(progressMonitor, "Aggregating values of layer '" + layer.getId() + "'")
+                    .filter(sortIdentifiers)
+                    .transform(new AggregationFunction(layer, aggregationDimension, aggregationIdentifiers))
+                    .store(
+                            aggregationMatrix,
+                            new PositionMapping().map(sortDimension, ROWS),
+                            aggregationLayers.get(layer.getId())
+                    );
 
         }
 
@@ -79,7 +79,7 @@ public class AggregationSortByValueComparator implements Comparator<String> {
     @Override
     public int compare(String idx1, String idx2) {
 
-        for (IMatrixLayer<Double> layer : aggregationLayers ) {
+        for (IMatrixLayer<Double> layer : aggregationLayers) {
 
             int compare = layer.getSortDirection().compare(
                     aggregationMatrix.get(layer, idx1),

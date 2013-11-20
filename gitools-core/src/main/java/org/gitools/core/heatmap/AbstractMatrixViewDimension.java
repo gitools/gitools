@@ -26,7 +26,11 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
-import org.gitools.core.matrix.model.*;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.view.Direction;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
+import org.gitools.core.matrix.model.AbstractMatrixDimension;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -193,7 +197,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     @Override
     public void select(Predicate<String> predicate) {
-        setSelected(Sets.newHashSet( filter(visible, predicate) ));
+        setSelected(Sets.newHashSet(filter(visible, predicate)));
     }
 
     public void selectAll() {
@@ -227,7 +231,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     @Override
     public String getLabel(int index) {
-        if (index < 0 || index > size() ) {
+        if (index < 0 || index > size()) {
             return null;
         }
 
@@ -250,14 +254,14 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         return Iterators.unmodifiableIterator(visible.iterator());
     }
 
-    private void setSelected( Set<String> selected ) {
-       this.selected = new ObservableSet<String>(selected) {
-           @Override
-           protected void fire() {
-               firePropertyChange(PROPERTY_SELECTED, null, this);
-           }
-       };
-       firePropertyChange(PROPERTY_SELECTED, null, this.selected);
+    private void setSelected(Set<String> selected) {
+        this.selected = new ObservableSet<String>(selected) {
+            @Override
+            protected void fire() {
+                firePropertyChange(PROPERTY_SELECTED, null, this);
+            }
+        };
+        firePropertyChange(PROPERTY_SELECTED, null, this.selected);
     }
 
     private Map<String, Integer> getVisibleToIndex() {
@@ -265,7 +269,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         if (visibleToIndex == null) {
             visibleToIndex = new HashMap<>(visible.size());
 
-            for (int i=0; i < visible.size(); i++) {
+            for (int i = 0; i < visible.size(); i++) {
                 visibleToIndex.put(visible.get(i), i);
             }
         }

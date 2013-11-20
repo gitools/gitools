@@ -23,7 +23,6 @@ package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.commands.Command;
 import org.gitools.ui.commands.CommandAddHeaderColoredLabels;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Option;
 
 import java.util.List;
@@ -43,24 +42,24 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
     private List<String> ids;
 
     @Option(name = "-n", aliases = "--no-auto-generate", required = false,
-    usage= "Specify if auto color generation is not desired.")
+            usage = "Specify if auto color generation is not desired.")
     private boolean noAutoGenerate;
 
     @Option(name = "-t", aliases = "--text-visible", required = false,
-    usage = "Set for visible text labels")
+            usage = "Set for visible text labels")
     private boolean textVisible;
 
     public AddHeaderColoredLabelsTool() {
         super();
     }
 
-    @NotNull
+
     @Override
     public String getName() {
         return "add-header-colored-labels";
     }
 
-    @NotNull
+
     @Override
     protected Command newJob() {
         return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible);

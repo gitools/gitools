@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.platform.panel;
 
-import org.jetbrains.annotations.NotNull;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -52,7 +51,7 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
+        public void onMouseOver(HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
@@ -73,7 +72,7 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event) {
+        public boolean onMouseClick(HTMLElement element, MouseEvent event) {
 
             if ("a".equalsIgnoreCase(element.getTagName())) {
                 try {
@@ -113,11 +112,11 @@ public class Html4Panel extends JPanel {
         add(panel, BorderLayout.CENTER);
     }
 
-    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException {
+    void linkClicked(HTMLElement linkNode) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
         String target = linkNode.getAttribute("target");
-        if (rel != null && rel.equalsIgnoreCase("action")) {
+        if (rel.equalsIgnoreCase("action")) {
             String name = href;
             Map<String, String> params = new HashMap<String, String>();
 
@@ -140,7 +139,7 @@ public class Html4Panel extends JPanel {
 
             performUrlAction(name, params);
             throw new LinkVetoException();
-        } else if (target != null && target.equalsIgnoreCase("_external")) {
+        } else if (target.equalsIgnoreCase("_external")) {
             try {
                 URI uri = new URI(href);
                 if (Desktop.isDesktopSupported()) {

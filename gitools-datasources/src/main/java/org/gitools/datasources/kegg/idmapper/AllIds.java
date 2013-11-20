@@ -22,7 +22,7 @@
 package org.gitools.datasources.kegg.idmapper;
 
 import org.gitools.datasources.biomart.idmapper.EnsemblIds;
-import org.gitools.core.idmapper.Ids;
+import org.gitools.datasources.idmapper.Ids;
 
 public interface AllIds extends Ids, KeggIds, EnsemblIds {
 

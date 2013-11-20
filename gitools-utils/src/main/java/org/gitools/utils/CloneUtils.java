@@ -36,7 +36,7 @@ public class CloneUtils {
             return null;
         }
 
-        JAXBContext context = null;
+        JAXBContext context;
         try {
             context = JAXBContext.newInstance(x.getClass());
 

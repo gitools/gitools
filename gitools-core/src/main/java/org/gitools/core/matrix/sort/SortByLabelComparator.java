@@ -23,7 +23,7 @@ package org.gitools.core.matrix.sort;
 
 
 import com.google.common.base.Function;
-import org.gitools.core.matrix.model.SortDirection;
+import org.gitools.api.matrix.SortDirection;
 
 import java.util.Comparator;
 
@@ -35,7 +35,7 @@ public class SortByLabelComparator implements Comparator<String> {
 
     public SortByLabelComparator(SortDirection direction, Function<String, String> transformFunction, boolean asNumeric) {
         this.direction = direction;
-        this.transformFunction =transformFunction;
+        this.transformFunction = transformFunction;
         this.asNumeric = asNumeric;
     }
 

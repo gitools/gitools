@@ -43,8 +43,7 @@ public final class ColorRegistry {
     public Color getColor(String id) {
         if (registry.containsKey(id)) {
             return registry.get(id);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -57,8 +56,7 @@ public final class ColorRegistry {
     public Color getColor(String id, Color alternative) {
         if (registry.containsKey(id)) {
             return registry.get(id);
-        }
-        else {
+        } else {
             return alternative;
         }
     }

@@ -21,22 +21,21 @@
  */
 package org.gitools.cli.correlation;
 
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
-import org.gitools.core.analysis.correlation.CorrelationCommand;
-import org.gitools.core.analysis.correlation.methods.PearsonCorrelationMethod;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.correlation.CorrelationCommand;
+import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
-import org.gitools.utils.threads.ThreadManager;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -67,7 +66,7 @@ public class CorrelationTool extends AnalysisTool {
                 usage = "Correlation method to use. (default: pearson)")
         public final String method = PearsonCorrelationMethod.ID;
 
-        @NotNull
+
         @Option(name = "-M", aliases = "-method-conf", metaVar = "<param=value>",
                 usage = "Define a method configuration parameter.\n" + " This allows to configure the behaviour of the method.")
         public final List<String> methodConf = new ArrayList<String>(0);
@@ -140,7 +139,7 @@ public class CorrelationTool extends AnalysisTool {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -152,7 +151,7 @@ public class CorrelationTool extends AnalysisTool {
         outputStream.println();
     }
 
-    private void printMethods(@NotNull PrintStream o) {
+    private void printMethods(PrintStream o) {
         o.println("Available correlation methods:");
         o.println(String.format(LIST_S_FMT, "pearson", "Pearson's correlation"));
         o.println(String.format(LIST_S_FMT, "spearman", "Spearman's rank correlation"));

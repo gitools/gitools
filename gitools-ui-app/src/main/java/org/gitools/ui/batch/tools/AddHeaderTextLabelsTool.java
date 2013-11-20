@@ -23,7 +23,6 @@ package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.commands.Command;
 import org.gitools.ui.commands.CommandAddHeaderTextLabels;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Option;
 
 public class AddHeaderTextLabelsTool extends AddHeaderTool {
@@ -36,13 +35,13 @@ public class AddHeaderTextLabelsTool extends AddHeaderTool {
         super();
     }
 
-    @NotNull
+
     @Override
     public String getName() {
         return "add-header-text-labels";
     }
 
-    @NotNull
+
     @Override
     protected Command newJob() {
         return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern);

@@ -72,5 +72,4 @@ public class AnnotationDecoratorHeaderWizard extends DecoratorHeaderWizard {
     }
 
 
-
 }

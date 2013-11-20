@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.collections;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,11 +29,11 @@ public class ReverseListIterator<T> implements Iterable<T>, Iterator<T> {
 
     private final ListIterator<? extends T> iterator;
 
-    public ReverseListIterator(@NotNull List<? extends T> list) {
+    public ReverseListIterator(List<? extends T> list) {
         this.iterator = list.listIterator(list.size());
     }
 
-    @NotNull
+
     @Override
     public Iterator<T> iterator() {
         return this;

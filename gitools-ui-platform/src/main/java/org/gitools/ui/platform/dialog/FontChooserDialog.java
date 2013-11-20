@@ -21,9 +21,6 @@
  */
 package org.gitools.ui.platform.dialog;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -33,11 +30,11 @@ public class FontChooserDialog extends javax.swing.JDialog {
 
     private static final String[] STYLE_NAMES = new String[]{"Normal", "Bold", "Italic", "Bold Italic"};
 
-    private static final String[] LOGICAL_FONT_FAMILIES = new String[] { "Serif", "SansSerif", "Monospaced", "Dialog", "DialogInput"};
+    private static final String[] LOGICAL_FONT_FAMILIES = new String[]{"Serif", "SansSerif", "Monospaced", "Dialog", "DialogInput"};
 
     private boolean cancelled = true;
 
-    public FontChooserDialog(java.awt.Frame parent, @NotNull Font font, boolean useSystemFonts) {
+    public FontChooserDialog(java.awt.Frame parent, Font font, boolean useSystemFonts) {
         super(parent, true);
 
         initComponents();
@@ -69,7 +66,7 @@ public class FontChooserDialog extends javax.swing.JDialog {
         }
     }
 
-    @Nullable
+
     public Font getFont() {
         try {
             String name = (String) fontFamily.getSelectedValue();

@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.datasources.intogen.dialog;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.intogen.IntogenService;
 import org.gitools.datasources.intogen.IntogenServiceException;
 import org.gitools.ui.IconNames;
@@ -32,9 +33,6 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
@@ -64,7 +62,7 @@ public class IntogenImportDialog extends JDialog {
     private final DialogHeaderPanel headerPanel;
 
     private final HtmlPanel htmlPanel;
-    @Nullable
+
     private SimpleHtmlRendererContext rcontext;
 
     public IntogenImportDialog(Window parent, final ImportType type) {
@@ -91,7 +89,7 @@ public class IntogenImportDialog extends JDialog {
 
         rcontext = new SimpleHtmlRendererContext(htmlPanel, uagent) {
             @Override
-            public void submitForm(@NotNull String method, @NotNull final URL action, String target, String enctype, @Nullable FormInput[] formInputs) {
+            public void submitForm(String method, final URL action, String target, String enctype, FormInput[] formInputs) {
 
                 boolean startDownload = false;
                 if (method.equalsIgnoreCase("post") && formInputs != null) {
@@ -125,7 +123,7 @@ public class IntogenImportDialog extends JDialog {
 
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
                         try {
                             IntogenService.getDefault().queryFromPOST(folder, prefix, action, properties, monitor);
 
@@ -207,7 +205,7 @@ public class IntogenImportDialog extends JDialog {
         pack();
     }
 
-    @Nullable
+
     private String getUrl() {
         switch (type) {
             case ONCODATA:

@@ -23,7 +23,6 @@ package org.gitools.ui.datasources.biomart.filter;
 
 import org.gitools.datasources.biomart.restful.model.FilterDescription;
 import org.gitools.datasources.biomart.restful.model.Option;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.List;
@@ -32,13 +31,13 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
 
     private FilterComponent childComponent;
 
-    @Nullable
+
     final FilterDescriptionPanel parentPanel;
 
-    @Nullable
+
     final FilterDescription filterDescription;
 
-    @Nullable
+
     final Option filterOptions;
 
     Integer currentHeight;
@@ -58,7 +57,6 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
     }
 
 
-    @Nullable
     @Override
     public Boolean hasChild() {
         return (childComponent != null);
@@ -74,7 +72,7 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
         this.childComponent = childComponent;
     }
 
-    @Nullable
+
     @Override
     public FilterDescriptionPanel getDescriptionPanel() {
         return parentPanel;
@@ -85,7 +83,7 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
         return currentHeight;
     }
 
-    @Nullable
+
     FilterDescription getFilterDescription() {
         return filterDescription;
     }

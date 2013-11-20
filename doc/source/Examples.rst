@@ -6,7 +6,7 @@ Gitools includes examples for each type of analysis. To this purpose, ready anno
 
 
 .. contents::
-   :depth: 2
+:depth: 2
 
 Enrichment analysis
 -------------------------------------------------

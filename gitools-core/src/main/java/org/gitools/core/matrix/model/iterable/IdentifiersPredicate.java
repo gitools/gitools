@@ -21,11 +21,11 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.position.IMatrixPredicate;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.IMatrixPosition;
-import org.gitools.core.matrix.model.IMatrixPredicate;
 import org.gitools.utils.textpatt.TextPattern;
 
 import java.util.Set;
@@ -58,8 +58,8 @@ public class IdentifiersPredicate<T> implements IMatrixPredicate<T>, TextPattern
     @Override
     public boolean apply(T object, IMatrixPosition position) {
         currentIdentifier = position.get(iterationDimension);
-        String value = (pattern != null ? pattern.generate( this ) : currentIdentifier);
-        return values.contains( value );
+        String value = (pattern != null ? pattern.generate(this) : currentIdentifier);
+        return values.contains(value);
     }
 
     @Override

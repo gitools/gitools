@@ -25,8 +25,6 @@ import org.gitools.core.model.Property;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -46,16 +44,16 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
 
     private static class AttributesModel implements TableModel {
 
-        @Nullable
+
         private final List<Property> attrs;
-        @NotNull
+
         private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         public AttributesModel() {
             attrs = new ArrayList<Property>();
         }
 
-        public AttributesModel(@Nullable List<Property> attrs) {
+        public AttributesModel(List<Property> attrs) {
             this.attrs = attrs != null ? attrs : new ArrayList<Property>();
         }
 
@@ -69,13 +67,13 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
             return 2;
         }
 
-        @NotNull
+
         @Override
         public String getColumnName(int columnIndex) {
             return columnIndex == 0 ? "Name" : "Value";
         }
 
-        @NotNull
+
         @Override
         public Class<?> getColumnClass(int columnIndex) {
             return String.class;
@@ -107,7 +105,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
             listeners.remove(l);
         }
 
-        @Nullable
+
         public List<Property> getAttributes() {
             return attrs;
         }
@@ -122,7 +120,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
                 l.tableChanged(new TableModelEvent(this));
         }
 
-        private void modifyAttribute(int index, @NotNull Property attribute) {
+        private void modifyAttribute(int index, Property attribute) {
             Property attr = getAttribute(index);
             attr.setName(attribute.getName());
             attr.setValue(attribute.getValue());
@@ -163,7 +161,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         });
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -185,7 +183,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         notesArea.setText(notes);
     }
 
-    @Nullable
+
     public List<Property> getAnalysisAttributes() {
         return attrModel.getAttributes();
     }
@@ -232,7 +230,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         attrTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
         }, new String[]{"Name", "Value"}) {
-            @NotNull
+
             final Class[] types = new Class[]{java.lang.String.class, java.lang.String.class};
 
             public Class getColumnClass(int columnIndex) {

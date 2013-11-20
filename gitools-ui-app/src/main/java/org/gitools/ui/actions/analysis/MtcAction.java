@@ -21,50 +21,40 @@
  */
 package org.gitools.ui.actions.analysis;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.*;
-import org.gitools.core.stats.mtc.MTC;
-import org.gitools.core.stats.mtc.MTCFactory;
+import org.gitools.analysis.stats.mtc.MTC;
+import org.gitools.analysis.stats.mtc.MTCFactory;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.IMatrixFunction;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.utils.MatrixUtils;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class MtcAction extends BaseAction {
+public class MtcAction extends HeatmapAction {
 
     private static final long serialVersionUID = 991170566166881702L;
 
     private final MTC mtc;
 
-    public MtcAction(@NotNull MTC mtc) {
+    public MtcAction(MTC mtc) {
         super(mtc.getName());
-
         setDesc("Calculate " + mtc.getName() + " multiple test correction");
-
         this.mtc = mtc;
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        final IMatrixView matrixView = ActionUtils.getMatrixView();
-
-        if (matrixView == null) {
-            return;
-        }
-
+        final IMatrixView matrixView = getHeatmap();
         final IMatrixLayer<Double> valueLayer = matrixView.getLayers().getTopLayer();
         final IMatrixLayer<Double> correctedLayer = MatrixUtils.correctedValueIndex(matrixView.getLayers(), valueLayer);
 
@@ -75,7 +65,7 @@ public class MtcAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
 
                 IMatrix contents = matrixView.getContents();
                 IMatrixDimension rows = contents.getRows();
@@ -89,8 +79,8 @@ public class MtcAction extends BaseAction {
 
                     position.iterate(valueLayer, rows)
                             .monitor(monitor)
-                            .transform( mtcFunction )
-                            .store( contents, correctedLayer );
+                            .transform(mtcFunction)
+                            .store(contents, correctedLayer);
 
                 }
 

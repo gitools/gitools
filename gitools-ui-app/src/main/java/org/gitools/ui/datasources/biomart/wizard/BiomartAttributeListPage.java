@@ -28,7 +28,6 @@ import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
@@ -112,7 +111,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
                     setMessage("Press [Add...] button to select attributes");
                 }
             });
-        } catch (@NotNull final Throwable cause) {
+        } catch (final Throwable cause) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -129,7 +128,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
         panel.setAttributePages(attrPages);
 	}*/
 
-    public void setSource(BiomartService biomartService, MartLocation mart, @NotNull DatasetInfo ds) {
+    public void setSource(BiomartService biomartService, MartLocation mart, DatasetInfo ds) {
 
         if (this.dataset != null && this.dataset.getName().equals(ds.getName())) {
             reloadData = false;

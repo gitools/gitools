@@ -23,14 +23,15 @@ package org.gitools.ui.analysis.htest.editor;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.model.ToolConfig;
 import org.gitools.core.model.decorator.impl.BinaryDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
-import org.gitools.core.stats.test.factory.TestFactory;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -41,8 +42,6 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -127,7 +126,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
@@ -162,7 +161,7 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
@@ -181,16 +180,16 @@ public class OncodriveAnalysisEditor extends AnalysisDetailsEditor<OncodriveAnal
         });
     }
 
-    @NotNull
-    private static Heatmap createHeatmap(@NotNull OncodriveAnalysis analysis) {
+
+    private static Heatmap createHeatmap(OncodriveAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
     }
 
     //TODO
-    @NotNull
-    protected static List<BaseAction> createToolBar(@NotNull OncodriveAnalysis analysis) {
+
+    protected static List<BaseAction> createToolBar(OncodriveAnalysis analysis) {
         ViewRelatedDataFromAction action = new ViewRelatedDataFromAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get(), MatrixDimensionKey.COLUMNS);
         List<BaseAction> tb = new ArrayList<BaseAction>();
         tb.add(action);

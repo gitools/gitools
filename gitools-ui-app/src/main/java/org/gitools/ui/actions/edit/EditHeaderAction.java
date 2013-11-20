@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;

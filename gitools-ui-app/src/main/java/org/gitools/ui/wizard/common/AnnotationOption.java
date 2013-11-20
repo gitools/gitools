@@ -45,6 +45,6 @@ public class AnnotationOption {
 
     @Override
     public String toString() {
-        return "<html><strong>" + key + "</strong>" + (description == null? "" : " - " +description) + "</html>";
+        return "<html><strong>" + key + "</strong>" + (description == null ? "" : " - " + description) + "</html>";
     }
 }

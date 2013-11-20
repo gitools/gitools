@@ -21,7 +21,7 @@
  */
 package org.gitools.core.matrix.model.iterable;
 
-import org.gitools.core.matrix.model.IMatrixPredicate;
+import org.gitools.api.matrix.position.IMatrixPredicate;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

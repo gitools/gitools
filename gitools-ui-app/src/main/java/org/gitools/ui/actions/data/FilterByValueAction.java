@@ -21,50 +21,35 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.matrix.filter.MatrixViewValueFilter;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.dialog.filter.ValueFilterPage;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
-public class FilterByValueAction extends BaseAction {
+public class FilterByValueAction extends HeatmapAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
     public FilterByValueAction() {
         super("Filter by values...");
-        setDesc("Filter by values");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        final IMatrixView matrixView = ActionUtils.getMatrixView();
-        if (matrixView == null) {
-            return;
-        }
+        final IMatrixView matrixView = getHeatmap();
 
         IMatrixLayers attributes = matrixView.getContents().getLayers();
 
@@ -93,7 +78,7 @@ public class FilterByValueAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
 
                 MatrixViewValueFilter.filter(matrixView, page.getCriteriaList(),
