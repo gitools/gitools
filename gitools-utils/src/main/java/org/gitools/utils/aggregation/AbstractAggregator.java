@@ -23,11 +23,26 @@ package org.gitools.utils.aggregation;
 
 import cern.colt.function.DoubleDoubleFunction;
 import cern.colt.function.DoubleFunction;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import org.jetbrains.annotations.NotNull;
 
 abstract class AbstractAggregator implements IAggregator {
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc) {
+    @Override
+    public Double aggregate(Iterable<Double> data) {
+        return aggregate(
+                Doubles.toArray(
+                        Lists.newArrayList(
+                                Iterables.filter(data, Predicates.notNull())
+                    )
+                )
+        );
+    }
+
+    double aggregate(double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc) {
 
         // Look for the first non-NaN value
         int first = 0;

@@ -24,28 +24,26 @@ package org.gitools.core.matrix.model.matrix;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.core.matrix.model.IMatrixDimension;
-import org.gitools.core.matrix.model.MatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayers;
+import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
 import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
-    private static MatrixLayer<String> LAYER = new MatrixLayer<>("value", String.class);
-
-    private Map<String, Map<String, String>> annotationsMetadata;
+    private Map<String, Map<String, String>> layersMetadata;
+    private Collection<String> labels;
 
     public AnnotationMatrix() {
-        super(new MatrixLayers(LAYER), new HashMatrixDimension(ROWS), new HashMatrixDimension(COLUMNS));
+        super(ROWS);
 
-        this.annotationsMetadata = new HashMap<>();
+        this.layersMetadata = new HashMap<>();
+        this.labels = new LabelsAdapter();
     }
 
     public void addAnnotations(IAnnotations annotations) {
@@ -76,30 +74,34 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
     @Override
     public Collection<String> getMetadataKeys() {
-        return annotationsMetadata.keySet();
+        return layersMetadata.keySet();
     }
 
     @Override
-    public IMatrixDimension getLabels() {
-        return getIdentifiers(COLUMNS);
+    public Collection<String> getLabels() {
+        return labels;
     }
 
     @Override
     public String getAnnotation(String identifier, String label) {
-        return get(LAYER, identifier, label);
+        return get(getLayer(label), identifier);
+    }
+
+    private IMatrixLayer<String> getLayer(String label) {
+        return getLayers().get(label);
     }
 
     public void setAnnotation(String identifier, String label, String value) {
-        set(LAYER, value, identifier, label);
+        set(label, value, identifier);
     }
 
     @Override
     public String getAnnotationMetadata(String key, String label) {
-        if (!annotationsMetadata.containsKey(key)) {
+        if (!layersMetadata.containsKey(key)) {
             return null;
         }
 
-        return annotationsMetadata.get(key).get(label);
+        return layersMetadata.get(key).get(label);
     }
 
     public void setAnnotationMetadata(String key, String annotationLabel, String value) {
@@ -108,13 +110,28 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
             return;
         }
 
-        Map<String, String> ketMetadata = annotationsMetadata.get(key);
+        Map<String, String> ketMetadata = layersMetadata.get(key);
 
         if (ketMetadata == null) {
             ketMetadata = new HashMap<>();
-            annotationsMetadata.put(key, ketMetadata);
+            layersMetadata.put(key, ketMetadata);
         }
 
         ketMetadata.put(annotationLabel, value);
+    }
+
+    private class LabelsAdapter extends AbstractList<String> {
+
+        @Override
+        public String get(int index) {
+            IMatrixLayer layer = getLayers().get(index);
+
+            return (layer == null ? null : layer.getId());
+        }
+
+        @Override
+        public int size() {
+            return getLayers().size();
+        }
     }
 }

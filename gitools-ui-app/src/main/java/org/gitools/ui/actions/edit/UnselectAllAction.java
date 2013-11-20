@@ -21,45 +21,31 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
-public class UnselectAllAction extends BaseAction {
+public class UnselectAllAction extends HeatmapAction {
 
     private static final long serialVersionUID = 1581417292789818975L;
 
     public UnselectAllAction() {
         super("Unselect all");
 
-        setDesc("Unselect all");
         setSmallIconFromResource(IconNames.unselectAll16);
         setLargeIconFromResource(IconNames.unselectAll24);
         setMnemonic(KeyEvent.VK_U);
     }
 
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView != null) {
-            matrixView.getColumns().clearSelection();
-            matrixView.getRows().clearSelection();
-        }
+        getHeatmap().getColumns().getSelected().clear();
+        getHeatmap().getRows().getSelected().clear();
 
         AppFrame.get().setStatusText("Unselected all.");
     }

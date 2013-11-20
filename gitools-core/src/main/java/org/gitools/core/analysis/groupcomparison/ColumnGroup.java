@@ -24,11 +24,12 @@ package org.gitools.core.analysis.groupcomparison;
 import org.gitools.core.datafilters.BinaryCutoff;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Set;
+
 public class ColumnGroup {
 
     private String name = "";
-    private int[] columns = new int[0];
-    @Nullable
+    private Set<String> columns;
     private BinaryCutoff binaryCutoff = null;
     private int cutoffAttributeIndex = -1;
 
@@ -36,7 +37,7 @@ public class ColumnGroup {
         this.name = string;
     }
 
-    public ColumnGroup(String name, int[] columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
+    public ColumnGroup(String name, Set<String> columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
         this.name = name;
         this.columns = columns;
         this.binaryCutoff = binaryCutoff;
@@ -60,11 +61,11 @@ public class ColumnGroup {
         this.cutoffAttributeIndex = cutoffAttributeIndex;
     }
 
-    public int[] getColumns() {
+    public Set<String> getColumns() {
         return columns;
     }
 
-    public void setColumns(int[] columns) {
+    public void setColumns(Set<String> columns) {
         this.columns = columns;
     }
 

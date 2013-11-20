@@ -2,7 +2,7 @@ package org.gitools.core.matrix.model;
 
 public enum MatrixDimensionKey {
 
-    ROWS("rows"), COLUMNS("columns");
+    ROWS("row"), COLUMNS("column");
 
     private String label;
 

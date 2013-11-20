@@ -24,7 +24,9 @@ package org.gitools.ui.actions;
 import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.edit.*;
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.utils.HeaderEnum.Dimension;
+
+import static org.gitools.core.matrix.model.MatrixDimensionKey.COLUMNS;
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
 public final class EditActions {
 
@@ -32,24 +34,22 @@ public final class EditActions {
 
     public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
 
-    public static final BaseAction groupSelectedRows = new GroupSelectionAction(Dimension.ROW);
+    public static final BaseAction groupSelectedRows = new GroupSelectionAction(ROWS);
 
-    public static final BaseAction groupSelectedColumns = new GroupSelectionAction(Dimension.COLUMN);
+    public static final BaseAction groupSelectedColumns = new GroupSelectionAction(COLUMNS);
 
-    public static final BaseAction invertSelectionAction = new InvertSelectionAction(Dimension.NONE_SPECIFIED);
+    public static final BaseAction invertRowSelectionAction = new InvertSelectionAction(ROWS);
 
-    public static final BaseAction invertRowSelectionAction = new InvertSelectionAction(Dimension.ROW);
-
-    public static final BaseAction invertColumnSelectionAction = new InvertSelectionAction(Dimension.COLUMN);
+    public static final BaseAction invertColumnSelectionAction = new InvertSelectionAction(COLUMNS);
 
     public static final BaseAction unselectAllAction = new UnselectAllAction();
 
-    public static final BaseAction addRowHeader = new AddHeaderAction(Dimension.ROW);
+    public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
 
-    public static final BaseAction addColumnHeader = new AddHeaderAction(Dimension.COLUMN);
+    public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
 
-    public static final BaseAction editRowHeader = new EditHeaderAction(Dimension.ROW);
+    public static final BaseAction editRowHeader = new EditHeaderAction(ROWS);
 
-    public static final BaseAction editColumnHeader = new EditHeaderAction(Dimension.COLUMN);
+    public static final BaseAction editColumnHeader = new EditHeaderAction(COLUMNS);
 
 }

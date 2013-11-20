@@ -21,111 +21,56 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.IMatrixViewDimension;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.utils.HeaderEnum;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
-public class GroupSelectionAction extends BaseAction implements IHeatmapDimensionAction {
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.newArrayList;
 
-    private static final long serialVersionUID = 1453040322414160605L;
+public class GroupSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
-    private final HeaderEnum.Dimension type;
     private HeatmapPosition position;
 
-    public GroupSelectionAction(@NotNull HeaderEnum.Dimension type) {
-        super(null);
-
-        this.type = type;
-        switch (type) {
-            case ROW:
-                setName("Group selected rows here");
-                setDesc("Group selected rows here");
-                break;
-            case COLUMN:
-                setName("Group selected columns here");
-                setDesc("Group selected columns here");
-                break;
-        }
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
+    public GroupSelectionAction(MatrixDimensionKey dimensionKey) {
+        super(dimensionKey, "Group selected " + dimensionKey.getLabel() + " here");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = ActionUtils.getMatrixView();
 
-        if (matrixView == null) {
-            return;
-        }
+        IMatrixViewDimension dimension = getDimension();
 
-        String msg = "";
+        groupSelected(dimension, position.get(dimension));
 
-        switch (type) {
-            case ROW:
-                groupSelected(matrixView.getRows(), position.getRow());
-                msg = "Selected rows grouped.";
-                break;
-            case COLUMN:
-                groupSelected(matrixView.getColumns(), position.getColumn());
-                msg = "Selected columns grouped.";
-                break;
-        }
-
-        AppFrame.get().setStatusText(msg);
+        AppFrame.get().setStatusText("Selected " + getDimensionLabel() + " grouped.");
     }
 
-    private void groupSelected(IMatrixViewDimension dim, int position) {
-        int[] visibleIndices = dim.getVisibleIndices();
-        int[] selectedIndices = new int[dim.getSelected().length];
-        int[] unselectedIndices = new int[visibleIndices.length - selectedIndices.length];
+    private void groupSelected(IMatrixViewDimension dimension, String identifier) {
 
-        int progress = 0;
-        int positionOffset = 0;
-        for (int i : dim.getSelected()) {
-            selectedIndices[progress++] = visibleIndices[i];
-            if (i <= position) {
-                positionOffset++;
-            }
-        }
+        List<String> selected = newArrayList( dimension.getSelected());
+        List<String> notSelected = newArrayList( filter( dimension, not( in (dimension.getSelected()))));
 
+        int split = dimension.indexOf(identifier) - selected.indexOf(identifier);
 
-        progress = 0;
-        for (int i = 0; i < visibleIndices.length; i++) {
-            if (!ArrayUtils.contains(dim.getSelected(), i)) {
-                unselectedIndices[progress++] = visibleIndices[i];
-            }
-        }
+        List<String> newOrder = newArrayList(
+                concat(
+                        notSelected.subList(0, split),
+                        selected,
+                        notSelected.subList(split, notSelected.size())
+                ));
 
-        int[] newOrder = new int[visibleIndices.length];
-
-        position -= positionOffset;
-        int selectedProgress = 0;
-        int unselectedProgress = 0;
-        boolean drawFromSelected;
-        for (int i = 0; i < newOrder.length; i++) {
-            drawFromSelected = i >= position && i < position + selectedIndices.length;
-
-            newOrder[i] = drawFromSelected ?
-                    selectedIndices[selectedProgress++] :
-                    unselectedIndices[unselectedProgress++];
-        }
-
-        dim.setVisibleIndices(newOrder);
-
+        dimension.show(newOrder);
     }
 
 
@@ -133,7 +78,7 @@ public class GroupSelectionAction extends BaseAction implements IHeatmapDimensio
     public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
 
         // Enable only if there is at least one item selected
-        setEnabled(dimension.getSelected().length > 0);
+        setEnabled(dimension.getSelected().size() > 0);
         this.position = position;
     }
 }

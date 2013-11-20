@@ -23,7 +23,7 @@ package org.gitools.core.label;
 
 import org.gitools.core.matrix.model.IMatrixDimension;
 
-public class MatrixDimensionLabelProvider implements LabelProvider {
+public class MatrixDimensionLabelProvider extends AbstractLabelProvider {
 
     private IMatrixDimension matrixDimension;
 

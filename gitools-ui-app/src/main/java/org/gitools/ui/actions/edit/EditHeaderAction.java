@@ -21,54 +21,24 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
-public class EditHeaderAction extends BaseAction {
+public class EditHeaderAction extends HeatmapDimensionAction {
 
-    private final HeaderEnum.Dimension dim;
-
-    public EditHeaderAction(HeaderEnum.Dimension dim) {
-        super("");
-        this.dim = dim;
-
+    public EditHeaderAction(MatrixDimensionKey dim) {
+        super(dim, "Edit " + dim.getLabel() + " headers");
         setSmallIconFromResource(IconNames.edit16);
-
-        switch (dim) {
-            case COLUMN:
-                setName("Edit column headers");
-                setDesc("Edit column headers");
-                break;
-
-            case ROW:
-                setName("Edit row headers");
-                setDesc("Edit row headers");
-                break;
-        }
-    }
-
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Heatmap heatmap = ActionUtils.getHeatmap();
-        HeatmapDimension heatmapDimension = (dim == HeaderEnum.Dimension.COLUMN) ? heatmap.getColumns() : heatmap.getRows();
-
-
-        HeadersEditPanel dialog = new HeadersEditPanel(heatmap, heatmapDimension);
+        HeadersEditPanel dialog = new HeadersEditPanel(getHeatmap(), getDimension());
         dialog.setSize(500, 400);
         dialog.setLocationRelativeTo(null);
         dialog.pack();

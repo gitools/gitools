@@ -25,7 +25,6 @@ import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleFactory1D;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.math.Functions;
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.htest.MtcTestProcessor;
 import org.gitools.core.heatmap.Heatmap;
@@ -88,19 +87,16 @@ public class EnrichmentProcessor extends MtcTestProcessor {
         if (analysis.isDiscardNonMappedRows()) {
 
             Heatmap heatmap = new Heatmap(dataMatrix);
-            List<Integer> rowsToHide = new ArrayList<>();
-            Collection<String> names = analysis.getModuleMap().get().getItems();
-            Set<String> backgroundNames = new HashSet<>();
-            backgroundNames.addAll(names);
-
-            for (int i = 0; i < dataMatrix.getRows().size(); i++) {
-                if (!backgroundNames.contains(dataMatrix.getRows().getLabel(i))) {
-                    rowsToHide.add(i);
+            Set<String> rowsToHide = new HashSet<>();
+            Set<String> backgroundNames = new HashSet<>(analysis.getModuleMap().get().getItems());
+            for (String row : dataMatrix.getRows()) {
+                if (!backgroundNames.contains(row)) {
+                    rowsToHide.add(row);
                 }
             }
 
             if (!rowsToHide.isEmpty()) {
-                heatmap.getRows().hide(ArrayUtils.toPrimitive(rowsToHide.toArray(new Integer[rowsToHide.size()])));
+                heatmap.getRows().hide(rowsToHide);
                 dataMatrix = heatmap;
             }
         }

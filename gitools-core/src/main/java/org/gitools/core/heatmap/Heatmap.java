@@ -71,8 +71,8 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
 
     public Heatmap(IMatrix data, boolean diagonal) {
         super(new HeatmapLayers(data));
-        this.rows = new HeatmapDimension(this, data.getIdentifiers(ROWS));
-        this.columns = new HeatmapDimension(this, data.getIdentifiers(COLUMNS));
+        this.rows = new HeatmapDimension(data.getIdentifiers(ROWS));
+        this.columns = new HeatmapDimension(data.getIdentifiers(COLUMNS));
         this.data = new ResourceReference<>("data", data);
         this.diagonal = diagonal;
     }
@@ -124,8 +124,8 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         getLayers().addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
-        this.rows.init(this, matrix.getIdentifiers(ROWS));
-        this.columns.init(this, matrix.getIdentifiers(COLUMNS));
+        this.rows.init(matrix.getIdentifiers(ROWS));
+        this.columns.init(matrix.getIdentifiers(COLUMNS));
 
         if (this.rows.getHeaderSize() == 0) {
             this.rows.addHeader(new HeatmapTextLabelsHeader());

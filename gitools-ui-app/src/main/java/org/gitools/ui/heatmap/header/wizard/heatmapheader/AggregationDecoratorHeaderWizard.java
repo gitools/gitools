@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.heatmap.header.wizard.heatmapheader;
 
+import com.google.common.collect.Sets;
 import org.gitools.core.clustering.ClusteringData;
 import org.gitools.core.clustering.ClusteringException;
 import org.gitools.core.clustering.ClusteringMethod;
@@ -32,25 +33,22 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.core.matrix.model.IMatrixPosition;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.progressmonitor.ProgressMonitor;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
     private final HeatmapDimension headerDimension;
     private final HeatmapDimension aggregationDimension;
     private final Heatmap heatmap;
-    private List<String> aggregationAnnotationLabels;
-    private Map<String, int[]> aggregationIndicesByAnnotation;
+    private Collection<String> aggregationAnnotationLabels;
+    private Map<String, Set<String>> aggregationIndicesByAnnotation;
     private AggregationDataSourcePage dataSourceAggregationPage;
     private AnnotationSourcePage dataSourceAnnotationPage;
 
@@ -119,29 +117,26 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         String annotationLabelPrefix = dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName() + ": ";
         ClusteringMethod clusteringMethod = new AnnPatClusteringMethod(annotationLabelPrefix);
         ClusteringResults results = clusteringMethod.cluster(data, ProgressMonitor.get());
-        aggregationAnnotationLabels = Arrays.asList(results.getClusterTitles());
-        aggregationIndicesByAnnotation = results.getDataIndicesByClusterTitle();
+        aggregationAnnotationLabels = results.getClusters();
+        aggregationIndicesByAnnotation = results.getClustersMap();
     }
 
     private void prepareAggregationByColumns() {
 
         String annotationLabel = dataSourceAggregationPage.getAggregator() + " of ";
 
-        int[] indicesToAggregate;
+        Set<String> indicesToAggregate = aggregationDimension.getSelected();
+
         if (dataSourceAggregationPage.useAllColumnsOrRows()) {
-            indicesToAggregate = new int[aggregationDimension.size()];
-            for (int i = 0; i < aggregationDimension.size(); i++)
-                indicesToAggregate[i] = i;
-        } else {
-            indicesToAggregate = aggregationDimension.getSelected();
+            indicesToAggregate = Sets.newHashSet( aggregationDimension );
         }
 
         annotationLabel += " " + dataSourceAggregationPage.getSelectedDataValueName();
         aggregationAnnotationLabels = Arrays.asList(annotationLabel);
 
-        Map<String, int[]> indicesMap = new HashMap<String, int[]>();
-        indicesMap.put(aggregationAnnotationLabels.get(0), indicesToAggregate);
-        aggregationIndicesByAnnotation = indicesMap;
+        aggregationIndicesByAnnotation = new HashMap<>();
+        aggregationIndicesByAnnotation.put(aggregationAnnotationLabels.iterator().next(), indicesToAggregate);
+
     }
 
     private void createAggregationAnnotations() {
@@ -149,35 +144,19 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         // Compute the annotations and store the results.
         AnnotationMatrix annotations = headerDimension.getAnnotations();
         IAggregator aggregator = dataSourceAggregationPage.getAggregator();
-        IMatrixLayer aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
+        IMatrixLayer<Double> aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
 
         for (String annotationLabel : aggregationAnnotationLabels) {
 
-            int[] indices = aggregationIndicesByAnnotation.get(annotationLabel);
-            final double[] valueBuffer = new double[indices.length];
+            Set<String> aggregationIdentifiers = aggregationIndicesByAnnotation.get(annotationLabel);
 
-            MatrixUtils.DoubleCast doubleCast = MatrixUtils.createDoubleCast(aggregationLayer.getValueClass());
+            IMatrixPosition position = heatmap.newPosition();
+            for (String identifier : position.iterate(headerDimension)) {
 
-            for (int index = 0; index < headerDimension.size(); index++) {
+                Double aggregatedValue = aggregator.aggregate( position.iterate(aggregationLayer, aggregationDimension).filter(aggregationIdentifiers));
 
-                // Full the buffer with the values in the
-                boolean useRows = (headerDimension == heatmap.getColumns());
-                for (int i = 0; i < indices.length; i++) {
-                    Object value = (useRows ?
-                            heatmap.get( aggregationLayer,
-                                heatmap.getRows().getLabel(indices[i]),
-                                heatmap.getColumns().getLabel(index)
-                            ) :
-                            heatmap.get(aggregationLayer,
-                                heatmap.getRows().getLabel(index),
-                                heatmap.getColumns().getLabel(indices[i]))
-                    );
-                    valueBuffer[i] = (value == null ? Double.NaN : doubleCast.getDoubleValue(value));
-                }
-
-                double aggregatedValue = aggregator.aggregate(valueBuffer);
-                if (!Double.isNaN(aggregatedValue)) {
-                    annotations.setAnnotation(headerDimension.getLabel(index), annotationLabel, Double.toString(aggregatedValue));
+                if (aggregatedValue != null) {
+                    annotations.setAnnotation( identifier, annotationLabel, Double.toString(aggregatedValue));
                 }
             }
         }

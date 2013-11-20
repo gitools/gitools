@@ -23,7 +23,7 @@ package org.gitools.ui.sort;
 
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.sort.ValueSortCriteria;
+import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.utils.aggregation.IAggregator;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,9 +35,6 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ValueSortDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -80,14 +77,14 @@ public class ValueSortDialog extends javax.swing.JDialog {
 
     private final IMatrixLayers<IMatrixLayer> layers;
     private final IAggregator[] aggregators;
-    private final ValueSortCriteria.SortDirection[] directions;
+    private final SortDirection[] directions;
 
     private final ValueSortCriteriaTableModel criteriaModel;
 
     /**
      * Creates new form FilterDialog
      */
-    public ValueSortDialog(java.awt.Frame parent, IMatrixLayers<IMatrixLayer> layers, IAggregator[] aggregators, ValueSortCriteria.SortDirection[] directions, ValueSortCriteria... initialCriteriaList) {
+    public ValueSortDialog(java.awt.Frame parent, IMatrixLayers<IMatrixLayer> layers, IAggregator[] aggregators, SortDirection[] directions, IMatrixLayer... initialCriteriaList) {
 
         super(parent, true);
 
@@ -240,7 +237,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueSortCriteria(layers.get(0), aggregators[0], directions[0]));
+        criteriaModel.addCriteria(layers.get(0));
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
     private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
@@ -280,7 +277,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
     }
 
-    public List<ValueSortCriteria> getCriteriaList() {
+    public List<IMatrixLayer> getCriteriaList() {
         return criteriaModel.getList();
     }
 }

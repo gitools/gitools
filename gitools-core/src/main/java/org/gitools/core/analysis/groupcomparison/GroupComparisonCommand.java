@@ -21,7 +21,6 @@
  */
 package org.gitools.core.analysis.groupcomparison;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.gitools.core.analysis.AnalysisCommand;
 import org.gitools.core.analysis.AnalysisException;
 import org.gitools.core.analysis.combination.ConvertModuleMapToMatrixResourceReference;
@@ -86,17 +85,12 @@ public class GroupComparisonCommand extends AnalysisCommand {
                 for (String filename : groupDefs) {
                     FileReader fileReader = new FileReader(filename);
                     BufferedReader bufferedReader = new BufferedReader(fileReader);
-                    HashSet<Integer> colIndices = new HashSet<>();
+                    HashSet<String> cols = new HashSet<>();
                     String line;
                     while ((line = bufferedReader.readLine()) != null) {
-                        int i = data.getColumns().indexOf(line);
-                        if (i != -1) {
-                            colIndices.add(i);
-                        }
+                        cols.add(line);
                     }
                     bufferedReader.close();
-
-                    int[] cols = ArrayUtils.toPrimitive(colIndices.toArray(new Integer[colIndices.size()]));
 
                     Integer groupNb = counter + 1;
                     columnGroups[counter] = new ColumnGroup("Group" + groupNb.toString());

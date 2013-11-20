@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.apache.commons.lang.ArrayUtils;
+import com.google.common.base.Predicate;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
@@ -32,8 +32,6 @@ import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeaderAction {
@@ -62,26 +60,27 @@ public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeade
             return;
         }
 
-        HeatmapDimension dimension = header.getHeatmapDimension();
-        List<Integer> toHide = new ArrayList<>();
-        for (int i = 0; i < dimension.size(); i++) {
-            String value = getAnnotationValue(i);
+        final HeatmapDimension dimension = header.getHeatmapDimension();
 
-            try {
-                double numericValue = Double.parseDouble(value);
+        dimension.show(new Predicate<String>() {
+            @Override
+            public boolean apply(String identifier) {
 
-                if ((greater && numericValue > thresholdValue) || (!greater && numericValue < thresholdValue)) {
-                    toHide.add(i);
+                String value = dimension.getAnnotations().getAnnotation(identifier, header.getSortLabel());
+
+                try {
+                    double numericValue = Double.parseDouble(value);
+
+                    if ((greater && numericValue > thresholdValue) || (!greater && numericValue < thresholdValue)) {
+                        return false;
+                    }
+
+                } catch (NumberFormatException ex) {
                 }
 
-            } catch (NumberFormatException ex) {
+                return true;
             }
-
-        }
-
-        if (toHide.size() < dimension.size()) {
-            dimension.hide(ArrayUtils.toPrimitive(toHide.toArray(new Integer[toHide.size()])));
-        }
+        });
 
     }
 
@@ -107,14 +106,4 @@ public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeade
         setName("Hide " + title + " than '" + position.headerDecoration.getFormatedValue() + "'");
     }
 
-    private String getAnnotationValue(int index) {
-        HeatmapDimension dimension = header.getHeatmapDimension();
-
-        if (index < 0 || index >= dimension.size()) {
-            return "NA";
-        }
-
-        String identifier = dimension.getLabel(index);
-        return header.getHeatmapDimension().getAnnotations().getAnnotation(identifier, header.getSortLabel());
-    }
 }

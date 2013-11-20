@@ -68,11 +68,15 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return point;
     }
 
+    protected String getLabel(int index) {
+        return getHeader().getIdentifierTransform().apply( getHeatmapDimension().getLabel(index) );
+    }
+
     @Override
     public HeatmapPosition getPosition(Point p) {
         int point = (isHorizontal() ? p.x : p.y);
         int index = getHeaderPosition(point);
-        return (isHorizontal() ? new HeatmapPosition(-1, index) : new HeatmapPosition(index, -1));
+        return (isHorizontal() ? new HeatmapPosition(getHeatmap(), -1, index) : new HeatmapPosition(getHeatmap(), index, -1));
     }
 
     protected int getHeaderPosition(int point) {
@@ -111,8 +115,8 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return heatmapDimension.getFullSize();
     }
 
-    protected boolean isSelected(int index) {
-        return !isPictureMode() &&  heatmapDimension.isSelected(index);
+    protected boolean isSelected(String identifier) {
+        return !isPictureMode() &&  heatmapDimension.getSelected().contains(identifier);
     }
 
     protected void prepareDraw(Graphics2D g, Rectangle box) {

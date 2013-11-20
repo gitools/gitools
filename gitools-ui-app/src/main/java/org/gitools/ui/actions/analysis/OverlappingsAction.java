@@ -29,13 +29,10 @@ import org.gitools.core.matrix.model.IMatrix;
 import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.persistence.ResourceReference;
 import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -45,29 +42,17 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class OverlappingsAction extends BaseAction {
+import static com.google.common.base.Predicates.in;
+
+public class OverlappingsAction extends HeatmapAction {
 
     public OverlappingsAction() {
-        super("Overlapping");
-        setDesc("Overlapping analysis");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
+        super("Overlapping analysis");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
-
-        final IEditor currentEditor = editorPanel.getSelectedEditor();
-
-        IMatrixView matrixView = ActionUtils.getMatrixView();
-
-        if (matrixView == null) {
-            return;
-        }
+        IMatrixView matrixView = getHeatmap();
 
         final OverlappingAnalysisWizard wiz = new OverlappingAnalysisWizard();
         wiz.setExamplePageEnabled(false);
@@ -86,15 +71,15 @@ public class OverlappingsAction extends BaseAction {
         final OverlappingAnalysis analysis = wiz.getAnalysis();
 
         if (!analysis.isTransposeData()) {
-            if (matrixView.getColumns().getSelected().length > 0) {
+            if (matrixView.getColumns().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getColumns().visibleFromSelection();
+                mv.getColumns().show( in(mv.getColumns().getSelected()));
                 matrixView = mv;
             }
         } else {
-            if (matrixView.getRows().getSelected().length > 0) {
+            if (matrixView.getRows().getSelected().size() > 0) {
                 Heatmap mv = new Heatmap(matrixView);
-                mv.getRows().visibleFromSelection();
+                mv.getRows().show( in( mv.getRows().getSelected() ));
                 matrixView = mv;
             }
         }
@@ -113,14 +98,14 @@ public class OverlappingsAction extends BaseAction {
 
                     final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
 
-                    String ext = FilenameUtils.getExtension(currentEditor.getName());
+                    String ext = FilenameUtils.getExtension(getSelectedEditor().getName());
 
                     String analysisTitle = analysis.getTitle();
 
                     if (!analysisTitle.equals("")) {
                         editor.setName(analysis.getTitle() + "." + OverlappingAnalysisFormat.EXTENSION);
                     } else {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", OverlappingAnalysisFormat.EXTENSION));
+                        editor.setName(getEditorsPanel().deriveName(getSelectedEditor().getName(), ext, "", OverlappingAnalysisFormat.EXTENSION));
                     }
 
                     SwingUtilities.invokeLater(new Runnable() {

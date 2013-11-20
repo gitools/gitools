@@ -22,7 +22,7 @@
 package org.gitools.ui.dialog.filter;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -145,11 +145,11 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
     }
 
     @NotNull
-    public FilterDimension getFilterDimension() {
+    public MatrixDimensionKey getFilterDimension() {
         if (rowsRb.isSelected()) {
-            return FilterDimension.ROWS;
+            return MatrixDimensionKey.ROWS;
         } else {
-            return FilterDimension.COLUMNS;
+            return MatrixDimensionKey.COLUMNS;
         }
     }
 

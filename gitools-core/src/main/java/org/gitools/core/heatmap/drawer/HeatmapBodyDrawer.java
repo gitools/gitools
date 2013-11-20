@@ -98,13 +98,13 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             // Draw selected rows
             g.setColor(SELECTED_COLOR);
             int cellSize = heatmap.getRows().getFullSize();
-            for (int s : heatmap.getRows().getSelected()) {
-                g.fillRect(box.x, box.y + (s * cellSize), box.width, cellSize);
+            for (String s : heatmap.getRows().getSelected()) {
+                g.fillRect(box.x, box.y + (heatmap.getRows().indexOf(s) * cellSize), box.width, cellSize);
             }
 
             // Draw row lead
             g.setColor(Color.DARK_GRAY);
-            int lead = heatmap.getRows().getSelectionLead();
+            int lead = heatmap.getRows().indexOf(heatmap.getRows().getFocus());
             if (lead != -1) {
                 g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
                 g.fillRect(box.x, box.y + ((lead + 1) * cellSize) - 1, box.width, 1);
@@ -113,13 +113,13 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             // Draw selected columns
             g.setColor(SELECTED_COLOR);
             cellSize = heatmap.getColumns().getFullSize();
-            for (int s : heatmap.getColumns().getSelected()) {
-                g.fillRect(box.x + (s * cellSize), box.y, cellSize, box.height);
+            for (String s : heatmap.getColumns().getSelected()) {
+                g.fillRect(box.x + (heatmap.getColumns().indexOf(s) * cellSize), box.y, cellSize, box.height);
             }
 
             // Draw column lead
             g.setColor(Color.DARK_GRAY);
-            lead = heatmap.getColumns().getSelectionLead();
+            lead = heatmap.getColumns().indexOf(heatmap.getColumns().getFocus());
             if (lead != -1) {
                 g.fillRect(box.x + (lead * cellSize) - 1, box.y, 1, box.height);
                 g.fillRect(box.x + ((lead + 1) * cellSize) - 1, box.y, 1, box.height);
@@ -157,7 +157,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         int row = p.y >= 0 && p.y < totalHeight ? p.y / cellHeight : -1;
         int column = p.x >= 0 && p.x < totalWidth ? p.x / cellWidth : -1;
 
-        return new HeatmapPosition(row, column);
+        return new HeatmapPosition(heatmap, row, column);
     }
 
     @NotNull

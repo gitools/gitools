@@ -100,9 +100,10 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     public HeatmapPosition getPosition(Point p) {
         int point = (isHorizontal() ? p.x : p.y);
         int index = getHeaderPosition(point);
-        String label = getHeader().getColoredLabel(index).getValue();
+        String identifier = getHeatmapDimension().getLabel(index);
+        String label = getHeader().getColoredLabel(identifier).getValue();
 
-        return (isHorizontal() ? new HeatmapPosition(-1, index, label) : new HeatmapPosition(index, -1, label));
+        return (isHorizontal() ? new HeatmapPosition(getHeatmap(), -1, index, label) : new HeatmapPosition(getHeatmap(), index, -1, label));
     }
 
     private Font rotateFont(Graphics2D g) {
@@ -136,7 +137,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
 
             List<String> annValues = decoratorHeader.getAnnotationLabels();
-            ColoredLabel[] clusters = getHeader().getClusters();
+            List<ColoredLabel> clusters = getHeader().getClusters();
 
             gridSize = 1;
             oppositeMargin = decoratorHeader.getMargin();

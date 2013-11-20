@@ -21,7 +21,6 @@
  */
 package org.gitools.core.matrix;
 
-import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.Direction;
@@ -59,11 +58,6 @@ public class MirrorDimension extends HeatmapDimension {
     @Override
     public void clearHighlightedLabels() {
         main.clearHighlightedLabels();
-    }
-
-    @Override
-    public void clearSelection() {
-        main.clearSelection();
     }
 
     @Override
@@ -112,33 +106,28 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public int[] getSelected() {
+    public Set<String> getSelected() {
         return main.getSelected();
     }
 
     @Override
-    public int getSelectionLead() {
-        return mirror.getSelectionLead();
+    public String getFocus() {
+        return mirror.getFocus();
     }
 
     @Override
-    public int[] getVisibleIndices() {
-        return main.getVisibleIndices();
+    public List<String> toList() {
+        return main.toList();
     }
 
     @Override
-    public void hide(int[] indices) {
+    public void hide(Set<String> indices) {
         main.hide(indices);
     }
 
     @Override
-    public void init(Heatmap heatmap, IMatrixDimension matrixDimension) {
+    public void init(IMatrixDimension matrixDimension) {
         throw new RuntimeException("A mirror dimension cannot be initialized");
-    }
-
-    @Override
-    public void invertSelection() {
-        main.invertSelection();
     }
 
     @Override
@@ -147,12 +136,7 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public boolean isSelected(int index) {
-        return main.isSelected(index);
-    }
-
-    @Override
-    public void move(Direction direction, int[] indices) {
+    public void move(Direction direction, Set<String> indices) {
         main.move(direction, indices);
     }
 
@@ -182,18 +166,13 @@ public class MirrorDimension extends HeatmapDimension {
     }
 
     @Override
-    public void setSelected(int[] indices) {
-        main.setSelected(indices);
+    public void setFocus(String focus) {
+        mirror.setFocus(focus);
     }
 
     @Override
-    public void setSelectionLead(int selectionLead) {
-        mirror.setSelectionLead(selectionLead);
-    }
-
-    @Override
-    public void setVisibleIndices(int[] indices) {
-        main.setVisibleIndices(indices);
+    public void show(List<String> identifiers) {
+        main.show(identifiers);
     }
 
     @Override
@@ -206,8 +185,4 @@ public class MirrorDimension extends HeatmapDimension {
         mirror.updateHeaders();
     }
 
-    @Override
-    public void visibleFromSelection() {
-        main.visibleFromSelection();
-    }
 }

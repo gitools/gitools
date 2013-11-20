@@ -22,62 +22,37 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.sort.MutualExclusionSortPage;
-import org.gitools.utils.aggregation.AggregatorFactory;
-import org.gitools.utils.aggregation.IAggregator;
-import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
-public class SortByMutualExclusionAction extends BaseAction {
-
-    private static final long serialVersionUID = -1582437709508438222L;
+public class SortByMutualExclusionAction extends HeatmapAction {
 
     public SortByMutualExclusionAction() {
         super("Sort by mutual exclusion ...");
-
-        setDesc("Sort by mutual exclusion ...");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
-        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
-
-        Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap)) {
-            return;
-        }
-        final Heatmap hm = (Heatmap) model;
-
+        final Heatmap hm = getHeatmap();
 
         final MutualExclusionSortPage page = new MutualExclusionSortPage(hm);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
 
-
-        if (hm.getColumns().getSelected().length > 0) {
-            page.setFilterDimension(FilterDimension.COLUMNS);
+        if (hm.getColumns().getSelected().size() > 0) {
+            page.setDimension(MatrixDimensionKey.COLUMNS);
         }
-
 
         dlg.setVisible(true);
 
@@ -85,39 +60,17 @@ public class SortByMutualExclusionAction extends BaseAction {
             return;
         }
 
-        // Aggregators
-
-        int aggrIndex = -1;
-        IAggregator[] aggregators = AggregatorFactory.getAggregatorsArray();
-        for (int i = 0; i < aggregators.length && aggrIndex == -1; i++)
-            if (aggregators[i].getClass().equals(MultAggregator.class)) {
-                aggrIndex = i;
-            }
-
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
-                IAnnotations am = null;
-                FilterDimension dim = page.getFilterDimension();
-                switch (dim) {
-                    case ROWS:
-                        am = hm.getRows().getAnnotations();
-                        break;
-                    case COLUMNS:
-                        am = hm.getColumns().getAnnotations();
-                        break;
-                }
-
                 MatrixViewSorter.sortByMutualExclusion(
                         hm,
                         page.getPattern(),
-                        am,
                         page.getValues(),
                         page.isUseRegexChecked(),
-                        dim.equals(FilterDimension.ROWS),
-                        dim.equals(FilterDimension.COLUMNS),
+                        page.getDimension().equals(MatrixDimensionKey.COLUMNS),
                         monitor,
                         Settings.getDefault().isShowMutualExclusionProgress()
                 );

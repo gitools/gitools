@@ -26,7 +26,6 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.utils.EventUtils;
 import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
@@ -39,6 +38,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static org.gitools.core.utils.EventUtils.isAny;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -138,10 +139,10 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                heatmap.getRows().setSelectionLead(-1);
-                heatmap.getColumns().setSelectionLead(-1);
-                heatmap.getColumns().clearSelection();
-                heatmap.getRows().clearSelection();
+                heatmap.getRows().setFocus(null);
+                heatmap.getColumns().setFocus(null);
+                heatmap.getColumns().getSelected().clear();
+                heatmap.getRows().getSelected().clear();
             }
         });
 
@@ -167,10 +168,10 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             colValue = (targetPoint.x - wheelPoint.x);
             rowValue = (targetPoint.y - wheelPoint.y);
         } else {
-            int row = heatmap.getRows().getSelectionLead();
-            int col = heatmap.getColumns().getSelectionLead();
+            String row = heatmap.getRows().getFocus();
+            String col = heatmap.getColumns().getFocus();
 
-            leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(row, col));
+            leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(heatmap, heatmap.getRows().indexOf(row), heatmap.getColumns().indexOf(col)));
             leadPointXEnd = leadPoint.x + heatmap.getColumns().getFullSize();
             leadPointYEnd = leadPoint.y + heatmap.getRows().getFullSize();
         }
@@ -273,7 +274,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     public void setScrollColumnPosition(int index) {
-        Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(0, index));
+        Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(heatmap, 0, index));
 
         colSB.setValue(pos.x);
     }
@@ -283,7 +284,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     public void setScrollRowPosition(int index) {
-        Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(index, 0));
+        Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(heatmap, index, 0));
 
         rowSB.setValue(pos.y);
     }
@@ -346,14 +347,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         boolean updateAll =
-                EventUtils.isAny(evt, HeatmapDimension.class,
+                isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_CELL_SIZE,
                         HeatmapDimension.PROPERTY_VISIBLE,
-                        HeatmapDimension.PROPERTY_SELECTION_LEAD,
+                        HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_GRID_SIZE,
                         HeatmapDimension.PROPERTY_GRID_COLOR
                 ) ||
-                        EventUtils.isAny(evt, HeatmapLayer.class,
+                        isAny(evt, HeatmapLayer.class,
                                 HeatmapLayer.PROPERTY_DECORATOR
                         );
 

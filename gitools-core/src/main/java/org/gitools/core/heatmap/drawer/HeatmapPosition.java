@@ -21,27 +21,36 @@
  */
 package org.gitools.core.heatmap.drawer;
 
+import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.model.IMatrixPosition;
+import org.gitools.core.matrix.model.MatrixPosition;
 import org.gitools.core.model.decorator.Decoration;
 
-public class HeatmapPosition {
+public class HeatmapPosition extends MatrixPosition implements IMatrixPosition {
 
     public int row;
     public int column;
+
     public String headerAnnotation;
     public Decoration headerDecoration;
 
-    public HeatmapPosition() {
+    public HeatmapPosition(Heatmap heatmap) {
+        super(heatmap);
     }
 
-    public HeatmapPosition(int row, int column) {
-        this(row, column, null, null);
+    public HeatmapPosition(Heatmap heatmap, int row, int column) {
+        this(heatmap, row, column, null, null);
     }
 
-    public HeatmapPosition(int row, int column, String headerAnnotation) {
-        this(row, column, headerAnnotation, null);
+    public HeatmapPosition(Heatmap heatmap, int row, int column, String headerAnnotation) {
+        this(heatmap, row, column, headerAnnotation, null);
     }
 
-    public HeatmapPosition(int row, int column, String headerAnnotation, Decoration headerDecoration) {
+    public HeatmapPosition(Heatmap heatmap, int row, int column, String headerAnnotation, Decoration headerDecoration) {
+        super(heatmap);
+
+        set( heatmap.getRows().getLabel(row), heatmap.getColumns().getLabel(column) );
+
         this.row = row;
         this.column = column;
         this.headerAnnotation = headerAnnotation;

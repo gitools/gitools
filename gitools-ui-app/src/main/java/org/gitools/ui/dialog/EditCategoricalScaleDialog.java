@@ -37,7 +37,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog {
 
     private final ColoredLabelsGroupsPage page;
 
-    public EditCategoricalScaleDialog(Window owner, ColoredLabel[] coloredLabels) {
+    public EditCategoricalScaleDialog(Window owner, List<ColoredLabel> coloredLabels) {
         super(owner, "Edit Categorical Scale", "Edit Categorical Scale", "Edit Categorical Scale", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);

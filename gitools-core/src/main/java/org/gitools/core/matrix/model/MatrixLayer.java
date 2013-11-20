@@ -24,6 +24,7 @@ package org.gitools.core.matrix.model;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.core.datafilters.ValueTranslator;
 import org.gitools.core.datafilters.ValueTranslatorFactory;
+import org.gitools.utils.aggregation.IAggregator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -53,6 +54,26 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     @XmlElement(name = "value-type")
     @XmlJavaTypeAdapter(ClassXmlAdapter.class)
     private Class<T> valueClass;
+
+    private IAggregator aggregator;
+
+    private SortDirection sortDirection;
+
+    public SortDirection getSortDirection() {
+        return sortDirection;
+    }
+
+    public void setSortDirection(SortDirection sortDirection) {
+        this.sortDirection = sortDirection;
+    }
+
+    public IAggregator getAggregator() {
+        return aggregator;
+    }
+
+    public void setAggregator(IAggregator aggregator) {
+        this.aggregator = aggregator;
+    }
 
     public MatrixLayer() {
         // JAXB requirement

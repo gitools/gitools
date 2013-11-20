@@ -23,8 +23,7 @@ package org.gitools.ui.sort;
 
 import org.gitools.core.matrix.model.IMatrixLayer;
 import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.sort.ValueSortCriteria;
-import org.gitools.core.matrix.sort.ValueSortCriteria.SortDirection;
+import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
@@ -43,11 +42,11 @@ class ValueSortCriteriaTableModel implements TableModel {
 
     private final IMatrixLayers<IMatrixLayer> layers;
 
-    private final List<ValueSortCriteria> criteriaList;
+    private final List<IMatrixLayer> criteriaList;
 
     private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-    public ValueSortCriteriaTableModel(IMatrixLayers<IMatrixLayer> layers, ValueSortCriteria... initialCriteria) {
+    public ValueSortCriteriaTableModel(IMatrixLayers<IMatrixLayer> layers, IMatrixLayer... initialCriteria) {
         super();
 
         this.criteriaList = new ArrayList<>(initialCriteria.length);
@@ -84,11 +83,11 @@ class ValueSortCriteriaTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return criteriaList.get(rowIndex).getLayer().getId();
+                return criteriaList.get(rowIndex).getId();
             case 1:
                 return criteriaList.get(rowIndex).getAggregator();
             case 2:
-                return criteriaList.get(rowIndex).getDirection();
+                return criteriaList.get(rowIndex).getSortDirection();
         }
         return null;
     }
@@ -98,7 +97,7 @@ class ValueSortCriteriaTableModel implements TableModel {
         switch (columnIndex) {
             case 0:
                 String attrName = (String) aValue;
-                criteriaList.get(rowIndex).setLayer(layers.get(attrName));
+                criteriaList.set(rowIndex, layers.get(attrName));
                 break;
 
             case 1:
@@ -106,16 +105,16 @@ class ValueSortCriteriaTableModel implements TableModel {
                 break;
 
             case 2:
-                criteriaList.get(rowIndex).setDirection((SortDirection) aValue);
+                criteriaList.get(rowIndex).setSortDirection((SortDirection) aValue);
                 break;
         }
     }
 
-    public List<ValueSortCriteria> getList() {
+    public List<IMatrixLayer> getList() {
         return criteriaList;
     }
 
-    public void addCriteria(final ValueSortCriteria criteria) {
+    public void addCriteria(final IMatrixLayer criteria) {
         criteriaList.add(criteria);
         fireCriteriaChanged();
     }

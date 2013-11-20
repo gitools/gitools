@@ -25,7 +25,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.model.IAnnotations;
 import org.gitools.utils.textpatt.TextPattern;
 
-public class AnnotationsPatternProvider implements LabelProvider {
+public class AnnotationsPatternProvider extends AbstractLabelProvider {
 
     private final LabelProvider labelProvider;
     private final TextPattern pattern;

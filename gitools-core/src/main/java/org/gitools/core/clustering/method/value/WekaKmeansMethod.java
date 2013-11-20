@@ -33,9 +33,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.NormalizableDistance;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
@@ -53,7 +51,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
     @Nullable
     @Override
-    public ClusteringResults cluster(@NotNull ClusteringData clusterData, @NotNull IProgressMonitor monitor) throws ClusteringException {
+    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
         try {
 
             if (iterations < 2) {
@@ -91,23 +89,23 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
                 Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();
 
-                HashMap<String, List<Integer>> clusterResults = new HashMap<String, List<Integer>>();
+                HashMap<String, Set<String>> clusterResults = new HashMap<>();
 
                 for (int i = 0; i < clusterWekaData.numInstances() && !monitor.isCancelled(); i++) {
                     if ((current = clusterWekaData.get(i)) != null) {
                         cluster = clusterer.clusterInstance(current);
 
-                        List<Integer> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
+                        Set<String> instancesCluster = clusterResults.get(ClusterUtils.valueToString(cluster, maxLength));
                         if (instancesCluster == null) {
-                            instancesCluster = new ArrayList<Integer>();
+                            instancesCluster = new HashSet<>();
                         }
-                        instancesCluster.add(i);
+                        instancesCluster.add(labels.get(i));
                         clusterResults.put(ClusterUtils.valueToString(cluster, maxLength), instancesCluster);
                     }
                     monitor.worked(1);
                 }
 
-                results = new GenericClusteringResults(labels.toArray(new String[0]), clusterResults);
+                results = new GenericClusteringResults(clusterResults);
             }
             return results;
 

@@ -23,7 +23,7 @@ package org.gitools.core.label;
 
 import org.gitools.core.heatmap.HeatmapDimension;
 
-public class AnnotationProvider implements LabelProvider {
+public class AnnotationProvider extends AbstractLabelProvider {
 
     private final HeatmapDimension heatmapDimension;
     private final String annotationLabel;

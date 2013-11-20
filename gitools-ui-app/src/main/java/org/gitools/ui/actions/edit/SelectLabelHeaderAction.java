@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.HeatmapPosition;
@@ -33,8 +33,6 @@ import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
@@ -58,27 +56,17 @@ public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeade
             return;
         }
 
-
-        List<Integer> toSelect = new ArrayList<>();
         HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        for (int i = 0; i < dimension.size(); i++) {
-            String value = coloredHeader.getColoredLabel(i).getValue();
 
-            if (value != null && value.equals(annotationValue)) {
-                toSelect.add(i);
+        for (String identifier :  dimension) {
+
+            String value = coloredHeader.getColoredLabel(identifier).getValue();
+
+            if (StringUtils.equals(value, annotationValue)) {
+                dimension.getSelected().add(identifier);
             }
         }
 
-        int[] alreadySelected = dimension.getSelected();
-        for (int i : alreadySelected) {
-            if (!toSelect.contains(i)) {
-                toSelect.add(i);
-            }
-        }
-
-        if (toSelect.size() < dimension.size()) {
-            dimension.setSelected(ArrayUtils.toPrimitive(toSelect.toArray(new Integer[toSelect.size()])));
-        }
     }
 
     @Override

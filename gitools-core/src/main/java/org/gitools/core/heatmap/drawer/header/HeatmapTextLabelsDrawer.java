@@ -25,7 +25,6 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.label.LabelProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -82,10 +81,6 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
         float fontDesc = lm.getDescent();
         int fontOffset = (int) Math.ceil(((fontHeight + cellHeight) / 2) - fontDesc);
 
-
-
-        LabelProvider labelProvider = header.getLabelProvider();
-
         int x = box.x;
         int y = box.y + start * height;
         int padding = 5;
@@ -94,7 +89,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             Color fgColor = header.getLabelColor();
             Color gColor = gridColor;
 
-            String label = labelProvider.getLabel(index);
+            String label = getLabel(index);
             String matrixLabel = heatmapDimension.getLabel(index);
             if (heatmapDimension.isHighlighted(matrixLabel)) {
                 bgColor = highlightingColor;

@@ -21,18 +21,17 @@
  */
 package org.gitools.ui.actions.data;
 
+import com.google.common.collect.Lists;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.model.MatrixDimensionKey;
+import org.gitools.core.matrix.model.SortDirection;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
-import org.gitools.core.matrix.sort.ValueSortCriteria;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.utils.HeaderEnum;
 import org.gitools.utils.aggregation.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.progressmonitor.IProgressMonitor;
@@ -40,32 +39,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
-public class FastSortValueAction extends BaseAction {
+import static org.gitools.core.matrix.model.MatrixDimensionKey.ROWS;
 
-    private static final long serialVersionUID = -582380114189586206L;
+public class FastSortValueAction extends HeatmapDimensionAction {
 
-    private ValueSortCriteria.SortDirection currentSort;
-    private boolean applyToRows;
+    private SortDirection currentSort;
 
-    public FastSortValueAction(HeaderEnum.Dimension dimension) {
-        super("Sort");
-
-        applyToRows = (dimension == HeaderEnum.Dimension.ROW);
-
-        String title = "Sort " + (applyToRows ? "rows" : "columns");
-        setName(title);
-        setDesc(title);
-
-        currentSort = ValueSortCriteria.SortDirection.ASCENDING;
-        updateIcon();
+    public FastSortValueAction(MatrixDimensionKey dimension) {
+        super(dimension, "Sort " + dimension.getLabel());
 
         setMnemonic(KeyEvent.VK_S);
+        currentSort = SortDirection.ASCENDING;
+        updateIcon();
+
     }
 
     private void updateIcon() {
 
-        if (currentSort == ValueSortCriteria.SortDirection.ASCENDING) {
+        if (currentSort == SortDirection.ASCENDING) {
             setSmallIconFromResource(IconNames.sortSelectedColumns16Desc);
             setLargeIconFromResource(IconNames.sortSelectedColumns24Desc);
         } else {
@@ -76,43 +69,36 @@ public class FastSortValueAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-        final IMatrixView matrixView = ActionUtils.getMatrixView();
 
+        final Heatmap heatmap = getHeatmap();
 
         // Deduce default Aggregator from the associated ColorScale
         IAggregator defaultAggregator;
         try {
-            Heatmap heatmap = ActionUtils.getHeatmap();
             defaultAggregator = heatmap.getLayers().getTopLayer().getDecorator().getScale().defaultAggregator();
         } catch (Exception ex) {
             defaultAggregator = MultAggregator.INSTANCE;
         }
         final IAggregator aggregator = defaultAggregator;
+        final IMatrixLayer layer = heatmap.getLayers().getTopLayer();
 
-        if (matrixView == null) {
-            return;
-        }
-
-        final IMatrixLayer layer = matrixView.getLayers().getTopLayer();
-
-        final ValueSortCriteria.SortDirection sort = currentSort;
-        currentSort = (currentSort == ValueSortCriteria.SortDirection.ASCENDING ? ValueSortCriteria.SortDirection.DESCENDING : ValueSortCriteria.SortDirection.ASCENDING);
+        final SortDirection sort = currentSort;
+        currentSort = (currentSort == SortDirection.ASCENDING ? SortDirection.DESCENDING : SortDirection.ASCENDING);
         updateIcon();
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
             public void run(@NotNull IProgressMonitor monitor) {
-                ValueSortCriteria[] criteriaArray = new ValueSortCriteria[]{new ValueSortCriteria(layer, aggregator, sort)};
+
+                layer.setAggregator(aggregator);
+                layer.setSortDirection(sort);
+
+                List<IMatrixLayer> criteriaArray = Lists.newArrayList(layer);
 
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByValue(matrixView, criteriaArray, applyToRows, !applyToRows, monitor);
+                MatrixViewSorter.sortByValue(heatmap, criteriaArray, getDimension().getId() == ROWS, getDimension().getId() != ROWS, monitor);
 
                 monitor.end();
             }
