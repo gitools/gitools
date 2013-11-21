@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.model.decorator.Decoration;
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;
@@ -148,7 +148,7 @@ public abstract class AbstractHeatmapDrawer {
                         bottomMargin = height - (((height - textWidth) / 2));
                     }
 
-                    g.setColor(ColorUtils.bestForegroundColor(decoration.getBgColor()));
+                    g.setColor(Colors.bestForegroundColor(decoration.getBgColor()));
                     if (text.matches("[0-9\\.]+e-?[0-9]+")) {
                         int e_pos = text.indexOf("e") + 3;
                         text = text.replaceAll("e(-?[0-9]+)", "·10$1");

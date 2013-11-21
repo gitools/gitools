@@ -28,7 +28,7 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.gitools.utils.color.generator.ColorRegistry;
+import org.gitools.utils.color.ColorRegistry;
 
 import java.util.List;
 

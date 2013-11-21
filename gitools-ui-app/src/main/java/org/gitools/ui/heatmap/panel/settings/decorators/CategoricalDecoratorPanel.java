@@ -29,7 +29,7 @@ import org.gitools.ui.dialog.EditCategoricalScaleDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
-import org.gitools.utils.color.generator.ColorRegistry;
+import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 

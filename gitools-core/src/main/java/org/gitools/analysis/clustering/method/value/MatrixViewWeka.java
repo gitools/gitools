@@ -118,24 +118,16 @@ class MatrixViewWeka extends Instances {
 
         //The dataset for the instance
         Instances dataset = new Instances("matrixToCluster", m_Attributes, 0);
-
         dataset.setClassIndex(m_ClassIndex);
-
         current.setDataset(dataset);
-
         dataset.add(current);
-
         return current;
     }
 
     void setFilteredAttributes(int[] selectedAttributes) {
-
         indexes = selectedAttributes;
-
         m_Attributes = addAttributes(selectedAttributes.length);
-
         structure = new Instances("matrixToCluster", m_Attributes, 0);
-
         m_ClassIndex = initClassIndex;
     }
 
@@ -148,7 +140,6 @@ class MatrixViewWeka extends Instances {
     public Instance instance(int i) {
         try {
             return get(i);
-
         } catch (Exception ex) {
             return null;
         }
@@ -169,22 +160,8 @@ class MatrixViewWeka extends Instances {
 
     }
 
-
-    public Attribute attribute(Integer index) {
-
-        return (Attribute) m_Attributes.elements(index);
-    }
-
-    @Override
-    public int classIndex() {
-        return m_ClassIndex;
-    }
-
     public ClusteringData getMatrixView() {
         return matrixView;
     }
 
-    public void setClassIndex(int index) {
-        m_ClassIndex = index;
-    }
 }

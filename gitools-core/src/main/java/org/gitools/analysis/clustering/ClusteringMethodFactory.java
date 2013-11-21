@@ -22,8 +22,8 @@
 package org.gitools.analysis.clustering;
 
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
-import org.gitools.analysis.clustering.method.value.WekaHCLMethod;
 import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 
 import java.lang.reflect.Constructor;
@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ClusteringMethodFactory {
 
-    private static final ClusteringMethodDescriptor[] DEFAULT_DESCRIPTORS = new ClusteringMethodDescriptor[]{new ClusteringMethodDescriptor("Clustering from annotations", "Cluster data instances according to a set of selected annotations", AnnPatClusteringMethod.class), new ClusteringMethodDescriptor("Agglomerative hierarchical clustering", "Cluster data instances according to classic agglomerative hierarchical clustering method", WekaHCLMethod.class), new ClusteringMethodDescriptor("K-means clustering", "Cluster data instances according to k-means clustering method", WekaKmeansMethod.class), new ClusteringMethodDescriptor("Cobweb clustering", "Cluster data instances according to cobweb clustering method", WekaCobWebMethod.class)};
+    private static final ClusteringMethodDescriptor[] DEFAULT_DESCRIPTORS = new ClusteringMethodDescriptor[]{new ClusteringMethodDescriptor("Clustering from annotations", "Cluster data instances according to a set of selected annotations", AnnPatClusteringMethod.class), new ClusteringMethodDescriptor("Agglomerative hierarchical clustering", "Cluster data instances according to classic agglomerative hierarchical clustering method", HierarchicalMethod.class), new ClusteringMethodDescriptor("K-means clustering", "Cluster data instances according to k-means clustering method", WekaKmeansMethod.class), new ClusteringMethodDescriptor("Cobweb clustering", "Cluster data instances according to cobweb clustering method", WekaCobWebMethod.class)};
 
     private static ClusteringMethodFactory instance;
 

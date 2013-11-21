@@ -19,12 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.color.utils;
+package org.gitools.utils.color;
 
 import java.awt.*;
 
-public class ColorUtils {
-
+public class Colors {
 
     public static Color mix(Color src, Color dst, double factor) {
 

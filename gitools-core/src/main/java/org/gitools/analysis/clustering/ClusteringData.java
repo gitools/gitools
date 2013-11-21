@@ -36,9 +36,12 @@ public interface ClusteringData {
      */
     String getLabel(int index);
 
+    Iterable<String> getLabels();
+
     /**
      * Returns an instance of the data
      */
-
     ClusteringDataInstance getInstance(int index);
+
+    ClusteringDataInstance getInstance(String label);
 }

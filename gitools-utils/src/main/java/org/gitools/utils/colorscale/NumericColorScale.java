@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.colorscale;
 
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
@@ -84,14 +84,14 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
     @Override
     public String valueRGBHtmlColor(double value) {
         Color color = valueColor(value);
-        return ColorUtils.colorToRGBHtml(color);
+        return Colors.colorToRGBHtml(color);
     }
 
 
     @Override
     public String valueHexHtmlColor(double value) {
         Color color = valueColor(value);
-        return ColorUtils.colorToHexHtml(color);
+        return Colors.colorToHexHtml(color);
     }
 
 

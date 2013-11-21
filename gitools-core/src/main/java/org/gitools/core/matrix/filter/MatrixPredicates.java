@@ -27,7 +27,7 @@ import org.gitools.api.matrix.position.IMatrixPredicate;
 
 public class MatrixPredicates {
 
-    public static <T> IMatrixPredicate<T> notNull() {
+    public static <T> IMatrixPredicate<T> notNull(Class<T> type) {
         return ObjectPredicate.NOT_NULL.withNarrowedType();
     }
 

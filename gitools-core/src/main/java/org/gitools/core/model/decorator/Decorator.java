@@ -55,11 +55,6 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         decorate(decoration, textFormatter, matrix, layer, position.toVector());
     }
 
-    @Deprecated
-    public final void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
-        decorate(decoration, textFormatter, matrix, matrix.getLayers().get(layer), matrix.getRows().getLabel(row), matrix.getColumns().getLabel(column));
-    }
-
     public abstract C getScale();
 
     public String getName() {

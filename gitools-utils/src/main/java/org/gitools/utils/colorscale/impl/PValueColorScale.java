@@ -23,7 +23,7 @@ package org.gitools.utils.colorscale.impl;
 
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
@@ -75,7 +75,7 @@ public class PValueColorScale extends NumericColorScale {
 
         double f = value / significanceLevel;
         f = (f == 0.0 ? 0.0 : 1.0 + defaultLogFactor * Math.log10(f));
-        return ColorUtils.mix(maxColor, minColor, f);
+        return Colors.mix(maxColor, minColor, f);
 
     }
 

@@ -59,11 +59,13 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
 
         Map<String, Set<String>> clusters = new HashMap<>();
-        for (int i = 0; i < data.getSize() && !monitor.isCancelled(); i++) {
+        for (String item : data.getLabels()) {
 
-            String item = data.getLabel(i);
+            if (monitor.isCancelled()) {
+                return null;
+            }
 
-            String clusterName = data.getInstance(i).getTypedValue(0, String.class);
+            String clusterName = data.getInstance(item).getTypedValue(0, String.class);
 
             if (AnnPatClusteringData.NA.equals(clusterName)) {
                 monitor.worked(1);

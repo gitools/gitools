@@ -125,7 +125,7 @@ public class ClusteringValueWizard extends AbstractWizard {
         if (currentPage == methodPage) {
             ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
             Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
-            optionsPage.setNewickExportVisible(WekaHCLMethod.class.equals(methodClass));
+            optionsPage.setNewickExportVisible(HierarchicalMethod.class.equals(methodClass));
         } else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage) {
             method = ((ClusteringValueMethodPage) currentPage).getMethod();
             method.setPreprocess(optionsPage.isPreprocessing());
@@ -140,7 +140,7 @@ public class ClusteringValueWizard extends AbstractWizard {
 
         if (WekaCobWebMethod.class.equals(methodClass)) {
             return cobwebPage;
-        } else if (WekaHCLMethod.class.equals(methodClass)) {
+        } else if (HierarchicalMethod.class.equals(methodClass)) {
             return hclPage;
         } else if (WekaKmeansMethod.class.equals(methodClass)) {
             return kmeansPage;
@@ -153,7 +153,7 @@ public class ClusteringValueWizard extends AbstractWizard {
         int attr = optionsPage.getDataAttribute();
         IMatrixView mv = heatmap;
         IMatrixLayer layer = heatmap.getLayers().get(attr);
-        return optionsPage.isApplyToRows() ? new MatrixRowClusteringData(mv, layer) : new MatrixColumnClusteringData(mv, layer);
+        return optionsPage.isApplyToRows() ? new MatrixClusteringData(mv, mv.getRows(), mv.getColumns(), layer) : new MatrixClusteringData(mv, mv.getColumns(), mv.getRows(), layer);
     }
 
     public int getDataAttribute() {

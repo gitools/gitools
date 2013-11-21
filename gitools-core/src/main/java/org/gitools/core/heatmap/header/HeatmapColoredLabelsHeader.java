@@ -31,8 +31,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.utils.color.generator.ColorGenerator;
-import org.gitools.utils.color.generator.ColorGeneratorFactory;
+import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -159,7 +158,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     }
 
     public void updateFromClusterResults(ClusteringResults results) {
-        ColorGenerator cg = ColorGeneratorFactory.getDefault().create();
+        ColorGenerator cg = new ColorGenerator();
 
         Collection<String> clusters = results.getClusters();
         coloredLabels = new ArrayList<>(results.size());
