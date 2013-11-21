@@ -23,7 +23,7 @@ package org.gitools.utils.colorscale.impl;
 
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.MeanAggregator;
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
@@ -73,10 +73,10 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
         if (value < mid.getValue()) {
             double f = (value - min.getValue()) / (mid.getValue() - min.getValue());
-            return ColorUtils.mix(mid.getColor(), min.getColor(), f);
+            return Colors.mix(mid.getColor(), min.getColor(), f);
         } else {
             double f = (value - mid.getValue()) / (max.getValue() - mid.getValue());
-            return ColorUtils.mix(max.getColor(), mid.getColor(), f);
+            return Colors.mix(max.getColor(), mid.getColor(), f);
         }
 
     }

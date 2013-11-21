@@ -31,6 +31,39 @@ public class AnnPatClusteringData implements ClusteringData {
 
     public final static String NA = "N/A";
 
+    private final HeatmapDimension dimension;
+    private final TextPattern pat;
+
+    public AnnPatClusteringData(HeatmapDimension dimension, String pattern) {
+        this.dimension = dimension;
+        this.pat = new TextPattern(pattern);
+    }
+
+    @Override
+    public int getSize() {
+        return dimension.size();
+    }
+
+    @Override
+    public String getLabel(int index) {
+        return dimension.getLabel(index);
+    }
+
+    @Override
+    public Iterable<String> getLabels() {
+        return dimension;
+    }
+
+    @Override
+    public ClusteringDataInstance getInstance(int index) {
+        return  getInstance(dimension.getLabel(index));
+    }
+
+    @Override
+    public ClusteringDataInstance getInstance(String label) {
+        return new Instance(new AnnotationResolver(dimension.getAnnotations(), label, NA));
+    }
+
     public class Instance implements ClusteringDataInstance {
 
         private final VariableValueResolver resolver;
@@ -70,29 +103,5 @@ public class AnnPatClusteringData implements ClusteringData {
 
             return (T) getValue(attribute);
         }
-    }
-
-    private final HeatmapDimension dimension;
-    private final TextPattern pat;
-
-    public AnnPatClusteringData(HeatmapDimension dimension, String pattern) {
-        this.dimension = dimension;
-        this.pat = new TextPattern(pattern);
-    }
-
-    @Override
-    public int getSize() {
-        return dimension.size();
-    }
-
-    @Override
-    public String getLabel(int index) {
-        return dimension.getLabel(index);
-    }
-
-
-    @Override
-    public ClusteringDataInstance getInstance(int index) {
-        return new Instance(new AnnotationResolver(dimension.getAnnotations(), dimension.getLabel(index), NA));
     }
 }

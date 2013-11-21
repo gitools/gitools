@@ -56,7 +56,7 @@ import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.utils.color.generator.ColorRegistry;
+import org.gitools.utils.color.ColorRegistry;
 
 import java.io.File;
 import java.io.IOException;

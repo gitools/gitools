@@ -22,6 +22,7 @@
 package org.gitools.ui.heatmap.drawer;
 
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 
@@ -56,9 +57,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < columns.size() ? colEnd : columns.size();
 
-        Decorator deco = heatmap.getLayers().getTopLayer().getDecorator();
         Decoration decoration = new Decoration();
-
         int y = box.y + rowStart * cellHeight;
         for (int row = rowStart; row < rowEnd; row++) {
             int x = box.x + colStart * cellWidth;
@@ -68,9 +67,7 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
                     decoration.setBgColor(Color.WHITE);
                     decoration.setValue("");
                 } else {
-                    decoration.reset();
-                    int layerIdx = heatmap.getLayers().getTopLayerIndex();
-                    deco.decorate(decoration, heatmap.getLayers().get(layerIdx).getShortFormatter(), heatmap, row, col, layerIdx);
+                    decorateCell(decoration.reset(), row, col);
                 }
 
                 Color rowsGridColor = rows.getGridColor();
@@ -92,6 +89,17 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             drawSelectedAndFocus(g, box, columns, false);
         }
 
+    }
+
+    protected void decorateCell(Decoration decoration, int row, int col) {
+
+        HeatmapLayer topLayer = heatmap.getLayers().getTopLayer();
+        Decorator decorator = topLayer.getDecorator();
+
+        String rowId = heatmap.getRows().getLabel(row);
+        String columnId = heatmap.getColumns().getLabel(col);
+
+        decorator.decorate(decoration, topLayer.getShortFormatter(), heatmap, topLayer, rowId, columnId);
     }
 
 

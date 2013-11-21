@@ -21,9 +21,6 @@
  */
 package org.gitools.utils.benchmark;
 
-/**
- * @noinspection ALL
- */
 public class TimeCounter {
 
     private boolean paused;

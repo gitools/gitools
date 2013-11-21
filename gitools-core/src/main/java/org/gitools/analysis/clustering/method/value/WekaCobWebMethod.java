@@ -52,9 +52,9 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
     public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
         try {
 
-            Instances structure = ClusterUtils.buildInstanceStructure(clusterData, transpose);
+            Instances structure = ClusterUtils.buildInstanceStructure(clusterData);
 
-            List<String> labels = ClusterUtils.getLabels(clusterData, transpose);
+            List<String> labels = ClusterUtils.getLabels(clusterData);
 
             MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
 

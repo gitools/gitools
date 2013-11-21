@@ -24,12 +24,8 @@ package org.gitools.ui.analysis.clustering.values;
 import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
 import org.gitools.analysis.clustering.ClusteringMethodFactory;
 import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
-import org.gitools.analysis.clustering.method.value.WekaHCLMethod;
-import org.gitools.analysis.clustering.method.value.WekaHierarchicalClusterer;
+import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import weka.core.EuclideanDistance;
-import weka.core.ManhattanDistance;
-import weka.core.SelectedTag;
 
 import java.util.List;
 
@@ -98,11 +94,12 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
     @Override
     public AbstractClusteringValueMethod getMethod() {
 
-        WekaHCLMethod method = null;
+        HierarchicalMethod method = null;
 
-        method = (WekaHCLMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
+        method = (HierarchicalMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
 
-        method.setLinkType(new SelectedTag(linkTypeCombo.getSelectedItem().toString(), WekaHierarchicalClusterer.TAGS_LINK_TYPE));
+        /*
+        method.setLinkType(new SelectedTag(linkTypeCombo.getSelectedItem().toString(), HierarchicalClusterer.TAGS_LINK_TYPE));
 
         method.setDistanceIsBranchLength(false);
         method.setNumClusters(1);
@@ -112,7 +109,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
             method.setDistanceFunction(new EuclideanDistance());
         } else {
             method.setDistanceFunction(new ManhattanDistance());
-        }
+        }       */
 
         return method;
     }
@@ -123,7 +120,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
         List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
 
         for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaHCLMethod.class)) {
+            if (desc.getMethodClass().equals(HierarchicalMethod.class)) {
                 return desc;
             }
 

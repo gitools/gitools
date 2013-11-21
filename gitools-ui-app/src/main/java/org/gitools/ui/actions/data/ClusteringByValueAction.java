@@ -24,6 +24,7 @@ package org.gitools.ui.actions.data;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.ClusteringResults;
 import org.gitools.analysis.clustering.HierarchicalClusteringResults;
+import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
@@ -32,6 +33,7 @@ import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.clustering.values.ClusteringValueWizard;
+import org.gitools.ui.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -73,13 +75,17 @@ public class ClusteringByValueAction extends HeatmapAction {
                     // Cluster data
                     ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
+                    if (results instanceof Cluster) {
+                        AppFrame.get().getEditorsPanel().addEditor(new DendrogramEditor((Cluster) results));
+                        return;
+                    }
+
                     // Target dimension
                     HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
                     boolean hcl = results instanceof HierarchicalClusteringResults;
 
                     // Save results as an annotation
                     String annotationLabel = wiz.getMethodName() + " " + heatmap.getLayers().get(wiz.getDataAttribute()).getId();
-
 
                     AnnotationMatrix annotationMatrix = hdim.getAnnotations();
                     if (hcl) {

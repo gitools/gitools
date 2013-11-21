@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.color.generator;
+package org.gitools.utils.color;
 
 import java.awt.*;
 import java.util.HashMap;

@@ -42,9 +42,10 @@ public class Decoration implements Serializable {
         reset();
     }
 
-    public void reset() {
+    public Decoration reset() {
         this.value = "";
         this.bgColor = Color.WHITE;
+        return this;
     }
 
     public String getValue() {

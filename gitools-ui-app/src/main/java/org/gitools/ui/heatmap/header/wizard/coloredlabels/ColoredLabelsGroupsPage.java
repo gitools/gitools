@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.utils.color.generator.ColorRegistry;
+import org.gitools.utils.color.ColorRegistry;
 
 import javax.swing.*;
 import javax.swing.event.*;

@@ -133,39 +133,16 @@ public class ClusterUtils {
 
     }
 
-    /**
-     * Creation of an Instance structure from a IMatrixView
-     *
-     * @param clusterData
-     * @param transposed
-     * @return
-     */
-
-    @Deprecated // It is not necessary to check for transposed !!!
-    public static Instances buildInstanceStructure(ClusteringData clusterData, boolean transposed) {
-
-        FastVector attr = null;
-
-        if (transposed) {
-            attr = addAttributes(((MatrixRowClusteringData) clusterData).getNumAttributes());
-        } else {
-            attr = addAttributes(((MatrixColumnClusteringData) clusterData).getNumAttributes());
-        }
-
-        return new Instances("matrixToCluster", attr, 0);
+    @Deprecated
+    public static Instances buildInstanceStructure(ClusteringData clusterData) {
+        return new Instances("matrixToCluster", addAttributes(((MatrixClusteringData) clusterData).getNumAttributes()), 0);
     }
 
-
-    @Deprecated // It is not necessary to check for transposed !!!
-    public static List<String> getLabels(ClusteringData clusterData, boolean transpose) {
+    @Deprecated
+    public static List<String> getLabels(ClusteringData clusterData) {
 
         List<String> labels = new ArrayList<>();
-
-        if (transpose) {
-            for (int i = 0; i < clusterData.getSize(); i++)
-                labels.add(clusterData.getLabel(i));
-        } else {
-            for (int i = 0; i < clusterData.getSize(); i++)
+        for (int i = 0; i < clusterData.getSize(); i++){
                 labels.add(clusterData.getLabel(i));
         }
         return labels;
