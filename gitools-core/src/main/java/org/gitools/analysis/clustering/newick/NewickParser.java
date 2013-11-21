@@ -116,13 +116,13 @@ public class NewickParser<VT> {
         Token token = null;
         ParserState state = ParserState.TREE_START;
 
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
 
         NewickTree tree = null;
         NewickNode node = null;
         NewickNode root = null;
         int level = 0;
-        Stack<NewickNode> nodeStack = new Stack<NewickNode>();
+        Stack<NewickNode> nodeStack = new Stack<>();
 
         while (state != ParserState.EOF) {
             switch (state) {

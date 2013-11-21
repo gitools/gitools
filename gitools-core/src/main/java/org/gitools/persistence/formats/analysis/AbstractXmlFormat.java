@@ -55,12 +55,12 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     void beforeRead(InputStream in, IResourceLocator resourceLocator, Unmarshaller unmarshaller, IProgressMonitor progressMonitor) throws PersistenceException {
-        dependencies = new ArrayList<ResourceReference>();
+        dependencies = new ArrayList<>();
         unmarshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 
     void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException {
-        dependencies = new ArrayList<ResourceReference>();
+        dependencies = new ArrayList<>();
         marshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 

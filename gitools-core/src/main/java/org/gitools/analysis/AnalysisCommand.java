@@ -22,11 +22,6 @@
 package org.gitools.analysis;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.ValueTranslator;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.datafilters.BinaryCutoff;
-import org.gitools.utils.datafilters.BinaryCutoffTranslator;
-import org.gitools.utils.datafilters.DoubleTranslator;
 
 public abstract class AnalysisCommand {
 
@@ -42,26 +37,6 @@ public abstract class AnalysisCommand {
         this.storeAnalysis = true;
     }
 
-    public String getWorkdir() {
-        return workdir;
-    }
-
-    public void setWorkdir(String workdir) {
-        this.workdir = workdir;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public boolean isStoreAnalysis() {
-        return storeAnalysis;
-    }
-
     public void setStoreAnalysis(boolean storeAnalysis) {
         this.storeAnalysis = storeAnalysis;
     }
@@ -69,7 +44,4 @@ public abstract class AnalysisCommand {
     public abstract void run(IProgressMonitor monitor) throws AnalysisException;
 
 
-    protected ValueTranslator createValueTranslator(boolean binaryCutoffEnabled, CutoffCmp cutoffCmp, Double cutoffValue) {
-        return binaryCutoffEnabled ? new BinaryCutoffTranslator(new BinaryCutoff(cutoffCmp, cutoffValue)) : DoubleTranslator.get();
-    }
 }

@@ -50,7 +50,7 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
     private HelpContext helpContext;
 
 
-    private final List<IWizardPageUpdateListener> listeners = new ArrayList<IWizardPageUpdateListener>();
+    private final List<IWizardPageUpdateListener> listeners = new ArrayList<>();
 
     protected AbstractWizardPage() {
         this(null);

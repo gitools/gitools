@@ -188,7 +188,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     }
 
     private void updateAnalysisDetails() {
-        List<Property> analysisAttributes = new ArrayList<Property>();
+        List<Property> analysisAttributes = new ArrayList<>();
         if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
             analysisAttributes.add(new Property("Group 1", "user defined group"));
             analysisAttributes.add(new Property("Group 2", "user defined group"));

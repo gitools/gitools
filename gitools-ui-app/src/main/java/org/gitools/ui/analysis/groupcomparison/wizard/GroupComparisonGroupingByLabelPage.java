@@ -177,9 +177,8 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
     }
 
     private void setValues(List<String> values, JTextArea patterns) {
-        Iterator<String> it = values.iterator();
-        while (it.hasNext()) {
-            patterns.append(it.next() + "\n");
+        for (String value : values) {
+            patterns.append(value + "\n");
         }
 
     }

@@ -88,7 +88,7 @@ public class IntogenService {
 
             monitor.end();
 
-            Map<String, String> nameMap = new HashMap<String, String>();
+            Map<String, String> nameMap = new HashMap<>();
             nameMap.put("modulemap.tsv", prefix + "-oncomodules.tcm.gz");
             nameMap.put("oncomodules.tsv", prefix + "-annotations.tsv.gz");
 

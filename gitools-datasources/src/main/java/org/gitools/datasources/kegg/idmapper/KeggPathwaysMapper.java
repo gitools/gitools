@@ -60,7 +60,7 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
             return null;
         }
 
-        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> map = new HashMap<>();
         Set<String> dstIds = data.getDstIds();
         monitor.begin("Getting KEGG genes ...", dstIds.size());
         try {
@@ -75,7 +75,7 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
                 //	break;
 
                 List<String> genes = service.getGenesByPathway(dstId);
-                map.put(dstId, new HashSet<String>(genes));
+                map.put(dstId, new HashSet<>(genes));
                 monitor.worked(1);
             }
         } catch (Exception ex) {

@@ -61,7 +61,7 @@ public class FilterByValueAction extends HeatmapAction {
         IMatrixLayer selectedLayer = matrixView.getLayers().getTopLayer();
 
 
-        ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<ValueFilterCriteria>(1);
+        ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
         initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
 
         final ValueFilterPage page = new ValueFilterPage(AppFrame.get(),

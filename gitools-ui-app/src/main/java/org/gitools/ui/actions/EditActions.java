@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.actions;
 
-import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.edit.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
@@ -33,14 +32,6 @@ public final class EditActions {
     public static final BaseAction selectAllAction = new SelectAllAction();
 
     public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
-
-    public static final BaseAction groupSelectedRows = new GroupSelectionAction(ROWS);
-
-    public static final BaseAction groupSelectedColumns = new GroupSelectionAction(COLUMNS);
-
-    public static final BaseAction invertRowSelectionAction = new InvertSelectionAction(ROWS);
-
-    public static final BaseAction invertColumnSelectionAction = new InvertSelectionAction(COLUMNS);
 
     public static final BaseAction unselectAllAction = new UnselectAllAction();
 

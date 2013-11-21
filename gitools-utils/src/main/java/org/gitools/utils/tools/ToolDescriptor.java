@@ -27,10 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * It represents the descriptor for a tool
  * and contains all the relevant information for the tool.
- *
- * @noinspection ALL
  */
-
 @XmlRootElement
 public class ToolDescriptor {
 

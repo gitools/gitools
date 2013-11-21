@@ -82,9 +82,9 @@ public class MappingEngine {
     private static class Path {
 
 
-        private final LinkedList<Step> steps = new LinkedList<Step>();
+        private final LinkedList<Step> steps = new LinkedList<>();
 
-        private final Set<MappingNode> visited = new HashSet<MappingNode>();
+        private final Set<MappingNode> visited = new HashSet<>();
 
         public Path() {
         }
@@ -172,7 +172,7 @@ public class MappingEngine {
 
     public MappingEngine() {
         this.context = new MappingContext();
-        this.edges = new ArrayList<Edge>();
+        this.edges = new ArrayList<>();
     }
 
     public MappingContext getContext() {
@@ -192,7 +192,7 @@ public class MappingEngine {
 
         MappingData data = new MappingData(src, src);
         if (ids != null) {
-            data.identity(new HashSet<String>(Arrays.asList(ids)));
+            data.identity(new HashSet<>(Arrays.asList(ids)));
         }
 
         monitor.info("Searching mapping path ...");
@@ -207,7 +207,7 @@ public class MappingEngine {
         LinkedList<Step> steps = path.getSteps();
         Iterator<Step> it = steps.iterator();
 
-        Set<Mapper> initializedMappers = new HashSet<Mapper>();
+        Set<Mapper> initializedMappers = new HashSet<>();
         it.next();
         while (it.hasNext()) {
             Step step = it.next();
@@ -252,7 +252,7 @@ public class MappingEngine {
         StringMappingNode dstNode = new StringMappingNode(dst);
         Path bestPath = null;
         int bestLength = Integer.MAX_VALUE;
-        LinkedList<Path> paths = new LinkedList<Path>();
+        LinkedList<Path> paths = new LinkedList<>();
         paths.offer(new Path(new StringMappingNode(src)));
         while (paths.size() > 0) {
             Path path = paths.poll();
@@ -280,7 +280,7 @@ public class MappingEngine {
 
 
     private List<Step> getSteps(MappingNode snode, boolean generatorRequired) {
-        List<Step> steps = new ArrayList<Step>();
+        List<Step> steps = new ArrayList<>();
 
         for (Edge edge : edges) {
             MappingNode src = edge.getSrc();

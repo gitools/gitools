@@ -88,6 +88,28 @@ public abstract class FilterComponent extends JPanel implements IFilterComponent
         return filterDescription;
     }
 
+    protected String[] getListTextOptions() {
+        String res[] = null;
+        if (filterOptions != null) {
+            res = new String[filterOptions.getOptions().size()];
+            for (int i = 0; i < filterOptions.getOptions().size(); i++) {
+                res[i] = filterOptions.getOptions().get(i).getValue();
+            }
+
+        } else {
+            if (filterDescription == null) {
+                return res;
+            }
+
+            res = new String[filterDescription.getOptions().size()];
+
+            for (int i = 0; i < filterDescription.getOptions().size(); i++) {
+                res[i] = filterDescription.getOptions().get(i).getValue();
+            }
+        }
+        return res;
+    }
+
     /**
      * Set options model of a comboBox component.
      * This operation is used for implement the PushAction

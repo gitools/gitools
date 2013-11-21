@@ -33,7 +33,7 @@ import java.util.List;
 class BiomartSources {
 
     @XmlElement(name = "mart")
-    private List<BiomartSource> sources = new ArrayList<BiomartSource>();
+    private List<BiomartSource> sources = new ArrayList<>();
 
     public List<BiomartSource> getSources() {
         return sources;

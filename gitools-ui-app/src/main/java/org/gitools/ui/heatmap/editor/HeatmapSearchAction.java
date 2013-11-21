@@ -21,23 +21,22 @@
  */
 package org.gitools.ui.heatmap.editor;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class HeatmapSearchAction extends BaseAction {
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 
-    private final boolean searchColumns;
+public class HeatmapSearchAction extends HeatmapDimensionAction {
 
-    public HeatmapSearchAction(boolean searchColumns) {
-        super("Search");
-
-        this.searchColumns = searchColumns;
+    public HeatmapSearchAction(MatrixDimensionKey key) {
+        super(key, "Search");
 
         setDesc("Search for a text in rows or columns");
         setSmallIconFromResource(IconNames.SEARCH16);
@@ -56,9 +55,7 @@ public class HeatmapSearchAction extends BaseAction {
         }
 
         HeatmapEditor hmEditor = (HeatmapEditor) currentEditor;
-
-
-        hmEditor.showSearch(searchColumns);
+        hmEditor.showSearch(getDimensionKey() == COLUMNS);
     }
 
 }

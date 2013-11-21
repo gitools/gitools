@@ -24,7 +24,7 @@ package org.gitools.ui.actions.data;
 import com.google.common.base.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;

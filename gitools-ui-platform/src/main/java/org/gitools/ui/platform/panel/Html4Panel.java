@@ -100,12 +100,13 @@ public class Html4Panel extends JPanel {
     HtmlPanel panel;
     SimpleHtmlRendererContext rcontext;
 
-    Html4Panel() {
+    public Html4Panel() {
         createComponents();
     }
 
     private void createComponents() {
         panel = new HtmlPanel();
+        panel.setBackground(Color.WHITE);
         rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
 
         setLayout(new BorderLayout());
@@ -118,7 +119,7 @@ public class Html4Panel extends JPanel {
         String target = linkNode.getAttribute("target");
         if (rel.equalsIgnoreCase("action")) {
             String name = href;
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
 
             int pos = href.indexOf('?');
             if (pos >= 0) {
@@ -155,14 +156,10 @@ public class Html4Panel extends JPanel {
     }
 
     protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-        /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-          if (formInputs != null)
-              for (FormInput fi : formInputs)
-                  System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
+
     }
 
     protected void performUrlAction(String name, Map<String, String> params) {
-        // do nothing
     }
 
     public void navigate(URL url) throws Exception {

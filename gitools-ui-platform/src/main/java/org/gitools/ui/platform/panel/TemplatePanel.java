@@ -36,9 +36,6 @@ import java.net.URL;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class TemplatePanel extends Html4Panel {
 
     private static final long serialVersionUID = 1939265225161205798L;
@@ -89,7 +86,6 @@ public class TemplatePanel extends Html4Panel {
     }
 
     void setTemplateFromResource(String resource, String baseUrl) throws Exception {
-
         setTemplateFromResource(resource, new URL(baseUrl));
     }
 

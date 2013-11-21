@@ -237,9 +237,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     }
 
     void setValues(List<String> values) {
-        Iterator<String> it = values.iterator();
-        while (it.hasNext()) {
-            patterns.append(it.next() + "\n");
+        for (String value : values) {
+            patterns.append(value + "\n");
         }
 
     }

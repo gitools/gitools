@@ -42,7 +42,7 @@ import java.util.Set;
  */
 public final class PixelMarkerOverlay extends Overlay {
 
-    private Set<Point> points = new HashSet<Point>();
+    private Set<Point> points = new HashSet<>();
     private Color color = Color.RED;
     private int size = 5;
 

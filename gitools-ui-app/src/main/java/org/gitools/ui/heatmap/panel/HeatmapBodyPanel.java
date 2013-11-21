@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.HeatmapBodyDrawer;
+import org.gitools.ui.heatmap.drawer.HeatmapBodyDrawer;
 
 public class HeatmapBodyPanel extends AbstractHeatmapPanel {
 

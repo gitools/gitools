@@ -34,9 +34,6 @@ import java.nio.channels.ClosedByInterruptException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public class CommandListener implements Runnable {
 
     private static final Logger log = Logger.getLogger(CommandListener.class);

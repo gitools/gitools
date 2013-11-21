@@ -22,6 +22,7 @@
 package org.gitools.ui.heatmap.panel.settings.headers;
 
 import com.alee.laf.table.WebTable;
+import com.google.common.collect.Lists;
 import com.jgoodies.binding.adapter.AbstractTableAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.core.heatmap.Heatmap;
@@ -31,14 +32,13 @@ import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.EditActions;
+import org.gitools.ui.actions.edit.AddHeaderAction;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.DecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.collections.ReverseList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,7 +69,7 @@ public class HeadersEditPanel extends JDialog {
 
         List<HeatmapHeader> headers;
         if (dimension == heatmap.getColumns()) {
-            headers = new ReverseList<>(dimension.getHeaders());
+            headers = Lists.reverse(dimension.getHeaders());
         } else {
             headers = dimension.getHeaders();
         }
@@ -257,24 +257,22 @@ public class HeadersEditPanel extends JDialog {
         }
 
         public void editRow(int modelRow) {
-            actionHeaderEdit(heatmap, dimension, listModel.getList().get(modelRow));
+            actionHeaderEdit(dimension, listModel.getList().get(modelRow));
             fireTableDataChanged();
         }
 
         public void addNewHeader() {
-            addHeader(heatmap, dimension);
+            addHeader(dimension);
             fireTableDataChanged();
         }
     }
 
-    public void addHeader(Heatmap header, HeatmapDimension dimension) {
-        if (dimension == HeadersEditPanel.this.heatmap.getColumns())
-            EditActions.addColumnHeader.actionPerformed(new ActionEvent(this, 1, ""));
-        else
-            EditActions.addRowHeader.actionPerformed(new ActionEvent(this, 1, ""));
+    public void addHeader(HeatmapDimension dimension) {
+        AddHeaderAction action = new AddHeaderAction(dimension.getId());
+        action.actionPerformed(new ActionEvent(this, 1, ""));
     }
 
-    private static void actionHeaderEdit(Heatmap hm, HeatmapDimension hdim, HeatmapHeader h) {
+    private static void actionHeaderEdit(HeatmapDimension hdim, HeatmapHeader h) {
         Class<? extends HeatmapHeader> cls = h.getClass();
         IWizard wizard = null;
 

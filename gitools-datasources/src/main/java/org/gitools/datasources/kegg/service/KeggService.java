@@ -50,7 +50,7 @@ public class KeggService {
         CSVReader reader = createReader(REST_SERVER + "/list/organism");
 
         String fields[];
-        List<KeggOrganism> result = new ArrayList<KeggOrganism>();
+        List<KeggOrganism> result = new ArrayList<>();
         while ((fields = reader.readNext()) != null) {
             result.add(new KeggOrganism(fields));
         }
@@ -72,7 +72,7 @@ public class KeggService {
         CSVReader reader = createReader(REST_SERVER + "/conv/" + targetDatabase + "/" + sourceDatabase);
 
         String fields[];
-        List<IdConversion> result = new ArrayList<IdConversion>();
+        List<IdConversion> result = new ArrayList<>();
         while ((fields = reader.readNext()) != null) {
             result.add(new IdConversion(fields));
         }
@@ -94,7 +94,7 @@ public class KeggService {
         CSVReader reader = createReader(REST_SERVER + "/list/pathway/" + organismId);
 
         String fields[];
-        List<KeggPathway> result = new ArrayList<KeggPathway>();
+        List<KeggPathway> result = new ArrayList<>();
         while ((fields = reader.readNext()) != null) {
             result.add(new KeggPathway(fields));
         }
@@ -116,7 +116,7 @@ public class KeggService {
         CSVReader reader = createReader(REST_SERVER + "/link/genes/" + pathwayId);
 
         String fields[];
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         while ((fields = reader.readNext()) != null) {
             result.add(fields[1]);
         }

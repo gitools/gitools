@@ -24,7 +24,7 @@ package org.gitools.ui.actions.data;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;

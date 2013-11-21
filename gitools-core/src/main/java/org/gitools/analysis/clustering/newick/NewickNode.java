@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.clustering.newick;
 
-import org.gitools.utils.collections.ReverseListIterator;
+import com.google.common.collect.Lists;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -48,7 +48,7 @@ public class NewickNode<VT> {
     private NewickNode(String name, VT value) {
         this.name = name;
         this.value = value;
-        this.children = new ArrayList<NewickNode>(2);
+        this.children = new ArrayList<>(2);
     }
 
     public String getName() {
@@ -118,7 +118,7 @@ public class NewickNode<VT> {
                     iterable = children;
                     break;
                 case POST_ORDER:
-                    iterable = new ReverseListIterator<>(children);
+                    iterable = Lists.reverse(children);
                     break;
             }
             for (NewickNode node : iterable)
@@ -128,7 +128,7 @@ public class NewickNode<VT> {
 
 
     List<NewickNode> getLeaves(int maxLevel, Order order) {
-        List<NewickNode> leaves = new ArrayList<NewickNode>();
+        List<NewickNode> leaves = new ArrayList<>();
         leaves(leaves, maxLevel, order);
         return leaves;
     }

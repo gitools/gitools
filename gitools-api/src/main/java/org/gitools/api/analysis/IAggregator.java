@@ -24,13 +24,10 @@ package org.gitools.api.analysis;
 public interface IAggregator {
 
     /**
-     * Aggregate all the values. The NaN values are skipped.
+     * Aggregate all the values. The null values are skipped.
      *
      * @param data the data vector to aggregate
      * @return The aggregation. NaN if all are NaNs.
      */
-    @Deprecated
-    double aggregate(double[] data);
-
     Double aggregate(Iterable<Double> data);
 }

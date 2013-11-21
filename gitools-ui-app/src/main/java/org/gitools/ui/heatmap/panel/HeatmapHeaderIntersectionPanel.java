@@ -22,8 +22,8 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 
 public class HeatmapHeaderIntersectionPanel extends AbstractHeatmapPanel {
 

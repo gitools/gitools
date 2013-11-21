@@ -50,11 +50,6 @@ public class CommandExecutor {
         return tool.check(toolArgs, out);
     }
 
-
-    public String printUsage() {
-        return errorMsg();
-    }
-
     public void execute(String[] args, PrintWriter out) {
 
         if (args.length == 0) {

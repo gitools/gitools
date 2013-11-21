@@ -61,15 +61,6 @@ public class ActionSet extends BaseAction {
     }
 
     @Override
-    public void setTreeEnabled(boolean enabled) {
-        setEnabled(enabled);
-        if (actions != null) {
-            for (BaseAction action : actions)
-                action.setTreeEnabled(enabled);
-        }
-    }
-
-    @Override
     public boolean updateEnabledByEditor(IEditor editor) {
         boolean someEnabled = false;
 

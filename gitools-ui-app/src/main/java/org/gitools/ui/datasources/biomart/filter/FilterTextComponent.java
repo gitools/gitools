@@ -225,7 +225,7 @@ public class FilterTextComponent extends FilterComponent {
     @Override
     public List<Filter> getFilters() {
 
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         Filter f = new Filter();
 

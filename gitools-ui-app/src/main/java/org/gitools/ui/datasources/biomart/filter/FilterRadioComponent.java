@@ -102,7 +102,7 @@ public class FilterRadioComponent extends FilterComponent {
     // FIXME : Check if get filter from radio value/s is correct
     public List<Filter> getFilters() {
 
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         Filter f = new Filter();
 
@@ -138,42 +138,10 @@ public class FilterRadioComponent extends FilterComponent {
 
     }
 
-
     @Override
-    //Always render filter from select component filter
     public Boolean hasChanged() {
         return true;
 
-    }
-
-    /**
-     * If the component is child the text of each radio is obtained from filterOptions
-     * component
-     *
-     * @param child
-     * @return
-     */
-
-    private String[] getListTextOptions() {
-        String res[] = null;
-        if (filterOptions != null) {
-            res = new String[filterOptions.getOptions().size()];
-            for (int i = 0; i < filterOptions.getOptions().size(); i++) {
-                res[i] = filterOptions.getOptions().get(i).getValue();
-            }
-
-        } else {
-            if (filterDescription == null) {
-                return res;
-            }
-
-            res = new String[filterDescription.getOptions().size()];
-
-            for (int i = 0; i < filterDescription.getOptions().size(); i++) {
-                res[i] = filterDescription.getOptions().get(i).getValue();
-            }
-        }
-        return res;
     }
 
     @Override

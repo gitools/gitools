@@ -28,9 +28,9 @@ import java.util.Map;
 
 public class MTCFactory {
 
-    private static final Map<String, Class<? extends MTC>> nameMap = new HashMap<String, Class<? extends MTC>>();
+    private static final Map<String, Class<? extends MTC>> nameMap = new HashMap<>();
 
-    private static final Map<Class<? extends MTC>, String> classMap = new HashMap<Class<? extends MTC>, String>();
+    private static final Map<Class<? extends MTC>, String> classMap = new HashMap<>();
 
     static {
         nameMap.put(Bonferroni.SHORT_NAME, Bonferroni.class);
@@ -38,12 +38,6 @@ public class MTCFactory {
 
         for (Map.Entry<String, Class<? extends MTC>> e : nameMap.entrySet())
             classMap.put(e.getValue(), e.getKey());
-    }
-
-    public static String[] getAvailableMtcNames() {
-        String[] names = new String[nameMap.size()];
-        nameMap.keySet().toArray(names);
-        return names;
     }
 
     public static MTC createFromName(String name) {

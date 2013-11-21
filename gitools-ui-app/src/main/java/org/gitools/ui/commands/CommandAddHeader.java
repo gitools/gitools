@@ -77,12 +77,15 @@ public abstract class CommandAddHeader extends AbstractCommand {
             }
 
 
-            if (side.equals(ROWS)) {
-                hdim = heatmap.getRows();
-            } else if (side.equals(COLUMNS)) {
-                hdim = heatmap.getColumns();
-            } else {
-                throw new Exception("No valid side of heatmap. Choose rows or columns: " + side);
+            switch (side) {
+                case ROWS:
+                    hdim = heatmap.getRows();
+                    break;
+                case COLUMNS:
+                    hdim = heatmap.getColumns();
+                    break;
+                default:
+                    throw new Exception("No valid side of heatmap. Choose rows or columns: " + side);
             }
 
         } catch (Exception e) {

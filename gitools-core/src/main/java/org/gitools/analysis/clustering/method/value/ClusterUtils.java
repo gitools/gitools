@@ -159,14 +159,14 @@ public class ClusterUtils {
     @Deprecated // It is not necessary to check for transposed !!!
     public static List<String> getLabels(ClusteringData clusterData, boolean transpose) {
 
-        List<String> labels = new ArrayList<String>();
+        List<String> labels = new ArrayList<>();
 
         if (transpose) {
-            for (int i = 0; i < ((MatrixRowClusteringData) clusterData).getSize(); i++)
-                labels.add(((MatrixRowClusteringData) clusterData).getLabel(i));
+            for (int i = 0; i < clusterData.getSize(); i++)
+                labels.add(clusterData.getLabel(i));
         } else {
-            for (int i = 0; i < ((MatrixColumnClusteringData) clusterData).getSize(); i++)
-                labels.add(((MatrixColumnClusteringData) clusterData).getLabel(i));
+            for (int i = 0; i < clusterData.getSize(); i++)
+                labels.add(clusterData.getLabel(i));
         }
         return labels;
     }

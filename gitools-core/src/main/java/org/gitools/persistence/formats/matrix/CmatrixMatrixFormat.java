@@ -69,7 +69,7 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<IMatrix> {
             String[] headers = splitBuffer(readBuffer(in));
 
             // Values
-            Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(rows.length);
+            Map<Integer, CompressRow> values = new HashMap<>(rows.length);
 
             for (int i = 0; i < rows.length; i++) {
                 int row = in.readInt();

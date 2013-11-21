@@ -53,7 +53,7 @@ public class VFSFileFilterAdaptor extends AbstractVFSFileFilter {
     }
 
     public static List<VFSFileFilterAdaptor> adapt(FileFormatFilter[] filters) {
-        List<VFSFileFilterAdaptor> result = new ArrayList<VFSFileFilterAdaptor>(filters.length);
+        List<VFSFileFilterAdaptor> result = new ArrayList<>(filters.length);
 
         for (FileFormatFilter filter : filters) {
             result.add(new VFSFileFilterAdaptor(filter));

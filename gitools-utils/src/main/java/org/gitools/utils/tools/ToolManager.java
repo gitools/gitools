@@ -30,9 +30,6 @@ import org.kohsuke.args4j.CmdLineParser;
 import java.io.*;
 import java.util.Date;
 
-/**
- * @noinspection ALL
- */
 public class ToolManager {
 
     private ToolSet toolSet;

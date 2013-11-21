@@ -19,14 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.heatmap.drawer.header;
+package org.gitools.ui.heatmap.drawer.header;
 
 import org.apache.commons.collections.map.MultiValueMap;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
@@ -51,7 +51,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     * legend of a header from the other dimension (row,cols) as for example:
     * HeatmapColoredLabelsHeader --> draws for --> HeatmapDataHeatmapHeader */
 
-    private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<Class<?>, Class<?>>();
+    private static final Map<Class<?>, Class<?>> headerRelationsMap = new HashMap<>();
 
     static {
         headerRelationsMap.put(HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class);
@@ -93,8 +93,8 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     }
 
     private void getHeaderDrawers() {
-        XCoordinates = new HashMap<Object, Integer>();
-        YCoordinates = new HashMap<Object, Integer>();
+        XCoordinates = new HashMap<>();
+        YCoordinates = new HashMap<>();
         List<AbstractHeatmapHeaderDrawer> colHeaderDrawers = colDrawer.getDrawers();
         List<AbstractHeatmapHeaderDrawer> rowHeaderDrawers = rowDrawer.getDrawers();
         List<HeatmapHeader> rowHeaders = getHeatmap().getRows().getHeaders();

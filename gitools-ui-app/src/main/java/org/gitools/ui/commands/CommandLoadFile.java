@@ -243,6 +243,6 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     private static void loadAnnotations(File file, HeatmapDimension hdim) {
-        hdim.addAnnotations(new ResourceReference<AnnotationMatrix>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+        hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
     }
 }

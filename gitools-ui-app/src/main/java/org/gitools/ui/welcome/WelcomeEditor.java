@@ -24,6 +24,7 @@ package org.gitools.ui.welcome;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.actions.help.ShortcutsAction;
+import org.gitools.ui.examples.ExamplesManager;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -36,110 +37,124 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class WelcomeEditor extends HtmlEditor {
 
     private static final long serialVersionUID = 6851947500231401412L;
 
     public WelcomeEditor() {
-        super("Welcome");
+        super("Welcome", WelcomeEditor.class.getResource("/html/welcome.html"));
+    }
 
-        try {
-            URL url = getClass().getResource("/html/welcome.html");
-            navigate(url);
-        } catch (Exception e) {
-            ExceptionDialog.show(AppFrame.get(), e);
-        }
+    @Override
+    protected void exception(Exception e) {
+        ExceptionDialog.show(AppFrame.get(), e);
     }
 
     @Override
     protected void performUrlAction(String name, Map<String, String> params) {
-        if (name.equals("goHome")) {
-            try {
-                Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
-            } catch (Exception ex) {
-                ExceptionDialog.show(AppFrame.get(), ex);
-            }
-        } else if (name.equals("importIntogen")) {
-            IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.get());
-            dlg.setVisible(true);
-            if (!dlg.isCancelled()) {
-                switch (dlg.getSelection()) {
-                    case IntogenTypeDialog.MATRIX:
-                        new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-
-                    case IntogenTypeDialog.ONCOMODULES:
-                        new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-                }
-            }
-        } else if (name.equals("importGo")) {
-            new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-        } else if (name.equals("importKegg")) {
-            new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-        } else if (name.equals("importBiomart")) {
-            BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.get());
-            dlg.setVisible(true);
-            if (!dlg.isCancelled()) {
-                switch (dlg.getSelection()) {
-                    case BiomartTypeDialog.TABLE:
-                        new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-
-                    case BiomartTypeDialog.MODULES:
-                        new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-                }
-            }
-        } else if (name.equals("importExcel")) {
-            new ImportExcelMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-        } else if (name.equals("analysis")) {
-            final Map<String, Class<? extends BaseAction>> actions = new HashMap<String, Class<? extends BaseAction>>();
-
-            actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
-            actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
-            actions.put("Correlations", NewCorrelationAnalysisAction.class);
-            actions.put("Overlapping", NewOverlappingAnalysisAction.class);
-            actions.put("Combination", NewCombinationAnalysisAction.class);
-
-            String ref = params.get("ref");
-            Class<? extends BaseAction> actionClass = actions.get(ref);
-            if (actionClass != null) {
+        switch (name) {
+            case "goHome":
                 try {
-                    ActionEvent event = new ActionEvent(this, 0, name);
-                    actionClass.newInstance().actionPerformed(event);
+                    Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
                 } catch (Exception ex) {
                     ExceptionDialog.show(AppFrame.get(), ex);
                 }
+                break;
+            case "importIntogen": {
+                IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.get());
+                dlg.setVisible(true);
+                if (!dlg.isCancelled()) {
+                    switch (dlg.getSelection()) {
+                        case IntogenTypeDialog.MATRIX:
+                            new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
+                            break;
+
+                        case IntogenTypeDialog.ONCOMODULES:
+                            new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                            break;
+                    }
+                }
+                break;
             }
-        } else if (name.equals("open")) {
-            String ref = params.get("ref");
-            if (ref.equals("DataHeatmap")) {
-                new OpenAction().actionPerformed(new ActionEvent(this, 0, name));
-            } else if (ref.equals("DataHeatmapGS")) {
-                new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
-            } else if (ref.equals("Shortcuts")) {
-                new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
+            case "importGo":
+                new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                break;
+            case "importKegg":
+                new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                break;
+            case "importBiomart": {
+                BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.get());
+                dlg.setVisible(true);
+                if (!dlg.isCancelled()) {
+                    switch (dlg.getSelection()) {
+                        case BiomartTypeDialog.TABLE:
+                            new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
+                            break;
+
+                        case BiomartTypeDialog.MODULES:
+                            new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                            break;
+                    }
+                }
+                break;
             }
-        } else if (name.equals("example")) {
-            LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
-        } else if (name.equals("downloadExamples")) {
-            DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.get());
-            dlg.setPath(Settings.getDefault().getLastWorkPath());
-            dlg.setVisible(true);
-            downloadExamples(dlg.getPath());
-        } else if (name.equals("dataMatrices") || name.equals("dataModules") || name.equals("dataTables")) {
-            DataHelpDialog dlg = new DataHelpDialog(AppFrame.get());
-            dlg.setVisible(true);
+            case "importExcel":
+                new ImportExcelMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
+                break;
+            case "analysis": {
+                final Map<String, Class<? extends BaseAction>> actions = new HashMap<>();
+
+                actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
+                actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
+                actions.put("Correlations", NewCorrelationAnalysisAction.class);
+                actions.put("Overlapping", NewOverlappingAnalysisAction.class);
+                actions.put("Combination", NewCombinationAnalysisAction.class);
+
+                String ref = params.get("ref");
+                Class<? extends BaseAction> actionClass = actions.get(ref);
+                if (actionClass != null) {
+                    try {
+                        ActionEvent event = new ActionEvent(this, 0, name);
+                        actionClass.newInstance().actionPerformed(event);
+                    } catch (Exception ex) {
+                        ExceptionDialog.show(AppFrame.get(), ex);
+                    }
+                }
+                break;
+            }
+            case "open": {
+                String ref = params.get("ref");
+                if (ref.equals("DataHeatmap")) {
+                    new OpenAction().actionPerformed(new ActionEvent(this, 0, name));
+                } else if (ref.equals("DataHeatmapGS")) {
+                    new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
+                } else if (ref.equals("Shortcuts")) {
+                    new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
+                }
+                break;
+            }
+            case "example":
+                LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
+                break;
+            case "downloadExamples": {
+                DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.get());
+                dlg.setPath(Settings.getDefault().getLastWorkPath());
+                dlg.setVisible(true);
+                downloadExamples(dlg.getPath());
+                break;
+            }
+            case "dataMatrices":
+            case "dataModules":
+            case "dataTables": {
+                DataHelpDialog dlg = new DataHelpDialog(AppFrame.get());
+                dlg.setVisible(true);
+                break;
+            }
         }
     }
 
@@ -152,55 +167,9 @@ public class WelcomeEditor extends HtmlEditor {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Connecting ...", 1);
-
-                    URL url = new URL("http://webstart.gitools.org/examples.zip");
-
-                    ZipInputStream zin = new ZipInputStream(url.openStream());
-
                     File pathFile = new File(path);
-
-                    monitor.end();
-
-                    monitor.begin("Downloading ...", 1);
-
-                    ZipEntry ze;
-                    while ((ze = zin.getNextEntry()) != null) {
-                        IProgressMonitor mnt = monitor.subtask();
-
-                        long totalKb = ze.getSize() / 1024;
-
-                        String name = ze.getName();
-
-                        mnt.begin("Extracting " + name + " ...", (int) ze.getSize());
-
-                        File outFile = new File(pathFile, name);
-                        if (!outFile.getParentFile().exists()) {
-                            outFile.getParentFile().mkdirs();
-                        }
-
-                        OutputStream fout = new FileOutputStream(outFile);
-
-                        final int BUFFER_SIZE = 4 * 1024;
-                        byte[] data = new byte[BUFFER_SIZE];
-                        int partial = 0;
-                        int count;
-                        while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
-                            fout.write(data, 0, count);
-                            partial += count;
-                            mnt.info((partial / 1024) + " Kb read");
-                            mnt.worked(count);
-                        }
-
-                        zin.closeEntry();
-                        fout.close();
-
-                        mnt.end();
-                    }
-
-                    zin.close();
-
-                    monitor.end();
+                    URL url = new URL("http://webstart.gitools.org/examples.zip");
+                    ExamplesManager.downloadAndExtract(pathFile, monitor, url);
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }

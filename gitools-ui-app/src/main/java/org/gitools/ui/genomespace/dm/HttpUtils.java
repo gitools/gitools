@@ -305,7 +305,7 @@ public class HttpUtils {
         HttpURLConnection urlconnection = null;
         OutputStream bos = null;
 
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Content-Length", String.valueOf(body.getBytes().length));
 
@@ -319,7 +319,7 @@ public class HttpUtils {
         int responseCode = urlconnection.getResponseCode();
 
         // Error messages below.
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         InputStream inputStream;
 
         if (responseCode >= 200 && responseCode < 300) {
@@ -365,8 +365,7 @@ public class HttpUtils {
             SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, trustAllCerts, null);
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (NoSuchAlgorithmException e) {
-        } catch (KeyManagementException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
         }
 
     }
@@ -514,9 +513,9 @@ public class HttpUtils {
     public class IGVAuthenticator extends Authenticator {
 
 
-        final Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<String, PasswordAuthentication>();
+        final Hashtable<String, PasswordAuthentication> pwCache = new Hashtable<>();
 
-        final HashSet<String> cacheAttempts = new HashSet<String>();
+        final HashSet<String> cacheAttempts = new HashSet<>();
 
         /**
          * Called when password authentication is needed.

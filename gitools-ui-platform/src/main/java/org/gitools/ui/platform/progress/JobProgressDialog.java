@@ -41,7 +41,7 @@ class JobProgressDialog extends javax.swing.JDialog {
     }
 
 
-    private final List<CancelListener> listeners = new ArrayList<CancelListener>();
+    private final List<CancelListener> listeners = new ArrayList<>();
 
     /**
      * Creates new form ProgressDialog

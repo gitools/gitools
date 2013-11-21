@@ -66,9 +66,7 @@ public class UrlResourceLocator implements IResourceLocator {
                 this.file = new File(url);
                 this.url = file.toURI().toURL();
             }
-        } catch (MalformedURLException e) {
-            throw new PersistenceException(e);
-        } catch (URISyntaxException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             throw new PersistenceException(e);
         }
 

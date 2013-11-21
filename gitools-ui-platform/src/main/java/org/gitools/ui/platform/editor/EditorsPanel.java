@@ -40,7 +40,7 @@ public class EditorsPanel extends WebTabbedPane {
     private static final String DEFAULT_NAME_PREFIX = "unnamed";
 
 
-    private final Map<String, Integer> nameCounts = new HashMap<String, Integer>();
+    private final Map<String, Integer> nameCounts = new HashMap<>();
 
     public EditorsPanel() {
         createComponents();
@@ -141,7 +141,7 @@ public class EditorsPanel extends WebTabbedPane {
 
 
     String createName(String prefix, String suffix) {
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         int numTabs = getTabCount();
         for (int i = 0; i < numTabs; i++) {
             IEditor editor = (IEditor) getComponentAt(i);

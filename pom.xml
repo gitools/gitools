@@ -294,6 +294,121 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.kohsuke</groupId>
+                        <artifactId>doxia-module-markdown</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <skipDeploy>true</skipDeploy>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <version>2.12.4</version>
+                            <configuration>
+                                <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jxr-plugin</artifactId>
+                            <version>2.2</version>
+                            <configuration>
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <version>3.0.1</version>
+                            <configuration>
+                                <linkXref>true</linkXref>
+                                <sourceEncoding>utf-8</sourceEncoding>
+                                <minimumTokens>100</minimumTokens>
+                                <targetJdk>1.6</targetJdk>
+                                <aggregate>true</aggregate>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>findbugs-maven-plugin</artifactId>
+                            <version>2.3.1</version>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>cobertura-maven-plugin</artifactId>
+                            <version>2.5.2</version>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-checkstyle-plugin</artifactId>
+                            <version>2.6</version>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>taglist-maven-plugin</artifactId>
+                            <version>2.4</version>
+                            <configuration>
+                                <tags>
+                                    <tag>TODO</tag>
+                                    <tag>FIXME</tag>
+                                </tags>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.7</version>
+                            <configuration>
+                                <minmemory>512m</minmemory>
+                                <maxmemory>1g</maxmemory>
+                                <linksource>true</linksource>
+                            </configuration>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>aggregate</report>
+                                        <report>test-aggregate</report>
+                                        <report>fix</report>
+                                        <report>test-fix</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <version>2.3.1</version>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>summary</report>
+                                        <report>license</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+
+                    </reportPlugins>
+                </configuration>
+            </plugin>
+
         </plugins>
 
         <pluginManagement>

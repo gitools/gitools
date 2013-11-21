@@ -34,7 +34,6 @@ import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.core.model.Resource;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.ui.actions.EditActions;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
@@ -75,16 +74,16 @@ public class SettingsPanel {
     private JTextField layerValueLink;
 
     public SettingsPanel(final Heatmap heatmap) {
-        PresentationModel<Heatmap> model = new PresentationModel<Heatmap>(heatmap);
+        PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
 
         // Data models
-        PresentationModel<HeatmapDimension> rows = new PresentationModel<HeatmapDimension>(model.getModel(Heatmap.PROPERTY_ROWS));
-        PresentationModel<HeatmapDimension> columns = new PresentationModel<HeatmapDimension>(model.getModel(Heatmap.PROPERTY_COLUMNS));
-        PresentationModel<HeatmapLayers> layers = new PresentationModel<HeatmapLayers>(model.getModel(Heatmap.PROPERTY_LAYERS));
-        PresentationModel<HeatmapLayer> topLayer = new PresentationModel<HeatmapLayer>(layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER));
+        PresentationModel<HeatmapDimension> rows = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_ROWS));
+        PresentationModel<HeatmapDimension> columns = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_COLUMNS));
+        PresentationModel<HeatmapLayers> layers = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_LAYERS));
+        PresentationModel<HeatmapLayer> topLayer = new PresentationModel<>(layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER));
 
         // Layer selector
-        Bindings.bind(layerselector, new SelectionInList<String>(
+        Bindings.bind(layerselector, new SelectionInList<>(
                 heatmap.getLayers().getLayerNames(),
                 new ValueHolder(),
                 layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER_INDEX)
@@ -114,7 +113,7 @@ public class SettingsPanel {
 
 
         decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), decoratorValueModel);
-        Bindings.bind(decoratorPanelSelector, new SelectionInList<DecoratorPanel>(
+        Bindings.bind(decoratorPanelSelector, new SelectionInList<>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
         ));

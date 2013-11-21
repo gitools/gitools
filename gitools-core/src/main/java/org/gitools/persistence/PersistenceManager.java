@@ -50,9 +50,9 @@ public class PersistenceManager implements Serializable {
         return defaultManager;
     }
 
-    private final List<IResourceFilter> filters = new ArrayList<IResourceFilter>();
-    private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<Class<? extends IResource>, Map<String, IResourceFormat>>();
-    private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<Class<? extends IResource>, String>();
+    private final List<IResourceFilter> filters = new ArrayList<>();
+    private final Map<Class<? extends IResource>, Map<String, IResourceFormat>> formats = new HashMap<>();
+    private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<>();
 
     private PersistenceManager() {
     }

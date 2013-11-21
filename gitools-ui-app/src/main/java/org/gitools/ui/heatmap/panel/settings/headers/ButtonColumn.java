@@ -73,16 +73,6 @@ public class ButtonColumn extends AbstractCellEditor
         table.addMouseListener(this);
     }
 
-
-    /**
-     * Get foreground color of the button when the cell has focus
-     *
-     * @return the foreground color
-     */
-    public Border getFocusBorder() {
-        return focusBorder;
-    }
-
     /**
      * The foreground color of the button when the cell has focus
      *
@@ -93,9 +83,6 @@ public class ButtonColumn extends AbstractCellEditor
         editButton.setBorder(focusBorder);
     }
 
-    public int getMnemonic() {
-        return mnemonic;
-    }
 
     /**
      * The mnemonic to activate the button when the cell has focus

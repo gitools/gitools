@@ -29,9 +29,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
 public class XmlToolSetResource {
 
     private final File file;

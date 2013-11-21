@@ -112,7 +112,7 @@ public class AddHeaderPage extends AbstractWizardPage {
     public AddHeaderPage() {
         initComponents();
 
-        Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
+        Map<Object, ImageIcon> icons = new HashMap<>();
         icons.put(ANNOTATION_TEXT_LABEL_HEADER, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_TEXT_LABEL_HEADER, 60));
         icons.put(ANNOTATION_COLORED_LABEL, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_COLORED_LABEL, 60));
         icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));

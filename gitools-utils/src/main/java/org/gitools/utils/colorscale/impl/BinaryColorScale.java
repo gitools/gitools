@@ -49,7 +49,7 @@ public class BinaryColorScale extends NumericColorScale {
     private Color maxColor;
 
 
-    private static final List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> equalCmp = new ArrayList<>();
 
     static {
         equalCmp.add(CutoffCmp.EQ);
@@ -57,7 +57,7 @@ public class BinaryColorScale extends NumericColorScale {
     }
 
 
-    private static final List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> notequalCmp = new ArrayList<>();
 
     {
         notequalCmp.add(CutoffCmp.NE);
@@ -65,7 +65,7 @@ public class BinaryColorScale extends NumericColorScale {
     }
 
 
-    private static final List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
+    private static final List<CutoffCmp> absoluteCmp = new ArrayList<>();
 
     {
         absoluteCmp.add(CutoffCmp.ABS_GE);

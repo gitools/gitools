@@ -57,7 +57,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog {
 
     @Override
     protected List<JButton> createButtons() {
-        List<JButton> buttons = new ArrayList<JButton>();
+        List<JButton> buttons = new ArrayList<>();
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {

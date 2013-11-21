@@ -22,7 +22,7 @@
 package org.gitools.ui.heatmap.panel;
 
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;
 
@@ -58,7 +58,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private int metaMask = OSProperties.get().getMetaMask();
 
 
-    private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
+    private final List<HeatmapMouseListener> listeners = new ArrayList<>(1);
 
     public HeatmapBodyMouseController(HeatmapPanel panel, HeatmapPanelInputProcessor inputProcessor) {
         this.heatmap = panel.getHeatmap();

@@ -234,7 +234,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     private void updateHighlight() {
 
         IMatrixView mv = hm;
-        Set<String> highlighted = new HashSet<String>();
+        Set<String> highlighted = new HashSet<>();
 
         boolean searchRows = searchRows();
         boolean found = false;

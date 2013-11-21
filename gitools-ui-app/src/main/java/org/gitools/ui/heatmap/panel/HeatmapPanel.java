@@ -24,7 +24,7 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;

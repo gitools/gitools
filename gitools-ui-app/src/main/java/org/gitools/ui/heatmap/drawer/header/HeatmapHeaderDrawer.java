@@ -19,19 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.heatmap.drawer.header;
+package org.gitools.ui.heatmap.drawer.header;
 
+import com.google.common.collect.Lists;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.core.heatmap.drawer.HeatmapBodyDrawer;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.utils.collections.ReverseListIterator;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapHeaderDrawer;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -147,22 +146,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         }
 
         if (!isPictureMode()) {
-
-            // Draw selected
-            g.setColor(HeatmapBodyDrawer.SELECTED_COLOR);
-            int cellSize = heatmapDimension.getFullSize();
-            for (String s : heatmapDimension.getSelected()) {
-                g.fillRect(box.x, box.y + (heatmapDimension.indexOf(s) * cellSize), box.width, cellSize);
-            }
-
-            // Draw row lead
-            g.setColor(Color.DARK_GRAY);
-            int lead = heatmapDimension.indexOf(heatmapDimension.getFocus());
-            if (lead != -1) {
-                g.fillRect(box.x, box.y + (lead * cellSize) - 1, box.width, 1);
-                g.fillRect(box.x, box.y + ((lead + 1) * cellSize) - 1, box.width, 1);
-            }
-
+            drawSelectedAndFocus(g, box, heatmapDimension, true);
         }
     }
 
@@ -171,7 +155,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         int x = 0;
         int y = 0;
         if (isHorizontal()) {
-            for (AbstractHeatmapDrawer d : new ReverseListIterator<>(drawers)) {
+            for (AbstractHeatmapDrawer d : Lists.reverse(drawers)) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
@@ -199,7 +183,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
         int y = 0;
         if (isHorizontal()) {
 
-            for (AbstractHeatmapHeaderDrawer d : new ReverseListIterator<>(drawers)) {
+            for (AbstractHeatmapHeaderDrawer d : Lists.reverse(drawers)) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {

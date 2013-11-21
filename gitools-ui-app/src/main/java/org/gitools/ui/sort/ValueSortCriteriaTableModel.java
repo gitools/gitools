@@ -44,7 +44,7 @@ class ValueSortCriteriaTableModel implements TableModel {
 
     private final List<IMatrixLayer> criteriaList;
 
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<>();
 
     public ValueSortCriteriaTableModel(IMatrixLayers<IMatrixLayer> layers, IMatrixLayer... initialCriteria) {
         super();
@@ -120,7 +120,7 @@ class ValueSortCriteriaTableModel implements TableModel {
     }
 
     void removeCriteria(int[] selectedRows) {
-        List<Object> objects = new ArrayList<Object>(selectedRows.length);
+        List<Object> objects = new ArrayList<>(selectedRows.length);
         for (int index : selectedRows)
             objects.add(criteriaList.get(index));
 

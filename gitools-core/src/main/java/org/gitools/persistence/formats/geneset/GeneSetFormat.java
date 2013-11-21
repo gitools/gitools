@@ -45,7 +45,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
     protected GeneSet readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
-        final Map<String, Integer> labelMap = new HashMap<String, Integer>();
+        final Map<String, Integer> labelMap = new HashMap<>();
 
 
         try {

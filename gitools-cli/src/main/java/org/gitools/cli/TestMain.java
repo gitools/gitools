@@ -69,7 +69,7 @@ public class TestMain {
 
     @SuppressWarnings("empty-statement")
     private static String[] cmdLineSplit(String cmd) {
-        List<String> args = new ArrayList<String>();
+        List<String> args = new ArrayList<>();
 
         int lastPos = 0;
         int pos = 0;

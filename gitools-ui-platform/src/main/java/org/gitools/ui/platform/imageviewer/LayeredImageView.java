@@ -153,7 +153,7 @@ class LayeredImageView {
             if (theImage.getResizeStrategy() == ResizeStrategy.NO_RESIZE)
                 return getPreferredSize();
             else
-                return ((JViewport) javax.swing.SwingUtilities.getAncestorOfClass(JViewport.class, this)).getSize();
+                return javax.swing.SwingUtilities.getAncestorOfClass(JViewport.class, this).getSize();
         }
     }
 }

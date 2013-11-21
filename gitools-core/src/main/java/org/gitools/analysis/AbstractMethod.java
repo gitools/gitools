@@ -50,10 +50,6 @@ public class AbstractMethod implements Method {
         return name;
     }
 
-    protected void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String getDescription() {
         return desc;

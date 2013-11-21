@@ -56,7 +56,7 @@ import java.util.WeakHashMap;
  * @author Kazó Csaba
  */
 class Synchronizer {
-    private final WeakHashMap<ImageViewer, Void> viewers = new WeakHashMap<ImageViewer, Void>(4);
+    private final WeakHashMap<ImageViewer, Void> viewers = new WeakHashMap<>(4);
 
     /*
      * If there is currently a synchronization update taking place, the viewer which initiated the change is stored
@@ -113,7 +113,7 @@ class Synchronizer {
         if (viewer.getSynchronizer() == this) return;
         ImageViewer referenceViewer = viewers.keySet().iterator().next();
 
-        List<ImageViewer> otherViewers = new ArrayList<ImageViewer>(viewer.getSynchronizer().viewers.keySet());
+        List<ImageViewer> otherViewers = new ArrayList<>(viewer.getSynchronizer().viewers.keySet());
         for (ImageViewer otherViewer : otherViewers) {
             otherViewer.getSynchronizer().remove(otherViewer);
             otherViewer.setSynchronizer(this);

@@ -40,7 +40,7 @@ public class ClusteringMethodFactory {
     private final List<ClusteringMethodDescriptor> descriptors;
 
     private ClusteringMethodFactory() {
-        descriptors = new ArrayList<ClusteringMethodDescriptor>();
+        descriptors = new ArrayList<>();
         registerMethods(DEFAULT_DESCRIPTORS);
     }
 

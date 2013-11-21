@@ -33,9 +33,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * @noinspection ALL
- */
 public class ColorScaleDrawer {
 
     private NumericColorScale scale;

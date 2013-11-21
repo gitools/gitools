@@ -139,58 +139,61 @@ public class ExamplesManager {
 
     private void downloadExample(File dstBasePath, String exampleId, IProgressMonitor monitor) {
         try {
-            monitor.begin("Downloading ...", 1);
-
             URL url = new URL(EXAMPLES_BASE_URL + "/" + exampleId + ".zip");
-
-            ZipInputStream zin = new ZipInputStream(url.openStream());
-
-            ZipEntry ze;
-            while ((ze = zin.getNextEntry()) != null) {
-                IProgressMonitor mon = monitor.subtask();
-
-                //long totalKb = ze.getSize() / 1024;
-
-                String name = ze.getName();
-
-                mon.begin("Extracting " + name + " ...", (int) ze.getSize());
-
-                File outFile = new File(dstBasePath, name);
-
-                if (ze.isDirectory()) {
-                    if (!outFile.exists()) {
-                        outFile.mkdirs();
-                    }
-                } else {
-                    if (!outFile.getParentFile().exists()) {
-                        outFile.getParentFile().mkdirs();
-                    }
-
-                    OutputStream fout = new FileOutputStream(outFile);
-
-                    final int BUFFER_SIZE = 4 * 1024;
-                    byte[] data = new byte[BUFFER_SIZE];
-                    int partial = 0;
-                    int count;
-                    while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
-                        fout.write(data, 0, count);
-                        partial += count;
-                        mon.info((partial / 1024) + " Kb read");
-                        mon.worked(count);
-                    }
-
-                    fout.close();
-                }
-
-                zin.closeEntry();
-                mon.end();
-            }
-
-            zin.close();
-
-            monitor.end();
+            downloadAndExtract(dstBasePath, monitor, url);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static void downloadAndExtract(File dstBasePath, IProgressMonitor monitor, URL url) throws IOException {
+        monitor.begin("Connecting ...", 1);
+
+        ZipInputStream zin = new ZipInputStream(url.openStream());
+
+        monitor.end();
+        monitor.begin("Downloading ...", 1);
+
+        ZipEntry ze;
+        while ((ze = zin.getNextEntry()) != null) {
+            IProgressMonitor mon = monitor.subtask();
+
+            String name = ze.getName();
+
+            mon.begin("Extracting " + name + " ...", (int) ze.getSize());
+
+            File outFile = new File(dstBasePath, name);
+
+            if (ze.isDirectory()) {
+                if (!outFile.exists()) {
+                    outFile.mkdirs();
+                }
+            } else {
+                if (!outFile.getParentFile().exists()) {
+                    outFile.getParentFile().mkdirs();
+                }
+
+                OutputStream fout = new FileOutputStream(outFile);
+
+                final int BUFFER_SIZE = 4 * 1024;
+                byte[] data = new byte[BUFFER_SIZE];
+                int partial = 0;
+                int count;
+                while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
+                    fout.write(data, 0, count);
+                    partial += count;
+                    mon.info((partial / 1024) + " Kb read");
+                    mon.worked(count);
+                }
+
+                fout.close();
+            }
+
+            zin.closeEntry();
+            mon.end();
+        }
+
+        zin.close();
+        monitor.end();
     }
 }

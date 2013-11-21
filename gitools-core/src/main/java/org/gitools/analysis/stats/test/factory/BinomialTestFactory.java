@@ -33,7 +33,6 @@ public class BinomialTestFactory extends TestFactory {
     public static final String EXACT_APROX = "exact";
     public static final String NORMAL_APROX = "normal";
     public static final String POISSON_APROX = "poisson";
-    public static final String AUTOMATIC_APROX = "automatic";
 
     private final AproximationMode aproxMode;
 
