@@ -17,7 +17,7 @@ In figure 2C of the paper we can see that four genes of the  `p53-signalling pa
 Watch the  `video tutorial <http://www.youtube.com/watch?v=rIvBN_iw6rs>`__  and/or read the instructions below
 
 .. image:: img/youtube-mutex.png
-    :target: http://www.youtube.com/watch?v=rIvBN_iw6rs
+:target: http://www.youtube.com/watch?v=rIvBN_iw6rs
 
 
 How to use Gitools for this task

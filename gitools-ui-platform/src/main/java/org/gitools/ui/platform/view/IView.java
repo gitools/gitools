@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.platform.view;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 
 /**
@@ -36,7 +34,7 @@ public interface IView {
 
     Icon getIcon();
 
-    @NotNull
+
     JPanel getPanel();
 
     void refresh();

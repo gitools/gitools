@@ -21,48 +21,45 @@
  */
 package org.gitools.core.matrix.filter;
 
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
 
 public class ValueFilterCriteria {
 
-    private String attributeName;
-    private int attributeIndex;
+    private IMatrixLayer layer;
     private CutoffCmp comparator;
     private double value;
     private IAggregator aggregator;
 
-    public ValueFilterCriteria(String attributeName, int attributeIndex, CutoffCmp comparator, double value) {
-        this.attributeName = attributeName;
-        this.attributeIndex = attributeIndex;
+    public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, double value) {
+        this.layer = layer;
         this.comparator = comparator;
         this.value = value;
         this.aggregator = null;
     }
 
-    public ValueFilterCriteria(String attributeName, int attributeIndex, IAggregator aggregator, CutoffCmp comparator, double value) {
+    public ValueFilterCriteria(IMatrixLayer layer, IAggregator aggregator, CutoffCmp comparator, double value) {
         this.aggregator = aggregator;
-        this.attributeName = attributeName;
-        this.attributeIndex = attributeIndex;
+        this.layer = layer;
         this.comparator = comparator;
         this.value = value;
     }
 
+    public IMatrixLayer getLayer() {
+        return layer;
+    }
+
     public String getAttributeName() {
-        return attributeName;
+        return layer.getName();
     }
 
     public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
-    }
-
-    public int getAttributeIndex() {
-        return attributeIndex;
+        //this.attributeName = attributeName;
     }
 
     public void setAttributeIndex(int attributeIndex) {
-        this.attributeIndex = attributeIndex;
+        //this.attributeIndex = attributeIndex;
     }
 
     public CutoffCmp getComparator() {
@@ -81,9 +78,9 @@ public class ValueFilterCriteria {
         this.value = value;
     }
 
-    @NotNull
+
     @Override
     public String toString() {
-        return attributeName.toString() + " " + comparator.toString() + " " + value;
+        return layer.getId() + " " + comparator.toString() + " " + value;
     }
 }

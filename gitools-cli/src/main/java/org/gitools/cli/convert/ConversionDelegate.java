@@ -21,11 +21,10 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.analysis.IProgressMonitor;
 
 public interface ConversionDelegate {
 
-    @Nullable
+
     Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception;
 }

@@ -21,12 +21,12 @@
  */
 package org.gitools.core.heatmap;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.utils.EventUtils;
+import org.gitools.utils.events.EventUtils;
 import org.gitools.utils.formatter.DetailsBoxFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
@@ -79,23 +79,22 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     }
 
 
-
     @Override
     public String toString() {
         return getName();
     }
 
-    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column, int layerIndex, boolean isSelected) {
+    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {
         DetailsDecoration decoration = new DetailsDecoration(getName(), getDescription(), getDescriptionUrl(), null, getValueUrl());
         decoration.setIndex(layerIndex);
         decoration.setSelectable(true);
         if (isSelected) {
             decoration.setSelected(true);
         }
-        if (row != -1 && column != -1) {
+        if (row != null && column != null) {
             boolean previousShowValue = getDecorator().isShowValue();
             getDecorator().setShowValue(true);
-            getDecorator().decorate(decoration, getLongFormatter(), matrix, row, column, layerIndex);
+            getDecorator().decorate(decoration, getLongFormatter(), matrix, matrix.getLayers().get(layerIndex), row, column);
             getDecorator().setShowValue(previousShowValue);
         }
         details.add(decoration);

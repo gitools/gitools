@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.commands;
 
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.api.analysis.IProgressMonitor;
 
 /**
  * @noinspection ALL

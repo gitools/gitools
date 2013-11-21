@@ -21,13 +21,11 @@
  */
 package org.gitools.ui.genomespace;
 
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.locators.ProgressMonitorInputStream;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
+import org.gitools.persistence.locators.ProgressMonitorInputStream;
 import org.gitools.ui.genomespace.dm.HttpUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +76,7 @@ public class GsResourceLocator implements IResourceLocator {
 
     }
 
-    @NotNull
+
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return new GsResourceLocator(resourceLocator.getReferenceLocator(referenceName));
@@ -89,7 +87,7 @@ public class GsResourceLocator implements IResourceLocator {
         return resourceLocator.isWritable();
     }
 
-    @Nullable
+
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 

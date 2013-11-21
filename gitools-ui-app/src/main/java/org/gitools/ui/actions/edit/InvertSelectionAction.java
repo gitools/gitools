@@ -21,63 +21,28 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.utils.HeaderEnum;
 
 import java.awt.event.ActionEvent;
 
-public class InvertSelectionAction extends BaseAction implements IHeatmapDimensionAction {
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
 
-    private static final long serialVersionUID = 3124483059501436713L;
-    private final HeaderEnum.Dimension dim;
+public class InvertSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
-
-    public InvertSelectionAction(HeaderEnum.Dimension dimension) {
-        super("Invert selection");
-
-        setDesc("Invert selection");
-        this.dim = dimension;
-
-        switch (dim) {
-            case COLUMN:
-                setName("Invert column selection");
-                setDesc("Invert column selection");
-                break;
-            case ROW:
-                setName("Invert row selection");
-                setDesc("Invert row selection");
-                break;
-        }
-
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
+    public InvertSelectionAction(MatrixDimensionKey dimension) {
+        super(dimension, "Invert " + dimension.getLabel() + " selection");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = ActionUtils.getMatrixView();
 
-
-        if (matrixView != null) {
-            if (this.dim != HeaderEnum.Dimension.COLUMN) {
-                matrixView.getRows().invertSelection();
-            }
-
-            if (this.dim != HeaderEnum.Dimension.ROW) {
-                matrixView.getColumns().invertSelection();
-            }
-        }
-
+        getDimension().select(not(in(getDimension().getSelected())));
         AppFrame.get().setStatusText("Selection inverted");
     }
 
@@ -85,6 +50,6 @@ public class InvertSelectionAction extends BaseAction implements IHeatmapDimensi
     public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
 
         // Enable only if there is at least one item selected
-        setEnabled(dimension.getSelected().length > 0);
+        setEnabled(dimension.getSelected().size() > 0);
     }
 }

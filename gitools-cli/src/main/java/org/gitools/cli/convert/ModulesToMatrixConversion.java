@@ -21,16 +21,16 @@
  */
 package org.gitools.cli.convert;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 
 public class ModulesToMatrixConversion implements ConversionDelegate {
 
     @Override
     public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
-        return MatrixUtils.moduleMapToMatrix((ModuleMap) src);
+        return MatrixUtils.moduleMapToMatrix((IModuleMap) src);
     }
 
 }

@@ -21,7 +21,7 @@
  */
 package org.gitools.utils.progressmonitor;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IProgressMonitor;
 
 public class NullProgressMonitor implements IProgressMonitor {
 
@@ -51,7 +51,7 @@ public class NullProgressMonitor implements IProgressMonitor {
     public void setLevel(int level) {
     }
 
-    @NotNull
+
     @Override
     public IProgressMonitor subtask() {
         return new NullProgressMonitor();

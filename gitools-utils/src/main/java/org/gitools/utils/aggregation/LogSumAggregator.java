@@ -21,27 +21,21 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-/**
- * Sum of logarithms
- */
+import static org.apache.commons.math3.stat.StatUtils.sumLog;
+
 public class LogSumAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new LogSumAggregator();
 
     private LogSumAggregator() {
+        super("Sum of logarithms");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-        return aggregate(data, Functions.plus, Functions.log);
+    public Double aggregateNoNulls(double[] values) {
+        return sumLog(values);
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Sum of logarithms";
-    }
 }

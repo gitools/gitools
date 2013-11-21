@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.dialog.filter;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -31,7 +31,6 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
@@ -104,7 +103,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
         colsPattBtn.setEnabled(cs);
     }
 
-    @NotNull
+
     String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
@@ -144,12 +143,12 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
         colsPattFld.setText(page.getPatternTitle());
     }
 
-    @NotNull
-    public FilterDimension getFilterDimension() {
+
+    public MatrixDimensionKey getFilterDimension() {
         if (rowsRb.isSelected()) {
-            return FilterDimension.ROWS;
+            return MatrixDimensionKey.ROWS;
         } else {
-            return FilterDimension.COLUMNS;
+            return MatrixDimensionKey.COLUMNS;
         }
     }
 
@@ -161,9 +160,9 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
         }
     }
 
-    @NotNull
+
     public List<String> getValues() {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;

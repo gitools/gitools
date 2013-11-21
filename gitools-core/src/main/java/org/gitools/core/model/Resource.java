@@ -22,9 +22,8 @@
 package org.gitools.core.model;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.IResourceLocator;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.IResourceLocator;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class Resource extends Model implements IResource {
      */
     @XmlElementWrapper(name = "properties")
     @XmlElement(name = "property")
-    private List<Property> properties = new ArrayList<Property>(0);
+    private List<Property> properties = new ArrayList<>(0);
 
 	/* constructors */
 
@@ -63,7 +62,7 @@ public class Resource extends Model implements IResource {
     protected Resource() {
     }
 
-    public Resource(@NotNull Resource artifact) {
+    public Resource(Resource artifact) {
         this.title = artifact.getTitle();
         this.description = artifact.getDescription();
         this.properties = (List<Property>) ((ArrayList<Property>) artifact.getProperties()).clone();

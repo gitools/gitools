@@ -21,16 +21,11 @@
  */
 package org.gitools.utils.tools;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement(name = "tools")
 public class ToolSet {
 
@@ -48,7 +43,7 @@ public class ToolSet {
         this.toolDescriptors = toolDescriptors;
     }
 
-    public void add(@NotNull ToolSet toolSet) {
+    public void add(ToolSet toolSet) {
         toolDescriptors.addAll(toolSet.getToolDescriptors());
     }
 

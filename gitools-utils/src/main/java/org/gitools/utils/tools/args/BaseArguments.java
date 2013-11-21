@@ -25,9 +25,6 @@ import org.kohsuke.args4j.Option;
 
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class BaseArguments {
 
     @Option(name = "-loglevel", aliases = "-ll", metaVar = "<PACKAGE=LEVEL>",

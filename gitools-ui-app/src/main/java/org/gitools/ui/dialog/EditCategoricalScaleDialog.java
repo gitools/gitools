@@ -25,7 +25,6 @@ import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,7 @@ public class EditCategoricalScaleDialog extends AbstractDialog {
 
     private final ColoredLabelsGroupsPage page;
 
-    public EditCategoricalScaleDialog(Window owner, ColoredLabel[] coloredLabels) {
+    public EditCategoricalScaleDialog(Window owner, List<ColoredLabel> coloredLabels) {
         super(owner, "Edit Categorical Scale", "Edit Categorical Scale", "Edit Categorical Scale", MessageStatus.INFO, null);
 
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -56,10 +55,9 @@ public class EditCategoricalScaleDialog extends AbstractDialog {
     }
 
 
-    @NotNull
     @Override
     protected List<JButton> createButtons() {
-        List<JButton> buttons = new ArrayList<JButton>();
+        List<JButton> buttons = new ArrayList<>();
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {

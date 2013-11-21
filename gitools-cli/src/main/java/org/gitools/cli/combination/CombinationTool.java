@@ -21,24 +21,23 @@
  */
 package org.gitools.cli.combination;
 
-import org.gitools.core.analysis.combination.CombinationAnalysis;
-import org.gitools.core.analysis.combination.CombinationCommand;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.combination.CombinationCommand;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.core.threads.ThreadManager;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.core.model.IModuleMap;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -101,11 +100,11 @@ public class CombinationTool extends AnalysisTool {
         CombinationAnalysis analysis = new CombinationAnalysis();
         prepareGeneralAnalysisAttributes(analysis, args);
         analysis.setTransposeData(args.applyToRows);
-        analysis.setSizeAttrName(args.sizeName);
-        analysis.setPvalueAttrName(args.pvalueName);
+        analysis.setSizeLayer(args.sizeName);
+        analysis.setValueLayer(args.pvalueName);
 
-        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
-        IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, ModuleMap.class);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
+        IResourceFormat columnsMime = getResourceFormat(args.columnsFormat, args.columnsFile, IModuleMap.class);
 
         CombinationCommand cmd = new CombinationCommand(analysis, dataMime, args.dataFile, columnsMime, args.columnsFile, args.workdir, args.analysisName + "." + CombinationAnalysisFormat.EXTENSION);
 
@@ -123,7 +122,7 @@ public class CombinationTool extends AnalysisTool {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -136,7 +135,7 @@ public class CombinationTool extends AnalysisTool {
     }
 
     @Override
-    protected void printDataFormats(@NotNull PrintStream out) {
+    protected void printDataFormats(PrintStream out) {
         out.println("Supported data formats:");
         FileFormat[] formats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.MODULES_2C_MAP};
 

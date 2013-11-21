@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.platform.panel;
 
-import org.jetbrains.annotations.NotNull;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
@@ -52,7 +51,7 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public void onMouseOver(@NotNull HTMLElement element, MouseEvent event) {
+        public void onMouseOver(HTMLElement element, MouseEvent event) {
             super.onMouseOver(element, event);
 
             Cursor cursor = null;
@@ -73,7 +72,7 @@ public class Html4Panel extends JPanel {
         }
 
         @Override
-        public boolean onMouseClick(@NotNull HTMLElement element, MouseEvent event) {
+        public boolean onMouseClick(HTMLElement element, MouseEvent event) {
 
             if ("a".equalsIgnoreCase(element.getTagName())) {
                 try {
@@ -101,25 +100,26 @@ public class Html4Panel extends JPanel {
     HtmlPanel panel;
     SimpleHtmlRendererContext rcontext;
 
-    Html4Panel() {
+    public Html4Panel() {
         createComponents();
     }
 
     private void createComponents() {
         panel = new HtmlPanel();
+        panel.setBackground(Color.WHITE);
         rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
 
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
     }
 
-    void linkClicked(@NotNull HTMLElement linkNode) throws LinkVetoException {
+    void linkClicked(HTMLElement linkNode) throws LinkVetoException {
         String rel = linkNode.getAttribute("rel");
         String href = linkNode.getAttribute("href");
         String target = linkNode.getAttribute("target");
-        if (rel != null && rel.equalsIgnoreCase("action")) {
+        if (rel.equalsIgnoreCase("action")) {
             String name = href;
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
 
             int pos = href.indexOf('?');
             if (pos >= 0) {
@@ -140,7 +140,7 @@ public class Html4Panel extends JPanel {
 
             performUrlAction(name, params);
             throw new LinkVetoException();
-        } else if (target != null && target.equalsIgnoreCase("_external")) {
+        } else if (target.equalsIgnoreCase("_external")) {
             try {
                 URI uri = new URI(href);
                 if (Desktop.isDesktopSupported()) {
@@ -156,14 +156,10 @@ public class Html4Panel extends JPanel {
     }
 
     protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-        /*System.out.println("method=" + method + ", action=" + action + ", target=" + target + ", enctype="+ enctype);
-          if (formInputs != null)
-              for (FormInput fi : formInputs)
-                  System.out.println("name=" + fi.getName() + ", value=" + fi.getTextValue() + ", file=" + fi.getFileValue());*/
+
     }
 
     protected void performUrlAction(String name, Map<String, String> params) {
-        // do nothing
     }
 
     public void navigate(URL url) throws Exception {

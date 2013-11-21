@@ -21,9 +21,6 @@
  */
 package org.gitools.utils.colorscale;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -33,21 +30,21 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ColorScaleRange {
 
-    @NotNull
+
     public static final String CONSTANT_TYPE = "constant";
-    @NotNull
+
     public static final String EMPTY_TYPE = "empty";
-    @NotNull
+
     public static final String LINEAR_TYPE = "linear";
-    @NotNull
+
     public static final String LOGARITHMIC_TYPE = "logarithmic";
 
     private String type = "";
-    @Nullable
+
     private Object leftLabel = null;
-    @Nullable
+
     private Object centerLabel = null;
-    @Nullable
+
     private Object rightLabel = null;
     private double width;
     private double minValue;
@@ -83,7 +80,7 @@ public class ColorScaleRange {
         this.type = type;
     }
 
-    @Nullable
+
     public Object getLeftLabel() {
         return leftLabel;
     }
@@ -92,7 +89,7 @@ public class ColorScaleRange {
         this.leftLabel = leftLabel;
     }
 
-    @Nullable
+
     public Object getCenterLabel() {
         return centerLabel;
     }
@@ -101,7 +98,7 @@ public class ColorScaleRange {
         this.centerLabel = centerLabel;
     }
 
-    @Nullable
+
     public Object getRightLabel() {
         return rightLabel;
     }

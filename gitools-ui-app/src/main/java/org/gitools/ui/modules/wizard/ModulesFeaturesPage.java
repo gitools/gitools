@@ -21,16 +21,15 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.biomart.idmapper.EnsemblIds;
-import org.gitools.core.modules.importer.FeatureCategory;
-import org.gitools.core.modules.importer.ModulesImporter;
-import org.gitools.core.modules.importer.Organism;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.datasources.modules.importer.FeatureCategory;
+import org.gitools.datasources.modules.importer.ModulesImporter;
+import org.gitools.datasources.modules.importer.Organism;
+import org.gitools.datasources.biomart.idmapper.EnsemblIds;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -52,7 +51,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
         if (!loaded || organism != importer.getOrganism()) {
             JobThread.execute(AppFrame.get(), new JobRunnable() {
                 @Override
-                public void run(@NotNull IProgressMonitor monitor) {
+                public void run(IProgressMonitor monitor) {
                     try {
                         monitor.begin("Getting available identifiers ...", 1);
 
@@ -84,7 +83,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
         importer.setFeatCategory(getFeatureCategory());
     }
 
-    @NotNull
+
     private FeatureCategory getFeatureCategory() {
         return (FeatureCategory) getSelectedValue();
     }

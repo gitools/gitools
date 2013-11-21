@@ -1,4 +1,3 @@
-
 =============================================================================
 Tutorial 4.2. Correlation of expression patterns in different tissues
 =============================================================================
@@ -58,5 +57,5 @@ Explore the results
 
 
 .. image:: img/T4.2.png
-    :width: 70%
+:width: 70%
 

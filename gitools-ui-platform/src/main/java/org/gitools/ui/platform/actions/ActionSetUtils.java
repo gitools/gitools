@@ -29,23 +29,22 @@ import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.util.List;
 
 public class ActionSetUtils {
 
-    @NotNull
-    public static JToolBar createToolBar(@NotNull ActionSet actionSet) {
+
+    public static JToolBar createToolBar(ActionSet actionSet) {
         WebToolBar toolBar = new WebToolBar(WebToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
         toolBar.setToolbarStyle(ToolbarStyle.attached);
         return createToolBar(toolBar, actionSet);
     }
 
-    @NotNull
-    private static JToolBar createToolBar(@NotNull JToolBar toolBar, @NotNull ActionSet actionSet) {
+
+    private static JToolBar createToolBar(JToolBar toolBar, ActionSet actionSet) {
 
         for (BaseAction a : actionSet.getActions()) {
             if (a instanceof SeparatorAction) {
@@ -58,7 +57,7 @@ public class ActionSetUtils {
         return toolBar;
     }
 
-    private static JComponent createTool(@NotNull BaseAction a) {
+    private static JComponent createTool(BaseAction a) {
         WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
         tool.setAction(a);
         tool.setHideActionText(true);
@@ -68,8 +67,8 @@ public class ActionSetUtils {
         return tool;
     }
 
-    @NotNull
-    public static JPopupMenu createPopupMenu(@NotNull ActionSet actionSet) {
+
+    public static JPopupMenu createPopupMenu(ActionSet actionSet) {
         JPopupMenu popupMenu = new JPopupMenu();
 
         for (BaseAction a : actionSet.getActions()) {
@@ -84,7 +83,7 @@ public class ActionSetUtils {
 
     }
 
-    @NotNull
+
     private static JMenuItem createPopupMenuItem(Action a) {
         JMenuItem item = new JMenuItem(a) {
             public void setToolTipText(String text) {
@@ -96,16 +95,16 @@ public class ActionSetUtils {
         return item;
     }
 
-    @NotNull
-    public static JMenuBar createMenuBar(@NotNull ActionSet actionSet) {
+
+    public static JMenuBar createMenuBar(ActionSet actionSet) {
         WebMenuBar menuBar = new WebMenuBar();
         for (BaseAction a : actionSet.getActions())
             menuBar.add(createMenu(a));
         return menuBar;
     }
 
-    @NotNull
-    private static JMenu createMenu(@NotNull BaseAction action) {
+
+    private static JMenu createMenu(BaseAction action) {
         WebMenu menu = new WebMenu(action);
 
 

@@ -25,8 +25,6 @@ import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.component.EditorTabComponent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -41,8 +39,8 @@ public class EditorsPanel extends WebTabbedPane {
 
     private static final String DEFAULT_NAME_PREFIX = "unnamed";
 
-    @NotNull
-    private final Map<String, Integer> nameCounts = new HashMap<String, Integer>();
+
+    private final Map<String, Integer> nameCounts = new HashMap<>();
 
     public EditorsPanel() {
         createComponents();
@@ -89,7 +87,7 @@ public class EditorsPanel extends WebTabbedPane {
 
     }
 
-    public void addEditor(@Nullable AbstractEditor editor) {
+    public void addEditor(AbstractEditor editor) {
         if (editor == null) {
             return;
         }
@@ -111,7 +109,7 @@ public class EditorsPanel extends WebTabbedPane {
         setSelectedComponent(editor);
     }
 
-    public void removeEditor(@Nullable AbstractEditor editor) {
+    public void removeEditor(AbstractEditor editor) {
         if (editor == null) {
             return;
         }
@@ -126,7 +124,7 @@ public class EditorsPanel extends WebTabbedPane {
         }
     }
 
-    @NotNull
+
     public AbstractEditor getSelectedEditor() {
         return (AbstractEditor) getSelectedComponent();
     }
@@ -136,14 +134,14 @@ public class EditorsPanel extends WebTabbedPane {
         ActionManager.getDefault().updateEnabledByEditor(editor);
     }
 
-    @NotNull
+
     String createName() {
         return createName(DEFAULT_NAME_PREFIX, "");
     }
 
-    @NotNull
+
     String createName(String prefix, String suffix) {
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         int numTabs = getTabCount();
         for (int i = 0; i < numTabs; i++) {
             IEditor editor = (IEditor) getComponentAt(i);
@@ -165,8 +163,8 @@ public class EditorsPanel extends WebTabbedPane {
         return name;
     }
 
-    @NotNull
-    public String deriveName(@NotNull String name, @NotNull String removeExtension, @NotNull String prefixAdd, @NotNull String newExtension) {
+
+    public String deriveName(String name, String removeExtension, String prefixAdd, String newExtension) {
         if (!removeExtension.isEmpty() && name.endsWith(removeExtension)) {
             int endIndex = name.length() - removeExtension.length() - 1;
             name = endIndex >= 0 ? name.substring(0, endIndex) : "";

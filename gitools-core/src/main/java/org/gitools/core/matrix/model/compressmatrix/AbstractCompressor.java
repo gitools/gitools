@@ -21,15 +21,13 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.zip.Deflater;
 
 public abstract class AbstractCompressor {
-    private static final Logger log = LoggerFactory.getLogger(AbstractCompressor.class);
     protected static final char SEPARATOR = '\t';
 
     private static final int MAX_LINES_TO_DICTIONARY = 5000000;
@@ -119,9 +117,8 @@ public abstract class AbstractCompressor {
         int length = compressDeflater(input);
 
         byte[] content = Arrays.copyOf(outBuffer, length);
-        CompressRow compressRow = new CompressRow(input.length, content);
+        return new CompressRow(input.length, content);
 
-        return compressRow;
     }
 
 
@@ -150,9 +147,9 @@ public abstract class AbstractCompressor {
      */
     protected void initialize(IMatrixReader reader) throws Exception {
         // Some internal variables
-        Map<String, Integer> frequencies = new HashMap<String, Integer>();
-        Set<String> rows = new HashSet<String>(1000);
-        Set<String> columns = new HashSet<String>(1000);
+        Map<String, Integer> frequencies = new HashMap<>();
+        Set<String> rows = new HashSet<>(1000);
+        Set<String> columns = new HashSet<>(1000);
         String[] fields;
 
         // Read the headers
@@ -192,7 +189,7 @@ public abstract class AbstractCompressor {
         reader.close();
 
         // Filter entries with frequency = 1
-        List<Map.Entry<String, Integer>> entries = new ArrayList<Map.Entry<String, Integer>>(frequencies.size());
+        List<Map.Entry<String, Integer>> entries = new ArrayList<>(frequencies.size());
         for (Map.Entry<String, Integer> entry : frequencies.entrySet()) {
             if (entry.getValue() > MIN_FREQUENCY) {
                 entries.add(entry);
@@ -224,8 +221,8 @@ public abstract class AbstractCompressor {
         outBuffer = new byte[2 * (maxLineLength + 1) * columns.size()];
 
         // Initialize rows and columns
-        this.rows = new CompressDimension("rows", 0, rows.toArray(new String[0]));
-        this.columns = new CompressDimension("columns", 1, columns.toArray(new String[0]));
+        this.rows = new CompressDimension(MatrixDimensionKey.ROWS, rows.toArray(new String[rows.size()]));
+        this.columns = new CompressDimension(MatrixDimensionKey.COLUMNS, columns.toArray(new String[columns.size()]));
     }
 
     public interface IMatrixReader {

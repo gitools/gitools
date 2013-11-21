@@ -21,27 +21,21 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-/**
- * Multiplication
- */
+import static org.apache.commons.math3.stat.StatUtils.product;
+
 public class MultAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MultAggregator();
 
     private MultAggregator() {
+        super("Multiplication");
     }
 
     @Override
-    public double aggregate(double[] data) {
-        return aggregate(data, Functions.mult);
+    public Double aggregateNoNulls(double[] values) {
+        return product(values);
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Multiplication";
-    }
 }

@@ -28,7 +28,6 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -37,9 +36,6 @@ import java.net.URL;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-/**
- * @noinspection ALL
- */
 public class TemplatePanel extends Html4Panel {
 
     private static final long serialVersionUID = 1939265225161205798L;
@@ -50,7 +46,7 @@ public class TemplatePanel extends Html4Panel {
     private Template template;
     private VelocityContext context;
 
-    private TemplatePanel(@NotNull Properties props) {
+    private TemplatePanel(Properties props) {
         super();
 
         velocityEngine = new VelocityEngine();
@@ -80,7 +76,7 @@ public class TemplatePanel extends Html4Panel {
     }
 
     @Deprecated
-    public void setTemplateFromResource(@NotNull String resource) throws Exception {
+    public void setTemplateFromResource(String resource) throws Exception {
 
         if (!resource.startsWith("/")) {
             resource = "/" + resource;
@@ -90,11 +86,10 @@ public class TemplatePanel extends Html4Panel {
     }
 
     void setTemplateFromResource(String resource, String baseUrl) throws Exception {
-
         setTemplateFromResource(resource, new URL(baseUrl));
     }
 
-    public void setTemplateFromResource(String resource, @NotNull URL baseUrl) throws Exception {
+    public void setTemplateFromResource(String resource, URL baseUrl) throws Exception {
         if (template == null || !this.templateName.equals(resource)) {
             template = velocityEngine.getTemplate(resource);
             this.templateName = resource;

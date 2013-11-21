@@ -21,12 +21,11 @@
  */
 package org.gitools.ui.dialog.filter;
 
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -47,7 +46,7 @@ public class ValueFilterPage extends AbstractWizardPage {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
-    private final int visibleLayer;
+    private final IMatrixLayer visibleLayer;
 
     private static class ComboBoxCellRenderer extends JComboBox implements TableCellRenderer {
 
@@ -55,9 +54,9 @@ public class ValueFilterPage extends AbstractWizardPage {
             super(values);
         }
 
-        @NotNull
+
         @Override
-        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -90,8 +89,8 @@ public class ValueFilterPage extends AbstractWizardPage {
     public ValueFilterPage(Frame parent,
                            String[] attributeNames,
                            CutoffCmp[] comparators,
-                           @Nullable List<ValueFilterCriteria> initialCriteriaList,
-                           int visibleLayer) {
+                           List<ValueFilterCriteria> initialCriteriaList,
+                           IMatrixLayer visibleLayer) {
 
         this.attributeNames = attributeNames;
         this.comparators = comparators;
@@ -364,7 +363,7 @@ public class ValueFilterPage extends AbstractWizardPage {
 
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueFilterCriteria(attributeNames[visibleLayer], visibleLayer, comparators[0], 0.0));
+        criteriaModel.addCriteria(new ValueFilterCriteria(visibleLayer, comparators[0], 0.0));
         updateFilterDescription();
     }//GEN-LAST:event_tableAddBtnActionPerformed
 

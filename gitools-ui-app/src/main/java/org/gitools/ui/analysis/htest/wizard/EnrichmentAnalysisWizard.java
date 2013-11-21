@@ -21,12 +21,13 @@
  */
 package org.gitools.ui.analysis.htest.wizard;
 
-import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
@@ -38,12 +39,9 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class EnrichmentAnalysisWizard extends AbstractWizard {
 
@@ -114,7 +112,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
             if (examplePage.isExampleEnabled()) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("enrichment", monitor);
 
@@ -123,11 +121,10 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final EnrichmentAnalysis a = PersistenceManager.get().load(analysisFile, EnrichmentAnalysis.class, props, monitor);
+                            final EnrichmentAnalysis a = PersistenceManager.get().load(analysisFile, EnrichmentAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
@@ -206,7 +203,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         return modulesPage.getSelectedFile();
     }
 
-    @NotNull
+
     public EnrichmentAnalysis getAnalysis() {
         EnrichmentAnalysis analysis = new EnrichmentAnalysis();
 
@@ -228,7 +225,7 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         return analysis;
     }
 
-    private void setAnalysis(@NotNull EnrichmentAnalysis a) {
+    private void setAnalysis(EnrichmentAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());

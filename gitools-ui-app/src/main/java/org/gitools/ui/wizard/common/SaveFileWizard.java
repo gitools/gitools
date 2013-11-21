@@ -21,9 +21,8 @@
  */
 package org.gitools.ui.wizard.common;
 
-import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -52,12 +51,12 @@ public class SaveFileWizard extends AbstractWizard {
         return getSaveFilePage().getFileNameWithoutExtension();
     }
 
-    @NotNull
+
     public String getFileName() {
         return getSaveFilePage().getFileName();
     }
 
-    @NotNull
+
     public File getPathAsFile() {
         return getSaveFilePage().getPathAsFile();
     }
@@ -66,19 +65,18 @@ public class SaveFileWizard extends AbstractWizard {
         return getSaveFilePage().getFolder();
     }
 
-    @NotNull
+
     public FileFormat getFormat() {
         return getSaveFilePage().getFormat();
     }
 
-    @NotNull
+
     public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat) {
         return createSimple(title, fileName, folder, new FileFormat[]{fileFormat});
     }
 
 
-    @NotNull
-    public static SaveFileWizard createSimple(String title, String fileName, String folder, @NotNull FileFormat[] fileFormats) {
+    public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat[] fileFormats) {
 
         SaveFileWizard wiz = new SaveFileWizard();
         wiz.setTitle(title);

@@ -21,36 +21,20 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-import static cern.jet.stat.Descriptive.sampleVariance;
+import static org.apache.commons.math3.stat.StatUtils.variance;
 
-/**
- * Sum of logarithms
- */
 public class VarianceAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new VarianceAggregator();
 
     private VarianceAggregator() {
+        super("Variance");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-        double sum = aggregate(data, Functions.plus);
-
-        if (Double.isNaN(sum)) {
-            return Double.NaN;
-        }
-
-        double sumOfSquares = aggregate(data, Functions.plus, Functions.square);
-        return sampleVariance(data.length, sum, sumOfSquares);
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "Variance";
+    protected Double aggregateNoNulls(double[] values) {
+        return variance(values);
     }
 }

@@ -22,7 +22,8 @@
 package org.gitools.core.model.decorator.impl;
 
 import cern.jet.stat.Probability;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.utils.MatrixUtils;
@@ -30,7 +31,6 @@ import org.gitools.utils.colorscale.impl.ZScoreColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -196,9 +196,9 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers) {
 
-        Object value = matrix.getValue(row, column, layer);
+        Object value = matrix.get(layer, identifiers);
         double v = toDouble(value);
 
         if (Double.isNaN(v)) {
@@ -209,7 +209,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         boolean useScale = true;
 
         if (useCorrection) {
-            Object corrValue = correctedValueIndex >= 0 ? matrix.getValue(row, column, correctedValueIndex) : 0.0;
+            Object corrValue = correctedValueIndex >= 0 ? matrix.get(matrix.getLayers().get(correctedValueIndex), identifiers) : 0.0;
 
             double cv = MatrixUtils.doubleValue(corrValue);
 

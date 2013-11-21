@@ -25,7 +25,6 @@ import java.io.Serializable;
 
 /**
  * Key-Value pair *
- *
  */
 public class KeyValue implements Serializable {
 

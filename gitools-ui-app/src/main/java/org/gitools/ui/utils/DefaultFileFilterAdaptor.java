@@ -52,7 +52,7 @@ public class DefaultFileFilterAdaptor extends DefaultFileFilter {
     }
 
     public static List<DefaultFileFilter> adapt(FileFilter[] filters) {
-        List<DefaultFileFilter> result = new ArrayList<DefaultFileFilter>(filters.length);
+        List<DefaultFileFilter> result = new ArrayList<>(filters.length);
 
         for (FileFilter filter : filters) {
             result.add(new DefaultFileFilterAdaptor(filter));

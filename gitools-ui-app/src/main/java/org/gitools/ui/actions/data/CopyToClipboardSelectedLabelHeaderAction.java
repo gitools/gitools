@@ -21,32 +21,27 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
+import static com.google.common.collect.Iterables.transform;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
-public class CopyToClipboardSelectedLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+
+public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
     public CopyToClipboardSelectedLabelHeaderAction() {
         super("Copy selected labels to clipboard");
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
@@ -56,17 +51,14 @@ public class CopyToClipboardSelectedLabelHeaderAction extends BaseAction impleme
             return;
         }
 
-        LabelProvider labelProvider = header.getLabelProvider();
         StringBuilder content = new StringBuilder();
-        for (int i : header.getHeatmapDimension().getSelected()) {
-            String label = labelProvider.getLabel(i);
-
-            if (label != null && !label.isEmpty()) {
+        for (String label : transform(header.getHeatmapDimension().getSelected(), header.getIdentifierTransform())) {
+            if (!isEmpty(label)) {
                 content.append(label).append('\n');
             }
         }
 
-        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard ();
+        Clipboard clipBoard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipBoard.setContents(new StringSelection(content.toString()), null);
 
 

@@ -21,14 +21,16 @@
  */
 package org.gitools.ui.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.gitools.utils.color.generator.ColorRegistry;
+import org.gitools.utils.color.ColorRegistry;
+
+import java.util.List;
 
 public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
@@ -101,7 +103,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
 
     @Override
     public void performFinish() {
-        ColoredLabel[] cls = clustersPage.getColoredLabels();
+        List<ColoredLabel> cls = clustersPage.getColoredLabels();
         ColorRegistry cr = ColorRegistry.get();
         for (ColoredLabel cl : cls) {
             cr.registerId(cl.getValue(), cl.getColor());

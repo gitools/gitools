@@ -24,7 +24,6 @@ package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,8 +60,8 @@ public class SelectColumnsPage extends AbstractWizardPage {
         try {
             reader.init();
 
-            final List<ExcelHeader> allHeaders = new ArrayList<ExcelHeader>();
-            final List<ExcelHeader> numericHeaders = new ArrayList<ExcelHeader>();
+            final List<ExcelHeader> allHeaders = new ArrayList<>();
+            final List<ExcelHeader> numericHeaders = new ArrayList<>();
 
             for (ExcelHeader header : reader.getHeaders()) {
 
@@ -98,7 +97,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
             // Add a mouse listener to handle changing selection
             valueCellsList.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(@NotNull MouseEvent event) {
+                public void mouseClicked(MouseEvent event) {
                     JList list = (JList) event.getSource();
 
                     int index = list.locationToIndex(event.getPoint());
@@ -130,7 +129,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     }
 
-    private void createCheckListItems(@NotNull List<ExcelHeader> headers) {
+    private void createCheckListItems(List<ExcelHeader> headers) {
         values = new CheckListItem[headers.size()];
         for (int i = 0; i < headers.size(); i++) {
             values[i] = new CheckListItem(headers.get(i));
@@ -171,10 +170,10 @@ public class SelectColumnsPage extends AbstractWizardPage {
         return row.getPos();
     }
 
-    @NotNull
+
     public List<Integer> getSelectedValues() {
 
-        List<Integer> valuesPos = new ArrayList<Integer>(values.length);
+        List<Integer> valuesPos = new ArrayList<>(values.length);
 
         for (CheckListItem v : values) {
             if (v.isSelected()) {
@@ -213,8 +212,8 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     private class CheckListRenderer extends JCheckBox implements ListCellRenderer {
 
-        @NotNull
-        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value, int index, boolean isSelected, boolean hasFocus) {
+
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
 
             setEnabled(list.isEnabled());
             setSelected(((CheckListItem) value).isSelected());

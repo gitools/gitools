@@ -21,12 +21,13 @@
  */
 package org.gitools.ui.analysis.htest.wizard;
 
-import org.gitools.core.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
@@ -39,12 +40,9 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class OncodriveAnalysisWizard extends AbstractWizard {
 
@@ -118,7 +116,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
             if (examplePage.isExampleEnabled()) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("oncodrive", monitor);
 
@@ -127,11 +125,10 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, props, monitor);
+                            final OncodriveAnalysis a = PersistenceManager.get().load(analysisFile, OncodriveAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
@@ -210,7 +207,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
         return modulesPage.getSelectedFile();
     }
 
-    @NotNull
+
     public OncodriveAnalysis getAnalysis() {
         OncodriveAnalysis analysis = new OncodriveAnalysis();
 
@@ -229,7 +226,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
         return analysis;
     }
 
-    private void setAnalysis(@NotNull OncodriveAnalysis a) {
+    private void setAnalysis(OncodriveAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());

@@ -21,36 +21,23 @@
  */
 package org.gitools.utils.aggregation;
 
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-/**
- * Multiplication
- */
 public class NonZeroCountAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new NonZeroCountAggregator();
 
     private NonZeroCountAggregator() {
+        super("Count (Non-zero)");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-
-        double length = (double) data.length;
+    public Double aggregateNoNulls(double[] data) {
         double events = 0.0;
-
-
         for (double d : data) {
-            if (!(Double.isNaN(d) || d == 0)) {
-                events += 1;
-            }
+            if (d != 0.0) events++;
         }
         return events;
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Count (Non-zero)";
-    }
 }

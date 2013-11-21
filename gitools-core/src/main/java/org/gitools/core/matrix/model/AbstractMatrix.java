@@ -21,18 +21,70 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.model.Resource;
 
-public abstract class AbstractMatrix extends Resource implements IMatrix {
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
+
+    private MatrixDimensionKey[] dimensions;
+    private Map<MatrixDimensionKey, MD> identifiers;
+    private ML layers;
 
     @Override
-    public Object getValue(int row, int column, int layerIndex) {
-        return getValue(new int[]{ row, column }, layerIndex);
+    public IMatrixPosition newPosition() {
+        return new MatrixPosition(this);
+    }
+
+    public AbstractMatrix(ML layers, MD... identifiers) {
+
+        this.layers = layers;
+        this.dimensions = new MatrixDimensionKey[identifiers.length];
+        this.identifiers = new HashMap<>(identifiers.length);
+
+        for (int i = 0; i < identifiers.length; i++) {
+            MD identifier = identifiers[i];
+            this.dimensions[i] = identifier.getId();
+            this.identifiers.put(identifier.getId(), identifier);
+        }
     }
 
     @Override
-    public void setValue(int row, int column, int layer, Object value) {
-        setValue(new int[]{row, column}, layer, value);
+    public ML getLayers() {
+        return layers;
+    }
+
+    @Override
+    public MD getDimension(MatrixDimensionKey dimension) {
+        return identifiers.get(dimension);
+    }
+
+    @Override
+    public MatrixDimensionKey[] getDimensionKeys() {
+        return dimensions;
+    }
+
+    @Override
+    public <T> T get(IMatrixLayer<T> layer, IMatrixPosition position) {
+        return get(layer, position.toVector());
+    }
+
+    @Override
+    public <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position) {
+        set(layer, value, position.toVector());
+    }
+
+    @Override
+    public MD getRows() {
+        return getDimension(dimensions[0]);
+    }
+
+    @Override
+    public MD getColumns() {
+        return getDimension(dimensions[1]);
     }
 
     @Override

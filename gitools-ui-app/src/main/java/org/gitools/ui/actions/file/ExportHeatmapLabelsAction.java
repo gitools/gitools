@@ -21,35 +21,28 @@
  */
 package org.gitools.ui.actions.file;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.core.matrix.filter.PatternFunction;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.wizard.common.ExportHeatmapLabelsWizard;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
 
-/**
- * @noinspection ALL
- */
-public class ExportHeatmapLabelsAction extends BaseAction {
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Sets.newHashSet;
 
-    private static final long serialVersionUID = -7288045475037410310L;
+public class ExportHeatmapLabelsAction extends HeatmapAction {
 
     public ExportHeatmapLabelsAction() {
         super("Export labels ...");
@@ -59,21 +52,9 @@ public class ExportHeatmapLabelsAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
-
-        Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap)) {
-            return;
-        }
-
-        final Heatmap hm = (Heatmap) model;
+        final Heatmap hm = getHeatmap();
 
         final ExportHeatmapLabelsWizard wiz = new ExportHeatmapLabelsWizard(hm);
         WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
@@ -83,51 +64,45 @@ public class ExportHeatmapLabelsAction extends BaseAction {
             return;
         }
 
-        final IMatrixView matrixView = hm;
-
         final File file = wiz.getSavePage().getPathAsFile();
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting labels ...", 1);
                     monitor.info("File: " + file.getName());
 
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 
-                    LabelProvider labelProvider = null;
+                    Iterable<String> identifiers = null;
                     IAnnotations annMatrix = null;
 
                     switch (wiz.getWhichLabels()) {
                         case VISIBLE_ROWS:
-                            labelProvider = new MatrixDimensionLabelProvider(matrixView.getRows());
+                            identifiers = hm.getRows();
                             annMatrix = hm.getRows().getAnnotations();
                             break;
 
                         case VISIBLE_COLUMNS:
-                            labelProvider = new MatrixDimensionLabelProvider(matrixView.getColumns());
+                            identifiers = hm.getColumns();
                             annMatrix = hm.getColumns().getAnnotations();
                             break;
 
                         case HIDDEN_ROWS:
-                            labelProvider = hiddenRowsLabelProvider(matrixView);
+                            identifiers = filter(hm.getContents().getRows(), not(in(newHashSet(hm.getRows()))));
                             annMatrix = hm.getRows().getAnnotations();
                             break;
 
                         case HIDDEN_COLUMNS:
-                            labelProvider = hiddenColumnsLabelProvider(matrixView);
+                            identifiers = filter(hm.getContents().getColumns(), not(in(newHashSet(hm.getColumns()))));
                             annMatrix = hm.getColumns().getAnnotations();
                             break;
                     }
 
-                    String pattern = wiz.getPattern();
-                    if (!pattern.equalsIgnoreCase("${id}")) {
-                        labelProvider = new AnnotationsPatternProvider(labelProvider, annMatrix, pattern);
+                    for (String identifier : transform(identifiers, new PatternFunction(wiz.getPattern(), annMatrix))) {
+                        pw.println(identifier);
                     }
-
-                    for (int i = 0; i < labelProvider.getCount(); i++)
-                        pw.println(labelProvider.getLabel(i));
 
                     pw.close();
 
@@ -141,132 +116,4 @@ public class ExportHeatmapLabelsAction extends BaseAction {
         AppFrame.get().setStatusText("Labels exported.");
     }
 
-    @NotNull
-    private LabelProvider hiddenRowsLabelProvider(@NotNull IMatrixView matrixView) {
-        int[] visibleIndices = matrixView.getRows().getVisibleIndices();
-        Set<Integer> visibleSet = new HashSet<Integer>();
-        for (int i = 0; i < visibleIndices.length; i++)
-            visibleSet.add(visibleIndices[i]);
-
-        IMatrix contents = matrixView.getContents();
-
-        int j = 0;
-        int count = contents.getRows().size();
-        int[] hiddenIndices = new int[count - visibleIndices.length];
-        for (int i = 0; i < count; i++)
-            if (!visibleSet.contains(i)) {
-                hiddenIndices[j++] = i;
-            }
-
-        IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.getRows().setVisibleIndices(hiddenIndices);
-        return new MatrixDimensionLabelProvider(hiddenView.getRows());
-    }
-
-    @NotNull
-    private LabelProvider hiddenColumnsLabelProvider(@NotNull IMatrixView matrixView) {
-        int[] visibleIndices = matrixView.getColumns().getVisibleIndices();
-        Set<Integer> visibleSet = new HashSet<Integer>();
-        for (int i = 0; i < visibleIndices.length; i++)
-            visibleSet.add(visibleIndices[i]);
-
-        IMatrix contents = matrixView.getContents();
-
-        int j = 0;
-        int count = contents.getColumns().size();
-        int[] hiddenIndices = new int[count - visibleIndices.length];
-        for (int i = 0; i < count; i++)
-            if (!visibleSet.contains(i)) {
-                hiddenIndices[j++] = i;
-            }
-
-        IMatrixView hiddenView = new Heatmap(matrixView);
-        hiddenView.getColumns().setVisibleIndices(hiddenIndices);
-        return new MatrixDimensionLabelProvider(hiddenView.getColumns());
-    }
-
-	/*@Override
-    public void actionPerformed(ActionEvent e) {
-
-		final String visibleRows = "Visible row names";
-		final String visibleCols = "Visible column names";
-		final String hiddenRows = "Hidden row names";
-		final String hiddenCols = "Hidden column names";
-
-		final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
-		if (matrixView == null)
-			return;
-		
-		final IMatrix contents = matrixView.getContents();
-		
-		String[] possibilities = { 
-				visibleRows, visibleCols, hiddenRows, hiddenCols };
-
-		final String selected = (String) JOptionPane.showInputDialog(AppFrame.instance(),
-				"What do you want to export ?", "Export names",
-				JOptionPane.QUESTION_MESSAGE, null, possibilities,
-				"Visible row names");
-
-		if (selected == null || selected.isEmpty())
-			return;
-
-		final File file = FileChooserUtils.selectFile(
-					"Select destination file",
-					Settings.getDefault().getLastExportPath(),
-					FileChooserUtils.MODE_SAVE);
-
-		if (file == null)
-			return;
-
-		Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
-
-		JobThread.execute(AppFrame.instance(), new JobRunnable() {
-			@Override
-			public void run(IProgressMonitor monitor) {
-				try {
-					monitor.begin("Exporting " + selected.toLowerCase() + " ...", 1);
-					monitor.info("File: " + file.getName());
-
-					PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-			
-					if (visibleRows.equals(selected)) {
-						for (int i = 0; i < matrixView.getRows().size(); i++)
-							pw.println(matrixView.getRows().getLabel(i));
-					}
-					else if (visibleCols.equals(selected)) {
-						for (int i = 0; i < matrixView.getColumns().size(); i++)
-							pw.println(matrixView.getColumns().getLabel(i));
-					}
-					else if (hiddenRows.equals(selected)) {
-						for (int i = 0; i < contents.getRows().size(); i++) {
-							if (!inArray(i, matrixView.getVisibleRows()))
-									pw.println(contents.getRows().getLabel(i));
-						}
-					}
-					else if (hiddenCols.equals(selected)) {
-						for (int i = 0; i < contents.getColumns().size(); i++) {
-							if (!inArray(i, matrixView.getVisibleColumns()))
-									pw.println(contents.getColumns().getLabel(i));
-						}
-					}
-
-					pw.close();
-
-					monitor.end();
-				}
-				catch (IOException ex) {
-					monitor.exception(ex);
-				}
-			}
-		});
-		
-		AppFrame.instance().setStatusText(selected + " exported.");
-	}
-
-	private boolean inArray(int needle, int[] ary) {
-		for (int i = 0; i < ary.length; i++)
-			if (needle == ary[i])
-				return true;
-		return false;
-	}*/
 }

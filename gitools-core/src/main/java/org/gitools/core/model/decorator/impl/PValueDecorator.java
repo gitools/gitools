@@ -21,13 +21,13 @@
  */
 package org.gitools.core.model.decorator.impl;
 
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -151,9 +151,9 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     }
 
     @Override
-    public void decorate(@NotNull Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer) {
+    public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers) {
 
-        Object value = matrix.getValue(row, column, layer);
+        Object value = matrix.get(layer, identifiers);
         double v = toDouble(value);
 
         if (Double.isNaN(v)) {
@@ -164,7 +164,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
         boolean isSig = v <= significanceLevel;
 
         if (useCorrection && correctedValueIndex != -1) {
-            Object cvalue = matrix.getValue(row, column, correctedValueIndex);
+            Object cvalue = matrix.get(matrix.getLayers().get(correctedValueIndex), identifiers);
             double cv = toDouble(cvalue);
 
             isSig = cv <= significanceLevel;

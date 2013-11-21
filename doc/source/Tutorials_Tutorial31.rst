@@ -52,4 +52,4 @@ Filter significance by Corrected two-tail p-value by checking the box below.
 
 
 .. image:: img/gitoolscasestudy31.png
-   :width: 70%
+:width: 70%

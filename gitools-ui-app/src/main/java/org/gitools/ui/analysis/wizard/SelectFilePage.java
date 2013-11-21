@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.core.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -29,8 +29,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -49,12 +47,12 @@ public class SelectFilePage extends AbstractWizardPage {
 
     private static final FileFormat[] defaultFormats = new FileFormat[]{anyFileFormat};
 
-    @Nullable
+
     private final FileFormat[] formats;
     private boolean blankFileAllowed;
     private String lastPath;
 
-    public SelectFilePage(@Nullable FileFormat[] formats) {
+    public SelectFilePage(FileFormat[] formats) {
         setTitle("Select file");
 
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SELECT_FILE, 96));
@@ -113,7 +111,7 @@ public class SelectFilePage extends AbstractWizardPage {
         setComplete(complete);
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         return this;
@@ -211,18 +209,18 @@ public class SelectFilePage extends AbstractWizardPage {
     private javax.swing.JLabel valueLabel;
     // End of variables declaration//GEN-END:variables
 
-    @NotNull
+
     public FileFormat getFileFormat() {
         return (FileFormat) formatCb.getSelectedItem();
     }
 
-    @Nullable
+
     public File getFile() {
         String path = filePath.getText();
         return path.isEmpty() ? null : new File(path);
     }
 
-    public void setFile(@NotNull File file) {
+    public void setFile(File file) {
         String fileName = file.getName();
         for (FileFormat f : formats)
             if (f.checkExtension(fileName)) {
@@ -264,7 +262,7 @@ public class SelectFilePage extends AbstractWizardPage {
     /**
      * @noinspection UnusedDeclaration
      */
-    @NotNull
+
     public String[] getValues() {
         //if (valueCb.isEnabled() == true)
         //TODO: return items

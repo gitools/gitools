@@ -21,10 +21,9 @@
  */
 package org.gitools.ui.platform.editor;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.view.AbstractView;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,8 +53,8 @@ public abstract class AbstractEditor extends AbstractView implements IEditor {
     private boolean saveAsAllowed = false;
     private boolean saveAllowed = false;
 
-    @NotNull
-    private final List<EditorListener> listeners = new ArrayList<EditorListener>();
+
+    private final List<EditorListener> listeners = new ArrayList<>();
 
     @Override
     public void setName(String name) {
@@ -144,7 +143,4 @@ public abstract class AbstractEditor extends AbstractView implements IEditor {
         listeners.add(listener);
     }
 
-    public void removeEditorListener(EditorListener listener) {
-        listeners.add(listener);
-    }
 }

@@ -21,48 +21,38 @@
  */
 package org.gitools.cli.convert;
 
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.core.model.HashModuleMap;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MatrixToModulesConversion implements ConversionDelegate {
 
-    @NotNull
+
     @Override
     public Object convert(String srcFormat, Object src, String dstFormat, IProgressMonitor progressMonitor) throws Exception {
-        final int attrIndex = 0; // TODO get from configuration
+
+        HashModuleMap moduleMap = new HashModuleMap();
 
         IMatrix matrix = (IMatrix) src;
+        IMatrixDimension rows = matrix.getDimension(ROWS);
+        IMatrixDimension columns = matrix.getDimension(COLUMNS);
 
-        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        IMatrixLayer<Double> firstLayer = matrix.getLayers().iterator().next();
 
-        MatrixUtils.DoubleCast cast = MatrixUtils.createDoubleCast(matrix.getLayers().get(attrIndex).getValueClass());
-
-        int numRows = matrix.getRows().size();
-        int numCols = matrix.getColumns().size();
-        for (int row = 0; row < numRows; row++) {
-            String rowLabel = matrix.getRows().getLabel(row);
-            Set<String> items = new HashSet<String>();
-            for (int col = 0; col < numCols; col++) {
-                String colLabel = matrix.getColumns().getLabel(col);
-                Object cellValue = matrix.getValue(row, col, attrIndex);
-                double value = cast.getDoubleValue(cellValue);
-                if (value == 1.0) {
-                    items.add(colLabel);
+        for (String row : rows) {
+            for (String column : columns) {
+                if (matrix.get(firstLayer, row, column) == 1.0) {
+                    moduleMap.addMapping(column, row);
                 }
             }
-            map.put(rowLabel, items);
         }
-        ModuleMap mmap = new ModuleMap(map);
-        return mmap;
+
+        return moduleMap;
     }
 
 }

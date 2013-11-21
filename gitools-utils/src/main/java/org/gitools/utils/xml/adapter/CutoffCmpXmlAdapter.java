@@ -22,7 +22,6 @@
 package org.gitools.utils.xml.adapter;
 
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -34,7 +33,7 @@ public class CutoffCmpXmlAdapter extends XmlAdapter<String, CutoffCmp> {
     }
 
     @Override
-    public String marshal(@NotNull CutoffCmp v) throws Exception {
+    public String marshal(CutoffCmp v) throws Exception {
         return v.getAbbreviation();
     }
 

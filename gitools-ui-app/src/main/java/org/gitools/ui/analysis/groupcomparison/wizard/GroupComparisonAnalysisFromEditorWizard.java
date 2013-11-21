@@ -21,22 +21,21 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.core.datafilters.BinaryCutoff;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.Property;
 import org.gitools.core.model.ToolConfig;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.utils.CloneUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.utils.CloneUtils;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.utils.datafilters.BinaryCutoff;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         attrSelectPage.setAttributes(heatmap.getLayers());
         addPage(attrSelectPage);
 
-        groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap);
+        groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap.getColumns());
         addPage(groupByLabelPage);
 
         groupByValuePage = new GroupComparisonGroupingByValuePage();
@@ -91,10 +90,10 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         }
         //Group by label page
         else if (page == groupByLabelPage) {
-            if (groupByLabelPage.getGroup1().length == 0) {
+            if (groupByLabelPage.getGroup1().size() == 0) {
                 groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 1");
                 return page;
-            } else if (groupByLabelPage.getGroup2().length == 0) {
+            } else if (groupByLabelPage.getGroup2().size() == 0) {
                 groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 2");
                 return page;
             } else {
@@ -137,7 +136,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         return canFinish;
     }
 
-    @NotNull
+
     public GroupComparisonAnalysis getAnalysis() {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();
 
@@ -189,7 +188,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     }
 
     private void updateAnalysisDetails() {
-        List<Property> analysisAttributes = new ArrayList<Property>();
+        List<Property> analysisAttributes = new ArrayList<>();
         if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
             analysisAttributes.add(new Property("Group 1", "user defined group"));
             analysisAttributes.add(new Property("Group 2", "user defined group"));

@@ -22,14 +22,16 @@
 package org.gitools.core.heatmap;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixViewLayers;
+import org.apache.commons.lang.StringUtils;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DecoratorFactory;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.gitools.core.utils.EventUtils;
+import org.gitools.utils.events.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -61,26 +63,24 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     private void createLayers(IMatrix matrix) {
         IMatrixLayers<? extends IMatrixLayer> matrixLayers = matrix.getLayers();
-        this.layers = new ArrayList<HeatmapLayer>(matrixLayers.size());
+        this.layers = new ArrayList<>(matrixLayers.size());
         this.layerNames = null;
         this.layersIdToIndex = null;
 
-        for (int i = 0; i < matrixLayers.size(); i++) {
-            IMatrixLayer layer = matrixLayers.get(i);
-            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
+        for (IMatrixLayer layer : matrixLayers) {
+            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
             this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
         }
     }
 
     public void init(IMatrix matrix) {
-        IMatrixLayers matrixLayers = matrix.getLayers();
+        IMatrixLayers<?> matrixLayers = matrix.getLayers();
         this.layersIdToIndex = new HashMap<>(matrixLayers.size());
         this.layerNames = new ArrayList<>(matrixLayers.size());
 
         // Reorder layers
         List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
-        for (int i=0; i < matrixLayers.size(); i++) {
-            IMatrixLayer layer = matrixLayers.get(i);
+        for (IMatrixLayer layer : matrixLayers) {
             HeatmapLayer orderedLayer = null;
             for (HeatmapLayer heatmapLayer : this.layers) {
                 if (heatmapLayer.getId().equals(layer.getId())) {
@@ -91,7 +91,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
             // This is a new layer
             if (orderedLayer == null) {
-                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, i);
+                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
                 orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
             }
 
@@ -116,20 +116,21 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         setTopLayerIndex(layers.indexOf(topLayer));
     }
 
-    @Override
+    @Deprecated
     public int getTopLayerIndex() {
         return topLayer;
     }
 
+    @Deprecated
     public void setTopLayerById(String id) {
-        int layer = findId(id);
+        int layer = indexOf(id);
 
         if (layer != -1) {
             setTopLayerIndex(layer);
         }
     }
 
-    @Override
+    @Deprecated
     public void setTopLayerIndex(int layerIndex) {
         int old = this.topLayer;
         this.topLayer = layerIndex;
@@ -140,17 +141,27 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         // Move listeners
         HeatmapLayer oldLayer = layers.get(old);
         HeatmapLayer newLayer = layers.get(layerIndex);
+
         EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
         EventUtils.moveListeners(oldLayer, newLayer);
     }
 
     @Override
-    public HeatmapLayer get(int layerIndex) {
-        return layers.get(layerIndex);
+    public String[] getIds() {
+        return layersIdToIndex.keySet().toArray(new String[size()]);
     }
 
     @Override
-    public int findId(String id) {
+    public HeatmapLayer get(String layer) {
+        return layers.get(indexOf(layer));
+    }
+
+    @Override
+    public HeatmapLayer get(int layer) {
+        return layers.get(layer);
+    }
+
+    public int indexOf(String id) {
         Integer layer = layersIdToIndex.get(id);
 
         if (layer == null) {
@@ -160,9 +171,31 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layer;
     }
 
+    public String getId() {
+        return MatrixLayers.LAYERS_ID;
+    }
+
     @Override
     public int size() {
         return layers.size();
+    }
+
+    public String getLabel(int index) {
+        return layers.get(index).getId();
+    }
+
+    public List<String> getLayerNames() {
+        return layerNames;
+    }
+
+    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
+
+        int i = 0;
+        for (HeatmapLayer layer : layers) {
+            layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
+            i++;
+        }
+
     }
 
     @Override
@@ -170,18 +203,18 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layers.iterator();
     }
 
-    public List<String> getLayerNames() {
-        return layerNames;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HeatmapLayers strings = (HeatmapLayers) o;
+
+        return StringUtils.equals(getId(), strings.getId());
     }
 
-    public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, int row, int column) {
-
-        int i=0;
-        for (HeatmapLayer layer : layers) {
-            layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
-            i++;
-        }
-
-
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
     }
 }

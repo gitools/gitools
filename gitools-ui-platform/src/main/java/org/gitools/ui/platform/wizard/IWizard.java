@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.help.HelpContext;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -43,7 +42,7 @@ public interface IWizard {
 
     void setCurrentPage(IWizardPage currentPage);
 
-    @Nullable
+
     IWizardPage getNextPage(IWizardPage page);
 
     IWizardPage getPreviousPage(IWizardPage page);

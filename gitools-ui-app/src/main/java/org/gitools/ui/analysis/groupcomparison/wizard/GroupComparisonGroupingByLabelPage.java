@@ -21,13 +21,11 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter;
-import org.gitools.core.matrix.filter.MatrixViewAnnotationsFilter.FilterDimension;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.matrix.filter.FilterByLabelPredicate;
+import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -36,29 +34,30 @@ import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.DocumentChangeListener;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.wizard.common.PatternSourcePage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
-    private final Heatmap hm;
+    private final HeatmapDimension dimension;
+    private String pattern;
 
-    private String colsPatt;
-
-    public GroupComparisonGroupingByLabelPage(Heatmap hm) {
-        this.hm = hm;
+    public GroupComparisonGroupingByLabelPage(HeatmapDimension dimension) {
+        this.dimension = dimension;
 
         initComponents();
         setComplete(false);
-
 
         colsPattBtn.addActionListener(new ActionListener() {
             @Override
@@ -66,7 +65,6 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
                 selectColsPattern();
             }
         });
-
         patterns1.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
             protected void update(DocumentEvent e) {
@@ -74,7 +72,6 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
                 setComplete(patterns1.getDocument().getLength() > 0 && patterns2.getDocument().getLength() > 0);
             }
         });
-
         patterns2.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
             protected void update(DocumentEvent e) {
@@ -83,19 +80,18 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
             }
         });
 
-
-        colsPatt = "${id}";
+        pattern = "${id}";
         colsPattFld.setText("id");
-
 
         setTitle("Group Comparison Analysis");
         setMessage("Choose the two column groups to compare");
-        setFilterDimension(FilterDimension.COLUMNS);
+
+        //TODO Why only columns ??
+        colsRb.setSelected(true);
     }
 
 
-    @NotNull
-    String readNamesFromFile(File file) throws IOException {
+    private String readNamesFromFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder sb = new StringBuilder();
         String line;
@@ -112,47 +108,29 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
 
     private void selectColsPattern() {
-        PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
+        PatternSourcePage page = new PatternSourcePage(dimension, true);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
         }
 
-        colsPatt = page.getPattern();
+        pattern = page.getPattern();
         colsPattFld.setText(page.getPatternTitle());
     }
 
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    @NotNull
-    public FilterDimension getFilterDimension() {
-        return FilterDimension.COLUMNS;
-    }
-
-    private void setFilterDimension(FilterDimension fd) {
-        colsRb.setSelected(true);
-    }
-
-    String getPattern() {
-        return colsPatt;
-    }
-
-    @NotNull
-    public int[] getGroup1() {
+    public Set<String> getGroup1() {
         return getGroupIndices(patterns1);
     }
 
-    @NotNull
-    public int[] getGroup2() {
+    public Set<String> getGroup2() {
         return getGroupIndices(patterns2);
     }
 
-    @NotNull
-    private int[] getGroupIndices(@NotNull JTextArea patterns) {
-        List<String> values = new ArrayList<String>();
+    private Set<String> getGroupIndices(JTextArea patterns) {
+
+        // Read pattern values
+        Set<String> values = new HashSet<>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;
@@ -168,69 +146,41 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
             dlg.setVisible(true);
         }
 
-        //conversion to
-        LabelProvider labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
-        int[] visibleCols = hm.getColumns().getVisibleIndices();
-        int[] groupCols = MatrixViewAnnotationsFilter.filterLabels(labelProvider, values, isUseRegexChecked(), visibleCols);
-        int[] groupColIndices = new int[groupCols.length];
-        for (int i = 0; i < groupCols.length; i++) {
-            groupColIndices[i] = ArrayUtils.indexOf(visibleCols, groupCols[i]);
-        }
+        // Filter identifiers
+        Predicate<String> filter = new FilterByLabelPredicate(
+                new PatternFunction(pattern, dimension.getAnnotations()),
+                values,
+                useRegexCheck.isSelected());
 
-        return groupColIndices;
+        return Sets.newHashSet(filter(dimension, filter));
     }
 
-    @NotNull
     private ArrayList<String> getSelectedColumns() {
-        ArrayList<String> selected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
-        if (!getPattern().equalsIgnoreCase("${id}")) {
-            labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
-        }
 
-        int[] selectedIndices = hm.getColumns().getSelected();
-        for (int i = 0; i < selectedIndices.length; i++)
-            selected.add(labelProvider.getLabel(selectedIndices[i]));
-
-        return selected;
+        return newArrayList(
+                transform(
+                        dimension.getSelected(),
+                        new PatternFunction(pattern, dimension.getAnnotations())
+                )
+        );
     }
 
-
-    void setValues(@NotNull List<String> values, @NotNull JTextArea patterns) {
-        Iterator<String> it = values.iterator();
-        while (it.hasNext()) {
-            patterns.append(it.next() + "\n");
-        }
-
-    }
-
-    @NotNull
     private ArrayList<String> getUnselectedColumns() {
-        ArrayList<String> unselected = new ArrayList<String>();
-        LabelProvider labelProvider = new MatrixDimensionLabelProvider(hm.getColumns());
-        if (!getPattern().equalsIgnoreCase("${id}")) {
-            labelProvider = new AnnotationsPatternProvider(hm.getColumns(), getPattern());
-        }
 
-        int[] selectedIndices = hm.getColumns().getSelected();
-        int visibleColumnsCount = hm.getColumns().size();
-        int[] unselectedIndices = new int[visibleColumnsCount - selectedIndices.length];
-        int count = 0;
-        for (int i = 0; i < visibleColumnsCount; i++) {
-            if (!(ArrayUtils.contains(selectedIndices, i))) {
-                unselectedIndices[count] = i;
-                count++;
-            }
-        }
-
-        for (int i = 0; i < unselectedIndices.length; i++)
-            unselected.add(labelProvider.getLabel(unselectedIndices[i]));
-        return unselected;
+        return newArrayList(
+                transform(
+                        filter(dimension, not(in(dimension.getSelected()))),
+                        new PatternFunction(pattern, dimension.getAnnotations())
+                )
+        );
 
     }
 
-    boolean isUseRegexChecked() {
-        return useRegexCheck.isSelected();
+    private void setValues(List<String> values, JTextArea patterns) {
+        for (String value : values) {
+            patterns.append(value + "\n");
+        }
+
     }
 
     /**

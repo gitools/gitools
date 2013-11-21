@@ -29,6 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DecoratorPanelContainer extends JPanel {
@@ -52,7 +53,7 @@ public class DecoratorPanelContainer extends JPanel {
         });
     }
 
-    public void init(List<DecoratorPanel> panels, List<String> layers, ValueModel decoratorModel) {
+    public void init(List<DecoratorPanel> panels, Iterable<String> layers, ValueModel decoratorModel) {
         this.decoratorModel = decoratorModel;
         this.panels = panels;
         this.decoratorModel.addValueChangeListener(new PropertyChangeListener() {
@@ -64,6 +65,12 @@ public class DecoratorPanelContainer extends JPanel {
         });
 
         removeAll();
+
+        List<String> layersList = new ArrayList<>();
+        for (String layer : layers) {
+            layersList.add(layer);
+        }
+
         for (DecoratorPanel panel : panels) {
 
             add(panel.getRootPanel(), panel.getName());
@@ -73,7 +80,7 @@ public class DecoratorPanelContainer extends JPanel {
                 panel.setValue(getCurrentDecorator());
             }
 
-            panel.setLayers(layers);
+            panel.setLayers(layersList);
             panel.bind();
         }
 
@@ -127,7 +134,7 @@ public class DecoratorPanelContainer extends JPanel {
         Class<? extends Decorator> decoratorClass = getCurrentPanel().getDecoratorClass();
         Decorator currentDecorator = getCurrentDecorator();
 
-        if (currentDecorator==null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
+        if (currentDecorator == null || !decoratorClass.isAssignableFrom(currentDecorator.getClass())) {
             Decorator newDecorator = getCurrentPanel().newDecorator();
             setCurrentDecorator(newDecorator);
             getCurrentPanel().setValue(newDecorator);

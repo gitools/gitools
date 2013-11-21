@@ -21,13 +21,8 @@
  */
 package org.gitools.core.model.decorator;
 
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.matrix.ObjectMatrix;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.core.model.decorator.impl.*;
-import org.gitools.core.stats.test.results.CommonResult;
-import org.gitools.core.stats.test.results.ZScoreResult;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +30,7 @@ import java.util.List;
 
 public class DecoratorFactory {
 
-    private static final List<DecoratorDescriptor> descriptors = new ArrayList<DecoratorDescriptor>();
+    private static final List<DecoratorDescriptor> descriptors = new ArrayList<>();
 
     static {
         descriptors.add(new DecoratorDescriptor(DecoratorNames.BINARY, BinaryDecorator.class));
@@ -51,7 +46,7 @@ public class DecoratorFactory {
         descriptors.add(new DecoratorDescriptor(DecoratorNames.CATEGORICAL, CategoricalDecorator.class));
     }
 
-    @Nullable
+
     public static <D extends Decorator> D create(Class<D> decoratorClass) {
         D decorator;
         try {
@@ -63,7 +58,7 @@ public class DecoratorFactory {
         return decorator;
     }
 
-    @Nullable
+
     public static DecoratorDescriptor getDescriptor(Class<? extends Decorator> decoratorClass) {
 
         for (DecoratorDescriptor desc : descriptors)
@@ -74,12 +69,15 @@ public class DecoratorFactory {
         return null;
     }
 
-    @NotNull
+
     public static List<DecoratorDescriptor> getDescriptors() {
         return descriptors;
     }
 
-    public static Decorator defaultDecorator(IMatrix matrix, int layer) {
+    @Deprecated
+    public static Decorator defaultDecorator(IMatrix matrix, String layer) {
+
+        /*
         Decorator decorator;
 
         if (matrix instanceof ObjectMatrix) {
@@ -100,6 +98,9 @@ public class DecoratorFactory {
         }
 
         return decorator;
+        */
+
+        return new LinearDecorator();
     }
 
 }

@@ -22,21 +22,28 @@
 package org.gitools.core.matrix.model.matrix;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.core.matrix.model.IAnnotations;
-import org.gitools.core.model.Resource;
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 
-import java.util.*;
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnnotationMatrix extends Resource implements IAnnotations {
-    private List<String> labels;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
-    private Map<String, Map<String, String>> annotations;
-    private Map<String, Map<String, String>> annotationsMetadata;
+public class AnnotationMatrix extends HashMatrix implements IAnnotations {
+
+    private Map<String, Map<String, String>> layersMetadata;
+    private Collection<String> labels;
 
     public AnnotationMatrix() {
-        this.labels = new ArrayList<>();
-        this.annotations = new HashMap<>();
-        this.annotationsMetadata = new HashMap<>();
+        super(ROWS);
+
+        this.layersMetadata = new HashMap<>();
+        this.labels = new LabelsAdapter();
     }
 
     public void addAnnotations(IAnnotations annotations) {
@@ -61,61 +68,40 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
     }
 
     @Override
-    public boolean hasIdentifier(String identifier) {
-        return annotations.containsKey(identifier);
-    }
-
-    @Override
-    public Collection<String> getIdentifiers() {
-        return annotations.keySet();
+    public IMatrixDimension getIdentifiers() {
+        return getDimension(ROWS);
     }
 
     @Override
     public Collection<String> getMetadataKeys() {
-        return annotationsMetadata.keySet();
+        return layersMetadata.keySet();
     }
 
     @Override
-    public List<String> getLabels() {
+    public Collection<String> getLabels() {
         return labels;
     }
 
     @Override
-    public String getAnnotation(String identifier, String annotationLabel) {
-        if (!hasIdentifier(identifier)) {
-            return null;
-        }
-
-        return annotations.get(identifier).get(annotationLabel);
+    public String getAnnotation(String identifier, String label) {
+        return get(getLayer(label), identifier);
     }
 
-    public void setAnnotation(String identifier, String annotationLabel, String value) {
+    private IMatrixLayer<String> getLayer(String label) {
+        return getLayers().get(label);
+    }
 
-        if (value == null || value.isEmpty()) {
-            return;
-        }
-
-        if (!labels.contains(annotationLabel)) {
-            labels.add(annotationLabel);
-        }
-
-        Map<String, String> identifierAnnotations = annotations.get(identifier);
-
-        if (identifierAnnotations == null) {
-            identifierAnnotations = new HashMap<>(labels.size());
-            annotations.put(identifier, identifierAnnotations);
-        }
-
-        identifierAnnotations.put(annotationLabel, value);
+    public void setAnnotation(String identifier, String label, String value) {
+        set(label, value, identifier);
     }
 
     @Override
-    public String getAnnotationMetadata(String key, String annotationLabel) {
-        if (!annotationsMetadata.containsKey(key)) {
+    public String getAnnotationMetadata(String key, String label) {
+        if (!layersMetadata.containsKey(key)) {
             return null;
         }
 
-        return annotationsMetadata.get(key).get(annotationLabel);
+        return layersMetadata.get(key).get(label);
     }
 
     public void setAnnotationMetadata(String key, String annotationLabel, String value) {
@@ -124,13 +110,28 @@ public class AnnotationMatrix extends Resource implements IAnnotations {
             return;
         }
 
-        Map<String, String> ketMetadata = annotationsMetadata.get(key);
+        Map<String, String> ketMetadata = layersMetadata.get(key);
 
         if (ketMetadata == null) {
             ketMetadata = new HashMap<>();
-            annotationsMetadata.put(key, ketMetadata);
+            layersMetadata.put(key, ketMetadata);
         }
 
         ketMetadata.put(annotationLabel, value);
+    }
+
+    private class LabelsAdapter extends AbstractList<String> {
+
+        @Override
+        public String get(int index) {
+            IMatrixLayer layer = getLayers().get(index);
+
+            return (layer == null ? null : layer.getId());
+        }
+
+        @Override
+        public int size() {
+            return getLayers().size();
+        }
     }
 }

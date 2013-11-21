@@ -21,23 +21,21 @@
  */
 package org.gitools.utils.xml.adapter;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.awt.*;
 
 
 public class FontXmlAdapter extends XmlAdapter<FontXmlElement, Font> {
 
-    @NotNull
+
     @Override
-    public Font unmarshal(@NotNull FontXmlElement v) throws Exception {
+    public Font unmarshal(FontXmlElement v) throws Exception {
         return new Font(v.name, v.style, v.size);
     }
 
-    @NotNull
+
     @Override
-    public FontXmlElement marshal(@NotNull Font v) throws Exception {
+    public FontXmlElement marshal(Font v) throws Exception {
         return new FontXmlElement(v.getName(), v.getStyle(), v.getSize());
     }
 

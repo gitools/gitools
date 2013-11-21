@@ -21,6 +21,7 @@
  */
 package org.gitools.core.matrix.model.compressmatrix;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
 
 import java.util.HashMap;
@@ -39,8 +40,8 @@ public class CompressDimension extends AbstractMatrixDimension {
      *
      * @param labels the identifier labels of this dimension
      */
-    public CompressDimension(String id, int vectorPosition, String[] labels) {
-        super(id, vectorPosition);
+    public CompressDimension(MatrixDimensionKey id, String[] labels) {
+        super(id);
 
         this.labels = labels;
         this.labelsToIndex = new HashMap<>(labels.length);
@@ -48,7 +49,6 @@ public class CompressDimension extends AbstractMatrixDimension {
         for (int i = 0; i < labels.length; i++) {
             this.labelsToIndex.put(labels[i], i);
         }
-
     }
 
     /**
@@ -79,14 +79,14 @@ public class CompressDimension extends AbstractMatrixDimension {
      * @return the index
      */
     @Override
-    public int getIndex(String label) {
+    public int indexOf(String label) {
         Integer value = labelsToIndex.get(label);
 
         if (value == null) {
             return -1;
         }
 
-        return value.intValue();
+        return value;
     }
 
     /**

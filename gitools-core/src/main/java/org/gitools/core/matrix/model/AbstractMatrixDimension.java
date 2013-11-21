@@ -22,62 +22,86 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
+
+import java.util.Iterator;
 
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
-    private int vectorPosition;
-    private String id;
+    private MatrixDimensionKey id;
 
     protected AbstractMatrixDimension() {
         super();
     }
 
-    public AbstractMatrixDimension(String id, int vectorPosition) {
+    public AbstractMatrixDimension(MatrixDimensionKey id) {
         super();
 
         this.id = id;
-        this.vectorPosition = vectorPosition;
     }
 
     @Override
-    public String getId() {
+    public MatrixDimensionKey getId() {
         return id;
     }
 
-    protected void setId(String id) {
+    protected void setId(MatrixDimensionKey id) {
         this.id = id;
     }
 
     @Override
-    public int getVectorPosition() {
-        return vectorPosition;
-    }
-
-    protected void setVectorPosition(int vectorPosition) {
-        this.vectorPosition = vectorPosition;
+    public boolean contains(String identifier) {
+        return indexOf(identifier) != -1;
     }
 
     @Override
-    public int getPosition(int[] matrixPosition) {
-        return matrixPosition[vectorPosition];
+    public Iterator<String> iterator() {
+        return new MatrixDimensionIterator();
     }
 
     @Override
-    public void setPosition(int[] matrixPosition, int index) {
-        matrixPosition[vectorPosition] = index;
+    public boolean isEmpty() {
+        return size() == 0;
     }
 
-    @Override
-    public int next(int[] matrixPosition) {
-        int next = matrixPosition[vectorPosition]++;
+    private class MatrixDimensionIterator implements Iterator<String> {
 
-        if (next == size()) {
-            matrixPosition[vectorPosition] = 0;
-            next = -1;
-        } else {
-            matrixPosition[vectorPosition] = next;
+        private int nextPosition;
+
+        private MatrixDimensionIterator() {
+            nextPosition = 0;
         }
 
-        return next;
+        @Override
+        public boolean hasNext() {
+            return nextPosition < AbstractMatrixDimension.this.size();
+        }
+
+        @Override
+        public String next() {
+            return AbstractMatrixDimension.this.getLabel(nextPosition++);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Read only iterator");
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractMatrixDimension strings = (AbstractMatrixDimension) o;
+
+        return id.equals(strings.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

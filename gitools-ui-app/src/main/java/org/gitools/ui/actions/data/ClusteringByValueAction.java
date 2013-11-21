@@ -21,31 +21,32 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.clustering.ClusteringMethod;
-import org.gitools.core.clustering.ClusteringResults;
-import org.gitools.core.clustering.HierarchicalClusteringResults;
-import org.gitools.core.clustering.method.value.ClusterUtils;
+import org.gitools.analysis.clustering.ClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.HierarchicalClusteringResults;
+import org.gitools.analysis.clustering.hierarchical.Cluster;
+import org.gitools.analysis.clustering.method.value.ClusterUtils;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.clustering.values.ClusteringValueWizard;
+import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.analysis.clustering.values.ClusteringValueWizard;
+import org.gitools.ui.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Collection;
+import java.util.Set;
 
-public class ClusteringByValueAction extends BaseAction {
+public class ClusteringByValueAction extends HeatmapAction {
 
     public ClusteringByValueAction() {
         super("Clustering");
@@ -53,18 +54,8 @@ public class ClusteringByValueAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-
-        final Heatmap heatmap = ActionUtils.getHeatmap();
-
-        if (heatmap == null) {
-            return;
-        }
+        final Heatmap heatmap = getHeatmap();
 
         final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
         WizardDialog wdlg = new WizardDialog(AppFrame.get(), wiz);
@@ -77,12 +68,17 @@ public class ClusteringByValueAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Clustering  ...", 1);
 
                     // Cluster data
                     ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
+
+                    if (results instanceof Cluster) {
+                        AppFrame.get().getEditorsPanel().addEditor(new DendrogramEditor((Cluster) results));
+                        return;
+                    }
 
                     // Target dimension
                     HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
@@ -91,35 +87,32 @@ public class ClusteringByValueAction extends BaseAction {
                     // Save results as an annotation
                     String annotationLabel = wiz.getMethodName() + " " + heatmap.getLayers().get(wiz.getDataAttribute()).getId();
 
-
                     AnnotationMatrix annotationMatrix = hdim.getAnnotations();
                     if (hcl) {
                         HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
                         for (int l = 0; l < hresults.getTree().getDepth(); l++) {
                             hresults.setLevel(l);
-                            String[] clusterTitles = results.getClusterTitles();
-                            for (int c=0; c < clusterTitles.length; c++) {
-                                int[] indices = results.getDataIndices(c);
-                                for (int i : indices) {
-                                    String identifier = hdim.getLabel(i);
-                                    annotationMatrix.setAnnotation(identifier, annotationLabel + " level " + l, clusterTitles[c]);
+                            Collection<String> clusters = results.getClusters();
+                            for (String cluster : clusters) {
+                                Set<String> items = results.getItems(cluster);
+
+                                for (String item : items) {
+                                    annotationMatrix.setAnnotation(item, annotationLabel + " level " + l, cluster);
                                 }
                             }
                         }
                     } else {
-                        String[] clusterTitles = results.getClusterTitles();
-                        for (int c=0; c < clusterTitles.length; c++) {
-                            int[] indices = results.getDataIndices(c);
-                            for (int i : indices) {
-                                String identifier = hdim.getLabel(i);
-                                annotationMatrix.setAnnotation(identifier, annotationLabel, clusterTitles[c]);
+                        Collection<String> clusters = results.getClusters();
+                        for (String cluster : clusters) {
+                            for (String item : results.getItems(cluster)) {
+                                annotationMatrix.setAnnotation(item, annotationLabel, cluster);
                             }
                         }
                     }
 
                     // Sort the matrix
                     if (wiz.isSortDataSelected()) {
-                        ClusterUtils.updateVisibility(hdim, results.getDataIndicesByClusterTitle());
+                        ClusterUtils.updateVisibility(hdim, results.getClustersMap());
                     }
 
                     // Export newick file
@@ -144,14 +137,14 @@ public class ClusteringByValueAction extends BaseAction {
                                 header.updateFromClusterResults(hresults);
                                 header.setTitle(annotationLabel + " level " + l);
                                 header.setSize(4);
-                                header.setAnnotationPattern("${" + annotationLabel + " level " + l +"}");
+                                header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
                                 hdim.addHeader(header);
                             }
                         } else {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
                             header.updateFromClusterResults(results);
                             header.setTitle(annotationLabel);
-                            header.setAnnotationPattern("${"+annotationLabel+"}");
+                            header.setAnnotationPattern("${" + annotationLabel + "}");
                             hdim.addHeader(header);
                         }
 

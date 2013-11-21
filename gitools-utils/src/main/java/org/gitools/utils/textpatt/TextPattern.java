@@ -21,16 +21,9 @@
  */
 package org.gitools.utils.textpatt;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * @noinspection ALL
- */
 public class TextPattern {
 
     public static interface VariableValueResolver {
@@ -49,7 +42,7 @@ public class TextPattern {
         }
 
         @Override
-        public void generate(VariableValueResolver resolver, @NotNull StringBuilder sb) {
+        public void generate(VariableValueResolver resolver, StringBuilder sb) {
             sb.append(text);
         }
     }
@@ -62,14 +55,14 @@ public class TextPattern {
         }
 
         @Override
-        public void generate(@NotNull VariableValueResolver resolver, @NotNull StringBuilder sb) {
+        public void generate(VariableValueResolver resolver, StringBuilder sb) {
             sb.append(resolver.resolveValue(variableName));
         }
     }
 
-    @NotNull
-    private static List<Token> internalCompile(@Nullable String pattern) {
-        List<Token> tokens = new ArrayList<Token>();
+
+    private static List<Token> internalCompile(String pattern) {
+        List<Token> tokens = new ArrayList<>();
 
         if (pattern == null) {
             return tokens;
@@ -143,7 +136,7 @@ public class TextPattern {
         return tokens;
     }
 
-    @NotNull
+
     public static TextPattern compile(String pattern) {
         return new TextPattern(pattern);
     }
@@ -159,11 +152,12 @@ public class TextPattern {
         return text;
     }
 
-    @NotNull
+
     public String generate(VariableValueResolver resolver) {
         StringBuilder sb = new StringBuilder();
         for (Token token : tokens)
             token.generate(resolver, sb);
         return sb.toString();
     }
+
 }

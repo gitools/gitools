@@ -22,7 +22,6 @@
 package org.gitools.utils.cutoffcmp;
 
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -129,10 +128,10 @@ public abstract class CutoffCmp implements Serializable {
         opposite.put(CutoffCmp.ABS_EQ, CutoffCmp.ABS_NE);
     }
 
-    private static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> shortNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> longNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> nameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> shortNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> longNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> nameMap = new HashMap<>();
 
     static {
         for (CutoffCmp cmp : comparators) {
@@ -171,7 +170,7 @@ public abstract class CutoffCmp implements Serializable {
         return longName;
     }
 
-    @NotNull
+
     public static CutoffCmp getOpposite(CutoffCmp key) {
         if (opposite.get(key) == null) {
             return (CutoffCmp) (opposite.getKey(key));

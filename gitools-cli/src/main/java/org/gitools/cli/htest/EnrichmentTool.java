@@ -21,18 +21,18 @@
  */
 package org.gitools.cli.htest;
 
-import org.gitools.core.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.core.analysis.htest.enrichment.EnrichmentCommand;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
-import org.gitools.core.model.ModuleMap;
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.core.model.IModuleMap;
 import org.gitools.core.model.ToolConfig;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.formats.analysis.EnrichmentAnalysisFormat;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.threads.ThreadManager;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
+import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.kohsuke.args4j.Option;
@@ -105,9 +105,9 @@ public class EnrichmentTool extends HtestTool {
 
         analysis.setDiscardNonMappedRows(args.discardNonMappedRows);
 
-        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataMime = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
-        IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, ModuleMap.class);
+        IResourceFormat modulesMime = getResourceFormat(args.modulesFormat, args.modulesFile, IModuleMap.class);
 
         EnrichmentCommand cmd = new EnrichmentCommand(analysis, dataMime, args.dataFile, args.valueIndex, args.populationFile, populationDefaultValue, modulesMime, args.modulesFile, args.workdir, args.analysisName + "." + EnrichmentAnalysisFormat.EXTENSION);
 

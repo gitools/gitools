@@ -18,8 +18,6 @@
 
 package org.gitools.ui.genomespace.dm;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.List;
  */
 public class GSDirectoryListing {
 
-    @Nullable
+
     private final GSFileMetadata directory;
 
     private final List<GSFileMetadata> contents;
@@ -53,7 +51,7 @@ public class GSDirectoryListing {
         this.contents = contents;
     }
 
-    @Nullable
+
     public GSFileMetadata getDirectory() {
         return directory;
     }

@@ -21,20 +21,18 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.core.matrix.sort.ValueSortCriteria;
-import org.gitools.core.matrix.sort.ValueSortCriteria.SortDirection;
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 class ValueSortCriteriaTableModel implements TableModel {
 
@@ -42,22 +40,18 @@ class ValueSortCriteriaTableModel implements TableModel {
 
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, SortDirection.class};
 
-    @NotNull
-    private final Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
+    private final IMatrixLayers<IMatrixLayer> layers;
 
-    private final List<ValueSortCriteria> criteriaList;
+    private final List<IMatrixLayer> criteriaList;
 
-    @NotNull
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<>();
 
-    private ValueSortCriteriaTableModel(List<ValueSortCriteria> criteriaList, @NotNull String[] attributeNames) {
-        this.criteriaList = criteriaList;
-        for (int i = 0; i < attributeNames.length; i++)
-            attrIndexMap.put(attributeNames[i], i);
-    }
+    public ValueSortCriteriaTableModel(IMatrixLayers<IMatrixLayer> layers, IMatrixLayer... initialCriteria) {
+        super();
 
-    public ValueSortCriteriaTableModel(@NotNull String[] attributeNames) {
-        this(new ArrayList<ValueSortCriteria>(), attributeNames);
+        this.criteriaList = new ArrayList<>(initialCriteria.length);
+        Collections.addAll(this.criteriaList, initialCriteria);
+        this.layers = layers;
     }
 
     @Override
@@ -85,16 +79,15 @@ class ValueSortCriteriaTableModel implements TableModel {
         return true;
     }
 
-    @Nullable
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return criteriaList.get(rowIndex).getAttributeName();
+                return criteriaList.get(rowIndex).getId();
             case 1:
                 return criteriaList.get(rowIndex).getAggregator();
             case 2:
-                return criteriaList.get(rowIndex).getDirection();
+                return criteriaList.get(rowIndex).getSortDirection();
         }
         return null;
     }
@@ -104,9 +97,7 @@ class ValueSortCriteriaTableModel implements TableModel {
         switch (columnIndex) {
             case 0:
                 String attrName = (String) aValue;
-                criteriaList.get(rowIndex).setAttributeName(attrName);
-                Integer index = attrIndexMap.get(attrName);
-                criteriaList.get(rowIndex).setAttributeIndex(index != null ? index : 0);
+                criteriaList.set(rowIndex, layers.get(attrName));
                 break;
 
             case 1:
@@ -114,28 +105,22 @@ class ValueSortCriteriaTableModel implements TableModel {
                 break;
 
             case 2:
-                criteriaList.get(rowIndex).setDirection((SortDirection) aValue);
+                criteriaList.get(rowIndex).setSortDirection((SortDirection) aValue);
                 break;
         }
     }
 
-    public List<ValueSortCriteria> getList() {
+    public List<IMatrixLayer> getList() {
         return criteriaList;
     }
 
-    public void addCriteria(final ValueSortCriteria criteria) {
+    public void addCriteria(final IMatrixLayer criteria) {
         criteriaList.add(criteria);
         fireCriteriaChanged();
     }
 
-    void addAllCriteria(@NotNull List<ValueSortCriteria> list) {
-        //int initialRow = criteriaList.size();
-        criteriaList.addAll(list);
-        fireCriteriaChanged();
-    }
-
-    void removeCriteria(@NotNull int[] selectedRows) {
-        List<Object> objects = new ArrayList<Object>(selectedRows.length);
+    void removeCriteria(int[] selectedRows) {
+        List<Object> objects = new ArrayList<>(selectedRows.length);
         for (int index : selectedRows)
             objects.add(criteriaList.get(index));
 

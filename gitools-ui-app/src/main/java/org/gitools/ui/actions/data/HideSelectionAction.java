@@ -21,85 +21,44 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class HideSelectionAction extends BaseAction implements IHeatmapDimensionAction {
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+
+public class HideSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
     private static final long serialVersionUID = 1453040322414160605L;
 
-    public enum ElementType {
-        ROWS, COLUMNS
-    }
+    public HideSelectionAction(MatrixDimensionKey key) {
+        super(key, "Hide selected " + key.getLabel());
 
-    private final ElementType type;
+        setSmallIconFromResource(IconNames.get(key).getHide16());
+        setLargeIconFromResource(IconNames.get(key).getHide24());
+        setMnemonic(key == ROWS ? KeyEvent.VK_W : KeyEvent.VK_O);
 
-    public HideSelectionAction(@NotNull ElementType type) {
-        super(null);
-
-        this.type = type;
-        switch (type) {
-            case ROWS:
-                setName("Hide selected rows");
-                setDesc("Hide selected rows");
-                setSmallIconFromResource(IconNames.rowHide16);
-                setLargeIconFromResource(IconNames.rowHide24);
-                setMnemonic(KeyEvent.VK_W);
-                break;
-            case COLUMNS:
-                setName("Hide selected columns");
-                setDesc("Hide selected columns");
-                setSmallIconFromResource(IconNames.columnHide16);
-                setLargeIconFromResource(IconNames.columnHide24);
-                setMnemonic(KeyEvent.VK_O);
-                break;
-        }
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = ActionUtils.getMatrixView();
+        HeatmapDimension dimension = getDimension();
+        dimension.hide(dimension.getSelected());
 
-        if (matrixView == null) {
-            return;
-        }
-
-        String msg = "";
-
-        switch (type) {
-            case ROWS:
-                msg = "Selected rows hidden.";
-                matrixView.getRows().hide(matrixView.getRows().getSelected());
-                break;
-            case COLUMNS:
-                msg = "Selected columns hidden.";
-                matrixView.getColumns().hide(matrixView.getColumns().getSelected());
-                break;
-        }
-
-        AppFrame.get().setStatusText(msg);
+        AppFrame.get().setStatusText("Selected " + getDimensionLabel() + " hidden");
     }
 
     @Override
     public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
 
         // Enable only if there is at least one item selected
-        setEnabled(dimension.getSelected().length > 0);
+        setEnabled(dimension.getSelected().size() > 0);
     }
 }

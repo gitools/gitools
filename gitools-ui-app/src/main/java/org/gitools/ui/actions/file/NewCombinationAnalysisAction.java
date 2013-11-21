@@ -22,13 +22,14 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.combination.CombinationAnalysis;
-import org.gitools.core.analysis.combination.CombinationCommand;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.model.ModuleMap;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.analysis.combination.CombinationCommand;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.core.model.IModuleMap;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -36,8 +37,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -79,14 +78,14 @@ public class NewCombinationAnalysisAction extends BaseAction {
         String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
         String columnSetsMime = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getExtension() : null;
 
-        IResourceFormat columnSetsFormat = PersistenceManager.get().getFormat(columnSetsMime, ModuleMap.class);
+        IResourceFormat columnSetsFormat = PersistenceManager.get().getFormat(columnSetsMime, IModuleMap.class);
         IResourceFormat dataFormat = PersistenceManager.get().getFormat(wizard.getDataFilePage().getFileFormat().getExtension(), IMatrix.class);
 
         final CombinationCommand cmd = new CombinationCommand(analysis, dataFormat, wizard.getDataFilePage().getFile().getAbsolutePath(), columnSetsFormat, columnSetsPath, wizard.getSaveFilePage().getFolder(), analysisPath);
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     cmd.run(monitor);
 

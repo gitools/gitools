@@ -21,15 +21,14 @@
  */
 package org.gitools.ui.commands;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandAddHeaderColoredLabels extends CommandAddHeader {
@@ -50,7 +49,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
+    public void execute(IProgressMonitor monitor) throws CommandException {
 
 
         super.execute(monitor);
@@ -59,7 +58,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         }
 
 
-        ColoredLabel[] cls = new ColoredLabel[0];
+        List<ColoredLabel> cls = new ArrayList<>();
         HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
 
         header.setAnnotationPattern(pattern);
@@ -71,10 +70,9 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         }
 
         if (autoGenerateColors) {
-            cls =  header.getClusters();
+            cls = header.getClusters();
             header.autoGenerateColoredLabels(new AnnPatClusteringMethod());
         }
-
 
 
         if (!(colors == null || ids == null)) {
@@ -84,16 +82,12 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
                 throw new CommandException("The number of specified colors and values must match");
             }
 
-            if (cls.length < 1) {
-                cls = new ColoredLabel[0];
-            }
-
             for (int i = 0; i < colors.size(); i++) {
                 ColoredLabel cl = new ColoredLabel(ids.get(i), Color.decode(colors.get(i)));
                 cls = addCluster(cls, cl);
             }
 
-            if (cls.length == 0)  {
+            if (cls.size() == 0) {
                 throw new CommandException("No color labels have been created.");
             }
 
@@ -112,17 +106,19 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
 
         setExitStatus(0);
-        return;
     }
 
-    private ColoredLabel[] addCluster(ColoredLabel[] coloredLabels, ColoredLabel cl) {
+    @Deprecated
+    private List<ColoredLabel> addCluster(List<ColoredLabel> coloredLabels, ColoredLabel cl) {
         String key = cl.getValue();
-        for (int i = 0; i < coloredLabels.length; i++) {
-            if (coloredLabels[i].getValue().equals(key)) {
-                coloredLabels[i] = cl;
+        for (int i = 0; i < coloredLabels.size(); i++) {
+            if (coloredLabels.get(i).getValue().equals(key)) {
+                coloredLabels.set(i, cl);
                 break;
             }
         }
-        return (ColoredLabel[]) ArrayUtils.add(coloredLabels, cl);
+        coloredLabels.add(cl);
+
+        return coloredLabels;
     }
 }

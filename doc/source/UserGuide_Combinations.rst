@@ -1,4 +1,3 @@
-
 ================================================================
 Combination of p-values
 ================================================================
@@ -23,10 +22,10 @@ Presentation and example
 
 
 .. image:: img/analysiscombinationexample.png
-   :width: 700px
+:width: 700px
    :align: center
 
-If you select the option **Fill this wizard with an example** all the following wizard pages will be filled with example files and parameters. In some situations the example files will be downloaded automatically before you can go to the next page. By default, when Gitools is installed from the zip file, the examples are already included. But when Gitools is executed directly from the web page the example files have to be downloaded the first time they are used. In that case the files are cached at *$HOME/.gitools/examples*.
+    If you select the option **Fill this wizard with an example** all the following wizard pages will be filled with example files and parameters. In some situations the example files will be downloaded automatically before you can go to the next page. By default, when Gitools is installed from the zip file, the examples are already included. But when Gitools is executed directly from the web page the example files have to be downloaded the first time they are used. In that case the files are cached at *$HOME/.gitools/examples*.
 
 You can avoid this first presentation page by selecting the option **Don’t show this page next time**.
 
@@ -35,18 +34,18 @@ Selection of the data to analyze
 
 
 .. image:: img/analysiscombinationdata.png
-   :width: 700px
+:width: 700px
    :align: center
 
 
-If you follow the conventions on file formats explained :doc:`here <UserGuide_ImportingData>` then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
+    If you follow the conventions on file formats explained :doc:`here <UserGuide_ImportingData>` then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Configure combination options
 -------------------------------------------------
 
 
 .. image:: img/analysiscombinationoptions.png
-   :width: 700px
+:width: 700px
    :align: center
 
 
@@ -60,23 +59,23 @@ Selection of the destination file
 -------------------------------------------------
 
 .. image:: img/analysiscombinationdestination.png
-   :width: 700px
+:width: 700px
    :align: center
 
 
-This wizard page allows to specify the prefix name for the files generated during the analysis and the folder where they will be created. The text in name and folder can be freely edited but it is also possible to navigate through the system folders in order to select an existing file by pressing the button [Browse].
+    This wizard page allows to specify the prefix name for the files generated during the analysis and the folder where they will be created. The text in name and folder can be freely edited but it is also possible to navigate through the system folders in order to select an existing file by pressing the button [Browse].
 
 Analysis details
 -------------------------------------------------
 
 .. image:: img/analysiscombinationdetails.png
-   :width: 700px
+:width: 700px
    :align: center
 
 
-This step is optional but recommended as it allows to give some details about the analysis for better organization and annotation of the results for future reviews.
+    This step is optional but recommended as it allows to give some details about the analysis for better organization and annotation of the results for future reviews.
 
-It is possible to specify free attributes for the analysis as Organization, Operator, Platform and so on.
+    It is possible to specify free attributes for the analysis as Organization, Operator, Platform and so on.
 
 
 
@@ -86,15 +85,15 @@ Exploring the results of the analysis
 After performing the analysis a new editor with the details of the analysis will be opened:
 
 .. image:: img/analysiscombinationeditor.png
-   :width: 700px
+:width: 700px
    :align: center
 
-To explore the data matrix resulting from the transformations with a heatmap click on the **Heatmap** button in the **Data** section.
+    To explore the data matrix resulting from the transformations with a heatmap click on the **Heatmap** button in the **Data** section.
 
 To explore the results of the analysis with a heatmap click on the **Heatmap** button in the **Results** section.
 
 .. image:: img/analysiscombinationheatmapresults.png
-   :width: 700px
+:width: 700px
    :align: center
 
 

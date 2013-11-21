@@ -21,28 +21,24 @@
  */
 package org.gitools.utils.xml.adapter;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.awt.*;
 
 public class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
-    @NotNull
+
     @Override
-    public String marshal(@NotNull Color v) throws Exception {
+    public String marshal(Color v) throws Exception {
         String rgb = Integer.toHexString(v.getRGB());
         rgb = rgb.substring(2, rgb.length());
         return "#" + rgb;
     }
 
-    @Nullable
+
     @Override
-    public Color unmarshal(@NotNull String v) throws Exception {
+    public Color unmarshal(String v) throws Exception {
         try {
-            Color c = Color.decode(v);
-            return c;
+            return Color.decode(v);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

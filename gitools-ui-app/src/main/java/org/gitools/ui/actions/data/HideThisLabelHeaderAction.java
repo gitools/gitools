@@ -21,23 +21,19 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.gitools.core.heatmap.Heatmap;
+import com.google.common.base.Predicate;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class HideThisLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private String annotationValue;
     private HeatmapColoredLabelsHeader coloredHeader;
@@ -47,30 +43,20 @@ public class HideThisLabelHeaderAction extends BaseAction implements IHeatmapHea
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
-
         if (annotationValue == null) {
             return;
         }
 
-        List<Integer> toHide = new ArrayList<>();
-        HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        for (int i=0; i < dimension.size(); i++) {
-            String value = coloredHeader.getColoredLabel(i).getValue();
-
-            if (value != null && value.equals(annotationValue)) {
-                toHide.add(i);
+        final HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
+        dimension.show(new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                String value = coloredHeader.getColoredLabel(input).getValue();
+                return !(value != null && value.equals(annotationValue));
             }
-        }
+        });
 
-        if (toHide.size() < dimension.size()) {
-            dimension.hide(ArrayUtils.toPrimitive(toHide.toArray(new Integer[toHide.size()])));
-        }
     }
 
     @Override

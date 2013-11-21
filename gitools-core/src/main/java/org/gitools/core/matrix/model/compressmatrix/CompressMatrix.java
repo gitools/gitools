@@ -25,14 +25,16 @@ package org.gitools.core.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IMatrixLayers;
+import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayers;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.utils.MemoryUtils;
+import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.Inflater;
 
@@ -42,13 +44,10 @@ import java.util.zip.Inflater;
  * This format keep the rows compressed at memory, and has a dynamic cache that can expand or
  * contract depending on the user free memory.
  */
-public class CompressMatrix extends AbstractMatrix {
+public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimension> {
 
-    private final CompressDimension rows;
-    private final CompressDimension columns;
     private final byte[] dictionary;
     private final Inflater decompresser = new Inflater();
-    private final MatrixLayers layers;
     private final Map<Integer, CompressRow> values;
     private final LoadingCache<Integer, double[][]> rowsCache;
 
@@ -62,14 +61,10 @@ public class CompressMatrix extends AbstractMatrix {
      * @param values     the values a map with the row position as a key and a {@link CompressRow} with all the column values.
      */
     public CompressMatrix(CompressDimension rows, CompressDimension columns, byte[] dictionary, String[] headers, Map<Integer, CompressRow> values) {
+        super(createMatrixLayers(headers), rows, columns);
 
-        this.rows = rows;
-        this.columns = columns;
         this.dictionary = dictionary;
         this.values = values;
-
-        // We assume that all the attributes are doubles.
-        this.layers = new MatrixLayers(double.class, headers);
 
         // Force a garbage collector now
         Runtime.getRuntime().gc();
@@ -86,7 +81,7 @@ public class CompressMatrix extends AbstractMatrix {
         // Calculate rows cache size
         double fact = (double) availableMemory / (double) matrixSize;
         int cacheSize = (int) ((double) values.size() * fact);
-        cacheSize = (cacheSize > values.size() ? values.size() + (values.size()/2) : cacheSize);
+        cacheSize = (cacheSize > values.size() ? values.size() + (values.size() / 2) : cacheSize);
         cacheSize = (cacheSize < 40 ? 40 : cacheSize);
 
         // Create the rows cache
@@ -114,26 +109,19 @@ public class CompressMatrix extends AbstractMatrix {
     }
 
     @Override
-    public CompressDimension getColumns() {
-        return columns;
-    }
+    public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
 
-    @Override
-    public CompressDimension getRows() {
-        return rows;
-    }
-
-    @Override
-    public Object getValue(int[] position, int layer) {
+        int rowIndex = getRows().indexOf(identifiers[0]);
+        int columnIndex = getColumns().indexOf(identifiers[1]);
+        int layerIndex = getLayers().indexOf(layer.getId());
 
         // The cache is who loads the value if it's not already loaded.
-        double[][] rowValues = rowsCache.getUnchecked(rows.getPosition(position));
+        double[][] rowValues = rowsCache.getUnchecked(rowIndex);
 
         if (rowValues != null) {
-            int column = columns.getPosition(position);
 
-            if (column != -1) {
-                return rowValues[column][layer];
+            if (columnIndex != -1) {
+                return (T) (Double) rowValues[columnIndex][layerIndex];
             }
         }
 
@@ -141,13 +129,8 @@ public class CompressMatrix extends AbstractMatrix {
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
+    public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
         throw new UnsupportedOperationException("Read only matrix");
-    }
-
-    @Override
-    public IMatrixLayers getLayers() {
-        return layers;
     }
 
     /**
@@ -158,11 +141,11 @@ public class CompressMatrix extends AbstractMatrix {
      */
     private synchronized double[][] uncompress(CompressRow compressRow) {
 
-        double[][] values = new double[columns.size()][layers.size()];
+        double[][] values = new double[getColumns().size()][getLayers().size()];
 
         // Initialize all to NaN
-        for (int i = 0; i < columns.size(); i++) {
-            for (int j = 0; j < layers.size(); j++) {
+        for (int i = 0; i < getColumns().size(); i++) {
+            for (int j = 0; j < getLayers().size(); j++) {
                 values[i][j] = Double.NaN;
             }
         }
@@ -183,7 +166,7 @@ public class CompressMatrix extends AbstractMatrix {
 
             while (in.available() > 0) {
                 int column = in.readInt();
-                for (int i = 0; i < layers.size(); i++) {
+                for (int i = 0; i < getLayers().size(); i++) {
                     values[column][i] = in.readDouble();
                 }
             }
@@ -192,7 +175,7 @@ public class CompressMatrix extends AbstractMatrix {
             return values;
 
         } catch (Exception e) {
-            throw new PersistenceException(e);
+            throw new RuntimeException("Error extracting the matrix", e);
         }
     }
 
@@ -207,4 +190,17 @@ public class CompressMatrix extends AbstractMatrix {
     public Map<Integer, CompressRow> getCompressRows() {
         return values;
     }
+
+    private static MatrixLayers createMatrixLayers(String[] headers) {
+
+        // We assume that all the attributes are doubles.
+        List<MatrixLayer> matrixLayers = new ArrayList<>(headers.length);
+        for (String header : headers) {
+            matrixLayers.add(new MatrixLayer(header, double.class));
+        }
+        return new MatrixLayers<>(matrixLayers);
+
+    }
+
+
 }

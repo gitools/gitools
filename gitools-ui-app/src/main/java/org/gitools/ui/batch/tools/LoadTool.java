@@ -23,7 +23,6 @@ package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.commands.Command;
 import org.gitools.ui.commands.CommandLoadFile;
-import org.jetbrains.annotations.NotNull;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
@@ -47,13 +46,13 @@ public class LoadTool extends AbstractTool {
         super();
     }
 
-    @NotNull
+
     @Override
     public String getName() {
         return "load";
     }
 
-    @NotNull
+
     @Override
     protected Command newJob() {
         return new CommandLoadFile(file, rows, cols);

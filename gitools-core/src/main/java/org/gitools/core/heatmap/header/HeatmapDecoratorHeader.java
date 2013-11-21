@@ -21,9 +21,10 @@
  */
 package org.gitools.core.heatmap.header;
 
+import com.google.common.base.Function;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.label.AnnotationProvider;
-import org.gitools.core.label.LabelProvider;
+import org.gitools.core.matrix.filter.AnnotationFunction;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
@@ -31,6 +32,8 @@ import org.gitools.utils.formatter.HeatmapTextFormatter;
 
 import javax.xml.bind.annotation.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -99,33 +102,30 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         return annotationLabels;
     }
 
-    public void setAnnotationLabels(List<String> annotationLabels) {
-        this.annotationLabels = annotationLabels;
+    public void setAnnotationLabels(Collection<String> annotationLabels) {
+        this.annotationLabels = new ArrayList<>(annotationLabels);
     }
 
-    public void decorate(Decoration decoration, int index, String annotation, boolean forceShowLabel) {
+    public void decorate(Decoration decoration, String identifier, String annotation, boolean forceShowLabel) {
 
         boolean showValue = decorator.isShowValue();
         if (forceShowLabel) {
             decorator.setShowValue(true);
         }
-        decorator.decorate(decoration, new HeatmapTextFormatter(), getMatrixAdapter(), index, index, getMatrixAdapter().indexOf(annotation));
+
+        IAnnotations annotations = getHeatmapDimension().getAnnotations();
+
+        decorator.decorate(
+                decoration,
+                new HeatmapTextFormatter(),
+                annotations,
+                annotations.getLayers().get(annotation),
+                identifier);
         decorator.setShowValue(showValue);
     }
 
-    private MatrixAdapter matrixAdapter;
-
-    private MatrixAdapter getMatrixAdapter() {
-
-        if (matrixAdapter == null) {
-            matrixAdapter = new MatrixAdapter(this);
-        }
-
-        return matrixAdapter;
-    }
-
     @Override
-    public void populateDetails(List<DetailsDecoration> details, int index) {
+    public void populateDetails(List<DetailsDecoration> details, String index) {
 
         String intersection = null;
 
@@ -148,7 +148,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
             DetailsDecoration decoration = new DetailsDecoration(getTitle() + trimmed, getDescription(), getDescriptionUrl(), null, getValueUrl());
 
-            if (index != -1) {
+            if (index != null) {
                 decorate(decoration, index, annotation, true);
             }
 
@@ -174,8 +174,8 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     }
 
     @Override
-    public LabelProvider getLabelProvider() {
-        return new AnnotationProvider(getHeatmapDimension(), sortLabel);
+    public Function<String, String> getIdentifierTransform() {
+        return new AnnotationFunction(sortLabel, getHeatmapDimension().getAnnotations());
     }
 
     public String getSortLabel() {

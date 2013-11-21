@@ -19,7 +19,6 @@
 package org.gitools.ui.genomespace.dm;
 
 import org.apache.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,8 +53,8 @@ public class DMUtils {
      * @throws IOException
      * @throws JSONException
      */
-    @NotNull
-    public static GSDirectoryListing getDirectoryListing(@NotNull URL directoryURL) throws IOException, JSONException {
+
+    public static GSDirectoryListing getDirectoryListing(URL directoryURL) throws IOException, JSONException {
 
         String str = HttpUtils.getInstance().getContentsAsJSON(directoryURL);
         JSONTokener tk = new JSONTokener(str);
@@ -99,7 +98,7 @@ public class DMUtils {
 
     }
 
-    @NotNull
+
     public static GSFileMetadata createDirectory(String putURL) throws IOException, JSONException {
 
         JSONObject dirMeta = new JSONObject();

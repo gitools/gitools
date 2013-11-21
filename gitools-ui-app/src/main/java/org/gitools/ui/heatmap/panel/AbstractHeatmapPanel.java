@@ -24,24 +24,22 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.core.utils.EventUtils;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderDrawer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static org.gitools.utils.events.EventUtils.isAny;
+
 class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     private final AbstractHeatmapDrawer drawer;
-    private Heatmap heatmap;
 
-    AbstractHeatmapPanel(Heatmap heatmap, @NotNull AbstractHeatmapDrawer drawer) {
-        this.heatmap = heatmap;
+    AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer) {
         this.drawer = drawer;
         this.drawer.setHeatmap(heatmap);
 
@@ -56,16 +54,12 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     }
 
-    public Heatmap getHeatmap() {
-        return heatmap;
-    }
-
     public AbstractHeatmapDrawer getDrawer() {
         return drawer;
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g) {
+    protected void paintComponent(Graphics g) {
         Dimension size = drawer.getSize();
         Rectangle box = new Rectangle(0, 0, size.width, size.height);
         Rectangle clip = g.getClipBounds();
@@ -79,15 +73,15 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (EventUtils.isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS)) {
+        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS)) {
             if (getDrawer() instanceof HeatmapHeaderDrawer) {
                 ((HeatmapHeaderDrawer) getDrawer()).update();
             }
         }
 
-        if (EventUtils.isAny(evt, HeatmapDimension.class) ||
-                EventUtils.isAny(evt, Decorator.class) ||
-                EventUtils.isAny(evt, HeatmapLayers.class)
+        if (isAny(evt, HeatmapDimension.class) ||
+                isAny(evt, Decorator.class) ||
+                isAny(evt, HeatmapLayers.class)
                 ) {
             updateSize();
             repaint();

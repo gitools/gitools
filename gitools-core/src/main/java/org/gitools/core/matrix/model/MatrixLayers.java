@@ -21,44 +21,46 @@
  */
 package org.gitools.core.matrix.model;
 
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+
 import java.util.*;
 
-public class MatrixLayers implements IMatrixLayers<MatrixLayer> {
-    private List<MatrixLayer> descriptors;
-    private Map<String, Integer> idToIndex;
+public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
 
-    public MatrixLayers(List<MatrixLayer> descriptors) {
-        this.descriptors = descriptors;
+    public static final String LAYERS_ID = "layers";
 
-        init();
+    private List<T> layers = new ArrayList<>();
+    private Map<String, Integer> idToIndex = new HashMap<>();
+
+    public MatrixLayers() {
+        super();
     }
 
-    public MatrixLayers(Class<?> valueClass, String... headers) {
-        this.descriptors = new ArrayList<MatrixLayer>(headers.length);
+    public MatrixLayers(T... layers) {
+        this();
 
-        for (String header : headers) {
-            this.descriptors.add(new MatrixLayer(header, valueClass));
+        for (T layer : layers) {
+            add(layer);
         }
-
-        init();
     }
 
-    private void init() {
-        this.idToIndex = new HashMap<String, Integer>(descriptors.size());
-        for (int i = 0; i < descriptors.size(); i++) {
-            this.idToIndex.put(descriptors.get(i).getId(), i);
+    public MatrixLayers(List<T> layers) {
+        this();
+
+        for (T layer : layers) {
+            add(layer);
         }
     }
 
     @Override
-    public MatrixLayer get(int layerIndex) {
-        return descriptors.get(layerIndex);
+    public String[] getIds() {
+        return idToIndex.keySet().toArray(new String[size()]);
     }
 
-    @Override
-    public int findId(String id) {
-        if (idToIndex.containsKey(id)) {
-            return idToIndex.get(id);
+    public int indexOf(String label) {
+        if (idToIndex.containsKey(label)) {
+            return idToIndex.get(label);
         }
 
         return -1;
@@ -66,11 +68,43 @@ public class MatrixLayers implements IMatrixLayers<MatrixLayer> {
 
     @Override
     public int size() {
-        return descriptors.size();
+        return layers.size();
+    }
+
+    public String getLabel(int index) {
+
+        if (!layers.contains(index)) {
+            return null;
+        }
+
+        return layers.get(index).getId();
     }
 
     @Override
-    public Iterator<MatrixLayer> iterator() {
-        return descriptors.iterator();
+    public T get(String layer) {
+
+        int index = indexOf(layer);
+
+        if (index == -1) {
+            return null;
+        }
+
+        return layers.get(index);
+    }
+
+    @Override
+    public T get(int layer) {
+        return layers.get(layer);
+    }
+
+    public void add(T matrixLayer) {
+        layers.add(matrixLayer);
+        idToIndex.put(matrixLayer.getId(), layers.indexOf(matrixLayer));
+    }
+
+
+    @Override
+    public Iterator<T> iterator() {
+        return layers.iterator();
     }
 }

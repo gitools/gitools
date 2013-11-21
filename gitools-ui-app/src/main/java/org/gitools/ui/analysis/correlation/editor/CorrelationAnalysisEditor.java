@@ -22,12 +22,13 @@
 package org.gitools.ui.analysis.correlation.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.impl.CorrelationDecorator;
-import org.gitools.core.persistence.IResourceLocator;
-import org.gitools.core.persistence.formats.analysis.CorrelationAnalysisFormat;
+import org.gitools.persistence.formats.analysis.CorrelationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -36,9 +37,6 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Map;
@@ -50,7 +48,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     @Override
-    protected void prepareContext(@NotNull VelocityContext context) {
+    protected void prepareContext(VelocityContext context) {
 
         IResourceLocator dataLocator = analysis.getData().getLocator();
         context.put("dataFile", dataLocator != null ? dataLocator.getName() : "Not defined");
@@ -102,7 +100,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getData().get());
@@ -133,7 +131,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
@@ -155,8 +153,8 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
         });
     }
 
-    @Nullable
-    private static Heatmap createHeatmap(@NotNull CorrelationAnalysis analysis) {
+
+    private static Heatmap createHeatmap(CorrelationAnalysis analysis) {
 
         Heatmap heatmap = new Heatmap(analysis.getResults().get(), true);
 
@@ -166,7 +164,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
             layer.setDecorator(new CorrelationDecorator());
         }
 
-        heatmap.getLayers().setTopLayerIndex(heatmap.getLayers().findId("score"));
+        heatmap.getLayers().setTopLayer(heatmap.getLayers().get("score"));
         heatmap.setTitle(analysis.getTitle());
 
         return heatmap;

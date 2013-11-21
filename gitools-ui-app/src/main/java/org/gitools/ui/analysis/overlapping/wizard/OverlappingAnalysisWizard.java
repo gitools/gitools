@@ -21,12 +21,13 @@
  */
 package org.gitools.ui.analysis.overlapping.wizard;
 
-import org.gitools.core.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.analysis.OverlappingAnalysisFormat;
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -42,12 +43,9 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class OverlappingAnalysisWizard extends AbstractWizard {
 
@@ -133,7 +131,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
             if (examplePage.isExampleEnabled()) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
 
@@ -142,11 +140,11 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
+
                         try {
                             monitor.begin("Loading example parameters ...", 1);
 
-                            final OverlappingAnalysis a = PersistenceManager.get().load(analysisFile, OverlappingAnalysis.class, props, monitor);
+                            final OverlappingAnalysis a = PersistenceManager.get().load(analysisFile, OverlappingAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
@@ -206,7 +204,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         this.saveFilePageEnabled = saveFilePageEnabled;
     }
 
-    @NotNull
+
     public OverlappingAnalysis getAnalysis() {
         OverlappingAnalysis a = new OverlappingAnalysis();
 
@@ -225,7 +223,7 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         return a;
     }
 
-    private void setAnalysis(@NotNull OverlappingAnalysis a) {
+    private void setAnalysis(OverlappingAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());

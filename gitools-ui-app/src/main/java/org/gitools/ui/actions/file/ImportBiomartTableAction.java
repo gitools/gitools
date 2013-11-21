@@ -21,18 +21,17 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.biomart.BiomartService;
-import org.gitools.biomart.restful.model.Query;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.datasources.biomart.BiomartService;
+import org.gitools.datasources.biomart.restful.model.Query;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.biomart.wizard.BiomartModulesWizard;
-import org.gitools.ui.biomart.wizard.BiomartTableWizard;
+import org.gitools.ui.datasources.biomart.wizard.BiomartModulesWizard;
+import org.gitools.ui.datasources.biomart.wizard.BiomartTableWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -65,7 +64,7 @@ public class ImportBiomartTableAction extends BaseAction {
         JobThread.execute(AppFrame.get(), new JobRunnable() {
 
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Downloading data...", 1);
                 Query query = wizard.getQuery();
                 String format = (String) wizard.getFormat().getExtension();

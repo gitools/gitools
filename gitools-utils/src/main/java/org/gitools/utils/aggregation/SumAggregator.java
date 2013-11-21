@@ -21,24 +21,21 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
+
+import static org.apache.commons.math3.stat.StatUtils.sum;
 
 public class SumAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new SumAggregator();
 
     private SumAggregator() {
+        super("Sum");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-        return aggregate(data, Functions.plus);
+    protected Double aggregateNoNulls(double[] values) {
+        return sum(values);
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Sum";
-    }
 }

@@ -21,11 +21,10 @@
  */
 package org.gitools.ui.modules.wizard;
 
-import org.gitools.core.modules.importer.ModuleCategory;
-import org.gitools.core.modules.importer.ModulesImporter;
-import org.gitools.core.modules.importer.Version;
+import org.gitools.datasources.modules.importer.ModuleCategory;
+import org.gitools.datasources.modules.importer.ModulesImporter;
+import org.gitools.datasources.modules.importer.Version;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -37,7 +36,7 @@ public class ModulesSourcePage extends AbstractWizardPage {
     /**
      * Creates new form ModulesSourcePage
      */
-    public ModulesSourcePage(@NotNull ModulesImporter importer) {
+    public ModulesSourcePage(ModulesImporter importer) {
         this.importer = importer;
 
         setTitle("Select category and version");

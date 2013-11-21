@@ -21,29 +21,27 @@
  */
 package org.gitools.cli.comparison;
 
-import org.gitools.core.analysis.correlation.GroupComparisonCommand;
-import org.gitools.core.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.GroupComparisonCommand;
+import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.analysis.GroupComparisonAnalysisFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
-import org.gitools.core.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.core.stats.test.Test;
-import org.gitools.core.stats.test.factory.TestFactory;
-import org.gitools.core.threads.ThreadManager;
+import org.gitools.persistence.formats.analysis.GroupComparisonAnalysisFormat;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
+import org.gitools.utils.threads.ThreadManager;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
@@ -92,14 +90,14 @@ public class ComparisonTool extends AnalysisTool {
                         "agt (abs greatar than), age (abs greater equal than)")
         public String groupCutoffs;
 
-        @NotNull
+
         @Option(name = "-gd", aliases = "-group-descriptions", metaVar = "<DESC 1,DESC 2>",
                 usage = "Add a short description for each group seperated by commas. If not \n" +
                         "supplied, an automatically generated description will be added \n" +
                         "Example: \"With disease,Without disease\"")
         public final String groupDescriptions = "";
 
-        @NotNull
+
         @Option(name = "-mtc", metaVar = "<name>",
                 usage = "Multiple test correxction method.\n" + "Available: bonferroni, bh. (default: bh)")
         public final String mtc = "bh";
@@ -114,7 +112,7 @@ public class ComparisonTool extends AnalysisTool {
 
     }
 
-    @NotNull
+
     protected Properties methodProperties = new Properties();
 
     @Override
@@ -143,7 +141,7 @@ public class ComparisonTool extends AnalysisTool {
         this.groups = (args.grouping.equals(GroupComparisonCommand.GROUP_BY_VALUE) ? args.groupCutoffs : args.groupLabels);
 
         if (args.attrName != null) {
-            MultiValueMatrixFormat obp = new MultiValueMatrixFormat();
+            TdmMatrixFormat obp = new TdmMatrixFormat();
             String[] headers = new String[0];
             try {
                 headers = readHeader(new File(args.dataFile));
@@ -157,7 +155,7 @@ public class ComparisonTool extends AnalysisTool {
         }
     }
 
-    @Nullable
+
     private static String[] readHeader(File file) throws PersistenceException {
 
         String[] matrixHeaders = null;
@@ -195,7 +193,7 @@ public class ComparisonTool extends AnalysisTool {
         analysis.setMtc(args.mtc);
         analysis.setToolConfig(TestFactory.createToolConfig("group comparison", t.getName()));
 
-        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, DoubleMatrix.class);
+        IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
         analysis.setAttributeIndex(args.attrIndex);
 
@@ -218,7 +216,7 @@ public class ComparisonTool extends AnalysisTool {
     }
 
     @Override
-    public void printUsage(@NotNull PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
+    public void printUsage(PrintStream outputStream, String appName, ToolDescriptor toolDesc, CmdLineParser parser) {
         super.printUsage(outputStream, appName, toolDesc, parser);
 
         outputStream.println();
@@ -230,7 +228,7 @@ public class ComparisonTool extends AnalysisTool {
         outputStream.println();
     }
 
-    private void printMethods(@NotNull PrintStream o) {
+    private void printMethods(PrintStream o) {
         o.println("Available comparison methods:");
         o.println(String.format(LIST_S_FMT, "mann-whitney-wilcoxon", "Mann-Whitney-Wilcoxon"));
     }

@@ -21,11 +21,9 @@
  */
 package org.gitools.utils.colorscale;
 
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -58,7 +56,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
         rangesList = new ArrayList<ColorScaleRange>();
     }
 
-    @Nullable
+
     @Override
     public Color valueColor(double value) {
         Color color = limitsColor(value);
@@ -71,7 +69,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
 
     protected abstract Color colorOf(double value);
 
-    @NotNull
+
     protected abstract double[] getPoints();
 
     public double getMinValue() {
@@ -82,21 +80,21 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
         return getPoints()[getPoints().length - 1];
     }
 
-    @NotNull
+
     @Override
     public String valueRGBHtmlColor(double value) {
         Color color = valueColor(value);
-        return ColorUtils.colorToRGBHtml(color);
+        return Colors.colorToRGBHtml(color);
     }
 
-    @NotNull
+
     @Override
     public String valueHexHtmlColor(double value) {
         Color color = valueColor(value);
-        return ColorUtils.colorToHexHtml(color);
+        return Colors.colorToHexHtml(color);
     }
 
-    @Nullable
+
     Color limitsColor(double value) {
         if (Double.isNaN(value)) {
             return getNotANumberColor();

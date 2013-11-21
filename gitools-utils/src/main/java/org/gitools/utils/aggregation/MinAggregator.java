@@ -21,27 +21,20 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-/**
- * Multiplication
- */
+import static org.apache.commons.math3.stat.StatUtils.min;
+
 public class MinAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MinAggregator();
 
     private MinAggregator() {
+        super("Min");
     }
 
     @Override
-    public double aggregate(double[] data) {
-        return aggregate(data, Functions.min);
-    }
-
-    @NotNull
-    @Override
-    public String toString() {
-        return "Min";
+    public Double aggregateNoNulls(double[] values) {
+        return min(values);
     }
 }

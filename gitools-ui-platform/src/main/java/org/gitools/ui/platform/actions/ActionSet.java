@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.editor.IEditor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -49,10 +48,6 @@ public class ActionSet extends BaseAction {
         setEnabled(true);
     }
 
-    public ActionSet(@NotNull List<BaseAction> actions) {
-        this(actions.toArray(new BaseAction[actions.size()]));
-    }
-
     public List<BaseAction> getActions() {
         return actions;
     }
@@ -62,15 +57,6 @@ public class ActionSet extends BaseAction {
         if (actions != null) {
             for (BaseAction action : actions)
                 action.actionPerformed(e);
-        }
-    }
-
-    @Override
-    public void setTreeEnabled(boolean enabled) {
-        setEnabled(enabled);
-        if (actions != null) {
-            for (BaseAction action : actions)
-                action.setTreeEnabled(enabled);
         }
     }
 

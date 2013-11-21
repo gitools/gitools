@@ -21,56 +21,33 @@
  */
 package org.gitools.ui.imageviewer;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.HeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.heatmap.editor.HeatmapEditor;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
-public class HeatmapCreateImageAction extends BaseAction {
+public class HeatmapCreateImageAction extends HeatmapAction {
 
     public HeatmapCreateImageAction() {
         super("Create Image");
-
-        setDesc("Create image");
         setLargeIcon(IconNames.CREATE_IMAGE_LARGE_ICON);
-    }
-
-    @Override
-    public boolean updateEnabledByEditor(IEditor editor) {
-        setEnabled(editor instanceof HeatmapEditor);
-        return isEnabled();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        AbstractEditor editor = ActionUtils.getSelectedEditor();
-        if (editor == null) {
-            return;
-        }
+        final Heatmap heatmap = getHeatmap();
 
-        Object model = editor.getModel();
-        if (!(model instanceof Heatmap)) {
-            return;
-        }
-
-        final Heatmap heatmap = (Heatmap) model;
-
-        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a title", editor.getName() + " (image)");
+        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a title", getSelectedEditor().getName() + " (image)");
 
         // The user canceled the image createn
         if (title == null) {
@@ -80,7 +57,7 @@ public class HeatmapCreateImageAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting heatmap to image ...", 1);
 

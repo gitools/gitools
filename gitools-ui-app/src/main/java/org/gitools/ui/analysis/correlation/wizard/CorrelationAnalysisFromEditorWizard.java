@@ -21,13 +21,12 @@
  */
 package org.gitools.ui.analysis.correlation.wizard;
 
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 public class CorrelationAnalysisFromEditorWizard extends AbstractWizard {
 
@@ -67,7 +66,7 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard {
         return canFinish;
     }
 
-    @NotNull
+
     public CorrelationAnalysis getAnalysis() {
         CorrelationAnalysis a = new CorrelationAnalysis();
 

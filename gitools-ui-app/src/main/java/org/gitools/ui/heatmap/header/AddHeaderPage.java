@@ -28,8 +28,6 @@ import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,20 +37,20 @@ import java.util.Map;
 
 public class AddHeaderPage extends AbstractWizardPage {
 
-    private final static Color SELECTED_BACKGROUND_COLOR = new Color(155,155,205);
+    private final static Color SELECTED_BACKGROUND_COLOR = new Color(155, 155, 205);
 
     private class IconListRenderer extends DefaultListCellRenderer {
 
-        @Nullable
+
         private Map<Object, ImageIcon> icons = null;
 
         public IconListRenderer(Map<Object, ImageIcon> icons) {
             this.icons = icons;
         }
 
-        @NotNull
+
         @Override
-        public Component getListCellRendererComponent(JList list, @NotNull Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
             // Get the renderer component from parent class
 
@@ -98,13 +96,13 @@ public class AddHeaderPage extends AbstractWizardPage {
         }
     }
 
-    @NotNull
+
     private static final String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
-    @NotNull
+
     private static final String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
-    @NotNull
+
     private static final String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
-    @NotNull
+
     public static final String ANNOTATION_HEATMAP = "Heatmap from annotation";
 
 
@@ -114,7 +112,7 @@ public class AddHeaderPage extends AbstractWizardPage {
     public AddHeaderPage() {
         initComponents();
 
-        Map<Object, ImageIcon> icons = new HashMap<Object, ImageIcon>();
+        Map<Object, ImageIcon> icons = new HashMap<>();
         icons.put(ANNOTATION_TEXT_LABEL_HEADER, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_TEXT_LABEL_HEADER, 60));
         icons.put(ANNOTATION_COLORED_LABEL, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_COLORED_LABEL, 60));
         icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));

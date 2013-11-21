@@ -21,14 +21,13 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -49,24 +48,24 @@ public class BinaryColorScale extends NumericColorScale {
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color maxColor;
 
-    @NotNull
-    private static final List<CutoffCmp> equalCmp = new ArrayList<CutoffCmp>();
+
+    private static final List<CutoffCmp> equalCmp = new ArrayList<>();
 
     static {
         equalCmp.add(CutoffCmp.EQ);
         equalCmp.add(CutoffCmp.ABS_EQ);
     }
 
-    @NotNull
-    private static final List<CutoffCmp> notequalCmp = new ArrayList<CutoffCmp>();
+
+    private static final List<CutoffCmp> notequalCmp = new ArrayList<>();
 
     {
         notequalCmp.add(CutoffCmp.NE);
         notequalCmp.add(CutoffCmp.ABS_NE);
     }
 
-    @NotNull
-    private static final List<CutoffCmp> absoluteCmp = new ArrayList<CutoffCmp>();
+
+    private static final List<CutoffCmp> absoluteCmp = new ArrayList<>();
 
     {
         absoluteCmp.add(CutoffCmp.ABS_GE);
@@ -77,7 +76,7 @@ public class BinaryColorScale extends NumericColorScale {
         absoluteCmp.add(CutoffCmp.ABS_NE);
     }
 
-    private BinaryColorScale(double cutoff, @NotNull CutoffCmp cmp) {
+    private BinaryColorScale(double cutoff, CutoffCmp cmp) {
         super();
 
         this.comparator = cmp.getShortName();
@@ -95,7 +94,7 @@ public class BinaryColorScale extends NumericColorScale {
         return satisfies ? getMaxColor() : getMinColor();
     }
 
-    @NotNull
+
     @Override
     public double[] getPoints() {
         double edge = Math.abs(cutoff) * 1.5;
@@ -223,7 +222,6 @@ public class BinaryColorScale extends NumericColorScale {
     }
 
 
-    @NotNull
     @Override
     public IAggregator defaultAggregator() {
         return SumAggregator.INSTANCE;

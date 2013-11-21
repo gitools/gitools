@@ -21,8 +21,7 @@
  */
 package org.gitools.utils.progressmonitor;
 
-import cern.colt.Timer;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IProgressMonitor;
 
 import java.io.PrintStream;
 
@@ -32,8 +31,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 
     private final PrintStream out;
 
-    private final Timer timer;
-    private final int lastprogress;
+    private long timer;
 
     private String tabs;
     private boolean flag;
@@ -45,8 +43,6 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     protected StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug) {
         super(parent);
         this.out = out;
-        this.timer = new Timer();
-        this.lastprogress = 0;
         this.flag = false;
         this.tabs = "";
         this.verbose = verbose;
@@ -64,7 +60,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         showingbar = false;
         tabs = tabbulate(level);
         print("\n" + tabs + title);
-        timer.start();
+        timer = System.currentTimeMillis();
     }
 
     @Override
@@ -97,7 +93,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         print(bar.toString());
     }
 
-    @NotNull
+
     @Override
     public IProgressMonitor subtask() {
         IProgressMonitor subtask = createSubtaskMonitor(this, out, verbose, debug);
@@ -106,9 +102,8 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         return subtask;
     }
 
-    @NotNull
-    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
 
+    protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
         return new StreamProgressMonitor(parentMonitor, out, verbose, debug);
     }
 
@@ -116,9 +111,9 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     public void end() {
         super.end();
 
-        double millis = timer.millis();
-        double secs = timer.seconds();
-        double mins = timer.minutes();
+        long millis = System.currentTimeMillis() - timer;
+        long secs = (millis / 1000) % 60;
+        long mins = millis / (60 * 1000);
 
         String time = "";
         if (millis < 1000) {
@@ -139,7 +134,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     }
 
     @Override
-    public void exception(@NotNull Throwable cause) {
+    public void exception(Throwable cause) {
         super.exception(cause);
 
         print("\n\nEXCEPTION: " + cause.getLocalizedMessage());
@@ -168,7 +163,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         out.print(text);
     }
 
-    @NotNull
+
     private String tabbulate(int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++)

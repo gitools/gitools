@@ -21,70 +21,33 @@
  */
 package org.gitools.ui.actions.data;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixView;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.sort.AnnotationSortPage;
-import org.gitools.ui.utils.HeaderEnum;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.ActionEvent;
 
 
-public class SortByAnnotationAction extends BaseAction {
+public class SortByAnnotationAction extends HeatmapDimensionAction {
 
-    private final HeaderEnum.Dimension dim;
-
-    public SortByAnnotationAction(HeaderEnum.Dimension dim) {
-        super("Sort by annotation");
-        setDesc("Sort by annotation ...");
-
-        this.dim = dim;
-
-        switch (dim) {
-            case COLUMN:
-                setName("Sort by column annotations");
-                setDesc("Sort by column annotations");
-                break;
-
-            case ROW:
-                setName("Sort by row annotations");
-                setDesc("Sort by row annotations");
-                break;
-
-            case NONE_SPECIFIED:
-                setName("Sort by annotations");
-                setDesc("Sort by annotations");
-                break;
-        }
-    }
-
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
+    public SortByAnnotationAction(MatrixDimensionKey dim) {
+        super(dim, "Sort by " + dim.getLabel() + " annotations");
     }
 
     protected AnnotationSortPage createSortPage(Heatmap hm) {
-        return new AnnotationSortPage(hm,dim);
+        return new AnnotationSortPage(hm, getDimensionKey());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
-
-        Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap)) {
-            return;
-        }
-
-        final Heatmap hm = (Heatmap) model;
+        final Heatmap hm = getHeatmap();
 
         final AnnotationSortPage page = createSortPage(hm);
         PageDialog dlg = new PageDialog(AppFrame.get(), page);
@@ -97,7 +60,7 @@ public class SortByAnnotationAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 MatrixViewSorter.sortByLabel(hm, page.isApplyToRowsSelected(), page.getRowsPattern(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), page.getColumnsDirection(), page.getColumnsNumeric());

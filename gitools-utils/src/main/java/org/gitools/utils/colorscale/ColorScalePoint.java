@@ -22,7 +22,6 @@
 package org.gitools.utils.colorscale;
 
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -82,7 +81,7 @@ public class ColorScalePoint implements Serializable, Comparable<ColorScalePoint
     }
 
     @Override
-    public int compareTo(@NotNull ColorScalePoint o) {
+    public int compareTo(ColorScalePoint o) {
         if (this.value < o.getValue()) {
             return -1;
         }

@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.panel.settings.headers;
 
-import org.gitools.utils.color.utils.ColorUtils;
+import org.gitools.utils.color.Colors;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -40,7 +40,7 @@ public class ColorCellRenderer extends JLabel implements TableCellRenderer {
             setText("None");
         } else {
             Color color = (Color) value;
-            setText(ColorUtils.colorToHexHtml(color));
+            setText(Colors.colorToHexHtml(color));
             setForeground(color);
         }
 

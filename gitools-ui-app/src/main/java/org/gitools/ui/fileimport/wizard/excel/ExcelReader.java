@@ -23,8 +23,6 @@ package org.gitools.ui.fileimport.wizard.excel;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,11 +35,11 @@ public class ExcelReader {
 
     private final File file;
 
-    @Nullable
+
     private Sheet sheet = null;
-    @Nullable
+
     private DataFormatter formatter = null;
-    @Nullable
+
     private FormulaEvaluator evaluator = null;
     private List<ExcelHeader> headers;
 
@@ -63,7 +61,7 @@ public class ExcelReader {
 
     }
 
-    private void openWorkbook(@NotNull File file) throws IOException, InvalidFormatException {
+    private void openWorkbook(File file) throws IOException, InvalidFormatException {
         FileInputStream fis = null;
         try {
             System.out.println("Opening workbook [" + file.getName() + "]");
@@ -83,7 +81,7 @@ public class ExcelReader {
     }
 
 
-    private String cellToString(@NotNull Cell cell) {
+    private String cellToString(Cell cell) {
         if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) {
             return this.formatter.formatCellValue(cell);
         } else {
@@ -91,13 +89,13 @@ public class ExcelReader {
         }
     }
 
-    @NotNull
-    private List<ExcelHeader> rowToHeader(@Nullable Row header, @NotNull Row firstRow) {
+
+    private List<ExcelHeader> rowToHeader(Row header, Row firstRow) {
 
         Cell cell = null;
         Cell firstCell = null;
         int lastCellNum = 0;
-        List<ExcelHeader> headers = new ArrayList<ExcelHeader>();
+        List<ExcelHeader> headers = new ArrayList<>();
 
         if (header != null) {
 
@@ -119,7 +117,7 @@ public class ExcelReader {
         return headers;
     }
 
-    @Nullable
+
     public String getValue(int rowPos, int colPos) {
 
         Row row = sheet.getRow(rowPos);

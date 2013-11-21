@@ -21,19 +21,17 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.core.exporter.TextMatrixViewExporter;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixLayers;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.ui.actions.ActionUtils;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.export.TextMatrixViewExporter;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChooserUtils;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -41,10 +39,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @noinspection ALL
- */
-public class ExportMatrixAction extends BaseAction {
+public class ExportMatrixAction extends HeatmapAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
@@ -56,41 +51,24 @@ public class ExportMatrixAction extends BaseAction {
     }
 
     @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
-
-    @Override
     public void actionPerformed(ActionEvent e) {
 
-        final IMatrixView matrixView = ActionUtils.getHeatmapMatrixView();
-        if (matrixView == null) {
+        final IMatrixView matrixView = getHeatmap();
+        IMatrixViewLayers layers = matrixView.getLayers();
+
+        String selectedId = (String) JOptionPane.showInputDialog(
+                AppFrame.get(),
+                "What do you want to export ?",
+                "Export table data", JOptionPane.QUESTION_MESSAGE, null,
+                layers.getIds(),
+                layers.getTopLayer().getId()
+        );
+
+        if (selectedId == null || selectedId.isEmpty()) {
             return;
         }
 
-        final IMatrixLayers properties = matrixView.getLayers();
-        final String[] propNames = new String[properties.size()];
-        for (int i = 0; i < properties.size(); i++)
-            propNames[i] = properties.get(i).getName();
-
-        int selectedPropIndex = matrixView.getLayers().getTopLayerIndex();
-        selectedPropIndex = selectedPropIndex >= 0 ? selectedPropIndex : 0;
-        selectedPropIndex = selectedPropIndex < properties.size() ? selectedPropIndex : 0;
-
-        final String selected = (String) JOptionPane.showInputDialog(AppFrame.get(), "What do you want to export ?", "Export table data", JOptionPane.QUESTION_MESSAGE, null, propNames, propNames[selectedPropIndex]);
-
-        if (selected == null || selected.isEmpty()) {
-            return;
-        }
-
-        int index = 0;
-        for (int j = 0; j < propNames.length; j++)
-            if (propNames[j].equals(selected)) {
-                index = j;
-            }
-
-        final int propIndex = index;
-
+        final IMatrixLayer selected = layers.get(selectedId);
         final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
@@ -101,12 +79,12 @@ public class ExportMatrixAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Exporting to image ...", 1);
                     monitor.info("File: " + file.getName());
 
-                    TextMatrixViewExporter.exportMatrix(matrixView, propIndex, file);
+                    TextMatrixViewExporter.exportMatrix(matrixView, selected, file);
 
                     monitor.end();
                 } catch (IOException ex) {

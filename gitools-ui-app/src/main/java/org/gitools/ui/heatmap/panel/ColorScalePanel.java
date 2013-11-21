@@ -26,7 +26,6 @@ import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.heatmap.HeatmapLayers;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +62,7 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    protected void paintComponent(@NotNull Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Dimension size = getSize();
         Rectangle box = new Rectangle(0, 0, size.width, size.height);

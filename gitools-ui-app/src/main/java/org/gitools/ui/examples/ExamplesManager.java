@@ -21,10 +21,8 @@
  */
 package org.gitools.ui.examples;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.settings.Settings;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URL;
@@ -50,8 +48,8 @@ public class ExamplesManager {
     private ExamplesManager() {
     }
 
-    @Nullable
-    public File resolvePath(String exampleId, @NotNull IProgressMonitor monitor) {
+
+    public File resolvePath(String exampleId, IProgressMonitor monitor) {
         File file = null;
 
         CodeSource sc = getClass().getProtectionDomain().getCodeSource();
@@ -100,8 +98,8 @@ public class ExamplesManager {
 
     private static final String EXAMPLES_BASE_URL = "http://webstart.gitools.org/default/examples";
 
-    @NotNull
-    private File resolveDownloadedPath(String exampleId, @NotNull IProgressMonitor monitor) {
+
+    private File resolveDownloadedPath(String exampleId, IProgressMonitor monitor) {
         File dstBasePath = new File(Settings.CONFIG_PATH + File.separator + "examples");
         if (!dstBasePath.exists()) {
             dstBasePath.mkdirs();
@@ -139,60 +137,63 @@ public class ExamplesManager {
         }
     }
 
-    private void downloadExample(File dstBasePath, String exampleId, @NotNull IProgressMonitor monitor) {
+    private void downloadExample(File dstBasePath, String exampleId, IProgressMonitor monitor) {
         try {
-            monitor.begin("Downloading ...", 1);
-
             URL url = new URL(EXAMPLES_BASE_URL + "/" + exampleId + ".zip");
-
-            ZipInputStream zin = new ZipInputStream(url.openStream());
-
-            ZipEntry ze;
-            while ((ze = zin.getNextEntry()) != null) {
-                IProgressMonitor mon = monitor.subtask();
-
-                //long totalKb = ze.getSize() / 1024;
-
-                String name = ze.getName();
-
-                mon.begin("Extracting " + name + " ...", (int) ze.getSize());
-
-                File outFile = new File(dstBasePath, name);
-
-                if (ze.isDirectory()) {
-                    if (!outFile.exists()) {
-                        outFile.mkdirs();
-                    }
-                } else {
-                    if (!outFile.getParentFile().exists()) {
-                        outFile.getParentFile().mkdirs();
-                    }
-
-                    OutputStream fout = new FileOutputStream(outFile);
-
-                    final int BUFFER_SIZE = 4 * 1024;
-                    byte[] data = new byte[BUFFER_SIZE];
-                    int partial = 0;
-                    int count;
-                    while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
-                        fout.write(data, 0, count);
-                        partial += count;
-                        mon.info((partial / 1024) + " Kb read");
-                        mon.worked(count);
-                    }
-
-                    fout.close();
-                }
-
-                zin.closeEntry();
-                mon.end();
-            }
-
-            zin.close();
-
-            monitor.end();
+            downloadAndExtract(dstBasePath, monitor, url);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public static void downloadAndExtract(File dstBasePath, IProgressMonitor monitor, URL url) throws IOException {
+        monitor.begin("Connecting ...", 1);
+
+        ZipInputStream zin = new ZipInputStream(url.openStream());
+
+        monitor.end();
+        monitor.begin("Downloading ...", 1);
+
+        ZipEntry ze;
+        while ((ze = zin.getNextEntry()) != null) {
+            IProgressMonitor mon = monitor.subtask();
+
+            String name = ze.getName();
+
+            mon.begin("Extracting " + name + " ...", (int) ze.getSize());
+
+            File outFile = new File(dstBasePath, name);
+
+            if (ze.isDirectory()) {
+                if (!outFile.exists()) {
+                    outFile.mkdirs();
+                }
+            } else {
+                if (!outFile.getParentFile().exists()) {
+                    outFile.getParentFile().mkdirs();
+                }
+
+                OutputStream fout = new FileOutputStream(outFile);
+
+                final int BUFFER_SIZE = 4 * 1024;
+                byte[] data = new byte[BUFFER_SIZE];
+                int partial = 0;
+                int count;
+                while ((count = zin.read(data, 0, BUFFER_SIZE)) != -1) {
+                    fout.write(data, 0, count);
+                    partial += count;
+                    mon.info((partial / 1024) + " Kb read");
+                    mon.worked(count);
+                }
+
+                fout.close();
+            }
+
+            zin.closeEntry();
+            mon.end();
+        }
+
+        zin.close();
+        monitor.end();
     }
 }

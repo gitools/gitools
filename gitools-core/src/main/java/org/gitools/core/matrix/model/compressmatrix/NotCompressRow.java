@@ -70,7 +70,7 @@ public class NotCompressRow {
      * @param value the fields
      */
     public void append(String value) {
-        int column = columns.getIndex(AbstractCompressor.parseField(value, 0));
+        int column = columns.indexOf(AbstractCompressor.parseField(value, 0));
         double[] cells = parseDoubles(value);
         indices[column] = true;
         values[column] = cells;
@@ -88,7 +88,7 @@ public class NotCompressRow {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream(indices.length * ((8 * totalLayers) + 4));
         DataOutputStream out = new DataOutputStream(bytes);
 
-        for (int column =0; column < indices.length; column++) {
+        for (int column = 0; column < indices.length; column++) {
 
             if (indices[column]) {
                 // Column position
@@ -116,7 +116,7 @@ public class NotCompressRow {
                     try {
                         values[i] = Double.parseDouble(value);
                     } catch (NumberFormatException e) {
-                        log.error("Malformed number '"+value+"'", e);
+                        log.error("Malformed number '" + value + "'", e);
                     }
                 }
             }
@@ -131,9 +131,10 @@ public class NotCompressRow {
      * @param values
      * @return
      * @throws java.io.UnsupportedEncodingException
+     *
      */
     private byte[] createColumnLine(double[] values) throws UnsupportedEncodingException {
-        byte[] bytes = new byte[8*values.length];
+        byte[] bytes = new byte[8 * values.length];
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         for (double value : values) {
             buffer.putDouble(value);

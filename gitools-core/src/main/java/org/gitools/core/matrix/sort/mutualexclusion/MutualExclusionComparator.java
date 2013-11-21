@@ -22,47 +22,47 @@
 package org.gitools.core.matrix.sort.mutualexclusion;
 
 
-import org.gitools.core.utils.MatrixUtils;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.sort.ValueSortCriteria;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.position.IMatrixPredicate;
 import org.gitools.utils.aggregation.SumAbsAggregator;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MutualExclusionComparator implements Comparator<Integer> {
+public class MutualExclusionComparator implements Comparator<String> {
 
-    private final IMatrixView matrixView;
-    private final int[] selectedColumns;
-    private final double[] valueBuffer;
-    private final Map<Integer, Double> aggregationCache;
+    private final Map<String, Double> aggregationCache;
 
-    public MutualExclusionComparator(IMatrixView matrixView, int numRows, int[] selectedColumns, IProgressMonitor monitor) {
-        this.matrixView = matrixView;
-        this.selectedColumns = selectedColumns;
-        this.valueBuffer = new double[selectedColumns.length];
+    public MutualExclusionComparator(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension sortDimension, IMatrixPredicate<String> validIdentifiers, IMatrixDimension aggregationDimension, IProgressMonitor monitor) {
 
-        this.aggregationCache = new HashMap<>(numRows);
+        aggregationCache = new HashMap<>(sortDimension.size());
 
-        monitor.begin("Aggregating values...", numRows);
-        for (int i = 0; i < numRows; i++) {
-            this.aggregationCache.put(i, aggregateValue(i));
-            monitor.worked(1);
-            if (monitor.isCancelled()) {
-                return;
-            }
+        IMatrixPosition position = matrix.newPosition();
+        Iterable<Double> aggregatedValues = position
+                .iterate(sortDimension)
+                .monitor(monitor, "Aggregating values")
+                .filter(validIdentifiers)
+                .transform(new AggregationFunction(layer, SumAbsAggregator.INSTANCE, aggregationDimension));
+
+        for (Double value : aggregatedValues) {
+            aggregationCache.put(position.get(sortDimension), value);
         }
     }
 
     @Override
-    public int compare(Integer idx1, Integer idx2) {
+    public int compare(String idx1, String idx2) {
+
         Double value1 = aggregationCache.get(idx1);
         Double value2 = aggregationCache.get(idx2);
 
         int res;
-        int factor = ValueSortCriteria.SortDirection.DESCENDING.getFactor();
+        int factor = SortDirection.DESCENDING.getFactor();
         if (Double.isNaN(value1) && Double.isNaN(value2)) {
             res = 0;
         } else if (Double.isNaN(value1)) {
@@ -76,15 +76,4 @@ public class MutualExclusionComparator implements Comparator<Integer> {
         return res * factor;
     }
 
-    private double aggregateValue(int idx) {
-
-        for (int i = 0; i < selectedColumns.length; i++) {
-            int col = selectedColumns[i];
-
-            Object valueObject = matrixView.getValue(idx, col, matrixView.getLayers().getTopLayerIndex());
-            valueBuffer[i] = MatrixUtils.doubleValue(valueObject);
-        }
-
-        return SumAbsAggregator.INSTANCE.aggregate(valueBuffer);
-    }
 }

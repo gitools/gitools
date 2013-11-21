@@ -22,16 +22,17 @@
 package org.gitools.ui.analysis.combination.wizard;
 
 
-import org.gitools.core.analysis.combination.CombinationAnalysis;
-import org.gitools.core.matrix.model.IMatrixLayer;
-import org.gitools.core.persistence.IResource;
-import org.gitools.core.persistence.IResourceFormat;
-import org.gitools.core.persistence.PersistenceManager;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.analysis.CombinationAnalysisFormat;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
+import org.gitools.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.analysis.wizard.DataFilePage;
@@ -47,13 +48,9 @@ import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.wizard.common.SaveFilePage;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.Properties;
 
 public class CombinationAnalysisWizard extends AbstractWizard {
 
@@ -74,7 +71,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
     private boolean examplePageEnabled;
     private boolean dataFromMemory;
-    @Nullable
+
     private String[] attributes;
     private boolean saveFilePageEnabled;
 
@@ -150,17 +147,17 @@ public class CombinationAnalysisWizard extends AbstractWizard {
             if (!dataFromMemory && (dataFile == null || !dataPage.getFile().equals(dataFile))) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
                         monitor.begin("Reading data header ...", 1);
 
                         try {
                             dataFile = dataPage.getFile();
 
-                            IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IResource.class);
-                            if (dataFormat instanceof MultiValueMatrixFormat) {
-                                attributes = MultiValueMatrixFormat.readHeader(dataFile);
-                            } else if (dataFormat instanceof CompressedMatrixFormat){
-                                attributes = CompressedMatrixFormat.readHeader(dataFile);
+                            IResourceFormat dataFormat = PersistenceManager.get().getFormat(dataFile.getName(), IMatrix.class);
+                            if (dataFormat instanceof TdmMatrixFormat) {
+                                attributes = TdmMatrixFormat.readHeader(dataFile);
+                            } else if (dataFormat instanceof CmatrixMatrixFormat) {
+                                attributes = CmatrixMatrixFormat.readHeader(dataFile);
                             } else {
                                 attributes = null;
                             }
@@ -184,7 +181,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
             if (examplePage.isExampleEnabled()) {
                 JobThread.execute(AppFrame.get(), new JobRunnable() {
                     @Override
-                    public void run(@NotNull IProgressMonitor monitor) {
+                    public void run(IProgressMonitor monitor) {
 
                         final File basePath = ExamplesManager.getDefault().resolvePath("combination", monitor);
 
@@ -193,9 +190,9 @@ public class CombinationAnalysisWizard extends AbstractWizard {
                         }
 
                         File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        Properties props = new Properties();
+
                         try {
-                            final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, props, monitor);
+                            final CombinationAnalysis a = PersistenceManager.get().load(analysisFile, CombinationAnalysis.class, monitor);
 
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
@@ -255,7 +252,7 @@ public class CombinationAnalysisWizard extends AbstractWizard {
         this.saveFilePageEnabled = saveFilePageEnabled;
     }
 
-    @NotNull
+
     public CombinationAnalysis getAnalysis() {
         CombinationAnalysis a = new CombinationAnalysis();
 
@@ -265,23 +262,23 @@ public class CombinationAnalysisWizard extends AbstractWizard {
 
         IMatrixLayer attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;
-        a.setSizeAttrName(sizeAttrName);
+        a.setSizeLayer(sizeAttrName);
 
         attr = combinationParamsPage.getPvalueAttribute();
         String pvalueAttrName = attr != null ? attr.getId() : null;
-        a.setPvalueAttrName(pvalueAttrName);
+        a.setValueLayer(pvalueAttrName);
 
         a.setTransposeData(combinationParamsPage.isTransposeEnabled());
 
         return a;
     }
 
-    private void setAnalysis(@NotNull CombinationAnalysis a) {
+    private void setAnalysis(CombinationAnalysis a) {
         analysisDetailsPage.setAnalysisTitle(a.getTitle());
         analysisDetailsPage.setAnalysisNotes(a.getDescription());
         analysisDetailsPage.setAnalysisAttributes(a.getProperties());
-        combinationParamsPage.setPreferredSizeAttr(a.getSizeAttrName());
-        combinationParamsPage.setPreferredPvalueAttr(a.getPvalueAttrName());
+        combinationParamsPage.setPreferredSizeAttr(a.getSizeLayer());
+        combinationParamsPage.setPreferredPvalueAttr(a.getValueLayer());
         combinationParamsPage.setTransposeEnabled(a.isTransposeData());
     }
 

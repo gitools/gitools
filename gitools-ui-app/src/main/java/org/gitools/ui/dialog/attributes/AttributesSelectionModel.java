@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.dialog.attributes;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -42,7 +40,7 @@ class AttributesSelectionModel<T> implements ListModel {
 
     private final List<ListDataListener> listeners;
 
-    public AttributesSelectionModel(@NotNull T[] attributes) {
+    public AttributesSelectionModel(T[] attributes) {
         this.attributes = attributes;
         this.selectedAttributes = new ArrayList<Integer>();
         this.unselectedAttributes = new ArrayList<Integer>();
@@ -80,7 +78,7 @@ class AttributesSelectionModel<T> implements ListModel {
         return Collections.unmodifiableList(selectedAttributes);
     }
 
-    public void setSelectedIndices(@NotNull List<Integer> indices) {
+    public void setSelectedIndices(List<Integer> indices) {
         List<Integer> unselectAttributes = new ArrayList<Integer>(selectedAttributes);
         unselect(unselectAttributes);
         select(indices);
@@ -90,7 +88,7 @@ class AttributesSelectionModel<T> implements ListModel {
         return Collections.unmodifiableList(unselectedAttributes);
     }
 
-    @NotNull
+
     public List<T> getSelectedAttributes() {
         List<T> attr = new ArrayList<T>(selectedAttributes.size());
         for (int i = 0; i < selectedAttributes.size(); i++)
@@ -99,7 +97,7 @@ class AttributesSelectionModel<T> implements ListModel {
         return attr;
     }
 
-    @NotNull
+
     public List<T> getUnselectedAttributes() {
         List<T> attr = new ArrayList<T>(unselectedAttributes.size());
         for (int i = 0; i < unselectedAttributes.size(); i++)
@@ -108,7 +106,7 @@ class AttributesSelectionModel<T> implements ListModel {
         return attr;
     }
 
-    public void select(@NotNull List<Integer> indices) {
+    public void select(List<Integer> indices) {
         for (Integer i : indices) {
             if (unselectedAttributes.contains(i)) {
                 unselectedAttributes.remove(i);
@@ -118,7 +116,7 @@ class AttributesSelectionModel<T> implements ListModel {
         fireChange();
     }
 
-    public void unselect(@NotNull List<Integer> indices) {
+    public void unselect(List<Integer> indices) {
         for (Integer i : indices) {
             if (selectedAttributes.contains(i)) {
                 selectedAttributes.remove(i);
@@ -128,7 +126,7 @@ class AttributesSelectionModel<T> implements ListModel {
         fireChange();
     }
 
-    public void moveUp(@NotNull List<Integer> indices) {
+    public void moveUp(List<Integer> indices) {
 
         for (Integer index : indices) {
             int i = selectedAttributes.indexOf(index);
@@ -143,7 +141,7 @@ class AttributesSelectionModel<T> implements ListModel {
         fireChange();
     }
 
-    public void moveDown(@NotNull List<Integer> indices) {
+    public void moveDown(List<Integer> indices) {
 
         for (Integer index : indices) {
             int i = selectedAttributes.indexOf(index);

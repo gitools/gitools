@@ -27,7 +27,7 @@ Import human KEGG pathway modules using Gitools
 
 - Select “Affy HG U133-PLUS-2” as identifiers for the genes, which correspond to the probe identifiers we have in our dataset. 
 
-- Alternatively download the KEGG pathways module map and annotations from here:   
+- Alternatively download the KEGG pathways module map and annotations from here:
    - `homo\_sapiens\_\_kegg\_pathways\_\_ensembl\_affy\_hg\_u133\_plus\_2.tcm <http://www.gitools.org/tutorials/data/homo_sapiens__kegg_pathways__ensembl_affy_hg_u133_plus_2.tcm.gz>`_
    -  `homo\_sapiens\_\_kegg\_pathways\_\_ensembl\_affy\_hg\_u133\_plus\_2\_annotations.tsv <http://www.gitools.org/tutorials/data/homo_sapiens__kegg_pathways__ensembl_affy_hg_u133_plus_2_annotations.tsv.gz>`_
 

@@ -22,7 +22,9 @@
 package org.gitools.core.model.decorator;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.core.matrix.model.IMatrix;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.core.model.decorator.impl.*;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.colorscale.IColorScale;
@@ -47,7 +49,11 @@ public abstract class Decorator<C extends IColorScale> extends Model {
         super();
     }
 
-    public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, int row, int column, int layer);
+    public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers);
+
+    public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, IMatrixPosition position) {
+        decorate(decoration, textFormatter, matrix, layer, position.toVector());
+    }
 
     public abstract C getScale();
 

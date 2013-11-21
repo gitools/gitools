@@ -21,66 +21,44 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.colt.function.DoubleDoubleFunction;
-import cern.colt.function.DoubleFunction;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
+
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.isEmpty;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.primitives.Doubles.toArray;
 
 abstract class AbstractAggregator implements IAggregator {
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc, @NotNull DoubleFunction mapFunc) {
+    private String name;
 
-        // Look for the first non-NaN value
-        int first = 0;
-        while (Double.isNaN(data[first])) {
-            first++;
+    protected AbstractAggregator(String name) {
+        this.name = name;
+    }
 
-            if (first == data.length) {
-                return Double.NaN;
-            }
+    @Override
+    public Double aggregate(Iterable<Double> values) {
+
+        Iterable<Double> noNullValues = filter(values, notNull());
+
+        if (isEmpty(noNullValues)) {
+            return null;
         }
 
-        // Look for the second non-Nan value
-        int second = first;
-        do {
-            second++;
-
-            // If there is only one non-Nan return this value mapped
-            if (second == data.length) {
-                return mapFunc.apply(data[first]);
-            }
-
-        } while (Double.isNaN(data[second]));
-
-        // Aggregate first two values
-        double total = reduceFunc.apply(mapFunc.apply(data[first]), mapFunc.apply(data[second]));
-
-        // Aggregate rhe remaining values
-        for (int i = second + 1; i < data.length; i++) {
-
-            // Skip NaN values
-            if (Double.isNaN(data[i])) {
-                continue;
-            }
-
-            total = reduceFunc.apply(total, mapFunc.apply(data[i]));
-        }
-
-        return total;
+        return aggregateNoNulls(toArray(newArrayList(noNullValues)));
     }
 
     /**
-     * A simple mapping functions that always returns the same input value
+     * Aggregate no null values.
+     *
+     * @param values All the values to aggregate without nulls and at least one value.
+     * @return the aggregated result
      */
-    private static final DoubleFunction NO_MAPPING = new DoubleFunction() {
-        @Override
-        public double apply(double v) {
-            return v;
-        }
-    };
+    protected abstract Double aggregateNoNulls(double[] values);
 
-    double aggregate(@NotNull double[] data, @NotNull DoubleDoubleFunction reduceFunc) {
-         return aggregate(data, reduceFunc, NO_MAPPING);
+    public String toString() {
+        return name;
     }
-
 
 }

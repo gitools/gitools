@@ -38,7 +38,7 @@ public abstract class DecoratorPanel {
     public DecoratorPanel(String name, Decorator defaultDecorator) {
         this.name = name;
         this.decoratorClass = defaultDecorator.getClass();
-        this.panelModel = new PresentationModel<Decorator>(defaultDecorator);
+        this.panelModel = new PresentationModel<>(defaultDecorator);
     }
 
     public boolean isValid(Object decorator) {

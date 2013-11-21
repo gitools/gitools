@@ -25,10 +25,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
-@SuppressWarnings("serial")
 public abstract class Operator implements Serializable {
 
     private static final long serialVersionUID = 6256197968707025432L;

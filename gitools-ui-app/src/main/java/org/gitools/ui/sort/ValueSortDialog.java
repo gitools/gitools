@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.sort;
 
-import org.gitools.core.matrix.sort.ValueSortCriteria;
-import org.gitools.utils.aggregation.IAggregator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.SortDirection;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -34,9 +34,6 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ValueSortDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
@@ -53,9 +50,9 @@ public class ValueSortDialog extends javax.swing.JDialog {
             super(values);
         }
 
-        @NotNull
+
         @Override
-        public Component getTableCellRendererComponent(@NotNull JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -77,29 +74,27 @@ public class ValueSortDialog extends javax.swing.JDialog {
         }
     }
 
-    private final String[] attributeNames;
+    private final IMatrixLayers<IMatrixLayer> layers;
     private final IAggregator[] aggregators;
-    private final ValueSortCriteria.SortDirection[] directions;
+    private final SortDirection[] directions;
 
     private final ValueSortCriteriaTableModel criteriaModel;
 
     /**
      * Creates new form FilterDialog
      */
-    public ValueSortDialog(java.awt.Frame parent, @NotNull String[] attributeNames, IAggregator[] aggregators, ValueSortCriteria.SortDirection[] directions, @Nullable List<ValueSortCriteria> initialCriteriaList) {
+    public ValueSortDialog(java.awt.Frame parent, IMatrixLayers<IMatrixLayer> layers, IAggregator[] aggregators, SortDirection[] directions, IMatrixLayer... initialCriteriaList) {
 
         super(parent, true);
 
-        this.attributeNames = attributeNames;
+        this.layers = layers;
         this.aggregators = aggregators;
         this.directions = directions;
-
-        this.criteriaModel = new ValueSortCriteriaTableModel(attributeNames);
+        this.criteriaModel = new ValueSortCriteriaTableModel(layers, initialCriteriaList);
 
         initComponents();
 
         table.setModel(criteriaModel);
-
         criteriaModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -107,12 +102,8 @@ public class ValueSortDialog extends javax.swing.JDialog {
             }
         });
 
-        if (initialCriteriaList != null) {
-            criteriaModel.addAllCriteria(initialCriteriaList);
-        }
-
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(layers.getIds()));
         columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(aggregators));
         columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(directions));
     }
@@ -174,7 +165,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
         }, new String[]{"Attribute", "Condition", "Value"}) {
-            @NotNull
+
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
             public Class getColumnClass(int columnIndex) {
@@ -245,7 +236,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_closeDialog
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueSortCriteria(attributeNames[0], 0, aggregators[0], directions[0]));
+        criteriaModel.addCriteria(layers.get(0));
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
     private void tableRemoveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableRemoveBtnActionPerformed
@@ -285,7 +276,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
         return applyToColumnsRb.isSelected() || applyToRowsAndColumnsRb.isSelected();
     }
 
-    public List<ValueSortCriteria> getCriteriaList() {
+    public List<IMatrixLayer> getCriteriaList() {
         return criteriaModel.getList();
     }
 }

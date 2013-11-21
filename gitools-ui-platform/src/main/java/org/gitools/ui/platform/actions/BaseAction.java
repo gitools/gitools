@@ -23,8 +23,6 @@ package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.IEditor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.net.URL;
@@ -40,7 +38,7 @@ public abstract class BaseAction extends AbstractAction {
     private boolean defaultEnabled;
 
 
-    public BaseAction(String name, ImageIcon icon, @Nullable String desc, @Nullable Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
+    public BaseAction(String name, ImageIcon icon, String desc, Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
         super(name, icon);
 
         this.defaultEnabled = false;
@@ -90,15 +88,11 @@ public abstract class BaseAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, desc);
     }
 
-    protected void setAccelerator(KeyStroke ks) {
-        putValue(ACCELERATOR_KEY, ks);
-    }
-
     protected void setMnemonic(int vk) {
         putValue(MNEMONIC_KEY, vk);
     }
 
-    @Nullable
+
     ImageIcon getSmallIcon() {
         return (ImageIcon) getValue(SMALL_ICON);
     }
@@ -121,7 +115,7 @@ public abstract class BaseAction extends AbstractAction {
         return String.valueOf(desc);
     }
 
-    @NotNull
+
     protected ImageIcon getLargeIcon() {
         return (ImageIcon) getValue(LARGE_ICON_KEY);
     }
@@ -134,7 +128,7 @@ public abstract class BaseAction extends AbstractAction {
         setLargeIcon(getIconResource(name));
     }
 
-    @NotNull
+
     private ImageIcon getIconResource(String name) {
         URL url = getClass().getResource(name);
         if (url == null) {
@@ -149,17 +143,13 @@ public abstract class BaseAction extends AbstractAction {
         setEnabled(defaultEnabled);
     }
 
-    void setTreeEnabled(boolean enabled) {
-        setEnabled(enabled);
-    }
-
     public boolean updateEnabledByEditor(IEditor editor) {
         boolean en = isEnabledByEditor(editor);
         setEnabled(en);
         return en;
     }
 
-    protected boolean isEnabledByEditor(@Nullable IEditor editor) {
+    protected boolean isEnabledByEditor(IEditor editor) {
         if (editor != null) {
             Object model = editor.getModel();
             if (model != null) {
@@ -168,12 +158,6 @@ public abstract class BaseAction extends AbstractAction {
         }
 
         return defaultEnabled;
-    }
-
-    public boolean updateEnabledByModel(Object model) {
-        boolean en = isEnabledByModel(model);
-        setEnabled(en);
-        return en;
     }
 
     protected boolean isEnabledByModel(Object model) {

@@ -21,10 +21,6 @@
  */
 package org.gitools.ui.platform.os;
 
-import com.apple.eawt.Application;
-
-import java.awt.*;
-
 public class OSXProperties extends OSProperties {
 
     public OSXProperties() {

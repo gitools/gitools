@@ -21,47 +21,40 @@
  */
 package org.gitools.core.heatmap;
 
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.MirrorDimension;
 import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.core.matrix.model.IMatrix;
-import org.gitools.core.matrix.model.IMatrixView;
-import org.gitools.core.matrix.model.matrix.DoubleBinaryMatrix;
-import org.gitools.core.matrix.model.matrix.DoubleMatrix;
-import org.gitools.core.model.decorator.impl.BinaryDecorator;
-import org.gitools.core.persistence.ResourceReference;
-import org.gitools.core.persistence.formats.analysis.adapter.ResourceReferenceXmlAdapter;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
+import org.gitools.persistence.ResourceReference;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
-public class Heatmap extends AbstractMatrix implements IMatrixView {
+public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> implements IMatrixView {
+
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
-
-    public static final int ROW = 0;
-    public static final int COLUMN = 1;
-
 
     @XmlTransient
     private PropertyChangeListener propertyListener;
 
     private HeatmapDimension rows;
-
-    private transient HeatmapDimension diagonalRows;
-
     private HeatmapDimension columns;
 
-    private HeatmapLayers layers;
+    private transient HeatmapDimension diagonalRows;
 
     private boolean diagonal;
 
@@ -69,9 +62,9 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     private ResourceReference<IMatrix> data;
 
     public Heatmap() {
+        super(new HeatmapLayers());
         this.rows = new HeatmapDimension();
         this.columns = new HeatmapDimension();
-        this.layers = new HeatmapLayers();
         this.diagonal = false;
     }
 
@@ -80,9 +73,9 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     }
 
     public Heatmap(IMatrix data, boolean diagonal) {
-        this.rows = new HeatmapDimension(this, data.getRows());
-        this.columns = new HeatmapDimension(this, data.getColumns());
-        this.layers = new HeatmapLayers(data);
+        super(new HeatmapLayers(data));
+        this.rows = new HeatmapDimension(data.getDimension(ROWS));
+        this.columns = new HeatmapDimension(data.getDimension(COLUMNS));
         this.data = new ResourceReference<>("data", data);
         this.diagonal = diagonal;
     }
@@ -96,7 +89,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         return rows;
     }
 
-    public void setRows(@NotNull HeatmapDimension rows) {
+    public void setRows(HeatmapDimension rows) {
         this.rows.removePropertyChangeListener(propertyListener);
         rows.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.rows;
@@ -108,7 +101,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         return columns;
     }
 
-    public void setColumns(@NotNull HeatmapDimension columns) {
+    public void setColumns(HeatmapDimension columns) {
         this.columns.removePropertyChangeListener(propertyListener);
         columns.addPropertyChangeListener(propertyListener);
         HeatmapDimension old = this.columns;
@@ -131,11 +124,11 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         };
         this.rows.addPropertyChangeListener(propertyListener);
         this.columns.addPropertyChangeListener(propertyListener);
-        this.layers.addPropertyChangeListener(propertyListener);
+        getLayers().addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
-        this.rows.init(this, matrix.getRows());
-        this.columns.init(this, matrix.getColumns());
+        this.rows.init(matrix.getDimension(ROWS));
+        this.columns.init(matrix.getDimension(COLUMNS));
 
         if (this.rows.getHeaderSize() == 0) {
             this.rows.addHeader(new HeatmapTextLabelsHeader());
@@ -144,7 +137,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
             this.columns.addHeader(new HeatmapTextLabelsHeader());
         }
 
-        this.layers.init(matrix);
+        getLayers().init(matrix);
 
         if (isDiagonal()) {
             diagonalRows = new MirrorDimension(columns, rows);
@@ -176,37 +169,44 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
     }
 
     @Override
-    public Object getValue(int[] position, int layer) {
+    public HeatmapDimension getDimension(MatrixDimensionKey dimension) {
 
-        int[] p = Arrays.copyOf(position, position.length);
+        if (dimension == ROWS) {
+            return getRows();
+        }
 
-        applyDiagonal(p);
-        applyVisible(p);
-        applyDiagonal(p);
+        if (dimension == COLUMNS) {
+            return getColumns();
+        }
 
-        return getContents().getValue(p, layer);
+        return null;
     }
 
     @Override
-    public void setValue(int[] position, int layer, Object value) {
-
-        int[] p = Arrays.copyOf(position, position.length);
-
-        applyDiagonal(p);
-        applyVisible(p);
-        applyDiagonal(p);
-
-        getContents().setValue(p, layer, value);
+    public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+        return getContents().get(layer, identifiers);
     }
 
     @Override
-    public HeatmapLayers getLayers() {
-        return layers;
+    public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
+        getContents().set(layer, value, identifiers);
+    }
+
+    @Override
+    public IMatrixPosition newPosition() {
+        return getContents().newPosition();
+    }
+
+    private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[]{ROWS, COLUMNS};
+
+    @Override
+    public MatrixDimensionKey[] getDimensionKeys() {
+        return dimensions;
     }
 
     @Deprecated
     private void particularInitialization(IMatrix matrix) {
-        if (matrix instanceof DoubleBinaryMatrix) {
+        /*if (matrix instanceof DoubleBinaryMatrix) {
             for (HeatmapLayer layer : getLayers()) {
                 BinaryDecorator decorator = new BinaryDecorator();
                 decorator.setCutoff(1.0);
@@ -219,20 +219,7 @@ public class Heatmap extends AbstractMatrix implements IMatrixView {
         } else if (matrix instanceof DoubleMatrix) {
             getRows().setGridSize(0);
             getColumns().setGridSize(0);
-        }
-    }
-
-    private void applyDiagonal(int[] position) {
-        if (isDiagonal() && position[COLUMN] < position[ROW]) {
-            int tmp = position[COLUMN];
-            position[COLUMN] = position[ROW];
-            position[ROW] = tmp;
-        }
-    }
-
-    private void applyVisible(int[] position) {
-        position[ROW] = getRows().getVisibleIndices()[position[ROW]];
-        position[COLUMN] = getColumns().getVisibleIndices()[position[COLUMN]];
+        } */
     }
 
 }

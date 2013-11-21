@@ -21,14 +21,12 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.utils.aggregation.IAggregator;
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
 import org.gitools.utils.colorscale.util.ColorConstants;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -54,12 +52,12 @@ public class CategoricalColorScale extends NumericColorScale {
         this.points = points;
     }
 
-    public CategoricalColorScale(@NotNull double pointValues[]) {
+    public CategoricalColorScale(double pointValues[]) {
 
         setValues(pointValues);
     }
 
-    public void setValues(@NotNull double[] pointValues) {
+    public void setValues(double[] pointValues) {
         Arrays.sort(pointValues);
         this.points = new ColorScalePoint[pointValues.length];
 
@@ -72,7 +70,7 @@ public class CategoricalColorScale extends NumericColorScale {
         updateRangesList();
     }
 
-    @NotNull
+
     Color[] generateColors(int n) {
         Color[] cols = new Color[n];
 
@@ -93,7 +91,7 @@ public class CategoricalColorScale extends NumericColorScale {
         return cols;
     }
 
-    @Nullable
+
     public ColorScalePoint getColorScalePoint(double value) {
         for (ColorScalePoint p : points) {
             if (cagetoricalSpans) {
@@ -128,7 +126,7 @@ public class CategoricalColorScale extends NumericColorScale {
         return c;
     }
 
-    @NotNull
+
     @Override
     public double[] getPoints() {
         double[] pointValues = new double[points.length];
@@ -171,7 +169,7 @@ public class CategoricalColorScale extends NumericColorScale {
         return this.points;
     }
 
-    public void setPointObjects(@NotNull ColorScalePoint[] points) {
+    public void setPointObjects(ColorScalePoint[] points) {
         Arrays.sort(points);
         this.points = points;
         updateRangesList();
@@ -202,7 +200,7 @@ public class CategoricalColorScale extends NumericColorScale {
         }
     }
 
-    @NotNull
+
     @Override
     public IAggregator defaultAggregator() {
         return SumAggregator.INSTANCE;

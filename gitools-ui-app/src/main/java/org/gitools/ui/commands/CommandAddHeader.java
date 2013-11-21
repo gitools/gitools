@@ -21,14 +21,13 @@
  */
 package org.gitools.ui.commands;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CancellationException;
 
@@ -49,7 +48,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
     }
 
     @Override
-    public void execute(@NotNull IProgressMonitor monitor) throws CommandException {
+    public void execute(IProgressMonitor monitor) throws CommandException {
 
         AppFrame appframe = AppFrame.get();
 
@@ -58,13 +57,13 @@ public abstract class CommandAddHeader extends AbstractCommand {
             monitor.begin("Adding header ...", 1);
             if (heatmapid.equals(LAST)) {
                 AbstractEditor e = appframe.getEditorsPanel().getSelectedEditor();
-                if (e instanceof HeatmapEditor)  {
+                if (e instanceof HeatmapEditor) {
                     heatmap = ((HeatmapEditor) e).getModel();
                 }
             } else {
                 for (AbstractEditor e : appframe.getEditorsPanel().getEditors()) {
                     if (e instanceof HeatmapEditor) {
-                        if ( e.getName().equals(heatmapid)) {
+                        if (e.getName().equals(heatmapid)) {
                             heatmap = ((HeatmapEditor) e).getModel();
                         } else {
                             availableHeatmaps += "<br/>- " + e.getName();
@@ -78,24 +77,27 @@ public abstract class CommandAddHeader extends AbstractCommand {
             }
 
 
-            if (side.equals(ROWS)) {
-                hdim = heatmap.getRows();
-            } else if (side.equals(COLUMNS)) {
-                hdim = heatmap.getColumns();
-            } else {
-                throw new Exception("No valid side of heatmap. Choose rows or columns: " + side);
+            switch (side) {
+                case ROWS:
+                    hdim = heatmap.getRows();
+                    break;
+                case COLUMNS:
+                    hdim = heatmap.getColumns();
+                    break;
+                default:
+                    throw new Exception("No valid side of heatmap. Choose rows or columns: " + side);
             }
 
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
-               String text = "<html>Command error:<br>" +
-                       "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" +
-                       e.getLocalizedMessage() +
-                       "</strong></div>" +
-                       "You may find the <strong>'User guide'</strong> at <a href='http://www.gitools.org'>" +
-                       "www.gitools.org</a><br></html>";
-               MessageUtils.showErrorMessage(AppFrame.get(), text, e);
+                String text = "<html>Command error:<br>" +
+                        "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" +
+                        e.getLocalizedMessage() +
+                        "</strong></div>" +
+                        "You may find the <strong>'User guide'</strong> at <a href='http://www.gitools.org'>" +
+                        "www.gitools.org</a><br></html>";
+                MessageUtils.showErrorMessage(AppFrame.get(), text, e);
             }
             setExitStatus(1);//Error!
             return;

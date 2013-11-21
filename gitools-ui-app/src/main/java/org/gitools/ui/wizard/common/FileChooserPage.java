@@ -25,7 +25,6 @@ import com.googlecode.vfsjfilechooser2.VFSJFileChooser;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.utils.FileFormatFilter;
 import org.gitools.ui.utils.VFSFileFilterAdaptor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +42,7 @@ public class FileChooserPage extends AbstractWizardPage {
 
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
 
@@ -57,7 +56,7 @@ public class FileChooserPage extends AbstractWizardPage {
 
         fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
-            public void propertyChange(@NotNull PropertyChangeEvent evt) {
+            public void propertyChange(PropertyChangeEvent evt) {
                 if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName()) || JFileChooser.SELECTED_FILES_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
                     updateComplete();
                 }

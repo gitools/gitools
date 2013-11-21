@@ -22,7 +22,6 @@
 package org.gitools.ui.wizard.export;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -45,7 +44,7 @@ public class ExportChooserPage extends AbstractWizardPage {
         super(ExportChooserPage.class.getSimpleName());
     }
 
-    @NotNull
+
     @Override
     public JComponent createControls() {
         DefaultMutableTreeNode model = new DefaultMutableTreeNode();

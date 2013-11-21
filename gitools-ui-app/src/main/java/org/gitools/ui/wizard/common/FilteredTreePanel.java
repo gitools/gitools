@@ -22,8 +22,6 @@
 package org.gitools.ui.wizard.common;
 
 import org.gitools.ui.utils.DocumentChangeListener;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -91,7 +89,7 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
         }
     }
 
-    @Nullable
+
     protected abstract TreeModel updateModel(String filterText);
 
     private String getFilterText() {
@@ -122,7 +120,7 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
 
     // If expand is true, expands all nodes in the tree.
     // Otherwise, collapses all nodes in the tree.
-    void expandCollapse(@NotNull JTree tree, boolean expand) {
+    void expandCollapse(JTree tree, boolean expand) {
         TreeModel model = tree.getModel();
         if (model == null) {
             return;
@@ -139,7 +137,7 @@ public abstract class FilteredTreePanel extends javax.swing.JPanel {
         }
     }
 
-    private void expandCollapse(@NotNull JTree tree, @NotNull TreePath parent, boolean expand) {
+    private void expandCollapse(JTree tree, TreePath parent, boolean expand) {
         // Traverse children
         TreeNode node = (TreeNode) parent.getLastPathComponent();
         if (node.getChildCount() >= 0) {

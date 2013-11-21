@@ -22,6 +22,11 @@
 package org.gitools.core.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.ValueTranslator;
+import org.gitools.utils.datafilters.ValueTranslatorFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -29,7 +34,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MatrixLayer extends Model implements IMatrixLayer {
+public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_NAME = "name";
@@ -50,17 +55,37 @@ public class MatrixLayer extends Model implements IMatrixLayer {
 
     @XmlElement(name = "value-type")
     @XmlJavaTypeAdapter(ClassXmlAdapter.class)
-    private Class<?> valueClass;
+    private Class<T> valueClass;
+
+    private IAggregator aggregator;
+
+    private SortDirection sortDirection;
+
+    public SortDirection getSortDirection() {
+        return sortDirection;
+    }
+
+    public void setSortDirection(SortDirection sortDirection) {
+        this.sortDirection = sortDirection;
+    }
+
+    public IAggregator getAggregator() {
+        return aggregator;
+    }
+
+    public void setAggregator(IAggregator aggregator) {
+        this.aggregator = aggregator;
+    }
 
     public MatrixLayer() {
         // JAXB requirement
     }
 
-    public MatrixLayer(String id, Class<?> valueClass) {
+    public MatrixLayer(String id, Class<T> valueClass) {
         this(id, valueClass, null, null);
     }
 
-    public MatrixLayer(String id, Class<?> valueClass, String name, String description) {
+    public MatrixLayer(String id, Class<T> valueClass, String name, String description) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = name;
@@ -91,8 +116,13 @@ public class MatrixLayer extends Model implements IMatrixLayer {
     }
 
     @Override
-    public Class<?> getValueClass() {
+    public Class<T> getValueClass() {
         return valueClass;
+    }
+
+    @Override
+    public ValueTranslator<T> getTranslator() {
+        return ValueTranslatorFactory.createValueTranslator(getValueClass());
     }
 
     public void setDescription(String description) {
@@ -113,7 +143,7 @@ public class MatrixLayer extends Model implements IMatrixLayer {
         firePropertyChange(PROPERTY_NAME, old, name);
     }
 
-    public void setValueClass(Class<?> valueClass) {
+    public void setValueClass(Class<T> valueClass) {
         Class old = this.valueClass;
         this.valueClass = valueClass;
         firePropertyChange(PROPERTY_VALUE_CLASS, old, valueClass);
@@ -137,5 +167,21 @@ public class MatrixLayer extends Model implements IMatrixLayer {
         String old = this.valueUrl;
         this.valueUrl = valueUrl;
         firePropertyChange(PROPERTY_VALUE_URL, old, valueUrl);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatrixLayer that = (MatrixLayer) o;
+
+        return !(id != null ? !id.equals(that.id) : that.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

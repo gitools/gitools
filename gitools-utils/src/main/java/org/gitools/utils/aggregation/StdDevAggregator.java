@@ -21,40 +21,22 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-import static cern.jet.stat.Descriptive.sampleVariance;
-import static cern.jet.stat.Descriptive.standardDeviation;
+import static org.apache.commons.math3.stat.StatUtils.variance;
+import static org.apache.commons.math3.util.FastMath.sqrt;
 
-/**
- * Sum of logarithms
- */
 public class StdDevAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new StdDevAggregator();
 
     private StdDevAggregator() {
+        super("Standard deviation");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-
-        double sum = aggregate(data, Functions.plus);
-
-        if (Double.isNaN(sum)) {
-            return Double.NaN;
-        }
-
-        int size = data.length;
-        double sumOfSquares = aggregate(data, Functions.plus, Functions.square);
-        double variance = sampleVariance(size, sum, sumOfSquares);
-        return standardDeviation(variance);
+    public Double aggregateNoNulls(double[] data) {
+        return sqrt(variance(data));
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Standard deviation";
-    }
 }

@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.io.Serializable;
 
 /**
@@ -57,7 +55,7 @@ public class ExcelHeader implements Serializable {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }

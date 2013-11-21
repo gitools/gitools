@@ -1,4 +1,3 @@
-
 ================================================================
 How to browse multi-dimensional genomics data in Gitools?
 ================================================================
@@ -35,11 +34,11 @@ Browse in Gitools
 -------------------------------------------------
 
 .. image:: img/gitoolsviz.png
-   :width: 40%
+:width: 40%
    :align: right
-   :alt: Gitools screenshot 
-   
-Select the option *File -> Open -> Heatmap*
+       :alt: Gitools screenshot
+
+    Select the option *File -> Open -> Heatmap*
 
 In the dialog that pops up select as file Filter (the lowest box) one of the following two options:
 

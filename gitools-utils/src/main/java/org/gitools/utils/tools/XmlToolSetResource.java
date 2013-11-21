@@ -22,7 +22,6 @@
 package org.gitools.utils.tools;
 
 import org.gitools.utils.tools.exception.ToolException;
-import org.jetbrains.annotations.Nullable;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -30,9 +29,6 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
 public class XmlToolSetResource {
 
     private final File file;
@@ -41,7 +37,7 @@ public class XmlToolSetResource {
         this.file = file;
     }
 
-    @Nullable
+
     public ToolSet load() throws ToolException {
         try {
             return load(new FileReader(file));
@@ -58,7 +54,7 @@ public class XmlToolSetResource {
         }
     }
 
-    @Nullable
+
     public static ToolSet load(Reader reader) throws ToolException {
         ToolSet toolSet = null;
         try {

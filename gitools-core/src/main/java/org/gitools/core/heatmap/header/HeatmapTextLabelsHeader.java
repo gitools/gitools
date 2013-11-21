@@ -21,14 +21,13 @@
  */
 package org.gitools.core.heatmap.header;
 
+import com.google.common.base.Function;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.label.AnnotationProvider;
-import org.gitools.core.label.AnnotationsPatternProvider;
-import org.gitools.core.label.LabelProvider;
-import org.gitools.core.label.MatrixDimensionLabelProvider;
-import org.gitools.core.matrix.model.IAnnotations;
+import org.gitools.core.matrix.filter.NoTransformFunction;
+import org.gitools.core.matrix.filter.AnnotationFunction;
+import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.core.model.decorator.DetailsDecoration;
-import org.jetbrains.annotations.NotNull;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -79,7 +78,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
         labelPattern = "${id}";
     }
 
-    @NotNull
+
     @Override
     public String getTitle() {
         StringBuilder sb = new StringBuilder();
@@ -134,26 +133,36 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, int index) {
-        details.add(new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), (index == -1 ? null : getLabelProvider().getLabel(index)), getValueUrl()));
+    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+        details.add(
+                new DetailsDecoration(
+                        getTitle(),
+                        getDescription(),
+                        getDescriptionUrl(),
+                        getIdentifierTransform().apply(identifier),
+                        getValueUrl()
+                )
+        );
     }
 
-    private transient LabelProvider labelProvider;
-    public LabelProvider getLabelProvider() {
+    private transient Function<String, String> transformFunction;
 
-        if (labelProvider == null) {
-            labelProvider = new MatrixDimensionLabelProvider(getHeatmapDimension());
+    public Function<String, String> getIdentifierTransform() {
+
+        if (transformFunction == null) {
             switch (getLabelSource()) {
                 case ANNOTATION:
-                    labelProvider = new AnnotationProvider(getHeatmapDimension(), getLabelAnnotation());
+                    transformFunction = new AnnotationFunction(getLabelAnnotation(), getHeatmapDimension().getAnnotations());
                     break;
                 case PATTERN:
-                    labelProvider = new AnnotationsPatternProvider(getHeatmapDimension(), getLabelPattern());
+                    transformFunction = new PatternFunction(getLabelPattern(), getHeatmapDimension().getAnnotations());
                     break;
+                default:
+                    transformFunction = new NoTransformFunction<>();
             }
         }
 
-        return labelProvider;
+        return transformFunction;
     }
 
 }

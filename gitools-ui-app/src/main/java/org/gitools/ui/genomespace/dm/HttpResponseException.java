@@ -18,8 +18,6 @@
 
 package org.gitools.ui.genomespace.dm;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 
 /**
@@ -41,7 +39,7 @@ class HttpResponseException extends IOException {
         return statusCode;
     }
 
-    @NotNull
+
     @Override
     public String getMessage() {
 

@@ -21,92 +21,58 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.model.IMatrixView;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.view.Direction;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.ui.DimensionIcons;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.ActionUtils;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.ui.actions.HeatmapDimensionAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-/**
- * @noinspection ALL
- */
-public class MoveSelectionAction extends BaseAction {
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.view.Direction.*;
 
-    private static final long serialVersionUID = 2499014276737037571L;
+public class MoveSelectionAction extends HeatmapDimensionAction {
 
     public enum MoveDirection {
-        ROW_UP, ROW_DOWN, COL_LEFT, COL_RIGHT
+
+        ROW_UP(ROWS, UP, KeyEvent.VK_U),
+        ROW_DOWN(ROWS, DOWN, KeyEvent.VK_D),
+        COL_LEFT(COLUMNS, LEFT, KeyEvent.VK_L),
+        COL_RIGHT(COLUMNS, RIGHT, KeyEvent.VK_R);
+
+        public Direction direction;
+        public MatrixDimensionKey dimension;
+        public int mnemonic;
+
+        private MoveDirection(MatrixDimensionKey dimension, Direction direction, int mnemonic) {
+            this.dimension = dimension;
+            this.direction = direction;
+            this.mnemonic = mnemonic;
+        }
     }
 
     private final MoveDirection dir;
 
-    public MoveSelectionAction(@NotNull MoveDirection dir) {
-        super(null);
+    public MoveSelectionAction(MoveDirection dir) {
+        super(dir.dimension, "Move " + dir.dimension.getLabel() + " " + dir.direction);
 
         this.dir = dir;
+        DimensionIcons icons = IconNames.get(dir.dimension);
 
-        switch (dir) {
-            case ROW_UP:
-                setName("Move row up");
-                setDesc("Move row up");
-                setSmallIconFromResource(IconNames.moveRowsUp16);
-                setLargeIconFromResource(IconNames.moveRowsUp24);
-                setMnemonic(KeyEvent.VK_U);
-                break;
-            case ROW_DOWN:
-                setName("Move row down");
-                setDesc("Move row down");
-                setSmallIconFromResource(IconNames.moveRowsDown16);
-                setLargeIconFromResource(IconNames.moveRowsDown24);
-                setMnemonic(KeyEvent.VK_D);
-                break;
-            case COL_LEFT:
-                setName("Move column left");
-                setDesc("Move column left");
-                setSmallIconFromResource(IconNames.moveColsLeft16);
-                setLargeIconFromResource(IconNames.moveColsLeft24);
-                setMnemonic(KeyEvent.VK_L);
-                break;
-            case COL_RIGHT:
-                setName("Move column right");
-                setDesc("Move column right");
-                setSmallIconFromResource(IconNames.moveColsRight16);
-                setLargeIconFromResource(IconNames.moveColsRight24);
-                setMnemonic(KeyEvent.VK_R);
-                break;
-        }
+        setSmallIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward16() : icons.getMoveBackward16());
+        setLargeIconFromResource(dir.direction.getShift() == 1 ? icons.getMoveForward24() : icons.getMoveBackward24());
+
+        setMnemonic(dir.mnemonic);
     }
 
-    @Override
-    public boolean isEnabledByModel(Object model) {
-        return model instanceof Heatmap || model instanceof IMatrixView;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = ActionUtils.getMatrixView();
-
-        if (matrixView == null) {
-            return;
-        }
-
-        switch (dir) {
-            case ROW_UP:
-                matrixView.getRows().move(org.gitools.core.matrix.model.Direction.UP, matrixView.getRows().getSelected());
-                break;
-            case ROW_DOWN:
-                matrixView.getRows().move(org.gitools.core.matrix.model.Direction.DOWN, matrixView.getRows().getSelected());
-                break;
-            case COL_LEFT:
-                matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.LEFT, matrixView.getColumns().getSelected());
-                break;
-            case COL_RIGHT:
-                matrixView.getColumns().move(org.gitools.core.matrix.model.Direction.RIGHT, matrixView.getColumns().getSelected());
-                break;
-        }
+        HeatmapDimension dimension = getDimension();
+        dimension.move(dir.direction, dimension.getSelected());
     }
 }

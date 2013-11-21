@@ -22,9 +22,10 @@
 package org.gitools.ui.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.core.analysis.correlation.CorrelationAnalysis;
-import org.gitools.core.analysis.correlation.CorrelationCommand;
-import org.gitools.core.persistence.formats.analysis.HeatmapFormat;
+import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.analysis.correlation.CorrelationCommand;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
 import org.gitools.ui.platform.AppFrame;
@@ -32,8 +33,6 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.progressmonitor.IProgressMonitor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,7 +72,7 @@ public class NewCorrelationAnalysisAction extends BaseAction {
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override
-            public void run(@NotNull IProgressMonitor monitor) {
+            public void run(IProgressMonitor monitor) {
                 try {
                     cmd.run(monitor);
 

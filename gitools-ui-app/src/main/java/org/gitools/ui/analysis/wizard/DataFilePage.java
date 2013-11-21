@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.analysis.wizard;
 
-import org.gitools.core.persistence.PersistenceException;
-import org.gitools.core.persistence.formats.FileFormat;
-import org.gitools.core.persistence.formats.FileFormats;
-import org.gitools.core.persistence.formats.compressmatrix.CompressedMatrixFormat;
-import org.gitools.core.persistence.formats.matrix.MultiValueMatrixFormat;
+import org.gitools.api.PersistenceException;
+import org.gitools.persistence.formats.FileFormat;
+import org.gitools.persistence.formats.FileFormats;
+import org.gitools.persistence.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -54,12 +54,12 @@ public class DataFilePage extends SelectFilePage {
         FileFormat ff = getFileFormat();
         super.updateState();
 
-        if (isComplete() == true && (ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))) {
+        if (isComplete() && (ff.getExtension().equals(FileFormats.MULTIVALUE_DATA_MATRIX.getExtension()))) {
             activateValueSelection();
 
             String[] headers = new String[0];
             try {
-                headers = MultiValueMatrixFormat.readHeader(getFile());
+                headers = TdmMatrixFormat.readHeader(getFile());
             } catch (PersistenceException e) {
                 setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
                 setComplete(false);
@@ -70,12 +70,12 @@ public class DataFilePage extends SelectFilePage {
             return;
         }
 
-        if (isComplete() == true && (ff.getExtension().equals(FileFormats.COMPRESSED_MATRIX.getExtension()))) {
+        if (isComplete() && (ff.getExtension().equals(FileFormats.COMPRESSED_MATRIX.getExtension()))) {
             activateValueSelection();
 
             String[] headers = new String[0];
             try {
-                headers = CompressedMatrixFormat.readHeader(getFile());
+                headers = CmatrixMatrixFormat.readHeader(getFile());
             } catch (PersistenceException e) {
                 setMessage(MessageStatus.ERROR, "Error reading headers of " + getFile().getName());
                 setComplete(false);

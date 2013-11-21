@@ -29,8 +29,6 @@ import org.gitools.ui.genomespace.dm.GSFileMetadata;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -57,11 +55,11 @@ public class GSFileBrowser extends JDialog {
 
     private static ImageIcon folderIcon;
     private static ImageIcon fileIcon;
-    @Nullable
+
     private static GSFileMetadata selectedFile;
 
     private Mode mode = Mode.OPEN;
-    @Nullable
+
     private String userRootUrl = null;
 
     private GSFileBrowser(Frame owner) throws IOException, JSONException {
@@ -93,7 +91,7 @@ public class GSFileBrowser extends JDialog {
         fileList.setCellRenderer(new CellRenderer());
 
         MouseListener mouseListener = new MouseAdapter() {
-            public void mouseClicked(@NotNull MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 int index = fileList.locationToIndex(e.getPoint());
                 GSFileMetadata md = (GSFileMetadata) fileList.getModel().getElementAt(index);
                 setSelectedFile(md);
@@ -119,7 +117,7 @@ public class GSFileBrowser extends JDialog {
         fetchContents(defaultURL);
     }
 
-    private void setSelectedFile(@NotNull GSFileMetadata md) {
+    private void setSelectedFile(GSFileMetadata md) {
         selectedFile = md;
         if (md.isDirectory()) {
             selectedFileTextField.setText(null);
@@ -128,12 +126,12 @@ public class GSFileBrowser extends JDialog {
         }
     }
 
-    @Nullable
+
     public String getFileURL() {
         return selectedFile == null ? null : selectedFile.getUrl();
     }
 
-    @Nullable
+
     public String getPath() {
         if (selectedFile == null) {
             return null;
@@ -279,8 +277,8 @@ public class GSFileBrowser extends JDialog {
         // This is the only method defined by ListCellRenderer.
         // We just reconfigure the JLabel each time we're called.
 
-        @NotNull
-        public Component getListCellRendererComponent(@NotNull JList list, @NotNull Object value,            // value to display
+
+        public Component getListCellRendererComponent(JList list, Object value,            // value to display
                                                       int index,               // cell index
                                                       boolean isSelected,      // is the cell selected
                                                       boolean cellHasFocus)    // the list and the cell have the focus
@@ -416,10 +414,10 @@ public class GSFileBrowser extends JDialog {
     // Generated using JFormDesigner non-commercial license
     private JPanel dialogPane;
     private JPanel buttonBar;
-    @Nullable
+
     private JPanel hSpacer2;
     private JButton newFolderButton;
-    @Nullable
+
     private JPanel hSpacer1;
     private JButton cancelButton;
     private JButton openButton;

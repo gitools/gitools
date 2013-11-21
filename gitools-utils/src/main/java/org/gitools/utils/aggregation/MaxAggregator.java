@@ -21,27 +21,21 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
-import org.jetbrains.annotations.NotNull;
+import org.gitools.api.analysis.IAggregator;
 
-/**
- * Multiplication
- */
+import static org.apache.commons.math3.stat.StatUtils.max;
+
 public class MaxAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MaxAggregator();
 
     private MaxAggregator() {
+        super("Max");
     }
 
     @Override
-    public double aggregate(@NotNull double[] data) {
-        return aggregate(data, Functions.max);
+    public Double aggregateNoNulls(double[] values) {
+        return max(values);
     }
 
-    @NotNull
-    @Override
-    public String toString() {
-        return "Max";
-    }
 }

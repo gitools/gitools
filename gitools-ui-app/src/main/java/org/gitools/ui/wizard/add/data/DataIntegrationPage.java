@@ -21,14 +21,12 @@
  */
 package org.gitools.ui.wizard.add.data;
 
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.data.integration.DataIntegrationCriteria;
-import org.gitools.core.matrix.model.IMatrixLayers;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -51,7 +49,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
             //setOpaque(true);
         }
 
-        @NotNull
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             List<DataIntegrationCriteria> criteriaList = (List<DataIntegrationCriteria>) value;
@@ -76,7 +74,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
     private final String[] attrNames;
     private final DefaultTableModel model;
 
-    public DataIntegrationPage(@NotNull Heatmap hm) {
+    public DataIntegrationPage(Heatmap hm) {
 
         initComponents();
         setComplete(false);
@@ -105,7 +103,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         });
     }
 
-    @NotNull
+
     public double[] getValues() {
         double values[] = new double[table.getRowCount()];
         for (int i = 0; i < table.getRowCount(); i++) {
@@ -114,7 +112,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         return values;
     }
 
-    @NotNull
+
     public List<ArrayList<DataIntegrationCriteria>> getCriteria() {
         ArrayList<ArrayList<DataIntegrationCriteria>> criteria = new ArrayList<ArrayList<DataIntegrationCriteria>>();
         for (int i = 0; i < table.getRowCount(); i++) {
@@ -203,7 +201,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
         }, new String[]{"Priority", "Value", "Criteria"}) {
-            @NotNull
+
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class};
 
             public Class getColumnClass(int columnIndex) {

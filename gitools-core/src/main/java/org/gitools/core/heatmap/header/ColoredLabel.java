@@ -112,9 +112,8 @@ public class ColoredLabel {
 
         ColoredLabel that = (ColoredLabel) o;
 
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        return !(value != null ? !value.equals(that.value) : that.value != null);
 
-        return true;
     }
 
     @Override
