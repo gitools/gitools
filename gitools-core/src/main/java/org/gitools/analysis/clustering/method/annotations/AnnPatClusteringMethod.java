@@ -46,10 +46,6 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
         this.labelPrefix = "";
     }
 
-    public String getPattern() {
-        return pattern;
-    }
-
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }

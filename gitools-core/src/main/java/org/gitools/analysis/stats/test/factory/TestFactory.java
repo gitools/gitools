@@ -42,7 +42,7 @@ public abstract class TestFactory {
         zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
     }
 
-    private static final Map<String, TestEnum> testNameMap = new HashMap<String, TestEnum>();
+    private static final Map<String, TestEnum> testNameMap = new HashMap<>();
 
     static {
         testNameMap.put(ZSCORE_TEST, TestEnum.zscore);
@@ -60,7 +60,7 @@ public abstract class TestFactory {
     }
 
 
-    private static final Map<String, TestConfigEnum> testAliases = new HashMap<String, TestConfigEnum>();
+    private static final Map<String, TestConfigEnum> testAliases = new HashMap<>();
 
     static {
         testAliases.put("zscore", TestConfigEnum.zscoreMean);

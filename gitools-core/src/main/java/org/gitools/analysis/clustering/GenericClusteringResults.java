@@ -22,14 +22,12 @@
 package org.gitools.analysis.clustering;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class GenericClusteringResults implements ClusteringResults {
 
     private Map<String, Set<String>> clusters;
-    private Map<String, String> itemToCluster;
 
     protected GenericClusteringResults() {
     }
@@ -40,13 +38,6 @@ public class GenericClusteringResults implements ClusteringResults {
 
     protected void init(Map<String, Set<String>> clusters) {
         this.clusters = clusters;
-
-        this.itemToCluster = new HashMap<>();
-        for (String cluster : clusters.keySet()) {
-            for (String item : clusters.get(cluster)) {
-                this.itemToCluster.put(item, cluster);
-            }
-        }
     }
 
     @Override
@@ -62,11 +53,6 @@ public class GenericClusteringResults implements ClusteringResults {
     @Override
     public Set<String> getItems(String cluster) {
         return clusters.get(cluster);
-    }
-
-    @Override
-    public String clusterOf(String item) {
-        return itemToCluster.get(item);
     }
 
     @Override

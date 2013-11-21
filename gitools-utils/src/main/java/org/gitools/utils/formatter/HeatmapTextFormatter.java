@@ -61,7 +61,7 @@ public class HeatmapTextFormatter implements ITextFormatter {
         }
 
         if (value instanceof Double) {
-            return decimal(((Double) value).doubleValue());
+            return decimal((Double) value);
         }
 
         if (value instanceof Float) {

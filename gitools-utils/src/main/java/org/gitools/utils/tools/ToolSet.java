@@ -26,9 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement(name = "tools")
 public class ToolSet {
 

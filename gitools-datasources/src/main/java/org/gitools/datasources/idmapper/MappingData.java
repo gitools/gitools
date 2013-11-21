@@ -35,8 +35,8 @@ public class MappingData {
         this.srcNode = new StringMappingNode(srcId);
         this.dstNode = new StringMappingNode(dstId);
 
-        dstIds = new HashSet<String>();
-        map = new HashMap<String, Set<String>>();
+        dstIds = new HashSet<>();
+        map = new HashMap<>();
     }
 
     public MappingNode getSrcNode() {
@@ -63,7 +63,7 @@ public class MappingData {
     public Set<String> get(String srcId) {
         Set<String> d = map.get(srcId);
         if (d == null) {
-            d = new HashSet<String>();
+            d = new HashSet<>();
         }
         return d;
     }
@@ -71,7 +71,7 @@ public class MappingData {
     public void put(String srcId, String dstId) {
         Set<String> ids = map.get(srcId);
         if (ids == null) {
-            ids = new HashSet<String>();
+            ids = new HashSet<>();
             map.put(srcId, ids);
         }
         dstIds.add(dstId);
@@ -95,7 +95,7 @@ public class MappingData {
         clearDstIds();
 
         for (Map.Entry<String, Set<String>> e : map.entrySet()) {
-            Set<String> dset = new HashSet<String>();
+            Set<String> dset = new HashSet<>();
             for (String sname : e.getValue()) {
                 Set<String> dnames = dstmap.get(sname);
                 if (dnames != null) {
@@ -123,7 +123,7 @@ public class MappingData {
     }
 
     public void removeEmptyKeys() {
-        List<String> rm = new ArrayList<String>();
+        List<String> rm = new ArrayList<>();
         for (Map.Entry<String, Set<String>> e : map.entrySet())
             if (e.getValue().isEmpty()) {
                 rm.add(e.getKey());

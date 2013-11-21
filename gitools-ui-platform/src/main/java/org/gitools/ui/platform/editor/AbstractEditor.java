@@ -54,7 +54,7 @@ public abstract class AbstractEditor extends AbstractView implements IEditor {
     private boolean saveAllowed = false;
 
 
-    private final List<EditorListener> listeners = new ArrayList<EditorListener>();
+    private final List<EditorListener> listeners = new ArrayList<>();
 
     @Override
     public void setName(String name) {

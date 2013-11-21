@@ -39,12 +39,12 @@ class DataIntegrationCriteriaTableModel implements TableModel {
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class, Operator.class};
 
 
-    private final Map<String, Integer> attrIndexMap = new HashMap<String, Integer>();
+    private final Map<String, Integer> attrIndexMap = new HashMap<>();
 
     private final List<DataIntegrationCriteria> criteriaList;
 
 
-    private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+    private final List<TableModelListener> listeners = new ArrayList<>();
 
     private DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, String[] attributeNames) {
         this.criteriaList = criteriaList;
@@ -141,7 +141,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
     }
 
     void removeCriteria(int[] selectedRows) {
-        List<Object> objects = new ArrayList<Object>(selectedRows.length);
+        List<Object> objects = new ArrayList<>(selectedRows.length);
         for (int index : selectedRows)
             objects.add(criteriaList.get(index));
 

@@ -21,7 +21,6 @@
  */
 package org.gitools.utils.progressmonitor;
 
-import cern.colt.Timer;
 import org.gitools.api.analysis.IProgressMonitor;
 
 import java.io.PrintStream;
@@ -32,8 +31,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 
     private final PrintStream out;
 
-    private final Timer timer;
-    private final int lastprogress;
+    private long timer;
 
     private String tabs;
     private boolean flag;
@@ -45,8 +43,6 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     protected StreamProgressMonitor(IProgressMonitor parent, PrintStream out, boolean verbose, boolean debug) {
         super(parent);
         this.out = out;
-        this.timer = new Timer();
-        this.lastprogress = 0;
         this.flag = false;
         this.tabs = "";
         this.verbose = verbose;
@@ -64,7 +60,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         showingbar = false;
         tabs = tabbulate(level);
         print("\n" + tabs + title);
-        timer.start();
+        timer = System.currentTimeMillis();
     }
 
     @Override
@@ -108,7 +104,6 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 
 
     protected IProgressMonitor createSubtaskMonitor(IProgressMonitor parentMonitor, PrintStream out, boolean verbose, boolean debug) {
-
         return new StreamProgressMonitor(parentMonitor, out, verbose, debug);
     }
 
@@ -116,9 +111,9 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     public void end() {
         super.end();
 
-        double millis = timer.millis();
-        double secs = timer.seconds();
-        double mins = timer.minutes();
+        long millis = System.currentTimeMillis() - timer;
+        long secs = (millis / 1000) % 60;
+        long mins = millis / (60 * 1000);
 
         String time = "";
         if (millis < 1000) {

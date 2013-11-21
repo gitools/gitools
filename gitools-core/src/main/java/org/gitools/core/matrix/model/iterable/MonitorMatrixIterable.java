@@ -45,7 +45,7 @@ public class MonitorMatrixIterable<T> extends AbstractChainIterable<T, T> {
             monitor.begin(title, size());
         }
 
-        return new MonitorIterator<T>(newParentIterator());
+        return new MonitorIterator<>(newParentIterator());
     }
 
     private class MonitorIterator<T> extends AbstractChainIterator<T, T> {

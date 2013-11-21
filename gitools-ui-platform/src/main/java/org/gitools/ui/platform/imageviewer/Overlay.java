@@ -54,7 +54,7 @@ import java.util.List;
  * @author Kazó Csaba
  */
 public abstract class Overlay {
-    List<OverlayComponent> overlayComponents = new ArrayList<OverlayComponent>(1);
+    List<OverlayComponent> overlayComponents = new ArrayList<>(1);
 
     final void addOverlayComponent(OverlayComponent c) {
         overlayComponents.add(c);

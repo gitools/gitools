@@ -48,10 +48,6 @@ public final class DataActions {
 
     public static final BaseAction hideSmallerThanHeaderAction = new HideNumericHeaderAction(false, "smaller");
 
-    public static final BaseAction fastSortRowsAction = new FastSortValueAction(ROWS);
-
-    public static final BaseAction fastSortColumnsAction = new FastSortValueAction(COLUMNS);
-
     public static final BaseAction sortByAnnotationAction = new SortByAnnotationAction(ROWS);
 
     public static final BaseAction sortByHeader = new SortByHeaderAction();

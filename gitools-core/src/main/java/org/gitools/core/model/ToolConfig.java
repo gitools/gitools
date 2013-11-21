@@ -40,7 +40,7 @@ public class ToolConfig {
     private String name;
 
     @XmlJavaTypeAdapter(ConfigurationXmlAdapter.class)
-    private Map<String, String> configuration = new HashMap<String, String>();
+    private Map<String, String> configuration = new HashMap<>();
 
     public ToolConfig(String name) {
         this.name = name;

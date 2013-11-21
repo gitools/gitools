@@ -162,7 +162,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
 
     public List<String> getValues() {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         StringReader sr = new StringReader(patterns.getText());
         BufferedReader br = new BufferedReader(sr);
         String line;

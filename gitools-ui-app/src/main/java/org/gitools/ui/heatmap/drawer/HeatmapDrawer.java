@@ -19,11 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.heatmap.drawer;
+package org.gitools.ui.heatmap.drawer;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

@@ -33,8 +33,6 @@ public interface ClusteringResults {
 
     Set<String> getItems(String cluster);
 
-    String clusterOf(String item);
-
     Map<String, Set<String>> getClustersMap();
 
 }

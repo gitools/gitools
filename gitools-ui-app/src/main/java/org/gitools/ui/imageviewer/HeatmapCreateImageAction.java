@@ -23,7 +23,7 @@ package org.gitools.ui.imageviewer;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.HeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.platform.AppFrame;

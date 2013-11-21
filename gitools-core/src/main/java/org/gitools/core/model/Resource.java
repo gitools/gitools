@@ -51,7 +51,7 @@ public class Resource extends Model implements IResource {
      */
     @XmlElementWrapper(name = "properties")
     @XmlElement(name = "property")
-    private List<Property> properties = new ArrayList<Property>(0);
+    private List<Property> properties = new ArrayList<>(0);
 
 	/* constructors */
 

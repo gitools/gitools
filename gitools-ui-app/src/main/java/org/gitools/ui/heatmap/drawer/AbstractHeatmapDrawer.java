@@ -19,10 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.heatmap.drawer;
+package org.gitools.ui.heatmap.drawer;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.utils.color.utils.ColorUtils;
 
@@ -32,12 +33,18 @@ import java.text.AttributedString;
 
 public abstract class AbstractHeatmapDrawer {
 
-    private Heatmap heatmap;
+    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 100);
+
+    protected Heatmap heatmap;
+    protected HeatmapDimension rows;
+    protected HeatmapDimension columns;
 
     private boolean pictureMode;
 
     protected AbstractHeatmapDrawer(Heatmap heatmap) {
         this.heatmap = heatmap;
+        this.columns = heatmap.getColumns();
+        this.rows = heatmap.getRows();
         this.pictureMode = false;
     }
 
@@ -158,5 +165,35 @@ public abstract class AbstractHeatmapDrawer {
         }
 
     }
+
+    protected void drawSelectedAndFocus(Graphics2D g, Rectangle box, HeatmapDimension dimension, boolean horizontal) {
+
+        // Draw selected
+        g.setColor(SELECTED_COLOR);
+        int cellSize = dimension.getFullSize();
+        for (String s : dimension.getSelected()) {
+            fillLine(g, box, dimension.indexOf(s)*cellSize, cellSize, horizontal);
+        }
+
+        // Draw row lead
+        g.setColor(Color.DARK_GRAY);
+        int lead = dimension.indexOf(dimension.getFocus());
+        if (lead != -1) {
+            fillLine(g, box, (lead*cellSize)-1, 1, horizontal);
+            fillLine(g, box, ((lead + 1) * cellSize) - 1, 1, horizontal);
+        }
+    }
+
+    /**
+     * Paint a full horizontal or vertical line
+     */
+    protected void fillLine(Graphics2D g, Rectangle box, int position, int size, boolean horizontal) {
+        if (horizontal) {
+            g.fillRect(box.x, box.y + position, box.width, size);
+        } else {
+            g.fillRect(box.x + position, box.y, size, box.height);
+        }
+    }
+
 
 }

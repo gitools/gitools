@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.heatmap.popupmenus.dynamicactions;
 
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 
 public interface IDynamicAction<T> {
 

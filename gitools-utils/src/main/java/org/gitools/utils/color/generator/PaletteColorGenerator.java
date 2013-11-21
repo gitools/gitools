@@ -23,9 +23,6 @@ package org.gitools.utils.color.generator;
 
 import java.awt.*;
 
-/**
- * @noinspection ALL
- */
 public class PaletteColorGenerator implements ColorGenerator {
 
     private static final int[] DEFAULT_PALETTE = {0x4bb2c5, 0xEAA228, 0xc5b47f, 0x546D61, 0x958c12, 0x953579, 0xc12e2e, 0x4b5de4, 0xd8b83f, 0xff5800, 0x0085cc, 0xc747a3, 0xcddf54, 0xFBD178, 0x26B4E3, 0xbd70c7, 0xabdbeb, 0x40D800, 0x8AFF00, 0xD9EB00, 0xFFFF71, 0x777B00,
@@ -44,11 +41,6 @@ public class PaletteColorGenerator implements ColorGenerator {
         this.palette = new Color[palette.length];
         for (int i = 0; i < palette.length; i++)
             this.palette[i] = new Color(palette[i]);
-        colorRegistry = ColorRegistry.get();
-    }
-
-    public PaletteColorGenerator(Color[] palette) {
-        this.palette = palette;
         colorRegistry = ColorRegistry.get();
     }
 

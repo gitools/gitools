@@ -25,7 +25,7 @@ import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -34,7 +34,7 @@ import java.util.*;
 public class HeatmapPanelInputProcessor {
 
 
-    private final List<HeatmapMouseListener> mouseListeners = new ArrayList<HeatmapMouseListener>();
+    private final List<HeatmapMouseListener> mouseListeners = new ArrayList<>();
 
     private IMatrixView mv;
     private Heatmap heatmap;
@@ -84,7 +84,7 @@ public class HeatmapPanelInputProcessor {
 
 
     //alphanumerics used as shortcuts
-    private Map<Integer, Boolean> pressedAlphaNumerics = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> pressedAlphaNumerics = new HashMap<>();
 
     public void savePressedState(KeyEvent e) {
         pressedAlphaNumerics.put(e.getKeyCode(), true);

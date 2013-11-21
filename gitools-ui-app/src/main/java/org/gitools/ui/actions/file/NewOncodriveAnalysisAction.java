@@ -38,9 +38,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class NewOncodriveAnalysisAction extends BaseAction {
 
     private static final long serialVersionUID = -8592231961109105958L;

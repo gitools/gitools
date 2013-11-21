@@ -25,12 +25,13 @@ import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.imageviewer.HeatmapCreateImageAction;
 import org.gitools.ui.platform.actions.BaseAction;
 
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+
 
 public final class HeatmapActions {
 
     public static final BaseAction snapshotAction = new HeatmapCreateImageAction();
 
-    public static final BaseAction searchRowsAction = new HeatmapSearchAction(false);
+    public static final BaseAction searchRowsAction = new HeatmapSearchAction(ROWS);
 
-    public static final BaseAction searchColumnsAction = new HeatmapSearchAction(true);
 }

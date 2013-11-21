@@ -88,10 +88,6 @@ public abstract class BaseAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, desc);
     }
 
-    protected void setAccelerator(KeyStroke ks) {
-        putValue(ACCELERATOR_KEY, ks);
-    }
-
     protected void setMnemonic(int vk) {
         putValue(MNEMONIC_KEY, vk);
     }
@@ -147,10 +143,6 @@ public abstract class BaseAction extends AbstractAction {
         setEnabled(defaultEnabled);
     }
 
-    void setTreeEnabled(boolean enabled) {
-        setEnabled(enabled);
-    }
-
     public boolean updateEnabledByEditor(IEditor editor) {
         boolean en = isEnabledByEditor(editor);
         setEnabled(en);
@@ -166,12 +158,6 @@ public abstract class BaseAction extends AbstractAction {
         }
 
         return defaultEnabled;
-    }
-
-    public boolean updateEnabledByModel(Object model) {
-        boolean en = isEnabledByModel(model);
-        setEnabled(en);
-        return en;
     }
 
     protected boolean isEnabledByModel(Object model) {

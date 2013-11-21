@@ -86,7 +86,7 @@ public class CompressDimension extends AbstractMatrixDimension {
             return -1;
         }
 
-        return value.intValue();
+        return value;
     }
 
     /**

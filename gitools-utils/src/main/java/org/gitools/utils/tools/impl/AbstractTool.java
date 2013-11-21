@@ -35,9 +35,6 @@ import java.io.PrintStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractTool<Context> implements ToolLifeCycle<Context> {
 
     private Context context;

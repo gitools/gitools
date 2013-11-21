@@ -128,10 +128,10 @@ public abstract class CutoffCmp implements Serializable {
         opposite.put(CutoffCmp.ABS_EQ, CutoffCmp.ABS_NE);
     }
 
-    private static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> shortNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> longNameMap = new HashMap<String, CutoffCmp>();
-    private static final Map<String, CutoffCmp> nameMap = new HashMap<String, CutoffCmp>();
+    private static final Map<String, CutoffCmp> abbreviatedNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> shortNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> longNameMap = new HashMap<>();
+    private static final Map<String, CutoffCmp> nameMap = new HashMap<>();
 
     static {
         for (CutoffCmp cmp : comparators) {

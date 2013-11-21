@@ -60,8 +60,8 @@ public class SelectColumnsPage extends AbstractWizardPage {
         try {
             reader.init();
 
-            final List<ExcelHeader> allHeaders = new ArrayList<ExcelHeader>();
-            final List<ExcelHeader> numericHeaders = new ArrayList<ExcelHeader>();
+            final List<ExcelHeader> allHeaders = new ArrayList<>();
+            final List<ExcelHeader> numericHeaders = new ArrayList<>();
 
             for (ExcelHeader header : reader.getHeaders()) {
 
@@ -173,7 +173,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     public List<Integer> getSelectedValues() {
 
-        List<Integer> valuesPos = new ArrayList<Integer>(values.length);
+        List<Integer> valuesPos = new ArrayList<>(values.length);
 
         for (CheckListItem v : values) {
             if (v.isSelected()) {

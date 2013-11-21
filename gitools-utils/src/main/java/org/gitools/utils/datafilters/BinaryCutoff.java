@@ -21,12 +21,11 @@
  */
 package org.gitools.utils.datafilters;
 
-import cern.colt.function.DoubleFunction;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.io.Serializable;
 
-public class BinaryCutoff implements DoubleFunction, Serializable {
+public class BinaryCutoff implements Serializable {
 
     private static final long serialVersionUID = 5091376519840044515L;
 
@@ -38,7 +37,6 @@ public class BinaryCutoff implements DoubleFunction, Serializable {
         this.cutoff = cutoff;
     }
 
-    @Override
     public double apply(double value) {
         return Double.isNaN(value) ? Double.NaN : cmp.compare(value, cutoff) ? 1 : 0;
     }

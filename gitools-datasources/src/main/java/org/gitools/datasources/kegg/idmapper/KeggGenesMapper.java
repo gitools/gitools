@@ -38,7 +38,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
     public static final String PDB_DB = "pdb";
     public static final String ENSEMBL_DB = "ensembl";
 
-    private static final Map<String, String> fileKey = new HashMap<String, String>();
+    private static final Map<String, String> fileKey = new HashMap<>();
 
     static {
         fileKey.put(NCBI_GENES, NCBI_DB);
@@ -54,7 +54,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
 
     @Override
     public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {
-        Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> map = new HashMap<>();
 
         monitor.begin("Getting mapping information from KEGG ...", 1);
 
@@ -79,7 +79,7 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
                 String dstId = rel.getTargetId();
                 Set<String> b = map.get(srcId);
                 if (b == null) {
-                    b = new HashSet<String>();
+                    b = new HashSet<>();
                     map.put(srcId, b);
                 }
                 b.add(dstId.substring(plen));

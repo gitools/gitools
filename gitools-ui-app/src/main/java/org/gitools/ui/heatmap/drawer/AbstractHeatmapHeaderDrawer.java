@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.heatmap.drawer;
+package org.gitools.ui.heatmap.drawer;
 
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
@@ -31,7 +31,6 @@ import java.awt.*;
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
     protected static final Color highlightingColor = Color.YELLOW;
-
     private final HT header;
     private HeatmapDimension heatmapDimension;
 
@@ -89,7 +88,6 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return index;
     }
 
-
     @Override
     public Dimension getSize() {
         HeatmapDimension hdim = getHeatmapDimension();
@@ -111,10 +109,6 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
     protected int fullCellSize() {
         return heatmapDimension.getFullSize();
-    }
-
-    protected boolean isSelected(String identifier) {
-        return !isPictureMode() && heatmapDimension.getSelected().contains(identifier);
     }
 
     protected void prepareDraw(Graphics2D g, Rectangle box) {

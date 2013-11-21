@@ -32,7 +32,7 @@ public class ThreadQueue {
     private final ExecutorService executor = ThreadManager.getExecutor();
 
     public ThreadQueue(int numSlots) {
-        queue = new ArrayBlockingQueue<ThreadSlot>(numSlots);
+        queue = new ArrayBlockingQueue<>(numSlots);
     }
 
     public void put(ThreadSlot threadSlot) throws InterruptedException {

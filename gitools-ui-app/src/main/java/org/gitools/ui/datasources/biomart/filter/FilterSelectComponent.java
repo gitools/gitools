@@ -75,7 +75,7 @@ public class FilterSelectComponent extends FilterComponent {
 
         initComponents();
 
-        pushActions = new HashMap<Option, HashMap<String, List<Option>>>();
+        pushActions = new HashMap<>();
 
         buildComponent();
 
@@ -225,7 +225,7 @@ public class FilterSelectComponent extends FilterComponent {
 
     private List<OptionListWrapper> InitListOptions() {
 
-        List<OptionListWrapper> res = new ArrayList<OptionListWrapper>();
+        List<OptionListWrapper> res = new ArrayList<>();
 
         for (Option o : filterDescription.getOptions()) {
             OptionListWrapper wrapper = new OptionListWrapper(o);
@@ -257,7 +257,7 @@ public class FilterSelectComponent extends FilterComponent {
 
         for (Option o : filterDescription.getOptions()) {
             if (o.getPushactions() != null) {
-                HashMap<String, List<Option>> actions = new HashMap<String, List<Option>>();
+                HashMap<String, List<Option>> actions = new HashMap<>();
 
                 for (PushAction action : o.getPushactions()) {
 
@@ -275,7 +275,7 @@ public class FilterSelectComponent extends FilterComponent {
     // FIXME : get Filter for selected value/s in list
     public List<Filter> getFilters() {
 
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         Filter f = null;
 
@@ -389,7 +389,7 @@ public class FilterSelectComponent extends FilterComponent {
         } else
 
         {
-            return new HashMap<String, List<Option>>();
+            return new HashMap<>();
         }
     }
 

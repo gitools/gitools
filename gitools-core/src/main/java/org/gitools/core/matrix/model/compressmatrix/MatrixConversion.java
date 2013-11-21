@@ -43,7 +43,7 @@ public class MatrixConversion extends AbstractCompressor {
         CompressDimension rows = getRows();
         CompressDimension columns = getColumns();
 
-        Map<Integer, CompressRow> values = new HashMap<Integer, CompressRow>(inputMatrix.getRows().size());
+        Map<Integer, CompressRow> values = new HashMap<>(inputMatrix.getRows().size());
 
         progressMonitor.begin("Compressing rows...", rows.size());
         int totalProperties = inputMatrix.getLayers().size();

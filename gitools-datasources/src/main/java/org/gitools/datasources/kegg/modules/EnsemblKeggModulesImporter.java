@@ -63,7 +63,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     private static final EnsemblKeggModuleCategory[] GO_MODULE_CATEGORIES = new EnsemblKeggModuleCategory[]{new EnsemblKeggModuleCategory("Ensembl", GO_BP, "GO Biological Processes"), new EnsemblKeggModuleCategory("Ensembl", GO_MF, "GO Molecular functions"), new EnsemblKeggModuleCategory("Ensembl", GO_CL, "GO Cellular locations")};
 
-    private static final Map<String, String> goDescId = new HashMap<String, String>();
+    private static final Map<String, String> goDescId = new HashMap<>();
 
     static {
         goDescId.put(GO_BP, "name_1006");
@@ -76,7 +76,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     private static final EnsemblKeggFeatureCategory[] COMMON_FEATURES = new EnsemblKeggFeatureCategory[]{new EnsemblKeggFeatureCategory("Genes", KEGG_GENES, "KEGG Genes"), new EnsemblKeggFeatureCategory("Genes", NCBI_GENES, "NCBI Genes"), new EnsemblKeggFeatureCategory("Protein", PDB, "PDB"), new EnsemblKeggFeatureCategory("Protein", UNIPROT, "UniProt"), new EnsemblKeggFeatureCategory("Genes", ENSEMBL_GENES, "Ensembl Genes"), new EnsemblKeggFeatureCategory("Genes", ENSEMBL_TRANSCRIPTS, "Ensembl Transcripts"), new EnsemblKeggFeatureCategory("Protein", ENSEMBL_PROTEINS, "Ensembl Proteins")};
 
-    private static final Map<String, EnsemblKeggFeatureCategory> featMap = new HashMap<String, EnsemblKeggFeatureCategory>();
+    private static final Map<String, EnsemblKeggFeatureCategory> featMap = new HashMap<>();
 
     static {
         for (EnsemblKeggFeatureCategory f : COMMON_FEATURES)
@@ -124,7 +124,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         this.keggEnabled = keggEnabled;
         this.goEnabled = goEnabled;
 
-        List<ModuleCategory> mc = new ArrayList<ModuleCategory>();
+        List<ModuleCategory> mc = new ArrayList<>();
 
         if (keggEnabled) {
             mc.addAll(Arrays.asList(KEGG_MODULE_CATEGORIES));
@@ -170,7 +170,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
     @Override
     public Version[] getVersions() {
-        LinkedList<Version> sources = new LinkedList<Version>();
+        LinkedList<Version> sources = new LinkedList<>();
 
         Version latestVersion = null;
         for (BiomartSource src : BiomartSourceManager.getDefault().getSources()) {
@@ -197,8 +197,8 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             return cachedOrganisms;
         }
 
-        List<EnsemblKeggOrganism> orgs = new ArrayList<EnsemblKeggOrganism>();
-        Map<String, EnsemblKeggOrganism> orgsMap = new HashMap<String, EnsemblKeggOrganism>();
+        List<EnsemblKeggOrganism> orgs = new ArrayList<>();
+        Map<String, EnsemblKeggOrganism> orgsMap = new HashMap<>();
 
         try {
             // Ensembl organisms
@@ -271,17 +271,17 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             throw new ModulesImporterException("Module category not defined.");
         }
 
-        List<EnsemblKeggFeatureCategory> feats = new ArrayList<EnsemblKeggFeatureCategory>();
+        List<EnsemblKeggFeatureCategory> feats = new ArrayList<>();
 
 		/* if this importer is activated for KEGG and the selected organism exists in KEGG*/
         if (keggEnabled && organism.getKeggOrganism() != null) {
 
-            keggFeatMap = new HashMap<String, EnsemblKeggFeatureCategory>();
+            keggFeatMap = new HashMap<>();
             keggFeatMap.put(KEGG_GENES, featMap.get(KEGG_GENES));
             feats.add(featMap.get(KEGG_GENES));
 
             String orgId = organism.getKeggOrganism().getId();
-            Map<String, String> idMap = new HashMap<String, String>();
+            Map<String, String> idMap = new HashMap<>();
             idMap.put(KeggGenesMapper.ENSEMBL_DB + "-" + orgId, ENSEMBL_GENES);
             idMap.put(KeggGenesMapper.NCBI_DB, NCBI_GENES);
             idMap.put(KeggGenesMapper.UNIPROT_DB, UNIPROT);
@@ -300,7 +300,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
 		/* if the selected organism has a dataset in ensembl */
         if (organism.getEnsemblDataset() != null) {
-            ensemblFeats = new ArrayList<EnsemblKeggFeatureCategory>();
+            ensemblFeats = new ArrayList<>();
 
             ensemblFeats.addAll(Arrays.asList(new EnsemblKeggFeatureCategory[]{featMap.get(ENSEMBL_GENES), featMap.get(ENSEMBL_TRANSCRIPTS), featMap.get(ENSEMBL_PROTEINS)}));
 
@@ -316,7 +316,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 throw new ModulesImporterException(ex);
             }
 
-            Map<String, String> idmap = new HashMap<String, String>();
+            Map<String, String> idmap = new HashMap<>();
             idmap.put("ensembl_gene_id", ENSEMBL_GENES);
             idmap.put("ensembl_transcript_id", ENSEMBL_TRANSCRIPTS);
             idmap.put("pdb", PDB);
@@ -324,7 +324,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             idmap.put("uniprot_swissprot_accession", UNIPROT);
             //idmap.put("unigene", UNIGENE);
 
-            Set<String> idremove = new HashSet<String>(Arrays.asList(new String[]{"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name", "clone_based_vega_gene_name", "clone_based_vega_transcript_name", "ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg", "shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt", "HGNC_mb001", "uniprot_sptrembl", "wikigene_description", "dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"}));
+            Set<String> idremove = new HashSet<>(Arrays.asList(new String[]{"clone_based_ensembl_gene_name", "clone_based_ensembl_transcript_name", "clone_based_vega_gene_name", "clone_based_vega_transcript_name", "ox_ENS_LRG_transcript__dm_dbprimary_acc_1074", "ottt", "ottg", "shares_cds_with_enst", "shares_cds_with_ottt", "shares_cds_and_utr_with_ottt", "HGNC_mb001", "uniprot_sptrembl", "wikigene_description", "dbass3_id", "dbass3_name", "dbass5_id", "dbass5_name"}));
 
             for (AttributePage p : attrs)
                 for (AttributeGroup g : p.getAttributeGroups())
@@ -367,7 +367,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         }
 
         // remove duplicated features
-        Set<String> featIds = new HashSet<String>();
+        Set<String> featIds = new HashSet<>();
         Iterator<EnsemblKeggFeatureCategory> featIt = feats.iterator();
         while (featIt.hasNext()) {
             EnsemblKeggFeatureCategory feat = featIt.next();
@@ -502,7 +502,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 linkId = ENSEMBL_GENES;
             }
 
-            Set<String> sinks = new HashSet<String>();
+            Set<String> sinks = new HashSet<>();
 
             for (FeatureCategory f : ensemblFeats) {
                 String id = f.getRef();
@@ -690,7 +690,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         URL url = new URL("ftp://ftp.geneontology.org/pub/go/ontology/gene_ontology.obo");
         OBOStreamReader oboReader = new OBOStreamReader(url);
 
-        Map<String, Set<String>> tree = new HashMap<String, Set<String>>();
+        Map<String, Set<String>> tree = new HashMap<>();
 
         OBOEvent evt = oboReader.nextEvent();
         while (evt != null) {
@@ -701,7 +701,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
                 evt = oboReader.nextEvent();
 
                 String id = null;
-                Set<String> isA = new HashSet<String>();
+                Set<String> isA = new HashSet<>();
                 boolean obsolete = false;
 
                 while (evt != null && evt.getType() != STANZA_START) {
@@ -752,7 +752,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         MappingData plainData = new MappingData(data.getSrcNode().getId(), data.getDstNode().getId());
 
         for (String id : data.getSrcIds()) {
-            Set<String> dstIds = new HashSet<String>(data.get(id));
+            Set<String> dstIds = new HashSet<>(data.get(id));
 
             plainGoTerm(id, new HashSet<String>(), dstIds, data.getMap(), tree);
 
@@ -782,7 +782,7 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             }
 
             dstIds.addAll(ids);
-            Set<String> childPath = new HashSet<String>(path);
+            Set<String> childPath = new HashSet<>(path);
             childPath.add(id);
             plainGoTerm(child, childPath, dstIds, map, childrenTree);
         }

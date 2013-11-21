@@ -95,7 +95,7 @@ public class ExcelReader {
         Cell cell = null;
         Cell firstCell = null;
         int lastCellNum = 0;
-        List<ExcelHeader> headers = new ArrayList<ExcelHeader>();
+        List<ExcelHeader> headers = new ArrayList<>();
 
         if (header != null) {
 

@@ -27,9 +27,7 @@ import java.util.Map;
 
 public final class ColorRegistry {
 
-
     private static ColorRegistry instance;
-
 
     public static ColorRegistry get() {
         if (instance == null) {
@@ -38,7 +36,7 @@ public final class ColorRegistry {
         return instance;
     }
 
-    private static final Map<String, Color> registry = new HashMap<String, Color>();
+    private static final Map<String, Color> registry = new HashMap<>();
 
     public Color getColor(String id) {
         if (registry.containsKey(id)) {

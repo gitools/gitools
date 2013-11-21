@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;

@@ -81,8 +81,8 @@ public class FilterCheckBoxComponent extends FilterComponent {
             JCheckBox check = null;
             this.setLayout(new GridLayout(options.length, 1));
 
-            for (int i = 0; i < options.length; i++) {
-                check = new JCheckBox(options[i]);
+            for (String option : options) {
+                check = new JCheckBox(option);
                 this.add(check);
             }
             currentHeight = CHECK_HEIGHT * options.length;
@@ -95,7 +95,7 @@ public class FilterCheckBoxComponent extends FilterComponent {
     // FIXME : Check if get filter from check value/s is correct
     public List<Filter> getFilters() {
 
-        List<Filter> filters = new ArrayList<Filter>();
+        List<Filter> filters = new ArrayList<>();
 
         Filter f = new Filter();
 
@@ -122,36 +122,6 @@ public class FilterCheckBoxComponent extends FilterComponent {
     public Boolean hasChanged() {
         return true;
 
-    }
-
-    /**
-     * If the component is child the text of each radio is obtained from filterOptions
-     * component
-     *
-     * @param child
-     * @return
-     */
-
-    private String[] getListTextOptions() {
-        String res[] = null;
-        if (filterOptions != null) {
-            res = new String[filterOptions.getOptions().size()];
-            for (int i = 0; i < filterOptions.getOptions().size(); i++) {
-                res[i] = filterOptions.getOptions().get(i).getValue();
-            }
-
-        } else {
-            if (filterDescription == null) {
-                return res;
-            }
-
-            res = new String[filterDescription.getOptions().size()];
-
-            for (int i = 0; i < filterDescription.getOptions().size(); i++) {
-                res[i] = filterDescription.getOptions().get(i).getValue();
-            }
-        }
-        return res;
     }
 
     @Override

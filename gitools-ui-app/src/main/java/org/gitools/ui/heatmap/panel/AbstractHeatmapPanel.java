@@ -24,23 +24,22 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayers;
-import org.gitools.core.heatmap.drawer.AbstractHeatmapDrawer;
-import org.gitools.core.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.utils.events.EventUtils;
+import org.gitools.ui.heatmap.drawer.AbstractHeatmapDrawer;
+import org.gitools.ui.heatmap.drawer.header.HeatmapHeaderDrawer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static org.gitools.utils.events.EventUtils.isAny;
+
 class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     private final AbstractHeatmapDrawer drawer;
-    private Heatmap heatmap;
 
     AbstractHeatmapPanel(Heatmap heatmap, AbstractHeatmapDrawer drawer) {
-        this.heatmap = heatmap;
         this.drawer = drawer;
         this.drawer.setHeatmap(heatmap);
 
@@ -53,10 +52,6 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
         setBackground(Color.WHITE);
         setPreferredSize(drawer.getSize());
 
-    }
-
-    public Heatmap getHeatmap() {
-        return heatmap;
     }
 
     public AbstractHeatmapDrawer getDrawer() {
@@ -78,15 +73,15 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (EventUtils.isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS)) {
+        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS)) {
             if (getDrawer() instanceof HeatmapHeaderDrawer) {
                 ((HeatmapHeaderDrawer) getDrawer()).update();
             }
         }
 
-        if (EventUtils.isAny(evt, HeatmapDimension.class) ||
-                EventUtils.isAny(evt, Decorator.class) ||
-                EventUtils.isAny(evt, HeatmapLayers.class)
+        if (isAny(evt, HeatmapDimension.class) ||
+                isAny(evt, Decorator.class) ||
+                isAny(evt, HeatmapLayers.class)
                 ) {
             updateSize();
             repaint();

@@ -33,7 +33,7 @@ public class ConfigurationXmlAdapter extends XmlAdapter<ConfigurationXmlElement,
 
     @Override
     public Map<String, String> unmarshal(ConfigurationXmlElement v) throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         for (ConfigurationXmlElement.ConfigurationXmlEntry entry : v.getConfiguration())
             map.put(entry.getName(), entry.getValue());
         return map;

@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.data;
 
 import com.google.common.base.Predicate;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;

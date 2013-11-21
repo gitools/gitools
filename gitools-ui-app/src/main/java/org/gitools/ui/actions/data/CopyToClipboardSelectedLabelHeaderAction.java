@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.actions.data;
 
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.actions.HeatmapAction;

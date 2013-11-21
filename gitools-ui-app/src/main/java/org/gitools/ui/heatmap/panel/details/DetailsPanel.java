@@ -59,9 +59,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         try {
             LookAndFeelAddons.setAddon(MetalLookAndFeelAddons.class);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -121,7 +119,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         } else {
             rowsBox.setTitle(label);
         }
-        List<DetailsDecoration> details = new ArrayList<DetailsDecoration>();
+        List<DetailsDecoration> details = new ArrayList<>();
         rows.populateDetails(details);
         rowsBox.draw(details);
     }
@@ -146,7 +144,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
             layersBox.setTitle("Values");
         }
 
-        List<DetailsDecoration> layersDetails = new ArrayList<DetailsDecoration>();
+        List<DetailsDecoration> layersDetails = new ArrayList<>();
         heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getFocus(), heatmap.getColumns().getFocus());
         layersBox.draw(layersDetails);
     }

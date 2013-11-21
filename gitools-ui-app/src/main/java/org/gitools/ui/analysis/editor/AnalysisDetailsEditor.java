@@ -50,7 +50,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
+public abstract class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
 
     private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
 
@@ -127,9 +127,7 @@ public class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
     void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) {
     }
 
-    protected void performUrlAction(String name, Map<String, String> params) {
-    }
-
+    protected abstract void performUrlAction(String name, Map<String, String> params);
     @Override
     public void doSave(IProgressMonitor progressMonitor) {
         if (xmlPersistance == null || fileformat == null) {

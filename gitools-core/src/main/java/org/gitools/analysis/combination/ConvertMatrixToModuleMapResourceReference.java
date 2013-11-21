@@ -22,11 +22,12 @@
 package org.gitools.analysis.combination;
 
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.core.model.HashModuleMap;
 import org.gitools.core.model.IModuleMap;
-import org.gitools.core.utils.MatrixUtils;
 import org.gitools.persistence.ResourceReference;
 
 public class ConvertMatrixToModuleMapResourceReference extends ResourceReference<IModuleMap> {
@@ -39,7 +40,23 @@ public class ConvertMatrixToModuleMapResourceReference extends ResourceReference
     protected IModuleMap onAfterLoad(IResource resource) {
 
         if (resource instanceof IMatrix) {
-            return MatrixUtils.matrixToModuleMap((IMatrix) resource);
+
+            IMatrix matrix = (IMatrix) resource;
+
+            HashModuleMap moduleMap = new HashModuleMap();
+
+            IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
+
+            for (String item : matrix.getRows()) {
+                for (String module : matrix.getColumns()) {
+
+                    if (matrix.get(layer, item, module) == 1.0) {
+                        moduleMap.addMapping(module, item);
+                    }
+                }
+            }
+
+            return moduleMap;
         }
 
         return (IModuleMap) resource;

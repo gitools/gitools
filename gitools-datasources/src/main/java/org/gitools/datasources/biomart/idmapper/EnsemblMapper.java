@@ -55,7 +55,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
 
         monitor.begin("Getting mappings from Ensembl ...", 1);
 
-        final Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+        final Map<String, Set<String>> map = new HashMap<>();
 
         Query q = createQuery(dataset, srcInternalName, dstInternalName);
         try {
@@ -74,7 +74,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
                     String dstf = rowFields[1];
                     Set<String> items = map.get(srcf);
                     if (items == null) {
-                        items = new HashSet<String>();
+                        items = new HashSet<>();
                         map.put(srcf, items);
                     }
                     items.add(dstf);
@@ -99,7 +99,7 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         return data;
     }
 
-    private static final Map<String, String> inameMap = new HashMap<String, String>();
+    private static final Map<String, String> inameMap = new HashMap<>();
 
     static {
         inameMap.put(ENSEMBL_GENES, "ensembl_gene_id");

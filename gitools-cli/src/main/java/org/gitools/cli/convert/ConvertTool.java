@@ -110,7 +110,7 @@ public class ConvertTool extends AbstractTool {
 
         Arguments args = (Arguments) argsObject;
 
-        List<Conversion> vc = new ArrayList<Conversion>();
+        List<Conversion> vc = new ArrayList<>();
 
         initConversionList(vc);
 

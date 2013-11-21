@@ -62,7 +62,7 @@ public class TextPattern {
 
 
     private static List<Token> internalCompile(String pattern) {
-        List<Token> tokens = new ArrayList<Token>();
+        List<Token> tokens = new ArrayList<>();
 
         if (pattern == null) {
             return tokens;

@@ -38,7 +38,7 @@ public class DecoratorArchive {
     public transient final static String VERSION = "3.0";
 
 
-    private final List<Decorator> scaleDecorators = new ArrayList<Decorator>();
+    private final List<Decorator> scaleDecorators = new ArrayList<>();
 
     private transient final String DEFAULT = "Default";
 
@@ -73,7 +73,7 @@ public class DecoratorArchive {
 
 
     public Map<String, Decorator> getDecorators() {
-        Map<String, Decorator> decoratorMap = new HashMap<String, Decorator>();
+        Map<String, Decorator> decoratorMap = new HashMap<>();
 
         for (Decorator d : scaleDecorators) {
             decoratorMap.put(d.getName(), d);

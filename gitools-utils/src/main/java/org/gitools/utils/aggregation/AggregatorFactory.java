@@ -23,41 +23,23 @@ package org.gitools.utils.aggregation;
 
 import org.gitools.api.analysis.IAggregator;
 
-import java.util.*;
-
 public class AggregatorFactory {
 
-    private static final List<IAggregator> aggregators = new ArrayList<IAggregator>();
-
-    private static final Map<String, IAggregator> aggregatorsMap = new HashMap<String, IAggregator>();
-
-    static {
-        put(MultAggregator.INSTANCE);
-        put(SumAggregator.INSTANCE);
-        put(SumAbsAggregator.INSTANCE);
-        put(MeanAggregator.INSTANCE);
-        put(LogSumAggregator.INSTANCE);
-        put(StdDevAggregator.INSTANCE);
-        put(VarianceAggregator.INSTANCE);
-        put(FrequencyAggregator.INSTANCE);
-        put(NonZeroCountAggregator.INSTANCE);
-        put(MinAggregator.INSTANCE);
-        put(MaxAggregator.INSTANCE);
-
-    }
-
-    private static void put(IAggregator aggregator) {
-        aggregators.add(aggregator);
-        aggregatorsMap.put(aggregator.toString(), aggregator);
-    }
-
-    public static IAggregator create(String name) {
-        return aggregatorsMap.get(name);
-    }
+    private static IAggregator[] AGGREGATORS = new IAggregator[] {
+                                    MultAggregator.INSTANCE,
+                                    SumAggregator.INSTANCE,
+                                    SumAbsAggregator.INSTANCE,
+                                    MeanAggregator.INSTANCE,
+                                    LogSumAggregator.INSTANCE,
+                                    StdDevAggregator.INSTANCE,
+                                    VarianceAggregator.INSTANCE,
+                                    FrequencyAggregator.INSTANCE,
+                                    NonZeroCountAggregator.INSTANCE,
+                                    MinAggregator.INSTANCE,
+                                    MaxAggregator.INSTANCE
+                        };
 
     public static IAggregator[] getAggregatorsArray() {
-        final IAggregator[] aggregatorsArray = new IAggregator[aggregators.size()];
-        aggregators.toArray(aggregatorsArray);
-        return aggregatorsArray;
+        return AGGREGATORS;
     }
 }

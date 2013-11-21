@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.platform.os;
 
-
 public class OperatingSystemUtils {
 
     private static String OS = System.getProperty("os.name").toLowerCase();

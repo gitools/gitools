@@ -59,14 +59,6 @@ public class ColorUtils {
         return "#" + Integer.toHexString((color.getRGB() & 0xffffff) | 0x1000000).substring(1);
     }
 
-
-    public static Color invert(Color color) {
-        int r = 255 - color.getRed();
-        int g = 255 - color.getGreen();
-        int b = 255 - color.getBlue();
-        return new Color(r, g, b);
-    }
-
     /**
      * Best foreground color. Returns WHITE or BLACK color depending on the 'backgroundColor' luminescence level.
      *

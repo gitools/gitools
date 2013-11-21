@@ -73,31 +73,9 @@ class MatrixViewWeka extends Instances {
         return structure;
     }
 
-    public void setDataSet(Instances mergeInstances) {
-    }
-
-
-    public Instances getDataSet() throws IOException {
-
-        Instance current = null;
-
-        Instances dataSet = new Instances("matrixToCluster", m_Attributes, 0);
-
-        try {
-            for (int i = 0; i < matrixView.getSize(); i++) {
-                current = get(i);
-                dataSet.add(current);
-            }
-        } catch (Exception ex) {
-            throw new IOException("Error retrieving Weka dataset");
-        }
-        return dataSet;
-    }
-
     /**
      * Given an index (col,row) from the matrix we retrieve the instance
      */
-
     public Instance get(int index) throws Exception {
 
         if (index > matrixView.getSize() - 1) {
@@ -161,20 +139,10 @@ class MatrixViewWeka extends Instances {
         m_ClassIndex = initClassIndex;
     }
 
-    void resetFilteredAttributes() {
-
-        indexes = null;
-
-        m_Attributes = addAttributes(matrixView.getSize());
-
-        structure = new Instances("matrixToCluster", m_Attributes, 0);
-    }
-
     @Override
     public int numInstances() {
         return matrixView.getSize();
     }
-
 
     @Override
     public Instance instance(int i) {

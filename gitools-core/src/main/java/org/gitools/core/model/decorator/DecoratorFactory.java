@@ -30,7 +30,7 @@ import java.util.List;
 
 public class DecoratorFactory {
 
-    private static final List<DecoratorDescriptor> descriptors = new ArrayList<DecoratorDescriptor>();
+    private static final List<DecoratorDescriptor> descriptors = new ArrayList<>();
 
     static {
         descriptors.add(new DecoratorDescriptor(DecoratorNames.BINARY, BinaryDecorator.class));

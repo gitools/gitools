@@ -23,10 +23,6 @@ package org.gitools.analysis.clustering;
 
 public class ClusteringException extends Exception {
 
-    public ClusteringException(String msg) {
-        super(msg);
-    }
-
     public ClusteringException(Throwable cause) {
         super(cause);
     }

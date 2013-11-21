@@ -60,7 +60,7 @@ public class ConfigurationXmlElement {
 
 
     @XmlElement(name = "property")
-    private final List<ConfigurationXmlEntry> configuration = new ArrayList<ConfigurationXmlElement.ConfigurationXmlEntry>();
+    private final List<ConfigurationXmlEntry> configuration = new ArrayList<>();
 
     public ConfigurationXmlElement() {
     }

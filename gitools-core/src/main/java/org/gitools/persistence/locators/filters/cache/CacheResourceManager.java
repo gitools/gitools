@@ -40,7 +40,7 @@ public class CacheResourceManager {
         return INSTANCE;
     }
 
-    private Map<URL, IResourceLocator> cache = new HashMap<URL, IResourceLocator>();
+    private Map<URL, IResourceLocator> cache = new HashMap<>();
 
     private CacheResourceManager() {
     }

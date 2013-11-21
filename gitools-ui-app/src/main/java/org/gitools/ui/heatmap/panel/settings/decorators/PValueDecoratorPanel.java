@@ -54,7 +54,7 @@ public class PValueDecoratorPanel extends DecoratorPanel {
 
         Bindings.bind(useCorrection, model(PValueDecorator.PROPERTY_USE_CORRECTION));
 
-        Bindings.bind(correctedValue, new SelectionInList<String>(
+        Bindings.bind(correctedValue, new SelectionInList<>(
                 getLayers(),
                 new ValueHolder(),
                 model(PValueDecorator.PROPERTY_CORRECTED_VALUE)

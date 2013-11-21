@@ -66,7 +66,7 @@ public class LoadDecoratorDialog<T> extends javax.swing.JDialog {
     private static final String MESSAGE = "Select a scale";
 
 
-    private final List<T> listObjects = new ArrayList<T>();
+    private final List<T> listObjects = new ArrayList<>();
 
     private final DefaultListModel model;
 

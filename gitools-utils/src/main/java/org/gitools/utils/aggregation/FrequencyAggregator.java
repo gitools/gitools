@@ -23,39 +23,21 @@ package org.gitools.utils.aggregation;
 
 import org.gitools.api.analysis.IAggregator;
 
-/**
- * Multiplication
- */
 public class FrequencyAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new FrequencyAggregator();
 
     private FrequencyAggregator() {
+        super("Frequency (Non-zero)");
     }
 
     @Override
-    public double aggregate(double[] data) {
-
-        double length = (double) data.length;
+    public Double aggregateNoNulls(double[] values) {
         double events = 0.0;
-
-
-        for (double d : data) {
-            if (!(Double.isNaN(d) || d == 0)) {
-                events += 1;
-            }
+        for (double value : values) {
+            if (value != 0.0) events++;
         }
-
-        if (events == 0.0 || length == 0.0) {
-            return 0.0;
-        } else {
-            return events / length;
-        }
+        return events / values.length;
     }
 
-
-    @Override
-    public String toString() {
-        return "Frequency (Non-zero)";
-    }
 }

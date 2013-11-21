@@ -79,9 +79,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 matrix.set(layer, getter.invoke(value), identifiers);
             }
 
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
@@ -110,11 +108,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 }
             }
 
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
 

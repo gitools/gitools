@@ -23,7 +23,7 @@ package org.gitools.ui.heatmap.panel;
 
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
-import org.gitools.core.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.ui.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;
@@ -49,7 +49,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private Point startScrollValue;
     private final IMatrixViewDimension dimension;
 
-    private final List<HeatmapMouseListener> listeners = new ArrayList<HeatmapMouseListener>(1);
+    private final List<HeatmapMouseListener> listeners = new ArrayList<>(1);
     private int selectionMoveLastIndex;
     private boolean selectionHasMoved = false;
 

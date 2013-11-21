@@ -92,14 +92,6 @@ class ClusteringOptionsPage extends AbstractWizardPage {
         return headerChk.isSelected();
     }
 
-    public void setHeaderEnabled(boolean res) {
-        headerChk.setEnabled(res);
-    }
-
-    public boolean isNewickExportVisible() {
-        return newickChk.isVisible();
-    }
-
     public void setNewickExportVisible(boolean enabled) {
         newickChk.setVisible(enabled);
     }

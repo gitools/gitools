@@ -56,7 +56,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
 
         initComponents();
 
-        listModel = new AttributesSelectionModel<T>(attributes);
+        listModel = new AttributesSelectionModel<>(attributes);
 
         listModel.addListDataListener(new ListDataListener() {
             @Override
@@ -239,7 +239,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
         dlg.setVisible(true);
 
         List<Integer> unselIndices = listModel.getUnselectedIndices();
-        List<Integer> selIndices = new ArrayList<Integer>();
+        List<Integer> selIndices = new ArrayList<>();
         if (dlg.getReturnStatus() == ListDialog.RET_OK) {
             for (int i : dlg.getSelectedIndices())
                 selIndices.add(unselIndices.get(i));
@@ -250,7 +250,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
-        List<Integer> removedIndices = new ArrayList<Integer>(listIndices.length);
+        List<Integer> removedIndices = new ArrayList<>(listIndices.length);
 
         for (int i : listIndices)
             removedIndices.add(selIndices.get(i));
@@ -260,12 +260,12 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
-        Map<String, Integer> indexMap = new HashMap<String, Integer>();
+        Map<String, Integer> indexMap = new HashMap<>();
         Object[] attributes = listModel.getAttributes();
         for (int i = 0; i < attributes.length; i++)
             indexMap.put(attributes[i].toString().trim(), i);
 
-        List<Integer> indices = new ArrayList<Integer>();
+        List<Integer> indices = new ArrayList<>();
 
         try {
             File file = FileChooserUtils.selectFile("Select file ...", Settings.getDefault().getLastPath(), FileChooserUtils.MODE_OPEN).getFile();
@@ -323,7 +323,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
     private void upBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
-        List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
+        List<Integer> moveIndices = new ArrayList<>(listIndices.length);
 
         for (int i : listIndices)
             moveIndices.add(selIndices.get(i));
@@ -339,7 +339,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
     private void downBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downBtnActionPerformed
         int[] listIndices = list.getSelectedIndices();
         List<Integer> selIndices = listModel.getSelectedIndices();
-        List<Integer> moveIndices = new ArrayList<Integer>(listIndices.length);
+        List<Integer> moveIndices = new ArrayList<>(listIndices.length);
 
         for (int i : listIndices)
             moveIndices.add(selIndices.get(i));

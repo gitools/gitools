@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ToolFactory {
-    final static Map<String, Class<? extends ITool>> TOOLS = new HashMap<String, Class<? extends ITool>>();
+    final static Map<String, Class<? extends ITool>> TOOLS = new HashMap<>();
 
     static {
         addTool(new LoadTool());
@@ -43,9 +43,7 @@ public class ToolFactory {
     public static ITool get(String toolName) {
         try {
             return TOOLS.get(toolName).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;

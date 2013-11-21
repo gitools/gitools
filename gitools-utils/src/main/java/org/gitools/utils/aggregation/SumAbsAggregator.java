@@ -21,27 +21,23 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
 import org.gitools.api.analysis.IAggregator;
 
-/**
- * Absolute Sum
- */
+
 public class SumAbsAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new SumAbsAggregator();
 
     private SumAbsAggregator() {
+        super("Absolute Sum");
     }
 
     @Override
-    public double aggregate(double[] data) {
-        return aggregate(data, Functions.plusAbs);
-    }
-
-
-    @Override
-    public String toString() {
-        return "Absolute Sum";
+    protected Double aggregateNoNulls(double[] values) {
+        double sum = 0.0;
+        for (double value : values) {
+            sum += Math.abs(value);
+        }
+        return sum;
     }
 }

@@ -21,33 +21,20 @@
  */
 package org.gitools.utils.aggregation;
 
-import cern.jet.math.Functions;
 import org.gitools.api.analysis.IAggregator;
 
-/**
- * Mean
- */
+import static org.apache.commons.math3.stat.StatUtils.mean;
+
 public class MeanAggregator extends AbstractAggregator {
 
     public final static IAggregator INSTANCE = new MeanAggregator();
 
     private MeanAggregator() {
+        super("Mean");
     }
 
     @Override
-    public double aggregate(double[] data) {
-        double sum = aggregate(data, Functions.plus);
-
-        if (Double.isNaN(sum)) {
-            return Double.NaN;
-        }
-
-        return sum / data.length;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Mean";
+    public Double aggregateNoNulls(double[] data) {
+        return mean(data);
     }
 }
