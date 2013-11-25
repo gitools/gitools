@@ -38,14 +38,10 @@ public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
     }
 
     public MatrixLayers(T... layers) {
-        this();
-
-        for (T layer : layers) {
-            add(layer);
-        }
+        this(Arrays.asList(layers));
     }
 
-    public MatrixLayers(List<T> layers) {
+    public MatrixLayers(Iterable<T> layers) {
         this();
 
         for (T layer : layers) {

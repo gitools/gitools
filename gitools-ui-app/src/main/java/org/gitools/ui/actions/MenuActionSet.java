@@ -26,6 +26,7 @@ import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 public class MenuActionSet extends ActionSet {
 
@@ -33,21 +34,11 @@ public class MenuActionSet extends ActionSet {
 
     public MenuActionSet() {
         super(new BaseAction[]{
-                new ActionSet("File",
+                new ActionSet("File", KeyEvent.VK_F,
                         new BaseAction[]{
-                                new ActionSet("New",
-                                        new BaseAction[]{
-                                                FileActions.newEnrichmentAnalysisAction,
-                                                FileActions.newOncozAnalysisAction,
-                                                FileActions.newCorrelationAnalysisAction,
-                                                FileActions.newOverlapAnalysisAction,
-                                                FileActions.newCombinationAnalysisAction
-                                        }),
-                                new ActionSet("Open",
-                                        new BaseAction[]{
-                                                FileActions.openAction,
-                                                FileActions.openGenomeSpaceAction
-                                        }),
+                                FileActions.open,
+                                FileActions.openURL,
+                                FileActions.openGenomeSpace,
                                 BaseAction.separator,
                                 FileActions.saveAction,
                                 FileActions.saveAsAction,
@@ -81,12 +72,12 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 FileActions.exitAction
                         }),
-                new ActionSet("Edit",
+                new ActionSet("Edit", KeyEvent.VK_E,
                         new BaseAction[]{
                                 EditActions.selectAllAction,
                                 EditActions.unselectAllAction
                         }),
-                new ActionSet("Data",
+                new ActionSet("Data", KeyEvent.VK_D,
                         new BaseAction[]{
                                 new ActionSet("Filter",
                                         new BaseAction[]{
@@ -115,8 +106,10 @@ public class MenuActionSet extends ActionSet {
                                         }),
                                 DataActions.clusteringByValueAction,
                         }),
-                new ActionSet("Analysis",
+                new ActionSet("Analysis", KeyEvent.VK_A,
                         new BaseAction[]{
+                                AnalysisActions.enrichment,
+                                AnalysisActions.oncodrive,
                                 AnalysisActions.correlations,
                                 AnalysisActions.combinations,
                                 AnalysisActions.overlapping,
@@ -127,7 +120,7 @@ public class MenuActionSet extends ActionSet {
                                                 AnalysisActions.mtcBenjaminiHochbergFdrAction
                                         }),
                         }),
-                new ActionSet("Help",
+                new ActionSet("Help", KeyEvent.VK_H,
                         new BaseAction[]{
                                 HelpActions.welcomeAction,
                                 BaseAction.separator,

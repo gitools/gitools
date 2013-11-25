@@ -163,4 +163,9 @@ public abstract class BaseAction extends AbstractAction {
     protected boolean isEnabledByModel(Object model) {
         return defaultEnabled;
     }
+
+    protected void setAccelerator(KeyStroke keyStroke) {
+        putValue(ACCELERATOR_KEY, keyStroke);
+    }
+
 }

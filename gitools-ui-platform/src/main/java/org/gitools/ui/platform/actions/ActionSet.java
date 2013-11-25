@@ -35,17 +35,25 @@ public class ActionSet extends BaseAction {
     private final List<BaseAction> actions;
 
     public ActionSet(BaseAction[] actions) {
-        this("", null, actions);
+        this("", null, null, actions);
     }
 
     public ActionSet(String name, BaseAction[] actions) {
-        this(name, null, actions);
+        this(name, null, null, actions);
     }
 
-    private ActionSet(String name, ImageIcon icon, BaseAction[] actions) {
+    public ActionSet(String name, int mnemonic, BaseAction[] actions) {
+        this(name, mnemonic, null, actions);
+    }
+
+    private ActionSet(String name, Integer mnemonic, ImageIcon icon, BaseAction[] actions) {
         super(name, icon);
         this.actions = Arrays.asList(actions);
         setEnabled(true);
+
+        if (mnemonic!=null) {
+            setMnemonic(mnemonic);
+        }
     }
 
     public List<BaseAction> getActions() {

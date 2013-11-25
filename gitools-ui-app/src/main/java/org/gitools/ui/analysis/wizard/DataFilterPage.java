@@ -36,9 +36,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class DataFilterPage extends AbstractWizardPage {
 
     private static final long serialVersionUID = 3840797252370672587L;

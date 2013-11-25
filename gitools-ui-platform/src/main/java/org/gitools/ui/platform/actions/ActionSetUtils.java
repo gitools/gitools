@@ -23,9 +23,6 @@ package org.gitools.ui.platform.actions;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.menu.WebMenu;
-import com.alee.laf.menu.WebMenuBar;
-import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
@@ -37,9 +34,9 @@ public class ActionSetUtils {
 
 
     public static JToolBar createToolBar(ActionSet actionSet) {
-        WebToolBar toolBar = new WebToolBar(WebToolBar.HORIZONTAL);
+        JToolBar toolBar = new JToolBar(WebToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
-        toolBar.setToolbarStyle(ToolbarStyle.attached);
+        //toolBar.setToolbarStyle(ToolbarStyle.attached);
         return createToolBar(toolBar, actionSet);
     }
 
@@ -97,26 +94,28 @@ public class ActionSetUtils {
 
 
     public static JMenuBar createMenuBar(ActionSet actionSet) {
-        WebMenuBar menuBar = new WebMenuBar();
-        for (BaseAction a : actionSet.getActions())
+        JMenuBar menuBar = new JMenuBar();
+        for (BaseAction a : actionSet.getActions()) {
             menuBar.add(createMenu(a));
+        }
+
         return menuBar;
     }
 
 
     private static JMenu createMenu(BaseAction action) {
-        WebMenu menu = new WebMenu(action);
-
+        JMenu menu = new JMenu(action);
 
         List<BaseAction> actions = ((ActionSet) action).getActions();
-        for (BaseAction a : actions)
+        for (BaseAction a : actions) {
             if (a instanceof SeparatorAction) {
                 menu.addSeparator();
             } else if (a instanceof ActionSet) {
                 menu.add(createMenu(a));
             } else {
-                menu.add(a);
+                menu.add(new JMenuItem(a));
             }
+        }
 
         return menu;
     }

@@ -26,16 +26,10 @@ import org.gitools.ui.platform.actions.BaseAction;
 
 class FileActions {
 
-    // New
-    public static final BaseAction newEnrichmentAnalysisAction = new NewEnrichmentAnalysisAction();
-    public static final BaseAction newOncozAnalysisAction = new NewOncodriveAnalysisAction();
-    public static final BaseAction newCombinationAnalysisAction = new NewCombinationAnalysisAction();
-    public static final BaseAction newCorrelationAnalysisAction = new NewCorrelationAnalysisAction();
-    public static final BaseAction newOverlapAnalysisAction = new NewOverlappingAnalysisAction();
-
     // Open
-    public static final BaseAction openAction = new OpenAction();
-    public static final BaseAction openGenomeSpaceAction = new OpenGenomeSpaceAction();
+    public static final BaseAction open = new OpenFromFilesystemAction();
+    public static final BaseAction openGenomeSpace = new OpenFromGenomeSpaceAction();
+    public static final BaseAction openURL = new OpenFromURLAction();
 
     // Save
     public static final BaseAction saveAction = new SaveAction();

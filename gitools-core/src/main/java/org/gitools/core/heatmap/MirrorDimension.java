@@ -25,7 +25,6 @@ import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
-import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 
@@ -126,7 +125,6 @@ public class MirrorDimension extends HeatmapDimension {
 
     @Override
     public void init(IMatrixDimension matrixDimension) {
-        throw new RuntimeException("A mirror dimension cannot be initialized");
     }
 
     @Override

@@ -24,8 +24,9 @@ package org.gitools.ui.heatmap.panel;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.ui.platform.idea.JBScrollBar;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
@@ -105,14 +106,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         inputProcessor = new HeatmapPanelInputProcessor(this);
 
-        colSB = new JScrollBar(JScrollBar.HORIZONTAL);
+        colSB = new JBScrollBar(JScrollBar.HORIZONTAL);
         colSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 updateViewPorts();
             }
         });
-        rowSB = new JScrollBar(JScrollBar.VERTICAL);
+        rowSB = new JBScrollBar(JScrollBar.VERTICAL);
         rowSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {

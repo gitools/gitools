@@ -29,6 +29,7 @@ import org.apache.commons.vfs2.FileType;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.settings.Settings;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
@@ -69,6 +70,41 @@ public class FileChooserUtils {
      */
     public static FileChoose selectFile(String title, String currentPath, int mode, FileFormatFilter[] filters) {
         return selectFileVFS(title, currentPath, mode, filters);
+    }
+
+    private static FileChoose selectFileDefault(String title, String currentPath, int mode, FileFormatFilter[] filters) {
+
+        JFileChooser fileChooser = new JFileChooser(currentPath);
+        fileChooser.setFileHidingEnabled(false);
+
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
+
+        if (filters != null) {
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            for (FileFormatFilter filter : filters)
+                fileChooser.addChoosableFileFilter(filter);
+
+            if (filters.length > 0) {
+                fileChooser.setFileFilter(filters[0]);
+            }
+        }
+
+        int retval = JFileChooser.CANCEL_OPTION;
+
+        if (mode == FileChooserUtils.MODE_SAVE) {
+            retval = fileChooser.showSaveDialog(AppFrame.get());
+        } else if (mode == FileChooserUtils.MODE_OPEN) {
+            retval = fileChooser.showOpenDialog(AppFrame.get());
+        }
+
+        if (retval == JFileChooser.APPROVE_OPTION) {
+            FileFormatFilter formatFilter = (FileFormatFilter) fileChooser.getFileFilter();
+            return new FileChoose(fileChooser.getSelectedFile(), formatFilter);
+        }
+
+        return null;
     }
 
 

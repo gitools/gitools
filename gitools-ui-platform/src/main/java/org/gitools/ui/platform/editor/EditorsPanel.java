@@ -43,9 +43,12 @@ public class EditorsPanel extends WebTabbedPane {
     private final Map<String, Integer> nameCounts = new HashMap<>();
 
     public EditorsPanel() {
-        createComponents();
 
         setTabbedPaneStyle(TabbedPaneStyle.attached);
+        setSelectedBottomBg(Color.WHITE);
+        setBackground(Color.WHITE);
+
+        createComponents();
 
         addChangeListener(new ChangeListener() {
             @Override

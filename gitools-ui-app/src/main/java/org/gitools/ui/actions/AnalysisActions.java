@@ -24,9 +24,14 @@ package org.gitools.ui.actions;
 import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.analysis.stats.mtc.Bonferroni;
 import org.gitools.ui.actions.analysis.*;
+import org.gitools.ui.actions.file.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
 class AnalysisActions {
+
+    public static final BaseAction oncodrive = new OncodriveAnalysisAction();
+
+    public static final BaseAction enrichment = new EnrichmentAnalysisAction();
 
     public static final BaseAction combinations = new CombinationsAction();
 

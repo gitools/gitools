@@ -33,10 +33,10 @@ public final class ToolBarActionSet extends ActionSet {
 
     public ToolBarActionSet() {
         super(new BaseAction[]{
-                FileActions.openAction,
+                FileActions.open,
                 FileActions.saveAction,
                 BaseAction.separator,
-                FileActions.openGenomeSpaceAction,
+                FileActions.openGenomeSpace,
                 FileActions.openIntegrativeGenomicViewerAction,
                 HeatmapActions.snapshotAction});
     }

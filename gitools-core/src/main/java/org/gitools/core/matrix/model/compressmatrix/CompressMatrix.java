@@ -115,6 +115,10 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimensi
         int columnIndex = getColumns().indexOf(identifiers[1]);
         int layerIndex = getLayers().indexOf(layer.getId());
 
+        if (rowIndex == -1 || columnIndex == -1 || layerIndex == -1) {
+            return null;
+        }
+
         // The cache is who loads the value if it's not already loaded.
         double[][] rowValues = rowsCache.getUnchecked(rowIndex);
 

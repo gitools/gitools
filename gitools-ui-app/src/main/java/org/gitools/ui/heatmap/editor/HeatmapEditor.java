@@ -23,8 +23,6 @@ package org.gitools.ui.heatmap.editor;
 
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
-import com.alee.extended.panel.WebAccordion;
-import com.alee.extended.panel.WebAccordionStyle;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import org.gitools.api.PersistenceException;
@@ -43,7 +41,6 @@ import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.heatmap.panel.settings.SettingsPanel;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -135,21 +132,15 @@ public class HeatmapEditor extends AbstractEditor {
 
     private void createComponents(JComponent container) {
 
-        WebAccordion leftPanel = new WebAccordion(WebAccordionStyle.accordionStyle);
-        leftPanel.setMultiplySelectionAllowed(false);
-        leftPanel.setAnimate(true);
-        leftPanel.setUndecorated(true);
-
         detailsPanel = new DetailsPanel(heatmap);
         colorScalePanel = new ColorScalePanel(heatmap);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
-        GroupPanel details = new GroupPanel(GroupingType.fillMiddle, false, detailsPanel, emptyPanel, colorScalePanel);
-        details.setUndecorated(true);
-        details.setBackground(Color.WHITE);
-        leftPanel.addPane("Details", details);
-        leftPanel.addPane("Settings", new JScrollPane(new SettingsPanel(heatmap).getRootPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        GroupPanel leftPanel = new GroupPanel(GroupingType.fillMiddle, false, detailsPanel, emptyPanel, colorScalePanel);
+        leftPanel.setUndecorated(true);
+        leftPanel.setBackground(Color.WHITE);
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
@@ -168,9 +159,9 @@ public class HeatmapEditor extends AbstractEditor {
         searchPanel = new HeatmapSearchPanel(heatmap);
         searchPanel.setVisible(false);
 
-        WebSplitPane splitPane = new WebSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, heatmapPanel);
+        JSplitPane splitPane = new WebSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, heatmapPanel);
 
-        heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
+        heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);

@@ -40,20 +40,22 @@ import org.gitools.ui.utils.FileChoose;
 import org.gitools.ui.utils.FileChooserUtils;
 import org.gitools.ui.utils.FileFormatFilter;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class OpenAction extends BaseAction {
+public class OpenFromFilesystemAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public OpenAction() {
-        super("from filesystem...");
+    public OpenFromFilesystemAction() {
+        super("Open...");
         setDesc("Open a heatmap or an analysis from the filesystem");
         setSmallIconFromResource(IconNames.openMatrix16);
         setLargeIconFromResource(IconNames.openMatrix24);
-        setMnemonic(KeyEvent.VK_M);
+        setMnemonic(KeyEvent.VK_O);
         setDefaultEnabled(true);
+        setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
     }
 
     @Override

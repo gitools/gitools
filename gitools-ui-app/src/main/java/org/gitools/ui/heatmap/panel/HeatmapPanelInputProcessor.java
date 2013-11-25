@@ -170,7 +170,9 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void addToSelected(int start, int end, IMatrixViewDimension dim) {
-        addToSelected(dim.toList().subList(start, end + 1), dim);
+        int first = start < end ? start : end;
+        int last = start < end ? end + 1 : start + 1;
+        addToSelected(dim.toList().subList(first, last), dim);
     }
 
     public void addToSelected(Collection<String> toAdd, IMatrixViewDimension dim) {

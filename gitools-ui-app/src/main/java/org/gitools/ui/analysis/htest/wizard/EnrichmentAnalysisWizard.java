@@ -56,6 +56,9 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
     private StatisticalTestPage statisticalTestPage;
     private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
+    private boolean examplePageEnabled = true;
+    private boolean dataFromMemory = false;
+    private boolean saveFilePageEnabled = true;
 
     public EnrichmentAnalysisWizard() {
         super();
@@ -68,15 +71,17 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
     @Override
     public void addPages() {
         // Example
-        if (Settings.getDefault().isShowCombinationExamplePage()) {
+        if (isExamplePageEnabled() && Settings.getDefault().isShowCombinationExamplePage()) {
             examplePage = new ExamplePage("an enrichment analysis");
             examplePage.setTitle("Enrichment analysis");
             addPage(examplePage);
         }
 
         // Data
-        dataPage = new DataFilePage();
-        addPage(dataPage);
+        if (!isDataFromMemory()) {
+            dataPage = new DataFilePage();
+            addPage(dataPage);
+        }
 
         // Data filtering
         dataFilterPage = new DataFilterPage();
@@ -92,12 +97,14 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         addPage(statisticalTestPage);
 
         // Destination
-        saveFilePage = new SaveFilePage();
-        saveFilePage.setTitle("Select destination file");
-        saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-        saveFilePage.setFormats(new FileFormat[]{new FileFormat("Enrichment analysis (*." + EnrichmentAnalysisFormat.EXTENSION + ")", EnrichmentAnalysisFormat.EXTENSION)});
-        saveFilePage.setFormatsVisible(false);
-        addPage(saveFilePage);
+        if (isSaveFilePageEnabled()) {
+            saveFilePage = new SaveFilePage();
+            saveFilePage.setTitle("Select destination file");
+            saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
+            saveFilePage.setFormats(new FileFormat[]{new FileFormat("Enrichment analysis (*." + EnrichmentAnalysisFormat.EXTENSION + ")", EnrichmentAnalysisFormat.EXTENSION)});
+            saveFilePage.setFormatsVisible(false);
+            addPage(saveFilePage);
+        }
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
@@ -147,6 +154,30 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         }
     }
 
+    public boolean isSaveFilePageEnabled() {
+        return saveFilePageEnabled;
+    }
+
+    public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
+        this.saveFilePageEnabled = saveFilePageEnabled;
+    }
+
+    public boolean isExamplePageEnabled() {
+        return examplePageEnabled;
+    }
+
+    public void setExamplePageEnabled(boolean examplePageEnabled) {
+        this.examplePageEnabled = examplePageEnabled;
+    }
+
+    public boolean isDataFromMemory() {
+        return dataFromMemory;
+    }
+
+    public void setDataFromMemory(boolean dataFromMemory) {
+        this.dataFromMemory = dataFromMemory;
+    }
+
     @Override
     public boolean canFinish() {
         IWizardPage page = getCurrentPage();
@@ -155,16 +186,6 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         canFinish |= page == saveFilePage && page.isComplete();
 
         return canFinish;
-    }
-
-    @Override
-    public void performCancel() {
-        super.performCancel();
-    }
-
-    @Override
-    public void performFinish() {
-        Settings.getDefault().setLastWorkPath(saveFilePage.getFolder());
     }
 
     public String getWorkdir() {

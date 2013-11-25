@@ -27,9 +27,9 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.core.matrix.model.AbstractMatrix;
-import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
+import org.gitools.core.model.Resource;
 import org.gitools.persistence.ResourceReference;
+import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -42,7 +42,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 @XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
-public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> implements IMatrixView {
+public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
@@ -54,6 +54,8 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
     private HeatmapDimension rows;
     private HeatmapDimension columns;
 
+    private HeatmapLayers layers;
+
     private transient HeatmapDimension diagonalRows;
 
     private boolean diagonal;
@@ -62,9 +64,10 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
     private ResourceReference<IMatrix> data;
 
     public Heatmap() {
-        super(new HeatmapLayers());
+        super();
         this.rows = new HeatmapDimension();
         this.columns = new HeatmapDimension();
+        this.layers = new HeatmapLayers();
         this.diagonal = false;
     }
 
@@ -73,10 +76,11 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
     }
 
     public Heatmap(IMatrix data, boolean diagonal) {
-        super(new HeatmapLayers(data));
+        super();
         this.rows = new HeatmapDimension(data.getDimension(ROWS));
         this.columns = new HeatmapDimension(data.getDimension(COLUMNS));
         this.data = new ResourceReference<>("data", data);
+        this.layers = new HeatmapLayers(data);
         this.diagonal = diagonal;
     }
 
@@ -124,7 +128,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         };
         this.rows.addPropertyChangeListener(propertyListener);
         this.columns.addPropertyChangeListener(propertyListener);
-        getLayers().addPropertyChangeListener(propertyListener);
+        this.layers.addPropertyChangeListener(propertyListener);
 
         IMatrix matrix = getData().get();
         this.rows.init(matrix.getDimension(ROWS));
@@ -137,7 +141,7 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
             this.columns.addHeader(new HeatmapTextLabelsHeader());
         }
 
-        getLayers().init(matrix);
+        this.layers.init(matrix);
 
         if (isDiagonal()) {
             diagonalRows = new MirrorDimension(columns, rows);
@@ -180,6 +184,21 @@ public class Heatmap extends AbstractMatrix<HeatmapLayers, HeatmapDimension> imp
         }
 
         return null;
+    }
+
+    @Override
+    public HeatmapLayers getLayers() {
+        return layers;
+    }
+
+    @Override
+    public <T> T get(IMatrixLayer<T> layer, IMatrixPosition position) {
+        return get(layer, position.toVector());
+    }
+
+    @Override
+    public <T> void set(IMatrixLayer<T> layer, T value, IMatrixPosition position) {
+        set(layer, value, position.toVector());
     }
 
     @Override

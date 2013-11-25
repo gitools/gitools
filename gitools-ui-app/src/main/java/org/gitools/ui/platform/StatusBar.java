@@ -77,6 +77,7 @@ public class StatusBar extends WebStatusBar {
         memoryBar = new WebMemoryBar();
         memoryBar.setShowMaximumMemory(true);
         memoryBar.setPreferredWidth(memoryBar.getPreferredSize().width + 20);
+
         addToEnd(memoryBar);
     }
 
@@ -103,7 +104,7 @@ public class StatusBar extends WebStatusBar {
             //the program was launched.
             device.setDisplayMode(dispModeOld);
             //hide the frame so we can change it.
-            frame.setVisible(false);
+            //frame.setVisible(false);
             //remove the frame from being displayable.
             frame.dispose();
             //put the borders back on the frame.
@@ -117,9 +118,11 @@ public class StatusBar extends WebStatusBar {
 
             //reset the display mode to what it was before
             //we changed it.
+            frame.setVisible(false);
             frame.setVisible(true);
 
         } else { //change to fullscreen.
+
             //hide everything
             frame.setVisible(false);
             //remove the frame from being displayable.
@@ -128,11 +131,13 @@ public class StatusBar extends WebStatusBar {
             frame.setUndecorated(true);
             //make the window fullscreen.
             device.setFullScreenWindow(frame);
+
             //attempt to change the screen resolution.
             device.setDisplayMode(dispMode);
             frame.setResizable(false);
             frame.setAlwaysOnTop(true);
             //show the frame
+            frame.setVisible(false);
             frame.setVisible(true);
         }
         //make sure that the screen is refreshed.

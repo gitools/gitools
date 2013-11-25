@@ -29,7 +29,7 @@ public class OSProperties {
 
     static {
         // Load OS specific properties
-        if (OperatingSystemUtils.isMac()) {
+        if (SystemInfo.isMac) {
             INSTANCE = new OSXProperties();
         } else {
             INSTANCE = new OSProperties();

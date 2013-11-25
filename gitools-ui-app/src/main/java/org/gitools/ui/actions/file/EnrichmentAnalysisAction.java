@@ -25,10 +25,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -38,30 +40,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
-public class NewEnrichmentAnalysisAction extends BaseAction {
+public class EnrichmentAnalysisAction extends HeatmapAction {
 
     private static final long serialVersionUID = -8592231961109105958L;
 
-    public NewEnrichmentAnalysisAction() {
+    public EnrichmentAnalysisAction() {
         super("Enrichment analysis ...");
 
         setDesc("Run an enrichment analysis");
         setMnemonic(KeyEvent.VK_E);
-        setDefaultEnabled(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        IMatrixView matrixView = getHeatmap();
+
         final EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
+        wizard.setExamplePageEnabled(false);
+        wizard.setDataFromMemory(true);
+
+        IMatrixLayers layers = matrixView.getLayers();
+        String[] attributes = new String[layers.size()];
+
+        for (int i = 0; i < layers.size(); i++) {
+            attributes[i] = layers.get(i).getId();
+        }
+
+        wizard.setSaveFilePageEnabled(false);
 
         WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
-
         wizDlg.open();
-
         if (wizDlg.isCancelled()) {
             return;
         }
@@ -70,7 +79,18 @@ public class NewEnrichmentAnalysisAction extends BaseAction {
 
         File populationFile = wizard.getPopulationFile();
 
-        final EnrichmentCommand cmd = new EnrichmentCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), wizard.getModulesFile().getAbsolutePath(), wizard.getWorkdir(), wizard.getFileName());
+        final EnrichmentCommand cmd = new EnrichmentCommand(
+                analysis,
+                wizard.getDataFileFormat(),
+                wizard.getDataFile().getAbsolutePath(),
+                wizard.getSelectedValueIndex(),
+                populationFile != null ? populationFile.getAbsolutePath() : null,
+                wizard.getPopulationDefaultValue(),
+                wizard.getModulesFileFormat(),
+                wizard.getModulesFile().getAbsolutePath(),
+                wizard.getWorkdir(),
+                wizard.getFileName()
+        );
 
         JobThread.execute(AppFrame.get(), new JobRunnable() {
             @Override

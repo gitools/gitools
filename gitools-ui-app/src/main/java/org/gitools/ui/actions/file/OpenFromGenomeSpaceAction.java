@@ -32,20 +32,19 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.json.JSONException;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-/**
- * @noinspection ALL
- */
-public class OpenGenomeSpaceAction extends BaseAction {
+public class OpenFromGenomeSpaceAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
-    public OpenGenomeSpaceAction() {
-        super("from Genomespace ...");
+    public OpenFromGenomeSpaceAction() {
+        super("Open from Genomespace...");
         setDesc("Open a heatmap or an analysis from Genomespace");
         setLargeIconFromResource(IconNames.gs24);
         setSmallIconFromResource(IconNames.gs16);
+        setMnemonic(KeyEvent.VK_G);
         setDefaultEnabled(true);
     }
 
