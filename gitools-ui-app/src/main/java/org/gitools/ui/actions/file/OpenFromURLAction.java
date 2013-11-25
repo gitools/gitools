@@ -21,51 +21,38 @@
  */
 package org.gitools.ui.actions.file;
 
-import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class SaveAsAction extends BaseAction {
+import static org.apache.commons.lang.StringUtils.isEmpty;
+
+public class OpenFromURLAction extends BaseAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 
-    public SaveAsAction() {
-        super("Save as...");
-        setDesc("Save to another location");
-        setMnemonic(KeyEvent.VK_A);
-    }
-
-    @Override
-    public boolean isEnabledByEditor(IEditor editor) {
-
-        if (editor == null) {
-            return false;
-        }
-
-        EditorsPanel editorPanel;
-        editorPanel = AppFrame.get().getEditorsPanel();
-
-        return editorPanel.getSelectedEditor().isSaveAsAllowed();
+    public OpenFromURLAction() {
+        super("Open from URL...");
+        setDesc("Open a heatmap or an analysis from a URL");
+        setMnemonic(KeyEvent.VK_U);
+        setDefaultEnabled(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
 
-        final IEditor currentEditor = editorPanel.getSelectedEditor();
+        String fileURL = JOptionPane.showInputDialog(null, "Specify URL:", "Open URL", JOptionPane.QUESTION_MESSAGE);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                currentEditor.doSaveAs(monitor);
-            }
-        });
+        if (!isEmpty(fileURL)) {
+            JobRunnable loadFile = new CommandLoadFile(fileURL);
+            JobThread.execute(AppFrame.get(), loadFile);
+            AppFrame.get().setStatusText("Done.");
+        }
     }
 }

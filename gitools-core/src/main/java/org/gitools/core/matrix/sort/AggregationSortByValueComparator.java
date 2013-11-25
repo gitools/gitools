@@ -26,7 +26,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.core.matrix.model.MatrixLayer;
 import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
@@ -45,7 +44,7 @@ public class AggregationSortByValueComparator implements Comparator<String> {
 
     public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, Iterable<IMatrixLayer<Double>> layers) {
 
-        aggregationLayers = createLayers(layers);
+        aggregationLayers = new MatrixLayers<>(layers);
         aggregationMatrix = new HashMatrix(
                 aggregationLayers,
                 new HashMatrixDimension(ROWS, sortIdentifiers)
@@ -93,17 +92,6 @@ public class AggregationSortByValueComparator implements Comparator<String> {
 
         // All the layer are equal
         return 0;
-    }
-
-    private MatrixLayers<IMatrixLayer<Double>> createLayers(Iterable<IMatrixLayer<Double>> layers) {
-
-        MatrixLayers<IMatrixLayer<Double>> result = new MatrixLayers<>();
-
-        for (IMatrixLayer layer : layers) {
-            result.add(new MatrixLayer<>(layer.getId(), Double.class));
-        }
-
-        return result;
     }
 
 }

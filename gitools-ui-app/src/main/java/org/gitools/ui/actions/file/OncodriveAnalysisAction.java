@@ -25,10 +25,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncozet.OncodriveCommand;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.OncodriveAnalysisWizard;
 import org.gitools.ui.platform.AppFrame;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -38,17 +38,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-public class NewOncodriveAnalysisAction extends BaseAction {
+public class OncodriveAnalysisAction extends HeatmapAction {
 
     private static final long serialVersionUID = -8592231961109105958L;
 
-    public NewOncodriveAnalysisAction() {
+    public OncodriveAnalysisAction() {
         super("OncoDrive analysis ...");
 
         setDesc("Run an oncodrive analysis");
         setMnemonic(KeyEvent.VK_O);
-
-        setDefaultEnabled(true);
     }
 
     @Override

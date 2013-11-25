@@ -134,12 +134,13 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 
     @Override
     public void populateDetails(List<DetailsDecoration> details, String identifier) {
+        String value = (identifier == null ? "None" : getIdentifierTransform().apply(identifier));
         details.add(
                 new DetailsDecoration(
                         getTitle(),
                         getDescription(),
                         getDescriptionUrl(),
-                        getIdentifierTransform().apply(identifier),
+                        value,
                         getValueUrl()
                 )
         );

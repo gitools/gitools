@@ -57,6 +57,10 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
         return layers;
     }
 
+    public void setLayers(ML layers) {
+        this.layers = layers;
+    }
+
     @Override
     public MD getDimension(MatrixDimensionKey dimension) {
         return identifiers.get(dimension);

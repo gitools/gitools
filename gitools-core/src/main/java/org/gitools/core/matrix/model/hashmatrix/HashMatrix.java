@@ -66,6 +66,10 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
             identifier = identifiers[i];
         }
 
+        if (identifier == null || !result.containsKey(identifier)) {
+            return null;
+        }
+
         return (T) result.get(identifier);
     }
 

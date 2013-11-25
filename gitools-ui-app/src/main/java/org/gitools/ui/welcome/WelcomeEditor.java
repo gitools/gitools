@@ -109,8 +109,8 @@ public class WelcomeEditor extends HtmlEditor {
             case "analysis": {
                 final Map<String, Class<? extends BaseAction>> actions = new HashMap<>();
 
-                actions.put("Enrichment", NewEnrichmentAnalysisAction.class);
-                actions.put("Oncodrive", NewOncodriveAnalysisAction.class);
+                actions.put("Enrichment", EnrichmentAnalysisAction.class);
+                actions.put("Oncodrive", OncodriveAnalysisAction.class);
                 actions.put("Correlations", NewCorrelationAnalysisAction.class);
                 actions.put("Overlapping", NewOverlappingAnalysisAction.class);
                 actions.put("Combination", NewCombinationAnalysisAction.class);
@@ -130,9 +130,9 @@ public class WelcomeEditor extends HtmlEditor {
             case "open": {
                 String ref = params.get("ref");
                 if (ref.equals("DataHeatmap")) {
-                    new OpenAction().actionPerformed(new ActionEvent(this, 0, name));
+                    new OpenFromFilesystemAction().actionPerformed(new ActionEvent(this, 0, name));
                 } else if (ref.equals("DataHeatmapGS")) {
-                    new OpenGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
+                    new OpenFromGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
                 } else if (ref.equals("Shortcuts")) {
                     new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
                 }

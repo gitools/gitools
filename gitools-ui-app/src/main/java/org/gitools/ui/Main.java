@@ -21,7 +21,7 @@
  */
 package org.gitools.ui;
 
-import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageManager;
 import com.apple.eawt.Application;
 import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
@@ -31,7 +31,8 @@ import org.gitools.ui.dialog.TipsDialog;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
-import org.gitools.ui.platform.os.OperatingSystemUtils;
+import org.gitools.ui.platform.LaFManager;
+import org.gitools.ui.platform.os.SystemInfo;
 import org.gitools.ui.settings.Settings;
 
 import java.io.ByteArrayInputStream;
@@ -51,7 +52,10 @@ public class Main {
         }
 
         // Initialize look and feel
-        WebLookAndFeel.install();
+        LaFManager.install();
+
+        // Web l&f components
+        LanguageManager.initialize();
 
         // Force silence lobobrowser loggers
         try {
@@ -60,7 +64,7 @@ public class Main {
         }
 
         // Load OS specific things
-        if (OperatingSystemUtils.isMac()) {
+        if (SystemInfo.isMac) {
             Application osxApp = Application.getApplication();
             osxApp.setDockIconImage(IconUtils.getImageResource(IconNames.logoNoText));
         }

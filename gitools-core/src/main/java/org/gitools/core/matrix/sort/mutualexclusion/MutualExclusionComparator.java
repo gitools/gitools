@@ -63,11 +63,11 @@ public class MutualExclusionComparator implements Comparator<String> {
 
         int res;
         int factor = SortDirection.DESCENDING.getFactor();
-        if (Double.isNaN(value1) && Double.isNaN(value2)) {
+        if (value1 == null && value2 == null) {
             res = 0;
-        } else if (Double.isNaN(value1)) {
+        } else if (value1 == null) {
             res = factor;
-        } else if (Double.isNaN(value2)) {
+        } else if (value2 == null) {
             res = -factor;
         } else {
             res = value1.compareTo(value2);

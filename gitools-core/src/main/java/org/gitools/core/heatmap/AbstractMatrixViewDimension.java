@@ -31,9 +31,11 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.core.matrix.model.AbstractMatrixDimension;
+import org.gitools.core.model.xml.StringArrayXmlAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 import static com.google.common.base.Predicates.in;
@@ -47,6 +49,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
     public static final String PROPERTY_VISIBLE = "visible";
 
     @XmlElement(name = "visible")
+    @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     private List<String> visible;
 
     private transient Map<String, Integer> visibleToIndex;
