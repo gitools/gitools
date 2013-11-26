@@ -23,7 +23,9 @@ package org.gitools.ui.platform.progress;
 
 import org.gitools.api.analysis.IProgressMonitor;
 
+import java.io.IOException;
+
 public interface JobRunnable {
 
-    void run(IProgressMonitor monitor);
+    void run(IProgressMonitor monitor) throws IOException;
 }

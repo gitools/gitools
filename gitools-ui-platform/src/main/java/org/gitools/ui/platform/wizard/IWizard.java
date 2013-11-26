@@ -25,9 +25,6 @@ import org.gitools.ui.platform.help.HelpContext;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public interface IWizard {
 
     String getTitle();

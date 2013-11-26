@@ -29,9 +29,6 @@ import java.io.File;
 public class FileFormatFilter extends FileFilter {
 
     private final String description;
-
-    private FileFormat format;
-
     private FileFormat[] formats;
 
     public FileFormatFilter(String description) {
@@ -45,7 +42,7 @@ public class FileFormatFilter extends FileFilter {
 
     public FileFormatFilter(FileFormat format) {
         this(format.getTitleWithExtension());
-        this.format = format;
+        this.formats = new FileFormat[] { format };
     }
 
     @Override
@@ -54,17 +51,18 @@ public class FileFormatFilter extends FileFilter {
     }
 
     public boolean accept(boolean directory, String fileName) {
+
         if (directory) {
             return true;
         }
 
-        if (format != null) {
-            return format.checkExtension(fileName);
-        } else if (formats != null) {
-            for (FileFormat ff : formats)
+        if (formats != null) {
+            for (FileFormat ff : formats) {
                 if (ff.checkExtension(fileName)) {
                     return true;
                 }
+            }
+
             return false;
         }
 
@@ -76,7 +74,7 @@ public class FileFormatFilter extends FileFilter {
         return description;
     }
 
-    public FileFormat getFormat() {
-        return format;
+    public FileFormat[] getFormats() {
+        return formats;
     }
 }

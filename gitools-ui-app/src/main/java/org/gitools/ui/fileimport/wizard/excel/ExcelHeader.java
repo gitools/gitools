@@ -23,9 +23,6 @@ package org.gitools.ui.fileimport.wizard.excel;
 
 import java.io.Serializable;
 
-/**
- * @noinspection ALL
- */
 public class ExcelHeader implements Serializable {
 
     private final int pos;

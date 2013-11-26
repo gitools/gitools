@@ -40,7 +40,6 @@ class FileActions {
 
     // Import
     public static final BaseAction importIntogenTableAction = new ImportIntogenMatrixAction();
-    public static final BaseAction importExcelMatrixAction = new ImportExcelMatrixAction();
     public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
     public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();

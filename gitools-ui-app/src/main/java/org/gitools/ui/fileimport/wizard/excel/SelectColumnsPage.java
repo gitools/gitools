@@ -58,7 +58,6 @@ public class SelectColumnsPage extends AbstractWizardPage {
     public void updateControls() {
 
         try {
-            reader.init();
 
             final List<ExcelHeader> allHeaders = new ArrayList<>();
             final List<ExcelHeader> numericHeaders = new ArrayList<>();

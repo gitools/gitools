@@ -47,7 +47,6 @@ public class MenuActionSet extends ActionSet {
                                         new BaseAction[]{
                                                 new ActionSet("Matrix",
                                                         new BaseAction[]{
-                                                                FileActions.importExcelMatrixAction,
                                                                 FileActions.importIntogenTableAction
                                                         }),
                                                 new ActionSet("Modules",
@@ -113,13 +112,9 @@ public class MenuActionSet extends ActionSet {
                                 AnalysisActions.correlations,
                                 AnalysisActions.combinations,
                                 AnalysisActions.overlapping,
-                                AnalysisActions.groupComparison,
-                                new ActionSet("MTC",
-                                        new BaseAction[]{
-                                                AnalysisActions.mtcBonferroniAction,
-                                                AnalysisActions.mtcBenjaminiHochbergFdrAction
-                                        }),
-                        }),
+                                AnalysisActions.groupComparison
+                        }
+                ),
                 new ActionSet("Help", KeyEvent.VK_H,
                         new BaseAction[]{
                                 HelpActions.welcomeAction,

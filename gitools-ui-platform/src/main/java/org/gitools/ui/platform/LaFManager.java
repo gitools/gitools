@@ -1,5 +1,6 @@
 package org.gitools.ui.platform;
 
+import com.alee.laf.WebLookAndFeel;
 import com.sun.java.swing.plaf.gtk.GTKLookAndFeel;
 import org.gitools.ui.platform.idea.PopupUtil;
 import org.gitools.ui.platform.idea.ScreenUtil;
@@ -26,6 +27,11 @@ public class LaFManager {
     public static void install() {
        installGTKLookAndFeel();
        updateUI();
+    }
+
+    private static void installWebLookAndFeel() {
+        WebLookAndFeel.install();
+        WebLookAndFeel.initializeManagers();
     }
 
     private static void installGTKLookAndFeel() {

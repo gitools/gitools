@@ -21,9 +21,12 @@
  */
 package org.gitools.persistence.formats;
 
+import com.google.common.collect.ObjectArrays;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
+
+import java.util.Collection;
 
 public class FileFormat {
 
@@ -85,5 +88,9 @@ public class FileFormat {
     @Override
     public String toString() {
         return titleWithExtension ? getTitleWithExtension() : getTitle();
+    }
+
+    public static FileFormat[] concat(Collection<FileFormat> collection, FileFormat... array) {
+        return ObjectArrays.concat(collection.toArray(new FileFormat[collection.size()]), array, FileFormat.class);
     }
 }

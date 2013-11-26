@@ -103,9 +103,6 @@ public class WelcomeEditor extends HtmlEditor {
                 }
                 break;
             }
-            case "importExcel":
-                new ImportExcelMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-                break;
             case "analysis": {
                 final Map<String, Class<? extends BaseAction>> actions = new HashMap<>();
 
