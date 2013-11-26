@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.actions.file;
 
+import com.google.common.collect.ObjectArrays;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.persistence.PersistenceManager;
@@ -31,9 +32,9 @@ import org.gitools.persistence.formats.matrix.CdmMatrixFormat;
 import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
+import org.gitools.ui.fileimport.ImportManager;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
 import org.gitools.ui.utils.FileChoose;
@@ -43,8 +44,32 @@ import org.gitools.ui.utils.FileFormatFilter;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OpenFromFilesystemAction extends BaseAction {
+
+    public static FileFormat[] FORMAT_ANALYSIS = new FileFormat[]{
+            EnrichmentAnalysisFormat.FILE_FORMAT,
+            OncodriveAnalysisFormat.FILE_FORMAT,
+            CorrelationAnalysisFormat.FILE_FORMAT,
+            CombinationAnalysisFormat.FILE_FORMAT,
+            OverlappingAnalysisFormat.FILE_FORMAT,
+            GroupComparisonAnalysisFormat.FILE_FORMAT
+    };
+
+    public static FileFormat[] FORMAT_HEATMAPS = new FileFormat[]{
+            HeatmapFormat.FILE_FORMAT,
+            FileFormats.MULTIVALUE_DATA_MATRIX,
+            FileFormats.DOUBLE_MATRIX,
+            FileFormats.DOUBLE_BINARY_MATRIX,
+            FileFormats.GENE_CLUSTER_TEXT,
+            FileFormats.GENE_MATRIX,
+            FileFormats.GENE_MATRIX_TRANSPOSED
+    };
+
+
 
     private static final long serialVersionUID = -6528634034161710370L;
 
@@ -60,44 +85,15 @@ public class OpenFromFilesystemAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FileFormatFilter[] filters = new FileFormatFilter[]{
+        List<FileFormatFilter> filters = new ArrayList<>();
 
-                new FileFormatFilter("All known formats",
-                        new FileFormat[]{
-                                HeatmapFormat.FILE_FORMAT,
-                                FileFormats.MULTIVALUE_DATA_MATRIX,
-                                FileFormats.DOUBLE_MATRIX,
-                                FileFormats.DOUBLE_BINARY_MATRIX,
-                                FileFormats.GENE_CLUSTER_TEXT,
-                                FileFormats.GENE_MATRIX,
-                                FileFormats.GENE_MATRIX_TRANSPOSED,
-                                FileFormats.COMPRESSED_MATRIX,
-                                EnrichmentAnalysisFormat.FILE_FORMAT,
-                                OncodriveAnalysisFormat.FILE_FORMAT,
-                                CorrelationAnalysisFormat.FILE_FORMAT,
-                                CombinationAnalysisFormat.FILE_FORMAT,
-                                OverlappingAnalysisFormat.FILE_FORMAT,
-                                GroupComparisonAnalysisFormat.FILE_FORMAT
-                        }),
-                new FileFormatFilter("Heatmaps",
-                        new FileFormat[]{
-                                HeatmapFormat.FILE_FORMAT,
-                                FileFormats.MULTIVALUE_DATA_MATRIX,
-                                FileFormats.DOUBLE_MATRIX,
-                                FileFormats.DOUBLE_BINARY_MATRIX,
-                                FileFormats.GENE_CLUSTER_TEXT,
-                                FileFormats.GENE_MATRIX,
-                                FileFormats.GENE_MATRIX_TRANSPOSED
-                        }),
-                new FileFormatFilter("Analysis",
-                        new FileFormat[]{
-                                EnrichmentAnalysisFormat.FILE_FORMAT,
-                                OncodriveAnalysisFormat.FILE_FORMAT,
-                                CorrelationAnalysisFormat.FILE_FORMAT,
-                                CombinationAnalysisFormat.FILE_FORMAT,
-                                OverlappingAnalysisFormat.FILE_FORMAT,
-                                GroupComparisonAnalysisFormat.FILE_FORMAT
-                        }),
+        Collections.addAll(filters,
+                new FileFormatFilter("All known formats", FileFormat.concat(
+                            ImportManager.get().getFileFormats(),
+                            ObjectArrays.concat(FORMAT_HEATMAPS, FORMAT_ANALYSIS, FileFormat.class)
+                        )),
+                new FileFormatFilter("Heatmaps", FORMAT_HEATMAPS),
+                new FileFormatFilter("Analysis", FORMAT_ANALYSIS),
 
                 new FileFormatFilter(HeatmapFormat.FILE_FORMAT),
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
@@ -116,9 +112,11 @@ public class OpenFromFilesystemAction extends BaseAction {
                 new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT),
                 new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT),
                 new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
-        };
+        );
 
-        final FileChoose fileChoose = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters);
+        filters.addAll( ImportManager.get().getFileFormatFilters());
+
+        final FileChoose fileChoose = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters.toArray(new FileFormatFilter[filters.size()]));
 
         if (fileChoose == null) {
             return;
@@ -137,9 +135,8 @@ public class OpenFromFilesystemAction extends BaseAction {
             }
         }
 
-        JobRunnable loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
+        CommandLoadFile loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
         JobThread.execute(AppFrame.get(), loadFile);
-
         AppFrame.get().setStatusText("Done.");
     }
 }

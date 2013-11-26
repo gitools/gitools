@@ -21,20 +21,22 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
+import org.gitools.ui.platform.progress.JobRunnable;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class ExcelReader {
+public class ExcelReader implements JobRunnable {
 
-    private final File file;
-
+    private final IResourceLocator locator;
 
     private Sheet sheet = null;
 
@@ -44,15 +46,29 @@ public class ExcelReader {
     private List<ExcelHeader> headers;
 
 
-    public ExcelReader(File file) {
+    public ExcelReader(IResourceLocator locator) {
         super();
-        this.file = file;
+        this.locator = locator;
     }
 
-    public void init() throws Exception {
-
+    @Override
+    public void run(IProgressMonitor monitor) {
         // Open the workbook
-        openWorkbook(file);
+        monitor.begin("Opening workbook [" + locator.getName() + "]", 0);
+        InputStream fis = null;
+        try {
+            fis = locator.openInputStream(monitor);
+            Workbook workbook = WorkbookFactory.create(fis);
+            this.sheet = workbook.getSheetAt(0);
+            this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            this.formatter = new DataFormatter(Locale.ENGLISH, true);
+
+        } catch (InvalidFormatException | IOException e ) {
+            throw new RuntimeException(e);
+        } finally {
+            IOUtils.closeQuietly(fis);
+        }
+        monitor.end();
 
         // Read the header
         Row header = sheet.getRow(0);
@@ -60,26 +76,6 @@ public class ExcelReader {
         headers = rowToHeader(header, firstRow);
 
     }
-
-    private void openWorkbook(File file) throws IOException, InvalidFormatException {
-        FileInputStream fis = null;
-        try {
-            System.out.println("Opening workbook [" + file.getName() + "]");
-
-            fis = new FileInputStream(file);
-
-            Workbook workbook = WorkbookFactory.create(fis);
-            this.sheet = workbook.getSheetAt(0);
-            this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
-            this.formatter = new DataFormatter(Locale.ENGLISH, true);
-
-        } finally {
-            if (fis != null) {
-                fis.close();
-            }
-        }
-    }
-
 
     private String cellToString(Cell cell) {
         if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) {
@@ -133,11 +129,13 @@ public class ExcelReader {
         return cellToString(cell);
     }
 
-    public File getFile() {
-        return file;
+    public IResourceLocator getLocator() {
+        return locator;
     }
 
     public int getLastRowNum() {
         return sheet.getLastRowNum();
     }
+
+
 }

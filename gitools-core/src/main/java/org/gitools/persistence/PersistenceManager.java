@@ -81,7 +81,7 @@ public class PersistenceManager implements Serializable {
                 }
             }
 
-            throw new RuntimeException("Unknow resource class: '" + resourceClass.getName() + "'");
+            return null;
         }
 
         IResourceFormat resourceFormat = extensions.get(extension);

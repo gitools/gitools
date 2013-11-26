@@ -50,6 +50,8 @@ import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEdi
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
+import org.gitools.ui.fileimport.ImportManager;
+import org.gitools.ui.fileimport.ImportWizard;
 import org.gitools.ui.genomespace.GsResourceLocator;
 import org.gitools.ui.genomespace.dm.HttpUtils;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
@@ -90,19 +92,21 @@ public class CommandLoadFile extends AbstractCommand {
     @Override
     public void execute(IProgressMonitor monitor) throws CommandException {
 
-
-        IResourceLocator resourceLocator;
-        final IResource resource;
-        try {
-            resourceLocator = new GsResourceLocator(new UrlResourceLocator(file));
-            monitor.begin("Loading ...", 1);
-
-            if (format == null) {
-                format = PersistenceManager.get().getFormat(resourceLocator.getName(), IResource.class);
+        if (isConfigurable()) {
+            try {
+                getConfigWizard().run(monitor);
+            } catch (IOException e) {
+                new CommandException(e);
             }
+            return;
+        }
 
-            resource = PersistenceManager.get().load(resourceLocator, format, monitor);
+        IResourceLocator resourceLocator = getResourceLocator();
+        final IResource resource;
 
+        try {
+            monitor.begin("Loading ...", 1);
+            resource = loadResource(monitor);
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
@@ -110,7 +114,7 @@ public class CommandLoadFile extends AbstractCommand {
                         (!StringUtils.isEmpty(e.getCause().getMessage()) ? "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>" : "") +
                         "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
             }
-            setExitStatus(1); //Error!
+            setExitStatus(1);
             return;
         }
 
@@ -128,6 +132,30 @@ public class CommandLoadFile extends AbstractCommand {
 
         setExitStatus(0);
         return;
+    }
+
+    protected IResource loadResource( IProgressMonitor monitor ) {
+        return PersistenceManager.get().load(getResourceLocator(), getFormat(), monitor);
+    }
+
+    protected IResourceLocator getResourceLocator() {
+        return new GsResourceLocator(new UrlResourceLocator(file));
+    }
+
+    public boolean isConfigurable() {
+        return getFormat() == null && ImportManager.get().isImportable(getResourceLocator());
+    }
+
+    public ImportWizard getConfigWizard() {
+        return ImportManager.get().getWizard(getResourceLocator());
+    }
+
+    private IResourceFormat getFormat() {
+        if (format == null) {
+            format = PersistenceManager.get().getFormat(getResourceLocator().getName(), IResource.class);
+        }
+
+        return format;
     }
 
 
@@ -245,4 +273,5 @@ public class CommandLoadFile extends AbstractCommand {
     private static void loadAnnotations(File file, HeatmapDimension hdim) {
         hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), PersistenceManager.get().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
     }
+
 }

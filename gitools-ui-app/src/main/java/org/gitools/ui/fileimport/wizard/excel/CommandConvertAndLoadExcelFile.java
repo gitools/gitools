@@ -21,8 +21,13 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
-import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.persistence.PersistenceManager;
+import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.utils.csv.RawCsvWriter;
 
@@ -30,6 +35,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
 
@@ -39,7 +45,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
     private final ExcelReader reader;
 
     public CommandConvertAndLoadExcelFile(int columns, int rows, List<Integer> values, ExcelReader reader) {
-        super(createTdmFile(reader).getAbsolutePath());
+        super(reader.getLocator().getURL().toString());
 
         this.columns = columns;
         this.rows = rows;
@@ -47,27 +53,22 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
         this.reader = reader;
     }
 
-
-    private static File createTdmFile(ExcelReader reader) {
-        File excelFile = reader.getFile();
-        return new File(excelFile.getParent(), FilenameUtils.getBaseName(excelFile.getName()) + ".tdm");
+    @Override
+    public boolean isConfigurable() {
+        return false;
     }
 
     @Override
-    public void execute(IProgressMonitor monitor) throws CommandException {
-
+    protected IResource loadResource(IProgressMonitor monitor) {
         monitor.begin("Converting excel file", reader.getLastRowNum());
-
-        File tdmFile = createTdmFile(reader);
-        RawCsvWriter out = null;
+        File tmpFile;
+        RawCsvWriter out;
 
         try {
-            if (!tdmFile.exists()) {
-                tdmFile.createNewFile();
-            }
-            out = new RawCsvWriter(new FileWriter(tdmFile), '\t', '"');
+            tmpFile = File.createTempFile("gitools", reader.getLocator().getBaseName() + ".tdm");
+            out = new RawCsvWriter(new FileWriter(tmpFile), '\t', '"');
         } catch (IOException e) {
-            throw new CommandException("Error opening file '" + tdmFile.getName() + "'");
+            throw new RuntimeException("Error opening temporal file");
         }
 
         // Write headers
@@ -96,11 +97,16 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
 
             if (monitor.isCancelled()) {
                 out.close();
-                tdmFile.delete();
-                return;
+                tmpFile.delete();
+                throw new CancellationException();
             }
         }
         out.close();
         setExitStatus(0);
+
+        IResourceFormat<IMatrix> format = PersistenceManager.get().getFormat(TdmMatrixFormat.EXSTENSION, IMatrix.class);
+        IMatrix matrix = PersistenceManager.get().load(new UrlResourceLocator(tmpFile), format, monitor);
+        matrix.setLocator(null);
+        return matrix;
     }
 }

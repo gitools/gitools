@@ -21,74 +21,73 @@
  */
 package org.gitools.ui.fileimport.wizard.excel;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.fileimport.ImportWizard;
 import org.gitools.ui.platform.AppFrame;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.settings.Settings;
+import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.ui.utils.FileFormatFilter;
-import org.gitools.ui.wizard.common.FileChooserPage;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-public class ImportExcelWizard extends AbstractWizard {
+public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
 
-    private FileChooserPage fileSelectionPage;
+    private static FileFormat[] FILE_FORMATS = new FileFormat[] { new FileFormat("Excel", "xls"), new FileFormat("Excel", "xlsx") };
+    private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Microsoft Excel files", FILE_FORMATS);
+
+    private IResourceLocator locator;
     private SelectColumnsPage selectColumnsPage;
+    private ExcelReader reader;
 
-    public ImportExcelWizard() {
+    public ExcelImportWizard() {
         setTitle("Import an Excel matrix");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
         setHelpContext("import_excel");
     }
 
+    @Override
+    public FileFormatFilter getFileFormatFilter() {
+        return FILE_FORMAT_FILTER;
+    }
+
+    public void setLocator(IResourceLocator locator) {
+        this.locator = locator;
+    }
 
     @Override
     public void addPages() {
 
-        fileSelectionPage = new FileChooserPage();
-        fileSelectionPage.setTitle("Select Excel file");
-        fileSelectionPage.setFileFilter(new FileFormatFilter("Microsoft Excel files", new FileFormat("Excel", "xls"), new FileFormat("Excel", "xlsx")));
-        addPage(fileSelectionPage);
-
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
+        selectColumnsPage.setReader(reader);
         addPage(selectColumnsPage);
 
-
-    }
-
-    @Override
-    public IWizardPage getNextPage(IWizardPage page) {
-
-        if (page == fileSelectionPage) {
-            selectColumnsPage.setReader(new ExcelReader(fileSelectionPage.getSelectedFile()));
-        }
-
-        return super.getNextPage(page);
     }
 
     @Override
     public void performFinish() {
-
-        File excelFile = fileSelectionPage.getSelectedFile();
-
         ExcelReader reader = selectColumnsPage.getReader();
-
-        Settings.getDefault().setLastPath(excelFile.getParent());
-        Settings.getDefault().save();
-
         int columns = selectColumnsPage.getSelectedColumn();
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
         JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader);
         JobThread.execute(AppFrame.get(), loadFile);
-
         AppFrame.get().setStatusText("Done.");
+    }
+
+
+    @Override
+    public void run(IProgressMonitor monitor) throws IOException {
+        reader = new ExcelReader(locator);
+        reader.run(monitor);
+        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), this);
+        wizDlg.open();
     }
 }
