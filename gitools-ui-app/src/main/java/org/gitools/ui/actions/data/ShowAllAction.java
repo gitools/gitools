@@ -25,7 +25,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 
@@ -34,7 +34,7 @@ public class ShowAllAction extends HeatmapDimensionAction {
     private static final long serialVersionUID = 7110623490709997414L;
 
     public ShowAllAction(MatrixDimensionKey key) {
-        super(key, "Show all " + key.getLabel());
+        super(key, "Show all");
 
         setSmallIconFromResource(IconNames.get(key).getShowAll16());
         setLargeIconFromResource(IconNames.get(key).getShowAll24());
@@ -48,7 +48,7 @@ public class ShowAllAction extends HeatmapDimensionAction {
 
         dimension.showAll();
 
-        AppFrame.get().setStatusText(dimension + " " + getDimensionLabel());
+        Application.get().setStatusText(dimension + " " + getDimensionLabel());
 
     }
 }

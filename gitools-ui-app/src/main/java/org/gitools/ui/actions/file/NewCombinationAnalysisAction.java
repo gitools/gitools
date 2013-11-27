@@ -32,7 +32,7 @@ import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -63,7 +63,7 @@ public class NewCombinationAnalysisAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
         final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
 
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
 
         wizDlg.open();
 
@@ -83,7 +83,7 @@ public class NewCombinationAnalysisAction extends BaseAction {
 
         final CombinationCommand cmd = new CombinationCommand(analysis, dataFormat, wizard.getDataFilePage().getFile().getAbsolutePath(), columnSetsFormat, columnSetsPath, wizard.getSaveFilePage().getFolder(), analysisPath);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -100,14 +100,14 @@ public class NewCombinationAnalysisAction extends BaseAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

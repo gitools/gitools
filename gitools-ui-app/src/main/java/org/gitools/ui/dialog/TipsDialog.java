@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.dialog;
 
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.help.GitoolsTips;
 import org.gitools.ui.settings.Settings;
 import org.jdesktop.swingx.JXTipOfTheDay;
@@ -52,7 +52,7 @@ public class TipsDialog {
         int i = generator.nextInt(loadedTips.getTipCount());
         tipOfTheDay.setCurrentTip(i);
 
-        tipOfTheDay.showDialog(AppFrame.get(), new JXTipOfTheDay.ShowOnStartupChoice() {
+        tipOfTheDay.showDialog(Application.get(), new JXTipOfTheDay.ShowOnStartupChoice() {
             @Override
             public void setShowingOnStartup(boolean showOnStartup) {
                 Settings.getDefault().setShowTipsAtStartup(showOnStartup);

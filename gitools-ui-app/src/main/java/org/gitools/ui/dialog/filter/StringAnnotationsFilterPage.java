@@ -23,7 +23,7 @@ package org.gitools.ui.dialog.filter;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -121,7 +121,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
     private void selectRowsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -133,7 +133,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
     private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -174,7 +174,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
                 }
             }
         } catch (IOException ex) {
-            ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
             dlg.setVisible(true);
         }
 
@@ -270,7 +270,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
             patterns.setText(readNamesFromFile(file));
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtnActionPerformed
@@ -289,7 +289,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
             bw.append(patterns.getText()).append('\n');
             bw.close();
         } catch (Exception ex) {
-            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtnActionPerformed

@@ -22,7 +22,7 @@
 package org.gitools.ui.batch.tools;
 
 import org.gitools.ui.commands.Command;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.kohsuke.args4j.CmdLineException;
@@ -80,7 +80,7 @@ public abstract class AbstractTool implements ITool {
 
         if (job != null) {
 
-            AppFrame mainFrame = AppFrame.get();
+            Application mainFrame = Application.get();
 
             // Trick to force window to front, the setAlwaysOnTop works on a Mac,  toFront() does nothing.
             mainFrame.toFront();

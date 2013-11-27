@@ -34,7 +34,7 @@ import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWiz
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.AggregationDecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.heatmapheader.AnnotationDecoratorHeaderWizard;
 import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -46,7 +46,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 public class AddHeaderAction extends HeatmapDimensionAction {
 
     public AddHeaderAction(MatrixDimensionKey dim) {
-        super(dim, "Add " + dim.getLabel() + " header");
+        super(dim, "Add header...");
 
         setSmallIconFromResource(IconNames.add16);
     }
@@ -57,7 +57,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
         HeatmapDimension heatmapDimension = getDimension();
 
         AddHeaderPage headerPage = new AddHeaderPage();
-        PageDialog tdlg = new PageDialog(AppFrame.get(), headerPage);
+        PageDialog tdlg = new PageDialog(Application.get(), headerPage);
         tdlg.setTitle("Header type selection");
         tdlg.setVisible(true);
         if (tdlg.isCancelled())
@@ -89,7 +89,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
             }
         }
 
-        WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
         wdlg.setTitle("Add header");
         wdlg.setVisible(true);
         if (wdlg.isCancelled())
@@ -97,7 +97,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
 
         heatmapDimension.addHeader(header);
 
-        AppFrame.get().setStatusText("Header added");
+        Application.get().setStatusText("Header added");
     }
 
 }

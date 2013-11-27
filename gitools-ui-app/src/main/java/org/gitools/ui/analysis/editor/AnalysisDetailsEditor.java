@@ -30,7 +30,7 @@ import org.gitools.persistence.formats.FileFormat;
 import org.gitools.persistence.formats.analysis.AbstractXmlFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
@@ -83,7 +83,7 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
             }
 
             @Override
-            protected void performUrlAction(String name, Map<String, String> params) {
+            protected void performAction(String name, Map<String, String> params) {
                 AnalysisDetailsEditor.this.performUrlAction(name, params);
             }
         };
@@ -139,7 +139,7 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
         String lastWorkPath = Settings.getDefault().getLastWorkPath();
 
         SaveFileWizard wizard = SaveFileWizard.createSimple(title, title, lastWorkPath, fileformat);
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog dlg = new WizardDialog(Application.get(), wizard);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {

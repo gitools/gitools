@@ -28,7 +28,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.OncodriveAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -43,7 +43,7 @@ public class OncodriveAnalysisAction extends HeatmapAction {
     private static final long serialVersionUID = -8592231961109105958L;
 
     public OncodriveAnalysisAction() {
-        super("OncoDrive analysis ...");
+        super("OncoDrive...");
 
         setDesc("Run an oncodrive analysis");
         setMnemonic(KeyEvent.VK_O);
@@ -53,7 +53,7 @@ public class OncodriveAnalysisAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
         final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
 
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
 
         wizDlg.open();
 
@@ -68,7 +68,7 @@ public class OncodriveAnalysisAction extends HeatmapAction {
 
         final OncodriveCommand cmd = new OncodriveCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), modulesFile != null ? modulesFile.getAbsolutePath() : null, wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -85,14 +85,14 @@ public class OncodriveAnalysisAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

@@ -33,7 +33,7 @@ import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.fileimport.ImportManager;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
@@ -136,7 +136,7 @@ public class OpenFromFilesystemAction extends BaseAction {
         }
 
         CommandLoadFile loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
-        JobThread.execute(AppFrame.get(), loadFile);
-        AppFrame.get().setStatusText("Done.");
+        JobThread.execute(Application.get(), loadFile);
+        Application.get().setStatusText("Done.");
     }
 }

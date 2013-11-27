@@ -23,7 +23,7 @@ package org.gitools.ui.settings.decorators;
 
 import com.jgoodies.binding.value.ValueModel;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -209,7 +209,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
         Decorator d = (Decorator) decoratorModel.getValue();
 
         LoadDecoratorDialog dialog = new LoadDecoratorDialog(
-                AppFrame.get(),
+                Application.get(),
                 archive.getDecorators().values().toArray(),
                 d.getClass());
         dialog.setVisible(true);
@@ -225,7 +225,7 @@ public class SaveDecoratorDialog extends javax.swing.JDialog {
     public static void actionSaveDecorator(Decorator d) {
         DecoratorArchivePersistance archivePersistance = new DecoratorArchivePersistance();
         DecoratorArchive archive = archivePersistance.load();
-        SaveDecoratorDialog dialog = new SaveDecoratorDialog(AppFrame.get());
+        SaveDecoratorDialog dialog = new SaveDecoratorDialog(Application.get());
         dialog.setExistingScaleNames(archive.getDecorators().keySet());
         dialog.setName(d.getName());
         dialog.setVisible(true);

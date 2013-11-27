@@ -23,7 +23,7 @@ package org.gitools.ui.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
@@ -46,7 +46,7 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
         header.setLabelPattern(pattern);
         hdim.addHeader(header);
 
-        AppFrame.get().refresh();
+        Application.get().refresh();
 
         // Force a GC to release free memory
         System.gc();

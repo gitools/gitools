@@ -23,7 +23,7 @@ package org.gitools.ui.actions.edit;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -47,7 +47,7 @@ public class UnselectAllAction extends HeatmapAction {
         getHeatmap().getColumns().getSelected().clear();
         getHeatmap().getRows().getSelected().clear();
 
-        AppFrame.get().setStatusText("Unselected all.");
+        Application.get().setStatusText("Unselected all.");
     }
 
 }

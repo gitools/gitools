@@ -27,7 +27,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -53,7 +53,7 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
 
         groupSelected(dimension, position.get(dimension));
 
-        AppFrame.get().setStatusText("Selected " + getDimensionLabel() + " grouped.");
+        Application.get().setStatusText("Selected " + getDimensionLabel() + " grouped.");
     }
 
     private void groupSelected(IMatrixViewDimension dimension, String identifier) {

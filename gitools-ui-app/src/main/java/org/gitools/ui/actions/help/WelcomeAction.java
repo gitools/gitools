@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.actions.help;
 
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.welcome.WelcomeEditor;
@@ -30,9 +30,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-/**
- * @noinspection ALL
- */
 public class WelcomeAction extends BaseAction {
 
     private static final long serialVersionUID = 6622410876631791866L;
@@ -47,7 +44,7 @@ public class WelcomeAction extends BaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         AbstractEditor view = new WelcomeEditor();
-        AppFrame.get().getEditorsPanel().addEditor(view);
+        Application.get().getEditorsPanel().addEditor(view);
     }
 
 }

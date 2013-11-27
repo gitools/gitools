@@ -26,7 +26,7 @@ import org.gitools.datasources.modules.importer.FeatureCategory;
 import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.datasources.modules.importer.Organism;
 import org.gitools.datasources.biomart.idmapper.EnsemblIds;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
@@ -49,7 +49,7 @@ public class ModulesFeaturesPage extends FilteredListPage {
     @Override
     public void updateControls() {
         if (!loaded || organism != importer.getOrganism()) {
-            JobThread.execute(AppFrame.get(), new JobRunnable() {
+            JobThread.execute(Application.get(), new JobRunnable() {
                 @Override
                 public void run(IProgressMonitor monitor) {
                     try {

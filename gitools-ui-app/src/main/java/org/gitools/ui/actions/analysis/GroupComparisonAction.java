@@ -34,7 +34,7 @@ import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.analysis.groupcomparison.wizard.GroupComparisonAnalysisFromEditorWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -43,16 +43,20 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class GroupComparisonAction extends HeatmapAction {
 
     public GroupComparisonAction() {
-        super("Group Comparison analysis");
+        super("Group comparison...");
+
+        setMnemonic(KeyEvent.VK_G);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
@@ -64,7 +68,7 @@ public class GroupComparisonAction extends HeatmapAction {
             attributeNames[i] = attributes.get(i).getName();
 
         GroupComparisonAnalysisFromEditorWizard wiz = new GroupComparisonAnalysisFromEditorWizard(heatmap);
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
@@ -75,7 +79,7 @@ public class GroupComparisonAction extends HeatmapAction {
 
         analysis.setData(new ResourceReference<IMatrix>("data", heatmap));
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -101,14 +105,14 @@ public class GroupComparisonAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

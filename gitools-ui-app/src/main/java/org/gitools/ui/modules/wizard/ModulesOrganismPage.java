@@ -26,7 +26,7 @@ import org.gitools.datasources.modules.importer.ModuleCategory;
 import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.datasources.modules.importer.Organism;
 import org.gitools.datasources.modules.importer.Version;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.wizard.common.FilteredListPage;
@@ -54,7 +54,7 @@ public class ModulesOrganismPage extends FilteredListPage {
 
         if (!loaded || modCategory != importer.getModuleCategory() || version != importer.getVersion()) {
 
-            JobThread.execute(AppFrame.get(), new JobRunnable() {
+            JobThread.execute(Application.get(), new JobRunnable() {
                 @Override
                 public void run(IProgressMonitor monitor) {
                     try {

@@ -25,7 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.intogen.IntogenService;
 import org.gitools.datasources.intogen.IntogenServiceException;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
@@ -121,7 +121,7 @@ public class IntogenImportDialog extends JDialog {
                 for (FormInput fi : formInputs)
                     properties.add(new String[]{fi.getName(), fi.getTextValue()});
 
-                JobThread.execute(AppFrame.get(), new JobRunnable() {
+                JobThread.execute(Application.get(), new JobRunnable() {
                     @Override
                     public void run(IProgressMonitor monitor) {
                         try {
@@ -161,7 +161,7 @@ public class IntogenImportDialog extends JDialog {
 
             @Override
             public void error(String message, Throwable throwable) {
-                int ret = JOptionPane.showConfirmDialog(AppFrame.get(), "There was an error trying to conect to " + getUrl() +
+                int ret = JOptionPane.showConfirmDialog(Application.get(), "There was an error trying to conect to " + getUrl() +
                         "\nPress OK to try again or Cancel to close this dialog and try later.", "Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 
                 if (ret == JOptionPane.OK_OPTION) {
@@ -169,7 +169,7 @@ public class IntogenImportDialog extends JDialog {
                         rcontext.navigate(new URL(getUrl()), "_this");
                     } catch (Exception ex) {
                         setVisible(false);
-                        ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                        ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
                         dlg.setVisible(true);
                     }
                 } else {
@@ -196,7 +196,7 @@ public class IntogenImportDialog extends JDialog {
                     rcontext.navigate(getUrl());
                 } catch (MalformedURLException ex) {
                     setVisible(false);
-                    ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                    ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
                     dlg.setVisible(true);
                 }
             }

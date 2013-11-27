@@ -25,7 +25,7 @@ import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.datasources.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.datasources.biomart.panel.AttributesTreeModel.AttributeWrapper;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.wizard.common.FilteredTreePage;
@@ -125,7 +125,7 @@ public class BiomartAttributePage extends FilteredTreePage {
                         public void run() {
                             setStatus(MessageStatus.ERROR);
                             setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
-                            ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), cause);
+                            ExceptionDialog dlg = new ExceptionDialog(Application.get(), cause);
                             dlg.setVisible(true);
                         }
                     });

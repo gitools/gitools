@@ -26,7 +26,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.HeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -38,7 +38,7 @@ import java.awt.event.ActionEvent;
 public class SortByAnnotationAction extends HeatmapDimensionAction {
 
     public SortByAnnotationAction(MatrixDimensionKey dim) {
-        super(dim, "Sort by " + dim.getLabel() + " annotations");
+        super(dim, "Sort by annotations...");
     }
 
     protected AnnotationSortPage createSortPage(Heatmap hm) {
@@ -50,7 +50,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
         final Heatmap hm = getHeatmap();
 
         final AnnotationSortPage page = createSortPage(hm);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
@@ -58,7 +58,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
         }
 
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
@@ -69,7 +69,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
             }
         });
 
-        AppFrame.get().setStatusText("Sort done.");
+        Application.get().setStatusText("Sort done.");
     }
 
 }

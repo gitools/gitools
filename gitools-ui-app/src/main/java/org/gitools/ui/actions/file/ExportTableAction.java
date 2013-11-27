@@ -27,7 +27,7 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.dialog.attributes.AttributesSelectionDialog;
 import org.gitools.ui.export.TextMatrixViewExporter;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
@@ -44,8 +44,8 @@ public class ExportTableAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportTableAction() {
-        super("Export table ...");
-        setMnemonic(KeyEvent.VK_A);
+        super("Values as a table...");
+        setMnemonic(KeyEvent.VK_T);
     }
 
     @Override
@@ -58,11 +58,11 @@ public class ExportTableAction extends HeatmapAction {
         for (int i = 0; i < properties.size(); i++)
             attributeNames[i] = properties.get(i).getName();
 
-        AttributesSelectionDialog dlg = new AttributesSelectionDialog(AppFrame.get(), attributeNames);
+        AttributesSelectionDialog dlg = new AttributesSelectionDialog(Application.get(), attributeNames);
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != AttributesSelectionDialog.RET_OK) {
-            AppFrame.get().setStatusText("Table export cancelled.");
+            Application.get().setStatusText("Table export cancelled.");
             return;
         }
 
@@ -76,7 +76,7 @@ public class ExportTableAction extends HeatmapAction {
 
         final List<Integer> selectedIndices = dlg.getSelectedIndices();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -96,7 +96,7 @@ public class ExportTableAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Table exported.");
+        Application.get().setStatusText("Table exported.");
     }
 
 }

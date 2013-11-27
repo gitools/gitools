@@ -21,20 +21,132 @@
  */
 package org.gitools.ui.actions;
 
+import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
+import org.gitools.analysis.stats.mtc.Bonferroni;
+import org.gitools.ui.actions.analysis.*;
+import org.gitools.ui.actions.data.*;
+import org.gitools.ui.actions.edit.*;
+import org.gitools.ui.actions.file.*;
+import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
+import org.gitools.ui.imageviewer.HeatmapCreateImageAction;
 import org.gitools.ui.platform.actions.ActionManager;
+import org.gitools.ui.platform.actions.BaseAction;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import static org.gitools.ui.actions.data.MoveSelectionAction.MoveDirection.*;
 
 public class Actions {
 
-    public static final MenuActionSet menuActionSet = new MenuActionSet();
+    // Open
+    public static final BaseAction open = new OpenFromFilesystemAction();
+    public static final BaseAction openGenomeSpace = new OpenFromGenomeSpaceAction();
+    public static final BaseAction openURL = new OpenFromURLAction();
 
-    public static final ToolBarActionSet toolBarActionSet = new ToolBarActionSet();
+    // Save
+    public static final BaseAction saveAction = new SaveAction();
+    public static final BaseAction saveAsAction = new SaveAsAction();
+
+    // Exit
+    public static final BaseAction exitAction = new ExitAction();
+
+    // Import
+    public static final BaseAction importIntogenTableAction = new ImportIntogenMatrixAction();
+    public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
+    public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
+    public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
+    public static final BaseAction importKeggModulesAction = new ImportKeggModulesAction();
+    public static final BaseAction importGoModulesAction = new ImportGoModulesAction();
+
+    // Export
+    public static final BaseAction exportLabelNamesAction = new ExportHeatmapLabelsAction();
+    public static final BaseAction exportMatrixAction = new ExportMatrixAction();
+    public static final BaseAction exportTableAction = new ExportTableAction();
+    public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+    public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
+
+    // Other
+    public static final BaseAction openIntegrativeGenomicViewerAction = new OpenIntegrativeGenomicViewerAction();
+    public static final BaseAction selectAllAction = new SelectAllAction();
+    public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
+    public static final BaseAction unselectAllAction = new UnselectAllAction();
+    public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
+    public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
+    public static final BaseAction addLayerHeader = new AddLayerAction();
+    public static final BaseAction editRowHeader = new EditAllHeaderAction(ROWS);
+    public static final BaseAction editColumnHeader = new EditAllHeaderAction(COLUMNS);
+
+    public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
+
+    public static final BaseAction filterByLabel = new FilterByAnnotations();
+
+    public static final BaseAction filterByValue = new FilterByValueAction();
+
+    public static final BaseAction showAllRowsAction = new ShowAllAction(ROWS);
+
+    public static final BaseAction showAllColumns = new ShowAllAction(COLUMNS);
+
+    public static final BaseAction hideSelectedColumns = new HideSelectionAction(COLUMNS);
+
+    public static final BaseAction hideThisLabelHeaderAction = new HideThisLabelHeaderAction();
+
+    public static final BaseAction hideGreaterThanHeaderAction = new HideNumericHeaderAction(true, "greater");
+
+    public static final BaseAction hideSmallerThanHeaderAction = new HideNumericHeaderAction(false, "smaller");
+
+    public static final BaseAction sortByRowsAnnotation = new SortByAnnotationAction(ROWS);
+
+    public static final BaseAction sortByColumnsAnnotationAction = new SortByAnnotationAction(COLUMNS);
+
+    public static final BaseAction sortByHeader = new SortByHeaderAction();
+
+    public static final BaseAction sortByValue = new SortByValueAction();
+
+    public static final BaseAction sortByMutualExclusion = new SortByMutualExclusionAction();
+
+    public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
+
+    public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
+
+    public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
+
+    public static final BaseAction moveRowsUpAction = new MoveSelectionAction(ROW_UP);
+
+    public static final BaseAction moveRowsDownAction = new MoveSelectionAction(ROW_DOWN);
+
+    public static final BaseAction moveColsLeftAction = new MoveSelectionAction(COL_LEFT);
+
+    public static final BaseAction moveColsRightAction = new MoveSelectionAction(COL_RIGHT);
+
+    public static final BaseAction clusteringAction = new ClusteringByValueAction();
+
+    public static final BaseAction oncodrive = new OncodriveAnalysisAction();
+
+    public static final BaseAction enrichment = new EnrichmentAnalysisAction();
+
+    public static final BaseAction combinations = new CombinationsAction();
+
+    public static final BaseAction correlations = new CorrelationsAction();
+
+    public static final BaseAction overlapping = new OverlappingsAction();
+
+    public static final BaseAction groupComparison = new GroupComparisonAction();
+
+    public static final BaseAction mtcBonferroniAction = new MtcAction(new Bonferroni());
+
+    public static final BaseAction mtcBenjaminiHochbergFdrAction = new MtcAction(new BenjaminiHochbergFdr());
+
+    public static final BaseAction snapshotAction = new HeatmapCreateImageAction();
+
+    public static final BaseAction searchRowsAction = new HeatmapSearchAction(ROWS);
+
 
     private Actions() {
     }
 
     public static void init() {
         ActionManager am = ActionManager.getDefault();
-        am.addRootAction(menuActionSet);
-        am.addRootAction(toolBarActionSet);
+        am.addRootAction(MenuActionSet.INSTANCE);
+        am.addRootAction(ToolBarActionSet.INSTANCE);
     }
 }

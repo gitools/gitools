@@ -39,6 +39,88 @@ import java.util.Map;
 
 public class Html4Panel extends JPanel {
 
+    HtmlPanel panel;
+    SimpleHtmlRendererContext rcontext;
+
+    public Html4Panel() {
+        createComponents();
+    }
+
+    private void createComponents() {
+        panel = new HtmlPanel();
+        panel.setBackground(Color.WHITE);
+        rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
+
+        setLayout(new BorderLayout());
+        add(panel, BorderLayout.CENTER);
+    }
+
+    private boolean linkClicked(HTMLElement linkNode) throws LinkVetoException {
+        String rel = linkNode.getAttribute("rel");
+        String href = linkNode.getAttribute("href");
+        String target = linkNode.getAttribute("target");
+        if ("action".equalsIgnoreCase(rel)) {
+            String name = href;
+            Map<String, String> params = new HashMap<>();
+
+            int pos = href.indexOf('?');
+            if (pos >= 0) {
+                name = href.substring(0, pos);
+                String p1 = pos < href.length() ? href.substring(pos + 1) : "";
+                if (!p1.isEmpty()) {
+                    String[] p2 = p1.split("\\&");
+                    for (String p3 : p2) {
+                        pos = p3.indexOf('=');
+                        if (pos > 0) {
+                            String id = p3.substring(0, pos);
+                            String value = pos < p3.length() ? p3.substring(pos + 1) : "";
+                            params.put(id, value);
+                        }
+                    }
+                }
+            }
+
+            performAction(name, params);
+            throw new LinkVetoException();
+        } else if ("load".equalsIgnoreCase(rel)) {
+            performLoad(href);
+        }else if ("_external".equalsIgnoreCase(target)) {
+            try {
+                URI uri = new URI(href);
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(uri);
+                } else {
+                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            throw new LinkVetoException();
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
+
+    }
+
+    protected void performAction(String name, Map<String, String> params) {
+    }
+
+    protected void performLoad(String href) {
+    }
+
+    public void navigate(URL url) throws Exception {
+        rcontext.navigate(url, "_this");
+    }
+
+    public HtmlRendererContext getHtmlRenderContext() {
+        return rcontext;
+    }
+
     public static class LinkVetoException extends Exception {
         public LinkVetoException() {
         }
@@ -76,8 +158,7 @@ public class Html4Panel extends JPanel {
 
             if ("a".equalsIgnoreCase(element.getTagName())) {
                 try {
-                    Html4Panel.this.linkClicked(element);
-                    return false;
+                    return Html4Panel.this.linkClicked(element);
                 } catch (LinkVetoException ex) {
                     return false;
                 }
@@ -95,78 +176,5 @@ public class Html4Panel extends JPanel {
             }
         }
 
-    }
-
-    HtmlPanel panel;
-    SimpleHtmlRendererContext rcontext;
-
-    public Html4Panel() {
-        createComponents();
-    }
-
-    private void createComponents() {
-        panel = new HtmlPanel();
-        panel.setBackground(Color.WHITE);
-        rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
-
-        setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER);
-    }
-
-    void linkClicked(HTMLElement linkNode) throws LinkVetoException {
-        String rel = linkNode.getAttribute("rel");
-        String href = linkNode.getAttribute("href");
-        String target = linkNode.getAttribute("target");
-        if (rel.equalsIgnoreCase("action")) {
-            String name = href;
-            Map<String, String> params = new HashMap<>();
-
-            int pos = href.indexOf('?');
-            if (pos >= 0) {
-                name = href.substring(0, pos);
-                String p1 = pos < href.length() ? href.substring(pos + 1) : "";
-                if (!p1.isEmpty()) {
-                    String[] p2 = p1.split("\\&");
-                    for (String p3 : p2) {
-                        pos = p3.indexOf('=');
-                        if (pos > 0) {
-                            String id = p3.substring(0, pos);
-                            String value = pos < p3.length() ? p3.substring(pos + 1) : "";
-                            params.put(id, value);
-                        }
-                    }
-                }
-            }
-
-            performUrlAction(name, params);
-            throw new LinkVetoException();
-        } else if (target.equalsIgnoreCase("_external")) {
-            try {
-                URI uri = new URI(href);
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().browse(uri);
-                } else {
-                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            throw new LinkVetoException();
-        }
-    }
-
-    protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-
-    }
-
-    protected void performUrlAction(String name, Map<String, String> params) {
-    }
-
-    public void navigate(URL url) throws Exception {
-        rcontext.navigate(url, "_this");
-    }
-
-    public HtmlRendererContext getHtmlRenderContext() {
-        return rcontext;
     }
 }

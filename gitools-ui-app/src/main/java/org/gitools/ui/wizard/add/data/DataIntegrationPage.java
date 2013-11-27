@@ -23,7 +23,7 @@ package org.gitools.ui.wizard.add.data;
 
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
@@ -234,7 +234,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
@@ -273,7 +273,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
         List<DataIntegrationCriteria> criteria = (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
         String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
-        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(AppFrame.get(), attrNames, CutoffCmp.comparators, ops, criteria, setToValue);
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, criteria, setToValue);
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {

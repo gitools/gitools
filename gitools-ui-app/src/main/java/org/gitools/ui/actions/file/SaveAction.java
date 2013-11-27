@@ -23,13 +23,14 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -44,6 +45,7 @@ public class SaveAction extends BaseAction {
         setLargeIconFromResource(IconNames.save24);
         setSmallIconFromResource(IconNames.save16);
         setMnemonic(KeyEvent.VK_S);
+        setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
     }
 
     @Override
@@ -54,18 +56,18 @@ public class SaveAction extends BaseAction {
         }
 
         EditorsPanel editorPanel;
-        editorPanel = AppFrame.get().getEditorsPanel();
+        editorPanel = Application.get().getEditorsPanel();
 
         return editorPanel.getSelectedEditor().isSaveAllowed() && editorPanel.getSelectedEditor().isDirty();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 currentEditor.doSave(monitor);

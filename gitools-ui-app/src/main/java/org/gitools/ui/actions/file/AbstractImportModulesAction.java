@@ -34,7 +34,7 @@ import org.gitools.persistence.formats.matrix.GmtMatrixFormat;
 import org.gitools.persistence.formats.matrix.GmxMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.modules.wizard.ModulesImportWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -64,14 +64,14 @@ public abstract class AbstractImportModulesAction extends BaseAction {
         final EnsemblKeggModulesImporter importer = getImporter();
         final ModulesImportWizard wz = getWizard(importer);
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wz);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -121,7 +121,7 @@ public abstract class AbstractImportModulesAction extends BaseAction {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                AppFrame.get().setStatusText(msg);
+                Application.get().setStatusText(msg);
             }
         });
     }

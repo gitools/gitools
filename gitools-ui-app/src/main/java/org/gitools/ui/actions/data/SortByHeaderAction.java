@@ -29,7 +29,7 @@ import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.sort.SortByLabelComparator;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -54,7 +54,7 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
@@ -71,7 +71,7 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             }
         });
 
-        AppFrame.get().setStatusText("Sort done.");
+        Application.get().setStatusText("Sort done.");
     }
 
     @Override

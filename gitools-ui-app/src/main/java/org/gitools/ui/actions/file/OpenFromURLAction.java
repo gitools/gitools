@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.ui.commands.CommandLoadFile;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -51,8 +51,8 @@ public class OpenFromURLAction extends BaseAction {
 
         if (!isEmpty(fileURL)) {
             JobRunnable loadFile = new CommandLoadFile(fileURL);
-            JobThread.execute(AppFrame.get(), loadFile);
-            AppFrame.get().setStatusText("Done.");
+            JobThread.execute(Application.get(), loadFile);
+            Application.get().setStatusText("Done.");
         }
     }
 }

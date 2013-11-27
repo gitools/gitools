@@ -24,7 +24,7 @@ package org.gitools.ui.datasources.biomart.filter;
 import org.gitools.datasources.biomart.restful.model.Filter;
 import org.gitools.datasources.biomart.restful.model.FilterDescription;
 import org.gitools.datasources.biomart.restful.model.Option;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.utils.FileChooserUtils;
 
@@ -121,7 +121,7 @@ public class FilterTextComponent extends FilterComponent {
                 txtArea.setText(readFileAsString(folder.getText()));
 
             } catch (IOException ex) {
-                ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
                 dlg.setVisible(true);
             }
 

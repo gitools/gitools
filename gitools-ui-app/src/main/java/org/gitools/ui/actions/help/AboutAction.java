@@ -21,8 +21,9 @@
  */
 package org.gitools.ui.actions.help;
 
+import org.gitools.ui.IconNames;
 import org.gitools.ui.dialog.AboutDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
@@ -34,15 +35,17 @@ public class AboutAction extends BaseAction {
     private static final long serialVersionUID = 8302818623988394433L;
 
     public AboutAction() {
-        super("About " + AppFrame.getAppName() + "...");
+        super("About " + Application.getAppName() + "...");
         setDesc("Know more about this application");
         setMnemonic(KeyEvent.VK_A);
         setDefaultEnabled(true);
+        setLargeIconFromResource(IconNames.logo24);
+        setSmallIconFromResource(IconNames.logo16);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new AboutDialog(AppFrame.get()).setVisible(true);
+        new AboutDialog(Application.get()).setVisible(true);
     }
 
 }

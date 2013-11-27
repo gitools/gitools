@@ -28,7 +28,7 @@ import org.gitools.ui.heatmap.drawer.HeatmapDrawer;
 import org.gitools.persistence.formats.FileFormat;
 import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -47,10 +47,10 @@ public class ExportHeatmapImageAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportHeatmapImageAction() {
-        super("Export heatmap as an image ...");
+        super("Heatmap as an image...");
 
         setDesc("Export the heatmap as an image file");
-        setMnemonic(KeyEvent.VK_I);
+        setMnemonic(KeyEvent.VK_H);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ExportHeatmapImageAction extends HeatmapAction {
                 new FileFormat[]{FileFormats.PNG}
         );
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), saveWiz);
+        WizardDialog dlg = new WizardDialog(Application.get(), saveWiz);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -75,7 +75,7 @@ public class ExportHeatmapImageAction extends HeatmapAction {
 
         final String formatExtension = saveWiz.getFormat().getExtension();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -104,7 +104,7 @@ public class ExportHeatmapImageAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Image created.");
+        Application.get().setStatusText("Image created.");
     }
 
 

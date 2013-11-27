@@ -29,7 +29,7 @@ import org.gitools.ui.modules.wizard.ModulesImportWizard;
 public class ImportGoModulesAction extends AbstractImportModulesAction {
 
     public ImportGoModulesAction() {
-        super("Gene Ontology ...");
+        super("Gene ontology...");
         setLargeIconFromResource(IconNames.GO24);
         setSmallIconFromResource(IconNames.GO16);
     }

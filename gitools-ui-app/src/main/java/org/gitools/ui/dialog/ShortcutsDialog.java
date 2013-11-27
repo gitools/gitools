@@ -23,7 +23,7 @@ package org.gitools.ui.dialog;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.panel.TemplatePanel;
@@ -46,8 +46,8 @@ public class ShortcutsDialog extends JDialog {
     public ShortcutsDialog(JFrame owner) {
         super(owner);
 
-        appName = AppFrame.getAppName();
-        appVersion = AppFrame.getAppVersion();
+        appName = Application.getAppName();
+        appVersion = Application.getAppVersion();
 
         setModal(true);
         setTitle(appName + " shortcuts");

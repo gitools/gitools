@@ -26,11 +26,7 @@ import org.gitools.ui.platform.help.HelpContext;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public interface IWizardPage {
-
 
     String getId();
 
@@ -41,7 +37,6 @@ public interface IWizardPage {
     void setWizard(IWizard wizard);
 
     boolean isComplete();
-
 
     JComponent createControls();
 

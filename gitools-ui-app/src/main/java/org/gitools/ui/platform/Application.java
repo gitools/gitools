@@ -22,7 +22,8 @@
 package org.gitools.ui.platform;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.actions.Actions;
+import org.gitools.ui.actions.MenuActionSet;
+import org.gitools.ui.actions.ToolBarActionSet;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.settings.Settings;
@@ -37,7 +38,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class AppFrame extends JFrame {
+public class Application extends JFrame {
 
     private static final long serialVersionUID = -6899584212813749990L;
     private static final String appName;
@@ -46,7 +47,7 @@ public class AppFrame extends JFrame {
     static {
         appName = "Gitools";
 
-        appVersion = AppFrame.class.getPackage().getImplementationVersion();
+        appVersion = Application.class.getPackage().getImplementationVersion();
         if (appVersion == null) {
             appVersion = "SNAPSHOT";
         }
@@ -58,16 +59,16 @@ public class AppFrame extends JFrame {
 
     private StatusBar statusBar;
 
-    private static AppFrame instance;
+    private static Application instance;
 
-    public static AppFrame get() {
+    public static Application get() {
         if (instance == null) {
-            instance = new AppFrame();
+            instance = new Application();
         }
         return instance;
     }
 
-    private AppFrame() {
+    private Application() {
 
         createComponents();
 
@@ -95,9 +96,9 @@ public class AppFrame extends JFrame {
     }
 
     private void createComponents() {
-        setJMenuBar(Actions.menuActionSet.createMenuBar());
+        setJMenuBar(MenuActionSet.INSTANCE.createMenuBar());
 
-        toolBar = Actions.toolBarActionSet.createToolBar();
+        toolBar = ToolBarActionSet.INSTANCE.createToolBar();
 
         editorsPanel = new EditorsPanel();
 
@@ -134,11 +135,11 @@ public class AppFrame extends JFrame {
 
                     String javaVersion = System.getProperty("java.version");
                     if (javaVersion != null && javaVersion.endsWith("1.7.0_25")) {
-                        JOptionPane.showMessageDialog(AppFrame.get(), "You are using Java 7 build 25. This build has some important bugs, please update to the latest Java 7 build.");
+                        JOptionPane.showMessageDialog(Application.get(), "You are using Java 7 build 25. This build has some important bugs, please update to the latest Java 7 build.");
                     }
 
                     if (isNewerGitoolsAvailable()) {
-                        JOptionPane.showMessageDialog(AppFrame.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
+                        JOptionPane.showMessageDialog(Application.get(), "There is a newer version of Gitools.\n Download it from http://www.gitools.org.");
                     }
 
                 } catch (Exception e) {
@@ -154,7 +155,7 @@ public class AppFrame extends JFrame {
 
     boolean isNewerGitoolsAvailable() throws Exception {
 
-        String thisVersion = AppFrame.getAppVersion();
+        String thisVersion = Application.getAppVersion();
         if (thisVersion.toLowerCase().contains("snapshot")) {
             return false;
         }

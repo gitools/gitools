@@ -35,19 +35,21 @@ import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.analysis.combination.wizard.CombinationAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class CombinationsAction extends HeatmapAction {
 
     public CombinationsAction() {
-        super("Combinations");
+        super("Combinations...");
+        setMnemonic(KeyEvent.VK_M);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class CombinationsAction extends HeatmapAction {
         wizard.setAttributes(attributes);
         wizard.setSaveFilePageEnabled(false);
 
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
 
         wizDlg.open();
 
@@ -87,7 +89,7 @@ public class CombinationsAction extends HeatmapAction {
         final CombinationCommand cmd = new CombinationCommand(analysis, null, null, columnSetsFormat, columnSetsPath, null, null);
         cmd.setStoreAnalysis(false);
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -111,14 +113,14 @@ public class CombinationsAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

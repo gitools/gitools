@@ -29,7 +29,7 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.sort.ValueSortDialog;
@@ -44,7 +44,7 @@ public class SortByValueAction extends HeatmapAction {
     private static final long serialVersionUID = -1582437709508438222L;
 
     public SortByValueAction() {
-        super("Sort by values ...");
+        super("Sort by values...");
 
         setDesc("Sort by heatmap values ...");
     }
@@ -66,7 +66,7 @@ public class SortByValueAction extends HeatmapAction {
         IMatrixLayers<IMatrixLayer> layers = matrixView.getLayers();
 
         final ValueSortDialog dlg = new ValueSortDialog(
-                AppFrame.get(),
+                Application.get(),
                 layers,
                 aggregators,
                 SortDirection.values(),
@@ -81,11 +81,11 @@ public class SortByValueAction extends HeatmapAction {
 
         final List<IMatrixLayer> criteriaList = dlg.getCriteriaList();
         if (criteriaList.size() == 0) {
-            AppFrame.get().setStatusText("No criteria specified.");
+            Application.get().setStatusText("No criteria specified.");
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
@@ -96,6 +96,6 @@ public class SortByValueAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Sorted.");
+        Application.get().setStatusText("Sorted.");
     }
 }

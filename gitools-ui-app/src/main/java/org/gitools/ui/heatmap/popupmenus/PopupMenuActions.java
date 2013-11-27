@@ -22,13 +22,12 @@
 package org.gitools.ui.heatmap.popupmenus;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.ui.actions.DataActions;
-import org.gitools.ui.actions.EditActions;
+import org.gitools.ui.actions.Actions;
 import org.gitools.ui.actions.data.FastSortValueAction;
 import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.data.ShowAllAction;
 import org.gitools.ui.actions.edit.AddHeaderAction;
-import org.gitools.ui.actions.edit.EditHeaderAction;
+import org.gitools.ui.actions.edit.EditAllHeaderAction;
 import org.gitools.ui.actions.edit.InvertSelectionAction;
 import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.platform.actions.ActionSet;
@@ -39,27 +38,27 @@ public class PopupMenuActions {
     private static ActionSet getMenu(MatrixDimensionKey dimensionKey) {
 
         return new ActionSet(new BaseAction[] {
-                EditActions.selectAllAction,
-                EditActions.selectLabelHeaderAction,
+                Actions.selectAllAction,
+                Actions.selectLabelHeaderAction,
                 new GroupSelectionAction(dimensionKey),
-                EditActions.unselectAllAction,
+                Actions.unselectAllAction,
                 new InvertSelectionAction(dimensionKey),
-                DataActions.copyToClipboardSelectedLabelHeader,
+                Actions.copyToClipboardSelectedLabelHeader,
                 BaseAction.separator,
                 new ShowAllAction(dimensionKey),
-                DataActions.showOnlyHeaderAction,
-                DataActions.hideSelectedRowsAction,
-                DataActions.hideEmptyLabelHeaderAction,
-                DataActions.hideThisLabelHeaderAction,
-                DataActions.hideGreaterThanHeaderAction,
-                DataActions.hideSmallerThanHeaderAction,
+                Actions.showOnlyHeaderAction,
+                Actions.hideSelectedRowsAction,
+                Actions.hideEmptyLabelHeaderAction,
+                Actions.hideThisLabelHeaderAction,
+                Actions.hideGreaterThanHeaderAction,
+                Actions.hideSmallerThanHeaderAction,
                 BaseAction.separator,
                 new FastSortValueAction(dimensionKey),
-                DataActions.sortByHeader,
+                Actions.sortByHeader,
                 BaseAction.separator,
                 new HeatmapSearchAction(dimensionKey),
                 BaseAction.separator,
-                new EditHeaderAction(dimensionKey),
+                new EditAllHeaderAction(dimensionKey),
                 new AddHeaderAction(dimensionKey)
         });
 

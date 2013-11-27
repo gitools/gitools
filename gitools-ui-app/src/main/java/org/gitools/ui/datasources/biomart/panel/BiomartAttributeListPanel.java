@@ -26,7 +26,7 @@ import org.gitools.datasources.biomart.restful.model.AttributeDescription;
 import org.gitools.datasources.biomart.restful.model.AttributeGroup;
 import org.gitools.datasources.biomart.restful.model.AttributePage;
 import org.gitools.ui.datasources.biomart.dialog.BiomartAttributeDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
@@ -240,7 +240,7 @@ public class BiomartAttributeListPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        BiomartAttributeDialog dlg = new BiomartAttributeDialog(AppFrame.get(), attrPages);
+        BiomartAttributeDialog dlg = new BiomartAttributeDialog(Application.get(), attrPages);
 
         dlg.open();
 

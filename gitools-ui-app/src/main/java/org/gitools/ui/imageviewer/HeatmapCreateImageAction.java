@@ -26,7 +26,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.ui.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -47,7 +47,7 @@ public class HeatmapCreateImageAction extends HeatmapAction {
 
         final Heatmap heatmap = getHeatmap();
 
-        final String title = JOptionPane.showInputDialog(AppFrame.get(), "Write a title", getSelectedEditor().getName() + " (image)");
+        final String title = JOptionPane.showInputDialog(Application.get(), "Write a title", getSelectedEditor().getName() + " (image)");
 
         // The user canceled the image createn
         if (title == null) {
@@ -55,7 +55,7 @@ public class HeatmapCreateImageAction extends HeatmapAction {
         }
 
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -80,8 +80,8 @@ public class HeatmapCreateImageAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(viewer);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(viewer);
+                            Application.get().refresh();
                         }
                     });
 

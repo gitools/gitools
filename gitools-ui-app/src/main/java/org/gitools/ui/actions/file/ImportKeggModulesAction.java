@@ -29,7 +29,7 @@ import org.gitools.ui.modules.wizard.ModulesImportWizard;
 public class ImportKeggModulesAction extends AbstractImportModulesAction {
 
     public ImportKeggModulesAction() {
-        super("KEGG Pathways ...");
+        super("KEGG pathways...");
         setLargeIconFromResource(IconNames.KEGG24);
         setSmallIconFromResource(IconNames.KEGG16);
     }

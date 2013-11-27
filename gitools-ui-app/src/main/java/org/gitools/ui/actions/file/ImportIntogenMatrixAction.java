@@ -23,7 +23,7 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.datasources.intogen.dialog.IntogenImportDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
@@ -50,7 +50,7 @@ public class ImportIntogenMatrixAction extends BaseAction {
 		
 		wizDlg.open();*/
 
-        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(), IntogenImportDialog.ImportType.ONCODATA);
+        IntogenImportDialog dlg = new IntogenImportDialog(Application.get(), IntogenImportDialog.ImportType.ONCODATA);
 
         dlg.setVisible(true);
     }

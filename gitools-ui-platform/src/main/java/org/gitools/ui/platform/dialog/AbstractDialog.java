@@ -25,9 +25,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractDialog extends JDialog {
 
     private static final long serialVersionUID = 5886096207448862426L;
@@ -51,9 +48,6 @@ public abstract class AbstractDialog extends JDialog {
 
         super(owner, title);
         setModal(true);
-
-		/*if (logo != null)
-            setIconImage(IconUtils.iconToImage(logo));*/
 
         createComponents(header, message, status, logo);
 

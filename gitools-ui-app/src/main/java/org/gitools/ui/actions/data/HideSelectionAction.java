@@ -22,12 +22,13 @@
 package org.gitools.ui.actions.data;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -39,7 +40,7 @@ public class HideSelectionAction extends HeatmapDimensionAction implements IHeat
     private static final long serialVersionUID = 1453040322414160605L;
 
     public HideSelectionAction(MatrixDimensionKey key) {
-        super(key, "Hide selected " + key.getLabel());
+        super(key, "Hide selected");
 
         setSmallIconFromResource(IconNames.get(key).getHide16());
         setLargeIconFromResource(IconNames.get(key).getHide24());
@@ -48,11 +49,21 @@ public class HideSelectionAction extends HeatmapDimensionAction implements IHeat
     }
 
     @Override
+    public boolean isEnabledByModel(Object model) {
+
+        if (model instanceof Heatmap) {
+            return !getDimension().getSelected().isEmpty();
+        }
+
+        return false;
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         HeatmapDimension dimension = getDimension();
         dimension.hide(dimension.getSelected());
 
-        AppFrame.get().setStatusText("Selected " + getDimensionLabel() + " hidden");
+        Application.get().setStatusText("Selected " + getDimensionLabel() + " hidden");
     }
 
     @Override

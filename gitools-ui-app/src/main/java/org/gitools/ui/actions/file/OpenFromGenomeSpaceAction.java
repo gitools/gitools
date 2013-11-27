@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.genomespace.GSFileBrowser;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -52,15 +52,15 @@ public class OpenFromGenomeSpaceAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
         GSFileBrowser fileBrowser = null;
         try {
-            fileBrowser = new GSFileBrowser(AppFrame.get(), GSFileBrowser.Mode.OPEN);
+            fileBrowser = new GSFileBrowser(Application.get(), GSFileBrowser.Mode.OPEN);
             fileBrowser.setVisible(true);
 
             String fileURL = fileBrowser.getFileURL();
 
             if (!StringUtils.isEmpty(fileURL)) {
                 JobRunnable loadFile = new CommandLoadFile(fileURL);
-                JobThread.execute(AppFrame.get(), loadFile);
-                AppFrame.get().setStatusText("Done.");
+                JobThread.execute(Application.get(), loadFile);
+                Application.get().setStatusText("Done.");
             }
 
         } catch (IOException e1) {

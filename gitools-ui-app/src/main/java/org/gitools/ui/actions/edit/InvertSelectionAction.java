@@ -26,7 +26,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 
@@ -43,7 +43,7 @@ public class InvertSelectionAction extends HeatmapDimensionAction implements IHe
     public void actionPerformed(ActionEvent e) {
 
         getDimension().select(not(in(getDimension().getSelected())));
-        AppFrame.get().setStatusText("Selection inverted");
+        Application.get().setStatusText("Selection inverted");
     }
 
     @Override

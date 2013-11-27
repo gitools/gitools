@@ -29,16 +29,17 @@ import javax.swing.*;
 
 public final class ToolBarActionSet extends ActionSet {
 
-    private static final long serialVersionUID = 6924230823891805344L;
+    public static ToolBarActionSet INSTANCE = new ToolBarActionSet();
 
     public ToolBarActionSet() {
         super(new BaseAction[]{
-                FileActions.open,
-                FileActions.saveAction,
+                Actions.open,
+                Actions.saveAction,
                 BaseAction.separator,
-                FileActions.openGenomeSpace,
-                FileActions.openIntegrativeGenomicViewerAction,
-                HeatmapActions.snapshotAction});
+                Actions.openGenomeSpace,
+                Actions.openIntegrativeGenomicViewerAction,
+                Actions.snapshotAction}
+        );
     }
 
     public JToolBar createToolBar() {

@@ -24,7 +24,7 @@ package org.gitools.ui.sort;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.utils.DocumentChangeListener;
@@ -142,7 +142,7 @@ public class AnnotationSortPage extends AbstractWizardPage {
 
     private void selectRowsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getRows(), true);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -154,7 +154,7 @@ public class AnnotationSortPage extends AbstractWizardPage {
 
     private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(hm.getColumns(), true);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;

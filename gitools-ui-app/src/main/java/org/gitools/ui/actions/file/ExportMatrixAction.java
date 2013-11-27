@@ -27,7 +27,7 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.export.TextMatrixViewExporter;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
@@ -44,10 +44,10 @@ public class ExportMatrixAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportMatrixAction() {
-        super("Export matrix ...");
+        super("Values as a matrix...");
 
         setDesc("Export a matrix");
-        setMnemonic(KeyEvent.VK_P);
+        setMnemonic(KeyEvent.VK_M);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ExportMatrixAction extends HeatmapAction {
         IMatrixViewLayers layers = matrixView.getLayers();
 
         String selectedId = (String) JOptionPane.showInputDialog(
-                AppFrame.get(),
+                Application.get(),
                 "What do you want to export ?",
                 "Export table data", JOptionPane.QUESTION_MESSAGE, null,
                 layers.getIds(),
@@ -77,7 +77,7 @@ public class ExportMatrixAction extends HeatmapAction {
 
         Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -93,6 +93,6 @@ public class ExportMatrixAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText(selected + " exported.");
+        Application.get().setStatusText(selected + " exported.");
     }
 }

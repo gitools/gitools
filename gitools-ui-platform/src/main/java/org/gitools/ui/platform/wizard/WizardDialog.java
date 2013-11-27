@@ -36,9 +36,6 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class WizardDialog extends AbstractDialog {
 
     private static final long serialVersionUID = 1L;

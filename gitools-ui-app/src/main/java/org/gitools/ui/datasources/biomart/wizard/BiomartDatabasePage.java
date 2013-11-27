@@ -23,7 +23,7 @@ package org.gitools.ui.datasources.biomart.wizard;
 
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.MartLocation;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -123,7 +123,7 @@ public class BiomartDatabasePage extends AbstractWizardPage {
                 } catch (Exception e) {
                     setStatus(MessageStatus.ERROR);
                     setMessage(e.getMessage());
-                    ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), e);
+                    ExceptionDialog dlg = new ExceptionDialog(Application.get(), e);
                     dlg.setVisible(true);
                 }
             }

@@ -23,20 +23,17 @@ package org.gitools.ui.actions.file;
 
 import org.gitools.ui.IconNames;
 import org.gitools.ui.datasources.intogen.dialog.IntogenImportDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 
-/**
- * @noinspection ALL
- */
 public class ImportIntogenOncomodulesAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
     public ImportIntogenOncomodulesAction() {
-        super("IntOGen Oncomodules ...");
+        super("IntOGen oncomodules...");
         setLargeIconFromResource(IconNames.intogen24);
         setSmallIconFromResource(IconNames.intogen16);
         setDefaultEnabled(true);
@@ -44,7 +41,7 @@ public class ImportIntogenOncomodulesAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IntogenImportDialog dlg = new IntogenImportDialog(AppFrame.get(), IntogenImportDialog.ImportType.ONCOMODULES);
+        IntogenImportDialog dlg = new IntogenImportDialog(Application.get(), IntogenImportDialog.ImportType.ONCOMODULES);
 
         dlg.setVisible(true);
     }

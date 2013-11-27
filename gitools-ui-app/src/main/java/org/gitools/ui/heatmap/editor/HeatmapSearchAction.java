@@ -24,10 +24,11 @@ package org.gitools.ui.heatmap.editor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -36,17 +37,18 @@ import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 public class HeatmapSearchAction extends HeatmapDimensionAction {
 
     public HeatmapSearchAction(MatrixDimensionKey key) {
-        super(key, "Search");
+        super(key, "Find...");
 
         setDesc("Search for a text in rows or columns");
         setSmallIconFromResource(IconNames.SEARCH16);
         setLargeIconFromResource(IconNames.SEARCH24);
         setMnemonic(KeyEvent.VK_F);
+        setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
         IEditor currentEditor = editorPanel.getSelectedEditor();
 
@@ -56,6 +58,7 @@ public class HeatmapSearchAction extends HeatmapDimensionAction {
 
         HeatmapEditor hmEditor = (HeatmapEditor) currentEditor;
         hmEditor.showSearch(getDimensionKey() == COLUMNS);
+
     }
 
 }

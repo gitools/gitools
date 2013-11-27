@@ -141,19 +141,17 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             }
         });
 
-        closeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (searchRows()) {
-                    HeatmapSearchPanel.this.hm.getRows().clearHighlightedLabels();
-                } else {
-                    HeatmapSearchPanel.this.hm.getColumns().clearHighlightedLabels();
-                }
-            }
-        });
-
         setNotFound(false);
 
+    }
+
+    public void close() {
+        if (searchRows()) {
+            HeatmapSearchPanel.this.hm.getRows().clearHighlightedLabels();
+        } else {
+            HeatmapSearchPanel.this.hm.getColumns().clearHighlightedLabels();
+        }
+        setVisible(false);
     }
 
     private void setNotFound(boolean b) {
@@ -416,7 +414,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         setNotFound(!found);
     }
 
-    private boolean searchRows() {
+    public boolean searchRows() {
         return rowsOrColumns.isSelected(rowsButton.getModel());
     }
 
@@ -504,7 +502,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
-        this.setVisible(false);
+        close();
     }//GEN-LAST:event_closeBtnActionPerformed
 
     private void rowsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rowsButtonActionPerformed
