@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.help;
 
 import org.gitools.ui.dialog.TipsDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class ShowTipsAction extends BaseAction {
     private final TipsDialog tipsDialog = new TipsDialog();
 
     public ShowTipsAction() {
-        super("Show tips about " + AppFrame.getAppName() + "...");
+        super("Tips about " + Application.getAppName() + "...");
         setDesc("Get useful tips about Gitools");
         setMnemonic(KeyEvent.VK_T);
         setDefaultEnabled(true);

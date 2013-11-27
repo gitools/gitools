@@ -25,7 +25,7 @@ import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
         hdim.addHeader(header);
 
-        AppFrame.get().refresh();
+        Application.get().refresh();
 
         // Force a GC to release free memory
         System.gc();

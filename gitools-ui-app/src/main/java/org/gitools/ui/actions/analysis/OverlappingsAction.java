@@ -33,20 +33,22 @@ import org.gitools.persistence.formats.analysis.OverlappingAnalysisFormat;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import static com.google.common.base.Predicates.in;
 
 public class OverlappingsAction extends HeatmapAction {
 
     public OverlappingsAction() {
-        super("Overlapping analysis");
+        super("Overlapping...");
+        setMnemonic(KeyEvent.VK_V);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class OverlappingsAction extends HeatmapAction {
         wiz.setAttributes(matrixView.getLayers());
         wiz.setSaveFilePageEnabled(false);
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
 
         dlg.open();
 
@@ -85,7 +87,7 @@ public class OverlappingsAction extends HeatmapAction {
 
         analysis.setSourceData(new ResourceReference<IMatrix>("source-data", matrixView));
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -110,14 +112,14 @@ public class OverlappingsAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

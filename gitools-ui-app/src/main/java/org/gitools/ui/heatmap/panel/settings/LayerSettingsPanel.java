@@ -23,36 +23,35 @@ package org.gitools.ui.heatmap.panel.settings;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
-import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.AbstractValueModel;
-import com.jgoodies.binding.value.ValueHolder;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.core.heatmap.HeatmapLayers;
-import org.gitools.core.model.Resource;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.ui.actions.EditActions;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
 import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.settings.AbstractSettingsPanel;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
-import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class SettingsPanel {
+public class LayerSettingsPanel extends AbstractSettingsPanel {
 
     // Components
     private JPanel rootPanel;
     private JComboBox decoratorPanelSelector;
     private JPanel decoratorPanels;
+    private JLabel colorScaleSave;
+    private JLabel colorScaleOpen;
+    private JTextArea layerDescription;
+    private JTextField layerDescriptionLink;
+    private JTextField layerValueLink;
+
+    /*
     private JTextField gridRowsColor;
     private JTextField gridColumnsColor;
     private JCheckBox cellSizeKeepRatio;
@@ -66,53 +65,33 @@ public class SettingsPanel {
     private JLabel editColumnsHeader;
     private JLabel newRowsHeader;
     private JLabel newColumnsHeader;
-    private JLabel colorScaleSave;
-    private JLabel colorScaleOpen;
-    private JComboBox layerselector;
-    private JTextArea layerDescription;
-    private JTextField layerDescriptionLink;
-    private JTextField layerValueLink;
+    */
 
-    public SettingsPanel(final Heatmap heatmap) {
-        PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
 
-        // Data models
-        PresentationModel<HeatmapDimension> rows = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_ROWS));
-        PresentationModel<HeatmapDimension> columns = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_COLUMNS));
-        PresentationModel<HeatmapLayers> layers = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_LAYERS));
-        PresentationModel<HeatmapLayer> topLayer = new PresentationModel<>(layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER));
+    public LayerSettingsPanel(final HeatmapLayer heatmapLayer, Iterable<String> layers) {
+        super("Layer settings", "this is the message of this layer settings panel");
 
-        // Layer selector
-        Bindings.bind(layerselector, new SelectionInList<>(
-                heatmap.getLayers().getLayerNames(),
-                new ValueHolder(),
-                layers.getModel(HeatmapLayers.PROPERTY_TOP_LAYER_INDEX)
-        ));
+        setLogo(IconUtils.getImageIconResource(IconNames.logoNoText));
 
-        // Bind color scale controls
+        PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
+
+        // Color scale
         DecoratorPanels decorators = new DecoratorPanels();
         DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
         final AbstractValueModel decoratorValueModel = new AbstractValueModel() {
             @Override
             public Object getValue() {
-                return heatmap.getLayers().getTopLayer().getDecorator();
+                return heatmapLayer.getDecorator();
             }
 
             @Override
             public void setValue(Object newValue) {
-                heatmap.getLayers().getTopLayer().setDecorator((Decorator) newValue);
+                heatmapLayer.setDecorator((Decorator) newValue);
                 fireValueChange(null, newValue);
             }
         };
-        layers.addBeanPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                decoratorValueModel.fireValueChange(null, heatmap.getLayers().getTopLayer().getDecorator());
-            }
-        });
 
-
-        decoratorsPanels.init(decorators, heatmap.getLayers().getLayerNames(), decoratorValueModel);
+        decoratorsPanels.init(decorators, layers, decoratorValueModel);
         Bindings.bind(decoratorPanelSelector, new SelectionInList<>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
@@ -123,7 +102,7 @@ public class SettingsPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 SaveDecoratorDialog.actionSaveDecorator(
-                        heatmap.getLayers().getTopLayer().getDecorator()
+                        heatmapLayer.getDecorator()
                 );
             }
         });
@@ -136,49 +115,17 @@ public class SettingsPanel {
             }
         });
 
-        // Bind headers controls
-        newColumnsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        newColumnsHeader.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EditActions.addColumnHeader.actionPerformed(new ActionEvent(this, 1, ""));
-            }
-        });
+        // Bind value controls
+        Bindings.bind(layerDescription, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
+        Bindings.bind(layerDescriptionLink, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
+        Bindings.bind(layerValueLink, layer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
 
-        editColumnsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        editColumnsHeader.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EditActions.editColumnHeader.actionPerformed(new ActionEvent(this, 1, ""));
-            }
-        });
-
-        newRowsHeader.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        newRowsHeader.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EditActions.addRowHeader.actionPerformed(new ActionEvent(this, 1, ""));
-            }
-        });
-
-        editRowHeaders.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        editRowHeaders.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                EditActions.editRowHeader.actionPerformed(new ActionEvent(this, 1, ""));
-            }
-        });
-
+        /*
         // Bind grid controls
         Bindings.bind(gridRowsColor, "color", rows.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
         Bindings.bind(gridColumnsColor, "color", columns.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
         gridRowsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(rows.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
         gridColumnsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(columns.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
-
-        // Bind value controls
-        Bindings.bind(layerDescription, topLayer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
-        Bindings.bind(layerDescriptionLink, topLayer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
-        Bindings.bind(layerValueLink, topLayer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
 
         // Bind document controls
         Bindings.bind(documentTitle, model.getModel(Resource.PROPERTY_TITLE));
@@ -190,18 +137,23 @@ public class SettingsPanel {
         AbstractValueModel cellSizeColumnsModel = columns.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
         cellSizeColumns.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel, 1, 1, 300, 1));
         cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
+        */
 
 
+    }
+
+    @Override
+    public JComponent createComponents() {
+        return getRootPanel();
     }
 
     public JPanel getRootPanel() {
         return rootPanel;
     }
 
-
     private void createUIComponents() {
-        this.gridRowsColor = new MyWebColorChooserField();
-        this.gridColumnsColor = new MyWebColorChooserField();
+        //this.gridRowsColor = new MyWebColorChooserField();
+        //this.gridColumnsColor = new MyWebColorChooserField();
         this.decoratorPanels = new DecoratorPanelContainer();
     }
 }

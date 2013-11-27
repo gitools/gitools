@@ -21,28 +21,58 @@
  */
 package org.gitools.ui.actions.edit;
 
-import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.ui.IconNames;
+import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.actions.HeatmapDimensionAction;
-import org.gitools.ui.heatmap.panel.settings.headers.HeadersEditPanel;
+import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.heatmapheader.DecoratorHeaderWizard;
+import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
+import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.wizard.IWizard;
+import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 
 public class EditHeaderAction extends HeatmapDimensionAction {
 
-    public EditHeaderAction(MatrixDimensionKey dim) {
-        super(dim, "Edit " + dim.getLabel() + " headers");
-        setSmallIconFromResource(IconNames.edit16);
+    private HeatmapHeader header;
+
+    public EditHeaderAction(HeatmapHeader header) {
+        super(header.getHeatmapDimension().getId(), header.getTitle());
+
+        this.header = header;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        HeadersEditPanel dialog = new HeadersEditPanel(getHeatmap(), getDimension());
-        dialog.setSize(500, 400);
-        dialog.setLocationRelativeTo(null);
-        dialog.pack();
-        dialog.setVisible(true);
+        execute(getDimension(), header);
     }
+
+    public static void execute(HeatmapDimension dimension, HeatmapHeader header) {
+        Class<? extends HeatmapHeader> cls = header.getClass();
+        IWizard wizard = null;
+
+        if (HeatmapTextLabelsHeader.class.equals(cls))
+            wizard = new TextLabelsHeaderWizard(dimension, (HeatmapTextLabelsHeader) header);
+        else if (HeatmapColoredLabelsHeader.class.equals(cls)) {
+            ColoredLabelsHeaderWizard wiz = new ColoredLabelsHeaderWizard(dimension, (HeatmapColoredLabelsHeader) header);
+            wiz.setEditionMode(true);
+            wizard = wiz;
+        } else if (HeatmapDecoratorHeader.class.equals(cls)) {
+            wizard = new DecoratorHeaderWizard((HeatmapDecoratorHeader) header);
+        }
+
+        if (wizard == null)
+            return;
+
+        WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
+        wdlg.setTitle("Edit header");
+        wdlg.setVisible(true);
+    }
+
+
 
 }

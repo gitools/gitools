@@ -29,7 +29,7 @@ import org.gitools.core.matrix.filter.MatrixViewValueFilter;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.dialog.filter.ValueFilterPage;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -64,19 +64,19 @@ public class FilterByValueAction extends HeatmapAction {
         ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
         initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
 
-        final ValueFilterPage page = new ValueFilterPage(AppFrame.get(),
+        final ValueFilterPage page = new ValueFilterPage(Application.get(),
                 attrNames,
                 CutoffCmp.comparators,
                 initialCriteria,
                 selectedLayer);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
@@ -90,6 +90,6 @@ public class FilterByValueAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Filter applied.");
+        Application.get().setStatusText("Filter applied.");
     }
 }

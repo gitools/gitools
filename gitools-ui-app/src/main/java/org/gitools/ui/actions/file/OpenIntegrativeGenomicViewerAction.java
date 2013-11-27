@@ -28,7 +28,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.commands.AbstractCommand;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.settings.Settings;
@@ -55,7 +55,6 @@ public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
         super("open current selection in IGV");
         setLargeIconFromResource(IconNames.igv24);
         setSmallIconFromResource(IconNames.igv16);
-        setDefaultEnabled(Settings.getDefault().isShowIGVLink());
     }
 
     /**
@@ -64,7 +63,7 @@ public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
      * @param message the message
      */
     private static void showMessage(String message) {
-        AppFrame frame = AppFrame.get();
+        Application frame = Application.get();
         JOptionPane.showMessageDialog(frame, message);
     }
 
@@ -86,8 +85,8 @@ public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
 
         // Execute the command
         JobRunnable loadFile = new IgvCommand(StringUtils.join(rows, " "));
-        JobThread.execute(AppFrame.get(), loadFile);
-        AppFrame.get().setStatusText("Done.");
+        JobThread.execute(Application.get(), loadFile);
+        Application.get().setStatusText("Done.");
 
     }
 

@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.dm.DMUtils;
 import org.gitools.ui.genomespace.dm.GSDirectoryListing;
 import org.gitools.ui.genomespace.dm.GSFileMetadata;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.settings.Settings;
 import org.json.JSONException;
@@ -187,7 +187,7 @@ public class GSFileBrowser extends JDialog {
         setVisible(false);
         dispose();
         GSUtils.logout();
-        if (MessageUtils.confirm(AppFrame.get(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
+        if (MessageUtils.confirm(Application.get(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
             Settings.getDefault().save();
             System.exit(0);
         }
@@ -223,12 +223,12 @@ public class GSFileBrowser extends JDialog {
 
         } catch (Exception e1) {
             log.error("Error loading GS files", e1);
-            MessageUtils.showMessage(AppFrame.get(), "Error: " + e1.toString());
+            MessageUtils.showMessage(Application.get(), "Error: " + e1.toString());
         }
     }
 
     private void newFolderButtonActionPerformed(ActionEvent e) {
-        String folderName = MessageUtils.showInputDialog(AppFrame.get(), "Name of new folder:");
+        String folderName = MessageUtils.showInputDialog(Application.get(), "Name of new folder:");
         if (folderName != null && folderName.length() > 0) {
             String dirurl = selectedFile.getUrl();
             if (!selectedFile.isDirectory()) {
@@ -246,7 +246,7 @@ public class GSFileBrowser extends JDialog {
                 fetchContents(new URL(putURL));
             } catch (IOException e1) {
                 log.error("Error creating directory: " + putURL, e1);
-                MessageUtils.showMessage(AppFrame.get(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
+                MessageUtils.showMessage(Application.get(), "<html>Error creating directory: " + e1 + "<br>" + e1.getMessage());
             } catch (JSONException e1) {
                 e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }

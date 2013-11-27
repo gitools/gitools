@@ -22,7 +22,7 @@
 package org.gitools.ui.actions;
 
 import org.gitools.core.heatmap.Heatmap;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
@@ -45,7 +45,7 @@ public abstract class HeatmapAction extends BaseAction {
     }
 
     protected EditorsPanel getEditorsPanel() {
-        return AppFrame.get().getEditorsPanel();
+        return Application.get().getEditorsPanel();
     }
 
     protected Heatmap getHeatmap() {

@@ -31,7 +31,7 @@ import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.aggregation.MultAggregator;
@@ -86,7 +86,7 @@ public class FastSortValueAction extends HeatmapDimensionAction {
         currentSort = (currentSort == SortDirection.ASCENDING ? SortDirection.DESCENDING : SortDirection.ASCENDING);
         updateIcon();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
 
@@ -103,6 +103,6 @@ public class FastSortValueAction extends HeatmapDimensionAction {
             }
         });
 
-        AppFrame.get().setStatusText("Rows sorted.");
+        Application.get().setStatusText("Rows sorted.");
     }
 }

@@ -13,7 +13,7 @@ package org.gitools.ui.genomespace.dm;
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.genomespace.GSUtils;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -548,7 +548,7 @@ public class HttpUtils {
                 return new PasswordAuthentication(defaultUserName, defaultPassword);
             }
 
-            Frame owner = AppFrame.get();
+            Frame owner = Application.get();
 
             boolean isGenomeSpace = GSUtils.isGenomeSpace(getRequestingURL());
             if (isGenomeSpace) {

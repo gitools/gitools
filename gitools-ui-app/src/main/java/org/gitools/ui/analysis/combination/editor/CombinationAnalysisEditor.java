@@ -31,7 +31,7 @@ import org.gitools.persistence.formats.analysis.CombinationAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -96,13 +96,13 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
     private void newDataHeatmap() {
         if (analysis.getData() == null) {
-            AppFrame.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -119,7 +119,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                         @Override
                         public void run() {
                             editorPanel.addEditor(editor);
-                            AppFrame.get().setStatusText("New heatmap created.");
+                            Application.get().setStatusText("New heatmap created.");
                         }
                     });
 
@@ -133,13 +133,13 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
 
     private void newResultsHeatmap() {
         if (analysis.getResults() == null) {
-            AppFrame.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
@@ -159,7 +159,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
                         @Override
                         public void run() {
                             editorPanel.addEditor(editor);
-                            AppFrame.get().setStatusText("Heatmap for combination results created.");
+                            Application.get().setStatusText("Heatmap for combination results created.");
                         }
                     });
                 } catch (Exception e) {

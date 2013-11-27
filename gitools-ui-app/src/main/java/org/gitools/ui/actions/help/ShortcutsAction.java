@@ -22,28 +22,25 @@
 package org.gitools.ui.actions.help;
 
 import org.gitools.ui.dialog.ShortcutsDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-/**
- * @noinspection ALL
- */
 public class ShortcutsAction extends BaseAction {
 
     public ShortcutsAction() {
-        super("Show shortcuts");
+        super("Shortcuts...");
         setDesc("See all the shortcuts for Gitools");
-        setMnemonic(KeyEvent.VK_A);
+        setMnemonic(KeyEvent.VK_S);
         setDefaultEnabled(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new ShortcutsDialog(AppFrame.get()).setVisible(true);
+        new ShortcutsDialog(Application.get()).setVisible(true);
     }
 
 }

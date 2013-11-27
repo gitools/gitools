@@ -35,7 +35,7 @@ import org.gitools.persistence.formats.analysis.EnrichmentAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -124,13 +124,13 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
 
     protected void newDataHeatmap() {
         if (analysis.getData() == null) {
-            AppFrame.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().setStatusText("Analysis doesn't contain data.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
@@ -150,7 +150,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        AppFrame.get().setStatusText("New heatmap created.");
+                        Application.get().setStatusText("New heatmap created.");
                     }
                 });
             }
@@ -159,13 +159,13 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
 
     protected void newResultsHeatmap() {
         if (analysis.getResults() == null) {
-            AppFrame.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().setStatusText("Analysis doesn't contain results.");
             return;
         }
 
-        final EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
@@ -179,7 +179,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        AppFrame.get().setStatusText("Heatmap results created.");
+                        Application.get().setStatusText("Heatmap results created.");
                     }
                 });
             }

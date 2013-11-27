@@ -25,8 +25,9 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.matrix.filter.PatternFunction;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -45,10 +46,11 @@ import static com.google.common.collect.Sets.newHashSet;
 public class ExportHeatmapLabelsAction extends HeatmapAction {
 
     public ExportHeatmapLabelsAction() {
-        super("Export labels ...");
+        super("Annotations...");
 
-        setDesc("Export row or column labels");
-        setMnemonic(KeyEvent.VK_N);
+        setDesc("Export row or column annotations");
+        setMnemonic(KeyEvent.VK_A);
+        setSmallIconFromResource(IconNames.empty16);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
         final Heatmap hm = getHeatmap();
 
         final ExportHeatmapLabelsWizard wiz = new ExportHeatmapLabelsWizard(hm);
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
@@ -66,7 +68,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
 
         final File file = wiz.getSavePage().getPathAsFile();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -113,7 +115,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Labels exported.");
+        Application.get().setStatusText("Labels exported.");
     }
 
 }

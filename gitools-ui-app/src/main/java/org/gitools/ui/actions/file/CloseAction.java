@@ -22,7 +22,7 @@
 package org.gitools.ui.actions.file;
 
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
@@ -50,14 +50,14 @@ public class CloseAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        EditorsPanel editorsPanel = AppFrame.get().getEditorsPanel();
+        EditorsPanel editorsPanel = Application.get().getEditorsPanel();
         AbstractEditor currentEditor = editorsPanel.getSelectedEditor();
         if (currentEditor != null) {
             editorsPanel.removeEditor(currentEditor);
         }
 
-        AppFrame.get().refresh();
-        AppFrame.get().setStatusText("View closed.");
+        Application.get().refresh();
+        Application.get().setStatusText("View closed.");
     }
 
     @Override

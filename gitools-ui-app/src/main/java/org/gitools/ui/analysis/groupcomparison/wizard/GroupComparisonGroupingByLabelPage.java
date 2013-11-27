@@ -26,7 +26,7 @@ import com.google.common.collect.Sets;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.FilterByLabelPredicate;
 import org.gitools.core.matrix.filter.PatternFunction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -109,7 +109,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
     private void selectColsPattern() {
         PatternSourcePage page = new PatternSourcePage(dimension, true);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -142,7 +142,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
                 }
             }
         } catch (IOException ex) {
-            ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
             dlg.setVisible(true);
         }
 
@@ -315,7 +315,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
             patterns1.setText(readNamesFromFile(file));
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtn1ActionPerformed
@@ -335,7 +335,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
             bw.append(patterns1.getText()).append('\n');
             bw.close();
         } catch (Exception ex) {
-            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtn1ActionPerformed
@@ -363,7 +363,7 @@ public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
             patterns2.setText(readNamesFromFile(file));
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(AppFrame.get(), ex);
+            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtn2ActionPerformed

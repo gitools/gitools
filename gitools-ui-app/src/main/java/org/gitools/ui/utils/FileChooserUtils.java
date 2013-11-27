@@ -26,7 +26,7 @@ import com.googlecode.vfsjfilechooser2.filechooser.AbstractVFSFileFilter;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileType;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.settings.Settings;
 
 import javax.swing.*;
@@ -94,9 +94,9 @@ public class FileChooserUtils {
         int retval = JFileChooser.CANCEL_OPTION;
 
         if (mode == FileChooserUtils.MODE_SAVE) {
-            retval = fileChooser.showSaveDialog(AppFrame.get());
+            retval = fileChooser.showSaveDialog(Application.get());
         } else if (mode == FileChooserUtils.MODE_OPEN) {
-            retval = fileChooser.showOpenDialog(AppFrame.get());
+            retval = fileChooser.showOpenDialog(Application.get());
         }
 
         if (retval == JFileChooser.APPROVE_OPTION) {
@@ -144,9 +144,9 @@ public class FileChooserUtils {
         VFSJFileChooser.RETURN_TYPE retval = VFSJFileChooser.RETURN_TYPE.CANCEL;
 
         if (mode == FileChooserUtils.MODE_SAVE) {
-            retval = fileChooser.showSaveDialog(AppFrame.get());
+            retval = fileChooser.showSaveDialog(Application.get());
         } else if (mode == FileChooserUtils.MODE_OPEN) {
-            retval = fileChooser.showOpenDialog(AppFrame.get());
+            retval = fileChooser.showOpenDialog(Application.get());
         }
 
         if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
@@ -191,7 +191,7 @@ public class FileChooserUtils {
             }
         });
 
-        VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(AppFrame.get());
+        VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(Application.get());
         if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
             return fileChooser.getSelectedFile();
         }

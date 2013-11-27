@@ -32,7 +32,6 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private static final long serialVersionUID = -4330234851091328953L;
 
-
     private String id;
 
     private IWizard wizard;
@@ -49,7 +48,6 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
 
     private HelpContext helpContext;
 
-
     private final List<IWizardPageUpdateListener> listeners = new ArrayList<>();
 
     protected AbstractWizardPage() {
@@ -59,7 +57,6 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
     protected AbstractWizardPage(String id) {
         this.id = id != null ? id : this.getClass().getCanonicalName();
         this.pageComplete = false;
-        //this.helpContext = new HelpContext(this.getClass());
     }
 
 

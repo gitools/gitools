@@ -23,7 +23,7 @@ package org.gitools.ui.dialog;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.ui.IconNames;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.panel.TemplatePanel;
 
@@ -43,8 +43,8 @@ public class AboutDialog extends JDialog {
     public AboutDialog(JFrame owner) {
         super(owner);
 
-        appName = AppFrame.getAppName();
-        appVersion = AppFrame.getAppVersion();
+        appName = Application.getAppName();
+        appVersion = Application.getAppVersion();
         javaRuntimeVersion = System.getProperty("java.vm.name") + " " + System.getProperty("java.version");
         javaVendor = System.getProperty("java.vm.vendor");
 

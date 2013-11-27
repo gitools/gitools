@@ -31,7 +31,7 @@ import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.analysis.wizard.*;
 import org.gitools.ui.examples.ExamplesManager;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -114,7 +114,7 @@ public class OncodriveAnalysisWizard extends AbstractWizard {
             Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
 
             if (examplePage.isExampleEnabled()) {
-                JobThread.execute(AppFrame.get(), new JobRunnable() {
+                JobThread.execute(Application.get(), new JobRunnable() {
                     @Override
                     public void run(IProgressMonitor monitor) {
 

@@ -50,7 +50,7 @@ public class StatusBar extends WebStatusBar {
         fullScreenBtn.setUndecorated(true);
         fullScreenBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AppFrame app = AppFrame.get();
+                Application app = Application.get();
 
                 // Toggle state
                 fullscreen = !fullscreen;
@@ -90,7 +90,7 @@ public class StatusBar extends WebStatusBar {
 
     private void updateFullscreen() {
 
-        AppFrame frame = AppFrame.get();
+        Application frame = Application.get();
 
         //get a reference to the device.
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();

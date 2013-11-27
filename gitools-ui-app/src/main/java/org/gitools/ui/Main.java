@@ -22,13 +22,12 @@
 package org.gitools.ui;
 
 import com.alee.managers.language.LanguageManager;
-import com.apple.eawt.Application;
 import org.gitools.persistence.PersistenceInitialization;
 import org.gitools.ui.actions.Actions;
 import org.gitools.ui.batch.CommandExecutor;
 import org.gitools.ui.batch.CommandListener;
 import org.gitools.ui.dialog.TipsDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.LaFManager;
@@ -65,7 +64,7 @@ public class Main {
 
         // Load OS specific things
         if (SystemInfo.isMac) {
-            Application osxApp = Application.getApplication();
+            com.apple.eawt.Application osxApp = com.apple.eawt.Application.getApplication();
             osxApp.setDockIconImage(IconUtils.getImageResource(IconNames.logoNoText));
         }
 
@@ -96,7 +95,7 @@ public class Main {
         Actions.init();
 
         // Launch frame
-        AppFrame.get().start();
+        Application.get().start();
 
         // Execute arguments
         if (args.length > 0) {

@@ -23,32 +23,40 @@ package org.gitools.ui.platform.actions;
 
 import org.gitools.ui.platform.editor.IEditor;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ActionSet extends BaseAction {
 
-    private static final long serialVersionUID = -1441656907811177103L;
-
-    private final List<BaseAction> actions;
+    private List<BaseAction> actions;
 
     public ActionSet(BaseAction[] actions) {
-        this("", null, null, actions);
+        this("", actions);
     }
 
     public ActionSet(String name, BaseAction[] actions) {
-        this(name, null, null, actions);
+        this(name, null, actions);
     }
 
-    public ActionSet(String name, int mnemonic, BaseAction[] actions) {
-        this(name, mnemonic, null, actions);
+    public ActionSet(String name, int mnemonic, String icon, BaseAction[] actions) {
+        this(name, mnemonic, actions);
+
+        if (icon!=null) {
+            setSmallIconFromResource(icon);
+        }
     }
 
-    private ActionSet(String name, Integer mnemonic, ImageIcon icon, BaseAction[] actions) {
-        super(name, icon);
-        this.actions = Arrays.asList(actions);
+    public ActionSet(String name, Integer mnemonic, BaseAction[] actions) {
+        super(name, null);
+
+        if (actions!=null) {
+            this.actions = Arrays.asList(actions);
+        } else {
+            this.actions = Collections.EMPTY_LIST;
+        }
+
         setEnabled(true);
 
         if (mnemonic!=null) {

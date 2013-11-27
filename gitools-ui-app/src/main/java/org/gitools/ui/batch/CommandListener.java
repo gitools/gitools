@@ -23,7 +23,7 @@ package org.gitools.ui.batch;
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.batch.tools.VersionTool;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.*;
 import java.io.*;
@@ -283,7 +283,7 @@ public class CommandListener implements Runnable {
 
     private void processGet(String command, Map<String, String> params, CommandExecutor cmdExe, PrintWriter out) throws IOException {
 
-        final Frame mainFrame = AppFrame.get();
+        final Frame mainFrame = Application.get();
 
         // Trick to force window to front, the setAlwaysOnTop works on a Mac,  toFront() does nothing.
         mainFrame.toFront();

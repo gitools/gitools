@@ -26,7 +26,7 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.formats.FileFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.fileimport.ImportWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -78,8 +78,8 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
         JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader);
-        JobThread.execute(AppFrame.get(), loadFile);
-        AppFrame.get().setStatusText("Done.");
+        JobThread.execute(Application.get(), loadFile);
+        Application.get().setStatusText("Done.");
     }
 
 
@@ -87,7 +87,7 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
     public void run(IProgressMonitor monitor) throws IOException {
         reader = new ExcelReader(locator);
         reader.run(monitor);
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), this);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), this);
         wizDlg.open();
     }
 }

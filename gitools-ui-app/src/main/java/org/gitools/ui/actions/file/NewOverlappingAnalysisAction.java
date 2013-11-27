@@ -36,7 +36,7 @@ import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.analysis.overlapping.wizard.OverlappingAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -63,7 +63,7 @@ public class NewOverlappingAnalysisAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
         final OverlappingAnalysisWizard wizard = new OverlappingAnalysisWizard();
 
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
 
         wizDlg.open();
 
@@ -89,7 +89,7 @@ public class NewOverlappingAnalysisAction extends BaseAction {
 
         final OverlappingCommand cmd = new OverlappingCommand(analysis, wizard.getWorkdir(), wizard.getFileName());
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -106,14 +106,14 @@ public class NewOverlappingAnalysisAction extends BaseAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Done.");
+                    Application.get().setStatusText("Done.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

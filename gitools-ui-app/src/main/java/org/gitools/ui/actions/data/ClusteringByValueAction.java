@@ -34,12 +34,13 @@ import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.clustering.values.ClusteringValueWizard;
 import org.gitools.ui.analysis.clustering.visualization.DendrogramEditor;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -49,8 +50,9 @@ import java.util.Set;
 public class ClusteringByValueAction extends HeatmapAction {
 
     public ClusteringByValueAction() {
-        super("Clustering");
+        super("Clustering...");
         setDesc("Cluster by values");
+        setMnemonic(KeyEvent.VK_L);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ClusteringByValueAction extends HeatmapAction {
         final Heatmap heatmap = getHeatmap();
 
         final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
-        WizardDialog wdlg = new WizardDialog(AppFrame.get(), wiz);
+        WizardDialog wdlg = new WizardDialog(Application.get(), wiz);
         wdlg.setVisible(true);
         if (wdlg.isCancelled()) {
             return;
@@ -66,7 +68,7 @@ public class ClusteringByValueAction extends HeatmapAction {
 
         final ClusteringMethod method = wiz.getMethod();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -76,7 +78,7 @@ public class ClusteringByValueAction extends HeatmapAction {
                     ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
 
                     if (results instanceof Cluster) {
-                        AppFrame.get().getEditorsPanel().addEditor(new DendrogramEditor((Cluster) results));
+                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor((Cluster) results));
                         return;
                     }
 
@@ -157,6 +159,6 @@ public class ClusteringByValueAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Clusters created");
+        Application.get().setStatusText("Clusters created");
     }
 }

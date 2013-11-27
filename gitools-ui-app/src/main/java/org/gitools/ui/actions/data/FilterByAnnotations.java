@@ -29,7 +29,7 @@ import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.matrix.filter.FilterByLabelPredicate;
 import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.ui.dialog.filter.StringAnnotationsFilterPage;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -43,7 +43,7 @@ public class FilterByAnnotations extends BaseAction {
     private static final long serialVersionUID = -1582437709508438222L;
 
     public FilterByAnnotations() {
-        super("Filter by annotations");
+        super("Filter by annotations...");
         setDesc("Filter by annotations");
     }
 
@@ -54,24 +54,24 @@ public class FilterByAnnotations extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IEditor editor = AppFrame.get().getEditorsPanel().getSelectedEditor();
+        IEditor editor = Application.get().getEditorsPanel().getSelectedEditor();
 
         Object model = editor != null ? editor.getModel() : null;
-        if (model == null || !(model instanceof Heatmap)) {
+        if (!(model instanceof Heatmap)) {
             return;
         }
 
         final Heatmap hm = (Heatmap) model;
 
         final StringAnnotationsFilterPage page = new StringAnnotationsFilterPage(hm);
-        PageDialog dlg = new PageDialog(AppFrame.get(), page);
+        PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
 
         if (dlg.isCancelled()) {
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Filtering ...", 1);
@@ -90,6 +90,6 @@ public class FilterByAnnotations extends BaseAction {
             }
         });
 
-        AppFrame.get().setStatusText("Filter by annotations done.");
+        Application.get().setStatusText("Filter by annotations done.");
     }
 }

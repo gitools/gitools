@@ -26,7 +26,7 @@ import com.jgoodies.binding.value.ValueModel;
 import org.gitools.core.heatmap.header.ColoredLabel;
 import org.gitools.core.model.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.dialog.EditCategoricalScaleDialog;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 import org.gitools.utils.color.ColorRegistry;
@@ -77,7 +77,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
             coloredLabels.add(new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor()));
         }
 
-        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(AppFrame.get(), coloredLabels);
+        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(Application.get(), coloredLabels);
         dialog.getPage().setValueMustBeNumeric(true);
         dialog.setVisible(true);
         if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {

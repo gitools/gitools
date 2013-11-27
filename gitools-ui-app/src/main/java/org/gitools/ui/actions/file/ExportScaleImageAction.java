@@ -28,7 +28,7 @@ import org.gitools.core.model.decorator.Decorator;
 import org.gitools.persistence.formats.FileFormat;
 import org.gitools.persistence.formats.FileFormats;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -40,6 +40,7 @@ import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -48,9 +49,10 @@ public class ExportScaleImageAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportScaleImageAction() {
-        super("Export scale as an image ...");
+        super("Scale as an image...");
 
         setDesc("Export the scale as an image file");
+        setMnemonic(KeyEvent.VK_S);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class ExportScaleImageAction extends HeatmapAction {
         wz.getSavePage().setFormats(new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
         wz.setScale(scale);
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wz);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -86,7 +88,7 @@ public class ExportScaleImageAction extends HeatmapAction {
 
         final String formatExtension = wz.getSavePage().getFormat().getExtension();
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -120,6 +122,6 @@ public class ExportScaleImageAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText("Image created.");
+        Application.get().setStatusText("Image created.");
     }
 }

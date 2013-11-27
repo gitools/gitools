@@ -24,21 +24,21 @@ package org.gitools.ui.welcome;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.actions.file.*;
 import org.gitools.ui.actions.help.ShortcutsAction;
+import org.gitools.ui.commands.CommandLoadFile;
 import org.gitools.ui.examples.ExamplesManager;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.HtmlEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.settings.Settings;
-import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.net.URI;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,71 +47,66 @@ public class WelcomeEditor extends HtmlEditor {
     private static final long serialVersionUID = 6851947500231401412L;
 
     public WelcomeEditor() {
-        super("Welcome", WelcomeEditor.class.getResource("/html/welcome.html"));
+        super("Welcome", getWelcomeURL());
     }
 
     @Override
     protected void exception(Exception e) {
-        ExceptionDialog.show(AppFrame.get(), e);
+        ExceptionDialog.show(Application.get(), e);
     }
 
     @Override
-    protected void performUrlAction(String name, Map<String, String> params) {
+    protected void performAction(String name, Map<String, String> params) {
         switch (name) {
-            case "goHome":
-                try {
-                    Desktop.getDesktop().browse(new URI("http://www.gitools.org"));
-                } catch (Exception ex) {
-                    ExceptionDialog.show(AppFrame.get(), ex);
-                }
-                break;
-            case "importIntogen": {
-                IntogenTypeDialog dlg = new IntogenTypeDialog(AppFrame.get());
-                dlg.setVisible(true);
-                if (!dlg.isCancelled()) {
-                    switch (dlg.getSelection()) {
-                        case IntogenTypeDialog.MATRIX:
-                            new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-                            break;
+            case "download":
+                switch (params.get("source")) {
+                    case "intogen": {
+                        IntogenTypeDialog dlg = new IntogenTypeDialog(Application.get());
+                        dlg.setVisible(true);
+                        if (!dlg.isCancelled()) {
+                            switch (dlg.getSelection()) {
+                                case IntogenTypeDialog.MATRIX:
+                                    new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
+                                    break;
 
-                        case IntogenTypeDialog.ONCOMODULES:
-                            new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                            break;
+                                case IntogenTypeDialog.ONCOMODULES:
+                                    new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                                    break;
+                            }
+                        }
+                        break;
                     }
-                }
-                break;
-            }
-            case "importGo":
-                new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                break;
-            case "importKegg":
-                new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                break;
-            case "importBiomart": {
-                BiomartTypeDialog dlg = new BiomartTypeDialog(AppFrame.get());
-                dlg.setVisible(true);
-                if (!dlg.isCancelled()) {
-                    switch (dlg.getSelection()) {
-                        case BiomartTypeDialog.TABLE:
-                            new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
-                            break;
+                    case "go":
+                        new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                        break;
+                    case "biomart": {
+                        BiomartTypeDialog dlg = new BiomartTypeDialog(Application.get());
+                        dlg.setVisible(true);
+                        if (!dlg.isCancelled()) {
+                            switch (dlg.getSelection()) {
+                                case BiomartTypeDialog.TABLE:
+                                    new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
+                                    break;
 
-                        case BiomartTypeDialog.MODULES:
-                            new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                            break;
+                                case BiomartTypeDialog.MODULES:
+                                    new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                                    break;
+                            }
+                        }
+                        break;
                     }
+                    case "kegg":
+                        new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
+                        break;
                 }
                 break;
-            }
             case "analysis": {
                 final Map<String, Class<? extends BaseAction>> actions = new HashMap<>();
-
-                actions.put("Enrichment", EnrichmentAnalysisAction.class);
-                actions.put("Oncodrive", OncodriveAnalysisAction.class);
-                actions.put("Correlations", NewCorrelationAnalysisAction.class);
-                actions.put("Overlapping", NewOverlappingAnalysisAction.class);
-                actions.put("Combination", NewCombinationAnalysisAction.class);
-
+                actions.put("enrichment", EnrichmentAnalysisAction.class);
+                actions.put("oncodrive", OncodriveAnalysisAction.class);
+                actions.put("correlations", NewCorrelationAnalysisAction.class);
+                actions.put("overlapping", NewOverlappingAnalysisAction.class);
+                actions.put("combination", NewCombinationAnalysisAction.class);
                 String ref = params.get("ref");
                 Class<? extends BaseAction> actionClass = actions.get(ref);
                 if (actionClass != null) {
@@ -119,40 +114,32 @@ public class WelcomeEditor extends HtmlEditor {
                         ActionEvent event = new ActionEvent(this, 0, name);
                         actionClass.newInstance().actionPerformed(event);
                     } catch (Exception ex) {
-                        ExceptionDialog.show(AppFrame.get(), ex);
+                        ExceptionDialog.show(Application.get(), ex);
                     }
                 }
                 break;
             }
             case "open": {
-                String ref = params.get("ref");
-                if (ref.equals("DataHeatmap")) {
-                    new OpenFromFilesystemAction().actionPerformed(new ActionEvent(this, 0, name));
-                } else if (ref.equals("DataHeatmapGS")) {
-                    new OpenFromGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
-                } else if (ref.equals("Shortcuts")) {
-                    new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
+                switch (params.get("ref")) {
+                    case "filesystem":
+                        new OpenFromFilesystemAction().actionPerformed(new ActionEvent(this, 0, name));
+                        break;
+                    case "genomespace":
+                        new OpenFromGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
+                        break;
+                    case "shortcuts":
+                        new ShortcutsAction().actionPerformed(new ActionEvent(this, 0, name));
+                        break;
                 }
                 break;
             }
-            case "example":
-                LoggerFactory.getLogger(WelcomeEditor.class).debug("example: " + params);
-                break;
-            case "downloadExamples": {
-                DownloadExamplesDialog dlg = new DownloadExamplesDialog(AppFrame.get());
-                dlg.setPath(Settings.getDefault().getLastWorkPath());
-                dlg.setVisible(true);
-                downloadExamples(dlg.getPath());
-                break;
-            }
-            case "dataMatrices":
-            case "dataModules":
-            case "dataTables": {
-                DataHelpDialog dlg = new DataHelpDialog(AppFrame.get());
-                dlg.setVisible(true);
-                break;
-            }
         }
+    }
+
+    @Override
+    protected void performLoad(String href) {
+        CommandLoadFile loadFile = new CommandLoadFile(href);
+        JobThread.execute(Application.get(), loadFile);
     }
 
     @Override
@@ -160,7 +147,7 @@ public class WelcomeEditor extends HtmlEditor {
     }
 
     private void downloadExamples(final String path) {
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -172,5 +159,21 @@ public class WelcomeEditor extends HtmlEditor {
                 }
             }
         });
+    }
+
+    private static URL getWelcomeURL() {
+        try {
+            URL url = new URL("http://www.gitools.org/welcome");
+            URLConnection connection = url.openConnection();
+
+            if(connection.getContentLength() != -1){
+                return url;
+            }
+
+        } catch (MalformedURLException e) {
+        } catch (IOException e) {
+        }
+
+        return WelcomeEditor.class.getResource("/html/welcome.html");
     }
 }

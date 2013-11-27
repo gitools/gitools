@@ -19,19 +19,24 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.actions;
+package org.gitools.ui.actions.edit;
 
-import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
-import org.gitools.ui.imageviewer.HeatmapCreateImageAction;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.IconNames;
+import org.gitools.ui.actions.HeatmapAction;
 
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import java.awt.event.ActionEvent;
 
+public class AddLayerAction extends HeatmapAction {
 
-public final class HeatmapActions {
+    public AddLayerAction() {
+        super("Add layer...");
 
-    public static final BaseAction snapshotAction = new HeatmapCreateImageAction();
+        setSmallIconFromResource(IconNames.add16);
+    }
 
-    public static final BaseAction searchRowsAction = new HeatmapSearchAction(ROWS);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //TODO
+    }
 
 }

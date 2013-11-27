@@ -23,7 +23,6 @@ package org.gitools.ui.platform.actions;
 
 import com.alee.laf.StyleConstants;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 
@@ -34,7 +33,7 @@ public class ActionSetUtils {
 
 
     public static JToolBar createToolBar(ActionSet actionSet) {
-        JToolBar toolBar = new JToolBar(WebToolBar.HORIZONTAL);
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
         //toolBar.setToolbarStyle(ToolbarStyle.attached);
         return createToolBar(toolBar, actionSet);
@@ -104,8 +103,12 @@ public class ActionSetUtils {
 
 
     private static JMenu createMenu(BaseAction action) {
-        JMenu menu = new JMenu(action);
 
+        if (action instanceof DynamicActionSet) {
+            return ((DynamicActionSet) action).createJMenu();
+        }
+
+        JMenu menu = new JMenu(action);
         List<BaseAction> actions = ((ActionSet) action).getActions();
         for (BaseAction a : actions) {
             if (a instanceof SeparatorAction) {

@@ -21,6 +21,11 @@
  */
 package org.gitools.ui.actions;
 
+import org.gitools.ui.IconNames;
+import org.gitools.ui.actions.edit.ColumnsActionSet;
+import org.gitools.ui.actions.edit.LayersActionSet;
+import org.gitools.ui.actions.edit.RowsActionSet;
+import org.gitools.ui.actions.help.OpenURLAction;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -30,89 +35,69 @@ import java.awt.event.KeyEvent;
 
 public class MenuActionSet extends ActionSet {
 
+    public static MenuActionSet INSTANCE = new MenuActionSet();
+
     private static final long serialVersionUID = -7702905459240675073L;
 
     public MenuActionSet() {
         super(new BaseAction[]{
                 new ActionSet("File", KeyEvent.VK_F,
                         new BaseAction[]{
-                                FileActions.open,
-                                FileActions.openURL,
-                                FileActions.openGenomeSpace,
+                                Actions.open,
+                                Actions.openURL,
+                                Actions.openGenomeSpace,
                                 BaseAction.separator,
-                                FileActions.saveAction,
-                                FileActions.saveAsAction,
+                                Actions.saveAction,
+                                Actions.saveAsAction,
                                 BaseAction.separator,
-                                new ActionSet("Import",
+                                new ActionSet("Export", KeyEvent.VK_E,
                                         new BaseAction[]{
-                                                new ActionSet("Matrix",
-                                                        new BaseAction[]{
-                                                                FileActions.importIntogenTableAction
-                                                        }),
-                                                new ActionSet("Modules",
-                                                        new BaseAction[]{
-                                                                FileActions.importIntogenOncomodulesAction,
-                                                                FileActions.importKeggModulesAction,
-                                                                FileActions.importGoModulesAction,
-                                                                FileActions.importBioMartModulesAction
-                                                        }),
-                                                new ActionSet("Annotations",
-                                                        new BaseAction[]{
-                                                                FileActions.importBioMartTableAction
-                                                        })}),
-                                new ActionSet("Export",
-                                        new BaseAction[]{
-                                                FileActions.exportLabelNamesAction,
-                                                FileActions.exportMatrixAction,
-                                                FileActions.exportTableAction,
-                                                FileActions.exportHeatmapImageAction,
-                                                FileActions.exportScaleImageAction
-                                        }),
+                                                Actions.exportLabelNamesAction,
+                                                Actions.exportMatrixAction,
+                                                Actions.exportTableAction,
+                                                Actions.exportHeatmapImageAction,
+                                                Actions.exportScaleImageAction
+                                        }
+                                ),
                                 BaseAction.separator,
-                                FileActions.exitAction
-                        }),
+                                Actions.exitAction
+                        }
+                ),
                 new ActionSet("Edit", KeyEvent.VK_E,
                         new BaseAction[]{
-                                EditActions.selectAllAction,
-                                EditActions.unselectAllAction
-                        }),
-                new ActionSet("Data", KeyEvent.VK_D,
-                        new BaseAction[]{
-                                new ActionSet("Filter",
-                                        new BaseAction[]{
-                                                DataActions.filterByLabelAction,
-                                                DataActions.filterByValueAction
-                                        }),
-                                new ActionSet("Sort",
-                                        new BaseAction[]{
-                                                DataActions.sortByAnnotationAction,
-                                                DataActions.sortByValueAction,
-                                                DataActions.sortByMutualExclusionAction
-                                        }),
-                                new ActionSet("Move",
-                                        new BaseAction[]{
-                                                DataActions.moveRowsUpAction,
-                                                DataActions.moveRowsDownAction,
-                                                DataActions.moveColsLeftAction,
-                                                DataActions.moveColsRightAction
-                                        }),
-                                new ActionSet("Visibility",
-                                        new BaseAction[]{
-                                                DataActions.showAllRowsAction,
-                                                DataActions.hideSelectedRowsAction,
-                                                DataActions.showAllColumnsAction,
-                                                DataActions.hideSelectedColumnsAction
-                                        }),
-                                DataActions.clusteringByValueAction,
-                        }),
+                                new ColumnsActionSet(),
+                                new RowsActionSet(),
+                                new LayersActionSet(),
+                                BaseAction.separator,
+                                Actions.searchRowsAction
+                        }
+                ),
                 new ActionSet("Analysis", KeyEvent.VK_A,
                         new BaseAction[]{
-                                AnalysisActions.enrichment,
-                                AnalysisActions.oncodrive,
-                                AnalysisActions.correlations,
-                                AnalysisActions.combinations,
-                                AnalysisActions.overlapping,
-                                AnalysisActions.groupComparison
+                                Actions.enrichment,
+                                Actions.oncodrive,
+                                Actions.correlations,
+                                Actions.combinations,
+                                Actions.overlapping,
+                                Actions.groupComparison,
+                                Actions.clusteringAction,
+                        }
+                ),
+                new ActionSet("Download", KeyEvent.VK_D,
+                        new BaseAction[]{
+                                new ActionSet("Modules", KeyEvent.VK_M, IconNames.empty16,
+                                        new BaseAction[]{
+                                                Actions.importIntogenOncomodulesAction,
+                                                Actions.importKeggModulesAction,
+                                                Actions.importGoModulesAction,
+                                                Actions.importBioMartModulesAction
+                                        }
+                                ),
+                                new ActionSet("Annotations", KeyEvent.VK_A,
+                                        new BaseAction[]{
+                                                Actions.importBioMartTableAction
+                                        }
+                                )
                         }
                 ),
                 new ActionSet("Help", KeyEvent.VK_H,
@@ -121,9 +106,20 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 HelpActions.shortcutsAction,
                                 HelpActions.showTipsAction,
+                                BaseAction.separator,
+                                new OpenURLAction("Users mail list", "https://groups.google.com/forum/#!forum/gitools-users", KeyEvent.VK_M),
+                                new OpenURLAction("Submit an issue", "https://github.com/gitools/gitools/issues", KeyEvent.VK_S),
+                                BaseAction.separator,
+                                new OpenURLAction("User guide", "http://www.gitools.org/documentation/UserGuide.html", KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0)),
+                                new OpenURLAction("Tutorials", "http://www.gitools.org/documentation/Tutorials.html", KeyEvent.VK_U),
+                                new OpenURLAction("Examples", "http://www.gitools.org/documentation/Examples.html", KeyEvent.VK_E),
+                                new OpenURLAction("Website", "http://www.gitools.org", KeyEvent.VK_S),
+                                BaseAction.separator,
                                 HelpActions.aboutAction
-                        })
-        });
+                        }
+                )
+        }
+        );
     }
 
     public JMenuBar createMenuBar() {

@@ -69,8 +69,13 @@ public class HtmlEditor extends AbstractEditor {
         panel = new Html4Panel() {
 
             @Override
-            protected void performUrlAction(String name, Map<String, String> params) {
-                HtmlEditor.this.performUrlAction(name, params);
+            protected void performAction(String name, Map<String, String> params) {
+                HtmlEditor.this.performAction(name, params);
+            }
+
+            @Override
+            protected void performLoad(String href) {
+                HtmlEditor.this.performLoad(href);    //To change body of overridden methods use File | Settings | File Templates.
             }
         };
 
@@ -78,8 +83,10 @@ public class HtmlEditor extends AbstractEditor {
         add(panel, BorderLayout.CENTER);
     }
 
-    protected void performUrlAction(String name, Map<String, String> params) {
-        // do nothing
+    protected void performAction(String name, Map<String, String> params) {
+    }
+
+    protected void performLoad(String href) {
     }
 
 }

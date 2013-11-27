@@ -27,10 +27,11 @@ import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
 import org.gitools.ui.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.analysis.htest.wizard.EnrichmentAnalysisWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -45,10 +46,11 @@ public class EnrichmentAnalysisAction extends HeatmapAction {
     private static final long serialVersionUID = -8592231961109105958L;
 
     public EnrichmentAnalysisAction() {
-        super("Enrichment analysis ...");
+        super("Enrichment...");
 
         setDesc("Run an enrichment analysis");
         setMnemonic(KeyEvent.VK_E);
+        setSmallIconFromResource(IconNames.empty16);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class EnrichmentAnalysisAction extends HeatmapAction {
 
         wizard.setSaveFilePageEnabled(false);
 
-        WizardDialog wizDlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
         wizDlg.open();
         if (wizDlg.isCancelled()) {
             return;
@@ -92,7 +94,7 @@ public class EnrichmentAnalysisAction extends HeatmapAction {
                 wizard.getFileName()
         );
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
@@ -109,14 +111,14 @@ public class EnrichmentAnalysisAction extends HeatmapAction {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            AppFrame.get().getEditorsPanel().addEditor(editor);
-                            AppFrame.get().refresh();
+                            Application.get().getEditorsPanel().addEditor(editor);
+                            Application.get().refresh();
                         }
                     });
 
                     monitor.end();
 
-                    AppFrame.get().setStatusText("Ok.");
+                    Application.get().setStatusText("Ok.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }

@@ -24,7 +24,7 @@ package org.gitools.ui.actions.edit;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -50,7 +50,7 @@ public class SelectAllAction extends HeatmapAction {
             matrixView.getColumns().selectAll();
         }
 
-        AppFrame.get().setStatusText("Selected all.");
+        Application.get().setStatusText("Selected all.");
     }
 
 }

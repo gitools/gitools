@@ -26,7 +26,7 @@ import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.Query;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.datasources.biomart.wizard.BiomartModulesWizard;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -35,15 +35,12 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class ImportBiomartModulesAction extends BaseAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
     public ImportBiomartModulesAction() {
-        super("Biomart Modules (advanced users) ...");
+        super("Biomart modules...");
         setLargeIconFromResource(IconNames.biomart24);
         setSmallIconFromResource(IconNames.biomart16);
         setDefaultEnabled(true);
@@ -53,14 +50,14 @@ public class ImportBiomartModulesAction extends BaseAction {
     public void actionPerformed(ActionEvent e) {
 
         final BiomartModulesWizard wizard = new BiomartModulesWizard();
-        WizardDialog wdlg = new WizardDialog(AppFrame.get(), wizard);
+        WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
         wdlg.open();
         if (wdlg.isCancelled()) {
             return;
         }
 
         final File file = wizard.getSelectedFile();
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Downloading data...", 1);

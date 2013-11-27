@@ -25,7 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 
@@ -50,7 +50,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
     @Override
     public void execute(IProgressMonitor monitor) throws CommandException {
 
-        AppFrame appframe = AppFrame.get();
+        Application appframe = Application.get();
 
         String availableHeatmaps = "<br/>Available hetamaps: ";
         try {
@@ -97,7 +97,7 @@ public abstract class CommandAddHeader extends AbstractCommand {
                         "</strong></div>" +
                         "You may find the <strong>'User guide'</strong> at <a href='http://www.gitools.org'>" +
                         "www.gitools.org</a><br></html>";
-                MessageUtils.showErrorMessage(AppFrame.get(), text, e);
+                MessageUtils.showErrorMessage(Application.get(), text, e);
             }
             setExitStatus(1);//Error!
             return;

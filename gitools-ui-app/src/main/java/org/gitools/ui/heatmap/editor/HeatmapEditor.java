@@ -41,7 +41,7 @@ import org.gitools.ui.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -214,7 +214,7 @@ public class HeatmapEditor extends AbstractEditor {
                 }
         );
 
-        WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
             return;
@@ -256,7 +256,7 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public boolean doClose() {
         if (isDirty()) {
-            int res = JOptionPane.showOptionDialog(AppFrame.get(), "File " + getName() + " is modified.\n" +
+            int res = JOptionPane.showOptionDialog(Application.get(), "File " + getName() + " is modified.\n" +
                     "Save changes ?", "Close", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Cancel", "Discard", "Save"}, "Save");
 
             if (res == -1 || res == 0) {
@@ -264,7 +264,7 @@ public class HeatmapEditor extends AbstractEditor {
             } else if (res == 2) {
                 SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
-                WizardDialog dlg = new WizardDialog(AppFrame.get(), wiz);
+                WizardDialog dlg = new WizardDialog(Application.get(), wiz);
                 dlg.setVisible(true);
                 if (dlg.isCancelled()) {
                     return false;
@@ -274,7 +274,7 @@ public class HeatmapEditor extends AbstractEditor {
 
                 setFile(wiz.getPathAsFile());
 
-                JobThread.execute(AppFrame.get(), new JobRunnable() {
+                JobThread.execute(Application.get(), new JobRunnable() {
                     @Override
                     public void run(IProgressMonitor monitor) {
                         doSave(monitor);
@@ -297,8 +297,12 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     public void showSearch(boolean searchColumns) {
-        searchPanel.searchOnColumns(searchColumns);
-        searchPanel.setVisible(true);
+        if (searchPanel.isVisible() && searchPanel.searchRows() != searchColumns) {
+            searchPanel.close();
+        } else {
+            searchPanel.searchOnColumns(searchColumns);
+            searchPanel.setVisible(true);
+        }
     }
 
     void mouseMoved(int row, int col, MouseEvent e) {

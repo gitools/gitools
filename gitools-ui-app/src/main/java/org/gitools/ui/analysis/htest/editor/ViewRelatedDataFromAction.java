@@ -31,7 +31,7 @@ import org.gitools.persistence.formats.analysis.HeatmapFormat;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
 import javax.swing.*;
@@ -69,7 +69,7 @@ public class ViewRelatedDataFromAction extends HeatmapDimensionAction {
         if ((selection == null || selection.size() == 0) && lead != null) {
             selection = Sets.newHashSet(lead);
         } else if (lead == null) {
-            JOptionPane.showMessageDialog(AppFrame.get(), "You must select some " + getDimensionLabel() + "s before.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(Application.get(), "You must select some " + getDimensionLabel() + "s before.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -81,10 +81,10 @@ public class ViewRelatedDataFromAction extends HeatmapDimensionAction {
 
         // Open new editor
         HeatmapEditor editor = new HeatmapEditor(heatmap);
-        EditorsPanel editorPanel = AppFrame.get().getEditorsPanel();
+        EditorsPanel editorPanel = Application.get().getEditorsPanel();
         editor.setName(editorPanel.deriveName(editorPanel.getSelectedEditor().getName(), HeatmapFormat.EXTENSION, "-data", HeatmapFormat.EXTENSION));
         editorPanel.addEditor(editor);
-        AppFrame.get().setStatusText("New heatmap created.");
+        Application.get().setStatusText("New heatmap created.");
     }
 
 }

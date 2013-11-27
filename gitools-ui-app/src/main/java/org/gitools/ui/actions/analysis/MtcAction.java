@@ -32,7 +32,7 @@ import org.gitools.api.matrix.position.IMatrixFunction;
 import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -59,11 +59,11 @@ public class MtcAction extends HeatmapAction {
         final IMatrixLayer<Double> correctedLayer = correctedValueIndex(matrixView.getLayers(), valueLayer);
 
         if (correctedLayer == null) {
-            JOptionPane.showMessageDialog(AppFrame.get(), "The property selected doesn't allow multiple test correction.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(Application.get(), "The property selected doesn't allow multiple test correction.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        JobThread.execute(AppFrame.get(), new JobRunnable() {
+        JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
 
@@ -88,7 +88,7 @@ public class MtcAction extends HeatmapAction {
             }
         });
 
-        AppFrame.get().setStatusText(mtc.getName() + " done.");
+        Application.get().setStatusText(mtc.getName() + " done.");
     }
 
     private static IMatrixLayer<Double> correctedValueIndex(IMatrixLayers<IMatrixLayer> layers, IMatrixLayer<Double> valueLayer) {

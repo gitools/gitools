@@ -43,12 +43,16 @@ public class IconNames {
         dimensionIcons.put(COLUMNS, new IconNamesColumns());
     }
 
+    public static final String empty16 = "/img/empty16.png";
+
     public static final String info = "/img/info.png";
     public static final String fullscreen = "/img/fullscreen.png";
 
     public static final String logoNoText = "/img/LogoNoText.png";
     public static final String logoMini = "/img/LogoMini.png";
     public static final String aboutLogo = "/img/AboutLogo.png";
+    public static final String logo16 = "/img/logo16.png";
+    public static final String logo24 = "/img/logo24.png";
 
     public static final String open16 = "/img/Open16.png";
     public static final String open24 = "/img/Open24.png";

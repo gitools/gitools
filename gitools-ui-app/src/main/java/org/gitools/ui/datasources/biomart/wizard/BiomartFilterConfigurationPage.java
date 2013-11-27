@@ -24,7 +24,7 @@ package org.gitools.ui.datasources.biomart.wizard;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.datasources.biomart.filter.FilterCollectionPanel;
-import org.gitools.ui.platform.AppFrame;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -308,7 +308,7 @@ public class BiomartFilterConfigurationPage extends AbstractWizardPage {
                             }
                         });
 
-                        ExceptionDialog dlg = new ExceptionDialog(AppFrame.get(), ex);
+                        ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
                         dlg.setVisible(true);
                         System.out.println(ex);
                     }
