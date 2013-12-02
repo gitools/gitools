@@ -22,10 +22,14 @@
 package org.gitools.ui.actions.edit;
 
 import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
-import org.gitools.ui.heatmap.panel.settings.LayerSettingsPanel;
+import org.gitools.ui.heatmap.panel.settings.layer.ColorScaleSection;
+import org.gitools.ui.heatmap.panel.settings.layer.DetailsSection;
 import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
+import org.gitools.ui.platform.settings.SettingsPanel;
 
 import java.awt.event.ActionEvent;
 
@@ -43,7 +47,17 @@ public class EditLayerAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
         getHeatmap().getLayers().setTopLayer(layer);
 
-        SettingsDialog dialog = new SettingsDialog(Application.get(), new LayerSettingsPanel(layer, getHeatmap().getLayers().getLayerNames()));
+        ISettingsSection colorScaleSection = new ColorScaleSection(layer, getHeatmap().getLayers().getLayerNames());
+        ISettingsSection detailsSection = new DetailsSection(layer);
+
+        SettingsPanel settingsPanel = new SettingsPanel(
+                "Layer '" + layer.getName() + "' settings",
+                layer.getDescription(),
+                IconNames.logoNoText,
+                colorScaleSection,
+                detailsSection);
+
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName());
         dialog.setVisible(true);
     }
 

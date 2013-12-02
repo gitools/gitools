@@ -10,7 +10,9 @@ public interface ISettingsPanel {
 
     Icon getLogo();
 
-    JComponent createComponents();
+    String[] getSectionNames();
+
+    JComponent createComponents(String section);
 
     MessageStatus getStatus();
 

@@ -28,6 +28,7 @@ import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
+import org.gitools.ui.actions.edit.EditLayerAction;
 import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
@@ -101,6 +102,11 @@ public class DetailsPanel extends JXTaskPaneContainer {
             @Override
             protected void onMouseClick(DetailsDecoration detail) {
                 heatmap.getLayers().setTopLayerIndex(detail.getIndex());
+            }
+
+            @Override
+            protected void onMouseDblClick(DetailsDecoration detail) {
+                new EditLayerAction(heatmap.getLayers().get(detail.getIndex())).actionPerformed(null);
             }
         });
 

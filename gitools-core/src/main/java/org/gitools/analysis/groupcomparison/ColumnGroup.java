@@ -27,13 +27,23 @@ import java.util.Set;
 
 public class ColumnGroup {
 
+    public static enum ColumnGroupType {
+        Annotation, Free, Value;
+    }
     private String name = "";
     private Set<String> columns;
     private BinaryCutoff binaryCutoff = null;
     private int cutoffAttributeIndex = -1;
+    private ColumnGroupType groupType;
 
-    public ColumnGroup(String string) {
-        this.name = string;
+    public ColumnGroup(String name) {
+        this.name = name;
+    }
+
+
+    public ColumnGroup(String name, Set<String> columns) {
+        this.name = name;
+        this.columns = columns;
     }
 
     public ColumnGroup(String name, Set<String> columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
@@ -74,6 +84,16 @@ public class ColumnGroup {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getProperty() {
+        if (groupType == ColumnGroupType.Annotation | groupType == ColumnGroupType.Free) {
+            return String.valueOf(columns.size()) + " columns";
+        }
+        else if(groupType == ColumnGroupType.Value) {
+            return "some value";
+        }
+        return "-";
     }
 
 }

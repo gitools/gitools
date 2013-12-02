@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.heatmap.panel.settings.decorators;
+package org.gitools.ui.heatmap.panel.settings.layer.decorators;
 
 import org.gitools.core.model.decorator.impl.CorrelationDecorator;
 import org.gitools.core.model.decorator.impl.LinearDecorator;
