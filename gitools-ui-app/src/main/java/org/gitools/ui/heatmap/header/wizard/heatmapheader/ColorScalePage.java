@@ -27,9 +27,8 @@ import com.jgoodies.binding.value.AbstractValueModel;
 import com.jgoodies.binding.value.ValueModel;
 import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanel;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
+import org.gitools.ui.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
+import org.gitools.ui.heatmap.panel.settings.layer.decorators.DecoratorPanels;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
