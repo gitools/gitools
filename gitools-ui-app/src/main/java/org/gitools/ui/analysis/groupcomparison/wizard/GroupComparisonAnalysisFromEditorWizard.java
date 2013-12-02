@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
+import org.gitools.analysis.groupcomparison.ColumnGroup;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.core.heatmap.Heatmap;
@@ -48,6 +49,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     private GroupComparisonGroupingByLabelPage groupByLabelPage;
     private GroupComparisonSelectAttributePage attrSelectPage;
     private AnalysisDetailsPage analysisDetailsPage;
+    private GroupComparisonGroupsPage groupsPage;
 
     public GroupComparisonAnalysisFromEditorWizard(Heatmap heatmap) {
         super();
@@ -67,6 +69,9 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
         groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap.getColumns());
         addPage(groupByLabelPage);
+
+        groupsPage = new GroupComparisonGroupsPage();
+        addPage(groupsPage);
 
         groupByValuePage = new GroupComparisonGroupingByValuePage();
         groupByValuePage.setAttributes(heatmap.getLayers());
@@ -98,7 +103,13 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
                 return page;
             } else {
                 updateAnalysisDetails();
-                return super.getPage(analysisDetailsPage.getId());
+
+                groupsPage.addGroups(
+                        new  ColumnGroup("g1", groupByLabelPage.getGroup1()),
+                        new ColumnGroup("g2", groupByLabelPage.getGroup2())
+                       );
+                return super.getPage(groupsPage.getId());
+                //return super.getPage(analysisDetailsPage.getId());
             }
         }
         //Group by value page
@@ -177,11 +188,11 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         a.setColumnHeaders(columnHeaders);
 
         if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
-            a.setGroup1(groupByLabelPage.getGroup1());
-            a.setGroup2(groupByLabelPage.getGroup2());
+            a.setGroup(groupByLabelPage.getGroup1(), 0);
+            a.setGroup(groupByLabelPage.getGroup2(), 1);
         } else if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
-            a.setGroup1(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex());
-            a.setGroup2(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex());
+            a.setGroup(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex(), 0);
+            a.setGroup(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex(), 1);
             a.setNoneConversion(groupByValuePage.getNoneConversion());
         }
         return a;

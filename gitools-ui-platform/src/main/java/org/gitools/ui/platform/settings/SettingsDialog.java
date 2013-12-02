@@ -25,6 +25,8 @@ import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,35 +38,64 @@ public class SettingsDialog extends AbstractDialog {
 
     private final ISettingsPanel panel;
 
-    private boolean cancelled;
-
     private JButton closeButton;
 
-    private JPanel pagePanel;
+    private JPanel selectedPanel;
 
-    public SettingsDialog(Window owner, ISettingsPanel panel) {
+    private JPanel sectionPanel;
+
+    public SettingsDialog(Window owner, ISettingsPanel panel, String selectedSection) {
         super(owner, panel.getTitle(), panel.getLogo());
 
-        setMinimumSize(new Dimension(800, 600));
-        setPreferredSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(700, 500));
         setLocationRelativeTo(owner);
 
         this.panel = panel;
 
-        cancelled = true;
+        // Sections list
+        final JList<String> list = new JList<>(panel.getSectionNames());
+        list.setSelectedValue(selectedSection, true);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                showSection(list.getSelectedValue());
+            }
+        });
 
-        JComponent contents = panel.createComponents();
-        pagePanel.add(contents, BorderLayout.CENTER);
-        contents.repaint();
+        sectionPanel.add(list);
+
+        // Selected panel
+        for (String section : panel.getSectionNames()) {
+            JComponent components = panel.createComponents(section);
+            components.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+            JScrollPane scrollPane = new JScrollPane(components);
+            //scrollPane.setMinimumSize(new Dimension(300, 400));
+            selectedPanel.add(scrollPane, section);
+        }
+
+        // Show current section
+        showSection(selectedSection);
 
         updateState();
 
     }
 
+    private void showSection(String sectionName) {
+        CardLayout layout = (CardLayout) selectedPanel.getLayout();
+        layout.show(selectedPanel, sectionName);
+    }
+
     @Override
     protected JComponent createContainer() {
-        pagePanel = new JPanel(new BorderLayout());
-        return pagePanel;
+        selectedPanel = new JPanel(new CardLayout());
+        selectedPanel.setPreferredSize(new Dimension(400, 300));
+        sectionPanel = new JPanel(new BorderLayout());
+        sectionPanel.setMinimumSize(new Dimension(200, 300));
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sectionPanel, selectedPanel);
+        splitPane.setMinimumSize(new Dimension(600, 300));
+        splitPane.setDividerLocation(0.25);
+        return splitPane;
     }
 
     protected void close() {
@@ -73,7 +104,6 @@ public class SettingsDialog extends AbstractDialog {
 
     @Override
     protected List<JButton> createButtons() {
-
         closeButton = new JButton("Close");
         closeButton.addActionListener(new ActionListener() {
             @Override
@@ -83,12 +113,7 @@ public class SettingsDialog extends AbstractDialog {
         });
 
         closeButton.setDefaultCapable(true);
-
         return Arrays.asList(closeButton);
-    }
-
-    public boolean isCancelled() {
-        return cancelled;
     }
 
     private void updateState() {

@@ -169,8 +169,8 @@ public class GroupComparisonCommand extends AnalysisCommand {
             try {
                 ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data.get());
                 List<Property> attributes = getGroupAttributes(columnGroups);
-                analysis.setGroup1(columnGroups[0]);
-                analysis.setGroup2(columnGroups[1]);
+                analysis.setGroup(columnGroups[0], 0);
+                analysis.setGroup(columnGroups[1], 1);
                 analysis.setProperties(attributes);
 
             } catch (IOException e) {

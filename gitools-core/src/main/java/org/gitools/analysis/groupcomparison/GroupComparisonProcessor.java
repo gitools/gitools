@@ -82,8 +82,8 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         );
 
         // Prepare group predicates
-        IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, analysis.getGroups1(), analysis.getNoneConversion());
-        IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, analysis.getGroups2(), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, analysis.getGroup(0), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, analysis.getGroup(1), analysis.getNoneConversion());
 
         // Run comparison
         dataMatrix.newPosition()

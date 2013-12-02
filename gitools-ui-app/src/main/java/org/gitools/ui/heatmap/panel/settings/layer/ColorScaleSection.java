@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.heatmap.panel.settings;
+package org.gitools.ui.heatmap.panel.settings.layer;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
@@ -27,11 +27,9 @@ import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.AbstractValueModel;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.core.model.decorator.Decorator;
-import org.gitools.ui.IconNames;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanelContainer;
-import org.gitools.ui.heatmap.panel.settings.decorators.DecoratorPanels;
-import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.settings.AbstractSettingsPanel;
+import org.gitools.ui.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
+import org.gitools.ui.heatmap.panel.settings.layer.decorators.DecoratorPanels;
+import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.settings.decorators.SaveDecoratorDialog;
 
 import javax.swing.*;
@@ -39,7 +37,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LayerSettingsPanel extends AbstractSettingsPanel {
+public class ColorScaleSection implements ISettingsSection {
 
     // Components
     private JPanel rootPanel;
@@ -47,31 +45,9 @@ public class LayerSettingsPanel extends AbstractSettingsPanel {
     private JPanel decoratorPanels;
     private JLabel colorScaleSave;
     private JLabel colorScaleOpen;
-    private JTextArea layerDescription;
-    private JTextField layerDescriptionLink;
-    private JTextField layerValueLink;
-
-    /*
-    private JTextField gridRowsColor;
-    private JTextField gridColumnsColor;
-    private JCheckBox cellSizeKeepRatio;
-    private JSpinner cellSizeRows;
-    private JSpinner cellSizeColumns;
-    private JTextArea documentTitle;
-    private JTextArea documentDescription;
-    private JSpinner gridRowsSize;
-    private JSpinner gridColumnsSize;
-    private JLabel editRowHeaders;
-    private JLabel editColumnsHeader;
-    private JLabel newRowsHeader;
-    private JLabel newColumnsHeader;
-    */
 
 
-    public LayerSettingsPanel(final HeatmapLayer heatmapLayer, Iterable<String> layers) {
-        super("Layer settings", "this is the message of this layer settings panel");
-
-        setLogo(IconUtils.getImageIconResource(IconNames.logoNoText));
+    public ColorScaleSection(final HeatmapLayer heatmapLayer, Iterable<String> layers) {
 
         PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
 
@@ -115,45 +91,21 @@ public class LayerSettingsPanel extends AbstractSettingsPanel {
             }
         });
 
-        // Bind value controls
-        Bindings.bind(layerDescription, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
-        Bindings.bind(layerDescriptionLink, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
-        Bindings.bind(layerValueLink, layer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
-
-        /*
-        // Bind grid controls
-        Bindings.bind(gridRowsColor, "color", rows.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
-        Bindings.bind(gridColumnsColor, "color", columns.getModel(HeatmapDimension.PROPERTY_GRID_COLOR));
-        gridRowsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(rows.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
-        gridColumnsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(columns.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
-
-        // Bind document controls
-        Bindings.bind(documentTitle, model.getModel(Resource.PROPERTY_TITLE));
-        Bindings.bind(documentDescription, model.getModel(Resource.PROPERTY_DESCRIPTION));
-
-        // Bind cell size controls
-        AbstractValueModel cellSizeRowsModel = rows.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
-        cellSizeRows.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeRowsModel, 1, 1, 300, 1));
-        AbstractValueModel cellSizeColumnsModel = columns.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
-        cellSizeColumns.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel, 1, 1, 300, 1));
-        cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
-        */
-
-
     }
 
     @Override
-    public JComponent createComponents() {
-        return getRootPanel();
+    public String getName() {
+        return "Color scale";
     }
 
-    public JPanel getRootPanel() {
+    public JPanel getPanel() {
         return rootPanel;
     }
 
     private void createUIComponents() {
-        //this.gridRowsColor = new MyWebColorChooserField();
-        //this.gridColumnsColor = new MyWebColorChooserField();
         this.decoratorPanels = new DecoratorPanelContainer();
     }
+
+
+
 }

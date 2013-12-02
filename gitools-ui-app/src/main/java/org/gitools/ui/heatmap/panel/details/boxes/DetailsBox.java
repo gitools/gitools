@@ -237,11 +237,22 @@ public class DetailsBox extends JXTaskPane {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            onMouseClick(item);
+
+            if (e.getClickCount() > 1) {
+                onMouseDblClick(item);
+            } else {
+                onMouseClick(item);
+            }
         }
+
+
     }
 
     protected void onMouseClick(DetailsDecoration propertyItem) {
+        // Override
+    }
+
+    protected void onMouseDblClick(DetailsDecoration propertyItem) {
         // Override
     }
 
