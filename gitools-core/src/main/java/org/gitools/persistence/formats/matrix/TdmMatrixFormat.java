@@ -27,6 +27,8 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.csv.RawCsvWriter;
@@ -50,8 +52,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     @Override
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
-        HashMatrix resultsMatrix = new HashMatrix(ROWS, COLUMNS);
-
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -60,6 +60,13 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             if (header.length < 3) {
                 throw new PersistenceException("At least 3 fields expected on one line.");
             }
+
+            MatrixLayer<Double> layers[] = new MatrixLayer[header.length - 2];
+            for (int i=2; i < header.length; i++) {
+                layers[i - 2] = new MatrixLayer<>(header[i], Double.class);
+            }
+
+            HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
 
             // read body
             String fields[];
@@ -75,18 +82,19 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 final String rowId = fields[1];
 
                 for (int i = 2; i < fields.length; i++) {
-                    final String layerId = header[i];
                     Double value = DoubleTranslator.get().stringToValue(fields[i]);
-                    resultsMatrix.set(layerId, value, rowId, columnId);
+                    resultsMatrix.set(layers[i - 2], value, rowId, columnId);
                 }
             }
 
             in.close();
+
+            return resultsMatrix;
+
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
-        return resultsMatrix;
     }
 
     @Override

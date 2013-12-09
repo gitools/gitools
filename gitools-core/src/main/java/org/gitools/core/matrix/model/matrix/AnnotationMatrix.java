@@ -25,6 +25,8 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 
 import java.util.AbstractList;
@@ -40,7 +42,7 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
     private Collection<String> labels;
 
     public AnnotationMatrix() {
-        super(ROWS);
+        super(new MatrixLayers(), ROWS);
 
         this.layersMetadata = new HashMap<>();
         this.labels = new LabelsAdapter();
@@ -92,7 +94,12 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
     }
 
     public void setAnnotation(String identifier, String label, String value) {
-        set(label, value, identifier);
+
+        if (getLayer(label) == null) {
+            addLayer(new MatrixLayer<>(label, String.class));
+        }
+
+        set(getLayer(label), value, identifier);
     }
 
     @Override

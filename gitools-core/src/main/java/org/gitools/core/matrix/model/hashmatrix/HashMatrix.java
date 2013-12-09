@@ -34,8 +34,8 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
 
     private Map<String, Map> values;
 
-    public HashMatrix(MatrixDimensionKey... dimensions) {
-        this(new MatrixLayers(), createHashMatrixDimensions(dimensions));
+    public HashMatrix(MatrixLayers layers, MatrixDimensionKey... dimensions) {
+        this(layers, createHashMatrixDimensions(dimensions));
     }
 
     public HashMatrix(MatrixLayers<? extends IMatrixLayer> layers, HashMatrixDimension... dimensions) {
@@ -109,17 +109,9 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
 
     }
 
-    public void set(String layerId, Object value, String... identifiers) {
-
-        // Check that the layers exists
-        IMatrixLayer<Object> layer = getLayers().get(layerId);
-        if (layer == null) {
-            layer = new MatrixLayer(layerId, value.getClass());
-            getLayers().add(layer);
-            values.put(layerId, new ConcurrentHashMap());
-        }
-
-        set(layer, value, identifiers);
+    protected void addLayer(MatrixLayer layer) {
+        getLayers().add(layer);
+        values.put(layer.getId(), new ConcurrentHashMap());
     }
 
     private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimensionKey[] identifiers) {

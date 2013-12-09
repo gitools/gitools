@@ -26,6 +26,8 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.core.utils.MatrixUtils;
 import org.gitools.utils.csv.CSVReader;
@@ -47,7 +49,8 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
-        HashMatrix matrix = new HashMatrix(ROWS, COLUMNS);
+        MatrixLayer<Double> layer = new MatrixLayer<>("value", Double.class);
+        HashMatrix matrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layer), ROWS, COLUMNS);
 
         try {
 
@@ -68,7 +71,7 @@ public class GmxMatrixFormat extends AbstractMatrixFormat {
                 }
 
                 for (int i = 0; i < fields.length; i++) {
-                    matrix.set("value", 1.0, fields[i], columns[i]);
+                    matrix.set(layer, 1.0, fields[i], columns[i]);
                 }
             }
 

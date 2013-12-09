@@ -27,6 +27,8 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.core.matrix.model.MatrixLayer;
+import org.gitools.core.matrix.model.MatrixLayers;
 import org.gitools.core.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.datafilters.DoubleTranslator;
@@ -57,7 +59,8 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
         progressMonitor.begin("Reading data ...", 1);
 
-        HashMatrix matrix = new HashMatrix(ROWS, COLUMNS);
+        MatrixLayer<Double> layer = new MatrixLayer<>("value", Double.class);
+        HashMatrix matrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layer), ROWS, COLUMNS);
 
         try {
             InputStream in = resourceLocator.openInputStream(progressMonitor);
@@ -78,10 +81,9 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
 
                 String rowId = fields[0];
                 for (int i = 1; i < fields.length; i++) {
-
                     String columnId = columns[i];
                     Double value = DoubleTranslator.get().stringToValue(fields[i]);
-                    matrix.set("value", value, rowId, columnId);
+                    matrix.set(layer, value, rowId, columnId);
                 }
             }
 
