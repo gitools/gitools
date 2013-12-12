@@ -33,15 +33,15 @@ import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
 
-    private final static ITextFormatter SHORT_FORMATTER = new HeatmapTextFormatter();
-    private final static ITextFormatter LONG_FORMATTER = new DetailsBoxFormatter();
-
+    private transient ITextFormatter shortFormatter;
+    private transient ITextFormatter longFormatter;
 
     private Decorator decorator;
 
@@ -70,14 +70,32 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     }
 
+    @XmlTransient
     public ITextFormatter getShortFormatter() {
-        return SHORT_FORMATTER;
+
+        if (shortFormatter == null) {
+            return HeatmapTextFormatter.INSTANCE;
+        }
+
+        return shortFormatter;
     }
 
+    public void setShortFormatter(ITextFormatter shortFormatter) {
+        this.shortFormatter = shortFormatter;
+    }
+
+    @XmlTransient
     public ITextFormatter getLongFormatter() {
-        return LONG_FORMATTER;
+
+        if (longFormatter == null) {
+            return DetailsBoxFormatter.INSTANCE;
+        }
+        return longFormatter;
     }
 
+    public void setLongFormatter(ITextFormatter longFormatter) {
+        this.longFormatter = longFormatter;
+    }
 
     @Override
     public String toString() {

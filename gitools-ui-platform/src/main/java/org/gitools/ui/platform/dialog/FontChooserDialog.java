@@ -37,6 +37,10 @@ public class FontChooserDialog extends javax.swing.JDialog {
     public FontChooserDialog(java.awt.Frame parent, Font font, boolean useSystemFonts) {
         super(parent, true);
 
+        if (font == null) {
+            font = UIManager.getDefaults().getFont("TabbedPane.font");
+        }
+
         initComponents();
 
         getRootPane().setDefaultButton(acceptBtn);

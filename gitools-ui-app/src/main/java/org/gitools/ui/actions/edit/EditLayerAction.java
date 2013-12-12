@@ -24,6 +24,8 @@ package org.gitools.ui.actions.edit;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.heatmap.panel.settings.FormatSection;
+import org.gitools.ui.heatmap.panel.settings.SortSection;
 import org.gitools.ui.heatmap.panel.settings.layer.ColorScaleSection;
 import org.gitools.ui.heatmap.panel.settings.layer.DetailsSection;
 import org.gitools.ui.platform.Application;
@@ -49,13 +51,18 @@ public class EditLayerAction extends HeatmapAction {
 
         ISettingsSection colorScaleSection = new ColorScaleSection(layer, getHeatmap().getLayers().getLayerNames());
         ISettingsSection detailsSection = new DetailsSection(layer);
+        ISettingsSection formatSection = new FormatSection(layer);
+        ISettingsSection sortSection = new SortSection(layer);
 
         SettingsPanel settingsPanel = new SettingsPanel(
                 "Layer '" + layer.getName() + "' settings",
                 layer.getDescription(),
                 IconNames.logoNoText,
                 colorScaleSection,
-                detailsSection);
+                formatSection,
+                sortSection,
+                detailsSection
+                );
 
         SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName());
         dialog.setVisible(true);

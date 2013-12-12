@@ -23,8 +23,6 @@ package org.gitools.ui.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
-import com.jgoodies.binding.list.SelectionInList;
-import com.jgoodies.binding.value.ValueHolder;
 import org.gitools.core.model.decorator.impl.PValueDecorator;
 import org.gitools.ui.utils.landf.MyWebColorChooserField;
 
@@ -36,8 +34,6 @@ public class PValueDecoratorPanel extends DecoratorPanel {
     private JTextField maxColor;
     private JTextField nonColor;
     private JTextField emptyColor;
-    private JComboBox correctedValue;
-    private JCheckBox useCorrection;
     private JSpinner significance;
     private JCheckBox showValueCheckBox;
 
@@ -51,14 +47,6 @@ public class PValueDecoratorPanel extends DecoratorPanel {
         Bindings.bind(maxColor, "color", model(PValueDecorator.PROPERTY_MAX_COLOR));
         Bindings.bind(emptyColor, "color", model(PValueDecorator.PROPERTY_EMPTY_COLOR));
         Bindings.bind(nonColor, "color", model(PValueDecorator.PROPERTY_NON_SIGNIFICANT_COLOR));
-
-        Bindings.bind(useCorrection, model(PValueDecorator.PROPERTY_USE_CORRECTION));
-
-        Bindings.bind(correctedValue, new SelectionInList<>(
-                getLayers(),
-                new ValueHolder(),
-                model(PValueDecorator.PROPERTY_CORRECTED_VALUE)
-        ));
 
         significance.setModel(
                 SpinnerAdapterFactory.createNumberAdapter(

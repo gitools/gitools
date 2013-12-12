@@ -23,6 +23,7 @@ package org.gitools.ui.heatmap.panel.settings.layer;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
+import static com.jgoodies.binding.adapter.Bindings.bind;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
@@ -34,14 +35,18 @@ public class DetailsSection implements ISettingsSection {
     private JTextArea layerDescription;
     private JTextField layerDescriptionLink;
     private JTextField layerValueLink;
+    private JComboBox valueTypeComboBox;
 
     public DetailsSection(HeatmapLayer heatmapLayer) {
         PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
 
+        // Fix the TextArea border
+        layerDescription.setBorder(BorderFactory.createEtchedBorder());
+
         // Bind value controls
-        Bindings.bind(layerDescription, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
-        Bindings.bind(layerDescriptionLink, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
-        Bindings.bind(layerValueLink, layer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
+        bind(layerDescription, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
+        bind(layerDescriptionLink, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
+        bind(layerValueLink, layer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
 
 
     }
