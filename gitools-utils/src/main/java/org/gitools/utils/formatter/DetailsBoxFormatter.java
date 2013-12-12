@@ -33,6 +33,8 @@ import java.util.Formatter;
  */
 public class DetailsBoxFormatter extends HeatmapTextFormatter {
 
+    public static final DetailsBoxFormatter INSTANCE = new DetailsBoxFormatter();
+
     protected final StringBuilder sb;
     protected final Formatter fmt;
     protected final DecimalFormat countFormat;
@@ -57,6 +59,11 @@ public class DetailsBoxFormatter extends HeatmapTextFormatter {
         } else {
             return countFormat.format(value);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Double value with many decimals";
     }
 
 

@@ -26,6 +26,8 @@ import java.util.Formatter;
 
 public class HeatmapTextFormatter implements ITextFormatter {
 
+    public static HeatmapTextFormatter INSTANCE = new HeatmapTextFormatter();
+
     protected final StringBuilder sb;
     protected final Formatter fmt;
     protected final DecimalFormat countFormat;
@@ -71,5 +73,10 @@ public class HeatmapTextFormatter implements ITextFormatter {
         sb.setLength(0);
         fmt.format("%s", value);
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Double value with two decimals";
     }
 }
