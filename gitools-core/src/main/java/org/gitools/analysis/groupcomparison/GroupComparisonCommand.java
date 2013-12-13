@@ -24,6 +24,7 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.analysis.AnalysisCommand;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.combination.ConvertModuleMapToMatrixResourceReference;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupValue;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
@@ -69,11 +70,11 @@ public class GroupComparisonCommand extends AnalysisCommand {
     }
 
 
-    private ColumnGroup[] getGrouping(String groupingMethod, String groups, IMatrix data) throws IOException {
+    private DimensionGroupValue[] getGrouping(String groupingMethod, String groups, IMatrix data) throws IOException {
 
-        ColumnGroup[] columnGroups;
+        DimensionGroupValue[] columnGroups;
         String[] groupDefs = groups.split(",");
-        columnGroups = new ColumnGroup[groupDefs.length];
+        columnGroups = new DimensionGroupValue[groupDefs.length];
 
         if (groupingMethod.equals(GroupComparisonCommand.GROUP_BY_LABELS)) {
 
@@ -91,8 +92,8 @@ public class GroupComparisonCommand extends AnalysisCommand {
                     bufferedReader.close();
 
                     Integer groupNb = counter + 1;
-                    columnGroups[counter] = new ColumnGroup("Group" + groupNb.toString());
-                    columnGroups[counter].setColumns(cols);
+                    //columnGroups[counter] = new DimensionGroupValue("Group" + groupNb.toString());
+                    //TODO: fix columnGroups[counter].setColumns(cols);
                     counter++;
 
                 }
@@ -137,14 +138,14 @@ public class GroupComparisonCommand extends AnalysisCommand {
                     groupName = "user defined Group";
                 }
 
-                columnGroups[i] = new ColumnGroup(groupName, null, bc, dataDimIndex);
+                //columnGroups[i] = new DimensionGroupValue(groupName, bc, dataDimIndex);
             }
         }
         return columnGroups;
     }
 
 
-    private List<Property> getGroupAttributes(ColumnGroup[] groups) {
+    private List<Property> getGroupAttributes(DimensionGroupValue[] groups) {
         List<Property> analysisAttributes = new ArrayList<>();
         if (groupDescriptions.length > 1) {
             for (int i = 0; i < groupDescriptions.length; i++) {
@@ -167,7 +168,7 @@ public class GroupComparisonCommand extends AnalysisCommand {
             data.load(progressMonitor);
 
             try {
-                ColumnGroup[] columnGroups = getGrouping(groupingMethod, groups, data.get());
+                DimensionGroupValue[] columnGroups = getGrouping(groupingMethod, groups, data.get());
                 List<Property> attributes = getGroupAttributes(columnGroups);
                 analysis.setGroup(columnGroups[0], 0);
                 analysis.setGroup(columnGroups[1], 1);

@@ -21,11 +21,13 @@
  */
 package org.gitools.analysis.groupcomparison.filters;
 
-import org.gitools.analysis.groupcomparison.ColumnGroup;
+import com.google.common.base.Function;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.api.matrix.position.IMatrixPredicate;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
@@ -33,12 +35,25 @@ public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
     private IMatrixDimension dimension;
     private Set<String> groupIdentifiers;
 
-    public GroupByLabelPredicate(IMatrixDimension dimension, ColumnGroup group) {
+    public GroupByLabelPredicate(IMatrixDimension dimension, Set<String> identifiers) {
         this.dimension = dimension;
-        this.groupIdentifiers = group.getColumns();
+        this.groupIdentifiers = identifiers;
+    }
+
+    public GroupByLabelPredicate(IMatrixDimension dimension, String groupAnnotation, Function<String, String> dimensionFunction) {
+        groupIdentifiers = new HashSet<>();
+        for (String identifier : dimension) {
+            if (StringUtils.equals(dimensionFunction.apply(identifier), groupAnnotation)) {
+                groupIdentifiers.add(identifier);
+            }
+        }
     }
 
     public boolean apply(Double value, IMatrixPosition position) {
         return groupIdentifiers.contains(position.get(dimension));
+    }
+
+    public Set<String> getGroupIdentifiers() {
+        return groupIdentifiers;
     }
 }

@@ -21,14 +21,14 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
-import org.gitools.analysis.groupcomparison.ColumnGroup;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class ColumnGroupsTableModel extends AbstractTableModel{
+class DimensionGroupTableModel extends AbstractTableModel {
 
     private static final String[] columnName = new String[]{"Name", "Property", "GroupNumber"};
 
@@ -37,15 +37,15 @@ class ColumnGroupsTableModel extends AbstractTableModel{
     private List<IndexedGroup> indexedGroupList = null;
 
     private class IndexedGroup implements Comparable<IndexedGroup> {
-        ColumnGroup group;
+        DimensionGroup group;
         int index;
 
-        public IndexedGroup(ColumnGroup group, int index) {
+        public IndexedGroup(DimensionGroup group, int index) {
             this.group = group;
             this.index = index;
         }
 
-        public ColumnGroup getGroup() {
+        public DimensionGroup getGroup() {
             return group;
         }
 
@@ -63,11 +63,12 @@ class ColumnGroupsTableModel extends AbstractTableModel{
         }
     }
 
-    public ColumnGroupsTableModel() {
+    public DimensionGroupTableModel() {
         super();
+        indexedGroupList = new ArrayList<IndexedGroup>(0);
     }
 
-    public void setGroups(ColumnGroup[] groups)  {
+    public void setGroups(DimensionGroup[] groups) {
         indexedGroupList = new ArrayList<>(groups.length);
         for (int i = 0; i < groups.length; i++) {
             indexedGroupList.add(new IndexedGroup(groups[i], i+1));
@@ -131,8 +132,8 @@ class ColumnGroupsTableModel extends AbstractTableModel{
         }
     }
 
-    public List<ColumnGroup> getList() {
-        List list = new ArrayList<ColumnGroup>();
+    public List<DimensionGroup> getList() {
+        List list = new ArrayList<DimensionGroup>();
 
         for (IndexedGroup g : indexedGroupList)
             list.add(g.getGroup());
@@ -140,7 +141,7 @@ class ColumnGroupsTableModel extends AbstractTableModel{
         return list;
     }
 
-    public void addGroup(final ColumnGroup group) {
+    public void addGroup(final DimensionGroup group) {
         indexedGroupList.add(new IndexedGroup(group, indexedGroupList.size()));
         fireTableDataChanged();
     }
@@ -172,9 +173,12 @@ class ColumnGroupsTableModel extends AbstractTableModel{
             indexedGroupList.remove(index);
         }
 
-
         indexedGroupList.removeAll(objects);
         fireTableDataChanged();
+    }
+
+    public DimensionGroup getGroupAt(int index) {
+        return (DimensionGroup) getValueAt(index, 1);
     }
 
 }

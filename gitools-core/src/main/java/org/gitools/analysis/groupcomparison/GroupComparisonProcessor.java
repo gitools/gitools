@@ -22,8 +22,6 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
-import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.analysis.htest.MtcTestProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
@@ -40,7 +38,6 @@ import org.gitools.core.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.core.matrix.model.iterable.PositionMapping;
 import org.gitools.core.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.persistence.ResourceReference;
-import org.gitools.utils.datafilters.BinaryCutoff;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -82,8 +79,10 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         );
 
         // Prepare group predicates
-        IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, analysis.getGroup(0), analysis.getNoneConversion());
-        IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, analysis.getGroup(1), analysis.getNoneConversion());
+        //IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(0), analysis.getNoneConversion());
+        //IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(1), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group1Predicate = null;
+        IMatrixPredicate<Double> group2Predicate = null;
 
         // Run comparison
         dataMatrix.newPosition()
@@ -124,11 +123,12 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         monitor.end();
     }
 
-    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
+/*
+    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, DimensionGroupValue group, double noneConversion) {
 
         // Group by label
         if (group.getColumns() != null && group.getColumns().size() > 0) {
-            return new GroupByLabelPredicate(dimension, group);
+            return new GroupByLabelPredicate(dimension, group.getColumns());
         }
 
         // Group by value
@@ -138,6 +138,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         return new GroupByValuePredicate(cutoffLayer, binaryCutoff, nullValue);
 
     }
+*/
 
 
 }
