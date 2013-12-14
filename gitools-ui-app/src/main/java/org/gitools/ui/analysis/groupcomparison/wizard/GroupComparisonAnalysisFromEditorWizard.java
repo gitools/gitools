@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.analysis.groupcomparison.wizard;
 
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.core.heatmap.Heatmap;
@@ -48,6 +49,8 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     private GroupComparisonGroupingByLabelPage groupByLabelPage;
     private GroupComparisonSelectAttributePage attrSelectPage;
     private AnalysisDetailsPage analysisDetailsPage;
+    private GroupComparisonGroupsPage groupsPage;
+    private GroupComparisonGroupingPage groupingPage;
 
     public GroupComparisonAnalysisFromEditorWizard(Heatmap heatmap) {
         super();
@@ -61,12 +64,19 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     @Override
     public void addPages() {
         // Column Selection
+
+        groupingPage = new GroupComparisonGroupingPage(heatmap);
+        addPage(groupingPage);
+
         attrSelectPage = new GroupComparisonSelectAttributePage();
         attrSelectPage.setAttributes(heatmap.getLayers());
         addPage(attrSelectPage);
 
         groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap.getColumns());
         addPage(groupByLabelPage);
+
+        groupsPage = new GroupComparisonGroupsPage();
+        addPage(groupsPage);
 
         groupByValuePage = new GroupComparisonGroupingByValuePage();
         groupByValuePage.setAttributes(heatmap.getLayers());
@@ -82,9 +92,9 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         page = getCurrentPage();
         //attribute Selection Page
         if (page == attrSelectPage) {
-            if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+            if (attrSelectPage.getColumnGrouping().equals(DimensionGroupEnum.Annotation)) {
                 return super.getPage(groupByLabelPage.getId());
-            } else if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
+            } else if (attrSelectPage.getColumnGrouping().equals(DimensionGroupEnum.Value)) {
                 return super.getPage(groupByValuePage.getId());
             }
         }
@@ -98,7 +108,14 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
                 return page;
             } else {
                 updateAnalysisDetails();
-                return super.getPage(analysisDetailsPage.getId());
+
+                //groupsPage.addGroups(
+                //        new DimensionGroupValue("g1", groupByLabelPage.getGroup1()),
+                //        new DimensionGroupValue("g2", groupByLabelPage.getGroup2())
+                //       );
+                groupsPage.setColumnGroupType(getAnalysis().getColumnGroupType());
+                return super.getPage(groupsPage.getId());
+                //return super.getPage(analysisDetailsPage.getId());
             }
         }
         //Group by value page
@@ -115,9 +132,9 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         if (page == groupByLabelPage || page == groupByValuePage) {
             return super.getPage(attrSelectPage.getId());
         } else if (page == analysisDetailsPage) {
-            if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+            if (attrSelectPage.getColumnGrouping().equals(DimensionGroupEnum.Annotation)) {
                 return super.getPage(groupByLabelPage.getId());
-            } else if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
+            } else if (attrSelectPage.getColumnGrouping().equals(DimensionGroupEnum.Value)) {
                 return super.getPage(groupByValuePage.getId());
             }
         }
@@ -176,12 +193,12 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         }
         a.setColumnHeaders(columnHeaders);
 
-        if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
-            a.setGroup1(groupByLabelPage.getGroup1());
-            a.setGroup2(groupByLabelPage.getGroup2());
-        } else if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
-            a.setGroup1(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex());
-            a.setGroup2(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex());
+        if (a.getColumnGrouping().equals(DimensionGroupEnum.Annotation)) {
+            a.setGroup(groupByLabelPage.getGroup1(), 0);
+            a.setGroup(groupByLabelPage.getGroup2(), 1);
+        } else if (a.getColumnGrouping().equals(DimensionGroupEnum.Value)) {
+            a.setGroup(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex(), 0);
+            a.setGroup(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex(), 1);
             a.setNoneConversion(groupByValuePage.getNoneConversion());
         }
         return a;
@@ -189,7 +206,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
     private void updateAnalysisDetails() {
         List<Property> analysisAttributes = new ArrayList<>();
-        if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+        if (attrSelectPage.getColumnGrouping().equals(DimensionGroupEnum.Annotation)) {
             analysisAttributes.add(new Property("Group 1", "user defined group"));
             analysisAttributes.add(new Property("Group 2", "user defined group"));
         } else {

@@ -19,29 +19,26 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.groupcomparison;
+package org.gitools.analysis.groupcomparison.DimensionGroups;
 
+import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.utils.datafilters.BinaryCutoff;
 
-import java.util.Set;
+public class DimensionGroupValue extends DimensionGroup {
 
-public class ColumnGroup {
-
-    private String name = "";
-    private Set<String> columns;
     private BinaryCutoff binaryCutoff = null;
     private int cutoffAttributeIndex = -1;
 
-    public ColumnGroup(String string) {
-        this.name = string;
+
+    public DimensionGroupValue(String name, GroupByValuePredicate predicate) {
+        super(name, predicate, DimensionGroupEnum.Value);
     }
 
-    public ColumnGroup(String name, Set<String> columns, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
-        this.name = name;
-        this.columns = columns;
-        this.binaryCutoff = binaryCutoff;
-        this.cutoffAttributeIndex = cutoffAttributeIndex;
-    }
+    //public DimensionGroupValue(String name, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
+    //    this(name);
+    //    this.binaryCutoff = binaryCutoff;
+    //    this.cutoffAttributeIndex = cutoffAttributeIndex;
+    //}
 
 
     public BinaryCutoff getBinaryCutoff() {
@@ -60,20 +57,9 @@ public class ColumnGroup {
         this.cutoffAttributeIndex = cutoffAttributeIndex;
     }
 
-    public Set<String> getColumns() {
-        return columns;
-    }
+    @Override
+    public String getProperty() {
+        return "some value";
 
-    public void setColumns(Set<String> columns) {
-        this.columns = columns;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

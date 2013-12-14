@@ -36,7 +36,7 @@ public abstract class AbstractDialog extends JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
-    private static final int RET_CANCEL = 0;
+    protected static final int RET_CANCEL = 0;
     /**
      * A return status code - returned if OK button has been pressed
      */
