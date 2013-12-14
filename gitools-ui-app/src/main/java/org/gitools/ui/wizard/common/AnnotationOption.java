@@ -30,6 +30,10 @@ public class AnnotationOption {
         this(key, null);
     }
 
+    public String getDescription() {
+        return description == null ?  "" : description;
+    }
+
     public AnnotationOption(String key, String description) {
         this.key = key;
         this.description = description;
