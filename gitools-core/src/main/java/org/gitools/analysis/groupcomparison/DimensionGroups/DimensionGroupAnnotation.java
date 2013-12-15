@@ -31,7 +31,7 @@ public class DimensionGroupAnnotation extends DimensionGroup {
 
     public DimensionGroupAnnotation(String name, GroupByLabelPredicate predicate) {
         super(name, predicate, DimensionGroupEnum.Annotation);
-        property = String.valueOf(predicate.getGroupIdentifiers().size()) + " items";
+        property = String.valueOf(predicate.getGroupIdentifiers().size()) + "\n items";
 
     }
 

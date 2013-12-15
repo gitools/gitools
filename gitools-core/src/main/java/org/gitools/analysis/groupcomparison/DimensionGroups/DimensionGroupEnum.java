@@ -23,9 +23,9 @@ package org.gitools.analysis.groupcomparison.DimensionGroups;
 
 
 public enum DimensionGroupEnum {
-    Free("Group freely (e.g. by Id)"),
     Annotation("Group by annotation"),
-    Value("Group by value");
+    Value("Group by value"),
+    Free("Group freely");
 
     private String string;
 

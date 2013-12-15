@@ -30,7 +30,7 @@ import java.util.List;
 
 class DimensionGroupTableModel extends AbstractTableModel {
 
-    private static final String[] columnName = new String[]{"Name", "Property", "GroupNumber"};
+    private static final String[] columnName = new String[]{"Name", "Property", "Group #"};
 
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, String.class, Integer.class};
 
@@ -155,12 +155,16 @@ class DimensionGroupTableModel extends AbstractTableModel {
     private void reorder() {
         Collections.sort(indexedGroupList);
         int next = 1;
+        int lastSet = -1;
         int currentGroup;
         int lastGroup = -1;
         for (IndexedGroup g : indexedGroupList) {
             currentGroup = g.getIndex();
             if (currentGroup != lastGroup) {
                 g.setIndex(next++);
+                lastSet = g.getIndex();
+            } else {
+                g.setIndex(lastSet);
             }
             lastGroup = currentGroup;
         }
@@ -170,7 +174,6 @@ class DimensionGroupTableModel extends AbstractTableModel {
         List<Object> objects = new ArrayList<>(selectedRows.length);
         for (int index : selectedRows) {
             objects.add(indexedGroupList.get(index));
-            indexedGroupList.remove(index);
         }
 
         indexedGroupList.removeAll(objects);
@@ -178,7 +181,7 @@ class DimensionGroupTableModel extends AbstractTableModel {
     }
 
     public DimensionGroup getGroupAt(int index) {
-        return (DimensionGroup) getValueAt(index, 1);
+        return indexedGroupList.get(index).getGroup();
     }
 
 }
