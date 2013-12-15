@@ -15,7 +15,7 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import javax.swing.*;
 
 
-public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
+public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
 
     private JPanel panel1;
@@ -27,7 +27,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
     private JComboBox mtcCb;
     private JTextPane testExplanation;
 
-    public GroupComparisonSelectAttributePage() {
+    public GroupComparisonStatisticsPage() {
         super();
 
         setTitle("Select data and statistical test");

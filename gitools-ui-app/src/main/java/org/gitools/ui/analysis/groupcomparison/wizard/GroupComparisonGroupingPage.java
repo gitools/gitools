@@ -23,7 +23,11 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.ui.wizard.add.data.DataIntegrationCriteriaDialog;
+import org.gitools.ui.wizard.add.data.DataIntegrationPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
 import javax.swing.*;
@@ -282,6 +286,17 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 annGroups.add(g);
             }
             newGroups = annGroups.toArray(new DimensionGroup[annGroups.size()]);
+        }  else if( getGroupingType().equals(DimensionGroupEnum.Value)) {
+
+            String[] attrNames = heatmap.getLayers().getIds();
+            String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
+            DataIntegrationCriteriaDialog dlg =
+                    new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
+            dlg.setVisible(true);
+            if (dlg.isCancelled()) {
+                return;
+            }
+
         }
 
 

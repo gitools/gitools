@@ -47,7 +47,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
     private GroupComparisonGroupingByValuePage groupByValuePage;
     private GroupComparisonGroupingByLabelPage groupByLabelPage;
-    private GroupComparisonSelectAttributePage attrSelectPage;
+    private GroupComparisonStatisticsPage attrSelectPage;
     private AnalysisDetailsPage analysisDetailsPage;
     private GroupComparisonGroupsPage groupsPage;
     private GroupComparisonGroupingPage groupingPage;
@@ -68,7 +68,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         groupingPage = new GroupComparisonGroupingPage(heatmap);
         addPage(groupingPage);
 
-        attrSelectPage = new GroupComparisonSelectAttributePage();
+        attrSelectPage = new GroupComparisonStatisticsPage();
         attrSelectPage.setAttributes(heatmap.getLayers());
         addPage(attrSelectPage);
 

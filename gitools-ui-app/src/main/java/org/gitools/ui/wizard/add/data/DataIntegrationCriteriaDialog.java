@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * @noinspection ALL
  */
-class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
+public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
     /**
      * A return status code - returned if Cancel button has been pressed
      */
@@ -46,6 +46,7 @@ class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
+    private boolean noValue;
 
     private static class OperatorCellRenderer extends DefaultTableCellRenderer {
         public OperatorCellRenderer() {
@@ -80,7 +81,12 @@ class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
      *
      * @noinspection UnusedDeclaration
      */
-    public DataIntegrationCriteriaDialog(java.awt.Frame parent, String[] attributeNames, CutoffCmp[] comparators, String[] operators, List<DataIntegrationCriteria> initialCriteriaList, String setToValue) {
+    public DataIntegrationCriteriaDialog(java.awt.Frame parent,
+                                         String[] attributeNames,
+                                         CutoffCmp[] comparators,
+                                         String[] operators,
+                                         List<DataIntegrationCriteria> initialCriteriaList,
+                                         String setToValue) {
 
         super(parent, true);
 
@@ -91,7 +97,15 @@ class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         this.criteriaModel = new DataIntegrationCriteriaTableModel(attributeNames);
         initComponents();
 
-        this.setToValue.setText(setToValue);
+        if (setToValue == null) {
+            this.noValue = true;
+        } else {
+            noValue = false;
+            this.setToValue.setText(setToValue);
+        }
+        this.setToValue.setVisible(!noValue);
+        this.setToValue.setEnabled(!noValue);
+
         table.setModel(criteriaModel);
 
         criteriaModel.addTableModelListener(new TableModelListener() {
