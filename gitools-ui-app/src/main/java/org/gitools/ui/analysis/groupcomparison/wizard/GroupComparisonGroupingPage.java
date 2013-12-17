@@ -9,12 +9,14 @@ import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupAnnota
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupValue;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
+import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.matrix.filter.DataIntegrationCriteria;
 import org.gitools.core.matrix.filter.PatternFunction;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.heatmap.panel.settings.headers.SpinnerCellEditor;
@@ -24,7 +26,6 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.wizard.add.data.DataIntegrationCriteriaDialog;
-import org.gitools.ui.wizard.add.data.DataIntegrationPage;
 import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
@@ -62,12 +63,14 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
     private DimensionGroupTableModel tableModel = new DimensionGroupTableModel();
     private List<DimensionGroup> removedItems = new ArrayList<DimensionGroup>();
     private Heatmap heatmap;
+    private DimensionGroupEnum groupingType;
 
 
-    public GroupComparisonGroupingPage(Heatmap heatmap) {
+    public GroupComparisonGroupingPage(Heatmap heatmap, DimensionGroupEnum groupingType) {
         super();
 
         this.heatmap = heatmap;
+        this.groupingType = groupingType;
 
         setTitle("Select data and statistical test");
 
@@ -115,12 +118,12 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (getGroupingType().equals(DimensionGroupEnum.Annotation)) {
+                if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
                     //TODO: create Dialog with removedItems
-                } else if (getGroupingType().equals(DimensionGroupEnum.Free)) {
+                } else if (getSelectedGroupingType().equals(DimensionGroupEnum.Free)) {
                     //TODO: create Dialog with paste labels
-                } else if (getGroupingType().equals(DimensionGroupEnum.Value)) {
-                    //TODO: create Dialog with binary filters
+                } else if (getSelectedGroupingType().equals(DimensionGroupEnum.Value)) {
+                    createValueGroup();
                 }
             }
         });
@@ -201,7 +204,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         //ADD button
         boolean enableAdd = true;
-        if (getGroupingType().equals(DimensionGroupEnum.Annotation)) {
+        if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
             enableAdd = !removedItems.isEmpty();
         }
         addButton.setEnabled(enableAdd);
@@ -252,61 +255,78 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         DimensionGroup[] newGroups = new DimensionGroup[0];
 
-        if (getGroupingType().equals(DimensionGroupEnum.Annotation)) {
-            HeatmapDimension hdim = dimensionCb.getSelectedItem().equals("Columns") ?
-                    heatmap.getColumns() : heatmap.getRows();
-
-            if (hdim.getAnnotations() == null) {
-                setMessage(MessageStatus.WARN, "No annotations found");
+        if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
+            newGroups = initAnnotationGroups();
+            if (newGroups == null) {
+                setSelectedGroupingType(groupingType);
                 return;
             }
-
-            PatternSourcePage page = new PatternSourcePage(hdim, true);
-            PageDialog dlg = new PageDialog(Application.get(), page);
-            dlg.setVisible(true);
-            if (dlg.isCancelled()) {
-                return;
-            }
-
-
-            // get all clusters from $pattern
-
-            ClusteringData data = new AnnPatClusteringData(hdim, page.getPattern());
-            ClusteringResults results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
-
-            List<DimensionGroup> annGroups = new ArrayList<>();
-            for (String groupAnnotationPattern : results.getClusters()) {
-                DimensionGroupAnnotation g = new DimensionGroupAnnotation(
-                        groupAnnotationPattern,
-                        new GroupByLabelPredicate(
-                                hdim,
-                                groupAnnotationPattern,
-                                new PatternFunction(page.getPattern(), hdim.getAnnotations()))
-                );
-                annGroups.add(g);
-            }
-            newGroups = annGroups.toArray(new DimensionGroup[annGroups.size()]);
-        }  else if( getGroupingType().equals(DimensionGroupEnum.Value)) {
-
-            String[] attrNames = heatmap.getLayers().getIds();
-            String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-            DataIntegrationCriteriaDialog dlg =
-                    new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
-            dlg.setVisible(true);
-            if (dlg.isCancelled()) {
-                return;
-            }
-
         }
-
 
         removedItems.clear();
         tableModel.setGroups(newGroups);
+        updateGroupingType();
+    }
 
+    private DimensionGroup[] initAnnotationGroups() {
+        DimensionGroup[] newGroups;
+        HeatmapDimension hdim = dimensionCb.getSelectedItem().equals("Columns") ?
+                heatmap.getColumns() : heatmap.getRows();
+
+        if (hdim.getAnnotations() == null) {
+            setMessage(MessageStatus.WARN, "No annotations found");
+            return null;
+        }
+
+        PatternSourcePage page = new PatternSourcePage(hdim, true);
+        PageDialog dlg = new PageDialog(Application.get(), page);
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return null;
+        }
+
+        // get all clusters from $pattern
+
+        ClusteringData data = new AnnPatClusteringData(hdim, page.getPattern());
+        ClusteringResults results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
+
+        List<DimensionGroup> annGroups = new ArrayList<>();
+        for (String groupAnnotationPattern : results.getClusters()) {
+            DimensionGroupAnnotation g = new DimensionGroupAnnotation(
+                    groupAnnotationPattern,
+                    new GroupByLabelPredicate(
+                            hdim,
+                            groupAnnotationPattern,
+                            new PatternFunction(page.getPattern(), hdim.getAnnotations()))
+            );
+            annGroups.add(g);
+        }
+        newGroups = annGroups.toArray(new DimensionGroup[annGroups.size()]);
+        return newGroups;
+    }
+
+    private void createValueGroup() {
+        String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
+        DataIntegrationCriteriaDialog dlg =
+                new DataIntegrationCriteriaDialog(
+                        Application.get(),
+                        heatmap.getLayers(),
+                        CutoffCmp.comparators,
+                        ops,
+                        null,
+                        "Group " + Integer.toString(tableModel.getRowCount() + 1));
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
+        List<DataIntegrationCriteria> criteria = dlg.getCriteriaList();
+        tableModel.addGroup(
+                new DimensionGroupValue(dlg.getGroupName(), new GroupByValuePredicate(criteria, null))
+        );
     }
 
     private void removeSelected() {
-        if (getGroupingType().equals(DimensionGroupEnum.Annotation)) {
+        if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
             for (int cg : groupsTable.getSelectedRows()) {
                 removedItems.add(tableModel.getGroupAt(cg));
             }
@@ -381,7 +401,18 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
     }
 
 
-    public DimensionGroupEnum getGroupingType() {
+    public void setSelectedGroupingType(DimensionGroupEnum groupingType) {
+        if (groupingType.equals(DimensionGroupEnum.Annotation)) {
+            annotationRadioButton.setSelected(true);
+        } else if (groupingType.equals(DimensionGroupEnum.Value)) {
+            valueRadioButton.setSelected(true);
+        } else if (groupingType.equals(DimensionGroupEnum.Free)) {
+            noConstraintRadioButton.setSelected(true);
+        }
+        this.groupingType = groupingType;
+    }
+
+    public DimensionGroupEnum getSelectedGroupingType() {
         if (annotationRadioButton.isSelected()) {
             return DimensionGroupEnum.Annotation;
         } else if (valueRadioButton.isSelected()) {
@@ -389,8 +420,17 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         } else if (noConstraintRadioButton.isSelected()) {
             return DimensionGroupEnum.Free;
         }
-
         return null;
+    }
+
+    private void updateGroupingType() {
+        if (annotationRadioButton.isSelected()) {
+            this.groupingType = DimensionGroupEnum.Annotation;
+        } else if (valueRadioButton.isSelected()) {
+            this.groupingType = DimensionGroupEnum.Value;
+        } else if (noConstraintRadioButton.isSelected()) {
+            this.groupingType = DimensionGroupEnum.Free;
+        }
     }
 
     @Override

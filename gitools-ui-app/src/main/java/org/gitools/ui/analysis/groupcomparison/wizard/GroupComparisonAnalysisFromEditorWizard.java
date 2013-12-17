@@ -65,7 +65,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     public void addPages() {
         // Column Selection
 
-        groupingPage = new GroupComparisonGroupingPage(heatmap);
+        groupingPage = new GroupComparisonGroupingPage(heatmap, DimensionGroupEnum.Free);
         addPage(groupingPage);
 
         attrSelectPage = new GroupComparisonStatisticsPage();

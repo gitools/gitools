@@ -51,13 +51,9 @@ public class FilterByValueAction extends HeatmapAction {
 
         final IMatrixView matrixView = getHeatmap();
 
-        IMatrixLayers attributes = matrixView.getContents().getLayers();
+        IMatrixLayers layers = matrixView.getContents().getLayers();
 
 
-        String[] attrNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++) {
-            attrNames[i] = attributes.get(i).getName();
-        }
         IMatrixLayer selectedLayer = matrixView.getLayers().getTopLayer();
 
 
@@ -65,7 +61,7 @@ public class FilterByValueAction extends HeatmapAction {
         initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
 
         final ValueFilterPage page = new ValueFilterPage(Application.get(),
-                attrNames,
+                layers,
                 CutoffCmp.comparators,
                 initialCriteria,
                 selectedLayer);

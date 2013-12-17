@@ -22,44 +22,16 @@
 package org.gitools.analysis.groupcomparison.DimensionGroups;
 
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
-import org.gitools.utils.datafilters.BinaryCutoff;
 
 public class DimensionGroupValue extends DimensionGroup {
-
-    private BinaryCutoff binaryCutoff = null;
-    private int cutoffAttributeIndex = -1;
 
 
     public DimensionGroupValue(String name, GroupByValuePredicate predicate) {
         super(name, predicate, DimensionGroupEnum.Value);
     }
 
-    //public DimensionGroupValue(String name, BinaryCutoff binaryCutoff, int cutoffAttributeIndex) {
-    //    this(name);
-    //    this.binaryCutoff = binaryCutoff;
-    //    this.cutoffAttributeIndex = cutoffAttributeIndex;
-    //}
-
-
-    public BinaryCutoff getBinaryCutoff() {
-        return binaryCutoff;
-    }
-
-    public void setBinaryCutoff(BinaryCutoff binaryCutoff) {
-        this.binaryCutoff = binaryCutoff;
-    }
-
-    public int getCutoffAttributeIndex() {
-        return cutoffAttributeIndex;
-    }
-
-    public void setCutoffAttributeIndex(int cutoffAttributeIndex) {
-        this.cutoffAttributeIndex = cutoffAttributeIndex;
-    }
-
     @Override
     public String getProperty() {
-        return "some value";
-
+        return predicate.toString();
     }
 }

@@ -22,6 +22,7 @@
 package org.gitools.ui.dialog.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -78,7 +79,7 @@ public class ValueFilterPage extends AbstractWizardPage {
         }
     }
 
-    private final String[] attributeNames;
+    private final IMatrixLayers layers;
     private final CutoffCmp[] comparators;
 
     private final ValueFilterCriteriaTableModel criteriaModel;
@@ -87,16 +88,16 @@ public class ValueFilterPage extends AbstractWizardPage {
      * Creates new form FilterDialog
      */
     public ValueFilterPage(Frame parent,
-                           String[] attributeNames,
+                           IMatrixLayers layers,
                            CutoffCmp[] comparators,
                            List<ValueFilterCriteria> initialCriteriaList,
                            IMatrixLayer visibleLayer) {
 
-        this.attributeNames = attributeNames;
+        this.layers = layers;
         this.comparators = comparators;
         this.visibleLayer = visibleLayer;
 
-        this.criteriaModel = new ValueFilterCriteriaTableModel(attributeNames);
+        this.criteriaModel = new ValueFilterCriteriaTableModel(layers);
 
         initComponents();
 
@@ -133,7 +134,7 @@ public class ValueFilterPage extends AbstractWizardPage {
             }
         };
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(layers.getIds()));
         columnModel.getColumn(0).getCellEditor().addCellEditorListener(cellEditorListener);
         columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(comparators));
         columnModel.getColumn(1).getCellEditor().addCellEditorListener(cellEditorListener);

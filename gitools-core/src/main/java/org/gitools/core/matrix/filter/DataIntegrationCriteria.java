@@ -23,51 +23,34 @@ package org.gitools.core.matrix.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.operators.Operator;
 
-public class ValueFilterCriteria {
+public class DataIntegrationCriteria extends ValueFilterCriteria {
 
-    protected IMatrixLayer layer;
-    protected CutoffCmp comparator;
-    protected double value;
+    private Operator operator;
 
-    public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, double value) {
-        this.layer = layer;
-        this.comparator = comparator;
-        this.value = value;
+    public DataIntegrationCriteria(IMatrixLayer layer, CutoffCmp comparator, double value, Operator operator) {
+        super(layer, comparator, value);
+        this.operator = operator;
     }
 
-    public IMatrixLayer getLayer() {
-        return layer;
-    }
 
-    public void setLayer(IMatrixLayer layer) {
-        this.layer = layer;
-    }
-
-    @Deprecated
     public String getAttributeName() {
         return layer.getName();
     }
 
-    public CutoffCmp getComparator() {
-        return comparator;
+
+    public Operator getOperator() {
+        return operator;
     }
 
-    public void setComparator(CutoffCmp comparator) {
-        this.comparator = comparator;
-    }
-
-    public double getValue() {
-        return this.value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
+    public void setOperator(Operator operator) {
+        this.operator = operator;
     }
 
 
     @Override
     public String toString() {
-        return layer.getId() + " " + comparator.toString() + " " + value;
+        return operator.getLongName() + " " + getAttributeName().toString() + " " + comparator.toString() + " " + value;
     }
 }

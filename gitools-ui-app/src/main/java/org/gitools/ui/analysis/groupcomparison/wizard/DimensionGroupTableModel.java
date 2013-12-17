@@ -122,12 +122,14 @@ class DimensionGroupTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 2:
-                indexedGroupList.get(rowIndex).setIndex((int) aValue);
-                break;
             case 0:
+                indexedGroupList.get(rowIndex).getGroup().setName((String) aValue);
+                break;
             case 1:
                 indexedGroupList.set(rowIndex, (IndexedGroup) aValue);
+                break;
+            case 2:
+                indexedGroupList.get(rowIndex).setIndex((int) aValue);
                 break;
         }
     }
@@ -142,7 +144,7 @@ class DimensionGroupTableModel extends AbstractTableModel {
     }
 
     public void addGroup(final DimensionGroup group) {
-        indexedGroupList.add(new IndexedGroup(group, indexedGroupList.size()));
+        indexedGroupList.add(new IndexedGroup(group, indexedGroupList.size() + 1));
         fireTableDataChanged();
     }
 

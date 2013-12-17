@@ -23,6 +23,7 @@ package org.gitools.ui.wizard.add.data;
 
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.core.heatmap.Heatmap;
+import org.gitools.core.matrix.filter.DataIntegrationCriteria;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -62,7 +63,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
                     rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
                 }
 
-                rendering = rendering + "    " + c.getAttributeName() + " " + c.getComparator().getLongName() + " " + Double.toString(c.getCutoffValue()) + "\n";
+                rendering = rendering + "    " + c.getAttributeName() + " " + c.getComparator().getLongName() + " " + Double.toString(c.getValue()) + "\n";
 
 
             }
@@ -71,7 +72,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         }
     }
 
-    private final String[] attrNames;
+    private final IMatrixLayers layers;
     private final DefaultTableModel model;
 
     public DataIntegrationPage(Heatmap hm) {
@@ -82,12 +83,8 @@ public class DataIntegrationPage extends AbstractWizardPage {
         setTitle("Data Dimension Integration");
         setMessage("Choose which data dimensions and what cut-offs" + " to integrate");
 
-        IMatrixLayers attributes = hm.getContents().getLayers();
+        this.layers = hm.getContents().getLayers();
 
-        this.attrNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++) {
-            this.attrNames[i] = attributes.get(i).getName();
-        }
         //this.model = new DefaultTableModel();
         model = (DefaultTableModel) table.getModel();
 
@@ -234,14 +231,14 @@ public class DataIntegrationPage extends AbstractWizardPage {
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
-        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, null, "1");
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), layers, CutoffCmp.comparators, ops, null, "1");
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
             return;
         }
         List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
-        String setToValue = dlg.getSetToValue();
+        String setToValue = dlg.getGroupName();
         model.addRow(new Object[]{table.getRowCount(), setToValue, criteriaList});
         updateRowHeightsAndPriorities();
         updateButtons();
@@ -273,7 +270,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         String[] ops = new String[]{Operator.AND.getAbbreviation(), Operator.OR.getAbbreviation()};
         List<DataIntegrationCriteria> criteria = (List<DataIntegrationCriteria>) table.getValueAt(table.getSelectedRow(), 2);
         String setToValue = (String) table.getValueAt(table.getSelectedRow(), 1);
-        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), attrNames, CutoffCmp.comparators, ops, criteria, setToValue);
+        final DataIntegrationCriteriaDialog dlg = new DataIntegrationCriteriaDialog(Application.get(), layers, CutoffCmp.comparators, ops, criteria, setToValue);
         dlg.setVisible(true);
 
         if (dlg.getReturnStatus() != DataIntegrationCriteriaDialog.RET_OK) {
@@ -281,7 +278,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
         }
         int selectedRow = table.getSelectedRow();
         List<DataIntegrationCriteria> criteriaList = dlg.getCriteriaList();
-        setToValue = dlg.getSetToValue();
+        setToValue = dlg.getGroupName();
         model.removeRow(selectedRow);
         model.insertRow(selectedRow, new Object[]{selectedRow + 1, setToValue, criteriaList});
         updateRowHeightsAndPriorities();
