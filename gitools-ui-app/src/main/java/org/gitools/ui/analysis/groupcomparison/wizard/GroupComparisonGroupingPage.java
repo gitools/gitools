@@ -160,47 +160,53 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         annotationRadioButton.addActionListener(listener);
         valueRadioButton.addActionListener(listener);
         noConstraintRadioButton.addActionListener(listener);
+
+        updateButtons();
     }
 
     private void updateButtons() {
-        if (groupsTable.getSelectedRowCount() > 0) {
-            //SPLIT button
-            int groupNumber = -1;
-            boolean enableSplit = true;
+        if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
+            mergeButton.setVisible(true);
 
-            // all selected rows are same group?
-            for (int i : groupsTable.getSelectedRows()) {
-                if (groupNumber < 0) {
-                    groupNumber = (int) tableModel.getValueAt(i, 2);
-                } else if (groupNumber != (int) tableModel.getValueAt(i, 2)) {
-                    enableSplit = false;
-                    break;
-                }
-            }
+            if (groupsTable.getSelectedRowCount() > 0) {
+                //SPLIT button
+                int groupNumber = -1;
+                boolean enableSplit = true;
 
-            // unselected of same group?
-            if (groupsTable.getSelectedRowCount() == 1) {
-                enableSplit = false;
-                for (int i = 0; i < groupsTable.getRowCount(); i++) {
-                    if (groupsTable.isRowSelected(i)) {
-                        continue;
-                    }
-
-                    if (groupNumber == (int) tableModel.getValueAt(i, 2)) {
-                        enableSplit = true;
+                // all selected rows are same group?
+                for (int i : groupsTable.getSelectedRows()) {
+                    if (groupNumber < 0) {
+                        groupNumber = (int) tableModel.getValueAt(i, 2);
+                    } else if (groupNumber != (int) tableModel.getValueAt(i, 2)) {
+                        enableSplit = false;
                         break;
                     }
                 }
+
+                // unselected of same group?
+                if (groupsTable.getSelectedRowCount() == 1) {
+                    enableSplit = false;
+                    for (int i = 0; i < groupsTable.getRowCount(); i++) {
+                        if (groupsTable.isRowSelected(i)) {
+                            continue;
+                        }
+
+                        if (groupNumber == (int) tableModel.getValueAt(i, 2)) {
+                            enableSplit = true;
+                            break;
+                        }
+                    }
+                }
+                //MERGE button
+                mergeButton.setEnabled(!enableSplit && groupsTable.getSelectedRowCount() > 1);
             }
+        } else {
+            mergeButton.setVisible(false);
+        }
 
-            splitButton.setEnabled(enableSplit);
+        splitButton.setEnabled(false);
+        splitButton.setVisible(false);
 
-            //MERGE button
-            mergeButton.setEnabled(!enableSplit && groupsTable.getSelectedRowCount() > 1);
-        } /*else {
-            mergeButton.setEnabled(false);
-            splitButton.setEnabled(false);
-        }*/
 
         //ADD button
         boolean enableAdd = true;
