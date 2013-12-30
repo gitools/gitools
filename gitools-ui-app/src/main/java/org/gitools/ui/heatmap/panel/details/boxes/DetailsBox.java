@@ -33,8 +33,16 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.SwingUtils;
 import info.clearthought.layout.TableLayout;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.ui.IconNames;
+import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapLayerAction;
+import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.jdesktop.swingx.JXTaskPane;
 
 import javax.swing.*;
@@ -51,11 +59,12 @@ public class DetailsBox extends JXTaskPane {
     private static final int MINIMUM_VALUE_LENGTH = 12;
 
     private WebPanel container;
+    private JPopupMenu popupMenu;
 
     /**
      * @param title Optional title of the details table
      */
-    public DetailsBox(String title) {
+    public DetailsBox(String title, ActionSet actions) {
         super();
         setTitle(title);
         setSpecial(true);
@@ -67,6 +76,8 @@ public class DetailsBox extends JXTaskPane {
         getContentPane().add(new WebScrollPane(container, false, false));
         container.setBackground(Color.WHITE);
         container.setBorder(null);
+
+        popupMenu = ActionSetUtils.createPopupMenu(actions);
     }
 
     public void draw(List<DetailsDecoration> details) {
@@ -145,10 +156,8 @@ public class DetailsBox extends JXTaskPane {
             SwingUtils.setBoldFont(label);
         }
 
-        if (detail.isSelectable()) {
-            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            label.addMouseListener(new PropertyMouseListener(detail));
-        }
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        label.addMouseListener(new PropertyMouseListener(detail));
 
         if (!StringUtils.isEmpty(detail.getDescriptionLink())) {
             WebLinkLabel webLabel = new WebLinkLabel("", JLabel.TRAILING);
@@ -191,10 +200,8 @@ public class DetailsBox extends JXTaskPane {
             TooltipManager.setTooltip(label, value, TooltipWay.down, 0);
         }
 
-        if (property.isSelectable()) {
-            label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            label.addMouseListener(new PropertyMouseListener(property));
-        }
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        label.addMouseListener(new PropertyMouseListener(property));
 
         if (property.isSelected()) {
             SwingUtils.setBoldFont(label);
@@ -235,16 +242,27 @@ public class DetailsBox extends JXTaskPane {
             this.item = item;
         }
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
+            if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
 
-            if (e.getClickCount() > 1) {
-                onMouseDblClick(item);
+                if (item.getReference() instanceof HeatmapHeader) {
+                    DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapHeaderAction.class, (HeatmapHeader) item.getReference(), null);
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+
+                if (item.getReference() instanceof HeatmapLayer) {
+                    DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapLayerAction.class, (HeatmapLayer) item.getReference(), null);
+                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+
             } else {
-                onMouseClick(item);
+                if (e.getClickCount() > 1) {
+                    onMouseDblClick(item);
+                } else {
+                    onMouseClick(item);
+                }
             }
         }
-
 
     }
 

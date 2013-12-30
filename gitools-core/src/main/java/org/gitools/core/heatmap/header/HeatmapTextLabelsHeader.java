@@ -135,15 +135,17 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
     @Override
     public void populateDetails(List<DetailsDecoration> details, String identifier) {
         String value = (identifier == null ? "None" : getIdentifierTransform().apply(identifier));
-        details.add(
-                new DetailsDecoration(
-                        getTitle(),
-                        getDescription(),
-                        getDescriptionUrl(),
-                        value,
-                        getValueUrl()
-                )
+
+        DetailsDecoration decoration = new DetailsDecoration(
+                getTitle(),
+                getDescription(),
+                getDescriptionUrl(),
+                value,
+                getValueUrl()
         );
+
+        decoration.setReference(this);
+        details.add(decoration);
     }
 
     private transient Function<String, String> transformFunction;

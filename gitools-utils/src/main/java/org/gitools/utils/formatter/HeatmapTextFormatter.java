@@ -41,17 +41,17 @@ public class HeatmapTextFormatter implements ITextFormatter {
 
     protected String decimal(double value) {
 
-        if (value != 0 && value < 1e-99 && value > -1e-99) {
+        /*if (value != 0 && value < 1e-99 && value > -1e-99) {
             return "~0.00";
-        }
+        } */
 
-        if (value < 1 && value > -1) {
+        /* if (value < 1 && value > -1) {
             sb.setLength(0);
             fmt.format("%.2g", value);
             return sb.toString();
-        } else {
+        } else {*/
             return countFormat.format(value);
-        }
+        //}
     }
 
     @Override

@@ -42,6 +42,7 @@ import java.util.*;
 public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLayer> {
     public static final String PROPERTY_TOP_LAYER_INDEX = "topLayerIndex";
     public static final String PROPERTY_TOP_LAYER = "topLayer";
+    public static final String PROPERTY_LAYERS = "layers";
 
     @XmlElement(name = "top-layer")
     private int topLayer;
@@ -75,8 +76,6 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public void init(IMatrix matrix) {
         IMatrixLayers<?> matrixLayers = matrix.getLayers();
-        this.layersIdToIndex = new HashMap<>(matrixLayers.size());
-        this.layerNames = new ArrayList<>(matrixLayers.size());
 
         // Reorder layers
         List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
@@ -99,13 +98,25 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         }
         this.layers = orderedLayers;
 
+        initTransient();
+
+    }
+
+    public void updateLayers() {
+        initTransient();
+        firePropertyChange(PROPERTY_LAYERS, null, null);
+    }
+
+    private void initTransient() {
+
+        this.layersIdToIndex = new HashMap<>(layers.size());
+        this.layerNames = new ArrayList<>(layers.size());
 
         // Init transient parameters
         for (int i = 0; i < layers.size(); i++) {
             this.layersIdToIndex.put(layers.get(i).getId(), i);
             this.layerNames.add(layers.get(i).getName());
         }
-
     }
 
     public HeatmapLayer getTopLayer() {
@@ -186,6 +197,10 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public List<String> getLayerNames() {
         return layerNames;
+    }
+
+    public List<HeatmapLayer> asList() {
+        return layers;
     }
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {

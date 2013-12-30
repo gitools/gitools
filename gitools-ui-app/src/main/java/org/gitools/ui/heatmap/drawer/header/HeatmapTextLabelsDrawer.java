@@ -98,7 +98,9 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             g.fillRect(x, y, width, cellHeight);
 
             g.setColor(header.getLabelColor());
-            g.drawString(label, x + padding, y + fontOffset);
+            if (label != null) {
+                g.drawString(label, x + padding, y + fontOffset);
+            }
 
             y += height;
         }

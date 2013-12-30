@@ -30,6 +30,7 @@ import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
 import org.gitools.ui.actions.edit.EditLayerAction;
 import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
+import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
@@ -92,13 +93,13 @@ public class DetailsPanel extends JXTaskPaneContainer {
         heatmap.getLayers().addPropertyChangeListener(updateLayers);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
 
-        add(columnsBox = new DetailsBox("Column"));
+        add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS));
         columnsBox.setCollapsed(true);
 
-        add(rowsBox = new DetailsBox("Row"));
+        add(rowsBox = new DetailsBox("Row", PopupMenuActions.DETAILS_ROWS));
         rowsBox.setCollapsed(true);
 
-        add(layersBox = new DetailsBox("Values") {
+        add(layersBox = new DetailsBox("Values", PopupMenuActions.DETAILS_LAYERS) {
             @Override
             protected void onMouseClick(DetailsDecoration detail) {
                 heatmap.getLayers().setTopLayerIndex(detail.getIndex());

@@ -38,7 +38,10 @@ import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
+
     public static final String PROPERTY_DECORATOR = "decorator";
+    public static final String PROPERTY_SHORT_FORMATTER = "shortFormatter";
+    public static final String PROPERTY_LONG_FORMATTER = "longFormatter";
 
     private transient ITextFormatter shortFormatter;
     private transient ITextFormatter longFormatter;
@@ -82,6 +85,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     public void setShortFormatter(ITextFormatter shortFormatter) {
         this.shortFormatter = shortFormatter;
+        firePropertyChange(PROPERTY_SHORT_FORMATTER, null, shortFormatter);
     }
 
     @XmlTransient
@@ -95,6 +99,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     public void setLongFormatter(ITextFormatter longFormatter) {
         this.longFormatter = longFormatter;
+        firePropertyChange(PROPERTY_LONG_FORMATTER, null, longFormatter);
     }
 
     @Override
@@ -104,8 +109,8 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {
         DetailsDecoration decoration = new DetailsDecoration(getName(), getDescription(), getDescriptionUrl(), null, getValueUrl());
+        decoration.setReference(this);
         decoration.setIndex(layerIndex);
-        decoration.setSelectable(true);
         if (isSelected) {
             decoration.setSelected(true);
         }

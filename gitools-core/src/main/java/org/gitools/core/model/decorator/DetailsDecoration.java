@@ -34,8 +34,9 @@ public class DetailsDecoration extends Decoration implements Serializable {
     private final String descriptionLink;
     private final String valueLink;
 
+    private Object reference;
+
     private int index;
-    private boolean selectable = false;
     private boolean selected = false;
 
     /**
@@ -132,19 +133,19 @@ public class DetailsDecoration extends Decoration implements Serializable {
         this.selected = selected;
     }
 
-    public boolean isSelectable() {
-        return selectable;
-    }
-
-    public void setSelectable(boolean selectable) {
-        this.selectable = selectable;
-    }
-
     public int getIndex() {
         return index;
     }
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public Object getReference() {
+        return reference;
+    }
+
+    public void setReference(Object reference) {
+        this.reference = reference;
     }
 }

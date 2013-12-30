@@ -27,15 +27,19 @@ import org.gitools.ui.actions.data.FastSortValueAction;
 import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.data.ShowAllAction;
 import org.gitools.ui.actions.edit.AddHeaderAction;
-import org.gitools.ui.actions.edit.EditAllHeaderAction;
 import org.gitools.ui.actions.edit.InvertSelectionAction;
+import org.gitools.ui.actions.edit.MoveDownHeaderAction;
+import org.gitools.ui.actions.edit.MoveDownLayerAction;
+import org.gitools.ui.actions.edit.MoveUpHeaderAction;
+import org.gitools.ui.actions.edit.MoveUpLayerAction;
 import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
+import weka.core.matrix.Matrix;
 
 public class PopupMenuActions {
 
-    private static ActionSet getMenu(MatrixDimensionKey dimensionKey) {
+    private static ActionSet getHeatmapMenu(MatrixDimensionKey dimensionKey) {
 
         return new ActionSet(new BaseAction[] {
                 Actions.selectAllAction,
@@ -58,13 +62,29 @@ public class PopupMenuActions {
                 BaseAction.separator,
                 new HeatmapSearchAction(dimensionKey),
                 BaseAction.separator,
-                new EditAllHeaderAction(dimensionKey),
                 new AddHeaderAction(dimensionKey)
         });
-
-
     }
 
-    public static final ActionSet ROWS = getMenu(MatrixDimensionKey.ROWS);
-    public static final ActionSet COLUMNS = getMenu(MatrixDimensionKey.COLUMNS);
+    private static ActionSet getDetailsMenu(MatrixDimensionKey dimensionKey) {
+        return new ActionSet(new BaseAction[] {
+                new MoveUpHeaderAction(dimensionKey),
+                new MoveDownHeaderAction(dimensionKey)
+        });
+    }
+
+    public static final ActionSet ROWS = getHeatmapMenu(MatrixDimensionKey.ROWS);
+    public static final ActionSet COLUMNS = getHeatmapMenu(MatrixDimensionKey.COLUMNS);
+
+    // Details popup menus
+    public static final ActionSet DETAILS_ROWS = getDetailsMenu(MatrixDimensionKey.ROWS);
+    public static final ActionSet DETAILS_COLUMNS = getDetailsMenu(MatrixDimensionKey.COLUMNS);
+
+    public static final ActionSet DETAILS_LAYERS = new ActionSet( new BaseAction[] {
+            new MoveUpLayerAction(),
+            new MoveDownLayerAction()
+    });
+
+
+
 }

@@ -171,6 +171,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     public void populateDetails(List<DetailsDecoration> details, String identifier) {
 
         DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
+        decoration.setReference(this);
 
         if (identifier != null) {
             decorate(decoration, getColoredLabel(identifier), true);

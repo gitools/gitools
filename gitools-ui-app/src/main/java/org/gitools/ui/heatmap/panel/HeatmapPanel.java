@@ -355,7 +355,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
                         HeatmapDimension.PROPERTY_GRID_COLOR
                 ) ||
                         isAny(evt, HeatmapLayer.class,
-                                HeatmapLayer.PROPERTY_DECORATOR
+                                HeatmapLayer.PROPERTY_DECORATOR,
+                                HeatmapLayer.PROPERTY_SHORT_FORMATTER
                         );
 
         if (updateAll) {
