@@ -50,8 +50,8 @@ public class MoveUpHeaderAction extends HeatmapDimensionAction implements IHeatm
 
     private HeatmapHeader header;
 
-    public MoveUpHeaderAction(MatrixDimensionKey dim) {
-        super(dim, "Move up");
+    public MoveUpHeaderAction(String title, MatrixDimensionKey dim) {
+        super(dim, title);
 
         setSmallIconFromResource(IconNames.add16);
     }
@@ -60,7 +60,10 @@ public class MoveUpHeaderAction extends HeatmapDimensionAction implements IHeatm
     public void actionPerformed(ActionEvent e) {
 
         // Move the header one position up
+        HeatmapDimension dimension = getDimension();
+
         List<HeatmapHeader> headers = getDimension().getHeaders();
+
         int index = getHeaderCurrentIndex();
         headers.set(index, headers.get(index - 1));
         headers.set(index - 1, header);

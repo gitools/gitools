@@ -66,19 +66,19 @@ public class PopupMenuActions {
         });
     }
 
-    private static ActionSet getDetailsMenu(MatrixDimensionKey dimensionKey) {
-        return new ActionSet(new BaseAction[] {
-                new MoveUpHeaderAction(dimensionKey),
-                new MoveDownHeaderAction(dimensionKey)
-        });
-    }
-
     public static final ActionSet ROWS = getHeatmapMenu(MatrixDimensionKey.ROWS);
     public static final ActionSet COLUMNS = getHeatmapMenu(MatrixDimensionKey.COLUMNS);
 
     // Details popup menus
-    public static final ActionSet DETAILS_ROWS = getDetailsMenu(MatrixDimensionKey.ROWS);
-    public static final ActionSet DETAILS_COLUMNS = getDetailsMenu(MatrixDimensionKey.COLUMNS);
+    public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[] {
+            new MoveUpHeaderAction("Move up", MatrixDimensionKey.ROWS),
+            new MoveDownHeaderAction("Move down", MatrixDimensionKey.ROWS)
+    });
+
+    public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[] {
+            new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS),
+            new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS)
+    });
 
     public static final ActionSet DETAILS_LAYERS = new ActionSet( new BaseAction[] {
             new MoveUpLayerAction(),

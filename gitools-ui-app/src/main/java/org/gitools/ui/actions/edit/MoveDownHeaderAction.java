@@ -37,8 +37,8 @@ public class MoveDownHeaderAction extends HeatmapDimensionAction implements IHea
 
     private HeatmapHeader header;
 
-    public MoveDownHeaderAction(MatrixDimensionKey dim) {
-        super(dim, "Move down");
+    public MoveDownHeaderAction(String title, MatrixDimensionKey dim) {
+        super(dim, title);
 
         setSmallIconFromResource(IconNames.add16);
     }

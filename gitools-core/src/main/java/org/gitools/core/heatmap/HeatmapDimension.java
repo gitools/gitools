@@ -21,8 +21,10 @@
  */
 package org.gitools.core.heatmap;
 
+import com.google.common.collect.Lists;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.adapter.ResourceReferenceXmlAdapter;
@@ -33,6 +35,7 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -202,7 +205,14 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
 
     public void populateDetails(List<DetailsDecoration> details) {
         details.add(new DetailsDecoration("Size", Integer.toString(size())));
-        for (HeatmapHeader header : headers) {
+
+        Iterable<HeatmapHeader> itHeaders = headers;
+
+        if (getId() == MatrixDimensionKey.COLUMNS) {
+            itHeaders = Lists.reverse(headers);
+        }
+
+        for (HeatmapHeader header : itHeaders) {
             if (header.isVisible()) {
                 header.populateDetails(details, getFocus());
             }
