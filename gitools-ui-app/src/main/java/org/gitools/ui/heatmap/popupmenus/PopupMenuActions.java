@@ -27,15 +27,17 @@ import org.gitools.ui.actions.data.FastSortValueAction;
 import org.gitools.ui.actions.data.GroupSelectionAction;
 import org.gitools.ui.actions.data.ShowAllAction;
 import org.gitools.ui.actions.edit.AddHeaderAction;
+import org.gitools.ui.actions.edit.EditHeaderAction;
+import org.gitools.ui.actions.edit.EditLayerAction;
 import org.gitools.ui.actions.edit.InvertSelectionAction;
 import org.gitools.ui.actions.edit.MoveDownHeaderAction;
 import org.gitools.ui.actions.edit.MoveDownLayerAction;
 import org.gitools.ui.actions.edit.MoveUpHeaderAction;
 import org.gitools.ui.actions.edit.MoveUpLayerAction;
+import org.gitools.ui.actions.edit.RemoveHeaderAction;
 import org.gitools.ui.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
-import weka.core.matrix.Matrix;
 
 public class PopupMenuActions {
 
@@ -71,16 +73,26 @@ public class PopupMenuActions {
 
     // Details popup menus
     public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[] {
+            new EditHeaderAction(MatrixDimensionKey.ROWS, "Edit..."),
+            BaseAction.separator,
             new MoveUpHeaderAction("Move up", MatrixDimensionKey.ROWS),
-            new MoveDownHeaderAction("Move down", MatrixDimensionKey.ROWS)
+            new MoveDownHeaderAction("Move down", MatrixDimensionKey.ROWS),
+            BaseAction.separator,
+            new RemoveHeaderAction(MatrixDimensionKey.ROWS, "Remove")
     });
 
     public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[] {
+            new EditHeaderAction(MatrixDimensionKey.COLUMNS, "Edit..."),
+            BaseAction.separator,
             new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS),
-            new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS)
+            new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS),
+            BaseAction.separator,
+            new RemoveHeaderAction(MatrixDimensionKey.COLUMNS, "Remove")
     });
 
     public static final ActionSet DETAILS_LAYERS = new ActionSet( new BaseAction[] {
+            new EditLayerAction("Edit..."),
+            BaseAction.separator,
             new MoveUpLayerAction(),
             new MoveDownLayerAction()
     });

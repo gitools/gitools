@@ -24,10 +24,12 @@ package org.gitools.ui.actions.edit;
 import org.gitools.core.heatmap.HeatmapLayer;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapAction;
+import org.gitools.ui.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.heatmap.panel.settings.FormatSection;
 import org.gitools.ui.heatmap.panel.settings.SortSection;
 import org.gitools.ui.heatmap.panel.settings.layer.ColorScaleSection;
 import org.gitools.ui.heatmap.panel.settings.layer.DetailsSection;
+import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
@@ -35,13 +37,25 @@ import org.gitools.ui.platform.settings.SettingsPanel;
 
 import java.awt.event.ActionEvent;
 
-public class EditLayerAction extends HeatmapAction {
+public class EditLayerAction extends HeatmapAction implements IHeatmapLayerAction {
 
     private HeatmapLayer layer;
+
+    public EditLayerAction(String name) {
+        super(name);
+    }
 
     public EditLayerAction(HeatmapLayer layer) {
         super(layer.getName());
 
+        this.layer = layer;
+    }
+
+    public HeatmapLayer getLayer() {
+        return layer;
+    }
+
+    public void setLayer(HeatmapLayer layer) {
         this.layer = layer;
     }
 
@@ -66,6 +80,11 @@ public class EditLayerAction extends HeatmapAction {
 
         SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName());
         dialog.setVisible(true);
+    }
+
+    @Override
+    public void onConfigure(HeatmapLayer object, HeatmapPosition position) {
+        setLayer(object);
     }
 
 }

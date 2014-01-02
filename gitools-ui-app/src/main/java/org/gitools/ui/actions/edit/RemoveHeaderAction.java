@@ -39,15 +39,15 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 
-public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmapHeaderAction{
+public class RemoveHeaderAction extends HeatmapDimensionAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
-    public EditHeaderAction(MatrixDimensionKey dimensionKey, String name) {
+    public RemoveHeaderAction(MatrixDimensionKey dimensionKey, String name) {
         super(dimensionKey, name);
     }
 
-    public EditHeaderAction(HeatmapHeader header) {
+    public RemoveHeaderAction(HeatmapHeader header) {
         super(header.getHeatmapDimension().getId(), header.getTitle());
 
         this.header = header;
@@ -63,36 +63,15 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        execute(getDimension(), header);
-    }
 
-    public static void execute(HeatmapDimension dimension, HeatmapHeader header) {
-        Class<? extends HeatmapHeader> cls = header.getClass();
-        IWizard wizard = null;
+        HeatmapDimension heatmapDimension = getDimension();
+        heatmapDimension.getHeaders().remove(header);
+        heatmapDimension.updateHeaders();
 
-        if (HeatmapTextLabelsHeader.class.equals(cls))
-            wizard = new TextLabelsHeaderWizard(dimension, (HeatmapTextLabelsHeader) header);
-        else if (HeatmapColoredLabelsHeader.class.equals(cls)) {
-            ColoredLabelsHeaderWizard wiz = new ColoredLabelsHeaderWizard(dimension, (HeatmapColoredLabelsHeader) header);
-            wiz.setEditionMode(true);
-            wizard = wiz;
-        } else if (HeatmapDecoratorHeader.class.equals(cls)) {
-            wizard = new DecoratorHeaderWizard((HeatmapDecoratorHeader) header);
-        }
-
-        if (wizard == null)
-            return;
-
-        WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
-        wdlg.setTitle("Edit header");
-        wdlg.setVisible(true);
     }
 
     @Override
     public void onConfigure(HeatmapHeader object, HeatmapPosition position) {
         setHeader(object);
     }
-
-
-
 }
