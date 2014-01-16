@@ -73,8 +73,6 @@ public class Actions {
     public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
     public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
     public static final BaseAction addLayerHeader = new AddLayerAction();
-    public static final BaseAction editRowHeader = new EditAllHeaderAction(ROWS);
-    public static final BaseAction editColumnHeader = new EditAllHeaderAction(COLUMNS);
 
     public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
 

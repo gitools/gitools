@@ -23,19 +23,17 @@ package org.gitools.ui.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.heatmapheader.DecoratorHeaderWizard;
-import org.gitools.ui.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
+import org.gitools.ui.heatmap.panel.settings.headers.ColorsSection;
+import org.gitools.ui.heatmap.panel.settings.headers.DetailsSection;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.wizard.IWizard;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.platform.settings.ISettingsSection;
+import org.gitools.ui.platform.settings.SettingsDialog;
+import org.gitools.ui.platform.settings.SettingsPanel;
 
 import java.awt.event.ActionEvent;
 
@@ -67,6 +65,9 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
     }
 
     public static void execute(HeatmapDimension dimension, HeatmapHeader header) {
+
+
+        /*
         Class<? extends HeatmapHeader> cls = header.getClass();
         IWizard wizard = null;
 
@@ -85,7 +86,21 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
         WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
         wdlg.setTitle("Edit header");
-        wdlg.setVisible(true);
+        wdlg.setVisible(true);*/
+
+        ISettingsSection detailsSection = new DetailsSection(header);
+        ISettingsSection colorsSection = new ColorsSection(header);
+
+        SettingsPanel settingsPanel = new SettingsPanel(
+                "Header '" + header.getTitle() + "' settings",
+                header.getDescription(),
+                IconNames.logoNoText,
+                detailsSection,
+                colorsSection
+        );
+
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, detailsSection.getName());
+        dialog.setVisible(true);
     }
 
     @Override
