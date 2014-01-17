@@ -39,8 +39,6 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JTextField rightMaxColor;
     private JTextField emptyColor;
     private JSpinner significance;
-    private JCheckBox filterByCheckBox;
-    private JComboBox filterValue;
     private JCheckBox showValueCheckBox;
 
     public ZScoreDecoratorPanel() {
@@ -65,13 +63,6 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
                         Double.valueOf(1),
                         Double.valueOf(0.01)
                 )
-        );
-
-        Bindings.bind(filterByCheckBox, model(ZScoreDecorator.PROPERTY_USE_CORRECTION));
-        Bindings.bind(filterValue, new SelectionInList<>(
-                getLayers(),
-                new ValueHolder(),
-                model(ZScoreDecorator.PROPERTY_CORRECTED_VALUE))
         );
 
         Bindings.bind(showValueCheckBox, model(ZScoreDecorator.PROPERTY_SHOW_VALUE));

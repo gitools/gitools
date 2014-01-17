@@ -47,7 +47,7 @@ public class ColorScaleSection implements ISettingsSection {
     private JLabel colorScaleOpen;
 
 
-    public ColorScaleSection(final HeatmapLayer heatmapLayer, Iterable<String> layers) {
+    public ColorScaleSection(final HeatmapLayer heatmapLayer) {
 
         PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
 
@@ -67,7 +67,7 @@ public class ColorScaleSection implements ISettingsSection {
             }
         };
 
-        decoratorsPanels.init(decorators, layers, decoratorValueModel);
+        decoratorsPanels.init(decorators, decoratorValueModel);
         Bindings.bind(decoratorPanelSelector, new SelectionInList<>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()

@@ -25,9 +25,11 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.core.heatmap.Heatmap;
 import org.gitools.core.heatmap.HeatmapDimension;
 import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.core.model.decorator.Decoration;
 import org.gitools.core.model.decorator.Decorator;
 import org.gitools.core.model.decorator.DetailsDecoration;
+import org.gitools.ui.actions.edit.EditHeaderAction;
 import org.gitools.ui.actions.edit.EditLayerAction;
 import org.gitools.ui.heatmap.panel.details.boxes.DetailsBox;
 import org.gitools.ui.heatmap.popupmenus.PopupMenuActions;
@@ -93,10 +95,28 @@ public class DetailsPanel extends JXTaskPaneContainer {
         heatmap.getLayers().addPropertyChangeListener(updateLayers);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
 
-        add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS));
+        add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS) {
+            @Override
+            protected void onMouseDblClick(DetailsDecoration detail) {
+                Object reference = detail.getReference();
+
+                if (reference instanceof HeatmapHeader) {
+                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
+                }
+            }
+        });
         columnsBox.setCollapsed(true);
 
-        add(rowsBox = new DetailsBox("Row", PopupMenuActions.DETAILS_ROWS));
+        add(rowsBox = new DetailsBox("Row", PopupMenuActions.DETAILS_ROWS) {
+            @Override
+            protected void onMouseDblClick(DetailsDecoration detail) {
+                Object reference = detail.getReference();
+
+                if (reference instanceof HeatmapHeader) {
+                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
+                }
+            }
+        });
         rowsBox.setCollapsed(true);
 
         add(layersBox = new DetailsBox("Values", PopupMenuActions.DETAILS_LAYERS) {
@@ -107,7 +127,11 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
             @Override
             protected void onMouseDblClick(DetailsDecoration detail) {
-                new EditLayerAction(heatmap.getLayers().get(detail.getIndex())).actionPerformed(null);
+                Object reference = detail.getReference();
+
+                if (reference instanceof HeatmapLayer) {
+                    new EditLayerAction((HeatmapLayer) reference).actionPerformed(null);
+                }
             }
         });
 

@@ -33,7 +33,6 @@ public abstract class DecoratorPanel {
     private Class<? extends Decorator> decoratorClass;
 
     private PresentationModel<Decorator> panelModel;
-    private List<String> layers;
 
     public DecoratorPanel(String name, Decorator defaultDecorator) {
         this.name = name;
@@ -69,14 +68,6 @@ public abstract class DecoratorPanel {
 
     protected AbstractValueModel model(String propertyName) {
         return getPanelModel().getModel(propertyName);
-    }
-
-    public List<String> getLayers() {
-        return layers;
-    }
-
-    public void setLayers(List<String> layers) {
-        this.layers = layers;
     }
 
     public abstract void bind();

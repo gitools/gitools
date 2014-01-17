@@ -23,10 +23,12 @@ package org.gitools.ui.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.core.heatmap.header.HeatmapHeader;
 import org.gitools.ui.IconNames;
 import org.gitools.ui.actions.HeatmapDimensionAction;
 import org.gitools.ui.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.heatmap.panel.settings.headers.ColorScaleSection;
 import org.gitools.ui.heatmap.panel.settings.headers.ColorsSection;
 import org.gitools.ui.heatmap.panel.settings.headers.DetailsSection;
 import org.gitools.ui.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
@@ -36,6 +38,8 @@ import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmapHeaderAction{
 
@@ -88,18 +92,24 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
         wdlg.setTitle("Edit header");
         wdlg.setVisible(true);*/
 
-        ISettingsSection detailsSection = new DetailsSection(header);
-        ISettingsSection colorsSection = new ColorsSection(header);
+        List<ISettingsSection> sections = new ArrayList<>();
+
+        sections.add( new DetailsSection(header) );
+
+        if (header instanceof HeatmapDecoratorHeader) {
+            sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
+        } else {
+            sections.add(new ColorsSection(header));
+        }
 
         SettingsPanel settingsPanel = new SettingsPanel(
                 "Header '" + header.getTitle() + "' settings",
                 header.getDescription(),
                 IconNames.logoNoText,
-                detailsSection,
-                colorsSection
+                sections
         );
 
-        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, detailsSection.getName());
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, sections.get(0).getName());
         dialog.setVisible(true);
     }
 

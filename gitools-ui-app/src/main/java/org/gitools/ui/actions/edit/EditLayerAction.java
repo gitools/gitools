@@ -63,7 +63,7 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
     public void actionPerformed(ActionEvent e) {
         getHeatmap().getLayers().setTopLayer(layer);
 
-        ISettingsSection colorScaleSection = new ColorScaleSection(layer, getHeatmap().getLayers().getLayerNames());
+        ISettingsSection colorScaleSection = new ColorScaleSection(layer);
         ISettingsSection detailsSection = new DetailsSection(layer);
         ISettingsSection formatSection = new FormatSection(layer);
         ISettingsSection sortSection = new SortSection(layer);

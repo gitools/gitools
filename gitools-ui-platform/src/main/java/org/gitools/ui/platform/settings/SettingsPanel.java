@@ -26,6 +26,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 
 import javax.swing.*;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SettingsPanel implements ISettingsPanel {
@@ -35,6 +36,10 @@ public class SettingsPanel implements ISettingsPanel {
     private MessageStatus status = MessageStatus.INFO;
     private Map<String, ISettingsSection> sections = new LinkedHashMap<>();
     private String message = "";
+
+    public SettingsPanel(String title, String message, String logo, List<ISettingsSection> sections) {
+        this(title, message, logo, sections.toArray(new ISettingsSection[sections.size()]));
+    }
 
     public SettingsPanel(String title, String message, String logo, ISettingsSection... sections) {
 

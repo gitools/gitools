@@ -27,8 +27,6 @@
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:min(d;100px):grow"/>
@@ -47,9 +45,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="fef98" class="javax.swing.JLabel">
             <constraints>
@@ -69,9 +64,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="42088" class="javax.swing.JTextField" binding="rightMaxColor" custom-create="true">
             <constraints>
@@ -81,9 +73,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="98c8d" class="javax.swing.JTextField" binding="nonSigColor" custom-create="true">
             <constraints>
@@ -93,9 +82,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="44c7d" class="javax.swing.JLabel">
             <constraints>
@@ -115,9 +101,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="5de0a" class="javax.swing.JTextField" binding="emptyColor" custom-create="true">
             <constraints>
@@ -127,9 +110,6 @@
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="43bd2" class="javax.swing.JLabel">
             <constraints>
@@ -167,23 +147,6 @@
               <font style="1"/>
               <text value="Right"/>
             </properties>
-          </component>
-          <component id="761f2" class="javax.swing.JCheckBox" binding="filterByCheckBox" default-binding="true">
-            <constraints>
-              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-              <forms defaultalign-horz="false"/>
-            </constraints>
-            <properties>
-              <font style="1"/>
-              <text value="Filter by"/>
-            </properties>
-          </component>
-          <component id="389fc" class="javax.swing.JComboBox" binding="filterValue">
-            <constraints>
-              <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-              <forms/>
-            </constraints>
-            <properties/>
           </component>
         </children>
       </grid>
