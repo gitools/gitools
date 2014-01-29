@@ -31,7 +31,7 @@
     <fileSets>
 
         <fileSet>
-            <directory>gitools-cli/src/main/command</directory>
+            <directory>org.gitools.cli/src/main/command</directory>
             <includes>
                 <include>*</include>
             </includes>
@@ -57,7 +57,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>gitools-ui-app/src/main/resources/img</directory>
+            <directory>org.gitools.ui.app/src/main/resources/img</directory>
             <includes>
                 <include>LogoMini.png</include>
             </includes>

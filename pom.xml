@@ -29,13 +29,13 @@
     </scm>
 
     <modules>
-        <module>gitools-utils</module>
-        <module>gitools-core</module>
-        <module>gitools-datasources</module>
-        <module>gitools-cli</module>
-        <module>gitools-ui-platform</module>
-        <module>gitools-ui-app</module>
-        <module>gitools-api</module>
+        <module>org.gitools.utils</module>
+        <module>org.gitools.core</module>
+        <module>org.gitools.datasources</module>
+        <module>org.gitools.cli</module>
+        <module>org.gitools.ui.platform</module>
+        <module>org.gitools.ui.app</module>
+        <module>org.gitools.api</module>
     </modules>
 
     <properties>
@@ -76,32 +76,38 @@
         <dependencies>
 
             <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>2.1.0.Final</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-api</artifactId>
+                <artifactId>org.gitools.api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-utils</artifactId>
+                <artifactId>org.gitools.utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-core</artifactId>
+                <artifactId>org.gitools.core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-datasources</artifactId>
+                <artifactId>org.gitools.datasources</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>gitools-ui-platform</artifactId>
+                <artifactId>org.gitools.ui.platform</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

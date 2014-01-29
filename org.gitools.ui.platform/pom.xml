@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>gitools</artifactId>
+        <groupId>org.gitools</groupId>
+        <version>2.1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.gitools</groupId>
+    <artifactId>org.gitools.ui.platform</artifactId>
+    <name>org.gitools.ui.platform</name>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cobra</groupId>
+            <artifactId>cobra</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>weblookandfeel</groupId>
+            <artifactId>weblookandfeel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.apple</groupId>
+            <artifactId>AppleJavaExtensions</artifactId>
+        </dependency>
+
+
+    </dependencies>
+</project>
