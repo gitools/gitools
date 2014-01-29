@@ -22,7 +22,7 @@
 package org.gitools.ui.app.imageviewer;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;

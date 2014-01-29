@@ -21,8 +21,9 @@
  */
 package org.gitools.cli;
 
-import org.gitools.core.ApplicationContext;
+import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.tools.ToolManager;
 import org.gitools.utils.tools.ToolSet;
 import org.gitools.utils.tools.XmlToolSetResource;
@@ -31,6 +32,7 @@ import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.kohsuke.args4j.CmdLineParser;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 
@@ -45,6 +47,7 @@ public class Main {
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
+        ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         final ToolSet toolSet = XmlToolSetResource.load(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("gitools-cli.xml")));
 

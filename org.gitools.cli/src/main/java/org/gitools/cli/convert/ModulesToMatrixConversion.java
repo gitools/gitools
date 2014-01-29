@@ -22,8 +22,8 @@
 package org.gitools.cli.convert;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.model.IModuleMap;
-import org.gitools.core.utils.MatrixUtils;
+import org.gitools.analysis._DEPRECATED.model.IModuleMap;
+import org.gitools.analysis._DEPRECATED.utils.MatrixUtils;
 
 
 public class ModulesToMatrixConversion implements ConversionDelegate {

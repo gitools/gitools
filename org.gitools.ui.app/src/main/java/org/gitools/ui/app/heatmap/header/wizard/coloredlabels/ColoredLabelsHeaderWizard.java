@@ -22,9 +22,9 @@
 package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.app.wizard.common.PatternSourcePage;

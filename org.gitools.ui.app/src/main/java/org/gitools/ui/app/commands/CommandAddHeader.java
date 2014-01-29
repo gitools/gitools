@@ -22,8 +22,8 @@
 package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;

@@ -25,7 +25,7 @@ import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.api.matrix.SortDirection;
-import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.aggregation.AggregatorFactory;
 

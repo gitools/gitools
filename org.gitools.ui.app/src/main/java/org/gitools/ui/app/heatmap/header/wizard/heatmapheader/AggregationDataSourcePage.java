@@ -22,7 +22,7 @@
 package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.api.analysis.IAggregator;
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 

@@ -22,10 +22,10 @@
 package org.gitools.ui.app.actions.data;
 
 import com.google.common.base.Predicate;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;

@@ -24,7 +24,7 @@ package org.gitools.ui.app.actions.file;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.commands.AbstractCommand;

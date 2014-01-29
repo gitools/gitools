@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.popupmenus.dynamicactions;
 
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 
 public interface IHeatmapDimensionAction extends IDynamicAction<HeatmapDimension> {
 }

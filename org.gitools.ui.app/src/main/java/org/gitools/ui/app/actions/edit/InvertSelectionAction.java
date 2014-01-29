@@ -24,7 +24,7 @@ package org.gitools.ui.app.actions.edit;
 import static com.google.common.base.Predicates.in;
 import static com.google.common.base.Predicates.not;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;

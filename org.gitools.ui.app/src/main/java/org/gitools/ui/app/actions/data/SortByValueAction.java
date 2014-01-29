@@ -27,7 +27,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.core.matrix.sort.MatrixViewSorter;
+import org.gitools.analysis._DEPRECATED.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;

@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
 

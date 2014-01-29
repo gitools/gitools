@@ -22,7 +22,7 @@
 package org.gitools.ui.app.wizard.add.data;
 
 import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;

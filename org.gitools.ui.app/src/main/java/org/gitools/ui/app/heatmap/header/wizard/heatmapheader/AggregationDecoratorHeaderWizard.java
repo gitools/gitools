@@ -31,11 +31,11 @@ import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.HeatmapLayers;
-import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.core.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayers;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.analysis._DEPRECATED.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.progressmonitor.ProgressMonitor;

@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
-import org.gitools.core.model.decorator.impl.ZScoreDecorator;
+import org.gitools.analysis._DEPRECATED.model.decorator.impl.ZScoreDecorator;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;

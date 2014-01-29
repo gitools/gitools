@@ -25,7 +25,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.matrix.SortDirection;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;

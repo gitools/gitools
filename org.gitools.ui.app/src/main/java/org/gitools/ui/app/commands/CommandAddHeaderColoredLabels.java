@@ -23,8 +23,8 @@ package org.gitools.ui.app.commands;
 
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.platform.Application;
 
 import java.awt.*;

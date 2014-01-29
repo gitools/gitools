@@ -22,7 +22,7 @@
 package org.gitools.ui.app.actions;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 
 public abstract class HeatmapDimensionAction extends HeatmapAction {
 

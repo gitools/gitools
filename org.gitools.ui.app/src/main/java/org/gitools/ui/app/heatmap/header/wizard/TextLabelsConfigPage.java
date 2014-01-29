@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard;
 
-import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.utils.FontUtils;

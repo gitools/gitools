@@ -21,15 +21,15 @@
  */
 package org.gitools.cli.htest;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.analysis.htest.oncozet.OncodriveCommand;
+import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncodrive.OncodriveCommand;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.core.model.IModuleMap;
-import org.gitools.core.model.ToolConfig;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.analysis._DEPRECATED.model.IModuleMap;
+import org.gitools.analysis._DEPRECATED.model.ToolConfig;
+import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.threads.ThreadManager;

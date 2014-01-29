@@ -22,7 +22,7 @@
 package org.gitools.ui.app.fileimport;
 
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.persistence.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
 import org.gitools.ui.app.fileimport.wizard.excel.ExcelImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 

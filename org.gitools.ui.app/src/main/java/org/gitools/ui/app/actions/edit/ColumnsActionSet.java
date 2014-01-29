@@ -22,8 +22,8 @@
 package org.gitools.ui.app.actions.edit;
 
 import static com.google.common.collect.Lists.reverse;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.HeatmapDynamicActionSet;

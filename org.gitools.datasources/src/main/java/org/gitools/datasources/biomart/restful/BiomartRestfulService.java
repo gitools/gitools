@@ -28,7 +28,7 @@ import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.queryhandler.TsvFileQueryHandler;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.datasources.biomart.settings.BiomartSource;
-import org.gitools.persistence.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
 import org.gitools.utils.benchmark.TimeCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

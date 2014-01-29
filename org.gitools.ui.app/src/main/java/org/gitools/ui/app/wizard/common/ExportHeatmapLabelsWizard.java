@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.wizard.common;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.persistence.formats.FileFormat;
-import org.gitools.persistence.formats.FileFormats;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormats;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.app.settings.Settings;

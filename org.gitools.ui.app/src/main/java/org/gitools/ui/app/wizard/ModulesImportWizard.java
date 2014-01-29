@@ -22,8 +22,8 @@
 package org.gitools.ui.app.wizard;
 
 import org.gitools.datasources.modules.importer.ModulesImporter;
-import org.gitools.persistence.formats.FileFormat;
-import org.gitools.persistence.formats.FileFormats;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormats;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;

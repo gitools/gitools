@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.analysis.htest.editor;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 
 public class OncodriveAnalysisEditor extends AbstractHtestAnalysisEditor<OncodriveAnalysis> {
 

@@ -24,7 +24,7 @@ package org.gitools.ui.app.heatmap.panel;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 
 import java.awt.event.KeyEvent;

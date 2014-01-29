@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.drawer;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapLayer;
-import org.gitools.core.model.decorator.Decoration;
-import org.gitools.core.model.decorator.Decorator;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
+import org.gitools.analysis._DEPRECATED.model.decorator.Decoration;
+import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
 
 import java.awt.*;
 

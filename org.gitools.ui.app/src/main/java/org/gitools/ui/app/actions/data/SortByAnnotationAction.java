@@ -23,8 +23,8 @@ package org.gitools.ui.app.actions.data;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.matrix.sort.MatrixViewSorter;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.matrix.sort.MatrixViewSorter;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;

@@ -31,7 +31,7 @@ import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
 import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.core.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;

@@ -22,10 +22,10 @@
 package org.gitools.ui.app.analysis.wizard;
 
 import org.gitools.api.PersistenceException;
-import org.gitools.persistence.formats.FileFormat;
-import org.gitools.persistence.formats.FileFormats;
-import org.gitools.persistence.formats.matrix.CmatrixMatrixFormat;
-import org.gitools.persistence.formats.matrix.TdmMatrixFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormats;
+import org.gitools.analysis._DEPRECATED.formats.matrix.CmatrixMatrixFormat;
+import org.gitools.analysis._DEPRECATED.formats.matrix.TdmMatrixFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;

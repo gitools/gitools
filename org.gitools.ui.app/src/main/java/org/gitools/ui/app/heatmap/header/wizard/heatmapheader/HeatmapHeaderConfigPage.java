@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.core.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 public class HeatmapHeaderConfigPage extends AbstractWizardPage {

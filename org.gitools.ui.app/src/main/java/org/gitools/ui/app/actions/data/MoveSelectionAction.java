@@ -29,7 +29,7 @@ import static org.gitools.api.matrix.view.Direction.DOWN;
 import static org.gitools.api.matrix.view.Direction.LEFT;
 import static org.gitools.api.matrix.view.Direction.RIGHT;
 import static org.gitools.api.matrix.view.Direction.UP;
-import org.gitools.core.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
 import org.gitools.ui.app.DimensionIcons;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;

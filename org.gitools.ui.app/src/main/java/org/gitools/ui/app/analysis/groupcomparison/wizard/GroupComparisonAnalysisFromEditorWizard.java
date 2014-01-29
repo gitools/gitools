@@ -23,10 +23,10 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.header.HeatmapHeader;
-import org.gitools.core.model.Property;
-import org.gitools.core.model.ToolConfig;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.analysis._DEPRECATED.model.Property;
+import org.gitools.analysis._DEPRECATED.model.ToolConfig;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;

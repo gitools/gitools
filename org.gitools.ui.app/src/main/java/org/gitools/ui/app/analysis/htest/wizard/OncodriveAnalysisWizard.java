@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.app.analysis.htest.wizard;
 
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.core.ApplicationContext;
-import org.gitools.persistence.formats.FileFormat;
-import org.gitools.persistence.formats.analysis.OncodriveAnalysisFormat;
+import org.gitools.api.ApplicationContext;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilePage;

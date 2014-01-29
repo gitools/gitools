@@ -24,7 +24,7 @@ package org.gitools.ui.app.analysis.htest.wizard;
 import org.gitools.analysis.stats.test.factory.BinomialTestFactory;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.factory.ZscoreTestFactory;
-import org.gitools.core.model.ToolConfig;
+import org.gitools.analysis._DEPRECATED.model.ToolConfig;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

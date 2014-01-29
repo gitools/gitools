@@ -25,6 +25,9 @@ import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 
 public interface IResourceFormat<R extends IResource> {
+
+    boolean isContainer();
+
     String getExtension();
 
     Class<R> getResourceClass();

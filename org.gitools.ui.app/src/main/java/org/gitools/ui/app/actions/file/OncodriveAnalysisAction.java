@@ -22,8 +22,8 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.analysis.htest.oncozet.OncodriveAnalysis;
-import org.gitools.analysis.htest.oncozet.OncodriveCommand;
+import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
+import org.gitools.analysis.htest.oncodrive.OncodriveCommand;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;

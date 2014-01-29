@@ -22,9 +22,9 @@
 package org.gitools.ui.app.heatmap.drawer;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.model.decorator.Decoration;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.model.decorator.Decoration;
 import org.gitools.utils.color.Colors;
 
 import java.awt.*;

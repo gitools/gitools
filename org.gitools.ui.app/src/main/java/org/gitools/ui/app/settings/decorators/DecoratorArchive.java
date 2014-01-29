@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.settings.decorators;
 
-import org.gitools.core.model.decorator.Decorator;
-import org.gitools.core.model.decorator.DecoratorDescriptor;
-import org.gitools.core.model.decorator.DecoratorFactory;
+import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
+import org.gitools.analysis._DEPRECATED.model.decorator.DecoratorDescriptor;
+import org.gitools.analysis._DEPRECATED.model.decorator.DecoratorFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

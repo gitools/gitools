@@ -23,9 +23,9 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.persistence.formats.FileFormat;
-import org.gitools.persistence.formats.FileFormats;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormats;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.platform.Application;

@@ -30,7 +30,7 @@ import org.gitools.datasources.biomart.restful.model.DatasetInfo;
 import org.gitools.datasources.biomart.restful.model.Filter;
 import org.gitools.datasources.biomart.restful.model.MartLocation;
 import org.gitools.datasources.biomart.restful.model.Query;
-import org.gitools.persistence.formats.FileFormat;
+import org.gitools.analysis._DEPRECATED.formats.FileFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;

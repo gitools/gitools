@@ -23,11 +23,11 @@ package org.gitools.ui.app.actions.edit;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.header.ColoredLabel;
-import org.gitools.core.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.core.heatmap.header.HeatmapHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;

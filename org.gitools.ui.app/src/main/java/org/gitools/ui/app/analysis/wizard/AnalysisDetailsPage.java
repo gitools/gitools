@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.analysis.wizard;
 
-import org.gitools.core.model.Property;
+import org.gitools.analysis._DEPRECATED.model.Property;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

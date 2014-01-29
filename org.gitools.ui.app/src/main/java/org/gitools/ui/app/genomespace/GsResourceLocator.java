@@ -62,6 +62,11 @@ public class GsResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public boolean isContainer() {
+        return false;
+    }
+
+    @Override
     public long getContentLength() {
 
         if (!getURL().getProtocol().equals("file")) {

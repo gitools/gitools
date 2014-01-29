@@ -30,12 +30,13 @@
 
     <modules>
         <module>org.gitools.utils</module>
-        <module>org.gitools.core</module>
         <module>org.gitools.datasources</module>
         <module>org.gitools.cli</module>
         <module>org.gitools.ui.platform</module>
         <module>org.gitools.ui.app</module>
         <module>org.gitools.api</module>
+        <module>org.gitools.analysis</module>
+        <module>org.gitools.persistence</module>
     </modules>
 
     <properties>
@@ -95,12 +96,6 @@
 
             <dependency>
                 <groupId>org.gitools</groupId>
-                <artifactId>org.gitools.core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
                 <artifactId>org.gitools.datasources</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -110,6 +105,7 @@
                 <artifactId>org.gitools.ui.platform</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>colt</groupId>

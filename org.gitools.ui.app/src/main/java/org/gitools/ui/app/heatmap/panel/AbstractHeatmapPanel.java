@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.heatmap.HeatmapLayers;
-import org.gitools.core.model.decorator.Decorator;
+import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayers;
+import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderDrawer;
 import static org.gitools.utils.events.EventUtils.isAny;

@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.popupmenus.dynamicactions;
 
-import org.gitools.core.heatmap.HeatmapLayer;
+import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
 
 public interface IHeatmapLayerAction extends IDynamicAction<HeatmapLayer> {
 }

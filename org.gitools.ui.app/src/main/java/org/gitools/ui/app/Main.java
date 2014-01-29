@@ -22,7 +22,7 @@
 package org.gitools.ui.app;
 
 import com.alee.managers.language.LanguageManager;
-import org.gitools.core.ApplicationContext;
+import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.batch.CommandExecutor;
@@ -34,6 +34,7 @@ import org.gitools.ui.platform.LaFManager;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.os.SystemInfo;
 import org.gitools.ui.app.settings.Settings;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
 
@@ -49,6 +50,7 @@ public class Main {
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
+        ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         // Check arguments syntax
         CommandExecutor cmdExecutor = new CommandExecutor();

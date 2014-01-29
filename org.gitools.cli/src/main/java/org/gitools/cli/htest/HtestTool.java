@@ -24,7 +24,7 @@ package org.gitools.cli.htest;
 import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.core.model.ToolConfig;
+import org.gitools.analysis._DEPRECATED.model.ToolConfig;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.tools.ToolDescriptor;
 import org.gitools.utils.tools.exception.ToolException;

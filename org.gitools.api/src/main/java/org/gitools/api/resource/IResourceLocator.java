@@ -42,6 +42,8 @@ public interface IResourceLocator {
 
     String getName();
 
+    boolean isContainer();
+
     /**
      * Returns, if known, the length in bytes of the content.
      *
