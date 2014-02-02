@@ -21,7 +21,7 @@
  */
 package org.gitools.cli.convert;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.Strings;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResource;
@@ -30,10 +30,10 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.cli.GitoolsArguments;
 import org.gitools.cli.Main;
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
-import org.gitools.analysis._DEPRECATED.formats.FileFormats;
-import org.gitools.analysis._DEPRECATED.formats.matrix.CmatrixMatrixFormat;
-import org.gitools.analysis._DEPRECATED.formats.matrix.TdmMatrixFormat;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.matrix.FileFormats;
+import org.gitools.matrix.format.CmatrixMatrixFormat;
+import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.gitools.utils.tools.ToolDescriptor;
@@ -228,7 +228,7 @@ public class ConvertTool extends AbstractTool {
     private static final String LIST_L_FMT = "\t* %-48s%s";
 
     String mimeFromFormat(String format, String fileName) {
-        if (StringUtils.isEmpty(format)) {
+        if (Strings.isNullOrEmpty(format)) {
             format = fileName;
         }
 

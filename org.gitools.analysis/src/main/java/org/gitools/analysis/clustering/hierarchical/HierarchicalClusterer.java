@@ -27,7 +27,7 @@ import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;

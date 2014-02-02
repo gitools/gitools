@@ -21,8 +21,8 @@
  */
 package org.gitools.analysis.correlation.format;
 
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
-import org.gitools.analysis._DEPRECATED.formats.analysis.AbstractXmlFormat;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.resource.AbstractXmlFormat;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;

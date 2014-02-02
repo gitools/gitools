@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;

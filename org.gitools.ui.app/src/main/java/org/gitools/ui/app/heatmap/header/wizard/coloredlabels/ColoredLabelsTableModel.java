@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.ColoredLabel;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;

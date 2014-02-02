@@ -22,13 +22,13 @@
 package org.gitools.ui.app.heatmap.panel.details;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
-import org.gitools.analysis._DEPRECATED.model.decorator.Decoration;
-import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
-import org.gitools.analysis._DEPRECATED.model.decorator.DetailsDecoration;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.decorator.Decoration;
+import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
 import org.gitools.ui.app.heatmap.panel.details.boxes.DetailsBox;

@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;

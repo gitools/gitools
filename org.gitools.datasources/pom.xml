@@ -12,9 +12,12 @@
     <artifactId>org.gitools.datasources</artifactId>
 
     <dependencies>
+
+        <!-- Module dependencies -->
         <dependency>
             <groupId>org.gitools</groupId>
             <artifactId>org.gitools.utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -29,6 +32,7 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- External dependencies -->
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>

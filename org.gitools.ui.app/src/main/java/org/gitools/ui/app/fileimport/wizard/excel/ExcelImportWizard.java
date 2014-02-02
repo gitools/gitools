@@ -23,7 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.excel;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.platform.Application;

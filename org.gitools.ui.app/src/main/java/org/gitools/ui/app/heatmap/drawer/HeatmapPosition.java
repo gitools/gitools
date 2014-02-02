@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.drawer;
 
-import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.matrix.model.MatrixPosition;
-import org.gitools.analysis._DEPRECATED.model.decorator.Decoration;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.MatrixPosition;
+import org.gitools.heatmap.decorator.Decoration;
 
 public class HeatmapPosition extends MatrixPosition implements IMatrixPosition {
 

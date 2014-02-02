@@ -29,7 +29,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.analysis._DEPRECATED.model.Property;
+import org.gitools.resource.Property;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;

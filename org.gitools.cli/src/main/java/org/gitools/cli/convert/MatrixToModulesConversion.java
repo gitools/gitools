@@ -27,7 +27,7 @@ import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-import org.gitools.analysis._DEPRECATED.model.HashModuleMap;
+import org.gitools.matrix.modulemap.HashModuleMap;
 
 public class MatrixToModulesConversion implements ConversionDelegate {
 

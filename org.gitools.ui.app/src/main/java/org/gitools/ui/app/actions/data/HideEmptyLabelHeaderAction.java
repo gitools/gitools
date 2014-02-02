@@ -23,7 +23,7 @@ package org.gitools.ui.app.actions.data;
 
 import com.google.common.base.Predicate;
 import static com.google.common.base.Strings.isNullOrEmpty;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;

@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.stats.mtc;
 
-import org.gitools.api.matrix.position.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixFunction;
 
 import java.util.HashMap;
 import java.util.Map;

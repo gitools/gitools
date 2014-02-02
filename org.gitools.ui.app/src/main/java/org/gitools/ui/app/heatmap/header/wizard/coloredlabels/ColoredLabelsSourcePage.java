@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.api.matrix.IAnnotations;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 

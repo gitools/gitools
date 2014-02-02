@@ -26,7 +26,7 @@ import org.gitools.analysis.stats.calc.MedianStatistic;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.ZscoreWithSamplingTest;
-import org.gitools.analysis._DEPRECATED.model.ToolConfig;
+import org.gitools.analysis.ToolConfig;
 
 import java.util.Map;
 

@@ -21,7 +21,6 @@
  */
 package org.gitools.api.matrix;
 
-import org.gitools.api.matrix.position.IMatrixPosition;
 import org.gitools.api.resource.IResource;
 
 public interface IMatrix extends IResource {

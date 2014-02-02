@@ -21,9 +21,9 @@
  */
 package org.gitools.cli;
 
-import org.gitools.analysis._DEPRECATED.formats.matrix.BdmMatrixFormat;
-import org.gitools.analysis._DEPRECATED.formats.matrix.CdmMatrixFormat;
-import org.gitools.analysis._DEPRECATED.formats.modulemap.TcmModuleMapFormat;
+import org.gitools.matrix.format.BdmMatrixFormat;
+import org.gitools.matrix.format.CdmMatrixFormat;
+import org.gitools.matrix.modulemap.format.TcmModuleMapFormat;
 import org.gitools.utils.tools.exception.ToolException;
 
 import java.util.ArrayList;

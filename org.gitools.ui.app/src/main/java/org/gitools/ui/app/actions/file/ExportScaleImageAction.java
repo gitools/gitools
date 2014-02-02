@@ -23,10 +23,10 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
-import org.gitools.analysis._DEPRECATED.formats.FileFormats;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;

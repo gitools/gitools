@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.analysis._DEPRECATED.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.color.ColorRegistry;
 

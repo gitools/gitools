@@ -23,7 +23,7 @@ package org.gitools.analysis.clustering.method.annotations;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringDataInstance;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.utils.textpatt.TextPattern;
 import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
 

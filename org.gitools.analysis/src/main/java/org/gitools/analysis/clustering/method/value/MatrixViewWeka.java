@@ -22,7 +22,7 @@
 package org.gitools.analysis.clustering.method.value;
 
 import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis._DEPRECATED.utils.MatrixUtils;
+import org.gitools.matrix.MatrixUtils;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;

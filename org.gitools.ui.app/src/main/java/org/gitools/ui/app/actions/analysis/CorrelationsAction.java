@@ -29,7 +29,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.ui.app.actions.HeatmapAction;

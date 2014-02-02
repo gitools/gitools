@@ -26,7 +26,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.ApplicationContext;
-import org.gitools.analysis._DEPRECATED.formats.matrix.TdmMatrixFormat;
+import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.utils.csv.RawCsvWriter;

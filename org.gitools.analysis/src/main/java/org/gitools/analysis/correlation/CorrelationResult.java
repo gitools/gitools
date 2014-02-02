@@ -22,7 +22,7 @@
 package org.gitools.analysis.correlation;
 
 
-import org.gitools.analysis._DEPRECATED.matrix.model.matrix.element.LayerDef;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 
 public class CorrelationResult {
 

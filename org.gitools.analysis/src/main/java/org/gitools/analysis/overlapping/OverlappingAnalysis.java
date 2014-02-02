@@ -22,7 +22,7 @@
 package org.gitools.analysis.overlapping;
 
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.analysis._DEPRECATED.model.Analysis;
+import org.gitools.analysis.Analysis;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;

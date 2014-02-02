@@ -22,8 +22,8 @@
 package org.gitools.analysis.combination;
 
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.analysis._DEPRECATED.model.Analysis;
-import org.gitools.analysis._DEPRECATED.model.IModuleMap;
+import org.gitools.analysis.Analysis;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;

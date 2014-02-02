@@ -27,7 +27,7 @@ import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.analysis._DEPRECATED.model.IModuleMap;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 

@@ -22,8 +22,8 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;

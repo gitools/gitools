@@ -23,11 +23,11 @@ package org.gitools.ui.app.heatmap.header.wizard.textlabels;
 
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.ApplicationContext;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.analysis._DEPRECATED.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis._DEPRECATED.formats.annotations.TsvAnnotationMatrixFormat;
+import org.gitools.matrix.format.TsvAnnotationMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.settings.Settings;

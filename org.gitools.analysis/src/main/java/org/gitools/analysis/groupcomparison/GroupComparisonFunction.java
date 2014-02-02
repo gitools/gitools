@@ -25,9 +25,9 @@ import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.api.matrix.position.IMatrixPredicate;
-import org.gitools.analysis._DEPRECATED.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPredicate;
+import org.gitools.matrix.model.AbstractMatrixFunction;
 
 public class GroupComparisonFunction extends AbstractMatrixFunction<GroupComparisonResult, String> {
 

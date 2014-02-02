@@ -27,7 +27,7 @@ import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.ui.app.actions.HeatmapAction;

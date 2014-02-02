@@ -33,7 +33,7 @@ import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
 import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
-import org.gitools.analysis._DEPRECATED.formats.matrix.TdmMatrixFormat;
+import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;

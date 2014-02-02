@@ -21,15 +21,14 @@
  */
 package org.gitools.cli;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.common.base.Strings;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.analysis._DEPRECATED.model.Analysis;
-import org.gitools.analysis._DEPRECATED.model.KeyValue;
-import org.gitools.analysis._DEPRECATED.model.Property;
+import org.gitools.analysis.Analysis;
+import org.gitools.resource.Property;
 import org.gitools.persistence.PersistenceManager;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
-import org.gitools.analysis._DEPRECATED.formats.FileFormats;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.matrix.FileFormats;
 import org.gitools.utils.tools.exception.ToolException;
 import org.gitools.utils.tools.exception.ToolValidationException;
 import org.gitools.utils.tools.impl.AbstractTool;
@@ -75,7 +74,7 @@ public class AnalysisTool extends AbstractTool {
 
     protected IResourceFormat getResourceFormat(String extension, String fileName, Class<? extends IResource> resourceClass) {
 
-        if (StringUtils.isEmpty(extension)) {
+        if (Strings.isNullOrEmpty(extension)) {
             // Use the fileName if the user has not specify any format
             extension = fileName;
         }

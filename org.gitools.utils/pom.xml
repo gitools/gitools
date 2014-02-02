@@ -14,11 +14,14 @@
 
     <dependencies>
 
+        <!-- Module dependencies -->
         <dependency>
             <groupId>org.gitools</groupId>
             <artifactId>org.gitools.api</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
+        <!-- External dependencies -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
@@ -27,50 +30,36 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>net.sf.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>2.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>14.0.1</version>
         </dependency>
 
         <dependency>
             <groupId>args4j</groupId>
             <artifactId>args4j</artifactId>
-            <version>2.0.10</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.8</version>
         </dependency>
 
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
         </dependency>
 
         <dependency>
             <groupId>com.jgoodies</groupId>
             <artifactId>binding</artifactId>
-            <version>2.0.6</version>
         </dependency>
 
     </dependencies>

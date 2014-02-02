@@ -25,8 +25,8 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.analysis._DEPRECATED.model.IModuleMap;
-import org.gitools.analysis._DEPRECATED.utils.MatrixUtils;
+import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.api.resource.ResourceReference;
 
 public class ConvertModuleMapToMatrixResourceReference extends ResourceReference<IMatrix> {

@@ -26,7 +26,7 @@ import org.gitools.analysis.clustering.ClusteringDataInstance;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.position.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPosition;
 
 public class MatrixClusteringData implements ClusteringData {
 

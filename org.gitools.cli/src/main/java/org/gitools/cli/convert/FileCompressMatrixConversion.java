@@ -23,9 +23,9 @@ package org.gitools.cli.convert;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.matrix.model.compressmatrix.AbstractCompressor;
-import org.gitools.analysis._DEPRECATED.matrix.model.compressmatrix.CompressRow;
-import org.gitools.analysis._DEPRECATED.matrix.model.compressmatrix.NotCompressRow;
+import org.gitools.matrix.model.compressmatrix.AbstractCompressor;
+import org.gitools.matrix.model.compressmatrix.CompressRow;
+import org.gitools.matrix.model.compressmatrix.NotCompressRow;
 import org.gitools.utils.MemoryUtils;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;

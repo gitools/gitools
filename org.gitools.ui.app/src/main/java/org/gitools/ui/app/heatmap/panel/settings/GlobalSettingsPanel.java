@@ -25,9 +25,9 @@ import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.value.AbstractValueModel;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.model.Resource;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.resource.Resource;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
 

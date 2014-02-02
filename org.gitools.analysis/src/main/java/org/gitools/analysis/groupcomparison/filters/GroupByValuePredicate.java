@@ -22,8 +22,8 @@
 package org.gitools.analysis.groupcomparison.filters;
 
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.api.matrix.position.IMatrixPredicate;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.utils.datafilters.BinaryCutoff;
 
 public class GroupByValuePredicate implements IMatrixPredicate<Double> {

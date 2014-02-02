@@ -28,7 +28,7 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Lists.newArrayList;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;

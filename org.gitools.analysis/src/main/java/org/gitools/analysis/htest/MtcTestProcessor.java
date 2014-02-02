@@ -29,7 +29,7 @@ import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.analysis._DEPRECATED.matrix.model.matrix.element.LayerAdapter;
+import org.gitools.matrix.model.matrix.element.LayerAdapter;
 
 public abstract class MtcTestProcessor implements AnalysisProcessor {
 

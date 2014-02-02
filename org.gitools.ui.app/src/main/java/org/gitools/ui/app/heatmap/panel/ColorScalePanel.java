@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayers;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
 

@@ -23,10 +23,10 @@ package org.gitools.ui.app.actions.data;
 
 import com.google.common.base.Predicate;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;

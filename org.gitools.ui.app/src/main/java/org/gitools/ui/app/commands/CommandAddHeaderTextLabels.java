@@ -22,7 +22,7 @@
 package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.platform.Application;
 
 public class CommandAddHeaderTextLabels extends CommandAddHeader {

@@ -27,9 +27,9 @@ import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
-import org.gitools.analysis._DEPRECATED.model.Analysis;
-import org.gitools.analysis._DEPRECATED.model.ToolConfig;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.analysis.Analysis;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.utils.datafilters.BinaryCutoff;
 

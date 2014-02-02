@@ -26,7 +26,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.ApplicationContext;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;

@@ -29,7 +29,7 @@ import org.gitools.datasources.biomart.restful.model.DatasetInfo;
 import org.gitools.datasources.biomart.restful.model.FilterPage;
 import org.gitools.datasources.biomart.restful.model.MartLocation;
 import org.gitools.datasources.biomart.restful.model.Query;
-import org.gitools.analysis._DEPRECATED.formats.FileFormat;
+import org.gitools.api.persistence.FileFormat;
 
 import java.io.File;
 import java.io.InputStream;

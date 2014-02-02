@@ -24,7 +24,7 @@ package org.gitools.analysis.stats.test.factory;
 import org.gitools.analysis.stats.test.BinomialTest;
 import org.gitools.analysis.stats.test.BinomialTest.AproximationMode;
 import org.gitools.analysis.stats.test.Test;
-import org.gitools.analysis._DEPRECATED.model.ToolConfig;
+import org.gitools.analysis.ToolConfig;
 
 public class BinomialTestFactory extends TestFactory {
 

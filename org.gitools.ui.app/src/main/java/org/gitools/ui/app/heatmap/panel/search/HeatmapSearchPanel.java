@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.panel.search;
 
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 
 import javax.swing.event.DocumentEvent;

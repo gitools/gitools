@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.settings.decorators;
 
-import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
+import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.app.utils.DocumentChangeListener;

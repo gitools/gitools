@@ -22,8 +22,8 @@
 package org.gitools.datasources.kegg.modules;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.model.HashModuleMap;
-import org.gitools.analysis._DEPRECATED.model.IModuleMap;
+import org.gitools.matrix.modulemap.HashModuleMap;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.BiomartServiceException;
 import org.gitools.datasources.biomart.BiomartServiceFactory;

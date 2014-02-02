@@ -22,10 +22,10 @@
 package org.gitools.analysis.stats.mtc;
 
 import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.position.IMatrixIterable;
-import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.analysis._DEPRECATED.matrix.filter.NotNullPredicate;
-import org.gitools.analysis._DEPRECATED.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.IMatrixIterable;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.matrix.filter.NotNullPredicate;
+import org.gitools.matrix.model.AbstractMatrixFunction;
 
 import java.util.HashMap;
 import java.util.Map;

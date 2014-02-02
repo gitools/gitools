@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.heatmap.drawer.header;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 
 import java.awt.*;

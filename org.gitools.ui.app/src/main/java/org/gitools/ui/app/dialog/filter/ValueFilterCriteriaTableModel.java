@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.dialog.filter;
 
-import org.gitools.analysis._DEPRECATED.matrix.filter.ValueFilterCriteria;
+import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import javax.swing.event.TableModelEvent;

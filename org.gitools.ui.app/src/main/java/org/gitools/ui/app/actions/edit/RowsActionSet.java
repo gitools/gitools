@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.HeatmapDynamicActionSet;
 

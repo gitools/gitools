@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.value.AbstractValueModel;
-import org.gitools.analysis._DEPRECATED.model.decorator.Decorator;
+import org.gitools.heatmap.decorator.Decorator;
 
 import javax.swing.*;
 

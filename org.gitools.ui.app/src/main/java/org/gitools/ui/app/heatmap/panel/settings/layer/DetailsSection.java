@@ -23,7 +23,7 @@ package org.gitools.ui.app.heatmap.panel.settings.layer;
 
 import com.jgoodies.binding.PresentationModel;
 import static com.jgoodies.binding.adapter.Bindings.bind;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;

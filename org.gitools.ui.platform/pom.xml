@@ -14,11 +14,14 @@
 
     <dependencies>
 
+        <!-- Module dependencies -->
         <dependency>
             <groupId>org.gitools</groupId>
             <artifactId>org.gitools.utils</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
+        <!-- External dependencies -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
@@ -43,7 +46,6 @@
             <groupId>com.apple</groupId>
             <artifactId>AppleJavaExtensions</artifactId>
         </dependency>
-
 
     </dependencies>
 </project>

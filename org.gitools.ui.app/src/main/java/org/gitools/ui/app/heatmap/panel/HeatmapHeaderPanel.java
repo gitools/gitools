@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderDrawer;
 
 public class HeatmapHeaderPanel extends AbstractHeatmapPanel {

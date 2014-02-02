@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.analysis.wizard;
 
-import org.gitools.analysis._DEPRECATED.model.Property;
+import org.gitools.resource.Property;
 
 class AttributeDialog extends javax.swing.JDialog {
     /**

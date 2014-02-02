@@ -24,7 +24,7 @@ package org.gitools.ui.app.heatmap.panel.settings;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.formatter.DetailsBoxFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;

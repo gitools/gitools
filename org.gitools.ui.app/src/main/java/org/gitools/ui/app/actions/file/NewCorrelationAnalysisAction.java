@@ -25,7 +25,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationCommand;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.heatmap.format.HeatmapFormat;
+import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisFromFileWizard;
 import org.gitools.ui.platform.Application;

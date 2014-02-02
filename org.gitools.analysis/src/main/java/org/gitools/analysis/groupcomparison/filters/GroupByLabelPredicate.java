@@ -23,8 +23,8 @@ package org.gitools.analysis.groupcomparison.filters;
 
 import org.gitools.analysis.groupcomparison.ColumnGroup;
 import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.position.IMatrixPosition;
-import org.gitools.api.matrix.position.IMatrixPredicate;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPredicate;
 
 import java.util.Set;
 

@@ -37,6 +37,9 @@
         <module>org.gitools.api</module>
         <module>org.gitools.analysis</module>
         <module>org.gitools.persistence</module>
+        <module>org.gitools.matrix</module>
+        <module>org.gitools.resource</module>
+        <module>org.gitools.heatmap</module>
     </modules>
 
     <properties>
@@ -83,29 +86,10 @@
             </dependency>
 
             <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>org.gitools.api</artifactId>
-                <version>${project.version}</version>
+                <groupId>javax.enterprise</groupId>
+                <artifactId>cdi-api</artifactId>
+                <version>1.1</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>org.gitools.utils</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>org.gitools.datasources</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.gitools</groupId>
-                <artifactId>org.gitools.ui.platform</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>colt</groupId>
@@ -130,6 +114,18 @@
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>3.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>3.2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>2.3</version>
             </dependency>
 
             <dependency>
@@ -221,6 +217,48 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jgoodies</groupId>
+                <artifactId>forms</artifactId>
+                <version>1.2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.intellij</groupId>
+                <artifactId>forms_rt</artifactId>
+                <version>7.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jgoodies</groupId>
+                <artifactId>binding</artifactId>
+                <version>2.0.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20090211</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.googlecode.vfsjfilechooser2</groupId>
+                <artifactId>vfsjfilechooser2</artifactId>
+                <version>0.2.5</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>0.1.49</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.swinglabs</groupId>
+                <artifactId>swingx</artifactId>
+                <version>1.6.1</version>
             </dependency>
 
         </dependencies>

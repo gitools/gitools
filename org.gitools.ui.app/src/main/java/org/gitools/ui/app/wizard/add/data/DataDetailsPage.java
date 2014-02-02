@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.wizard.add.data;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapLayer;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.utils.DocumentChangeListener;

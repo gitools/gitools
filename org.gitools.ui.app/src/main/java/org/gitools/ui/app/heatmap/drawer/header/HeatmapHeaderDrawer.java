@@ -22,12 +22,12 @@
 package org.gitools.ui.app.heatmap.drawer.header;
 
 import com.google.common.collect.Lists;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapHeader;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;

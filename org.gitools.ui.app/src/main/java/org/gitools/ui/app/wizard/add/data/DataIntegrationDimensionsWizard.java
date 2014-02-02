@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.wizard.add.data;
 
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 import java.util.ArrayList;

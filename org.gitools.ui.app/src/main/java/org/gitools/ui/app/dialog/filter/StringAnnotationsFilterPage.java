@@ -22,7 +22,7 @@
 package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

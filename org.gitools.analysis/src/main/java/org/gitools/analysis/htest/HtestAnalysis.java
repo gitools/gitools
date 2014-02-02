@@ -25,9 +25,9 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis._DEPRECATED.model.Analysis;
-import org.gitools.analysis._DEPRECATED.model.IModuleMap;
-import org.gitools.analysis._DEPRECATED.model.ToolConfig;
+import org.gitools.analysis.Analysis;
+import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 

@@ -27,13 +27,14 @@ import org.gitools.analysis.clustering.HierarchicalClusteringResults;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.analysis._DEPRECATED.heatmap.Heatmap;
-import org.gitools.analysis._DEPRECATED.heatmap.HeatmapDimension;
-import org.gitools.analysis._DEPRECATED.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.analysis._DEPRECATED.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.clustering.values.ClusteringValueWizard;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
+import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -136,7 +137,7 @@ public class ClusteringByValueAction extends HeatmapAction {
                             for (int l = 0; l < depth; l++) {
                                 hresults.setLevel(l);
                                 HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
-                                header.updateFromClusterResults(hresults);
+                                CommandAddHeaderColoredLabels.updateFromClusterResults(header, hresults);
                                 header.setTitle(annotationLabel + " level " + l);
                                 header.setSize(4);
                                 header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
@@ -144,7 +145,7 @@ public class ClusteringByValueAction extends HeatmapAction {
                             }
                         } else {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
-                            header.updateFromClusterResults(results);
+                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, results);
                             header.setTitle(annotationLabel);
                             header.setAnnotationPattern("${" + annotationLabel + "}");
                             hdim.addHeader(header);

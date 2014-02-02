@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.stats.test.results;
 
-import org.gitools.analysis._DEPRECATED.matrix.model.matrix.element.LayerDef;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 
 
 public class GroupComparisonResult extends CommonResult {

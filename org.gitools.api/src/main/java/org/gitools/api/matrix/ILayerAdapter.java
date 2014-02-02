@@ -21,8 +21,6 @@
  */
 package org.gitools.api.matrix;
 
-import org.gitools.api.matrix.position.IMatrixPosition;
-
 public interface ILayerAdapter<T> {
 
     Class<? extends T> getElementClass();
