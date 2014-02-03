@@ -53,11 +53,12 @@ public class DoubleTranslator implements ValueTranslator<Double> {
             }
         }
 
-        double value = Double.NaN;
+        double value;
         try {
             value = Double.parseDouble(str);
         } catch (NumberFormatException e) {
             log.error("Malformed number '" + str + "'");
+            return null;
         }
         return value;
     }

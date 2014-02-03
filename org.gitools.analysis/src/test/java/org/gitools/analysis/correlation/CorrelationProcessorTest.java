@@ -1,7 +1,29 @@
+/*
+ * #%L
+ * org.gitools.analysis
+ * %%
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.analysis.correlation;
 
 
 import static junit.framework.Assert.assertEquals;
+import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.AssertMatrix;
@@ -20,29 +42,22 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.io.IOException;
 
-@RunWith(WeldRunner.class)
-public class CorrelationProcessorTest {
+public class CorrelationProcessorTest extends AbstractProcessorTest<CorrelationAnalysis> {
 
-    private CorrelationAnalysis analysis;
-
-    @Before
-    public void setUp() throws Exception {
-
-        analysis = new ResourceReference<>(
-                new UrlResourceLocator(getClass().getResource("/correlation/analysis.correlations")),
-                CorrelationAnalysis.class
-        ).get();
-
+    public CorrelationProcessorTest() {
+        super(CorrelationAnalysis.class, "/correlation/analysis.correlations");
     }
 
     @Test
     public void testResourceFormat() {
-        assertEquals("analysis", analysis.getTitle());
-        assertEquals("pearson", analysis.getMethod());
+        assertEquals("analysis", getAnalysis().getTitle());
+        assertEquals("pearson", getAnalysis().getMethod());
     }
 
     @Test
     public void testAnalysisProcessor() throws IOException {
+
+        CorrelationAnalysis analysis = getAnalysis();
 
         // Keep the correct results
         IMatrix resultsOk = analysis.getResults().get();
@@ -56,23 +71,12 @@ public class CorrelationProcessorTest {
             e.printStackTrace();
         }
 
-        // Compare results
-        IMatrix results = analysis.getResults().get();
-
-        // Write the results to a temporal file
-        File tmpFile = File.createTempFile("correlation-test", ".tdm");
-        IResourceLocator tmpLocator = new UrlResourceLocator(tmpFile);
-        IResourceFormat<IMatrix> format = getPersistenceManager().getFormat("tdm", IMatrix.class);
-        getPersistenceManager().store(tmpLocator, results, format, getProgressMonitor());
-
-        // Load the results from the temporal file
-        results = new ResourceReference<>(tmpLocator, format).get();
+        // Test the store and load
+        IMatrix results = storeAndLoadMatrix(analysis.getResults().get());
 
         // Compare the matrix
         AssertMatrix.assertEquals(resultsOk, results);
 
-        // Remove temporal file
-        //tmpFile.delete();
     }
 
 }

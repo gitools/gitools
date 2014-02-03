@@ -1,3 +1,24 @@
+/*
+ * #%L
+ * org.gitools.analysis
+ * %%
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 package org.gitools.analysis;
 
 import junit.framework.Assert;
@@ -45,7 +66,7 @@ public class AssertMatrix {
     }
 
     static public void assertEquals(IMatrixDimension d1, IMatrixDimension d2) {
-        Assert.assertEquals(d1.size(), d2.size());
+        Assert.assertEquals("Dimension '"+d1.getId()+"' size", d1.size(), d2.size());
 
         for (String id : d1) {
             Assert.assertTrue(d2.contains(id));
@@ -53,7 +74,6 @@ public class AssertMatrix {
     }
 
     static public void assertEquals(IMatrixLayer l1, IMatrixLayer l2) {
-
         Assert.assertEquals(l1.getId(), l2.getId());
         Assert.assertEquals(l1.getName(), l2.getName());
         Assert.assertEquals(l1.getDescription(), l2.getDescription());
@@ -61,6 +81,5 @@ public class AssertMatrix {
         Assert.assertEquals(l1.getTranslator(), l2.getTranslator());
         Assert.assertEquals(l1.getSortDirection(), l2.getSortDirection());
         Assert.assertEquals(l1.getAggregator(), l2.getAggregator());
-
     }
 }
