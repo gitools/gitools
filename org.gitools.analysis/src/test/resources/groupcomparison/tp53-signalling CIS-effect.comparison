@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupComparisonAnalysis>
+    <title>tp53-signalling CIS-effect</title>
+    <description>GBM: CNA effect in expression in TP53 signalling pathway. This test assesses the effecto of copy umber alteration on the expression status of the gene. Read under the following link on how to perform the test: http://help.gitools.org/xwiki/bin/view/Tutorials/Tutorial63</description>
+    <attributes>
+        <attribute>
+            <name>Group 1</name>
+            <value>expr median-centered absolute equal to 2.0</value>
+        </attribute>
+        <attribute>
+            <name>Group 2</name>
+            <value>expr median-centered equal to 0.0</value>
+        </attribute>
+        <attribute>
+            <name>author</name>
+            <value>Michael P Schroeder</value>
+        </attribute>
+    </attributes>
+    <startTime>2013-04-03T13:28:55.505+03:00</startTime>
+    <elapsedTime>46</elapsedTime>
+    <transposeData>false</transposeData>
+    <attributeIndex>0</attributeIndex>
+    <columnGrouping>Group by value</columnGrouping>
+    <dataFile></dataFile>
+    <testConfig>
+        <name>group comparison</name>
+        <configuration>
+            <property key="test-name" value="mannWhitneyWilcoxon"/>
+        </configuration>
+    </testConfig>
+    <mtc>bh</mtc>
+    <data mime="application/gitools-matrix-object" path="tp53-signalling CIS-effect-data.tdm.gz"/>
+    <results mime="application/gitools-matrix-object" path="tp53-signalling CIS-effect-results.tdm.gz"/>
+</groupComparisonAnalysis>

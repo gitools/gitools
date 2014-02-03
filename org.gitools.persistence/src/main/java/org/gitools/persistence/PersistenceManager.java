@@ -63,6 +63,10 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
     public PersistenceManager() {
     }
 
+    public PersistenceManager(Instance<IResourceFilter> resourceFilters, Instance<IResourceFormat<?>> resourceFormats) {
+
+    }
+
     @PostConstruct
     public void init() {
 

@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import org.gitools.matrix.model.iterable.ValueSourceIterable;
 import org.gitools.api.matrix.ILayerAdapter;
 import org.gitools.api.matrix.IMatrix;
@@ -47,7 +49,12 @@ public class MatrixPosition implements IMatrixPosition {
 
         this.matrix = matrix;
         this.dimensions = matrix.getDimensionKeys();
+
         this.identifiers = new String[dimensions.length];
+        for (int i=0; i < dimensions.length; i++) {
+            this.identifiers[i] = matrix.getDimension(dimensions[i]).iterator().next();
+        }
+
         this.positions = new HashMap<>(dimensions.length);
 
         for (int i = 0; i < dimensions.length; i++) {
@@ -116,4 +123,8 @@ public class MatrixPosition implements IMatrixPosition {
         return new ValueSourceIterable<>(this, dimension.getId(), layer);
     }
 
+    @Override
+    public String toString() {
+        return " (" + Joiner.on(",").join(identifiers) + ")";
+    }
 }

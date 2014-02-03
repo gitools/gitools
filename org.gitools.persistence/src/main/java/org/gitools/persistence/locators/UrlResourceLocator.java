@@ -48,7 +48,20 @@ public class UrlResourceLocator implements IResourceLocator {
     private transient String baseName;
     private transient String name;
 
-    public UrlResourceLocator(File file) throws PersistenceException {
+    public UrlResourceLocator(URL url) {
+        try {
+            this.url = url;
+            if (this.url.getProtocol().equals("file")) {
+                this.file = new File(this.url.toURI());
+            } else {
+                this.file = null;
+            }
+        } catch (URISyntaxException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public UrlResourceLocator(File file) {
         this.file = file;
         try {
             this.url = file.toURI().toURL();
@@ -57,7 +70,7 @@ public class UrlResourceLocator implements IResourceLocator {
         }
     }
 
-    public UrlResourceLocator(String url) throws PersistenceException {
+    public UrlResourceLocator(String url) {
         try {
             if (ABSOLUTE_REMOTE_URL.matcher(url).matches()) {
                 this.file = null;

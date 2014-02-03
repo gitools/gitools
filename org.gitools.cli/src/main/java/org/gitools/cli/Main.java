@@ -22,6 +22,7 @@
 package org.gitools.cli;
 
 import org.gitools.api.ApplicationContext;
+import org.gitools.api.persistence.IPersistenceManager;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.tools.ToolManager;
@@ -46,7 +47,7 @@ public class Main {
 
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
-        ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
+        ApplicationContext.setPersistenceManager(container.instance().select(IPersistenceManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         final ToolSet toolSet = XmlToolSetResource.load(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("gitools-cli.xml")));
