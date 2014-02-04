@@ -47,12 +47,12 @@ import java.io.IOException;
 public class CombinationProcessorTest extends AbstractProcessorTest<CombinationAnalysis> {
 
     public CombinationProcessorTest() {
-        super(CombinationAnalysis.class, "/combination/analysis.combination");
+        super(CombinationAnalysis.class, "/combination/test.combination");
     }
 
     @Test
     public void testResourceFormat() {
-        assertEquals("Example for combination analysis", getAnalysis().getTitle());
+        assertEquals("combination-test", getAnalysis().getTitle());
     }
 
     @Test
@@ -65,16 +65,15 @@ public class CombinationProcessorTest extends AbstractProcessorTest<CombinationA
         analysis.setResults(null);
 
         //TODO Execute the analysis
-        /*
         try {
             AnalysisProcessor processor = new CombinationProcessor(analysis);
             processor.run(getProgressMonitor());
         } catch (AnalysisException e) {
             e.printStackTrace();
-        }*/
+        }
 
         // Test store and load
-        IMatrix results = storeAndLoadMatrix(resultsOk);
+        IMatrix results = storeAndLoadMatrix(analysis.getResults().get());
 
         // Compare the matrix
         AssertMatrix.assertEquals(resultsOk, results);
