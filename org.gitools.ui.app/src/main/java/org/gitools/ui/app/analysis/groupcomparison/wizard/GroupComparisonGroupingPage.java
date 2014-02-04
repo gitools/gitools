@@ -26,10 +26,7 @@ import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringResults;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupAnnotation;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupValue;
+import org.gitools.analysis.groupcomparison.DimensionGroups.*;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.analysis.stats.mtc.MTC;
@@ -144,7 +141,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
                     //TODO: create Dialog with removedItems
                 } else if (getSelectedGroupingType().equals(DimensionGroupEnum.Free)) {
-                    //TODO: create Dialog with paste labels
+                    createFreeGroup();
                 } else if (getSelectedGroupingType().equals(DimensionGroupEnum.Value)) {
                     createValueGroup();
                 }
@@ -153,7 +150,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         dimensionCb.setModel(new DefaultComboBoxModel(new String[]{"Columns", "Rows"}));
 
-        setComplete(true);
+        updateControls();
 
         mergeButton.addActionListener(new ActionListener() {
             @Override
@@ -186,6 +183,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         updateButtons();
     }
+
 
     private void updateButtons() {
         if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
@@ -241,6 +239,17 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         //Remove button
         removeButton.setEnabled(groupsTable.getSelectedRowCount() > 0);
 
+        updateControls();
+
+    }
+
+    @Override
+    public void updateControls() {
+        boolean isComplete = false;
+
+        isComplete = tableModel.getRowCount() > 1;
+
+        setComplete(isComplete);
     }
 
     private void performSplit() {
@@ -367,6 +376,28 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 new DimensionGroupValue(dlg.getGroupName(), new GroupByValuePredicate(criteria, null))
         );
     }
+
+    private void createFreeGroup() {
+        HeatmapDimension hdim = dimensionCb.getSelectedItem().equals("Columns") ?
+                heatmap.getColumns() : heatmap.getRows();
+        DimensionGroupSelectPage page = new DimensionGroupSelectPage(hdim, "Group " + String.valueOf(groupsTable.getRowCount() + 1));
+        PageDialog dlg = new PageDialog(Application.get(), page);
+        dlg.setVisible(true);
+
+        if (dlg.isCancelled()) {
+            return;
+        }
+
+        tableModel.addGroup(
+                new DimensionGroupFree(
+                        page.getGroupName(),
+                        new GroupByLabelPredicate(
+                                hdim,
+                                page.getGroup())
+                )
+        );
+    }
+
 
     private void removeSelected() {
         if (getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {

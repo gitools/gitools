@@ -22,40 +22,36 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import com.google.common.base.Predicate;
-import static com.google.common.base.Predicates.in;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Lists.newArrayList;
 import com.google.common.collect.Sets;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.filter.FilterByLabelPredicate;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.wizard.common.PatternSourcePage;
+import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Lists.newArrayList;
+
+@Deprecated
 public class GroupComparisonGroupingByLabelPage extends AbstractWizardPage {
 
     private final HeatmapDimension dimension;
