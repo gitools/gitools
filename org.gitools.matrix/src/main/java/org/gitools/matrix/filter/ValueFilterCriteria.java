@@ -21,26 +21,16 @@
  */
 package org.gitools.matrix.filter;
 
-import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 public class ValueFilterCriteria {
 
-    private IMatrixLayer layer;
-    private CutoffCmp comparator;
-    private double value;
-    private IAggregator aggregator;
+    protected IMatrixLayer layer;
+    protected CutoffCmp comparator;
+    protected double value;
 
     public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, double value) {
-        this.layer = layer;
-        this.comparator = comparator;
-        this.value = value;
-        this.aggregator = null;
-    }
-
-    public ValueFilterCriteria(IMatrixLayer layer, IAggregator aggregator, CutoffCmp comparator, double value) {
-        this.aggregator = aggregator;
         this.layer = layer;
         this.comparator = comparator;
         this.value = value;
@@ -50,16 +40,13 @@ public class ValueFilterCriteria {
         return layer;
     }
 
+    public void setLayer(IMatrixLayer layer) {
+        this.layer = layer;
+    }
+
+    @Deprecated
     public String getAttributeName() {
         return layer.getName();
-    }
-
-    public void setAttributeName(String attributeName) {
-        //this.attributeName = attributeName;
-    }
-
-    public void setAttributeIndex(int attributeIndex) {
-        //this.attributeIndex = attributeIndex;
     }
 
     public CutoffCmp getComparator() {

@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.app.wizard.add.data;
 
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.matrix.filter.DataIntegrationCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 
@@ -34,26 +36,28 @@ import java.util.Map;
 
 class DataIntegrationCriteriaTableModel implements TableModel {
 
-    private static final String[] columnName = new String[]{"Operator", "Attribute", "Condition", "Value"};
+    private static final String[] columnName = new String[]{"Operator", "Layer", "Condition", "Value"};
 
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class, Operator.class};
 
 
-    private final Map<String, Integer> attrIndexMap = new HashMap<>();
+    private final Map<String, Integer> layerIndexMap = new HashMap<>();
 
     private final List<DataIntegrationCriteria> criteriaList;
 
 
     private final List<TableModelListener> listeners = new ArrayList<>();
+    private final IMatrixLayers layers;
 
-    private DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, String[] attributeNames) {
+    private DataIntegrationCriteriaTableModel(List<DataIntegrationCriteria> criteriaList, IMatrixLayers layers) {
         this.criteriaList = criteriaList;
-        for (int i = 0; i < attributeNames.length; i++)
-            attrIndexMap.put(attributeNames[i], i);
+        this.layers = layers;
+        for (int i = 0; i < layers.size(); i++)
+            layerIndexMap.put(layers.getIds()[i], i);
     }
 
-    public DataIntegrationCriteriaTableModel(String[] attributeNames) {
-        this(new ArrayList<DataIntegrationCriteria>(), attributeNames);
+    public DataIntegrationCriteriaTableModel(IMatrixLayers layers) {
+        this(new ArrayList<DataIntegrationCriteria>(), layers);
     }
 
     @Override
@@ -92,7 +96,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
             case 2:
                 return criteriaList.get(rowIndex).getComparator();
             case 3:
-                return String.valueOf(criteriaList.get(rowIndex).getCutoffValue());
+                return String.valueOf(criteriaList.get(rowIndex).getValue());
 
         }
         return null;
@@ -109,10 +113,10 @@ class DataIntegrationCriteriaTableModel implements TableModel {
                 }
                 break;
             case 1:
-                String attrName = (String) aValue;
-                criteriaList.get(rowIndex).setAttributeName(attrName);
-                Integer index = attrIndexMap.get(attrName);
-                criteriaList.get(rowIndex).setAttributeIndex(index != null ? index : 0);
+                String layerId = (String) aValue;
+                criteriaList.get(rowIndex).setLayer(layers.get(layerId));
+                //Integer index = layerIndexMap.get(layerId);
+                //criteriaList.get(rowIndex).setAttributeIndex(index != null ? index : 0);
                 break;
 
             case 2:
@@ -120,7 +124,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
                 break;
 
             case 3:
-                criteriaList.get(rowIndex).setCutoffValue(Double.parseDouble((String) aValue));
+                criteriaList.get(rowIndex).setValue(Double.parseDouble((String) aValue));
                 break;
         }
     }

@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.dialog.filter;
 
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
@@ -34,7 +35,7 @@ import java.util.Map;
 
 class ValueFilterCriteriaTableModel implements TableModel {
 
-    private static final String[] columnName = new String[]{"Attribute", "Condition", "Value"};
+    private static final String[] columnName = new String[]{"Layer", "Condition", "Value"};
 
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class};
 
@@ -42,18 +43,18 @@ class ValueFilterCriteriaTableModel implements TableModel {
     private final Map<String, Integer> attrIndexMap = new HashMap<>();
 
     private final List<ValueFilterCriteria> criteriaList;
+    private final IMatrixLayers layers;
 
 
     private final List<TableModelListener> listeners = new ArrayList<>();
 
-    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, String[] attributeNames) {
+    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, IMatrixLayers layers) {
         this.criteriaList = criteriaList;
-        for (int i = 0; i < attributeNames.length; i++)
-            attrIndexMap.put(attributeNames[i], i);
+        this.layers = layers;
     }
 
-    public ValueFilterCriteriaTableModel(String[] attributeNames) {
-        this(new ArrayList<ValueFilterCriteria>(), attributeNames);
+    public ValueFilterCriteriaTableModel(IMatrixLayers layers) {
+        this(new ArrayList<ValueFilterCriteria>(), layers);
     }
 
     @Override
@@ -99,10 +100,8 @@ class ValueFilterCriteriaTableModel implements TableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                String attrName = (String) aValue;
-                criteriaList.get(rowIndex).setAttributeName(attrName);
-                Integer index = attrIndexMap.get(attrName);
-                criteriaList.get(rowIndex).setAttributeIndex(index != null ? index : 0);
+                String layerId = (String) aValue;
+                criteriaList.get(rowIndex).setLayer(layers.get(layerId));
                 break;
 
             case 1:

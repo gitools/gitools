@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.analysis.groupcomparison.wizard;
+package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 
@@ -71,7 +71,7 @@ class DimensionGroupTableModel extends AbstractTableModel {
     public void setGroups(DimensionGroup[] groups) {
         indexedGroupList = new ArrayList<>(groups.length);
         for (int i = 0; i < groups.length; i++) {
-            indexedGroupList.add(new IndexedGroup(groups[i], i+1));
+            indexedGroupList.add(new IndexedGroup(groups[i], i + 1));
         }
 
         fireTableDataChanged();

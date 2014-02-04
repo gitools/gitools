@@ -22,30 +22,23 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
-import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.analysis.htest.MtcTestProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.IMatrixPredicate;
+import org.gitools.api.matrix.*;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.PositionMapping;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.utils.datafilters.BinaryCutoff;
 
 import java.util.Arrays;
 import java.util.Date;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class GroupComparisonProcessor extends MtcTestProcessor {
 
@@ -81,8 +74,10 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         );
 
         // Prepare group predicates
-        IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, analysis.getGroups1(), analysis.getNoneConversion());
-        IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, analysis.getGroups2(), analysis.getNoneConversion());
+        //IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(0), analysis.getNoneConversion());
+        //IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(1), analysis.getNoneConversion());
+        IMatrixPredicate<Double> group1Predicate = null;
+        IMatrixPredicate<Double> group2Predicate = null;
 
         // Run comparison
         dataMatrix.newPosition()
@@ -123,11 +118,12 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         monitor.end();
     }
 
-    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, ColumnGroup group, double noneConversion) {
+/*
+    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, DimensionGroupValue group, double noneConversion) {
 
         // Group by label
         if (group.getColumns() != null && group.getColumns().size() > 0) {
-            return new GroupByLabelPredicate(dimension, group);
+            return new GroupByLabelPredicate(dimension, group.getColumns());
         }
 
         // Group by value
@@ -137,6 +133,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         return new GroupByValuePredicate(cutoffLayer, binaryCutoff, nullValue);
 
     }
+*/
 
 
 }

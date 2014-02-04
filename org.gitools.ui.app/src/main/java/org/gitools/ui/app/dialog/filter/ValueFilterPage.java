@@ -22,17 +22,14 @@
 package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+import javax.swing.event.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
@@ -82,7 +79,7 @@ public class ValueFilterPage extends AbstractWizardPage {
         }
     }
 
-    private final String[] attributeNames;
+    private final IMatrixLayers layers;
     private final CutoffCmp[] comparators;
 
     private final ValueFilterCriteriaTableModel criteriaModel;
@@ -91,16 +88,16 @@ public class ValueFilterPage extends AbstractWizardPage {
      * Creates new form FilterDialog
      */
     public ValueFilterPage(Frame parent,
-                           String[] attributeNames,
+                           IMatrixLayers layers,
                            CutoffCmp[] comparators,
                            List<ValueFilterCriteria> initialCriteriaList,
                            IMatrixLayer visibleLayer) {
 
-        this.attributeNames = attributeNames;
+        this.layers = layers;
         this.comparators = comparators;
         this.visibleLayer = visibleLayer;
 
-        this.criteriaModel = new ValueFilterCriteriaTableModel(attributeNames);
+        this.criteriaModel = new ValueFilterCriteriaTableModel(layers);
 
         initComponents();
 
@@ -137,7 +134,7 @@ public class ValueFilterPage extends AbstractWizardPage {
             }
         };
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(attributeNames));
+        columnModel.getColumn(0).setCellEditor(new ComboBoxCellEditor(layers.getIds()));
         columnModel.getColumn(0).getCellEditor().addCellEditorListener(cellEditorListener);
         columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(comparators));
         columnModel.getColumn(1).getCellEditor().addCellEditorListener(cellEditorListener);

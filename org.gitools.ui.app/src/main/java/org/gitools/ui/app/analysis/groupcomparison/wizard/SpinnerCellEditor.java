@@ -1,6 +1,6 @@
 /*
  * #%L
- * gitools-core
+ * gitools-ui-app
  * %%
  * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,36 +19,29 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.groupcomparison.DimensionGroups;
 
-import org.gitools.api.matrix.position.IMatrixPredicate;
+package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
-
-public abstract class DimensionGroup {
-
-    protected String name = "";
-    protected DimensionGroupEnum groupType;
-    protected IMatrixPredicate predicate;
+import javax.swing.*;
+import java.awt.*;
 
 
-    abstract public String getProperty();
+public class SpinnerCellEditor extends DefaultCellEditor {
+    private JSpinner spinner;
 
-    public IMatrixPredicate getPredicate() {
-        return predicate;
+    public SpinnerCellEditor(SpinnerNumberModel numberModel) {
+        super(new JTextField());
+        spinner = new JSpinner(numberModel);
+        spinner.setBorder(null);
     }
 
-    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType) {
-        this.name = name;
-        this.predicate = predicate;
-        this.groupType = groupType;
+    public Component getTableCellEditorComponent(
+            JTable table, Object value, boolean isSelected, int row, int column) {
+        spinner.setValue(value);
+        return spinner;
     }
 
-    public String getName() {
-        return name;
+    public Object getCellEditorValue() {
+        return spinner.getValue();
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }

@@ -37,6 +37,7 @@ import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FilterByValueAction extends HeatmapAction {
 
@@ -51,21 +52,17 @@ public class FilterByValueAction extends HeatmapAction {
 
         final IMatrixView matrixView = getHeatmap();
 
-        IMatrixLayers attributes = matrixView.getContents().getLayers();
+        IMatrixLayers layers = matrixView.getContents().getLayers();
 
 
-        String[] attrNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++) {
-            attrNames[i] = attributes.get(i).getName();
-        }
         IMatrixLayer selectedLayer = matrixView.getLayers().getTopLayer();
 
 
-        ArrayList<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
+        List<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
         initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
 
         final ValueFilterPage page = new ValueFilterPage(Application.get(),
-                attrNames,
+                layers,
                 CutoffCmp.comparators,
                 initialCriteria,
                 selectedLayer);

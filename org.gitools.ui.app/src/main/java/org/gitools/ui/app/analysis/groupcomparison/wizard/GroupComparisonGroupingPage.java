@@ -1,4 +1,25 @@
-package org.gitools.ui.analysis.groupcomparison.wizard;
+/*
+ * #%L
+ * org.gitools.ui.app
+ * %%
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringResults;
@@ -14,19 +35,18 @@ import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.core.heatmap.Heatmap;
-import org.gitools.core.heatmap.HeatmapDimension;
-import org.gitools.core.matrix.filter.DataIntegrationCriteria;
-import org.gitools.core.matrix.filter.PatternFunction;
-import org.gitools.ui.IconNames;
-import org.gitools.ui.heatmap.panel.settings.headers.SpinnerCellEditor;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.matrix.filter.DataIntegrationCriteria;
+import org.gitools.matrix.filter.PatternFunction;
+import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.wizard.add.data.DataIntegrationCriteriaDialog;
+import org.gitools.ui.app.wizard.common.PatternSourcePage;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.ui.wizard.add.data.DataIntegrationCriteriaDialog;
-import org.gitools.ui.wizard.common.PatternSourcePage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;

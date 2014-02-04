@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.core.matrix.filter;
+package org.gitools.matrix.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
