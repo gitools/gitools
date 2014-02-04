@@ -43,6 +43,11 @@ public class MatrixPredicates {
         return ObjectPredicate.IS_NULL.withNarrowedType();
     }
 
+    @SafeVarargs
+    public static <T> IMatrixPredicate<T> or(IMatrixPredicate<T>... predicates) {
+        return new OrPredicate<>(predicates);
+    }
+
     enum ObjectPredicate implements IMatrixPredicate<Object> {
         ALWAYS_TRUE {
             @Override
@@ -73,6 +78,27 @@ public class MatrixPredicates {
             // these Object predicates work for any T
         <T> IMatrixPredicate<T> withNarrowedType() {
             return (IMatrixPredicate<T>) this;
+        }
+    }
+
+    public static class OrPredicate<T> implements IMatrixPredicate<T> {
+
+        private IMatrixPredicate<T>[] innerPredicates;
+
+        public OrPredicate(IMatrixPredicate<T>[] innerPredicates) {
+            this.innerPredicates = innerPredicates;
+        }
+
+        @Override
+        public boolean apply(T value, IMatrixPosition position) {
+
+            for (IMatrixPredicate<T> predicate : innerPredicates) {
+                if (predicate.apply(value, position)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
