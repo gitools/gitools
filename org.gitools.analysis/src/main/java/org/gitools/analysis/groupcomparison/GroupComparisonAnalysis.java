@@ -33,15 +33,14 @@ import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.utils.datafilters.BinaryCutoff;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -52,7 +51,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private boolean transposeData;
 
-    private int attributeIndex;
+    private int layerIndex;
 
 
     private DimensionGroupEnum columnGrouping = null;
@@ -71,11 +70,6 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     @XmlTransient
     private IAnnotations columnAnnotations;
-
-    @XmlTransient
-    private DimensionGroup group1;
-    @XmlTransient
-    private DimensionGroup group2;
 
     @XmlTransient
     private DimensionGroupEnum columnGroupType;
@@ -111,22 +105,20 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public GroupComparisonAnalysis() {
         this.transposeData = false;
-
-        //groups.add(new DimensionGroupValue("Group 1"));
-        //groups.add(new DimensionGroupValue("Group 2"));
         this.noneConversion = Double.NaN;
+        this.groups = new ArrayList<>();
     }
 
     public String getSizeAttrName() {
         return sizeAttrName;
     }
 
-    public void setAttributeIndex(int attributeIndex) {
-        this.attributeIndex = attributeIndex;
+    public void setLayer(int attributeIndex) {
+        this.layerIndex = attributeIndex;
     }
 
-    public int getAttributeIndex() {
-        return attributeIndex;
+    public int getLayerIndex() {
+        return layerIndex;
     }
 
     public void setSizeAttrName(String sizeAttrName) {
@@ -163,17 +155,14 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         return groups.get(index);
     }
 
-    public void setGroup(Set<String> ids, int index) {
-        //TODO fix: groups.get(index).setColumns(ids);
-    }
-
-    public void setGroup(BinaryCutoff binaryCutoff, int cutoffAttrIndex, int index) {
-        //TODO: fix this.groups.get(index).setBinaryCutoff(binaryCutoff);
-        //TODO: fix this.groups.get(index).setCutoffAttributeIndex(cutoffAttrIndex);
-    }
-
     public void setGroup(DimensionGroup group, int index) {
         this.groups.set(index, group);
+    }
+
+    public void addGroups(List<DimensionGroup> groups) {
+        for (DimensionGroup g : groups) {
+            this.groups.add(g);
+        }
     }
 
     public ResourceReference<IMatrix> getData() {

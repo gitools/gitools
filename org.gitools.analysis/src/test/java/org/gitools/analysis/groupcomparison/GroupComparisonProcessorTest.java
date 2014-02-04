@@ -21,13 +21,14 @@
  */
 package org.gitools.analysis.groupcomparison;
 
-import static junit.framework.Assert.assertEquals;
 import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AssertMatrix;
 import org.gitools.api.matrix.IMatrix;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
 
 public class GroupComparisonProcessorTest extends AbstractProcessorTest<GroupComparisonAnalysis> {
 
@@ -63,7 +64,7 @@ public class GroupComparisonProcessorTest extends AbstractProcessorTest<GroupCom
     public void testResourceFormat() {
         assertEquals(getAnalysis().getTitle(), "tp53-signalling CIS-effect");
         assertEquals(getAnalysis().getDescription(), "GBM: CNA effect in expression in TP53 signalling pathway. This test assesses the effecto of copy umber alteration on the expression status of the gene. Read under the following link on how to perform the test: http://help.gitools.org/xwiki/bin/view/Tutorials/Tutorial63");
-        assertEquals(getAnalysis().getAttributeIndex(), 0);
+        assertEquals(getAnalysis().getLayerIndex(), 0);
         assertEquals(getAnalysis().getColumnGrouping(), "Group by value");
     }
 }

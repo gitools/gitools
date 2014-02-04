@@ -54,7 +54,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
         // Prepare input data matrix
         IMatrix dataMatrix = analysis.getData().get();
-        IMatrixLayer<Double> layer = dataMatrix.getLayers().get(analysis.getAttributeIndex());
+        IMatrixLayer<Double> layer = dataMatrix.getLayers().get(analysis.getLayerIndex());
 
         // Prepare dimensions to compare
         IMatrixDimension rows = (analysis.isTransposeData() ? dataMatrix.getDimension(COLUMNS) : dataMatrix.getDimension(ROWS));

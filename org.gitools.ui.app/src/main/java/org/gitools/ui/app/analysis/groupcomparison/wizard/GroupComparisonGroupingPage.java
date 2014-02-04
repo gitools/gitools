@@ -414,6 +414,10 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         tableModel.setGroups(groups);
     }
 
+    public List<DimensionGroup> getGroups() {
+        return (tableModel.getGroupList());
+    }
+
 
     private static class TestElement {
         public final Test test;
@@ -538,7 +542,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         //attributeLabel.setVisible(false);
     }
 
-    public int getAttributeIndex() {
+    public int getLayerIndex() {
         return layerCb.getSelectedIndex();
     }
 

@@ -134,7 +134,7 @@ class DimensionGroupTableModel extends AbstractTableModel {
         }
     }
 
-    public List<DimensionGroup> getList() {
+    public List<DimensionGroup> getGroupList() {
         List list = new ArrayList<DimensionGroup>();
 
         for (IndexedGroup g : indexedGroupList)

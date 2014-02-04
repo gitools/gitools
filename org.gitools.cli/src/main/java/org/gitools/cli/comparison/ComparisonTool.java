@@ -23,6 +23,7 @@ package org.gitools.cli.comparison;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonCommand;
+import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
@@ -32,7 +33,6 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.cli.AnalysisArguments;
 import org.gitools.cli.AnalysisTool;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.fileutils.IOUtils;
@@ -194,7 +194,7 @@ public class ComparisonTool extends AnalysisTool {
 
         IResourceFormat dataFormat = getResourceFormat(args.dataFormat, args.dataFile, IMatrix.class);
 
-        analysis.setAttributeIndex(args.attrIndex);
+        analysis.setLayer(args.attrIndex);
 
         String[] groupDescriptions = args.groupDescriptions.split(",");
 
