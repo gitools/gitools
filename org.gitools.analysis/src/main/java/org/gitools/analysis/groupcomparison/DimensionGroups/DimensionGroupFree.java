@@ -28,13 +28,6 @@ public class DimensionGroupFree extends DimensionGroup {
     String property = "";
 
     public DimensionGroupFree(String name, GroupByLabelPredicate predicate) {
-        super(name, predicate, DimensionGroupEnum.Free);
-        property = String.valueOf(predicate.getGroupIdentifiers().size()) + " items";
-    }
-
-
-    @Override
-    public String getProperty() {
-        return property;
+        super(name, predicate, DimensionGroupEnum.Free, String.valueOf(predicate.getGroupIdentifiers().size()) + " items");
     }
 }

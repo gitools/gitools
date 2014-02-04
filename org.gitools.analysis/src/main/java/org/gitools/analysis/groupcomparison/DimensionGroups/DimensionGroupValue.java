@@ -27,11 +27,6 @@ public class DimensionGroupValue extends DimensionGroup {
 
 
     public DimensionGroupValue(String name, GroupByValuePredicate predicate) {
-        super(name, predicate, DimensionGroupEnum.Value);
-    }
-
-    @Override
-    public String getProperty() {
-        return predicate.toString();
+        super(name, predicate, DimensionGroupEnum.Value, predicate.toString());
     }
 }

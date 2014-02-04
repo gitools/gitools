@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.gitools.ui.analysis.groupcomparison.wizard.GroupComparisonGroupsPage">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonGroupsPage">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="FormLayout">
     <rowspec value="top:59px:grow"/>
     <colspec value="fill:d:grow"/>

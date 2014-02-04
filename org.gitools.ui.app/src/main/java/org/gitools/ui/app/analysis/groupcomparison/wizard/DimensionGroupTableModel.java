@@ -148,6 +148,12 @@ class DimensionGroupTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void setGroup(final DimensionGroup group, int position) {
+        int groupIndex = indexedGroupList.get(position).getIndex();
+        indexedGroupList.set(position, new IndexedGroup(group, groupIndex));
+        fireTableDataChanged();
+    }
+
     @Override
     public void fireTableDataChanged() {
         reorder();

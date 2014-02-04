@@ -24,6 +24,8 @@ package org.gitools.matrix.filter;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
 
+import java.util.Arrays;
+
 
 public class MatrixPredicates {
 
@@ -45,6 +47,10 @@ public class MatrixPredicates {
 
     @SafeVarargs
     public static <T> IMatrixPredicate<T> or(IMatrixPredicate<T>... predicates) {
+        return new OrPredicate<>(predicates);
+    }
+
+    public static <T> IMatrixPredicate<T> or(Iterable<IMatrixPredicate<T>> predicates) {
         return new OrPredicate<>(predicates);
     }
 
@@ -83,9 +89,13 @@ public class MatrixPredicates {
 
     public static class OrPredicate<T> implements IMatrixPredicate<T> {
 
-        private IMatrixPredicate<T>[] innerPredicates;
+        private Iterable<IMatrixPredicate<T>> innerPredicates;
 
         public OrPredicate(IMatrixPredicate<T>[] innerPredicates) {
+            this.innerPredicates = Arrays.asList(innerPredicates);
+        }
+
+        public OrPredicate(Iterable<IMatrixPredicate<T>> innerPredicates) {
             this.innerPredicates = innerPredicates;
         }
 

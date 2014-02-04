@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringResults;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
@@ -35,9 +36,11 @@ import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.filter.DataIntegrationCriteria;
+import org.gitools.matrix.filter.MatrixPredicates;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.wizard.add.data.DataIntegrationCriteriaDialog;
@@ -266,14 +269,28 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
     private void performMerge() {
 
-        int groupNumber = -1;
-        for (int i : groupsTable.getSelectedRows()) {
-            if (groupNumber < 0) {
-                groupNumber = (int) groupsTable.getValueAt(i, 2);
-            } else {
-                groupsTable.setValueAt(groupNumber, i, 2);
+        int[] selection = groupsTable.getSelectedRows();
+        List<IMatrixPredicate> predicateList = new ArrayList<>();
+        StringBuilder groupName = new StringBuilder("");
+        StringBuilder groupProperty = new StringBuilder("");
+        for (int i : selection) {
+            DimensionGroup group = tableModel.getGroupAt(i);
+            if (!groupName.toString().equals("")) {
+                groupName.append(" + ");
+                groupProperty.append(" + ");
             }
+            groupName.append(group.getName());
+            groupProperty.append(group.getProperty());
+            predicateList.add(group.getPredicate());
         }
+
+        MatrixPredicates.OrPredicate newpredicate = new MatrixPredicates.OrPredicate(predicateList);
+        tableModel.setGroup(new DimensionGroup(groupName.toString(),
+                newpredicate,
+                DimensionGroupEnum.Annotation,
+                groupProperty.toString()),
+                selection[0]);
+        tableModel.removeGroup(ArrayUtils.removeElement(selection, selection[0]));
         tableModel.fireTableDataChanged();
     }
 

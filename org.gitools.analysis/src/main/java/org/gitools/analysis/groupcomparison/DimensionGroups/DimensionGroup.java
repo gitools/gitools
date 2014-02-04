@@ -24,23 +24,27 @@ package org.gitools.analysis.groupcomparison.DimensionGroups;
 import org.gitools.api.matrix.IMatrixPredicate;
 
 
-public abstract class DimensionGroup {
+public class DimensionGroup {
 
     protected String name = "";
     protected DimensionGroupEnum groupType;
     protected IMatrixPredicate predicate;
+    protected String property = "";
 
 
-    abstract public String getProperty();
+    public String getProperty() {
+        return property;
+    }
 
     public IMatrixPredicate getPredicate() {
         return predicate;
     }
 
-    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType) {
+    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property) {
         this.name = name;
         this.predicate = predicate;
         this.groupType = groupType;
+        this.property = property;
     }
 
     public String getName() {
