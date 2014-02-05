@@ -131,7 +131,7 @@ public abstract class HeatmapHeader extends Model {
      * The title
      */
     public String getTitle() {
-        return title;
+        return (title==null) ? "" : title;
     }
 
     /**
