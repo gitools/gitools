@@ -23,6 +23,12 @@ package org.gitools.analysis.stats.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import static com.google.common.base.Predicates.notNull;
+import com.google.common.collect.Iterables;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.size;
 import org.gitools.analysis.stats.calc.OnesCountStatistic;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.BinomialResult;
@@ -37,7 +43,6 @@ public class BinomialTest extends AbstractTest {
     }
 
     private abstract class BinomialAproximation {
-
         public abstract CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar);
     }
 
@@ -126,12 +131,6 @@ public class BinomialTest extends AbstractTest {
         return sb.toString();
     }
 
-	/*@Override
-    public String[] getResultNames() {
-		return new BinomialResult().getNames();
-	}*/
-
-
     @Override
     public Class<? extends CommonResult> getResultClass() {
         return BinomialResult.class;
@@ -147,7 +146,6 @@ public class BinomialTest extends AbstractTest {
     public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
 
         // Create a view with group values (excluding NaN's)
-
         final DoubleMatrix1D groupItems = condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
 
         // Calculate observed statistic
@@ -165,8 +163,28 @@ public class BinomialTest extends AbstractTest {
         return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
     }
 
+    @Override
+    public CommonResult processTest(Iterable<Double> values) {
 
-    final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev) {
+        int observed = 0;
+        int n = 0;
+
+        for (Double value : filter(values, notNull())) {
+            if (value == 0) {
+                observed++;
+            }
+            n++;
+        }
+
+        double expectedMean = n * p;
+        double expectedVar = n * p * (1.0 - p);
+        double expectedStdev = Math.sqrt(expectedVar);
+
+        return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
+    }
+
+
+    private final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;
@@ -187,7 +205,7 @@ public class BinomialTest extends AbstractTest {
     }
 
 
-    final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
+    private final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double zscore;
         double leftPvalue;
@@ -228,11 +246,4 @@ public class BinomialTest extends AbstractTest {
         return new BinomialResult(BinomialResult.Distribution.POISSON, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
-	/*private double filterPvalue(double pvalue) {
-        if (pvalue < 0.0)
-			pvalue = 0.0;
-		else if (pvalue > 1.0)
-			pvalue = 1.0;
-		return pvalue;
-	}*/
 }

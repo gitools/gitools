@@ -34,6 +34,7 @@ import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -57,19 +58,6 @@ import java.util.Set;
 
 public class EnrichmentProcessor extends MtcTestProcessor {
 
-    private class RunSlot extends ThreadSlot {
-
-        public DoubleMatrix1D population;
-
-        public Test test;
-
-        public RunSlot(ThreadQueue threadQueue) {
-            super(threadQueue);
-            population = null;
-            test = null;
-        }
-    }
-
     private final EnrichmentAnalysis analysis;
 
     public EnrichmentProcessor(EnrichmentAnalysis analysis) {
@@ -82,13 +70,14 @@ public class EnrichmentProcessor extends MtcTestProcessor {
 
         Date startTime = new Date();
 
+        // Initialize test
         TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
+        Test test = testFactory.create();
 
-        IMatrix dataMatrix = analysis.getData().get();
-        IMatrixLayer layer = dataMatrix.getLayers().iterator().next();
-
+        IMatrix data = analysis.getData().get();
+        IMatrixLayer layer = data.getLayers().iterator().next();
+        /*
         if (analysis.isDiscardNonMappedRows()) {
-
             Heatmap heatmap = new Heatmap(dataMatrix);
             Set<String> rowsToHide = new HashSet<>();
             Set<String> backgroundNames = new HashSet<>(analysis.getModuleMap().get().getItems());
@@ -102,107 +91,74 @@ public class EnrichmentProcessor extends MtcTestProcessor {
                 heatmap.getRows().hide(rowsToHide);
                 dataMatrix = heatmap;
             }
-        }
+        }*/
+        IMatrixDimension conditions = data.getColumns();
+        IMatrixDimension items = data.getRows();
 
-        final int numConditions = dataMatrix.getColumns().size();
-        final int numRows = dataMatrix.getRows().size();
-
-        IModuleMap mmap = analysis.getModuleMap().get();
-        mmap = ModuleMapUtils.filterByItems(mmap, dataMatrix.getRows());
-        mmap = ModuleMapUtils.filterByModuleSize(mmap, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
-
-        Collection<String> modules = mmap.getModules();
-
-        monitor.begin("Running enrichment analysis...", numConditions);
-        Test test = testFactory.create();
+        IModuleMap moduleMap = analysis.getModuleMap().get();
+        // moduleMap = ModuleMapUtils.filterByItems(moduleMap, dataMatrix.getRows());
+        // moduleMap = ModuleMapUtils.filterByModuleSize(moduleMap, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
+        Collection<String> modules = moduleMap.getModules();
 
         final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
 
         final IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
                 new HashMatrixDimension(ROWS, modules),
-                new HashMatrixDimension(COLUMNS, dataMatrix.getColumns())
+                new HashMatrixDimension(COLUMNS, data.getColumns())
         );
-
-        int numProcs = ThreadManager.getNumThreads();
-
-        ThreadQueue threadQueue = new ThreadQueue(numProcs);
-
-        for (int i = 0; i < numProcs; i++)
-            try {
-                threadQueue.put(new RunSlot(threadQueue));
-            } catch (InterruptedException e) {
-                monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
-            }
 
         final int minModuleSize = analysis.getMinModuleSize();
         final int maxModuleSize = analysis.getMaxModuleSize();
 
-		/* Test analysis */
+        monitor.begin("Running enrichment analysis...", conditions.size());
 
-        for (int condIndex = 0; condIndex < numConditions && !monitor.isCancelled(); condIndex++) {
+        for (String condition : conditions) {
 
-            final String condName = dataMatrix.getColumns().getLabel(condIndex);
-
-            final DoubleMatrix1D condItems = DoubleFactory1D.dense.make(numRows);
-            for (int i = 0; i < numRows; i++) {
-                double value = MatrixUtils.doubleValue(dataMatrix.get(layer, dataMatrix.getRows().getLabel(i), dataMatrix.getColumns().getLabel(condIndex)));
-
+            DoubleMatrix1D condItems = DoubleFactory1D.dense.make(items.size());
+            int i=0;
+            for (String item : items) {
+                double value = MatrixUtils.doubleValue(data.get(layer, item, condition));
                 condItems.setQuick(i, value);
+                i++;
             }
 
             DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
+            test.processPopulation(condition, population);
 
             final IProgressMonitor condMonitor = monitor.subtask();
 
-            condMonitor.begin("Condition " + condName + "...", modules.size());
+            condMonitor.begin("Condition " + condition + "...", modules.size());
 
             Iterator<String> modulesIterator = modules.iterator();
             while (modulesIterator.hasNext() && !monitor.isCancelled()) {
 
                 final String moduleName = modulesIterator.next();
-                final int[] itemIndices = mmap.getItemIndices(moduleName);
+                final int[] itemIndices = moduleMap.getItemIndices(moduleName);
 
-                final RunSlot slot;
+                CommonResult result = null;
                 try {
-                    slot = (RunSlot) threadQueue.take();
-                } catch (InterruptedException ex) {
-                    throw new AnalysisException(ex);
-                }
-
-                if (slot.population != population) {
-                    slot.population = population;
-                    slot.test = testFactory.create();
-                    slot.test.processPopulation(condName, population);
-                }
-
-                slot.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        CommonResult result = null;
-                        try {
-                            int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction() {
-                                @Override
-                                public double apply(double d) {
-                                    return Double.isNaN(d) ? 0 : 1;
-                                }
-                            });
-
-                            if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize) {
-                                result = slot.test.processTest(condName, condItems, moduleName, itemIndices);
-                            }
-                        } catch (Throwable cause) {
-                            cause.printStackTrace();
+                    int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction() {
+                        @Override
+                        public double apply(double d) {
+                            return Double.isNaN(d) ? 0 : 1;
                         }
+                    });
 
-                        try {
-                            adapter.set(resultsMatrix, result, moduleName, condName);
-
-                        } catch (Throwable cause) {
-                            cause.printStackTrace();
-                        }
+                    if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize) {
+                        result = test.processTest(condition, condItems, moduleName, itemIndices);
+                        //TODO result = test.processTest();
                     }
-                });
+                } catch (Throwable cause) {
+                    cause.printStackTrace();
+                }
+
+                try {
+                    adapter.set(resultsMatrix, result, moduleName, condition);
+
+                } catch (Throwable cause) {
+                    cause.printStackTrace();
+                }
 
                 condMonitor.worked(1);
             }
@@ -217,15 +173,12 @@ public class EnrichmentProcessor extends MtcTestProcessor {
             return;
         }
 
-		/* Multiple test correction */
-
         MTC mtc = MTCFactory.createFromName(analysis.getMtc());
 
         multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-
         analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
         monitor.end();

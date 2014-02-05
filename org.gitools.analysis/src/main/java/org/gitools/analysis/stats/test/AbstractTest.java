@@ -22,6 +22,7 @@
 package org.gitools.analysis.stats.test;
 
 import cern.colt.function.DoubleProcedure;
+import org.gitools.analysis.stats.test.results.CommonResult;
 
 abstract class AbstractTest implements Test {
 
@@ -31,4 +32,9 @@ abstract class AbstractTest implements Test {
             return !Double.isNaN(element);
         }
     };
+
+    @Override
+    public CommonResult processTest(Iterable<Double> values) {
+        throw new UnsupportedOperationException();
+    }
 }

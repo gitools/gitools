@@ -57,7 +57,6 @@ public class OncodriveProcessorTest extends AbstractProcessorTest<OncodriveAnaly
         IMatrix resultsOk = analysis.getResults().get();
         analysis.setResults(null);
 
-        //TODO Execute the analysis
         /*try {
             AnalysisProcessor processor = new OncodriveProcessor(analysis);
             processor.run(getProgressMonitor());

@@ -188,7 +188,7 @@ public class ComparisonTool extends AnalysisTool {
         GroupComparisonAnalysis analysis = new GroupComparisonAnalysis();
         prepareGeneralAnalysisAttributes(analysis, args);
 
-        Test t = new MannWhitneyWilxoxonTest();
+        MannWhitneyWilxoxonTest t = new MannWhitneyWilxoxonTest();
         analysis.setMtc(args.mtc);
         analysis.setToolConfig(TestFactory.createToolConfig("group comparison", t.getName()));
 

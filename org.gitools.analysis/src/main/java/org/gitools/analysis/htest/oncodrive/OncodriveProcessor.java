@@ -52,19 +52,6 @@ import java.util.Iterator;
 
 public class OncodriveProcessor extends MtcTestProcessor {
 
-    private class RunSlot extends ThreadSlot {
-
-        public DoubleMatrix1D population;
-
-        public Test test;
-
-        public RunSlot(ThreadQueue threadQueue) {
-            super(threadQueue);
-            population = null;
-            test = null;
-        }
-    }
-
     private final OncodriveAnalysis analysis;
 
     public OncodriveProcessor(OncodriveAnalysis analysis) {
@@ -105,21 +92,10 @@ public class OncodriveProcessor extends MtcTestProcessor {
                 new HashMatrixDimension(COLUMNS, csmap.getModules())
         );
 
-        int numProcs = ThreadManager.getNumThreads();
-
-        ThreadQueue threadQueue = new ThreadQueue(numProcs);
-
-        for (int i = 0; i < numProcs; i++)
-            try {
-                threadQueue.put(new RunSlot(threadQueue));
-            } catch (InterruptedException e) {
-                monitor.debug("InterruptedException while initializing run queue: " + e.getLocalizedMessage());
-            }
 
         final int minCsetSize = analysis.getMinModuleSize();
         final int maxCsetSize = analysis.getMaxModuleSize();
 
-		/* Test analysis */
         Iterator<String> modulesIterator = csmap.getModules().iterator();
         while (modulesIterator.hasNext()) {
             final String csetName = modulesIterator.next();
@@ -134,6 +110,8 @@ public class OncodriveProcessor extends MtcTestProcessor {
                 condMonitor.begin("Column set " + csetName + "...", numRows);
 
                 DoubleMatrix1D population = DoubleFactory1D.dense.make(numColumns * numRows);
+                test.processPopulation(csetName, population);
+
                 IMatrixLayer layer = dataMatrix.getLayers().iterator().next();
 
                 int k = 0;
@@ -158,36 +136,18 @@ public class OncodriveProcessor extends MtcTestProcessor {
                     for (int j = 0; j < numColumns; j++)
                         itemValues.setQuick(j, MatrixUtils.doubleValue(dataMatrix.get(layer, dataMatrix.getRows().getLabel(itemIndex), dataMatrix.getColumns().getLabel(columnIndices[j]))));
 
-                    final RunSlot slot;
-                    try {
-                        slot = (RunSlot) threadQueue.take();
-                    } catch (InterruptedException ex) {
-                        throw new AnalysisException(ex);
-                    }
-
-                    if (slot.population != population) {
-                        slot.population = population;
-                        slot.test = testFactory.create();
-                        slot.test.processPopulation(csetName, population);
-                    }
-
-                    slot.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            CommonResult result = null;
-                            try {
-                                result = slot.test.processTest(csetName, itemValues, itemName, cindices);
-                            } catch (Throwable cause) {
-                                cause.printStackTrace();
-                            }
-
-                            try {
-                                adapter.set(resultsMatrix, result, itemName, csetName);
-                            } catch (Throwable cause) {
-                                cause.printStackTrace();
-                            }
+                        CommonResult result = null;
+                        try {
+                            result = test.processTest(csetName, itemValues, itemName, cindices);
+                        } catch (Throwable cause) {
+                            cause.printStackTrace();
                         }
-                    });
+
+                        try {
+                            adapter.set(resultsMatrix, result, itemName, csetName);
+                        } catch (Throwable cause) {
+                            cause.printStackTrace();
+                        }
 
                     condMonitor.worked(1);
                 }
