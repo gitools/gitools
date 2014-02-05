@@ -28,12 +28,14 @@ public class ValueFilterCriteria {
 
     protected IMatrixLayer layer;
     protected CutoffCmp comparator;
-    protected double value;
+    protected Double value;
+    protected Double nullConversion;
 
-    public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, double value) {
+    public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, Double value, Double nullConversion) {
         this.layer = layer;
         this.comparator = comparator;
         this.value = value;
+        this.nullConversion = nullConversion;
     }
 
     public IMatrixLayer getLayer() {
@@ -42,11 +44,6 @@ public class ValueFilterCriteria {
 
     public void setLayer(IMatrixLayer layer) {
         this.layer = layer;
-    }
-
-    @Deprecated
-    public String getAttributeName() {
-        return layer.getName();
     }
 
     public CutoffCmp getComparator() {
@@ -58,16 +55,23 @@ public class ValueFilterCriteria {
     }
 
     public double getValue() {
-        return this.value;
+        return this.value == null ? nullConversion : this.value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
-
 
     @Override
     public String toString() {
         return layer.getId() + " " + comparator.toString() + " " + value;
+    }
+
+    public Double getNullConversion() {
+        return nullConversion;
+    }
+
+    public void setNullConversion(Double nullConversion) {
+        this.nullConversion = nullConversion;
     }
 }

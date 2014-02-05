@@ -29,16 +29,10 @@ public class DataIntegrationCriteria extends ValueFilterCriteria {
 
     private Operator operator;
 
-    public DataIntegrationCriteria(IMatrixLayer layer, CutoffCmp comparator, double value, Operator operator) {
-        super(layer, comparator, value);
+    public DataIntegrationCriteria(IMatrixLayer layer, CutoffCmp comparator, Double value, Double nullConversion, Operator operator) {
+        super(layer, comparator, value, nullConversion);
         this.operator = operator;
     }
-
-
-    public String getAttributeName() {
-        return layer.getName();
-    }
-
 
     public Operator getOperator() {
         return operator;
@@ -51,6 +45,6 @@ public class DataIntegrationCriteria extends ValueFilterCriteria {
 
     @Override
     public String toString() {
-        return operator.getLongName() + " " + getAttributeName().toString() + " " + comparator.toString() + " " + value;
+        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + value;
     }
 }

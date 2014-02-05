@@ -196,7 +196,7 @@ public class ValueFilterPage extends AbstractWizardPage {
         sb.append("<ul>");
         for (ValueFilterCriteria c : getCriteriaList()) {
             sb.append("<li>");
-            sb.append(c.getAttributeName());
+            sb.append(c.getLayer().getId());
             sb.append(" ");
             sb.append(c.getComparator().getLongName());
             sb.append(" ");
@@ -364,7 +364,7 @@ public class ValueFilterPage extends AbstractWizardPage {
 
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueFilterCriteria(visibleLayer, comparators[0], 0.0));
+        criteriaModel.addCriteria(new ValueFilterCriteria(visibleLayer, comparators[0], 0.0, null));
         updateFilterDescription();
     }//GEN-LAST:event_tableAddBtnActionPerformed
 

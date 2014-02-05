@@ -52,10 +52,7 @@ import org.gitools.utils.operators.Operator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,6 +75,9 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
     private JRadioButton annotationRadioButton;
     private JRadioButton valueRadioButton;
     private JRadioButton noConstraintRadioButton;
+    private JRadioButton nullConversionRadioButton;
+    private JRadioButton nullDiscardRadioButton;
+    private JTextField nullConversionTextArea;
 
 
     private DimensionGroupTableModel tableModel = new DimensionGroupTableModel();
@@ -123,7 +123,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         groupsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                updateButtons();
+                updateControls();
             }
         });
 
@@ -145,12 +145,12 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 } else if (getSelectedGroupingType().equals(DimensionGroupEnum.Value)) {
                     createValueGroup();
                 }
+                updateControls();
             }
         });
 
         dimensionCb.setModel(new DefaultComboBoxModel(new String[]{"Columns", "Rows"}));
 
-        updateControls();
 
         mergeButton.addActionListener(new ActionListener() {
             @Override
@@ -181,7 +181,39 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         valueRadioButton.addActionListener(listener);
         noConstraintRadioButton.addActionListener(listener);
 
-        updateButtons();
+        ActionListener nullConversionListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateControls();
+            }
+        };
+        nullDiscardRadioButton.addActionListener(nullConversionListener);
+        nullConversionRadioButton.addActionListener(nullConversionListener);
+
+        nullConversionTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateControls();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateControls();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateControls();
+            }
+        });
+
+
+        updateControls();
+
+    }
+
+    private void updateNullConversion() {
+        nullConversionTextArea.setEnabled(nullConversionRadioButton.isSelected());
     }
 
 
@@ -239,16 +271,30 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         //Remove button
         removeButton.setEnabled(groupsTable.getSelectedRowCount() > 0);
 
-        updateControls();
-
     }
 
     @Override
     public void updateControls() {
         boolean isComplete = false;
 
+        updateNullConversion();
+        updateButtons();
+        updateGroupingType();
+
         isComplete = tableModel.getRowCount() > 1;
 
+        try {
+            Double.valueOf(nullConversionTextArea.getText());
+        } catch (Exception e) {
+            setMessage(MessageStatus.ERROR, "\" " + nullConversionTextArea.getText() + "\" can is not a numeric value");
+            setComplete(false);
+            return;
+        }
+        if (!isComplete) {
+            setMessage(MessageStatus.INFO, "Create at least 2 groups to compare");
+        } else {
+            setMessage(MessageStatus.INFO, "Click next to proceed.");
+        }
         setComplete(isComplete);
     }
 
@@ -317,7 +363,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         removedItems.clear();
         tableModel.setGroups(newGroups);
-        updateGroupingType();
+        updateControls();
     }
 
     private DimensionGroup[] initAnnotationGroups() {
@@ -373,7 +419,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         }
         List<DataIntegrationCriteria> criteria = dlg.getCriteriaList();
         tableModel.addGroup(
-                new DimensionGroupValue(dlg.getGroupName(), new GroupByValuePredicate(criteria, null))
+                new DimensionGroupValue(dlg.getGroupName(), new GroupByValuePredicate(criteria))
         );
     }
 
@@ -412,6 +458,14 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
     public void addGroups(DimensionGroupValue... groups) {
         tableModel.setGroups(groups);
+    }
+
+    public Double getNullConversion() {
+        if (nullConversionRadioButton.isSelected()) {
+            return Double.valueOf(nullConversionTextArea.getText());
+        } else {
+            return null;
+        }
     }
 
     public List<DimensionGroup> getGroups() {

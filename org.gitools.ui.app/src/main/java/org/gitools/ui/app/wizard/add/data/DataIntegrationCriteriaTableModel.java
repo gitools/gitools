@@ -36,9 +36,10 @@ import java.util.Map;
 
 class DataIntegrationCriteriaTableModel implements TableModel {
 
-    private static final String[] columnName = new String[]{"Operator", "Layer", "Condition", "Value"};
+    private static final String[] columnName = new String[]{"Operator", "Layer", "Condition", "Value", "Empty Conversion"};
 
-    private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class, Operator.class};
+    //private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, String.class, Operator.class};
+    private static final Class<?>[] columnClass = new Class<?>[]{Operator.class, String.class, CutoffCmp.class, String.class, String.class};
 
 
     private final Map<String, Integer> layerIndexMap = new HashMap<>();
@@ -67,7 +68,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -92,11 +93,13 @@ class DataIntegrationCriteriaTableModel implements TableModel {
             case 0:
                 return criteriaList.get(rowIndex).getOperator();
             case 1:
-                return criteriaList.get(rowIndex).getAttributeName();
+                return criteriaList.get(rowIndex).getLayer().getId();
             case 2:
                 return criteriaList.get(rowIndex).getComparator();
             case 3:
                 return String.valueOf(criteriaList.get(rowIndex).getValue());
+            case 4:
+                return criteriaList.get(rowIndex).getNullConversion();
 
         }
         return null;
@@ -126,6 +129,10 @@ class DataIntegrationCriteriaTableModel implements TableModel {
             case 3:
                 criteriaList.get(rowIndex).setValue(Double.parseDouble((String) aValue));
                 break;
+
+            case 4:
+                criteriaList.get(rowIndex).setNullConversion(aValue.equals("") ? null : Double.parseDouble((String) aValue));
+                break;
         }
     }
 
@@ -139,7 +146,6 @@ class DataIntegrationCriteriaTableModel implements TableModel {
     }
 
     void addAllCriteria(List<DataIntegrationCriteria> list) {
-        int initialRow = criteriaList.size();
         criteriaList.addAll(list);
         fireCriteriaChanged();
     }

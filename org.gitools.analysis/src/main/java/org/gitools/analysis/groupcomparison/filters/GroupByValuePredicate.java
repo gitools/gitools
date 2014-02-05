@@ -32,11 +32,9 @@ import java.util.List;
 public class GroupByValuePredicate implements IMatrixPredicate<Double> {
 
     private List<DataIntegrationCriteria> criteriaList;
-    private Double nullValue;
 
-    public GroupByValuePredicate(List<DataIntegrationCriteria> criteriaList, Double nullValue) {
+    public GroupByValuePredicate(List<DataIntegrationCriteria> criteriaList) {
         this.criteriaList = criteriaList;
-        this.nullValue = nullValue;
     }
 
     @Override
@@ -56,13 +54,6 @@ public class GroupByValuePredicate implements IMatrixPredicate<Double> {
 
     public boolean apply(Double value, IMatrixPosition position) {
 
-/*
-        Double cutoffValue = position.getMatrix().get(cutoffLayer, position);
-        if (cutoffValue == null) {
-            cutoffValue = nullValue;
-        }
-        return (cutoffValue != null) && (binaryCutoff.apply(cutoffValue) == 1.0);
-    }     */
         ArrayList<Boolean> ORs = new ArrayList<Boolean>();
 
         for (DataIntegrationCriteria dic : criteriaList) {

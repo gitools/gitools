@@ -22,6 +22,7 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.ToolConfig;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
@@ -73,6 +74,11 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     @Override
     public IWizardPage getNextPage(IWizardPage page) {
         page = getCurrentPage();
+
+        if (super.getNextPage(page) == analysisDetailsPage) {
+            updateAnalysisDetails();
+        }
+
         return super.getNextPage(page);
     }
 
@@ -106,6 +112,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
 
         a.setLayer(groupingPage.getLayerIndex());
+        a.setNullConversion(groupingPage.getNullConversion());
         a.setToolConfig(toolConfig);
         a.setMtc(attrSelectPage.getMtc().getShortName());
         a.setRowAnnotations(heatmap.getRows().getAnnotations());
@@ -139,10 +146,13 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
     private void updateAnalysisDetails() {
         List<Property> analysisAttributes = new ArrayList<>();
-        //TODO: none conversion from where?
-        analysisAttributes.add(new Property("Group 1", "user defined group"));
+        analysisAttributes.add(new Property("Grouping type", groupingPage.getGroups().get(0).getGroupType().toString()));
+        for (DimensionGroup g : groupingPage.getGroups()) {
+            analysisAttributes.add(new Property("Group: " + g.getName(), g.getProperty()));
+        }
+        Double nullConversion = groupingPage.getNullConversion();
         analysisAttributes.add(new Property("NoneConvertedTo",
-                String.valueOf(9)));
+                nullConversion != null ? Double.toString(nullConversion) : "null"));
         analysisDetailsPage.setAnalysisAttributes(analysisAttributes);
     }
 }

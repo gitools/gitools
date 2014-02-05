@@ -106,10 +106,10 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
             this.noValue = true;
         } else {
             noValue = false;
-            this.groupName.setText(groupName);
+            this.groupNameTextArea.setText(groupName);
         }
-        this.groupName.setVisible(!noValue);
-        this.groupName.setEnabled(!noValue);
+        this.groupNameTextArea.setVisible(!noValue);
+        this.groupNameTextArea.setEnabled(!noValue);
 
         table.setModel(criteriaModel);
 
@@ -131,13 +131,20 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         columnModel.getColumn(1).setCellEditor(new ComboBoxCellEditor(layers.getIds()));
         columnModel.getColumn(1).setMinWidth(200);
         columnModel.getColumn(2).setCellEditor(new ComboBoxCellEditor(comparators));
-        columnModel.getColumn(2).setMaxWidth(110);
         columnModel.getColumn(3).setCellEditor(new DefaultCellEditor(new JTextField()));
-        columnModel.getColumn(3).setMaxWidth(60);
+        columnModel.getColumn(4).setCellEditor(new DefaultCellEditor(new JTextField()));
 
         if (initialCriteriaList == null) {
             addCriteria(true);
         }
+
+        groupNameTextArea.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                groupNameChanged(e);
+            }
+        });
+
 
     }
 
@@ -157,9 +164,9 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
     private void addCriteria(boolean first) {
         if (first) {
-            criteriaModel.addCriteria(new DataIntegrationCriteria(layers.get(layers.getIds()[0]), CutoffCmp.EQ, 1.0, Operator.EMPTY));
+            criteriaModel.addCriteria(new DataIntegrationCriteria(layers.get(layers.getIds()[0]), CutoffCmp.EQ, 1.0, null, Operator.EMPTY));
         } else {
-            criteriaModel.addCriteria(new DataIntegrationCriteria(layers.get(layers.getIds()[0]), CutoffCmp.EQ, 1.0, Operator.AND));
+            criteriaModel.addCriteria(new DataIntegrationCriteria(layers.get(layers.getIds()[0]), CutoffCmp.EQ, 1.0, null, Operator.AND));
         }
 
     }
@@ -183,9 +190,13 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
         tableRemoveBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        groupName = new javax.swing.JTextField();
+        groupNameTextArea = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
-        setTitle("Create criteria");
+        setTitle("Criteria creation");
         setLocationByPlatform(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -207,11 +218,17 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
             }
         });
 
-        table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{
 
-        }, new String[]{"Operator", "Attribute", "Condition", "Value"}) {
-
-            final Class[] types = new Class[]{java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
+                },
+                new String[]{
+                        "Operator", "Attribute", "Condition", "Value", "Convert empty"
+                }
+        ) {
+            Class[] types = new Class[]{
+                    java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Object.class
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types[columnIndex];
@@ -236,22 +253,85 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("Name:");
+        jLabel2.setText("Group Name:");
 
-        groupName.getDocument().addDocumentListener(new DocumentChangeListener() {
-            @Override
-            protected void update(DocumentEvent e) {
-                groupNameChanged(e);
-            }
-        });
+        groupNameTextArea.setText("0");
+
+        jLabel1.setText("Select columns or rows according to the specified criteria below. ");
+
+        jLabel3.setText("<html><b>Operator</b> lets you combine critera by AND (both criteria fulfilled) and OR (one critera fulfilled).</html>");
+
+        jLabel4.setText("<html><b>Layer</b>, <b>Condition</b> and <b>Value</b> define the criteria</html>");
+
+        jLabel5.setText("<html>Specify a <b>Convert empty</b> value if empty cells for the specified layer are equivalent to a numeric value.</html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cancelButton)).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false).addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(tableRemoveBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addGap(18, 18, 18).addComponent(groupName, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(cancelButton))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jScrollPane1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(tableRemoveBtn))
+                                                .addGap(6, 6, 6))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel2)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(groupNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())
+        );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[]{cancelButton, okButton});
 
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tableAddBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(tableRemoveBtn)).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(groupName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cancelButton).addComponent(okButton)).addContainerGap()));
+        layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(groupNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(tableAddBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(tableRemoveBtn)
+                                                .addGap(165, 165, 165)))
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(cancelButton)
+                                        .addComponent(okButton))
+                                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -282,7 +362,7 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
     private void groupNameChanged(DocumentEvent evt) {
 
-        if (groupName.getText().isEmpty()) {
+        if (groupNameTextArea.getText().isEmpty()) {
             okButton.setEnabled(false);
         } else {
             okButton.setEnabled(true);
@@ -298,11 +378,15 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup applyToGroup;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JTextField groupNameTextArea;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton okButton;
-    private javax.swing.JTextField groupName;
     private javax.swing.JTable table;
     private javax.swing.JButton tableAddBtn;
     private javax.swing.JButton tableRemoveBtn;
@@ -315,6 +399,6 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
     }
 
     public String getGroupName() {
-        return groupName.getText();
+        return groupNameTextArea.getText();
     }
 }

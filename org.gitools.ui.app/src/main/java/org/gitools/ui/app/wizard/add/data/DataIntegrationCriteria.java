@@ -24,6 +24,7 @@ package org.gitools.ui.app.wizard.add.data;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 
+@Deprecated
 public class DataIntegrationCriteria {
 
     private String attributeName;

@@ -40,6 +40,10 @@ public class DimensionGroup {
         return predicate;
     }
 
+    public DimensionGroupEnum getGroupType() {
+        return groupType;
+    }
+
     public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property) {
         this.name = name;
         this.predicate = predicate;

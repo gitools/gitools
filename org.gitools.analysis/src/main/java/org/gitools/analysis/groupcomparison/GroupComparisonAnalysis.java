@@ -83,7 +83,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private ResourceReference<IMatrix> data;
 
     private ResourceReference<IMatrix> results;
-    private double noneConversion;
+    private Double noneConversion;
 
 
     public MTC getMtc() {
@@ -218,7 +218,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         return noneConversion;
     }
 
-    public void setNoneConversion(double noneConversion) {
+    public void setNullConversion(Double noneConversion) {
         this.noneConversion = noneConversion;
     }
 

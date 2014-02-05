@@ -59,7 +59,7 @@ public class FilterByValueAction extends HeatmapAction {
 
 
         List<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
-        initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05));
+        initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05, null));
 
         final ValueFilterPage page = new ValueFilterPage(Application.get(),
                 layers,
