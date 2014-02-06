@@ -34,5 +34,7 @@ public interface Test {
 
     CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices);
 
+    void processPopulation(Iterable<Double> population);
+
     CommonResult processTest(Iterable<Double> values);
 }

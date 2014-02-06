@@ -21,6 +21,7 @@
  */
 package org.gitools.matrix.model.hashmatrix;
 
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.matrix.model.AbstractMatrix;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
@@ -35,6 +36,10 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
     private Map<String, Map> values;
 
     public HashMatrix(MatrixLayers layers, MatrixDimensionKey... dimensions) {
+        this(layers, createHashMatrixDimensions(dimensions));
+    }
+
+    public HashMatrix(MatrixLayers<? extends IMatrixLayer> layers, IMatrixDimension... dimensions) {
         this(layers, createHashMatrixDimensions(dimensions));
     }
 
@@ -122,6 +127,22 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         }
 
         return dimensions;
+    }
+
+    private static HashMatrixDimension[] createHashMatrixDimensions(IMatrixDimension[] dimensions) {
+        HashMatrixDimension[] hashDimensions = new HashMatrixDimension[dimensions.length];
+
+        for (int i = 0; i < dimensions.length; i++) {
+            IMatrixDimension dimension = dimensions[i];
+
+            if (dimension instanceof HashMatrixDimension) {
+                hashDimensions[i] = (HashMatrixDimension) dimension;
+            } else {
+                hashDimensions[i] = new HashMatrixDimension(dimensions[i].getId(), dimensions[i]);
+            }
+        }
+
+        return hashDimensions;
     }
 
 

@@ -164,13 +164,35 @@ public class BinomialTest extends AbstractTest {
     }
 
     @Override
+    public void processPopulation(Iterable<Double> population) {
+
+        double size = 0;
+        double observed = 0;
+
+        for (Double value : population) {
+            if (value == null) {
+                continue;
+            }
+
+            if (value == 1.0) {
+                observed++;
+            }
+
+            size++;
+        }
+
+        p = observed / size;
+
+    }
+
+    @Override
     public CommonResult processTest(Iterable<Double> values) {
 
         int observed = 0;
         int n = 0;
 
         for (Double value : filter(values, notNull())) {
-            if (value == 0) {
+            if (value == 1.0) {
                 observed++;
             }
             n++;

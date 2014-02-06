@@ -21,161 +21,107 @@
  */
 package org.gitools.analysis.htest.enrichment;
 
-import cern.colt.function.DoubleFunction;
-import cern.colt.matrix.DoubleFactory1D;
-import cern.colt.matrix.DoubleMatrix1D;
-import cern.jet.math.Functions;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.htest.MtcTestProcessor;
-import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-import org.gitools.heatmap.Heatmap;
+import org.gitools.api.matrix.*;
+import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.matrix.model.AbstractMatrixFunction;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.modulemap.ModuleMapUtils;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.utils.threads.ThreadManager;
-import org.gitools.utils.threads.ThreadQueue;
-import org.gitools.utils.threads.ThreadSlot;
+import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class EnrichmentProcessor extends MtcTestProcessor {
 
     private final EnrichmentAnalysis analysis;
 
     public EnrichmentProcessor(EnrichmentAnalysis analysis) {
-
         this.analysis = analysis;
     }
 
     @Override
     public void run(IProgressMonitor monitor) throws AnalysisException {
-
         Date startTime = new Date();
 
-        // Initialize test
-        TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
-        Test test = testFactory.create();
-
         IMatrix data = analysis.getData().get();
-        IMatrixLayer layer = data.getLayers().iterator().next();
-        /*
-        if (analysis.isDiscardNonMappedRows()) {
-            Heatmap heatmap = new Heatmap(dataMatrix);
-            Set<String> rowsToHide = new HashSet<>();
-            Set<String> backgroundNames = new HashSet<>(analysis.getModuleMap().get().getItems());
-            for (String row : dataMatrix.getRows()) {
-                if (!backgroundNames.contains(row)) {
-                    rowsToHide.add(row);
-                }
-            }
-
-            if (!rowsToHide.isEmpty()) {
-                heatmap.getRows().hide(rowsToHide);
-                dataMatrix = heatmap;
-            }
-        }*/
-        IMatrixDimension conditions = data.getColumns();
-        IMatrixDimension items = data.getRows();
-
-        IModuleMap moduleMap = analysis.getModuleMap().get();
-        // moduleMap = ModuleMapUtils.filterByItems(moduleMap, dataMatrix.getRows());
-        // moduleMap = ModuleMapUtils.filterByModuleSize(moduleMap, analysis.getMinModuleSize(), analysis.getMaxModuleSize());
-        Collection<String> modules = moduleMap.getModules();
-
+        final IMatrixLayer<Double> layer = data.getLayers().iterator().next();
+        final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
         final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
+        final IModuleMap moduleMap = analysis.getModuleMap().get();
+        final IMatrixDimension conditions = data.getColumns();
+        final IMatrixDimension items = data.getRows();
+        final IMatrixDimension modules = new HashMatrixDimension(ROWS, moduleMap.getModules());
 
-        final IMatrix resultsMatrix = new HashMatrix(
+        IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
-                new HashMatrixDimension(ROWS, modules),
-                new HashMatrixDimension(COLUMNS, data.getColumns())
+                modules,
+                conditions
         );
 
-        final int minModuleSize = analysis.getMinModuleSize();
-        final int maxModuleSize = analysis.getMaxModuleSize();
+        // Run enrichment
+        data.newPosition().iterate(layer, conditions)
+                .monitor(monitor, "Running enrichment analysis")
+                .transform(new AbstractMatrixFunction<Map<String, CommonResult>, Double>() {
 
-        monitor.begin("Running enrichment analysis...", conditions.size());
+                    @Override
+                    public Map<String, CommonResult> apply(Double value, IMatrixPosition position) {
 
-        for (String condition : conditions) {
-
-            DoubleMatrix1D condItems = DoubleFactory1D.dense.make(items.size());
-            int i=0;
-            for (String item : items) {
-                double value = MatrixUtils.doubleValue(data.get(layer, item, condition));
-                condItems.setQuick(i, value);
-                i++;
-            }
-
-            DoubleMatrix1D population = condItems.viewSelection(notNaNProc);
-            test.processPopulation(condition, population);
-
-            final IProgressMonitor condMonitor = monitor.subtask();
-
-            condMonitor.begin("Condition " + condition + "...", modules.size());
-
-            Iterator<String> modulesIterator = modules.iterator();
-            while (modulesIterator.hasNext() && !monitor.isCancelled()) {
-
-                final String moduleName = modulesIterator.next();
-                final int[] itemIndices = moduleMap.getItemIndices(moduleName);
-
-                CommonResult result = null;
-                try {
-                    int moduleSize = (int) condItems.viewSelection(itemIndices).aggregate(Functions.plus, new DoubleFunction() {
-                        @Override
-                        public double apply(double d) {
-                            return Double.isNaN(d) ? 0 : 1;
+                        IMatrixIterable<Double> population = position.iterate(layer, items);
+                        if (analysis.isDiscardNonMappedRows()) {
+                            population.filter(moduleMap.getItems());
                         }
-                    });
 
-                    if (moduleSize >= minModuleSize && moduleSize <= maxModuleSize) {
-                        result = test.processTest(condition, condItems, moduleName, itemIndices);
-                        //TODO result = test.processTest();
+                        test.processPopulation(population);
+
+                        Map<String, CommonResult> results = new HashMap<>();
+                        for (String module : moduleMap.getModules()) {
+
+                            Iterable<Double> moduleValues = position.iterate(layer, items).filter(moduleMap.getMappingItems(module));
+
+                            CommonResult result = test.processTest(moduleValues);
+                            if (result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
+                                results.put(module, result);
+                            }
+                        }
+
+                        return results;
                     }
-                } catch (Throwable cause) {
-                    cause.printStackTrace();
-                }
+                })
+                .store(resultsMatrix, new MapLayerAdapter<>(modules, adapter));
 
-                try {
-                    adapter.set(resultsMatrix, result, moduleName, condition);
+        // Run multiple test correction
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(MTCFactory.createFromName(analysis.getMtc()));
+        IMatrixPosition position = resultsMatrix.newPosition();
+        for (String condition : position.iterate(conditions)) {
 
-                } catch (Throwable cause) {
-                    cause.printStackTrace();
-                }
+            // Left p-Value
+            position.iterate(adapter.getLayer(Double.class, "left-p-value"), modules)
+                    .transform(mtcFunction)
+                    .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-left-p-value"));
 
-                condMonitor.worked(1);
-            }
+            // Right p-Value
+            position.iterate(adapter.getLayer(Double.class, "right-p-value"), modules)
+                    .transform(mtcFunction)
+                    .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-right-p-value"));
 
-            condMonitor.end();
-            monitor.worked(1);
+            // Two-tail p-Value
+            position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), modules)
+                    .transform(mtcFunction)
+                    .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
+
         }
-
-        ThreadManager.shutdown(monitor);
-
-        if (monitor.isCancelled()) {
-            return;
-        }
-
-        MTC mtc = MTCFactory.createFromName(analysis.getMtc());
-
-        multipleTestCorrection(adapter, resultsMatrix, mtc, monitor.subtask());
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enrichmentAnalysis>
+    <title>test</title>
+    <description></description>
+    <attributes/>
+    <startTime>2014-02-06T20:09:04.261+01:00</startTime>
+    <elapsedTime>32285</elapsedTime>
+    <binaryCutoffEnabled>false</binaryCutoffEnabled>
+    <binaryCutoffValue>0.0</binaryCutoffValue>
+    <testConfig>
+        <name>enrichment</name>
+        <configuration>
+            <property key="test-name" value="binomial"/>
+            <property key="aproximation" value="exact"/>
+        </configuration>
+    </testConfig>
+    <moduleMap path="test01-modules.ixm.gz"/>
+    <minModuleSize>20</minModuleSize>
+    <maxModuleSize>2147483647</maxModuleSize>
+    <data path="test01-data.cdm.gz"/>
+    <mtc>bh</mtc>
+    <results path="test01-results.tdm.gz"/>
+    <discardNonMappedRows>false</discardNonMappedRows>
+</enrichmentAnalysis>

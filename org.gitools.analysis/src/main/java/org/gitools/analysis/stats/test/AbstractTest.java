@@ -34,6 +34,11 @@ abstract class AbstractTest implements Test {
     };
 
     @Override
+    public void processPopulation(Iterable<Double> population) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public CommonResult processTest(Iterable<Double> values) {
         throw new UnsupportedOperationException();
     }

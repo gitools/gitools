@@ -71,7 +71,7 @@ public abstract class AbstractProcessorTest<A extends Analysis> {
 
         // Write the results to a temporal file
         File tmpFile = File.createTempFile(getClass().getSimpleName(), ".tdm");
-        //tmpFile.deleteOnExit();
+        tmpFile.deleteOnExit();
         IResourceLocator tmpLocator = new UrlResourceLocator(tmpFile);
         IResourceFormat<IMatrix> format = getPersistenceManager().getFormat("tdm", IMatrix.class);
         getPersistenceManager().store(tmpLocator, matrixToStore, format, getProgressMonitor());

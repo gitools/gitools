@@ -40,12 +40,12 @@ import java.io.IOException;
 public class OncodriveProcessorTest extends AbstractProcessorTest<OncodriveAnalysis> {
 
     public OncodriveProcessorTest() {
-        super(OncodriveAnalysis.class, "/oncodrive/analysis.oncodrive");
+        super(OncodriveAnalysis.class, "/oncodrive/test01.oncodrive");
     }
 
     @Test
     public void testResourceFormat() {
-        assertEquals("Example for OncoDrive analysis", getAnalysis().getTitle());
+        assertEquals("test", getAnalysis().getTitle());
     }
 
     @Test
@@ -57,15 +57,15 @@ public class OncodriveProcessorTest extends AbstractProcessorTest<OncodriveAnaly
         IMatrix resultsOk = analysis.getResults().get();
         analysis.setResults(null);
 
-        /*try {
+        try {
             AnalysisProcessor processor = new OncodriveProcessor(analysis);
             processor.run(getProgressMonitor());
         } catch (AnalysisException e) {
             e.printStackTrace();
-        }*/
+        }
 
         // Test the store and load
-        IMatrix results = storeAndLoadMatrix(resultsOk);
+        IMatrix results = storeAndLoadMatrix(analysis.getResults().get());
 
         // Compare the matrix
         AssertMatrix.assertEquals(resultsOk, results);
