@@ -23,7 +23,6 @@ package org.gitools.analysis.stats.test;
 
 import cern.colt.matrix.DoubleMatrix1D;
 import com.google.common.collect.Iterables;
-import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.ConvergenceException;
 import org.apache.commons.math3.exception.MaxCountExceededException;
@@ -34,8 +33,6 @@ import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MannWhitneyWilxoxonTest extends AbstractTest {
 
@@ -57,8 +54,8 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 
     public GroupComparisonResult processTest(Iterable<Double> group1, Iterable<Double> group2) {
 
-        final double[] x = removeNaNs(group1);
-        final double[] y = removeNaNs(group2);
+        Double[] x = Iterables.toArray(group1, Double.class);
+        Double[] y = Iterables.toArray(group2, Double.class);
 
         if (x.length == 0 || y.length == 0) {
             return new GroupComparisonResult(Iterables.size(group1) + Iterables.size(group2), x.length, y.length, Double.NaN, Double.NaN, Double.NaN);
@@ -102,21 +99,6 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 
     }
 
-    private double[] removeNaNs(Iterable<Double> values) {
-
-        List<Double> noNaNs = new ArrayList<>();
-
-        for (Double value : values) {
-
-            if (value != null) {
-                noNaNs.add(value);
-            }
-
-        }
-
-        return Doubles.toArray(noNaNs);
-    }
-
     /**
      * Concatenate the samples into one array.
      *
@@ -124,7 +106,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
      * @param y second sample
      * @return concatenated array
      */
-    private double[] concatenateSamples(final double[] x, final double[] y) {
+    private double[] concatenateSamples(final Double[] x, final Double[] y) {
         final double[] z = new double[x.length + y.length];
 
         System.arraycopy(x, 0, z, 0, x.length);

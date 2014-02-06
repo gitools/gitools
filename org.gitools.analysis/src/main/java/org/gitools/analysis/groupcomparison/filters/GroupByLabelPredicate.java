@@ -42,6 +42,7 @@ public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
 
     public GroupByLabelPredicate(IMatrixDimension dimension, String groupAnnotation, Function<String, String> dimensionFunction) {
         groupIdentifiers = new HashSet<>();
+        this.dimension = dimension;
         for (String identifier : dimension) {
             if (Objects.equals(dimensionFunction.apply(identifier), groupAnnotation)) {
                 groupIdentifiers.add(identifier);

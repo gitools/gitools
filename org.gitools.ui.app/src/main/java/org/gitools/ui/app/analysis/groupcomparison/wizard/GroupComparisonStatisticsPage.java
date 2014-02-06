@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
+import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
 import org.gitools.analysis.stats.mtc.Bonferroni;
 import org.gitools.analysis.stats.mtc.MTC;
@@ -29,6 +30,7 @@ import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
@@ -115,6 +117,20 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
         @Override
         public String toString() {
             return attr != null ? attr.getName() : name;
+        }
+    }
+
+    @Override
+    public void updateControls() {
+        if (testCb.getSelectedIndex() == 0) {
+            //TODO: calc combinatorics
+            double v = CombinatoricsUtils.binomialCoefficientDouble(10, 2);
+            if (v < 50) {
+                setMessage(MessageStatus.INFO, "You will be calculating " + String.valueOf(v) + " group combinations");
+            } else {
+                setMessage(MessageStatus.WARN, "This would yield " + String.valueOf(v) + " group combinations. Gitools" +
+                        "refuses to do that much work.");
+            }
         }
     }
 

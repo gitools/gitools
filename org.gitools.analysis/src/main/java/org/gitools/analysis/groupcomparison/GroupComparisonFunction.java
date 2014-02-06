@@ -21,28 +21,41 @@
  */
 package org.gitools.analysis.groupcomparison;
 
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.matrix.model.AbstractMatrixFunction;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
 
 public class GroupComparisonFunction extends AbstractMatrixFunction<GroupComparisonResult, String> {
 
     private MannWhitneyWilxoxonTest test;
     private IMatrixLayer<Double> valueLayer;
     private IMatrixDimension dimension;
-    private IMatrixPredicate<Double> group1Filter;
-    private IMatrixPredicate<Double> group2Filter;
+    private DimensionGroup[] groups;
+    private NullConversion nullConversion;
 
-    public GroupComparisonFunction(MannWhitneyWilxoxonTest test, IMatrixDimension dimension, IMatrixLayer<Double> valueLayer, IMatrixPredicate<Double> group1Filter, IMatrixPredicate<Double> group2Filter) {
+    public GroupComparisonFunction(MannWhitneyWilxoxonTest test,
+                                   IMatrixDimension dimension,
+                                   IMatrixLayer<Double> valueLayer,
+                                   NullConversion nullConversion,
+                                   DimensionGroup... groups) {
         this.test = test;
         this.dimension = dimension;
         this.valueLayer = valueLayer;
-        this.group1Filter = group1Filter;
-        this.group2Filter = group2Filter;
+        this.groups = groups;
+        this.nullConversion = nullConversion;
     }
 
     public GroupComparisonFunction() {
@@ -52,9 +65,36 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<GroupCompari
     @Override
     public GroupComparisonResult apply(String identifier, IMatrixPosition position) {
 
-        Iterable<Double> group1 = position.iterate(valueLayer, dimension).filter(group1Filter);
-        Iterable<Double> group2 = position.iterate(valueLayer, dimension).filter(group2Filter);
+        // Filter according to Predicate (groupFilter), transform according to nullConversion,
+        // and finally remove nulls.
 
-        return test.processTest(group1, group2);
+        Iterator<int[]> combIterator = CombinatoricsUtils.combinationsIterator(groups.length, 2);
+        Map<String, GroupComparisonResult> resultHashMap = new HashMap<>();
+
+        while (combIterator.hasNext()) {
+            int[] groupIndices = combIterator.next();
+
+            DimensionGroup dimensionGroup1 = groups[groupIndices[0]];
+            DimensionGroup dimensionGroup2 = groups[groupIndices[1]];
+
+            Iterable<Double> group1 =
+                    filter(
+                            transform(
+                                    position.iterate(valueLayer, dimension).filter(dimensionGroup1.getPredicate()), nullConversion),
+                            notNull());
+            Iterable<Double> group2 =
+                    filter(
+                            transform(
+                                    position.iterate(valueLayer, dimension).filter(dimensionGroup2.getPredicate()), nullConversion),
+                            notNull());
+
+            resultHashMap.put(
+                    dimensionGroup1.getName() + " VS " + dimensionGroup2.getName(),
+                    test.processTest(group1, group2));
+
+        }
+
+
+        return null;
     }
 }

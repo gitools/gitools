@@ -83,7 +83,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private ResourceReference<IMatrix> data;
 
     private ResourceReference<IMatrix> results;
-    private Double noneConversion;
+    private Double nullConversion;
 
 
     public MTC getMtc() {
@@ -105,7 +105,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public GroupComparisonAnalysis() {
         this.transposeData = false;
-        this.noneConversion = Double.NaN;
+        this.nullConversion = Double.NaN;
         this.groups = new ArrayList<>();
     }
 
@@ -153,6 +153,10 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public DimensionGroup getGroup(int index) {
         return groups.get(index);
+    }
+
+    public List<DimensionGroup> getGroups() {
+        return groups;
     }
 
     public void setGroup(DimensionGroup group, int index) {
@@ -214,12 +218,12 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.columnHeaders = columnHeaders;
     }
 
-    public double getNoneConversion() {
-        return noneConversion;
+    public Double getNullConversion() {
+        return nullConversion;
     }
 
-    public void setNullConversion(Double noneConversion) {
-        this.noneConversion = noneConversion;
+    public void setNullConversion(Double nullConversion) {
+        this.nullConversion = nullConversion;
     }
 
     public DimensionGroupEnum getColumnGroupType() {

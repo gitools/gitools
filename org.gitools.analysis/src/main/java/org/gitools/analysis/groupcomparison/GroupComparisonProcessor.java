@@ -22,6 +22,7 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.htest.MtcTestProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
@@ -64,50 +65,46 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
         MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
 
-        HashMatrixDimension conditions = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
-        HashMatrixDimension modules = new HashMatrixDimension(ROWS, rows);
+        HashMatrixDimension groupCombinations = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
+        HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, rows);
 
         IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
-                modules,
-                conditions
+                resultsRows,
+                groupCombinations
         );
 
         // Prepare group predicates
-        //IMatrixPredicate<Double> group1Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(0), analysis.getNoneConversion());
-        //IMatrixPredicate<Double> group2Predicate = createPredicate(dataMatrix, columns, (DimensionGroupValue) analysis.getGroup(1), analysis.getNoneConversion());
-        IMatrixPredicate<Double> group1Predicate = null;
-        IMatrixPredicate<Double> group2Predicate = null;
+        NullConversion nullConversionFunction = new NullConversion(analysis.getNullConversion());
 
         // Run comparison
         dataMatrix.newPosition()
                 .iterate(rows)
                 .monitor(monitor, "Running group comparison analysis")
                 .transform(
-                        new GroupComparisonFunction(test, columns, layer, group1Predicate, group2Predicate)
-                )
-                .store(
-                        resultsMatrix,
-                        new PositionMapping().map(rows, modules).fix(conditions, test.getName()),
-                        adapter
-                );
+                        new GroupComparisonFunction(test, columns, layer, nullConversionFunction, (DimensionGroup[]) analysis.getGroups().toArray())
+                ).store(
+                resultsMatrix,
+                new PositionMapping().map(rows, resultsRows).fix(groupCombinations, test.getName()),
+                adapter
+        );
 
         // Run multiple test correction
-        IMatrixPosition position = resultsMatrix.newPosition().set(conditions, test.getName());
+        IMatrixPosition position = resultsMatrix.newPosition().set(groupCombinations, test.getName());
         IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
 
         // Left p-Value
-        position.iterate(adapter.getLayer(Double.class, "left-p-value"), modules)
+        position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)
                 .transform(mtcFunction)
                 .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-left-p-value"));
 
         // Right p-Value
-        position.iterate(adapter.getLayer(Double.class, "right-p-value"), modules)
+        position.iterate(adapter.getLayer(Double.class, "right-p-value"), resultsRows)
                 .transform(mtcFunction)
                 .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-right-p-value"));
 
         // Two-tail p-Value
-        position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), modules)
+        position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), resultsRows)
                 .transform(mtcFunction)
                 .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
 
@@ -117,23 +114,6 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
         analysis.setResults(new ResourceReference<>("results", resultsMatrix));
         monitor.end();
     }
-
-/*
-    private static IMatrixPredicate<Double> createPredicate(IMatrix matrix, IMatrixDimension dimension, DimensionGroupValue group, double noneConversion) {
-
-        // Group by label
-        if (group.getColumns() != null && group.getColumns().size() > 0) {
-            return new GroupByLabelPredicate(dimension, group.getColumns());
-        }
-
-        // Group by value
-        IMatrixLayer<Double> cutoffLayer = matrix.getLayers().get(group.getCutoffAttributeIndex());
-        BinaryCutoff binaryCutoff = group.getBinaryCutoff();
-        Double nullValue = (Double.isNaN(noneConversion) ? null : noneConversion);
-        return new GroupByValuePredicate(cutoffLayer, binaryCutoff, nullValue);
-
-    }
-*/
 
 
 }
