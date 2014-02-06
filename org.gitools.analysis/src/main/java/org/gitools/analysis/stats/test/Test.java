@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.analysis.stats.test.results.CommonResult;
 
 public interface Test {
@@ -29,10 +28,6 @@ public interface Test {
     String getName();
 
     Class<? extends CommonResult> getResultClass();
-
-    void processPopulation(String name, DoubleMatrix1D population);
-
-    CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices);
 
     void processPopulation(Iterable<Double> population);
 

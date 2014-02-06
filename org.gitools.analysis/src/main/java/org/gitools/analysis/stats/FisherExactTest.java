@@ -50,7 +50,6 @@ public class FisherExactTest {
      * Constructor from an array contingency table:
      *
      * @param ctable ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
-     * @see FisherExactTest(int a, int b, int c, int d)
      */
     public FisherExactTest(int[] ctable) {
         this.a = ctable[0];

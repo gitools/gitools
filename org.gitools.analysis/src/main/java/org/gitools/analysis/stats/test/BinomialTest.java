@@ -21,18 +21,14 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import cern.jet.stat.Probability;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import static com.google.common.base.Predicates.notNull;
-import com.google.common.collect.Iterables;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.size;
 import org.gitools.analysis.stats.calc.OnesCountStatistic;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.BinomialResult;
 import org.gitools.analysis.stats.test.results.CommonResult;
+
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.filter;
 
 public class BinomialTest extends AbstractTest {
 
@@ -46,8 +42,6 @@ public class BinomialTest extends AbstractTest {
         public abstract CommonResult getResult(int observed, int n, double p, double expectedMean, double expectedStdev, double expectedVar);
     }
 
-    private final Statistic statCalc;
-
     private final AproximationMode aproxMode;
 
     private double p;
@@ -55,9 +49,9 @@ public class BinomialTest extends AbstractTest {
     private BinomialAproximation aprox;
 
     public BinomialTest(AproximationMode aproxMode) {
-        this.statCalc = new OnesCountStatistic();
-        this.aproxMode = aproxMode;
+        super("binomial", BinomialResult.class);
 
+        this.aproxMode = aproxMode;
         switch (aproxMode) {
             case onlyExact:
                 this.aprox = new BinomialAproximation() {
@@ -110,7 +104,6 @@ public class BinomialTest extends AbstractTest {
         }
     }
 
-
     @Override
     public String getName() {
         StringBuilder sb = new StringBuilder();
@@ -132,38 +125,6 @@ public class BinomialTest extends AbstractTest {
     }
 
     @Override
-    public Class<? extends CommonResult> getResultClass() {
-        return BinomialResult.class;
-    }
-
-    @Override
-    public void processPopulation(String name, DoubleMatrix1D population) {
-        p = statCalc.calc(population) / population.size();
-    }
-
-
-    @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
-
-        // Create a view with group values (excluding NaN's)
-        final DoubleMatrix1D groupItems = condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
-
-        // Calculate observed statistic
-
-        int observed = (int) statCalc.calc(groupItems);
-
-        // Calculate expected mean and standard deviation
-
-        int n = groupItems.size();
-
-        double expectedMean = n * p;
-        double expectedVar = n * p * (1.0 - p);
-        double expectedStdev = Math.sqrt(expectedVar);
-
-        return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
-    }
-
-    @Override
     public void processPopulation(Iterable<Double> population) {
 
         double size = 0;
@@ -182,7 +143,6 @@ public class BinomialTest extends AbstractTest {
         }
 
         p = observed / size;
-
     }
 
     @Override
@@ -205,8 +165,7 @@ public class BinomialTest extends AbstractTest {
         return aprox.getResult(observed, n, p, expectedMean, expectedStdev, expectedVar);
     }
 
-
-    private final CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev) {
+    private static CommonResult resultWithExact(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;
@@ -227,7 +186,7 @@ public class BinomialTest extends AbstractTest {
     }
 
 
-    private final CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
+    private static CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double zscore;
         double leftPvalue;
@@ -235,7 +194,6 @@ public class BinomialTest extends AbstractTest {
         double twoTailPvalue;
 
         // Calculate zscore and pvalues
-
         zscore = (observed - expectedMean) / expectedStdev;
 
         leftPvalue = Probability.normal(zscore);
@@ -247,7 +205,7 @@ public class BinomialTest extends AbstractTest {
     }
 
 
-    final CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev) {
+    private static CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;

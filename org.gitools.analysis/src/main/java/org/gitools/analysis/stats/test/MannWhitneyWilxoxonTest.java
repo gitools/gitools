@@ -42,17 +42,8 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
     private NaturalRanking naturalRanking;
 
     public MannWhitneyWilxoxonTest() {
+        super("mannWhitneyWilcoxon", GroupComparisonResult.class);
         naturalRanking = new NaturalRanking(NaNStrategy.FIXED, TiesStrategy.AVERAGE);
-    }
-
-    @Override
-    public String getName() {
-        return "mannWhitneyWilcoxon";
-    }
-
-    @Override
-    public Class<? extends GroupComparisonResult> getResultClass() {
-        return GroupComparisonResult.class;
     }
 
     public GroupComparisonResult processTest(Iterable<Double> group1, Iterable<Double> group2) {
@@ -152,15 +143,5 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 
         return standardNormal.cumulativeProbability(z);
     }
-
-    @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
-        throw new UnsupportedOperationException("Not supported at all.");
-    }
-
-    @Override
-    public void processPopulation(String name, DoubleMatrix1D population) {
-    }
-
 
 }

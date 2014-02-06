@@ -31,31 +31,15 @@ import java.util.Arrays;
 public class FisherTest extends AbstractTest {
 
     public FisherTest() {
-    }
-
-
-    @Override
-    public String getName() {
-        return "fisher";
-    }
-
-
-    @Override
-    public Class<? extends CommonResult> getResultClass() {
-        return FisherResult.class;
+        super("fisher", FisherResult.class);
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population) {
-    }
-
-
-    @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
+    public CommonResult processTest(Iterable<Double> values) {
 
         int[] ctable = new int[4];
 
-        calcContingencyTable(condItems, groupItemIndices, ctable);
+        //TODO calcContingencyTable(condItems, groupItemIndices, ctable);
 
         FisherExactTest fisher = new FisherExactTest(ctable);
         fisher.testContingencyTable();
@@ -70,18 +54,18 @@ public class FisherTest extends AbstractTest {
      * <p/>
      * Contingency table format:
      * <p/>
-     * | has a 1.0  | hasn't a 1.0 |
+     *                             | has a 1.0  | hasn't a 1.0 |
      * ----------------------------+------------+--------------+
-     * belongs to the group       |      a     |       b      |
+     * belongs to the group        |      a     |       b      |
      * ----------------------------+------------+--------------+
-     * don't belong to the group  |      c     |       d      |
+     * don't belong to the group   |      c     |       d      |
      * ----------------------------+------------+--------------+
      *
      * @param condItems  all the data for the items of the property
      * @param groupItems item indices to propItems for the items that belongs to the group
      * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      */
-    private void calcContingencyTable(DoubleMatrix1D condItems, int[] groupItems, int[] ctable) {
+    private static void calcContingencyTable(DoubleMatrix1D condItems, int[] groupItems, int[] ctable) {
 
         // Initialize the contingency table with zeros
         for (int i = 0; i < 4; i++)

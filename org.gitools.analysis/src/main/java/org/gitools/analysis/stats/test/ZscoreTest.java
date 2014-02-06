@@ -21,47 +21,44 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
+import cern.jet.random.engine.MersenneTwister;
+import cern.jet.random.engine.RandomEngine;
+import cern.jet.random.sampling.RandomSampler;
 import cern.jet.stat.Probability;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.ZScoreResult;
 
-public abstract class ZscoreTest extends AbstractTest {
+import static com.google.common.collect.Iterables.size;
 
-    class PopulationStatistics {
+public class ZscoreTest extends AbstractTest {
+
+    protected class PopulationStatistics {
+        public int n;
         public double mean;
         public double stdev;
     }
 
     final Statistic statCalc;
+    private Iterable<Double> population;
 
-    private DoubleMatrix1D population;
+    private final int numSamples;
 
-    ZscoreTest(Statistic statCalc) {
+    public ZscoreTest(int numSamples, Statistic statCalc) {
+        super("zscore-" + statCalc.getName(), ZScoreResult.class);
+
         this.statCalc = statCalc;
-    }
-
-
-    @Override
-    public String getName() {
-        return "zscore-" + statCalc.getName();
-    }
-
-
-    @Override
-    public Class<? extends CommonResult> getResultClass() {
-        return ZScoreResult.class;
+        this.numSamples = numSamples;
     }
 
     @Override
-    public void processPopulation(String name, DoubleMatrix1D population) {
+    public void processPopulation(Iterable<Double> population) {
         this.population = population;
     }
 
 
     @Override
-    public CommonResult processTest(String condName, DoubleMatrix1D condItems, String groupName, int[] groupItemIndices) {
+    public CommonResult processTest(Iterable<Double> values) {
 
         double observed;
         double zscore;
@@ -69,17 +66,10 @@ public abstract class ZscoreTest extends AbstractTest {
         double rightPvalue;
         double twoTailPvalue;
 
-        // Create a view with group values (excluding NaN's)
-        final DoubleMatrix1D groupItems = condItems.viewSelection(groupItemIndices).viewSelection(notNaNProc);
-
         // Calculate observed statistic
-        observed = statCalc.calc(groupItems);
+        observed = statCalc.calc(values);
 
-        // Calculate expected mean and standard deviation from sampling
-        int sampleSize = groupItems.size();
-
-        PopulationStatistics expected = new PopulationStatistics();
-        infereMeanAndStdev(population, groupItems, expected);
+        PopulationStatistics expected = infereMeanAndStdev(population, values);
 
         // Calculate zscore and pvalue
         zscore = (observed - expected.mean) / expected.stdev;
@@ -89,9 +79,48 @@ public abstract class ZscoreTest extends AbstractTest {
         twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
         twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 
-        return new ZScoreResult(sampleSize, leftPvalue, rightPvalue, twoTailPvalue, observed, expected.mean, expected.stdev, zscore);
+        return new ZScoreResult(expected.n, leftPvalue, rightPvalue, twoTailPvalue, observed, expected.mean, expected.stdev, zscore);
     }
 
-    protected abstract void infereMeanAndStdev(DoubleMatrix1D population, DoubleMatrix1D groupItems, PopulationStatistics expected);
+    private PopulationStatistics infereMeanAndStdev(Iterable<Double> population, Iterable<Double> values) {
+
+        PopulationStatistics expected = new PopulationStatistics();
+
+        int sampleSize =  size(values);
+        int populationSize = size(population);
+
+        long[] lindices = new long[sampleSize];
+        int[] indices = new int[sampleSize];
+
+        double sx = 0;
+        double sx2 = 0;
+
+        RandomEngine randomEngine = new MersenneTwister();
+
+        for (int i = 0; i < numSamples; i++) {
+            RandomSampler.sample(sampleSize, populationSize, sampleSize, 0, lindices, 0, randomEngine);
+
+            copyIndices(lindices, indices);
+
+            //TODO double xi = statCalc.calc(population.viewSelection(indices));
+            double xi = statCalc.calc(population);
+
+            sx += xi;
+            sx2 += (xi * xi);
+        }
+
+        double N = numSamples;
+
+        expected.n = sampleSize;
+        expected.mean = sx / N;
+        expected.stdev = Math.sqrt((N * sx2) - (sx * sx)) / N;
+
+        return expected;
+    }
+
+    private void copyIndices(long[] lindices, int[] indices) {
+        for (int j = 0; j < lindices.length; j++)
+            indices[j] = (int) lindices[j];
+    }
 
 }
