@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.analysis.stats.FisherExactTest;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.FisherResult;
@@ -39,7 +38,7 @@ public class FisherTest extends AbstractTest {
 
         int[] ctable = new int[4];
 
-        //TODO calcContingencyTable(condItems, groupItemIndices, ctable);
+        //TODO calcContingencyTable(values, groupItemIndices, ctable);
 
         FisherExactTest fisher = new FisherExactTest(ctable);
         fisher.testContingencyTable();
@@ -61,11 +60,11 @@ public class FisherTest extends AbstractTest {
      * don't belong to the group   |      c     |       d      |
      * ----------------------------+------------+--------------+
      *
-     * @param condItems  all the data for the items of the property
+     * @param values
      * @param groupItems item indices to propItems for the items that belongs to the group
      * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
      */
-    private static void calcContingencyTable(DoubleMatrix1D condItems, int[] groupItems, int[] ctable) {
+    private static void calcContingencyTable(Iterable<Double> values, int[] groupItems, int[] ctable) {
 
         // Initialize the contingency table with zeros
         for (int i = 0; i < 4; i++)
@@ -76,8 +75,10 @@ public class FisherTest extends AbstractTest {
 
         // count
         int k = 0;
-        for (int i = 0; i < condItems.size(); i++) {
-            double value = condItems.getQuick(i);
+        for (Double value : values) {
+
+            //TODO
+            int i = 0;
 
             boolean belongsToGroup = k < groupItems.length && groupItems[k] == i;
             if (belongsToGroup) {

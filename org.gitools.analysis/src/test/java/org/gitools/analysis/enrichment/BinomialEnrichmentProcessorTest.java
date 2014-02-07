@@ -37,9 +37,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class EnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAnalysis> {
+public class BinomialEnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAnalysis> {
 
-    public EnrichmentProcessorTest() {
+    public BinomialEnrichmentProcessorTest() {
         super(EnrichmentAnalysis.class, "/enrichment/test01.enrichment");
     }
 

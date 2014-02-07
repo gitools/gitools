@@ -21,26 +21,26 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.jet.random.engine.MersenneTwister;
-import cern.jet.random.engine.RandomEngine;
-import cern.jet.random.sampling.RandomSampler;
 import cern.jet.stat.Probability;
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.find;
+import static com.google.common.collect.Iterables.size;
+import com.google.common.collect.Lists;
+import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.ZScoreResult;
 
-import static com.google.common.collect.Iterables.size;
+import java.util.List;
+import java.util.Random;
 
 public class ZscoreTest extends AbstractTest {
 
-    protected class PopulationStatistics {
-        public int n;
-        public double mean;
-        public double stdev;
-    }
-
     final Statistic statCalc;
-    private Iterable<Double> population;
+
+    private Random random;
+    private List<Double> population;
 
     private final int numSamples;
 
@@ -53,74 +53,48 @@ public class ZscoreTest extends AbstractTest {
 
     @Override
     public void processPopulation(Iterable<Double> population) {
-        this.population = population;
+
+        Double seed = find(population, notNull());
+        this.random = new Random( seed.longValue() );
+        this.population = Lists.newArrayList(population);
     }
 
 
     @Override
     public CommonResult processTest(Iterable<Double> values) {
 
-        double observed;
-        double zscore;
-        double leftPvalue;
-        double rightPvalue;
-        double twoTailPvalue;
+        double observed = statCalc.calc(values);
 
-        // Calculate observed statistic
-        observed = statCalc.calc(values);
-
-        PopulationStatistics expected = infereMeanAndStdev(population, values);
-
-        // Calculate zscore and pvalue
-        zscore = (observed - expected.mean) / expected.stdev;
-
-        leftPvalue = Probability.normal(zscore);
-        rightPvalue = 1.0 - leftPvalue;
-        twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
-        twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
-
-        return new ZScoreResult(expected.n, leftPvalue, rightPvalue, twoTailPvalue, observed, expected.mean, expected.stdev, zscore);
-    }
-
-    private PopulationStatistics infereMeanAndStdev(Iterable<Double> population, Iterable<Double> values) {
-
-        PopulationStatistics expected = new PopulationStatistics();
-
-        int sampleSize =  size(values);
-        int populationSize = size(population);
-
-        long[] lindices = new long[sampleSize];
-        int[] indices = new int[sampleSize];
-
-        double sx = 0;
-        double sx2 = 0;
-
-        RandomEngine randomEngine = new MersenneTwister();
-
+        int n = size(filter(values, notNull()));
+        double sx = 0, sx2 = 0;
         for (int i = 0; i < numSamples; i++) {
-            RandomSampler.sample(sampleSize, populationSize, sampleSize, 0, lindices, 0, randomEngine);
-
-            copyIndices(lindices, indices);
-
-            //TODO double xi = statCalc.calc(population.viewSelection(indices));
-            double xi = statCalc.calc(population);
-
+            double xi = statCalc.calc(randomSample(population, n));
             sx += xi;
             sx2 += (xi * xi);
         }
 
         double N = numSamples;
+        double mean = sx / N;
+        double stdev = FastMath.sqrt((N * sx2) - (sx * sx)) / N;
 
-        expected.n = sampleSize;
-        expected.mean = sx / N;
-        expected.stdev = Math.sqrt((N * sx2) - (sx * sx)) / N;
+        double zscore = (observed - mean) / stdev;
+        double leftPvalue = Probability.normal(zscore);
+        double rightPvalue = 1.0 - leftPvalue;
+        double twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
+        twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
 
-        return expected;
+        return new ZScoreResult(n, leftPvalue, rightPvalue, twoTailPvalue, observed, mean, stdev, zscore);
     }
 
-    private void copyIndices(long[] lindices, int[] indices) {
-        for (int j = 0; j < lindices.length; j++)
-            indices[j] = (int) lindices[j];
+
+    public List<Double> randomSample(List<Double> items, int m){
+        for(int i=0;i<m;i++){
+            int pos = i + random.nextInt(items.size() - i);
+            Double tmp = items.get(pos);
+            items.set(pos, items.get(i));
+            items.set(i, tmp);
+        }
+        return items.subList(0, m);
     }
 
 }

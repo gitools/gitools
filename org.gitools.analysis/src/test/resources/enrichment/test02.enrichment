@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enrichmentAnalysis>
+    <title>test</title>
+    <description>Using z-Score</description>
+    <attributes/>
+    <startTime>2014-02-07T12:53:51.741+01:00</startTime>
+    <elapsedTime>13812</elapsedTime>
+    <binaryCutoffEnabled>false</binaryCutoffEnabled>
+    <binaryCutoffValue>0.0</binaryCutoffValue>
+    <testConfig>
+        <name>enrichment</name>
+        <configuration>
+            <property key="estimator" value="mean"/>
+            <property key="test-name" value="zscore"/>
+            <property key="samples" value="10000"/>
+        </configuration>
+    </testConfig>
+    <moduleMap path="test02-modules.ixm.gz"/>
+    <minModuleSize>20</minModuleSize>
+    <maxModuleSize>2147483647</maxModuleSize>
+    <data path="test02-data.cdm.gz"/>
+    <mtc>bh</mtc>
+    <results path="test02-results.tdm.gz"/>
+    <discardNonMappedRows>false</discardNonMappedRows>
+</enrichmentAnalysis>

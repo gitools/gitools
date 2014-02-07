@@ -31,10 +31,16 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 
 public class AssertMatrix {
 
+    public static double DEFAULT_DELTA = 0.5e-5;
+
     protected AssertMatrix() {
     }
 
     static public void assertEquals(IMatrix m1, IMatrix m2) {
+        assertEquals(m1, m2, DEFAULT_DELTA);
+    }
+
+    static public void assertEquals(IMatrix m1, IMatrix m2, double delta) {
 
         for (MatrixDimensionKey key : m1.getDimensionKeys()) {
            assertEquals(m1.getDimension(key), m2.getDimension(key));
@@ -42,24 +48,35 @@ public class AssertMatrix {
 
         Assert.assertEquals(m1.getLayers().size(), m2.getLayers().size());
         for (IMatrixLayer l1 : m1.getLayers()) {
-            IMatrixLayer l2 = m2.getLayers().get(l1.getId());
-            assertEquals(l1, l2);
+            assertEquals(l1.getId(), m1, m2, delta);
+        }
+    }
 
-            IMatrixPosition p1 = m1.newPosition();
-            IMatrixPosition p2 = m2.newPosition();
-            for (MatrixDimensionKey key : m1.getDimensionKeys()) {
-                IMatrixDimension d1 = m1.getDimension(key);
-                IMatrixDimension d2 = m2.getDimension(key);
+    static public void assertEquals(String layerId, IMatrix m1, IMatrix m2) {
+        assertEquals(layerId, m1, m2, DEFAULT_DELTA);
+    }
 
-                for (String id : m1.getDimension(key)) {
-                    p1.set(d1, id);
-                    p2.set(d2, id);
+    static public void assertEquals(String layerId, IMatrix m1, IMatrix m2, double delta) {
 
-                    Object v1 = m1.get(l1, p1);
-                    Object v2 = m2.get(l2, p2);
+        IMatrixLayer l1 = m1.getLayers().get(layerId);
+        IMatrixLayer l2 = m2.getLayers().get(l1.getId());
 
-                    assertSimilar("layer: " + l1.getId() + " pos:" + p1.toString(), v1, v2, 0.5e-5);
-                }
+        assertEquals(l1, l2);
+
+        IMatrixPosition p1 = m1.newPosition();
+        IMatrixPosition p2 = m2.newPosition();
+        for (MatrixDimensionKey key : m1.getDimensionKeys()) {
+            IMatrixDimension d1 = m1.getDimension(key);
+            IMatrixDimension d2 = m2.getDimension(key);
+
+            for (String id : m1.getDimension(key)) {
+                p1.set(d1, id);
+                p2.set(d2, id);
+
+                Object v1 = m1.get(l1, p1);
+                Object v2 = m2.get(l2, p2);
+
+                assertSimilar("layer: " + l1.getId() + " pos:" + p1.toString(), v1, v2, delta);
             }
         }
 

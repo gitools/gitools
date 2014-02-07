@@ -53,9 +53,6 @@ public class BinomialResult extends CommonResult {
         this.probability = p;
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
     @LayerDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
     public int getObserved() {
         return observed;
