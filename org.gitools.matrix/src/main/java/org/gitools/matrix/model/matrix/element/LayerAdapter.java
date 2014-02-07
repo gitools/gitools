@@ -45,7 +45,6 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
         createLayers();
     }
 
-    @Override
     public Class<? extends T> getElementClass() {
         return elementClass;
     }

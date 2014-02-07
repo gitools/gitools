@@ -21,8 +21,6 @@
  */
 package org.gitools.analysis.stats.calc;
 
-import cern.colt.matrix.DoubleMatrix1D;
-
 public class OnesCountStatistic implements Statistic {
 
     @Override
@@ -31,14 +29,15 @@ public class OnesCountStatistic implements Statistic {
     }
 
     @Override
-    public double calc(DoubleMatrix1D values) {
-        int size = values.size();
-        int count = 0;
+    public Double calc(Iterable<Double> values) {
 
-        for (int i = 0; i < size; i++)
-            count += values.getQuick(i) == 1.0 ? 1 : 0;
+        Double count = 0.0;
 
-        return (double) count;
+        for (Double value : values) {
+            count += (value == 1.0 ? 1.0 : 0.0);
+        }
+
+        return count;
     }
 
 }

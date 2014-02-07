@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<oncodriveAnalysis>
+    <title>test</title>
+    <description>Binomial + BH FDR</description>
+    <attributes/>
+    <startTime>2014-02-06T17:29:20.554+01:00</startTime>
+    <elapsedTime>471</elapsedTime>
+    <binaryCutoffEnabled>false</binaryCutoffEnabled>
+    <binaryCutoffCmp>ge</binaryCutoffCmp>
+    <binaryCutoffValue>1.5</binaryCutoffValue>
+    <testConfig>
+        <name>enrichment</name>
+        <configuration>
+            <property key="test-name" value="binomial"/>
+            <property key="aproximation" value="exact"/>
+        </configuration>
+    </testConfig>
+    <moduleMap path="test01-modules.ixm.gz"/>
+    <minModuleSize>0</minModuleSize>
+    <maxModuleSize>2147483647</maxModuleSize>
+    <data path="test01-data.cdm.gz"/>
+    <mtc>bh</mtc>
+    <results path="test01-results.tdm.gz"/>
+</oncodriveAnalysis>

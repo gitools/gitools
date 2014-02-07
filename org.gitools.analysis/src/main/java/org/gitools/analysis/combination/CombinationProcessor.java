@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.combination;
 
-import cern.jet.stat.Probability;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -48,6 +48,8 @@ public class CombinationProcessor implements AnalysisProcessor {
     private static MatrixLayer LAYER_P_VALUE = new MatrixLayer("p-value", double.class, "P-Value", "Combined P-Value");
 
     private final CombinationAnalysis analysis;
+
+    private static NormalDistribution NORMAL = new NormalDistribution();
 
     public CombinationProcessor(CombinationAnalysis analysis) {
         this.analysis = analysis;
@@ -160,7 +162,7 @@ public class CombinationProcessor implements AnalysisProcessor {
         pValue = pValue < 0.000001 ? 0.000001 : pValue;
         pValue = pValue > 0.999999 ? 0.999999 : pValue;
 
-        return Probability.normalInverse(pValue);
+        return NORMAL.inverseCumulativeProbability(pValue);
     }
 
     private double toPValue(double zScore) {
@@ -168,7 +170,8 @@ public class CombinationProcessor implements AnalysisProcessor {
             return zScore;
         }
 
-        return 1.0 - Probability.normal(zScore);
+        return 1.0 - NORMAL.cumulativeProbability(zScore);
+
     }
 
 }

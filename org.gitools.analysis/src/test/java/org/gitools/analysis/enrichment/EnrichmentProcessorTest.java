@@ -40,12 +40,12 @@ import java.io.IOException;
 public class EnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAnalysis> {
 
     public EnrichmentProcessorTest() {
-        super(EnrichmentAnalysis.class, "/enrichment/analysis.enrichment");
+        super(EnrichmentAnalysis.class, "/enrichment/test01.enrichment");
     }
 
     @Test
     public void testResourceFormat() {
-        assertEquals("Example for enrichment analysis", getAnalysis().getTitle());
+        assertEquals("test", getAnalysis().getTitle());
     }
 
     @Test
@@ -57,16 +57,16 @@ public class EnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAna
         IMatrix resultsOk = analysis.getResults().get();
         analysis.setResults(null);
 
-        //TODO Execute the analysis
-        /*try {
+        // Execute the analysis
+        try {
             AnalysisProcessor processor = new EnrichmentProcessor(analysis);
             processor.run(getProgressMonitor());
         } catch (AnalysisException e) {
             e.printStackTrace();
-        }*/
+        }
 
         // Test the store and load
-        IMatrix results = storeAndLoadMatrix(resultsOk);
+        IMatrix results = storeAndLoadMatrix(analysis.getResults().get());
 
         // Compare the matrix
         AssertMatrix.assertEquals(resultsOk, results);

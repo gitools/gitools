@@ -21,9 +21,10 @@
  */
 package org.gitools.analysis.stats.calc;
 
-import cern.colt.matrix.DoubleMatrix1D;
+import com.google.common.collect.Lists;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class MedianStatistic implements Statistic {
 
@@ -33,27 +34,20 @@ public class MedianStatistic implements Statistic {
     }
 
     @Override
-    public double calc(DoubleMatrix1D values) {
+    public Double calc(Iterable<Double> input) {
 
-        final int size = values.size();
+        List<Double> values = Lists.newArrayList(input);
 
-        if (size == 0) {
-            return Double.NaN;
-        } else if (size == 1) {
-            return values.getQuick(0);
+        if (values.isEmpty()) {
+            return null;
         }
 
-        double[] tmp = new double[size];
+        Collections.sort(values);
+        final int middle = values.size() / 2;
 
-        values.toArray(tmp);
-
-        Arrays.sort(tmp);
-
-        final int middle = size / 2;
-        double median = tmp[middle];
-
-        if (size % 2 == 0) {
-            median = (tmp[middle - 1] + median) / 2.0;
+        Double median = values.get(middle);
+        if (values.size() % 2 == 0) {
+            median = (values.get(middle - 1) + median) / 2.0;
         }
 
         return median;

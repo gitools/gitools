@@ -23,8 +23,6 @@ package org.gitools.api.matrix;
 
 public interface ILayerAdapter<T> {
 
-    Class<? extends T> getElementClass();
-
     IMatrixLayers<? extends IMatrixLayer> getMatrixLayers();
 
     <L> IMatrixLayer<L> getLayer(Class<L> layerClass, String layerName);

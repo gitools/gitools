@@ -25,52 +25,33 @@ package org.gitools.matrix.modulemap;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.resource.Resource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HashModuleMap extends Resource implements IModuleMap {
 
-    private List<String> modules;
-    private List<String> items;
-    private Map<String, List<String>> map;
-
-    private transient Map<String, int[]> mapIndices;
+    private Set<String> modules;
+    private Set<String> items;
+    private Map<String, Set<String>> map;
 
     public HashModuleMap() {
-        this.modules = new ArrayList<>();
-        this.items = new ArrayList<>();
+        this.modules = new HashSet<>();
+        this.items = new HashSet<>();
         this.map = new HashMap<>();
     }
 
     @Override
-    public Collection<String> getModules() {
+    public Set<String> getModules() {
         return modules;
     }
 
     @Override
-    public Collection<String> getItems() {
+    public Set<String> getItems() {
         return items;
     }
 
     @Override
-    public Collection<String> getMappingItems(String module) {
+    public Set<String> getMappingItems(String module) {
         return map.get(module);
-    }
-
-    @Override
-    public int[] getItemIndices(String modName) {
-
-        int[] result = getMapIndices().get(modName);
-
-        if (result == null) {
-            return new int[0];
-        }
-
-        return result;
     }
 
     public HashModuleMap addMapping(String module, String... items) {
@@ -89,7 +70,7 @@ public class HashModuleMap extends Resource implements IModuleMap {
             }
 
             if (!this.map.containsKey(module)) {
-                this.map.put(module, new ArrayList<String>());
+                this.map.put(module, new HashSet<String>());
             }
 
             if (!this.map.get(module).contains(item)) {
@@ -97,31 +78,9 @@ public class HashModuleMap extends Resource implements IModuleMap {
             }
         }
 
-        this.mapIndices = null;
-
         return this;
     }
 
-    private Map<String, int[]> getMapIndices() {
-
-        if (mapIndices == null) {
-            mapIndices = new HashMap<>();
-
-            for (String module : modules) {
-
-                List<String> mappings = map.get(module);
-                int[] mappingIndices = new int[mappings.size()];
-
-                for (int i = 0; i < mappings.size(); i++) {
-                    mappingIndices[i] = items.indexOf(mappings.get(i));
-                }
-
-                mapIndices.put(module, mappingIndices);
-            }
-        }
-
-        return mapIndices;
-    }
 
     @Override
     public String toString() {

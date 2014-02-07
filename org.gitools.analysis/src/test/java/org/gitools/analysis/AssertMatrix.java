@@ -58,11 +58,29 @@ public class AssertMatrix {
                     Object v1 = m1.get(l1, p1);
                     Object v2 = m2.get(l2, p2);
 
-                    Assert.assertEquals("layer: " + l1.getId() + " pos:" + p1.toString(), v1, v2);
+                    assertSimilar("layer: " + l1.getId() + " pos:" + p1.toString(), v1, v2, 0.5e-5);
                 }
             }
         }
 
+    }
+
+    static public void assertSimilar(String message, Object v1, Object v2, double delta) {
+
+        if (v1 == null && v2 == null) {
+            return;
+        }
+
+        if (v1 == null) {
+            Assert.failNotEquals(message, v1, v2);
+        }
+
+        if (v1 instanceof Double) {
+            Assert.assertEquals(message, ((Double) v1).doubleValue(), ((Double)v2).doubleValue(), delta);
+            return;
+        }
+
+        Assert.assertEquals(message, v1, v2);
     }
 
     static public void assertEquals(IMatrixDimension d1, IMatrixDimension d2) {

@@ -25,15 +25,14 @@ package org.gitools.api.modulemap;
 import org.gitools.api.resource.IResource;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface IModuleMap extends IResource {
 
-    Collection<String> getModules();
+    Set<String> getModules();
 
-    Collection<String> getItems();
+    Set<String> getItems();
 
-    Collection<String> getMappingItems(String module);
+    Set<String> getMappingItems(String module);
 
-    @Deprecated
-    int[] getItemIndices(String modName);
 }

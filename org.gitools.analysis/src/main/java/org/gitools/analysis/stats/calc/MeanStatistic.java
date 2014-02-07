@@ -21,8 +21,6 @@
  */
 package org.gitools.analysis.stats.calc;
 
-import cern.colt.matrix.DoubleMatrix1D;
-
 public class MeanStatistic implements Statistic {
 
     @Override
@@ -31,7 +29,18 @@ public class MeanStatistic implements Statistic {
     }
 
     @Override
-    public double calc(DoubleMatrix1D values) {
-        return values.zSum() / values.size();
+    public Double calc(Iterable<Double> values) {
+
+        double sum = 0.0;
+        int size = 0;
+
+        for(Double value : values) {
+            if (value != null) {
+                sum += value;
+                size++;
+            }
+        }
+
+        return sum / size;
     }
 }

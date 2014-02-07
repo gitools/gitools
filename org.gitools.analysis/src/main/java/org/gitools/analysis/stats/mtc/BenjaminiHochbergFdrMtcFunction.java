@@ -21,6 +21,7 @@
  */
 package org.gitools.analysis.stats.mtc;
 
+import org.apache.commons.math3.util.FastMath;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
@@ -57,6 +58,7 @@ public class BenjaminiHochbergFdrMtcFunction extends AbstractMatrixFunction<Doub
             }
 
             ranks.put(parentIterable.getPosition().get(iterateDimension), rank);
+            lastValue = value;
         }
 
     }
@@ -69,7 +71,7 @@ public class BenjaminiHochbergFdrMtcFunction extends AbstractMatrixFunction<Doub
         }
 
         int rank = ranks.get(position.get(iterateDimension));
-        return Math.min(1.0, value * n / rank);
-
+        double result = FastMath.min(1.0, value * n / rank);
+        return result;
     }
 }
