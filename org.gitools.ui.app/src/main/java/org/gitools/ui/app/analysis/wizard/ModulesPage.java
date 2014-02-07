@@ -41,9 +41,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class ModulesPage extends AbstractWizardPage {
 
     private static final long serialVersionUID = -3938595143114651781L;
@@ -52,9 +49,6 @@ public class ModulesPage extends AbstractWizardPage {
 
     private boolean emptyFileAllowed;
 
-    /**
-     * Creates new form ModuleFilteringPanel
-     */
     public ModulesPage() {
         setTitle("Select modules");
 
@@ -135,11 +129,6 @@ public class ModulesPage extends AbstractWizardPage {
             if (!getFileFormat().checkExtension(path)) {
                 setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
             }
-
-			/*String ext = getFileFormat().getExtension().toLowerCase();
-            if (!path.endsWith(ext) &&
-					!path.endsWith(ext + ".gz"))
-				setMessage(MessageStatus.WARN, "The extension of the data file doesn't match the selected format");*/
         }
 
         setComplete(completed);

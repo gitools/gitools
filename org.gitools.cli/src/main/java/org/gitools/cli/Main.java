@@ -50,11 +50,11 @@ public class Main {
         ApplicationContext.setPersistenceManager(container.instance().select(IPersistenceManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
-        final ToolSet toolSet = XmlToolSetResource.load(new InputStreamReader(Main.class.getClassLoader().getResourceAsStream("gitools-cli.xml")));
+        //TODO
+        printVersion();
 
-        final ToolManager toolManager = new ToolManager(toolSet, appName, versionString);
-        int code = toolManager.launch(args);
-        System.exit(code);
+        System.exit(0);
+
     }
 
     public static void printVersion() {
@@ -62,9 +62,4 @@ public class Main {
         System.exit(0);
     }
 
-    private static void printUsage(PrintStream out, CmdLineParser parser, String toolName) {
-        System.err.println("Usage: " + toolName + " [options]");
-        parser.printUsage(System.err);
-        System.err.println();
-    }
 }

@@ -35,12 +35,7 @@ import javax.swing.table.TableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class AnalysisDetailsPage extends AbstractWizardPage {
-
-    private static final long serialVersionUID = -6310021084299136899L;
 
     private static class AttributesModel implements TableModel {
 
@@ -50,7 +45,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         private final List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         public AttributesModel() {
-            attrs = new ArrayList<Property>();
+            attrs = new ArrayList<>();
         }
 
         public AttributesModel(List<Property> attrs) {
@@ -175,7 +170,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         titleField.setText(title);
     }
 
-    public String getAnalysisNotes() {
+    public String getAnalysisDescription() {
         return notesArea.getText();
     }
 
@@ -183,8 +178,7 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
         notesArea.setText(notes);
     }
 
-
-    public List<Property> getAnalysisAttributes() {
+    public List<Property> getAnalysisProperties() {
         return attrModel.getAttributes();
     }
 

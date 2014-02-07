@@ -22,70 +22,41 @@
 package org.gitools.ui.app.analysis.htest.wizard;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.api.ApplicationContext;
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.matrix.geneset.GeneSet;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.app.analysis.wizard.DataFilePage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
-import org.gitools.ui.app.analysis.wizard.ExamplePage;
 import org.gitools.ui.app.analysis.wizard.ModulesPage;
-import org.gitools.ui.app.examples.ExamplesManager;
-import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 
-import javax.swing.*;
 import java.io.File;
 
-public class EnrichmentAnalysisWizard extends AbstractWizard {
+public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis> {
 
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + EnrichmentAnalysisFormat.EXTENSION;
-    private static final String EXAMPLE_DATA_FILE = "20_tumor_types_upreg_annot.cdm.gz";
-    private static final String EXAMPLE_MODULES_FILE = "KEGG_pathways_descr__ensembl_gene.tcm";
-
-    private ExamplePage examplePage;
-    private DataFilePage dataPage;
+    private IMatrix sourceData;
     private DataFilterPage dataFilterPage;
     private ModulesPage modulesPage;
     private StatisticalTestPage statisticalTestPage;
-    private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
-    private boolean examplePageEnabled = true;
-    private boolean dataFromMemory = false;
-    private boolean saveFilePageEnabled = true;
 
-    public EnrichmentAnalysisWizard() {
+    public EnrichmentAnalysisWizard(IMatrix sourceData) {
         super();
 
         setTitle("Enrichment analysis");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ENRICHMENT, 96));
         setHelpContext("analysis_enrichment");
+
+        this.sourceData = sourceData;
     }
 
     @Override
     public void addPages() {
-        // Example
-        if (isExamplePageEnabled() && Settings.getDefault().isShowCombinationExamplePage()) {
-            examplePage = new ExamplePage("an enrichment analysis");
-            examplePage.setTitle("Enrichment analysis");
-            addPage(examplePage);
-        }
-
-        // Data
-        if (!isDataFromMemory()) {
-            dataPage = new DataFilePage();
-            addPage(dataPage);
-        }
 
         // Data filtering
         dataFilterPage = new DataFilterPage();
@@ -100,142 +71,28 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         statisticalTestPage = new StatisticalTestPage();
         addPage(statisticalTestPage);
 
-        // Destination
-        if (isSaveFilePageEnabled()) {
-            saveFilePage = new SaveFilePage();
-            saveFilePage.setTitle("Select destination file");
-            saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-            saveFilePage.setFormats(new FileFormat[]{new FileFormat("Enrichment analysis (*." + EnrichmentAnalysisFormat.EXTENSION + ")", EnrichmentAnalysisFormat.EXTENSION)});
-            saveFilePage.setFormatsVisible(false);
-            addPage(saveFilePage);
-        }
-
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
         addPage(analysisDetailsPage);
     }
 
     @Override
-    public void pageLeft(IWizardPage currentPage) {
-        if (currentPage == examplePage) {
-            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
-
-            if (examplePage.isExampleEnabled()) {
-                JobThread.execute(Application.get(), new JobRunnable() {
-                    @Override
-                    public void run(IProgressMonitor monitor) {
-
-                        final File basePath = ExamplesManager.getDefault().resolvePath("enrichment", monitor);
-
-                        if (basePath == null) {
-                            throw new RuntimeException("Unexpected error: There are no examples available");
-                        }
-
-                        File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-                        try {
-                            monitor.begin("Loading example parameters ...", 1);
-
-                            final EnrichmentAnalysis a = ApplicationContext.getPersistenceManager().load(analysisFile, EnrichmentAnalysis.class, monitor);
-
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setAnalysis(a);
-
-                                    dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
-                                    modulesPage.setSelectedFile(new File(basePath, EXAMPLE_MODULES_FILE));
-                                    saveFilePage.setFileNameWithoutExtension("example");
-                                }
-                            });
-
-                            monitor.end();
-                        } catch (Exception ex) {
-                            monitor.exception(ex);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    public boolean isSaveFilePageEnabled() {
-        return saveFilePageEnabled;
-    }
-
-    public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
-        this.saveFilePageEnabled = saveFilePageEnabled;
-    }
-
-    public boolean isExamplePageEnabled() {
-        return examplePageEnabled;
-    }
-
-    public void setExamplePageEnabled(boolean examplePageEnabled) {
-        this.examplePageEnabled = examplePageEnabled;
-    }
-
-    public boolean isDataFromMemory() {
-        return dataFromMemory;
-    }
-
-    public void setDataFromMemory(boolean dataFromMemory) {
-        this.dataFromMemory = dataFromMemory;
-    }
-
-    @Override
-    public boolean canFinish() {
-        IWizardPage page = getCurrentPage();
-
-        boolean canFinish = super.canFinish();
-        canFinish |= page == saveFilePage && page.isComplete();
-
-        return canFinish;
-    }
-
-    public String getWorkdir() {
-        return saveFilePage.getFolder();
-    }
-
-    public String getFileName() {
-        return saveFilePage.getFileName();
-    }
-
-    public IResourceFormat getDataFileFormat() {
-        return dataPage.getFileFormat().getFormat(IMatrix.class);
-    }
-
-    public File getDataFile() {
-        return dataPage.getFile();
-    }
-
-    public int getSelectedValueIndex() {
-        return dataPage.getSelectedValueIndex();
-    }
-
-    public File getPopulationFile() {
-        return dataFilterPage.getRowsFilterFile();
-    }
-
-    public Double getPopulationDefaultValue() {
-        return dataFilterPage.getPopulationDefaultValue();
-    }
-
-    public IResourceFormat getModulesFileFormat() {
-        return modulesPage.getFileResourceFormat();
-    }
-
-    public File getModulesFile() {
-        return modulesPage.getSelectedFile();
-    }
-
-
-    public EnrichmentAnalysis getAnalysis() {
+    public EnrichmentAnalysis createAnalysis() {
         EnrichmentAnalysis analysis = new EnrichmentAnalysis();
 
+        // Details
         analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
-        analysis.setDescription(analysisDetailsPage.getAnalysisNotes());
-        analysis.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        analysis.setDescription(analysisDetailsPage.getAnalysisDescription());
+        analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
 
+        // Source data
+        analysis.setData(new ResourceReference<>("data", sourceData));
+
+        // Module map data
+        analysis.setModuleMap(new ResourceReference<>(new UrlResourceLocator(modulesPage.getSelectedFile()), IModuleMap.class));
+
+        // Test parameters
+        analysis.setTestConfig(statisticalTestPage.getTestConfig());
         analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
         if (dataFilterPage.isBinaryCutoffEnabled()) {
             analysis.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
@@ -244,22 +101,18 @@ public class EnrichmentAnalysisWizard extends AbstractWizard {
         analysis.setDiscardNonMappedRows(dataFilterPage.isDiscardNonMappedRowsEnabled());
         analysis.setMinModuleSize(modulesPage.getMinSize());
         analysis.setMaxModuleSize(modulesPage.getMaxSize());
-        analysis.setTestConfig(statisticalTestPage.getTestConfig());
+
+        // Multiple test correction
         analysis.setMtc(statisticalTestPage.getMtc());
+
+        // Population
+        File populationFile = dataFilterPage.getPopulationFile();
+        if (populationFile!=null) {
+            analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), GeneSet.class));
+            analysis.setPopulationDefaultValue(dataFilterPage.getPopulationDefaultValue());
+        }
 
         return analysis;
     }
 
-    private void setAnalysis(EnrichmentAnalysis a) {
-        analysisDetailsPage.setAnalysisTitle(a.getTitle());
-        analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
-        dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
-        dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
-        dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
-        modulesPage.setMinSize(a.getMinModuleSize());
-        modulesPage.setMaxSize(a.getMaxModuleSize());
-        statisticalTestPage.setTestConfig(a.getTestConfig());
-        statisticalTestPage.setMtc(a.getMtc());
-    }
 }

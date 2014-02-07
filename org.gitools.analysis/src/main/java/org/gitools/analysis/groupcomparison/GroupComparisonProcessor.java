@@ -22,9 +22,9 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
-import org.gitools.analysis.htest.MtcTestProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
@@ -47,7 +47,7 @@ import org.gitools.utils.datafilters.BinaryCutoff;
 import java.util.Arrays;
 import java.util.Date;
 
-public class GroupComparisonProcessor extends MtcTestProcessor {
+public class GroupComparisonProcessor implements AnalysisProcessor {
 
     private final GroupComparisonAnalysis analysis;
 

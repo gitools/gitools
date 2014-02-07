@@ -141,8 +141,8 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        a.setDescription(analysisDetailsPage.getAnalysisDescription());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
         a.setTransposeData(false);
 
         ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
