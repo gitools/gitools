@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enrichmentAnalysis>
+    <title>test</title>
+    <description>Using Fisher exact</description>
+    <attributes/>
+    <startTime>2014-02-07T15:10:57.997+01:00</startTime>
+    <elapsedTime>385</elapsedTime>
+    <binaryCutoffEnabled>false</binaryCutoffEnabled>
+    <binaryCutoffValue>0.0</binaryCutoffValue>
+    <testConfig>
+        <name>enrichment</name>
+        <configuration>
+            <property key="test-name" value="fisher-exact"/>
+        </configuration>
+    </testConfig>
+    <moduleMap path="test03-modules.ixm.gz"/>
+    <minModuleSize>20</minModuleSize>
+    <maxModuleSize>2147483647</maxModuleSize>
+    <data path="test03-data.cdm.gz"/>
+    <mtc>bh</mtc>
+    <results path="test03-results.tdm.gz"/>
+    <discardNonMappedRows>false</discardNonMappedRows>
+</enrichmentAnalysis>

@@ -80,7 +80,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
 
                         IMatrixIterable<Double> population = position.iterate(layer, items);
                         if (analysis.isDiscardNonMappedRows()) {
-                            population.filter(moduleMap.getItems());
+                            population = population.filter(moduleMap.getItems());
                         }
 
                         test.processPopulation(population);
