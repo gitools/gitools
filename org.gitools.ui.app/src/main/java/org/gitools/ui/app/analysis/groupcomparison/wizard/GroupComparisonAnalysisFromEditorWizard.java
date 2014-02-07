@@ -26,6 +26,8 @@ import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.resource.Property;
@@ -43,7 +45,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
 
-    private GroupComparisonStatisticsPage attrSelectPage;
+    private GroupComparisonStatisticsPage statisticsPage;
     private AnalysisDetailsPage analysisDetailsPage;
     private GroupComparisonGroupingPage groupingPage;
 
@@ -63,8 +65,8 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         groupingPage = new GroupComparisonGroupingPage(heatmap, DimensionGroupEnum.Free);
         addPage(groupingPage);
 
-        attrSelectPage = new GroupComparisonStatisticsPage();
-        addPage(attrSelectPage);
+        statisticsPage = new GroupComparisonStatisticsPage();
+        addPage(statisticsPage);
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
@@ -75,7 +77,9 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     public IWizardPage getNextPage(IWizardPage page) {
         page = getCurrentPage();
 
-        if (super.getNextPage(page) == analysisDetailsPage) {
+        if (super.getNextPage(page) == statisticsPage) {
+            statisticsPage.setGroupNumber(groupingPage.getGroups().size());
+        } else if (super.getNextPage(page) == analysisDetailsPage) {
             updateAnalysisDetails();
         }
 
@@ -95,7 +99,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
         IWizardPage page = getCurrentPage();
 
-        canFinish |= page.isComplete() && (page == attrSelectPage);
+        canFinish |= page.isComplete() && (page == statisticsPage);
 
         return canFinish;
     }
@@ -104,17 +108,19 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     public GroupComparisonAnalysis getAnalysis() {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();
 
+        a.setData(new ResourceReference<IMatrix>("data", heatmap));
+
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
         a.setDescription(analysisDetailsPage.getAnalysisNotes());
         a.setProperties(analysisDetailsPage.getAnalysisAttributes());
         a.setTransposeData(false);
 
-        ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
+        ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", statisticsPage.getTest().getName());
 
-        a.setLayer(groupingPage.getLayerIndex());
+        a.setLayer(groupingPage.getLayer());
         a.setNullConversion(groupingPage.getNullConversion());
         a.setToolConfig(toolConfig);
-        a.setMtc(attrSelectPage.getMtc().getShortName());
+        a.setMtc(statisticsPage.getMtc().getShortName());
         a.setRowAnnotations(heatmap.getRows().getAnnotations());
 
         List<HeatmapHeader> rowHeaders = new ArrayList<>();
@@ -144,15 +150,33 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         return a;
     }
 
+    /**
+     * Fill the form with the analysis details
+     */
     private void updateAnalysisDetails() {
         List<Property> analysisAttributes = new ArrayList<>();
-        analysisAttributes.add(new Property("Grouping type", groupingPage.getGroups().get(0).getGroupType().toString()));
-        for (DimensionGroup g : groupingPage.getGroups()) {
-            analysisAttributes.add(new Property("Group: " + g.getName(), g.getProperty()));
+        analysisAttributes.add(new Property("Grouping type", groupingPage.getGroupingType().toString()));
+
+        String title;
+        title = heatmap.getTitle() + " Group Comparison";
+        if (!title.equals("")) {
+            analysisDetailsPage.setAnalysisTitle(title);
         }
+
+        if (groupingPage.getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
+            analysisAttributes.add(new Property("Grouping pattern", groupingPage.getGroupingPattern()));
+        }
+
+        int counter = 0;
+        for (DimensionGroup g : groupingPage.getGroups()) {
+            counter++;
+            analysisAttributes.add(new Property("Group " + String.valueOf(counter) + ": " + g.getName(), g.getProperty()));
+        }
+
         Double nullConversion = groupingPage.getNullConversion();
         analysisAttributes.add(new Property("NoneConvertedTo",
                 nullConversion != null ? Double.toString(nullConversion) : "null"));
+
         analysisDetailsPage.setAnalysisAttributes(analysisAttributes);
     }
 }

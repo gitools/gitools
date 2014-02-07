@@ -24,7 +24,6 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.htest.MtcTestProcessor;
-import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -32,12 +31,14 @@ import org.gitools.api.matrix.*;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.matrix.model.iterable.PositionMapping;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
+import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.gitools.analysis.stats.mtc.MTCFactory.createFromName;
+import static org.gitools.analysis.stats.mtc.MTCFactory.createFunction;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
@@ -55,23 +56,23 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
         // Prepare input data matrix
         IMatrix dataMatrix = analysis.getData().get();
-        IMatrixLayer<Double> layer = dataMatrix.getLayers().get(analysis.getLayerIndex());
+        IMatrixLayer<Double> layer = dataMatrix.getLayers().get(analysis.getLayerName());
 
         // Prepare dimensions to compare
-        IMatrixDimension rows = (analysis.isTransposeData() ? dataMatrix.getDimension(COLUMNS) : dataMatrix.getDimension(ROWS));
-        IMatrixDimension columns = (analysis.isTransposeData() ? dataMatrix.getDimension(ROWS) : dataMatrix.getDimension(COLUMNS));
+        IMatrixDimension sourceRows = (analysis.isTransposeData() ? dataMatrix.getDimension(COLUMNS) : dataMatrix.getDimension(ROWS));
+        IMatrixDimension sourceColumns = (analysis.isTransposeData() ? dataMatrix.getDimension(ROWS) : dataMatrix.getDimension(COLUMNS));
 
         // Prepare results data matrix
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
         MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
 
-        HashMatrixDimension groupCombinations = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
-        HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, rows);
+        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
+        HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, sourceRows);
 
         IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
                 resultsRows,
-                groupCombinations
+                resultColumns
         );
 
         // Prepare group predicates
@@ -79,19 +80,21 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
         // Run comparison
         dataMatrix.newPosition()
-                .iterate(rows)
+                .iterate(sourceRows)
                 .monitor(monitor, "Running group comparison analysis")
                 .transform(
-                        new GroupComparisonFunction(test, columns, layer, nullConversionFunction, (DimensionGroup[]) analysis.getGroups().toArray())
-                ).store(
-                resultsMatrix,
-                new PositionMapping().map(rows, resultsRows).fix(groupCombinations, test.getName()),
-                adapter
-        );
+                        new GroupComparisonFunction(
+                                test,
+                                sourceColumns,
+                                layer,
+                                nullConversionFunction,
+                                analysis.getGroups().toArray(new DimensionGroup[analysis.getGroups().size()]))
+                )
+                .store(resultsMatrix, new MapLayerAdapter<>(resultColumns, adapter));
 
         // Run multiple test correction
-        IMatrixPosition position = resultsMatrix.newPosition().set(groupCombinations, test.getName());
-        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
+        IMatrixPosition position = resultsMatrix.newPosition().set(resultColumns, test.getName());
+        IMatrixFunction<Double, Double> mtcFunction = createFunction(createFromName(analysis.mtc()));
 
         // Left p-Value
         position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)

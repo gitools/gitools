@@ -27,7 +27,9 @@ import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 
 public class DimensionGroupAnnotation extends DimensionGroup {
 
+
     public DimensionGroupAnnotation(String name, GroupByLabelPredicate predicate) {
-        super(name, predicate, DimensionGroupEnum.Annotation, String.valueOf(predicate.getGroupIdentifiers().size()) + "\n items");
+        super(name, predicate, DimensionGroupEnum.Annotation, String.valueOf(predicate.getGroupIdentifiers().size()) + "\n items",
+                predicate.getGroupIdentifiers().size());
     }
 }

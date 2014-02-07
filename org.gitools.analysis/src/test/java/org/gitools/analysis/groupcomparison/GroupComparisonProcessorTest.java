@@ -64,7 +64,7 @@ public class GroupComparisonProcessorTest extends AbstractProcessorTest<GroupCom
     public void testResourceFormat() {
         assertEquals(getAnalysis().getTitle(), "tp53-signalling CIS-effect");
         assertEquals(getAnalysis().getDescription(), "GBM: CNA effect in expression in TP53 signalling pathway. This test assesses the effecto of copy umber alteration on the expression status of the gene. Read under the following link on how to perform the test: http://help.gitools.org/xwiki/bin/view/Tutorials/Tutorial63");
-        assertEquals(getAnalysis().getLayerIndex(), 0);
+        assertEquals(getAnalysis().getLayerName(), 0);
         assertEquals(getAnalysis().getColumnGrouping(), "Group by value");
     }
 }

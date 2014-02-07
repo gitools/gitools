@@ -30,15 +30,15 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.matrix.model.AbstractMatrixFunction;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 
-public class GroupComparisonFunction extends AbstractMatrixFunction<GroupComparisonResult, String> {
+public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, GroupComparisonResult>, String> {
 
     private MannWhitneyWilxoxonTest test;
     private IMatrixLayer<Double> valueLayer;
@@ -63,13 +63,14 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<GroupCompari
     }
 
     @Override
-    public GroupComparisonResult apply(String identifier, IMatrixPosition position) {
+    public Map<String, GroupComparisonResult> apply(String identifier, IMatrixPosition position) {
 
         // Filter according to Predicate (groupFilter), transform according to nullConversion,
         // and finally remove nulls.
 
         Iterator<int[]> combIterator = CombinatoricsUtils.combinationsIterator(groups.length, 2);
-        Map<String, GroupComparisonResult> resultHashMap = new HashMap<>();
+        // LinkedHashMap to guarantee order in result heatmap
+        Map<String, GroupComparisonResult> resultHashMap = new LinkedHashMap<>();
 
         while (combIterator.hasNext()) {
             int[] groupIndices = combIterator.next();
@@ -94,7 +95,6 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<GroupCompari
 
         }
 
-
-        return null;
+        return resultHashMap;
     }
 }

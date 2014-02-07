@@ -25,8 +25,6 @@ import org.gitools.analysis.Analysis;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
-import org.gitools.analysis.stats.mtc.MTC;
-import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IAnnotations;
@@ -51,8 +49,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private boolean transposeData;
 
-    private int layerIndex;
-
+    private String layerName;
 
     private DimensionGroupEnum columnGrouping = null;
 
@@ -86,8 +83,8 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private Double nullConversion;
 
 
-    public MTC getMtc() {
-        return MTCFactory.createFromName(mtc);
+    public String mtc() {
+        return mtc;
     }
 
     public void setMtc(String mtc) {
@@ -113,12 +110,12 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         return sizeAttrName;
     }
 
-    public void setLayer(int attributeIndex) {
-        this.layerIndex = attributeIndex;
+    public void setLayer(String layerName) {
+        this.layerName = layerName;
     }
 
-    public int getLayerIndex() {
-        return layerIndex;
+    public String getLayerName() {
+        return layerName;
     }
 
     public void setSizeAttrName(String sizeAttrName) {

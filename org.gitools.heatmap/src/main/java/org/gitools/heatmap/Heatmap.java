@@ -21,26 +21,24 @@
  */
 package org.gitools.heatmap;
 
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.matrix.model.MatrixPosition;
 import org.gitools.resource.Resource;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -216,7 +214,7 @@ public class Heatmap extends Resource implements IMatrixView {
 
     @Override
     public IMatrixPosition newPosition() {
-        return getContents().newPosition();
+        return new MatrixPosition(this);
     }
 
     private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[]{ROWS, COLUMNS};

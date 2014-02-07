@@ -178,7 +178,7 @@ class DimensionGroupTableModel extends AbstractTableModel {
         }
     }
 
-    void removeGroup(int[] selectedRows) {
+    void removeGroups(int[] selectedRows) {
         List<Object> objects = new ArrayList<>(selectedRows.length);
         for (int index : selectedRows) {
             objects.add(indexedGroupList.get(index));

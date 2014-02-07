@@ -24,12 +24,10 @@ package org.gitools.ui.app.actions.analysis;
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
+import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
@@ -76,8 +74,6 @@ public class GroupComparisonAction extends HeatmapAction {
         }
 
         final GroupComparisonAnalysis analysis = wiz.getAnalysis();
-
-        analysis.setData(new ResourceReference<IMatrix>("data", heatmap));
 
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override

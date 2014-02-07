@@ -43,6 +43,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
     private JComboBox testCb;
     private JComboBox mtcCb;
     private JTextPane testExplanation;
+    private int groupNumber;
 
     public GroupComparisonStatisticsPage() {
         super();
@@ -60,6 +61,9 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
     }
 
+    public void setGroupNumber(int groupNumber) {
+        this.groupNumber = groupNumber;
+    }
 
     private static class TestElement {
         public final Test test;
@@ -123,10 +127,9 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
     @Override
     public void updateControls() {
         if (testCb.getSelectedIndex() == 0) {
-            //TODO: calc combinatorics
-            double v = CombinatoricsUtils.binomialCoefficientDouble(10, 2);
+            double v = CombinatoricsUtils.binomialCoefficientDouble(groupNumber, 2);
             if (v < 50) {
-                setMessage(MessageStatus.INFO, "You will be calculating " + String.valueOf(v) + " group combinations");
+                setMessage(MessageStatus.INFO, "You will be calculating " + String.valueOf(Math.round(v)) + " group combinations");
             } else {
                 setMessage(MessageStatus.WARN, "This would yield " + String.valueOf(v) + " group combinations. Gitools" +
                         "refuses to do that much work.");

@@ -29,7 +29,7 @@ firefox html/index.html
 
 # Go back and Compile and package
 cd ..
-mvn clean install assembly:assembly
+mvn -P test-analysis clean install assembly:assembly
 
 # Test new release
 cd target

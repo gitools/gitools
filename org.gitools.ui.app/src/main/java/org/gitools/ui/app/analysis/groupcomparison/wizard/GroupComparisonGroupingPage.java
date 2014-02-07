@@ -84,6 +84,9 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
     private List<DimensionGroup> removedItems = new ArrayList<DimensionGroup>();
     private Heatmap heatmap;
     private DimensionGroupEnum groupingType;
+    private String groupingPattern;
+
+    private static int MIN_GROUP_SIZE = 3;
 
 
     public GroupComparisonGroupingPage(Heatmap heatmap, DimensionGroupEnum groupingType) {
@@ -281,19 +284,37 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         updateButtons();
         updateGroupingType();
 
+
+        // Are there at least two groups?
         isComplete = tableModel.getRowCount() > 1;
 
+        if (!isComplete) {
+            setMessage(MessageStatus.INFO, "Create at least 2 groups to compare");
+            setComplete(false);
+            return;
+        } else {
+            setMessage(MessageStatus.INFO, "Click next to proceed.");
+        }
+
+        // Do all groups have at least 3 columns (if applicable)
+        if (annotationRadioButton.isSelected() | noConstraintRadioButton.isSelected()) {
+            for (DimensionGroup g : tableModel.getGroupList()) {
+                if (g.getGroupSize() < MIN_GROUP_SIZE) {
+                    setMessage(MessageStatus.ERROR, "Groups must contain 3 or more items. Remove or merge groups" +
+                            "that are too small.");
+                    setComplete(false);
+                    return;
+                }
+            }
+        }
+
+        // Valid Null Conversion?
         try {
             Double.valueOf(nullConversionTextArea.getText());
         } catch (Exception e) {
             setMessage(MessageStatus.ERROR, "\" " + nullConversionTextArea.getText() + "\" can is not a numeric value");
             setComplete(false);
             return;
-        }
-        if (!isComplete) {
-            setMessage(MessageStatus.INFO, "Create at least 2 groups to compare");
-        } else {
-            setMessage(MessageStatus.INFO, "Click next to proceed.");
         }
         setComplete(isComplete);
     }
@@ -328,6 +349,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         List<IMatrixPredicate> predicateList = new ArrayList<>();
         StringBuilder groupName = new StringBuilder("");
         StringBuilder groupProperty = new StringBuilder("");
+        int size = 0;
         for (int i : selection) {
             DimensionGroup group = tableModel.getGroupAt(i);
             if (!groupName.toString().equals("")) {
@@ -337,16 +359,18 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
             groupName.append(group.getName());
             groupProperty.append(group.getProperty());
             predicateList.add(group.getPredicate());
+            size += group.getGroupSize();
         }
 
         MatrixPredicates.OrPredicate newpredicate = new MatrixPredicates.OrPredicate(predicateList);
         tableModel.setGroup(new DimensionGroup(groupName.toString(),
                 newpredicate,
                 DimensionGroupEnum.Annotation,
-                groupProperty.toString()),
+                groupProperty.toString(), size),
                 selection[0]);
-        tableModel.removeGroup(ArrayUtils.removeElement(selection, selection[0]));
+        tableModel.removeGroups(ArrayUtils.removeElement(selection, selection[0]));
         tableModel.fireTableDataChanged();
+        updateControls();
     }
 
     private void initGroups() {
@@ -395,11 +419,14 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                     new GroupByLabelPredicate(
                             hdim,
                             groupAnnotationPattern,
-                            new PatternFunction(page.getPattern(), hdim.getAnnotations()))
-            );
+                            new PatternFunction(page.getPattern(), hdim.getAnnotations())));
+            if (groupAnnotationPattern.equals("")) {
+                g.setName("Not annotated");
+            }
             annGroups.add(g);
         }
         newGroups = annGroups.toArray(new DimensionGroup[annGroups.size()]);
+        this.groupingPattern = page.getPattern();
         return newGroups;
     }
 
@@ -452,7 +479,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
             }
 
         }
-        tableModel.removeGroup(groupsTable.getSelectedRows());
+        tableModel.removeGroups(groupsTable.getSelectedRows());
     }
 
 
@@ -596,9 +623,15 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         //attributeLabel.setVisible(false);
     }
 
-    public int getLayerIndex() {
-        return layerCb.getSelectedIndex();
+    public String getLayer() {
+        return layerCb.getSelectedItem().toString();
     }
 
+    public DimensionGroupEnum getGroupingType() {
+        return groupingType;
+    }
 
+    public String getGroupingPattern() {
+        return groupingPattern;
+    }
 }

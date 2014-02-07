@@ -21,8 +21,8 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.ConvergenceException;
 import org.apache.commons.math3.exception.MaxCountExceededException;
@@ -30,7 +30,6 @@ import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.NaturalRanking;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
 import org.apache.commons.math3.util.FastMath;
-import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 
 
@@ -45,11 +44,12 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
 
     public GroupComparisonResult processTest(Iterable<Double> group1, Iterable<Double> group2) {
 
-        Double[] x = Iterables.toArray(group1, Double.class);
-        Double[] y = Iterables.toArray(group2, Double.class);
+
+        double[] x = Doubles.toArray(Lists.newArrayList(group1));
+        double[] y = Doubles.toArray(Lists.newArrayList(group2));
 
         if (x.length == 0 || y.length == 0) {
-            return new GroupComparisonResult(Iterables.size(group1) + Iterables.size(group2), x.length, y.length, Double.NaN, Double.NaN, Double.NaN);
+            return new GroupComparisonResult(x.length + y.length, x.length, y.length, Double.NaN, Double.NaN, Double.NaN);
         }
 
         final double[] z = concatenateSamples(x, y);
@@ -97,7 +97,7 @@ public class MannWhitneyWilxoxonTest extends AbstractTest {
      * @param y second sample
      * @return concatenated array
      */
-    private double[] concatenateSamples(final Double[] x, final Double[] y) {
+    private double[] concatenateSamples(final double[] x, final double[] y) {
         final double[] z = new double[x.length + y.length];
 
         System.arraycopy(x, 0, z, 0, x.length);

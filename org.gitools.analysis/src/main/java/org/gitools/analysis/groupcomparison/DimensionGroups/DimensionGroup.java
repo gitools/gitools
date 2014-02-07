@@ -30,7 +30,40 @@ public class DimensionGroup {
     protected DimensionGroupEnum groupType;
     protected IMatrixPredicate predicate;
     protected String property = "";
+    protected Integer groupSize;
 
+
+    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property) {
+        this.name = name;
+        this.predicate = predicate;
+        this.groupType = groupType;
+        this.property = property;
+        groupSize = null;
+    }
+
+    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property, Integer groupSize) {
+        this.name = name;
+        this.predicate = predicate;
+        this.groupType = groupType;
+        this.property = property;
+        this.groupSize = groupSize;
+    }
+
+
+    public void setGroupSize(Integer groupSize) {
+        this.groupSize = groupSize;
+    }
+
+    /**
+     * If applicable, returns the size of the group or null if
+     * group size may vary
+     *
+     * @return Integer|null
+     */
+
+    public Integer getGroupSize() {
+        return groupSize;
+    }
 
     public String getProperty() {
         return property;
@@ -42,13 +75,6 @@ public class DimensionGroup {
 
     public DimensionGroupEnum getGroupType() {
         return groupType;
-    }
-
-    public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property) {
-        this.name = name;
-        this.predicate = predicate;
-        this.groupType = groupType;
-        this.property = property;
     }
 
     public String getName() {

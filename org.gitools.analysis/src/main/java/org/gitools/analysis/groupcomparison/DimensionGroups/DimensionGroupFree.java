@@ -25,9 +25,8 @@ import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 
 public class DimensionGroupFree extends DimensionGroup {
 
-    String property = "";
-
     public DimensionGroupFree(String name, GroupByLabelPredicate predicate) {
-        super(name, predicate, DimensionGroupEnum.Free, String.valueOf(predicate.getGroupIdentifiers().size()) + " items");
+        super(name, predicate, DimensionGroupEnum.Free, String.valueOf(predicate.getGroupIdentifiers().size()) + " items",
+                predicate.getGroupIdentifiers().size());
     }
 }

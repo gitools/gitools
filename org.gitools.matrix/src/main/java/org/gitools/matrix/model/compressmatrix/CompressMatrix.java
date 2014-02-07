@@ -25,10 +25,10 @@ package org.gitools.matrix.model.compressmatrix;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.matrix.model.AbstractMatrix;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.MemoryUtils;
 
 import java.io.ByteArrayInputStream;
@@ -125,7 +125,12 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimensi
         if (rowValues != null) {
 
             if (columnIndex != -1) {
-                return (T) (Double) rowValues[columnIndex][layerIndex];
+                Double result = rowValues[columnIndex][layerIndex];
+                if (Double.isNaN(result)) {
+                    return null;
+                }
+
+                return (T) result;
             }
         }
 
