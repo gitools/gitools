@@ -21,8 +21,6 @@
  */
 package org.gitools.analysis.groupcomparison;
 
-import org.gitools.analysis.stats.mtc.MTC;
-import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IAnnotations;
@@ -90,8 +88,8 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private double noneConversion;
 
 
-    public MTC getMtc() {
-        return MTCFactory.createFromName(mtc);
+    public String getMtc() {
+        return mtc;
     }
 
     public void setMtc(String mtc) {

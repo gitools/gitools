@@ -102,7 +102,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
                 .store(resultsMatrix, new MapLayerAdapter<>(modules, adapter));
 
         // Run multiple test correction
-        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(MTCFactory.createFromName(analysis.getMtc()));
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
         IMatrixPosition position = resultsMatrix.newPosition();
         for (String condition : position.iterate(conditions)) {
 

@@ -22,9 +22,7 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.analysis.stats.mtc.Bonferroni;
-import org.gitools.analysis.stats.mtc.MTC;
+import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
@@ -35,9 +33,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 
 
@@ -58,33 +53,9 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         }
     }
 
-    private static class MTCElement {
-        public final MTC mtc;
-
-        public MTCElement(MTC mtc) {
-            this.mtc = mtc;
-        }
-
-        @Override
-        public String toString() {
-            return this.mtc.getName();
-        }
-
-        public MTC getMTC() {
-            return this.mtc;
-        }
-    }
-
     public class AttrOption {
         private String name;
         private IMatrixLayer attr;
-
-        /**
-         * @noinspection UnusedDeclaration
-         */
-        public AttrOption(String name) {
-            this.name = name;
-        }
 
         public AttrOption(IMatrixLayer attr) {
             this.attr = attr;
@@ -113,7 +84,7 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
 
         testCbox.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilxoxonTest())}));
 
-        mtcCb.setModel(new DefaultComboBoxModel(new MTCElement[]{new MTCElement(new BenjaminiHochbergFdr()), new MTCElement(new Bonferroni())}));
+        mtcCb.setModel(new DefaultComboBoxModel(MTCFactory.getMethods()));
 
         columnGroupingCb.setModel(new DefaultComboBoxModel(GroupComparisonAnalysis.getColumnGroupingMethods()));
     }
@@ -123,9 +94,8 @@ public class GroupComparisonSelectAttributePage extends AbstractWizardPage {
         return testElement.getTest();
     }
 
-    public MTC getMtc() {
-        MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
-        return mtcElement.getMTC();
+    public String getMtc() {
+        return mtcCb.getModel().getSelectedItem().toString();
     }
 
 

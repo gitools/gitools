@@ -21,20 +21,13 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.analysis.stats.mtc.Bonferroni;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.ui.app.actions.analysis.CombinationsAction;
 import org.gitools.ui.app.actions.analysis.CorrelationsAction;
 import org.gitools.ui.app.actions.analysis.GroupComparisonAction;
-import org.gitools.ui.app.actions.analysis.MtcAction;
 import org.gitools.ui.app.actions.analysis.OverlappingsAction;
 import org.gitools.ui.app.actions.data.*;
-import static org.gitools.ui.app.actions.data.MoveSelectionAction.MoveDirection.COL_LEFT;
-import static org.gitools.ui.app.actions.data.MoveSelectionAction.MoveDirection.COL_RIGHT;
-import static org.gitools.ui.app.actions.data.MoveSelectionAction.MoveDirection.ROW_DOWN;
-import static org.gitools.ui.app.actions.data.MoveSelectionAction.MoveDirection.ROW_UP;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
 import org.gitools.ui.app.actions.edit.AddLayerAction;
 import org.gitools.ui.app.actions.edit.SelectAllAction;
@@ -61,7 +54,6 @@ public class Actions {
     public static final BaseAction exitAction = new ExitAction();
 
     // Import
-    public static final BaseAction importIntogenTableAction = new ImportIntogenMatrixAction();
     public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
     public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
@@ -104,8 +96,6 @@ public class Actions {
 
     public static final BaseAction sortByRowsAnnotation = new SortByAnnotationAction(ROWS);
 
-    public static final BaseAction sortByColumnsAnnotationAction = new SortByAnnotationAction(COLUMNS);
-
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
     public static final BaseAction sortByValue = new SortByValueAction();
@@ -117,14 +107,6 @@ public class Actions {
     public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
-
-    public static final BaseAction moveRowsUpAction = new MoveSelectionAction(ROW_UP);
-
-    public static final BaseAction moveRowsDownAction = new MoveSelectionAction(ROW_DOWN);
-
-    public static final BaseAction moveColsLeftAction = new MoveSelectionAction(COL_LEFT);
-
-    public static final BaseAction moveColsRightAction = new MoveSelectionAction(COL_RIGHT);
 
     public static final BaseAction clusteringAction = new ClusteringByValueAction();
 
@@ -139,10 +121,6 @@ public class Actions {
     public static final BaseAction overlapping = new OverlappingsAction();
 
     public static final BaseAction groupComparison = new GroupComparisonAction();
-
-    public static final BaseAction mtcBonferroniAction = new MtcAction(new Bonferroni());
-
-    public static final BaseAction mtcBenjaminiHochbergFdrAction = new MtcAction(new BenjaminiHochbergFdr());
 
     public static final BaseAction snapshotAction = new HeatmapCreateImageAction();
 

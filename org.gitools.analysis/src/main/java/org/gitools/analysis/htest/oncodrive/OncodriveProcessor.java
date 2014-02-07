@@ -110,7 +110,7 @@ public class OncodriveProcessor extends MtcTestProcessor {
         }
 
         // Run multiple test correction
-        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(MTCFactory.createFromName(analysis.getMtc()));
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
         IMatrixPosition position = resultsMatrix.newPosition();
         for (String modules : position.iterate(sampleModules).monitor(monitor, "Running multiple test correction")) {
 

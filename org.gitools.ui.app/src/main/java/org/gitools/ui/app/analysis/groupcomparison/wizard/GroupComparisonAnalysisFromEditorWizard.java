@@ -150,7 +150,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         a.setAttributeIndex(attrSelectPage.getAttributeIndex());
         a.setColumnGrouping(attrSelectPage.getColumnGrouping());
         a.setToolConfig(toolConfig);
-        a.setMtc(attrSelectPage.getMtc().getShortName());
+        a.setMtc(attrSelectPage.getMtc());
         a.setRowAnnotations(heatmap.getRows().getAnnotations());
 
         List<HeatmapHeader> rowHeaders = new ArrayList<>();

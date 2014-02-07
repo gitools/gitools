@@ -59,7 +59,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
 
         context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
-        context.put("mtc", analysis.getMtc().getName());
+        context.put("mtc", analysis.getMtc());
 
         fileRef = analysis.getResults().getLocator();
         context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
