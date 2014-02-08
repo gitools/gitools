@@ -58,7 +58,12 @@ public class GroupByValuePredicate implements IMatrixPredicate<Double> {
 
         for (DataIntegrationCriteria dic : criteriaList) {
 
-            double matrixValue = (double) position.getMatrix().get(dic.getLayer(), position);
+            Object v = position.getMatrix().get(dic.getLayer(), position);
+            if (v == null && dic.getNullConversion() == null) {
+                return false;
+            }
+
+            double matrixValue = (v == null) ? dic.getNullConversion() : (double) v;
             boolean evaluatedCondition = dic.getComparator().compare(matrixValue, dic.getValue());
 
             if (dic.getOperator().equals(Operator.EMPTY)) {

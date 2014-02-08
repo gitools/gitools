@@ -55,7 +55,7 @@ public class ValueFilterCriteria {
     }
 
     public double getValue() {
-        return this.value == null ? nullConversion : this.value;
+        return this.value;
     }
 
     public void setValue(Double value) {
