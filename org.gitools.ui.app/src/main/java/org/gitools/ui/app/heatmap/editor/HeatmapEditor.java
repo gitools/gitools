@@ -25,14 +25,14 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.api.ApplicationContext;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.IconNames;
@@ -41,14 +41,14 @@ import org.gitools.ui.app.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.app.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.utils.MemoryUtils;
 
 import javax.swing.*;
@@ -114,6 +114,10 @@ public class HeatmapEditor extends AbstractEditor {
         heatmap.getLayers().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
 
+        if (heatmap.getTitle() == null) {
+            heatmap.setTitle(getName());
+        }
+
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.
         timer = new java.util.Timer();
@@ -129,6 +133,13 @@ public class HeatmapEditor extends AbstractEditor {
 
     }
 
+    @Override
+    public void setName(String name) {
+        if (this.heatmap != null) {
+            heatmap.setTitle(name);
+        }
+        super.setName(name);
+    }
 
     private void createComponents(JComponent container) {
 
