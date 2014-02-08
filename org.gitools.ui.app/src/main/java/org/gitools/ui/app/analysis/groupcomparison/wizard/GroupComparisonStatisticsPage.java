@@ -55,7 +55,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);
-
+        testExplanation.setContentType("text/html");
     }
 
     public void setGroupNumber(int groupNumber) {
@@ -99,7 +99,20 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
     @Override
     public void updateControls() {
+
         if (testCb.getSelectedIndex() == 0) {
+
+            testExplanation.setText("<html><body style=\"font-size: 9px;\">" +
+                    "The two-sample Mann-Whitney-Wilcoxon rank sum test will be carried out" +
+                    " for each pair of groups. The <b>null hypothesis</b> is that the distributions of Group 1 and Group 2 do " +
+                    "not differ. The <b>alternative</b> is that they do: The one-sided alternative \"greater\" is that " +
+                    "Group 1 is shifted to the right of Group 2 resulting in a low right-tail p-value. " +
+                    "The one-sided alternative \"less\" is that " +
+                    "Group 1 is shifted to the left of Group 2 resulting in a low left-tail p-value." +
+                    "<br><img src=\"" + IconNames.ANALYSIS_IMAGE_MANN_WHITNEY_WILCOXON.toString()
+                    + "\" > <br>" +
+                    "Above, Expression value distribution of Group 1 (Gain) is shifted to the right of Group 2 (Loss)</body></html>");
+
             double v = CombinatoricsUtils.binomialCoefficientDouble(groupNumber, 2);
             if (v < 101) {
                 setMessage(MessageStatus.INFO, "You will be calculating " + String.valueOf(Math.round(v)) + " group combinations");

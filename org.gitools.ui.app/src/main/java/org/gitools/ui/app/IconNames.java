@@ -22,12 +22,14 @@
 package org.gitools.ui.app;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 import javax.swing.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class IconNames {
 
@@ -185,6 +187,8 @@ public class IconNames {
 
     public static final String SEARCH16 = "/img/Search16.png";
     public static final String SEARCH24 = "/img/Search24.png";
+
+    public static final URL ANALYSIS_IMAGE_MANN_WHITNEY_WILCOXON = IconNames.class.getResource("/img/AnalysisImageMannWhitneyWilcoxon.png");
 
     public static final String drag = "/img/drag.png";
 
