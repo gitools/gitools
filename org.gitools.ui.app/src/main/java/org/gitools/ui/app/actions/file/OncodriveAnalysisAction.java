@@ -21,26 +21,18 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
-import org.gitools.analysis.htest.oncodrive.OncodriveCommand;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.analysis.htest.oncodrive.OncodriveProcessor;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.OncodriveAnalysisWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
-public class OncodriveAnalysisAction extends HeatmapAction {
-
-    private static final long serialVersionUID = -8592231961109105958L;
+public class OncodriveAnalysisAction extends AbstractAnalysisAction<OncodriveAnalysis> {
 
     public OncodriveAnalysisAction() {
         super("OncoDrive...");
@@ -50,53 +42,17 @@ public class OncodriveAnalysisAction extends HeatmapAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        final OncodriveAnalysisWizard wizard = new OncodriveAnalysisWizard();
+    protected AbstractEditor newEditor(OncodriveAnalysis analysis) {
+        return new OncodriveAnalysisEditor(analysis);
+    }
 
-        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
+    @Override
+    protected AnalysisWizard<? extends OncodriveAnalysis> newWizard(Heatmap heatmap) {
+        return new OncodriveAnalysisWizard(heatmap);
+    }
 
-        wizDlg.open();
-
-        if (wizDlg.isCancelled()) {
-            return;
-        }
-
-        final OncodriveAnalysis analysis = wizard.getAnalysis();
-
-        File populationFile = wizard.getPopulationFile();
-        File modulesFile = wizard.getModulesFile();
-
-        final OncodriveCommand cmd = new OncodriveCommand(analysis, wizard.getDataFileFormat(), wizard.getDataFile().getAbsolutePath(), wizard.getSelectedValueIndex(), populationFile != null ? populationFile.getAbsolutePath() : null, wizard.getPopulationDefaultValue(), wizard.getModulesFileFormat(), modulesFile != null ? modulesFile.getAbsolutePath() : null, wizard.getWorkdir(), wizard.getFileName());
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    cmd.run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final OncodriveAnalysisEditor editor = new OncodriveAnalysisEditor(analysis);
-
-                    editor.setName(FilenameUtils.getBaseName(wizard.getFileName()));
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Done.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
+    @Override
+    protected AnalysisProcessor newProcessor(OncodriveAnalysis analysis) {
+        return new OncodriveProcessor(analysis);
     }
 }

@@ -209,8 +209,8 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
         OverlappingAnalysis a = new OverlappingAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        a.setDescription(analysisDetailsPage.getAnalysisDescription());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
 
         a.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
         a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());

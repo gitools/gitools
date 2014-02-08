@@ -22,9 +22,6 @@
 package org.gitools.analysis;
 
 
-import static junit.framework.Assert.assertEquals;
-import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.analysis.combination.CombinationProcessor;
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
 import static org.gitools.api.ApplicationContext.getProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
@@ -33,10 +30,8 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.annotation.processing.AbstractProcessor;
 import java.io.File;
 import java.io.IOException;
 

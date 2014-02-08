@@ -40,9 +40,6 @@ public class DataFilterPage extends AbstractWizardPage {
 
     private static final long serialVersionUID = 3840797252370672587L;
 
-    /**
-     * Creates new form DataSourcePanel
-     */
     public DataFilterPage() {
         setTitle("Select data filtering options");
 
@@ -223,7 +220,7 @@ public class DataFilterPage extends AbstractWizardPage {
     }
 
 
-    public File getRowsFilterFile() {
+    public File getPopulationFile() {
         String text = populationFilePath.getText();
         return populationCheck.isSelected() && !text.isEmpty() ? new File(text) : null;
     }

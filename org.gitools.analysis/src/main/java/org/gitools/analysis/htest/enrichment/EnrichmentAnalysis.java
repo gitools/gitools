@@ -22,22 +22,18 @@
 package org.gitools.analysis.htest.enrichment;
 
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.matrix.geneset.GeneSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 
-    private static final long serialVersionUID = -7476200948081644842L;
-
-    /**
-     * Discard data rows without any module annotation
-     */
     private boolean discardNonMappedRows;
 
     public EnrichmentAnalysis() {
@@ -50,4 +46,5 @@ public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
     public void setDiscardNonMappedRows(boolean discardNonMappedRows) {
         this.discardNonMappedRows = discardNonMappedRows;
     }
+
 }

@@ -23,40 +23,19 @@ package org.gitools.analysis.stats.mtc;
 
 import org.gitools.api.matrix.IMatrixFunction;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MTCFactory {
 
-    private static final Map<String, Class<? extends MTC>> nameMap = new HashMap<>();
-
-    private static final Map<Class<? extends MTC>, String> classMap = new HashMap<>();
-
-    static {
-        nameMap.put(Bonferroni.SHORT_NAME, Bonferroni.class);
-        nameMap.put(BenjaminiHochbergFdr.SHORT_NAME, BenjaminiHochbergFdr.class);
-
-        for (Map.Entry<String, Class<? extends MTC>> e : nameMap.entrySet())
-            classMap.put(e.getValue(), e.getKey());
+    public static String[] getMethods() {
+        return new String[] { "bonferroni", "bh"};
     }
 
-    public static MTC createFromName(String name) {
-        MTC mtc = null;
-        try {
-            Class<? extends MTC> cls = nameMap.get(name);
-            mtc = cls.newInstance();
-        } catch (Exception ex) {
-            return null;
-        }
-        return mtc;
-    }
+    public static IMatrixFunction<Double, Double> createFunction(String mtc) {
 
-    public static IMatrixFunction<Double, Double> createFunction(MTC mtc) {
-
-        if (mtc instanceof Bonferroni) {
-            return new BonferroniMtcFunction();
+        switch (mtc) {
+            case "bonferroni": return new BonferroniMtcFunction();
+            case "bh": return new BenjaminiHochbergFdrMtcFunction();
         }
 
-        return new BenjaminiHochbergFdrMtcFunction();
+        throw new UnsupportedOperationException("Unknown MTC function '" + mtc + "'");
     }
 }

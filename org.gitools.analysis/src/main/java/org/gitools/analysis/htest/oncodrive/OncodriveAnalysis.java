@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement()
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OncodriveAnalysis extends HtestAnalysis implements Serializable {
 
     public OncodriveAnalysis() {

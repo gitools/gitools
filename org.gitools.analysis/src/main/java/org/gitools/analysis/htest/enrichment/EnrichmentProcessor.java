@@ -22,13 +22,19 @@
 package org.gitools.analysis.htest.enrichment;
 
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.htest.MtcTestProcessor;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixIterable;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.AbstractMatrixFunction;
@@ -41,9 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-
-public class EnrichmentProcessor extends MtcTestProcessor {
+public class EnrichmentProcessor implements AnalysisProcessor {
 
     private final EnrichmentAnalysis analysis;
 
@@ -80,7 +84,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
 
                         IMatrixIterable<Double> population = position.iterate(layer, items);
                         if (analysis.isDiscardNonMappedRows()) {
-                            population.filter(moduleMap.getItems());
+                            population = population.filter(moduleMap.getItems());
                         }
 
                         test.processPopulation(population);
@@ -102,7 +106,7 @@ public class EnrichmentProcessor extends MtcTestProcessor {
                 .store(resultsMatrix, new MapLayerAdapter<>(modules, adapter));
 
         // Run multiple test correction
-        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(MTCFactory.createFromName(analysis.getMtc()));
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
         IMatrixPosition position = resultsMatrix.newPosition();
         for (String condition : position.iterate(conditions)) {
 

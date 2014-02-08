@@ -23,13 +23,18 @@ package org.gitools.analysis.htest.oncodrive;
 
 import com.google.common.collect.Iterables;
 import org.gitools.analysis.AnalysisException;
-import org.gitools.analysis.htest.MtcTestProcessor;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.AbstractMatrixFunction;
@@ -37,14 +42,14 @@ import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.PositionMapping;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 import org.gitools.matrix.modulemap.HashModuleMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-
-public class OncodriveProcessor extends MtcTestProcessor {
+public class OncodriveProcessor implements AnalysisProcessor {
 
     private final OncodriveAnalysis analysis;
 
@@ -110,7 +115,7 @@ public class OncodriveProcessor extends MtcTestProcessor {
         }
 
         // Run multiple test correction
-        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(MTCFactory.createFromName(analysis.getMtc()));
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
         IMatrixPosition position = resultsMatrix.newPosition();
         for (String modules : position.iterate(sampleModules).monitor(monitor, "Running multiple test correction")) {
 

@@ -21,22 +21,21 @@
  */
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
-import org.gitools.analysis.ToolConfig;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.resource.Property;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.CloneUtils;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.datafilters.BinaryCutoff;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +44,15 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
 
-    private GroupComparisonStatisticsPage statisticsPage;
+    private GroupComparisonGroupingByValuePage groupByValuePage;
+    private GroupComparisonGroupingByLabelPage groupByLabelPage;
+    private GroupComparisonSelectAttributePage attrSelectPage;
     private AnalysisDetailsPage analysisDetailsPage;
-    private GroupComparisonGroupingPage groupingPage;
 
     public GroupComparisonAnalysisFromEditorWizard(Heatmap heatmap) {
         super();
 
-        setTitle("Group Comparison analysis");
+        setTitle("Correlation analysis");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_GROUP_COMPARISON, 96));
 
         this.heatmap = heatmap;
@@ -61,12 +61,16 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     @Override
     public void addPages() {
         // Column Selection
+        attrSelectPage = new GroupComparisonSelectAttributePage();
+        attrSelectPage.setAttributes(heatmap.getLayers());
+        addPage(attrSelectPage);
 
-        groupingPage = new GroupComparisonGroupingPage(heatmap, DimensionGroupEnum.Free);
-        addPage(groupingPage);
+        groupByLabelPage = new GroupComparisonGroupingByLabelPage(heatmap.getColumns());
+        addPage(groupByLabelPage);
 
-        statisticsPage = new GroupComparisonStatisticsPage();
-        addPage(statisticsPage);
+        groupByValuePage = new GroupComparisonGroupingByValuePage();
+        groupByValuePage.setAttributes(heatmap.getLayers());
+        addPage(groupByValuePage);
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
@@ -76,19 +80,47 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     @Override
     public IWizardPage getNextPage(IWizardPage page) {
         page = getCurrentPage();
-
-        if (super.getNextPage(page) == statisticsPage) {
-            statisticsPage.setGroupNumber(groupingPage.getGroups().size());
-        } else if (super.getNextPage(page) == analysisDetailsPage) {
-            updateAnalysisDetails();
+        //attribute Selection Page
+        if (page == attrSelectPage) {
+            if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+                return super.getPage(groupByLabelPage.getId());
+            } else if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
+                return super.getPage(groupByValuePage.getId());
+            }
         }
-
+        //Group by label page
+        else if (page == groupByLabelPage) {
+            if (groupByLabelPage.getGroup1().size() == 0) {
+                groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 1");
+                return page;
+            } else if (groupByLabelPage.getGroup2().size() == 0) {
+                groupByLabelPage.setMessage(MessageStatus.ERROR, "No columns match values in Group 2");
+                return page;
+            } else {
+                updateAnalysisDetails();
+                return super.getPage(analysisDetailsPage.getId());
+            }
+        }
+        //Group by value page
+        else if (page == groupByValuePage) {
+            updateAnalysisDetails();
+            return super.getPage(analysisDetailsPage.getId());
+        }
         return super.getNextPage(page);
     }
 
     @Override
     public IWizardPage getPreviousPage(IWizardPage page) {
         page = getCurrentPage();
+        if (page == groupByLabelPage || page == groupByValuePage) {
+            return super.getPage(attrSelectPage.getId());
+        } else if (page == analysisDetailsPage) {
+            if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+                return super.getPage(groupByLabelPage.getId());
+            } else if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
+                return super.getPage(groupByValuePage.getId());
+            }
+        }
         return super.getPreviousPage(page);
     }
 
@@ -99,7 +131,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
         IWizardPage page = getCurrentPage();
 
-        canFinish |= page.isComplete() && (page == statisticsPage);
+        canFinish |= page.isComplete() && (page == groupByLabelPage || page == groupByValuePage);
 
         return canFinish;
     }
@@ -108,19 +140,17 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
     public GroupComparisonAnalysis getAnalysis() {
         GroupComparisonAnalysis a = new GroupComparisonAnalysis();
 
-        a.setData(new ResourceReference<IMatrix>("data", heatmap));
-
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        a.setDescription(analysisDetailsPage.getAnalysisDescription());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
         a.setTransposeData(false);
 
-        ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", statisticsPage.getTest().getName());
+        ToolConfig toolConfig = TestFactory.createToolConfig("group comparison", attrSelectPage.getTest().getName());
 
-        a.setLayer(groupingPage.getLayer());
-        a.setNullConversion(groupingPage.getNullConversion());
+        a.setAttributeIndex(attrSelectPage.getAttributeIndex());
+        a.setColumnGrouping(attrSelectPage.getColumnGrouping());
         a.setToolConfig(toolConfig);
-        a.setMtc(statisticsPage.getMtc().getShortName());
+        a.setMtc(attrSelectPage.getMtc());
         a.setRowAnnotations(heatmap.getRows().getAnnotations());
 
         List<HeatmapHeader> rowHeaders = new ArrayList<>();
@@ -146,37 +176,40 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         }
         a.setColumnHeaders(columnHeaders);
 
-        a.addGroups(groupingPage.getGroups());
+        if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+            a.setGroup1(groupByLabelPage.getGroup1());
+            a.setGroup2(groupByLabelPage.getGroup2());
+        } else if (a.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_VALUE)) {
+            a.setGroup1(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[0], groupByValuePage.getGroupCutoffValues()[0]), groupByValuePage.getCutoffAttributeIndex());
+            a.setGroup2(new BinaryCutoff(groupByValuePage.getGroupCutoffCmps()[1], groupByValuePage.getGroupCutoffValues()[1]), groupByValuePage.getCutoffAttributeIndex());
+            a.setNoneConversion(groupByValuePage.getNoneConversion());
+        }
         return a;
     }
 
-    /**
-     * Fill the form with the analysis details
-     */
     private void updateAnalysisDetails() {
         List<Property> analysisAttributes = new ArrayList<>();
-        analysisAttributes.add(new Property("Grouping type", groupingPage.getGroupingType().toString()));
+        if (attrSelectPage.getColumnGrouping().equals(GroupComparisonAnalysis.COLUMN_GROUPING_BY_LABEL)) {
+            analysisAttributes.add(new Property("Group 1", "user defined group"));
+            analysisAttributes.add(new Property("Group 2", "user defined group"));
+        } else {
+            CutoffCmp[] groupCutoffCmps = groupByValuePage.getGroupCutoffCmps();
+            double[] groupCutoffValues = groupByValuePage.getGroupCutoffValues();
+            String cutoffAttributeString = groupByValuePage.getCutoffAttributeString();
 
-        String title;
-        title = heatmap.getTitle() + " Group Comparison";
-        if (!title.equals("")) {
-            analysisDetailsPage.setAnalysisTitle(title);
+            for (int i = 0; i < groupCutoffCmps.length; i++) {
+                String group = "Group " + (i + 1);
+                String name = cutoffAttributeString + " " +
+                        groupCutoffCmps[i].getLongName() + " " +
+                        String.valueOf(groupCutoffValues[i]);
+                analysisAttributes.add(new Property(group, name));
+            }
+            if (groupByValuePage.isIncludeNone()) {
+                analysisAttributes.add(new Property("NoneConvertedTo",
+                        String.valueOf(groupByValuePage.getNoneConversion())))
+                ;
+            }
         }
-
-        if (groupingPage.getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
-            analysisAttributes.add(new Property("Grouping pattern", groupingPage.getGroupingPattern()));
-        }
-
-        int counter = 0;
-        for (DimensionGroup g : groupingPage.getGroups()) {
-            counter++;
-            analysisAttributes.add(new Property("Group " + String.valueOf(counter) + ": " + g.getName(), g.getProperty()));
-        }
-
-        Double nullConversion = groupingPage.getNullConversion();
-        analysisAttributes.add(new Property("NoneConvertedTo",
-                nullConversion != null ? Double.toString(nullConversion) : "null"));
-
         analysisDetailsPage.setAnalysisAttributes(analysisAttributes);
     }
 }

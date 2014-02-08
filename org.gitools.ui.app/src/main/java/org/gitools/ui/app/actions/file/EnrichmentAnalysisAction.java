@@ -21,29 +21,19 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.enrichment.EnrichmentCommand;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.htest.editor.EnrichmentAnalysisEditor;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.EnrichmentAnalysisWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
-public class EnrichmentAnalysisAction extends HeatmapAction {
-
-    private static final long serialVersionUID = -8592231961109105958L;
+public class EnrichmentAnalysisAction extends AbstractAnalysisAction<EnrichmentAnalysis> {
 
     public EnrichmentAnalysisAction() {
         super("Enrichment...");
@@ -54,75 +44,19 @@ public class EnrichmentAnalysisAction extends HeatmapAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-        IMatrixView matrixView = getHeatmap();
-
-        final EnrichmentAnalysisWizard wizard = new EnrichmentAnalysisWizard();
-        wizard.setExamplePageEnabled(false);
-        wizard.setDataFromMemory(true);
-
-        IMatrixLayers layers = matrixView.getLayers();
-        String[] attributes = new String[layers.size()];
-
-        for (int i = 0; i < layers.size(); i++) {
-            attributes[i] = layers.get(i).getId();
-        }
-
-        wizard.setSaveFilePageEnabled(false);
-
-        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
-        wizDlg.open();
-        if (wizDlg.isCancelled()) {
-            return;
-        }
-
-        final EnrichmentAnalysis analysis = wizard.getAnalysis();
-
-        File populationFile = wizard.getPopulationFile();
-
-        final EnrichmentCommand cmd = new EnrichmentCommand(
-                analysis,
-                wizard.getDataFileFormat(),
-                wizard.getDataFile().getAbsolutePath(),
-                wizard.getSelectedValueIndex(),
-                populationFile != null ? populationFile.getAbsolutePath() : null,
-                wizard.getPopulationDefaultValue(),
-                wizard.getModulesFileFormat(),
-                wizard.getModulesFile().getAbsolutePath(),
-                wizard.getWorkdir(),
-                wizard.getFileName()
-        );
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    cmd.run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final EnrichmentAnalysisEditor editor = new EnrichmentAnalysisEditor(analysis);
-
-                    editor.setName(FilenameUtils.getBaseName(wizard.getFileName()));
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Ok.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
+    protected AbstractEditor newEditor(EnrichmentAnalysis analysis) {
+        return new EnrichmentAnalysisEditor(analysis);
     }
+
+    @Override
+    protected AnalysisWizard<? extends EnrichmentAnalysis> newWizard(Heatmap heatmap) {
+        return new EnrichmentAnalysisWizard(heatmap);
+    }
+
+    @Override
+    protected AnalysisProcessor newProcessor(EnrichmentAnalysis analysis) {
+        return new EnrichmentProcessor(analysis);
+    }
+
+
 }

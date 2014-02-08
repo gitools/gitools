@@ -36,9 +36,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-/**
- * @noinspection ALL
- */
 public class SelectFilePage extends AbstractWizardPage {
 
     private static final long serialVersionUID = 3840797252370672587L;

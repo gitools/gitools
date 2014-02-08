@@ -29,9 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @noinspection ALL
- */
 public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
     private String title;
@@ -175,12 +172,10 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     @Override
     public void performFinish() {
-        // do nothing
     }
 
     @Override
     public void performCancel() {
-        // do nothing
     }
 
     @Override

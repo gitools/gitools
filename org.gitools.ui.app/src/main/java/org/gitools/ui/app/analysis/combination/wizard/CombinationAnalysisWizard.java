@@ -257,8 +257,8 @@ public class CombinationAnalysisWizard extends AbstractWizard {
         CombinationAnalysis a = new CombinationAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        a.setDescription(analysisDetailsPage.getAnalysisDescription());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
 
         IMatrixLayer attr = combinationParamsPage.getSizeAttribute();
         String sizeAttrName = attr != null ? attr.getId() : null;

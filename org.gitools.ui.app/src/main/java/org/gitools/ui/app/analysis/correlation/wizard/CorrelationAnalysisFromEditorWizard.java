@@ -71,8 +71,8 @@ public class CorrelationAnalysisFromEditorWizard extends AbstractWizard {
         CorrelationAnalysis a = new CorrelationAnalysis();
 
         a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisNotes());
-        a.setProperties(analysisDetailsPage.getAnalysisAttributes());
+        a.setDescription(analysisDetailsPage.getAnalysisDescription());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
 
         a.setAttributeIndex(corrPage.getAttributeIndex());
         a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);

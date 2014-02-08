@@ -28,6 +28,7 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.analysis.Analysis;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.analysis.ToolConfig;
+import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
@@ -38,61 +39,33 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
-
 @XmlSeeAlso({EnrichmentAnalysis.class, OncodriveAnalysis.class})
-
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HtestAnalysis extends Analysis {
 
-    /**
-     * Data binary cutoff enabled
-     */
     private boolean binaryCutoffEnabled;
 
-    /**
-     * Data binary cutoff comparator
-     */
     @XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
     private CutoffCmp binaryCutoffCmp;
 
-    /**
-     * Data binary cutoff value
-     */
     private double binaryCutoffValue;
 
-    /**
-     * Test name
-     */
     private ToolConfig testConfig;
 
-    /**
-     * Modules
-     */
     private ResourceReference<IModuleMap> moduleMap;
 
-    /**
-     * Minimum module size
-     */
     private int minModuleSize;
 
-    /**
-     * Maximum module size
-     */
     private int maxModuleSize;
 
-    /**
-     * Data
-     */
     private ResourceReference<IMatrix> data;
 
-    /**
-     * Multiple test correction
-     */
     private String mtc;
 
-    /**
-     * Results
-     */
+    private ResourceReference<GeneSet> population;
+
+    private Double populationDefaultValue;
+
     private ResourceReference<IMatrix> results;
 
     protected HtestAnalysis() {
@@ -176,5 +149,21 @@ public class HtestAnalysis extends Analysis {
 
     public void setResults(ResourceReference<IMatrix> results) {
         this.results = results;
+    }
+
+    public ResourceReference<GeneSet> getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(ResourceReference<GeneSet> population) {
+        this.population = population;
+    }
+
+    public Double getPopulationDefaultValue() {
+        return populationDefaultValue;
+    }
+
+    public void setPopulationDefaultValue(Double populationDefaultValue) {
+        this.populationDefaultValue = populationDefaultValue;
     }
 }

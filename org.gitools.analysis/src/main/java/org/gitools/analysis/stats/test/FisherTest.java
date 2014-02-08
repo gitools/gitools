@@ -21,77 +21,60 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.matrix.DoubleMatrix1D;
 import org.gitools.analysis.stats.FisherExactTest;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.FisherResult;
 
-import java.util.Arrays;
-
 public class FisherTest extends AbstractTest {
+
+    int populationNotOnes, populationOnes;
 
     public FisherTest() {
         super("fisher", FisherResult.class);
     }
 
     @Override
-    public CommonResult processTest(Iterable<Double> values) {
+    public void processPopulation(Iterable<Double> population) {
 
-        int[] ctable = new int[4];
+        populationNotOnes = populationOnes = 0;
 
-        //TODO calcContingencyTable(condItems, groupItemIndices, ctable);
-
-        FisherExactTest fisher = new FisherExactTest(ctable);
-        fisher.testContingencyTable();
-
-        int N = ctable[0] + ctable[1];
-
-        return new FisherResult(N, fisher.getLeftPValue(), fisher.getRightPValue(), fisher.getTwoTailPValue(), ctable[0], ctable[1], ctable[2], ctable[3]);
-    }
-
-    /**
-     * Calculates a contingency table from the data
-     * <p/>
-     * Contingency table format:
-     * <p/>
-     *                             | has a 1.0  | hasn't a 1.0 |
-     * ----------------------------+------------+--------------+
-     * belongs to the group        |      a     |       b      |
-     * ----------------------------+------------+--------------+
-     * don't belong to the group   |      c     |       d      |
-     * ----------------------------+------------+--------------+
-     *
-     * @param condItems  all the data for the items of the property
-     * @param groupItems item indices to propItems for the items that belongs to the group
-     * @param ctable     contingency table: ctable[0] = a, ctable[1] = b, ctable[2] = c, ctable[3] = d
-     */
-    private static void calcContingencyTable(DoubleMatrix1D condItems, int[] groupItems, int[] ctable) {
-
-        // Initialize the contingency table with zeros
-        for (int i = 0; i < 4; i++)
-            ctable[i] = 0;
-
-        //sort group item indices
-        Arrays.sort(groupItems); //FIXME this is redundant for diferent conditions
-
-        // count
-        int k = 0;
-        for (int i = 0; i < condItems.size(); i++) {
-            double value = condItems.getQuick(i);
-
-            boolean belongsToGroup = k < groupItems.length && groupItems[k] == i;
-            if (belongsToGroup) {
-                k++;
-            }
-
-            if (!Double.isNaN(value)) {
-                int j = (value == 1.0) ? 0 : 1;
-                if (!belongsToGroup) {
-                    j += 2;
+        for (Double value : population) {
+            if (value != null) {
+                if (value == 1.0) {
+                    populationOnes++;
+                } else {
+                    populationNotOnes++;
                 }
-
-                ctable[j]++;
             }
         }
     }
+
+    @Override
+    public CommonResult processTest(Iterable<Double> values) {
+
+        int notOnes=0, ones=0;
+        for (Double value : values) {
+             if (value != null) {
+                 if (value == 1.0) {
+                     ones++;
+                 } else {
+                     notOnes++;
+                 }
+             }
+        }
+
+        FisherExactTest fisher = new FisherExactTest(ones, notOnes, (populationOnes - ones), (populationNotOnes - notOnes));
+        fisher.testContingencyTable();
+        return new FisherResult(
+                notOnes + ones,
+                fisher.getLeftPValue(),
+                fisher.getRightPValue(),
+                fisher.getTwoTailPValue(),
+                fisher.getA(),
+                fisher.getB(),
+                fisher.getC(),
+                fisher.getD()
+        );
+    }
+
 }
