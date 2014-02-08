@@ -29,7 +29,6 @@ import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod
 import org.gitools.analysis.groupcomparison.DimensionGroups.*;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
-import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
@@ -497,41 +496,6 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
     public List<DimensionGroup> getGroups() {
         return (tableModel.getGroupList());
-    }
-
-
-    private static class TestElement {
-        public final Test test;
-
-        public TestElement(Test test) {
-            this.test = test;
-        }
-
-        @Override
-        public String toString() {
-            return this.test.getName();
-        }
-
-        public Test getTest() {
-            return this.test;
-        }
-    }
-
-    private static class MTCElement {
-        public final MTC mtc;
-
-        public MTCElement(MTC mtc) {
-            this.mtc = mtc;
-        }
-
-        @Override
-        public String toString() {
-            return this.mtc.getName();
-        }
-
-        public MTC getMTC() {
-            return this.mtc;
-        }
     }
 
     public class AttrOption {

@@ -21,23 +21,24 @@
  */
 package org.gitools.analysis.groupcomparison;
 
+import org.gitools.analysis.Analysis;
+import org.gitools.analysis.ToolConfig;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.analysis.Analysis;
-import org.gitools.analysis.ToolConfig;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.utils.datafilters.BinaryCutoff;
+import org.gitools.heatmap.header.HeatmapHeader;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
@@ -48,15 +49,9 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private boolean transposeData;
 
-    private int attributeIndex;
+    private String layerName;
 
-
-    public static final String COLUMN_GROUPING_BY_VALUE = "Group by value";
-
-    public static final String COLUMN_GROUPING_BY_LABEL = "Group by label";
-
-
-    private String columnGrouping = null;
+    private DimensionGroupEnum columnGrouping = null;
 
 
     protected String dataFile = "";
@@ -74,9 +69,9 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private IAnnotations columnAnnotations;
 
     @XmlTransient
-    private ColumnGroup group1;
-    @XmlTransient
-    private ColumnGroup group2;
+    private DimensionGroupEnum columnGroupType;
+
+    private List<DimensionGroup> groups;
 
     private ToolConfig testConfig;
 
@@ -85,7 +80,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     private ResourceReference<IMatrix> data;
 
     private ResourceReference<IMatrix> results;
-    private double noneConversion;
+    private Double nullConversion;
 
 
     public String getMtc() {
@@ -107,21 +102,20 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public GroupComparisonAnalysis() {
         this.transposeData = false;
-        group1 = new ColumnGroup("Group 1");
-        group2 = new ColumnGroup("Group 2");
-        this.noneConversion = Double.NaN;
+        this.nullConversion = Double.NaN;
+        this.groups = new ArrayList<>();
     }
 
     public String getSizeAttrName() {
         return sizeAttrName;
     }
 
-    public void setAttributeIndex(int attributeIndex) {
-        this.attributeIndex = attributeIndex;
+    public void setLayer(String layerName) {
+        this.layerName = layerName;
     }
 
-    public int getAttributeIndex() {
-        return attributeIndex;
+    public String getLayerName() {
+        return layerName;
     }
 
     public void setSizeAttrName(String sizeAttrName) {
@@ -145,51 +139,31 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     }
 
 
-    public String getColumnGrouping() {
+    public DimensionGroupEnum getColumnGrouping() {
         return columnGrouping;
     }
 
 
-    public static String[] getColumnGroupingMethods() {
-        return new String[]{COLUMN_GROUPING_BY_LABEL, COLUMN_GROUPING_BY_VALUE};
-    }
-
-    public void setColumnGrouping(String columnGrouping) {
+    public void setColumnGrouping(DimensionGroupEnum columnGrouping) {
         this.columnGrouping = columnGrouping;
     }
 
-    public ColumnGroup getGroups1() {
-        return group1;
+    public DimensionGroup getGroup(int index) {
+        return groups.get(index);
     }
 
-    public ColumnGroup getGroups2() {
-        return group2;
+    public List<DimensionGroup> getGroups() {
+        return groups;
     }
 
-    public void setGroup1(Set<String> group1) {
-        this.group1.setColumns(group1);
+    public void setGroup(DimensionGroup group, int index) {
+        this.groups.set(index, group);
     }
 
-    public void setGroup2(Set<String> group2) {
-        this.group2.setColumns(group2);
-    }
-
-    public void setGroup1(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
-        this.group1.setBinaryCutoff(binaryCutoff);
-        this.group1.setCutoffAttributeIndex(cutoffAttrIndex);
-    }
-
-    public void setGroup2(BinaryCutoff binaryCutoff, int cutoffAttrIndex) {
-        this.group2.setBinaryCutoff(binaryCutoff);
-        this.group2.setCutoffAttributeIndex(cutoffAttrIndex);
-    }
-
-    public void setGroup1(ColumnGroup group1) {
-        this.group1 = group1;
-    }
-
-    public void setGroup2(ColumnGroup group2) {
-        this.group2 = group2;
+    public void addGroups(List<DimensionGroup> groups) {
+        for (DimensionGroup g : groups) {
+            this.groups.add(g);
+        }
     }
 
     public ResourceReference<IMatrix> getData() {
@@ -241,12 +215,19 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.columnHeaders = columnHeaders;
     }
 
-    public double getNoneConversion() {
-        return noneConversion;
+    public Double getNullConversion() {
+        return nullConversion;
     }
 
-    public void setNoneConversion(double noneConversion) {
-        this.noneConversion = noneConversion;
+    public void setNullConversion(Double nullConversion) {
+        this.nullConversion = nullConversion;
     }
 
+    public DimensionGroupEnum getColumnGroupType() {
+        return columnGroupType;
+    }
+
+    public void setColumnGroupType(DimensionGroupEnum columnGroupType) {
+        this.columnGroupType = columnGroupType;
+    }
 }

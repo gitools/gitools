@@ -22,9 +22,6 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
-import org.gitools.analysis.stats.mtc.BenjaminiHochbergFdr;
-import org.gitools.analysis.stats.mtc.Bonferroni;
-import org.gitools.analysis.stats.mtc.MTC;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
@@ -56,7 +53,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         testCb.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilxoxonTest())}));
 
-        mtcCb.setModel(new DefaultComboBoxModel(new MTCElement[]{new MTCElement(new BenjaminiHochbergFdr()), new MTCElement(new Bonferroni())}));
+        mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);
 
     }
@@ -82,33 +79,9 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
         }
     }
 
-    private static class MTCElement {
-        public final MTC mtc;
-
-        public MTCElement(MTC mtc) {
-            this.mtc = mtc;
-        }
-
-        @Override
-        public String toString() {
-            return this.mtc.getName();
-        }
-
-        public MTC getMTC() {
-            return this.mtc;
-        }
-    }
-
     public class AttrOption {
         private String name;
         private IMatrixLayer attr;
-
-        /**
-         * @noinspection UnusedDeclaration
-         */
-        public AttrOption(String name) {
-            this.name = name;
-        }
 
         public AttrOption(IMatrixLayer attr) {
             this.attr = attr;
@@ -142,10 +115,16 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
         return testElement.getTest();
     }
 
-    public MTC getMtc() {
-        MTCElement mtcElement = (MTCElement) mtcCb.getModel().getSelectedItem();
-        return mtcElement.getMTC();
+    public String getMtc() {
+        switch (mtcCb.getSelectedIndex()) {
+            case 0:
+                return "bonferroni";
+            case 1:
+                return "bh";
+        }
+        return "bh";
     }
+
 
     @Override
     public JComponent createControls() {

@@ -22,27 +22,29 @@
 package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
-import org.gitools.analysis.htest.MtcTestProcessor;
+import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
-import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixLayer;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import org.gitools.api.matrix.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.gitools.analysis.stats.mtc.MTCFactory.createFromName;
-import static org.gitools.analysis.stats.mtc.MTCFactory.createFunction;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-
-public class GroupComparisonProcessor extends MtcTestProcessor {
+public class GroupComparisonProcessor implements AnalysisProcessor {
 
     private final GroupComparisonAnalysis analysis;
 
@@ -94,7 +96,7 @@ public class GroupComparisonProcessor extends MtcTestProcessor {
 
         // Run multiple test correction
         IMatrixPosition position = resultsMatrix.newPosition().set(resultColumns, test.getName());
-        IMatrixFunction<Double, Double> mtcFunction = createFunction(createFromName(analysis.mtc()));
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
 
         // Left p-Value
         position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)
