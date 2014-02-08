@@ -29,7 +29,6 @@ import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod
 import org.gitools.analysis.groupcomparison.DimensionGroups.*;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
-import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.IMatrixPredicate;
@@ -94,18 +93,19 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         this.heatmap = heatmap;
         this.groupingType = groupingType;
 
-        setTitle("Select data and statistical test");
-
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
-        layerCb.setModel(new DefaultComboBoxModel(heatmap.getLayers().getIds()));
-
+        String[] layerOptions = new String[heatmap.getLayers().size() + 1];
+        layerOptions[0] = "";
+        System.arraycopy(heatmap.getLayers().getIds(), 0, layerOptions, 1, heatmap.getLayers().size());
+        layerCb.setModel(new DefaultComboBoxModel(layerOptions));
+        if (layerOptions.length == 2) {
+            layerCb.setSelectedIndex(1);
+        }
 
         groupsTable.setModel(tableModel);
 
-        setTitle("Groups");
-        setMessage("Add / Remove groups and merge by selecting the same group number.");
-
+        setTitle("Group selection");
         TableColumnModel columnModel = groupsTable.getColumnModel();
         columnModel.getColumn(2).setPreferredWidth(50);
         columnModel.getColumn(2).setCellEditor(new SpinnerCellEditor(new SpinnerNumberModel()));
@@ -212,6 +212,12 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         updateControls();
 
+        layerCb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateControls();
+            }
+        });
     }
 
     private void updateNullConversion() {
@@ -285,10 +291,10 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
 
         // Are there at least two groups?
-        isComplete = tableModel.getRowCount() > 1;
+        isComplete = tableModel.getRowCount() > 1 & layerCb.getSelectedIndex() > 0;
 
         if (!isComplete) {
-            setMessage(MessageStatus.INFO, "Create at least 2 groups to compare");
+            setMessage(MessageStatus.INFO, "Create at least 2 groups to compare and select data layer for group comparison");
             setComplete(false);
             return;
         } else {

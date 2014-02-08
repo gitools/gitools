@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.stats.test.factory;
 
-import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
-import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.ToolConfig;
+import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
+import org.gitools.analysis.stats.test.Test;
 
 public final class MannWhitneyWilcoxonTestFactory extends TestFactory {
 
@@ -34,7 +34,7 @@ public final class MannWhitneyWilcoxonTestFactory extends TestFactory {
 
     @Override
     public Test create() {
-        return new MannWhitneyWilxoxonTest();
+        return new MannWhitneyWilcoxonTest();
     }
 
 }

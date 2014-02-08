@@ -23,14 +23,15 @@ package org.gitools.ui.app.analysis.groupcomparison.editor;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
+import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
@@ -159,9 +160,13 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
                     if (layer.getId().contains("p-value")) {
                         layer.setDecorator(new PValueDecorator());
                     }
+                    heatmap.getLayers().get("log-p-value-sum").setDecorator(
+                            new ZScoreDecorator(1, 10)
+                    );
+
                 }
 
-                heatmap.getLayers().setTopLayerById("two-tail-p-value");
+                heatmap.getLayers().setTopLayerById("log-p-value-sum");
 
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 

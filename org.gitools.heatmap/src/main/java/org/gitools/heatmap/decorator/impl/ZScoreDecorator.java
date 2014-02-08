@@ -66,6 +66,17 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         significanceLevel = 0.05;
     }
 
+    public ZScoreDecorator(double significanceLevel, double limits) {
+        super();
+
+        scale = new ZScoreColorScale();
+        correctedValueIndex = -1;
+        useCorrection = false;
+        this.significanceLevel = significanceLevel;
+        scale.setHalfAmplitude(limits);
+        setSigHalfAmplitude(significanceLevel);
+    }
+
     public ZScoreColorScale getScale() {
         return scale;
     }

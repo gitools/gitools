@@ -28,7 +28,7 @@ public class GroupComparisonResult extends CommonResult {
 
     private int N_group1;
     private int N_group2;
-    private double logpvalue;
+    private double logPValueSum;
 
     public GroupComparisonResult() {
         super(0, 0.0, 0.0, 0.0);
@@ -36,7 +36,7 @@ public class GroupComparisonResult extends CommonResult {
 
     public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue) {
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
-        logpvalue = Math.log10(leftPvalue) - Math.log10(rightPvalue);
+        logPValueSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
     }
 
     public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue) {
@@ -44,7 +44,16 @@ public class GroupComparisonResult extends CommonResult {
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
         this.N_group1 = N_group1;
         this.N_group2 = N_group2;
-        logpvalue = Math.log10(leftPvalue) - Math.log10(rightPvalue);
+        logPValueSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
+    }
+
+    @LayerDef(id = "log-p-value-sum", name = "Log P-Value Sum", description = "Score combining left and right p-values.")
+    public double getLogPValueSum() {
+        return logPValueSum;
+    }
+
+    public void setLogPValueSum(double logPValueSum) {
+        this.logPValueSum = logPValueSum;
     }
 
     @LayerDef(id = "N-group1", name = "N Group 1", description = "Number of elements in Group 1")

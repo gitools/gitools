@@ -33,11 +33,11 @@ import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 
 
-public class MannWhitneyWilxoxonTest extends AbstractTest {
+public class MannWhitneyWilcoxonTest extends AbstractTest {
 
     private NaturalRanking naturalRanking;
 
-    public MannWhitneyWilxoxonTest() {
+    public MannWhitneyWilcoxonTest() {
         super("mannWhitneyWilcoxon", GroupComparisonResult.class);
         naturalRanking = new NaturalRanking(NaNStrategy.FIXED, TiesStrategy.AVERAGE);
     }

@@ -25,24 +25,21 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.stats.mtc.MTCFactory;
-import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class GroupComparisonProcessor implements AnalysisProcessor {
 
@@ -66,9 +63,9 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
 
         // Prepare results data matrix
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
-        MannWhitneyWilxoxonTest test = (MannWhitneyWilxoxonTest) analysis.getTest();
+        MannWhitneyWilcoxonTest test = (MannWhitneyWilcoxonTest) analysis.getTest();
 
-        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, Arrays.asList(test.getName()));
+        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, new ArrayList<String>());
         HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, sourceRows);
 
         IMatrix resultsMatrix = new HashMatrix(

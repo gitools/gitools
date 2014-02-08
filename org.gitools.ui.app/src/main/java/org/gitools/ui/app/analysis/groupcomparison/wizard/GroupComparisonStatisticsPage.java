@@ -22,7 +22,7 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
-import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.ui.app.IconNames;
@@ -51,7 +51,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         setComplete(true);
 
-        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilxoxonTest())}));
+        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilcoxonTest())}));
 
         mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);
@@ -101,11 +101,11 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
     public void updateControls() {
         if (testCb.getSelectedIndex() == 0) {
             double v = CombinatoricsUtils.binomialCoefficientDouble(groupNumber, 2);
-            if (v < 50) {
+            if (v < 101) {
                 setMessage(MessageStatus.INFO, "You will be calculating " + String.valueOf(Math.round(v)) + " group combinations");
             } else {
                 setMessage(MessageStatus.WARN, "This would yield " + String.valueOf(v) + " group combinations. Gitools" +
-                        "refuses to do that much work.");
+                        " refuses to do that much work.");
             }
         }
     }

@@ -159,7 +159,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
 
         String title;
         title = heatmap.getTitle() + " Group Comparison";
-        if (!title.equals("")) {
+        if (!heatmap.getTitle().equals("")) {
             analysisDetailsPage.setAnalysisTitle(title);
         }
 

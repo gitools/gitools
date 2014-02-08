@@ -23,7 +23,7 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
-import org.gitools.analysis.stats.test.MannWhitneyWilxoxonTest;
+import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
@@ -40,13 +40,13 @@ import static com.google.common.collect.Iterables.transform;
 
 public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, GroupComparisonResult>, String> {
 
-    private MannWhitneyWilxoxonTest test;
+    private MannWhitneyWilcoxonTest test;
     private IMatrixLayer<Double> valueLayer;
     private IMatrixDimension dimension;
     private DimensionGroup[] groups;
     private NullConversion nullConversion;
 
-    public GroupComparisonFunction(MannWhitneyWilxoxonTest test,
+    public GroupComparisonFunction(MannWhitneyWilcoxonTest test,
                                    IMatrixDimension dimension,
                                    IMatrixLayer<Double> valueLayer,
                                    NullConversion nullConversion,
