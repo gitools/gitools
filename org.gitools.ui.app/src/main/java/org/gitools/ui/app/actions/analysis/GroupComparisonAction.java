@@ -29,7 +29,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonAnalysisFromEditorWizard;
 import org.gitools.ui.platform.Application;
@@ -47,25 +47,15 @@ public class GroupComparisonAction extends HeatmapAction {
 
     public GroupComparisonAction() {
         super("Group comparison...");
-
         setMnemonic(KeyEvent.VK_G);
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         final EditorsPanel editorPanel = Application.get().getEditorsPanel();
-
         final IEditor currentEditor = editorPanel.getSelectedEditor();
 
-        Heatmap heatmap = getHeatmap();
-
-        IMatrixLayers attributes = heatmap.getLayers();
-        String[] attributeNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-            attributeNames[i] = attributes.get(i).getName();
-
-        GroupComparisonAnalysisFromEditorWizard wiz = new GroupComparisonAnalysisFromEditorWizard(heatmap);
+        GroupComparisonAnalysisFromEditorWizard wiz = new GroupComparisonAnalysisFromEditorWizard(getHeatmap());
         WizardDialog dlg = new WizardDialog(Application.get(), wiz);
         dlg.setVisible(true);
 
@@ -85,7 +75,7 @@ public class GroupComparisonAction extends HeatmapAction {
                         return;
                     }
 
-                    final AnalysisDetailsEditor editor = new GroupComparisonAnalysisEditor(analysis);
+                    final AnalysisEditor editor = new GroupComparisonAnalysisEditor(analysis);
                     //TODO: adapt to group comparison analysis
 
                     String ext = FilenameUtils.getExtension(currentEditor.getName());

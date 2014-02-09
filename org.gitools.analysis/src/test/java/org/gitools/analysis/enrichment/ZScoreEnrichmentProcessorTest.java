@@ -45,11 +45,6 @@ public class ZScoreEnrichmentProcessorTest extends AbstractProcessorTest<Enrichm
     }
 
     @Test
-    public void testResourceFormat() {
-        assertEquals("test", getAnalysis().getTitle());
-    }
-
-    @Test
     public void testAnalysisProcessor() throws IOException {
 
         EnrichmentAnalysis analysis = getAnalysis();

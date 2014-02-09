@@ -33,7 +33,7 @@ import org.gitools.analysis.ToolConfig;
 import org.gitools.heatmap.decorator.impl.BinaryDecorator;
 import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -46,18 +46,20 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> extends AnalysisDetailsEditor<T> {
+public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> extends AnalysisEditor<T> {
 
     private String formatExtension;
 
     protected AbstractHtestAnalysisEditor(T analysis, String template, String formatExtension) {
-        super(analysis, template, null);
+        super(analysis, template);
         this.formatExtension = formatExtension;
     }
 
 
     @Override
     protected void prepareContext(VelocityContext context) {
+
+        T analysis = getModel();
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -123,6 +125,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
     }
 
     protected void newDataHeatmap() {
+        final T analysis = getModel();
         if (analysis.getData() == null) {
             Application.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -158,6 +161,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
     }
 
     protected void newResultsHeatmap() {
+        final T analysis = getModel();
         if (analysis.getResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
             return;
@@ -192,11 +196,4 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         return heatmap;
     }
 
-    /*TODO
-    protected static List<BaseAction> createToolBar(EnrichmentAnalysis analysis) {
-        ViewRelatedDataFromAction action = new ViewRelatedDataFromAction(analysis.getTitle(), analysis.getData().get(), analysis.getModuleMap().get(), MatrixDimensionKey.ROWS);
-        List<BaseAction> tb = new ArrayList<>();
-        tb.add(action);
-        return tb;
-    }*/
 }

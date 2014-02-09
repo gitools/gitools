@@ -22,55 +22,33 @@
 package org.gitools.ui.app.analysis.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.api.PersistenceException;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.resource.IResource;
 import org.gitools.analysis.Analysis;
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.ResourceEditor;
 import org.gitools.ui.platform.panel.TemplatePanel;
-import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.LogUtils;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.lobobrowser.html.FormInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.io.File;
 import java.net.URL;
 import java.util.Map;
 
-public abstract class AnalysisDetailsEditor<A extends IResource> extends AbstractEditor {
-
-    private static final Logger log = LoggerFactory.getLogger(AnalysisDetailsEditor.class);
-
-    protected final A analysis;
+public abstract class AnalysisEditor<A extends Analysis> extends ResourceEditor<A> {
+    private static final Logger log = LoggerFactory.getLogger(AnalysisEditor.class);
 
     private final String template;
-
-    private ActionSet toolBar = null;
-
     private TemplatePanel templatePanel;
 
-    protected AbstractXmlFormat xmlPersistance = null;
+    protected AnalysisEditor(A analysis, String template) {
+        super(analysis);
 
-    protected FileFormat fileformat;
-
-    protected AnalysisDetailsEditor(A analysis, String template, ActionSet toolBar) {
-        this.analysis = analysis;
         this.template = template;
-        this.toolBar = toolBar;
-        this.setIcon(IconUtils.getIconResource(IconNames.LOGO_ANALYSIS_DETAILS16));
+
+        setIcon(IconUtils.getIconResource(IconNames.LOGO_ANALYSIS_DETAILS16));
 
         createComponents();
     }
@@ -79,12 +57,12 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
         templatePanel = new TemplatePanel() {
             @Override
             protected void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs) throws LinkVetoException {
-                AnalysisDetailsEditor.this.submitForm(method, action, target, enctype, formInputs);
+                AnalysisEditor.this.submitForm(method, action, target, enctype, formInputs);
             }
 
             @Override
             protected void performAction(String name, Map<String, String> params) {
-                AnalysisDetailsEditor.this.performUrlAction(name, params);
+                AnalysisEditor.this.performUrlAction(name, params);
             }
         };
         try {
@@ -93,7 +71,7 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
 
             VelocityContext context = new VelocityContext();
             context.put("fmt", new HeatmapTextFormatter());
-            context.put("analysis", analysis);
+            context.put("analysis", getModel());
 
             prepareContext(context);
 
@@ -104,19 +82,10 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
 
         setLayout(new BorderLayout());
 
-        if (toolBar != null) {
-            add(ActionSetUtils.createToolBar(toolBar), BorderLayout.NORTH);
-        }
-
         add(templatePanel, BorderLayout.CENTER);
     }
 
     protected void prepareContext(VelocityContext context) {
-    }
-
-    @Override
-    public Object getModel() {
-        return analysis;
     }
 
     @Override
@@ -128,34 +97,5 @@ public abstract class AnalysisDetailsEditor<A extends IResource> extends Abstrac
     }
 
     protected abstract void performUrlAction(String name, Map<String, String> params);
-    @Override
-    public void doSave(IProgressMonitor progressMonitor) {
-        if (xmlPersistance == null || fileformat == null) {
-            return;
-        }
-
-        String title = ((Analysis) analysis).getTitle();
-
-        String lastWorkPath = Settings.getDefault().getLastWorkPath();
-
-        SaveFileWizard wizard = SaveFileWizard.createSimple(title, title, lastWorkPath, fileformat);
-        WizardDialog dlg = new WizardDialog(Application.get(), wizard);
-        dlg.setVisible(true);
-
-        if (dlg.isCancelled()) {
-            return;
-        }
-
-        File workdir = new File(wizard.getFolder());
-        File file = new File(workdir, wizard.getFileName());
-        Settings.getDefault().setLastWorkPath(wizard.getFolder());
-
-
-        try {
-            xmlPersistance.write(new UrlResourceLocator(file), analysis, progressMonitor);
-        } catch (PersistenceException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

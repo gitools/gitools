@@ -23,6 +23,7 @@ package org.gitools.ui.app.fileimport;
 
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.ui.app.fileimport.wizard.csv.CsvImportWizard;
 import org.gitools.ui.app.fileimport.wizard.excel.ExcelImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 
@@ -46,6 +47,7 @@ public class ImportManager {
         super();
 
         register(new ExcelImportWizard());
+        register(new CsvImportWizard());
     }
 
     public Collection<FileFormatFilter> getFileFormatFilters() {

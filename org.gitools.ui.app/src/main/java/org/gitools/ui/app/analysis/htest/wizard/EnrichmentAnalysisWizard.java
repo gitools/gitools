@@ -115,4 +115,6 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         return analysis;
     }
 
+
+
 }

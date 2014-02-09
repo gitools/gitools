@@ -29,32 +29,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEditor extends AbstractView implements IEditor {
+public abstract class AbstractEditor<M> extends AbstractView implements IEditor<M> {
 
-    private static final long serialVersionUID = -2379950551933668781L;
-
-    public static abstract class EditorListener {
-        public void nameChanged(IEditor editor) {
-        }
-
-        public void fileChanged(IEditor editor) {
-        }
-
-        public void dirtyChanged(IEditor editor) {
-        }
-
-        public void saved(IEditor editor) {
-        }
-
-    }
-
+    private final List<EditorListener> listeners = new ArrayList<>();
     private File file;
     private boolean dirty = false;
     private boolean saveAsAllowed = false;
     private boolean saveAllowed = false;
-
-
-    private final List<EditorListener> listeners = new ArrayList<>();
 
     @Override
     public void setName(String name) {
@@ -141,6 +122,21 @@ public abstract class AbstractEditor extends AbstractView implements IEditor {
 
     public void addEditorListener(EditorListener listener) {
         listeners.add(listener);
+    }
+
+    public static abstract class EditorListener {
+        public void nameChanged(IEditor editor) {
+        }
+
+        public void fileChanged(IEditor editor) {
+        }
+
+        public void dirtyChanged(IEditor editor) {
+        }
+
+        public void saved(IEditor editor) {
+        }
+
     }
 
 }

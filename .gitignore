@@ -12,7 +12,7 @@
 
 # Maven files
 target/
-
+site/
 
 # Operating System annoyances
 *.DS_Store

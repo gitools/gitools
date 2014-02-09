@@ -7,15 +7,23 @@
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
     <version>2.1.0-SNAPSHOT</version>
+
     <name>gitools</name>
     <description>Gitools</description>
-    <url>https://bg.upf.edu/forge/projects/gitools</url>
+    <url>http://gitools.github.io/gitools</url>
 
     <organization>
         <name>Universitat Pompeu Fabra - Biomedical Genomics group</name>
         <url>http://bg.upf.edu</url>
     </organization>
 
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL) version 3.0</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <issueManagement>
         <system>Github</system>
@@ -75,15 +83,11 @@
     </repositories>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>gitools-snapshots</id>
-            <url>file:///${user.dir}/target/repo</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-        <repository>
-            <id>gitools-releases</id>
-            <url>file:///${user.dir}/target/repo</url>
-        </repository>
+        <site>
+            <id>site</id>
+            <name>Gitools ghpages checkout</name>
+            <url>file://${basedir}/site/${project.version}</url>
+        </site>
     </distributionManagement>
 
     <dependencyManagement>
@@ -352,6 +356,21 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.0</version>
                 <dependencies>
@@ -362,7 +381,6 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <skipDeploy>true</skipDeploy>
                     <reportPlugins>
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>

@@ -39,6 +39,7 @@ public class MirrorDimension extends HeatmapDimension {
     private HeatmapDimension mirror;
 
     public MirrorDimension(HeatmapDimension main, HeatmapDimension mirror) {
+        super(mirror);
         this.main = main;
         this.mirror = mirror;
     }
@@ -121,10 +122,6 @@ public class MirrorDimension extends HeatmapDimension {
     @Override
     public void hide(Set<String> indices) {
         main.hide(indices);
-    }
-
-    @Override
-    public void init(IMatrixDimension matrixDimension) {
     }
 
     @Override

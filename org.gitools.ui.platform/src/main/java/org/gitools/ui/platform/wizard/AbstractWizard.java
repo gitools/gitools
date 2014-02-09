@@ -31,24 +31,22 @@ import java.util.Map;
 
 public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListener {
 
-    private String title;
-
-    private Icon logo;
-
-    private HelpContext helpContext;
-
     protected IWizardPage currentPage;
-
-
-    private final List<IWizardPage> pages = new ArrayList<IWizardPage>();
-
-
-    private final Map<String, IWizardPage> pageIdMap = new HashMap<String, IWizardPage>();
-
-
-    private final List<IWizardUpdateListener> listeners = new ArrayList<IWizardUpdateListener>();
+    private String title;
+    private Icon logo;
+    private HelpContext helpContext;
+    private List<IWizardPage> pages;
+    private Map<String, IWizardPage> pageIdMap;
+    private List<IWizardUpdateListener> listeners;
 
     protected AbstractWizard() {
+        init();
+    }
+
+    protected void init() {
+        pages = new ArrayList<>();
+        pageIdMap = new HashMap<>();
+        listeners = new ArrayList<>();
     }
 
     @Override
@@ -76,12 +74,12 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
         return helpContext;
     }
 
-    public void setHelpContext(HelpContext helpContext) {
-        this.helpContext = helpContext;
-    }
-
     protected void setHelpContext(String helpContextId) {
         this.helpContext = new HelpContext(helpContextId);
+    }
+
+    public void setHelpContext(HelpContext helpContext) {
+        this.helpContext = helpContext;
     }
 
     protected void addPage(IWizardPage page) {

@@ -1,8 +1,8 @@
 /*
  * #%L
- * org.gitools.ui.app
+ * gitools-ui-app
  * %%
- * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,13 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.htest.wizard;
+package org.gitools.ui.app.fileimport.wizard.csv;
 
-import org.gitools.analysis.Analysis;
-import org.gitools.ui.platform.wizard.AbstractWizard;
+class RowSelection {
+    private String rowSelection;
 
-public abstract class AnalysisWizard<A extends Analysis> extends AbstractWizard {
+    public RowSelection() {
+    }
 
-    public abstract A createAnalysis();
+    public String getRowSelection() {
+        return rowSelection;
+    }
 
+    public void setRowSelection(final String rowSelection) {
+        this.rowSelection = rowSelection;
+    }
 }

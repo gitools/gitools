@@ -33,7 +33,7 @@ import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -46,15 +46,17 @@ import java.util.List;
 import java.util.Map;
 
 
-public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupComparisonAnalysis> {
+public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupComparisonAnalysis> {
 
     public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
-        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", null);
+        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm");
     }
 
 
     @Override
     protected void prepareContext(VelocityContext context) {
+
+        GroupComparisonAnalysis analysis = getModel();
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
@@ -75,13 +77,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor) {
-        xmlPersistance = new GroupComparisonAnalysisFormat();
-        fileformat = GroupComparisonAnalysisFormat.FILE_FORMAT;
-        super.doSave(progressMonitor);
-    }
-
-    @Override
     protected void performUrlAction(String name, Map<String, String> params) {
         if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
@@ -91,6 +86,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
     private void newDataHeatmap() {
+
+        final GroupComparisonAnalysis analysis = getModel();
+
         if (analysis.getData() == null) {
             Application.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -142,6 +140,9 @@ public class GroupComparisonAnalysisEditor extends AnalysisDetailsEditor<GroupCo
     }
 
     private void newResultsHeatmap() {
+
+        final GroupComparisonAnalysis analysis = getModel();
+
         if (analysis.getResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
             return;

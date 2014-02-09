@@ -19,37 +19,36 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.excel;
+package org.gitools.ui.app.fileimport.wizard.csv;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.fileimport.ImportWizard;
+import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.utils.FileFormatFilter;
 
 import java.io.IOException;
 import java.util.List;
 
-public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
+public class CsvImportWizard extends AbstractWizard implements ImportWizard {
 
-    private static FileFormat[] FILE_FORMATS = new FileFormat[] { new FileFormat("Excel", "xls"), new FileFormat("Excel", "xlsx") };
-    private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Microsoft Excel files", FILE_FORMATS);
+    private static FileFormat[] FILE_FORMATS = new FileFormat[] { new FileFormat("CSV", "csv"), new FileFormat("TSV", "tsv"), new FileFormat("TXT", "txt") };
+    private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Text files", FILE_FORMATS);
 
     private IResourceLocator locator;
     private SelectColumnsPage selectColumnsPage;
-    private ExcelReader reader;
 
-    public ExcelImportWizard() {
-        setTitle("Import an Excel matrix");
-        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
-        setHelpContext("import_excel");
+    public CsvImportWizard() {
+        setTitle("Import a CSV file");
+        //TODO setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
+        setHelpContext("import_csv");
     }
 
     @Override
@@ -65,18 +64,18 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
     public void addPages() {
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
-        selectColumnsPage.setReader(reader);
+        selectColumnsPage.setReader(new CsvReader(locator));
         addPage(selectColumnsPage);
 
     }
 
     @Override
     public void performFinish() {
-        ExcelReader reader = selectColumnsPage.getReader();
+        CsvReader reader = selectColumnsPage.getReader();
         int columns = selectColumnsPage.getSelectedColumn();
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
-        JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader);
+        JobRunnable loadFile = new CommandConvertAndLoadCsvFile(columns, rows, values, reader);
         JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
     }
@@ -84,9 +83,6 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
 
     @Override
     public void run(IProgressMonitor monitor) throws IOException {
-        reader = new ExcelReader(locator);
-        reader.run(monitor);
-
         init();
         WizardDialog wizDlg = new WizardDialog(Application.get(), this);
         wizDlg.open();
