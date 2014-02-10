@@ -34,6 +34,12 @@
 
         <dependency>
             <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.matrix</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gitools</groupId>
             <artifactId>org.gitools.analysis</artifactId>
             <version>${project.version}</version>
         </dependency>

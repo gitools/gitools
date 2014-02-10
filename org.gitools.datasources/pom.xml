@@ -33,6 +33,18 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.matrix</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.heatmap</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- External dependencies -->
         <dependency>
             <groupId>commons-net</groupId>

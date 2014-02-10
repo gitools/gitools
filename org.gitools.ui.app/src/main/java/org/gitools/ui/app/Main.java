@@ -63,9 +63,6 @@ public class Main {
         // Initialize look and feel
         LaFManager.install();
 
-        // Web l&f components
-        LanguageManager.initialize();
-
         // Force silence lobobrowser loggers
         try {
             LogManager.getLogManager().readConfiguration(new ByteArrayInputStream("org.lobobrowser.level=OFF".getBytes("UTF-8")));

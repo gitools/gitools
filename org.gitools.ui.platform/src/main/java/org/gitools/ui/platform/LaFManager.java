@@ -22,10 +22,12 @@
 package org.gitools.ui.platform;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LanguageManager;
 import com.sun.java.swing.plaf.gtk.GTKLookAndFeel;
 import org.gitools.ui.platform.idea.PopupUtil;
 import org.gitools.ui.platform.idea.ScreenUtil;
 import org.gitools.ui.platform.idea.UIUtil;
+import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.os.SystemInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,13 +48,33 @@ public class LaFManager {
             "OptionPane.warningIcon", "OptionPane.questionIcon"};
 
     public static void install() {
-       installGTKLookAndFeel();
-       updateUI();
+
+       if (SystemInfo.isLinux) {
+           installGTKLookAndFeel();
+           updateUI();
+       } else {
+           installSystemLookAndFeel();
+       }
     }
 
     private static void installWebLookAndFeel() {
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+    }
+
+    private static void installSystemLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void installGTKLookAndFeel() {
@@ -63,6 +85,9 @@ public class LaFManager {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+
+        // Web l&f components
+        LanguageManager.initialize();
     }
 
     public static void updateUI() {
