@@ -27,6 +27,7 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 
+
 @ApplicationScoped
 public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnalysis> {
 
