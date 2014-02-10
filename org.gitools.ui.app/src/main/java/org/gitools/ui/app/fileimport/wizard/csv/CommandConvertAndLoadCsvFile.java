@@ -68,7 +68,7 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
                 throw new PersistenceException("At least 3 fields expected on one line.");
             }
 
-            MatrixLayer<Double> layers[] = new MatrixLayer[header.length - 2];
+            MatrixLayer<Double> layers[] = new MatrixLayer[values.size()];
             for (int i=0; i < values.size(); i++) {
                 layers[i] = new MatrixLayer<>(header[values.get(i)], Double.class);
             }

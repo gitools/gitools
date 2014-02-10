@@ -30,6 +30,7 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
@@ -40,9 +41,9 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.format.TsvAnnotationMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -153,6 +154,12 @@ public class CommandLoadFile extends AbstractCommand {
     private IResourceFormat getFormat() {
         if (format == null) {
             format = getPersistenceManager().getFormat(getResourceLocator().getName(), IResource.class);
+        }
+
+        // We don't want to Open annotation matrices
+        //TODO remove all IAnnotations stuff and use normal IMatrix
+        if (format != null && IAnnotations.class.isAssignableFrom(format.getResourceClass())) {
+            format = null;
         }
 
         return format;
@@ -271,7 +278,7 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     private static void loadAnnotations(File file, HeatmapDimension hdim) {
-        hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), getPersistenceManager().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+        hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
     }
 
 }

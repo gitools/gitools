@@ -94,14 +94,12 @@ public class OpenFromFilesystemAction extends BaseAction {
                             ImportManager.get().getFileFormats(),
                             ObjectArrays.concat(FORMAT_HEATMAPS, FORMAT_ANALYSIS, FileFormat.class)
                         )),
-                new FileFormatFilter("Heatmaps", FORMAT_HEATMAPS),
                 new FileFormatFilter("Analysis", FORMAT_ANALYSIS),
 
                 new FileFormatFilter(HeatmapFormat.FILE_FORMAT),
+                new FileFormatFilter("All files"),
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
-                new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX.getTitle() + " (*.*)"),
                 new FileFormatFilter(FileFormats.DOUBLE_MATRIX),
-                new FileFormatFilter(FileFormats.DOUBLE_MATRIX.getTitle() + " (*.*)"),
                 new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
                 new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
                 new FileFormatFilter(FileFormats.GENE_MATRIX),

@@ -47,7 +47,6 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
 
     public CsvImportWizard() {
         setTitle("Import a CSV file");
-        //TODO setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.excel48, 48));
         setHelpContext("import_csv");
     }
 
