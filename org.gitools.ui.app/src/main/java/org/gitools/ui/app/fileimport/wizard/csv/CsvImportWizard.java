@@ -24,11 +24,9 @@ package org.gitools.ui.app.fileimport.wizard.csv;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -43,6 +41,7 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
     private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Text files", FILE_FORMATS);
 
     private IResourceLocator locator;
+    private SelectDataLayoutPage selectDataLayoutPage;
     private SelectColumnsPage selectColumnsPage;
 
     public CsvImportWizard() {
@@ -61,6 +60,11 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
 
     @Override
     public void addPages() {
+
+        selectDataLayoutPage = new SelectDataLayoutPage();
+        selectDataLayoutPage.setReader(new CsvReader(locator));
+        addPage(selectDataLayoutPage);
+
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
         selectColumnsPage.setReader(new CsvReader(locator));

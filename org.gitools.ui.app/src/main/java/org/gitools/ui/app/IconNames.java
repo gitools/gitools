@@ -190,6 +190,11 @@ public class IconNames {
 
     public static final URL ANALYSIS_IMAGE_MANN_WHITNEY_WILCOXON = IconNames.class.getResource("/img/AnalysisImageMannWhitneyWilcoxon.png");
 
+    public static final URL DATA_FORMAT_MATRIX = IconNames.class.getResource("/img/DataFormatMatrix.png");
+
+    public static final URL DATA_FORMAT_TABLE = IconNames.class.getResource("/img/DataFormatTable.png");
+
+
     public static final String drag = "/img/drag.png";
 
     public static final ImageIcon INFO_ICON = new ImageIcon(IconNames.class.getResource("/img/info.png"));
