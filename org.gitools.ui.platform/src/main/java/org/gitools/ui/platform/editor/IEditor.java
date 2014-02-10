@@ -24,9 +24,9 @@ package org.gitools.ui.platform.editor;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.view.IView;
 
-public interface IEditor extends IView {
+public interface IEditor<M> extends IView {
 
-    Object getModel();
+    M getModel();
 
     boolean isDirty();
 

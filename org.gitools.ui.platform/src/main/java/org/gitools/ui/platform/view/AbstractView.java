@@ -44,6 +44,5 @@ public abstract class AbstractView extends JPanel implements IView {
 
     @Override
     public void refresh() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

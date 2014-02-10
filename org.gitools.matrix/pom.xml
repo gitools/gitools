@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>org.gitools.matrix</artifactId>
-
+    <name>org.gitools.matrix</name>
 
     <dependencies>
 
@@ -46,5 +46,12 @@
 
     </dependencies>
 
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <name>Gitools Github ghpages checkout</name>
+            <url>file://${basedir}/../site/${project.version}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
 
 </project>

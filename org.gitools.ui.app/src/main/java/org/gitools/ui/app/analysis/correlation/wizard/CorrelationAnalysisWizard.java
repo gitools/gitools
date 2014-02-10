@@ -28,14 +28,14 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class CorrelationAnalysisFromEditorWizard extends AbstractWizard {
+public class CorrelationAnalysisWizard extends AbstractWizard {
 
     private final String[] attributeNames;
 
     private CorrelationFromEditorPage corrPage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public CorrelationAnalysisFromEditorWizard(String[] attributeNames) {
+    public CorrelationAnalysisWizard(String[] attributeNames) {
         super();
 
         setTitle("Correlation analysis");

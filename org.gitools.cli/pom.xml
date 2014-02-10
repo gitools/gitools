@@ -9,7 +9,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.gitools.cli</artifactId>
     <name>org.gitools.cli</name>
-    <description>gitools command line interface</description>
 
     <properties>
         <mainClass>org.gitools.cli.Main</mainClass>
@@ -88,4 +87,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <name>Gitools Github ghpages checkout</name>
+            <url>file://${basedir}/../site/${project.version}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
 </project>

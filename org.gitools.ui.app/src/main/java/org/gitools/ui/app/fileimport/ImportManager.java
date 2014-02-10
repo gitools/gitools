@@ -23,6 +23,7 @@ package org.gitools.ui.app.fileimport;
 
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.ui.app.fileimport.wizard.csv.CsvImportWizard;
 import org.gitools.ui.app.fileimport.wizard.excel.ExcelImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 
@@ -40,12 +41,14 @@ public class ImportManager {
         return INSTANCE;
     }
 
+    private ImportWizard DEFAULT_TEXT_WIZARD_IMPORT = new CsvImportWizard();
     private Map<FileFormatFilter, ImportWizard> wizards = new HashMap<>();
 
     private ImportManager() {
         super();
 
         register(new ExcelImportWizard());
+        register(DEFAULT_TEXT_WIZARD_IMPORT);
     }
 
     public Collection<FileFormatFilter> getFileFormatFilters() {
@@ -63,12 +66,23 @@ public class ImportManager {
     }
 
     public boolean isImportable(IResourceLocator locator) {
-        return getFileFormatFilter(locator) != null;
+        return getWizard(locator) != null;
     }
 
     public ImportWizard getWizard(IResourceLocator locator) {
 
-        ImportWizard wizard = wizards.get(getFileFormatFilter(locator));
+        ImportWizard wizard = null;
+        for (ImportWizard w : wizards.values()) {
+            if (w.getFileFormatFilter().accept(false, locator.getExtension())) {
+                wizard = w;
+            }
+        }
+
+        if (wizard == null) {
+            //TODO Check that is a text file
+            wizard = DEFAULT_TEXT_WIZARD_IMPORT;
+        }
+
         wizard.setLocator(locator);
 
         return wizard;
@@ -78,15 +92,5 @@ public class ImportManager {
         wizards.put(importWizard.getFileFormatFilter(), importWizard);
     }
 
-    private FileFormatFilter getFileFormatFilter(IResourceLocator locator) {
-
-        for (FileFormatFilter filter : wizards.keySet()) {
-            if (filter.accept(false, locator.getExtension())) {
-                return filter;
-            }
-        }
-
-        return null;
-    }
 
 }

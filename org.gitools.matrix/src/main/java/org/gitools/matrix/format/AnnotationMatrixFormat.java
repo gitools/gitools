@@ -40,11 +40,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-public class TsvAnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
+public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
+
+    private static AnnotationMatrixFormat INSTANCE = new AnnotationMatrixFormat();
+    public static AnnotationMatrixFormat get() {
+        return INSTANCE;
+    }
 
     public static final String EXTENSION = "tsv";
 
-    public TsvAnnotationMatrixFormat() {
+    public AnnotationMatrixFormat() {
         super(EXTENSION, AnnotationMatrix.class);
     }
 

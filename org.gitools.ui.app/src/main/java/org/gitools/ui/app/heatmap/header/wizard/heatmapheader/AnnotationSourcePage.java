@@ -24,9 +24,9 @@ package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.ApplicationContext;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.format.TsvAnnotationMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -206,7 +206,7 @@ public class AnnotationSourcePage extends AbstractWizardPage {
             File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file != null) {
-                hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), ApplicationContext.getPersistenceManager().getFormat(TsvAnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+                hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), ApplicationContext.getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
                 updateControls();
                 //annFile.setText(file.getName());
             }

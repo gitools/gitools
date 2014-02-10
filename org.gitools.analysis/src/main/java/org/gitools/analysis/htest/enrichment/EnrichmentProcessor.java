@@ -46,6 +46,7 @@ import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CancellationException;
 
 public class EnrichmentProcessor implements AnalysisProcessor {
 
@@ -56,7 +57,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(final IProgressMonitor monitor) throws AnalysisException {
         Date startTime = new Date();
 
         IMatrix data = analysis.getData().get();
@@ -91,6 +92,10 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
                         Map<String, CommonResult> results = new HashMap<>();
                         for (String module : moduleMap.getModules()) {
+
+                            if (monitor.isCancelled()) {
+                                throw new CancellationException();
+                            }
 
                             Iterable<Double> moduleValues = position.iterate(layer, items).filter(moduleMap.getMappingItems(module));
 

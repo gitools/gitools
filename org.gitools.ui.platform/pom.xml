@@ -48,4 +48,13 @@
         </dependency>
 
     </dependencies>
+
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <name>Gitools Github ghpages checkout</name>
+            <url>file://${basedir}/../site/${project.version}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
 </project>

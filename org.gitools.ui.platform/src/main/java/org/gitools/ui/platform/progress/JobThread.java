@@ -29,6 +29,7 @@ import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CancellationException;
 
 /**
  * @noinspection ALL
@@ -162,6 +163,10 @@ public class JobThread implements JobRunnable {
 
                 try {
                     runnable.run(monitor);
+                } catch (CancellationException e) {
+                    if (!monitor.isCancelled()) {
+                        monitor.exception(e);
+                    }
                 } catch (Throwable cause) {
                     m.exception(cause);
                 }

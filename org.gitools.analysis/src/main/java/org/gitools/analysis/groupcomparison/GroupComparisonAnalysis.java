@@ -53,7 +53,6 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private DimensionGroupEnum columnGrouping = null;
 
-
     protected String dataFile = "";
 
     @XmlTransient
@@ -77,7 +76,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private String mtc;
 
-    private ResourceReference<IMatrix> data;
+    private ResourceReference<? extends IMatrix> data;
 
     private ResourceReference<? extends IMatrix> results;
     private Double nullConversion;
@@ -166,7 +165,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         }
     }
 
-    public ResourceReference<IMatrix> getData() {
+    public ResourceReference<? extends IMatrix> getData() {
         return data;
     }
 

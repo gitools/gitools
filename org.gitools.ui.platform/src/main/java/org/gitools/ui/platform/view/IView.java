@@ -23,9 +23,6 @@ package org.gitools.ui.platform.view;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public interface IView {
 
     String getName();
@@ -33,7 +30,6 @@ public interface IView {
     void setName(String name);
 
     Icon getIcon();
-
 
     JPanel getPanel();
 

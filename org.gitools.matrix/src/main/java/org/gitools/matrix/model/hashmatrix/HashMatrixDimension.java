@@ -77,4 +77,5 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
         this.labelToIndex.put(label, nextIndex);
         this.indexToLabel.put(nextIndex, label);
     }
+
 }

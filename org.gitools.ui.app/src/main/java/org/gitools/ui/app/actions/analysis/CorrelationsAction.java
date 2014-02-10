@@ -34,7 +34,7 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
-import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisFromEditorWizard;
+import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -61,7 +61,7 @@ public class CorrelationsAction extends HeatmapAction {
         for (int i = 0; i < attributes.size(); i++)
             attributeNames[i] = attributes.get(i).getName();
 
-        CorrelationAnalysisFromEditorWizard wiz = new CorrelationAnalysisFromEditorWizard(attributeNames);
+        CorrelationAnalysisWizard wiz = new CorrelationAnalysisWizard(attributeNames);
         WizardDialog dlg = new WizardDialog(Application.get(), wiz);
         dlg.setVisible(true);
 

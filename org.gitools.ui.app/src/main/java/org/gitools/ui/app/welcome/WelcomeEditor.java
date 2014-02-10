@@ -100,25 +100,6 @@ public class WelcomeEditor extends HtmlEditor {
                         break;
                 }
                 break;
-            case "analysis": {
-                final Map<String, Class<? extends BaseAction>> actions = new HashMap<>();
-                actions.put("enrichment", EnrichmentAnalysisAction.class);
-                actions.put("oncodrive", OncodriveAnalysisAction.class);
-                actions.put("correlations", NewCorrelationAnalysisAction.class);
-                actions.put("overlapping", NewOverlappingAnalysisAction.class);
-                actions.put("combination", NewCombinationAnalysisAction.class);
-                String ref = params.get("ref");
-                Class<? extends BaseAction> actionClass = actions.get(ref);
-                if (actionClass != null) {
-                    try {
-                        ActionEvent event = new ActionEvent(this, 0, name);
-                        actionClass.newInstance().actionPerformed(event);
-                    } catch (Exception ex) {
-                        ExceptionDialog.show(Application.get(), ex);
-                    }
-                }
-                break;
-            }
             case "open": {
                 switch (params.get("ref")) {
                     case "filesystem":

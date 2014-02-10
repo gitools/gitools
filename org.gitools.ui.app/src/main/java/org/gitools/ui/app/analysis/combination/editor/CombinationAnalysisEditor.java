@@ -29,7 +29,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -40,14 +40,17 @@ import org.gitools.ui.platform.progress.JobThread;
 import javax.swing.*;
 import java.util.Map;
 
-public class CombinationAnalysisEditor extends AnalysisDetailsEditor<CombinationAnalysis> {
+public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysis> {
 
     public CombinationAnalysisEditor(CombinationAnalysis analysis) {
-        super(analysis, "/vm/analysis/combination/analysis_details.vm", null);
+        super(analysis, "/vm/analysis/combination/analysis_details.vm");
     }
 
     @Override
     protected void prepareContext(VelocityContext context) {
+
+        final CombinationAnalysis analysis = getModel();
+
         String combOf = "columns";
         if (analysis.isTransposeData()) {
             combOf = "rows";
@@ -79,13 +82,6 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor) {
-        xmlPersistance = new CombinationAnalysisFormat();
-        fileformat = CombinationAnalysisFormat.FILE_FORMAT;
-        super.doSave(progressMonitor);
-    }
-
-    @Override
     protected void performUrlAction(String name, Map<String, String> params) {
         if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
@@ -95,6 +91,9 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     private void newDataHeatmap() {
+
+        final CombinationAnalysis analysis = getModel();
+
         if (analysis.getData() == null) {
             Application.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -132,6 +131,7 @@ public class CombinationAnalysisEditor extends AnalysisDetailsEditor<Combination
     }
 
     private void newResultsHeatmap() {
+        final CombinationAnalysis analysis = getModel();
         if (analysis.getResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
             return;

@@ -30,7 +30,7 @@ import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.CorrelationDecorator;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -41,14 +41,16 @@ import org.gitools.ui.platform.progress.JobThread;
 import javax.swing.*;
 import java.util.Map;
 
-public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<CorrelationAnalysis> {
+public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysis> {
 
     public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {
-        super(analysis, "/vm/analysis/correlation/analysis_details.vm", null);
+        super(analysis, "/vm/analysis/correlation/analysis_details.vm");
     }
 
     @Override
     protected void prepareContext(VelocityContext context) {
+
+        final CorrelationAnalysis analysis = getModel();
 
         IResourceLocator dataLocator = analysis.getData().getLocator();
         context.put("dataFile", dataLocator != null ? dataLocator.getName() : "Not defined");
@@ -75,13 +77,6 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor) {
-        xmlPersistance = new CorrelationAnalysisFormat();
-        fileformat = CorrelationAnalysisFormat.FILE_FORMAT;
-        super.doSave(progressMonitor);
-    }
-
-    @Override
     protected void performUrlAction(String name, Map<String, String> params) {
         if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
@@ -91,6 +86,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     private void newDataHeatmap() {
+        final CorrelationAnalysis analysis = getModel();
         if (analysis.getData() == null) {
             Application.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -122,6 +118,7 @@ public class CorrelationAnalysisEditor extends AnalysisDetailsEditor<Correlation
     }
 
     private void newResultsHeatmap() {
+        final CorrelationAnalysis analysis = getModel();
         if (analysis.getResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
             return;

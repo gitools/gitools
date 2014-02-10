@@ -32,7 +32,7 @@ import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.analysis.editor.AnalysisDetailsEditor;
+import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -46,15 +46,16 @@ import java.awt.*;
 import java.util.Map;
 
 
-public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<OverlappingAnalysis> {
+public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysis> {
 
     public OverlappingAnalysisEditor(OverlappingAnalysis analysis) {
-        super(analysis, "/vm/analysis/overlapping/analysis_details.vm", null);
+        super(analysis, "/vm/analysis/overlapping/analysis_details.vm");
     }
 
     @Override
     protected void prepareContext(VelocityContext context) {
 
+        OverlappingAnalysis analysis = getModel();
 
         ResourceReference<IMatrix> resourceRef = analysis.getFilteredData();
         context.put("filteredDataFile", ((resourceRef != null && resourceRef.getLocator() != null) ? resourceRef.getLocator().getURL() : "Not defined"));
@@ -82,14 +83,6 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     @Override
-    public void doSave(IProgressMonitor progressMonitor) {
-
-        xmlPersistance = new OverlappingAnalysisFormat();
-        fileformat = OverlappingAnalysisFormat.FILE_FORMAT;
-        super.doSave(progressMonitor);
-    }
-
-    @Override
     protected void performUrlAction(String name, Map<String, String> params) {
         if ("NewDataHeatmap".equals(name)) {
             newDataHeatmap();
@@ -99,6 +92,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     private void newDataHeatmap() {
+        final OverlappingAnalysis analysis = getModel();
         if (analysis.getSourceData() == null) {
             Application.get().setStatusText("Analysis doesn't contain data.");
             return;
@@ -130,6 +124,7 @@ public class OverlappingAnalysisEditor extends AnalysisDetailsEditor<Overlapping
     }
 
     private void newResultsHeatmap() {
+        final OverlappingAnalysis analysis = getModel();
         if (analysis.getCellResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
             return;

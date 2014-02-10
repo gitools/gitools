@@ -90,6 +90,11 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
     }
 
     @Override
+    public String toString() {
+        return "(dimension:" + id + " #" + size() + ")";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

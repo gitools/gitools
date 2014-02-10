@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>org.gitools.heatmap</artifactId>
+    <name>org.gitools.heatmap</name>
 
     <dependencies>
 
@@ -44,5 +45,13 @@
         </dependency>
 
     </dependencies>
+
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <name>Gitools Github ghpages checkout</name>
+            <url>file://${basedir}/../site/${project.version}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
 
 </project>

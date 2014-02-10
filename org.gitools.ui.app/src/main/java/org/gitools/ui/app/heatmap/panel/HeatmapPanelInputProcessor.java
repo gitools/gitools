@@ -198,8 +198,9 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLead(int i, IMatrixViewDimension dim) {
-        if (i >= getRowMax()) {
-            dim.setFocus(dim.getLabel(getRowMax()));
+        int max = dim.size() - 1;
+        if (i >= max) {
+            dim.setFocus(dim.getLabel(max));
         } else if (i < 0) {
             dim.setFocus(dim.getLabel(0));
         } else {

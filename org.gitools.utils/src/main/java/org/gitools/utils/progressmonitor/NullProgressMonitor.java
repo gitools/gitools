@@ -25,6 +25,11 @@ import org.gitools.api.analysis.IProgressMonitor;
 
 public class NullProgressMonitor implements IProgressMonitor {
 
+    private static NullProgressMonitor INSTANCE = new NullProgressMonitor();
+    public static NullProgressMonitor get() {
+        return INSTANCE;
+    }
+
     @Override
     public void begin(String title, long totalWork) {
     }
