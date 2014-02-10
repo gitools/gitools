@@ -121,7 +121,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
         decorator.decorate(
                 decoration,
-                new HeatmapTextFormatter(),
+                HeatmapTextFormatter.TWO_DECIMALS,
                 annotations,
                 annotations.getLayers().get(annotation),
                 identifier);

@@ -52,9 +52,10 @@ public class ColorScaleDrawer {
     private final Color legendPointColor;
     private final int legendPadding;
     private final Font legendFont;
-    private final String legendFormat;
+    private ITextFormatter textFormatter;
 
-    public ColorScaleDrawer(IColorScale scale) {
+
+    public ColorScaleDrawer(IColorScale scale, ITextFormatter textFormatter) {
         setScale(scale);
 
         this.bgColor = Color.WHITE;
@@ -69,7 +70,8 @@ public class ColorScaleDrawer {
         this.legendPointColor = Color.BLACK;
         this.legendPadding = 4;
         this.legendFont = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
-        this.legendFormat = "%.3g";
+
+        this.textFormatter = textFormatter;
     }
 
     public IColorScale getScale() {
@@ -163,19 +165,19 @@ public class ColorScaleDrawer {
                 int fontHeight = g.getFontMetrics().getHeight();
                 int legendYTop = scaleYBottom + legendPadding;
                 int ye = legendYTop + fontHeight;
-                ITextFormatter gf = new HeatmapTextFormatter();
+
                 g.setColor(legendPointColor);
 
 
                 if (range.getLeftLabel() != null) {
-                    String legend = gf.format(range.getLeftLabel());
+                    String legend = textFormatter.format(range.getLeftLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeXLeft + legendPadding;
                     g.drawString(legend, legendStart, ye);
                     lastX = fontWidth + legendPadding;
                 }
                 if (range.getCenterLabel() != null) {
-                    String legend = gf.format(range.getCenterLabel());
+                    String legend = textFormatter.format(range.getCenterLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeEnd - (rangeWidth / 2 + fontWidth / 2);
                     if (legendStart > lastX + legendPadding * 2) {
@@ -184,7 +186,7 @@ public class ColorScaleDrawer {
                     }
                 }
                 if (range.getRightLabel() != null) {
-                    String legend = gf.format(range.getRightLabel());
+                    String legend = textFormatter.format(range.getRightLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeXLeft + rangeWidth - legendPadding - fontWidth;
                     if (legendStart > lastX + legendPadding) {
@@ -214,7 +216,6 @@ public class ColorScaleDrawer {
             return maxValue;
 
         }
-
 
         return 0;
     }

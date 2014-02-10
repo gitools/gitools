@@ -70,7 +70,7 @@ public abstract class AnalysisEditor<A extends Analysis> extends ResourceEditor<
             templatePanel.setTemplateFromResource(template, url);
 
             VelocityContext context = new VelocityContext();
-            context.put("fmt", new HeatmapTextFormatter());
+            context.put("fmt", HeatmapTextFormatter.TWO_DECIMALS);
             context.put("analysis", getModel());
 
             prepareContext(context);

@@ -24,30 +24,21 @@ package org.gitools.utils.formatter;
 import java.text.DecimalFormat;
 import java.util.Formatter;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mschroeder
- * Date: 9/16/13
- * Time: 3:49 PM
- * To change this template use File | Settings | File Templates.
- */
-public class DetailsBoxFormatter extends HeatmapTextFormatter {
+public class ScientificHeatmapTextFormatter extends HeatmapTextFormatter {
 
-    public static final DetailsBoxFormatter INSTANCE = new DetailsBoxFormatter();
+    public static final ScientificHeatmapTextFormatter INSTANCE = new ScientificHeatmapTextFormatter();
 
-    protected final StringBuilder sb;
-    protected final Formatter fmt;
-    protected final DecimalFormat countFormat;
+    private final StringBuilder sb;
+    private final Formatter fmt;
 
-    public DetailsBoxFormatter() {
+    public ScientificHeatmapTextFormatter() {
+        super("Scientific notation", new DecimalFormat("#.#########"));
         sb = new StringBuilder(14);
         fmt = new Formatter(sb);
-        countFormat = new DecimalFormat("#.#########");
     }
 
     @Override
     protected String decimal(double value) {
-
         if (value != 0 && value < 1e-99 && value > -1e-99) {
             return "~0.00";
         }
@@ -57,14 +48,8 @@ public class DetailsBoxFormatter extends HeatmapTextFormatter {
             fmt.format("%.2g", value);
             return sb.toString();
         } else {
-            return countFormat.format(value);
+            return getFormat().format(value);
         }
     }
-
-    @Override
-    public String toString() {
-        return "Double value with many decimals";
-    }
-
 
 }

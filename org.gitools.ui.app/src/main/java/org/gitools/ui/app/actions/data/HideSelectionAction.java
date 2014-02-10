@@ -61,6 +61,7 @@ public class HideSelectionAction extends HeatmapDimensionAction implements IHeat
     public void actionPerformed(ActionEvent e) {
         HeatmapDimension dimension = getDimension();
         dimension.hide(dimension.getSelected());
+        dimension.getSelected().clear();
 
         Application.get().setStatusText("Selected " + getDimensionLabel() + " hidden");
     }

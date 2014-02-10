@@ -65,32 +65,10 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        execute(getDimension(), header);
+        execute(header);
     }
 
-    public static void execute(HeatmapDimension dimension, HeatmapHeader header) {
-
-
-        /*
-        Class<? extends HeatmapHeader> cls = header.getClass();
-        IWizard wizard = null;
-
-        if (HeatmapTextLabelsHeader.class.equals(cls))
-            wizard = new TextLabelsHeaderWizard(dimension, (HeatmapTextLabelsHeader) header);
-        else if (HeatmapColoredLabelsHeader.class.equals(cls)) {
-            ColoredLabelsHeaderWizard wiz = new ColoredLabelsHeaderWizard(dimension, (HeatmapColoredLabelsHeader) header);
-            wiz.setEditionMode(true);
-            wizard = wiz;
-        } else if (HeatmapDecoratorHeader.class.equals(cls)) {
-            wizard = new DecoratorHeaderWizard((HeatmapDecoratorHeader) header);
-        }
-
-        if (wizard == null)
-            return;
-
-        WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
-        wdlg.setTitle("Edit header");
-        wdlg.setVisible(true);*/
+    public static void execute(final HeatmapHeader header) {
 
         List<ISettingsSection> sections = new ArrayList<>();
 
@@ -109,7 +87,14 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
                 sections
         );
 
-        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, sections.get(0).getName());
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, sections.get(0).getName()) {
+
+            @Override
+            protected void apply() {
+                header.getHeatmapDimension().updateHeaders();
+            }
+        };
+
         dialog.setVisible(true);
     }
 

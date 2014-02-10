@@ -50,6 +50,12 @@ public class CsvReader implements JobRunnable, Closeable {
     public CsvReader(IResourceLocator locator) {
         super();
         this.locator = locator;
+
+        // Choose COMMA separator if it's a CSV
+        if ("csv".equalsIgnoreCase(locator.getExtension())) {
+            setSeparator(CsvReader.COMMA);
+        }
+
     }
 
     public String getSeparator() {

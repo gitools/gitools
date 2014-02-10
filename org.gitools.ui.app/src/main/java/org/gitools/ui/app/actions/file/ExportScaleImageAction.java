@@ -23,7 +23,9 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;
@@ -36,6 +38,7 @@ import org.gitools.ui.app.scale.ScaleExportWizard;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
+import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -59,7 +62,10 @@ public class ExportScaleImageAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
 
         Heatmap hm = getHeatmap();
-        Decorator cd = hm.getLayers().getTopLayer().getDecorator();
+        HeatmapLayer layer = hm.getLayers().getTopLayer();
+        Decorator cd = layer.getDecorator();
+
+        final ITextFormatter textFormatter = layer.getShortFormatter();
         final IColorScale scale = cd != null ? cd.getScale() : null;
 
         if (scale == null) {
@@ -95,7 +101,7 @@ public class ExportScaleImageAction extends HeatmapAction {
                     monitor.begin("Exporting scale to image ...", 1);
                     monitor.info("File: " + file.getName());
 
-                    ColorScaleDrawer drawer = new ColorScaleDrawer(scale);
+                    ColorScaleDrawer drawer = new ColorScaleDrawer(scale, textFormatter);
                     if (wz.isPartialRange()) {
                         drawer.setZoomRangeMin(wz.getRangeMin());
                         drawer.setZoomRangeMax(wz.getRangeMax());

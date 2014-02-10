@@ -26,7 +26,7 @@ import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
-import org.gitools.utils.formatter.DetailsBoxFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 
@@ -36,7 +36,13 @@ import java.util.List;
 
 public class FormatSection implements ISettingsSection {
 
-    private static List<? extends ITextFormatter> FORMATTERS = Arrays.asList(HeatmapTextFormatter.INSTANCE, DetailsBoxFormatter.INSTANCE);
+    private static List<? extends ITextFormatter> FORMATTERS = Arrays.asList(
+            HeatmapTextFormatter.TWO_DECIMALS,
+            ScientificHeatmapTextFormatter.INSTANCE,
+            HeatmapTextFormatter.NO_DECIMALS,
+            HeatmapTextFormatter.FOUR_DECIMALS,
+            HeatmapTextFormatter.ONE_DECIMALS
+    );
 
     private JPanel mainPanel;
     private JComboBox cellFormatComboBox;

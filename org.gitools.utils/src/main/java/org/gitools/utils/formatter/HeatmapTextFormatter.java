@@ -26,36 +26,29 @@ import java.util.Formatter;
 
 public class HeatmapTextFormatter implements ITextFormatter {
 
-    public static HeatmapTextFormatter INSTANCE = new HeatmapTextFormatter();
+    public static HeatmapTextFormatter NO_DECIMALS = new HeatmapTextFormatter("No decimals", new DecimalFormat("########"));
+    public static HeatmapTextFormatter ONE_DECIMALS = new HeatmapTextFormatter("One decimal", new DecimalFormat("########.#"));
+    public static HeatmapTextFormatter FOUR_DECIMALS = new HeatmapTextFormatter("Four decimals", new DecimalFormat("########.####"));
+    public static HeatmapTextFormatter TWO_DECIMALS = new HeatmapTextFormatter("Two decimals", new DecimalFormat("########.##"));
 
-    protected final StringBuilder sb;
-    protected final Formatter fmt;
-    protected final DecimalFormat countFormat;
 
-    public HeatmapTextFormatter() {
-        sb = new StringBuilder(8);
-        fmt = new Formatter(sb);
-        countFormat = new DecimalFormat("#####.##");
+    private String name;
+    private final StringBuilder sb;
+    private final Formatter fmt;
+    private final DecimalFormat countFormat;
+
+    public HeatmapTextFormatter(String name, DecimalFormat format) {
+        this.sb = new StringBuilder(8);
+        this.fmt = new Formatter(sb);
+        this.name = name;
+        this.countFormat = format;
     }
 
-
     protected String decimal(double value) {
-
-        /*if (value != 0 && value < 1e-99 && value > -1e-99) {
-            return "~0.00";
-        } */
-
-        /* if (value < 1 && value > -1) {
-            sb.setLength(0);
-            fmt.format("%.2g", value);
-            return sb.toString();
-        } else {*/
-            return countFormat.format(value);
-        //}
+         return countFormat.format(value);
     }
 
     @Override
-
     public String format(Object value) {
 
         if (value == null) {
@@ -75,8 +68,12 @@ public class HeatmapTextFormatter implements ITextFormatter {
         return sb.toString();
     }
 
+    protected DecimalFormat getFormat() {
+        return countFormat;
+    }
+
     @Override
     public String toString() {
-        return "Double value with two decimals";
+        return name;
     }
 }

@@ -78,7 +78,14 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
                 detailsSection
                 );
 
-        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName());
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName()) {
+
+            @Override
+            protected void apply() {
+                 getHeatmap().getLayers().updateLayers();
+            }
+        };
+
         dialog.setVisible(true);
     }
 

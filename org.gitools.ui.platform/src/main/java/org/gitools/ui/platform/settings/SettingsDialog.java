@@ -34,11 +34,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class SettingsDialog extends AbstractDialog {
+public abstract class SettingsDialog extends AbstractDialog {
 
     private final ISettingsPanel panel;
 
     private JButton closeButton;
+
+    private JButton applyButton;
 
     private JPanel selectedPanel;
 
@@ -99,8 +101,11 @@ public class SettingsDialog extends AbstractDialog {
     }
 
     protected void close() {
+        apply();
         setVisible(false);
     }
+
+    protected abstract void apply();
 
     @Override
     protected List<JButton> createButtons() {
@@ -112,8 +117,16 @@ public class SettingsDialog extends AbstractDialog {
             }
         });
 
+        applyButton = new JButton("Apply");
+        applyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                apply();
+            }
+        });
+
         closeButton.setDefaultCapable(true);
-        return Arrays.asList(closeButton);
+        return Arrays.asList(applyButton, closeButton);
     }
 
     private void updateState() {

@@ -27,7 +27,7 @@ import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.utils.events.EventUtils;
-import org.gitools.utils.formatter.DetailsBoxFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 
@@ -77,7 +77,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public ITextFormatter getShortFormatter() {
 
         if (shortFormatter == null) {
-            return HeatmapTextFormatter.INSTANCE;
+            return HeatmapTextFormatter.TWO_DECIMALS;
         }
 
         return shortFormatter;
@@ -92,7 +92,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public ITextFormatter getLongFormatter() {
 
         if (longFormatter == null) {
-            return DetailsBoxFormatter.INSTANCE;
+            return ScientificHeatmapTextFormatter.INSTANCE;
         }
         return longFormatter;
     }

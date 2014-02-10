@@ -64,6 +64,7 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
         selectColumnsPage.setReader(new CsvReader(locator));
+
         addPage(selectColumnsPage);
 
     }

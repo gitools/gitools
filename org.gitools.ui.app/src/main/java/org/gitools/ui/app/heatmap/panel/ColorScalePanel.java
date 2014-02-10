@@ -26,6 +26,7 @@ import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
+import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,12 +46,18 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener {
         heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, this);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, this);
 
-        init(heatmap.getLayers().getTopLayer().getDecorator().getScale());
-
+        init();
     }
 
-    private void init(IColorScale scale) {
-        this.drawer = new ColorScaleDrawer(scale);
+    private void init() {
+
+        HeatmapLayer layer = heatmap.getLayers().getTopLayer();
+
+        this.drawer = new ColorScaleDrawer(
+                layer.getDecorator().getScale(),
+                layer.getShortFormatter()
+        );
+
         setPreferredSize(this.drawer.getSize());
         repaint();
     }
@@ -72,6 +79,6 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        init(heatmap.getLayers().getTopLayer().getDecorator().getScale());
+        init();
     }
 }

@@ -59,7 +59,7 @@ public class PopupMenuActions {
                 Actions.hideGreaterThanHeaderAction,
                 Actions.hideSmallerThanHeaderAction,
                 BaseAction.separator,
-                new FastSortValueAction(dimensionKey),
+                new FastSortValueAction(dimensionKey == MatrixDimensionKey.COLUMNS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
                 Actions.sortByHeader,
                 BaseAction.separator,
                 new HeatmapSearchAction(dimensionKey),
