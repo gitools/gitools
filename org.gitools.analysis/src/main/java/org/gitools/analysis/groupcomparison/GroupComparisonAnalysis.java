@@ -79,7 +79,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private ResourceReference<IMatrix> data;
 
-    private ResourceReference<IMatrix> results;
+    private ResourceReference<? extends IMatrix> results;
     private Double nullConversion;
 
 
@@ -175,11 +175,11 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.data = data;
     }
 
-    public ResourceReference<IMatrix> getResults() {
+    public ResourceReference<? extends IMatrix> getResults() {
         return results;
     }
 
-    public void setResults(ResourceReference<IMatrix> results) {
+    public void setResults(ResourceReference<? extends IMatrix> results) {
         this.results = results;
     }
 

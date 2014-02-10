@@ -42,17 +42,17 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, 
 
     private MannWhitneyWilcoxonTest test;
     private IMatrixLayer<Double> valueLayer;
-    private IMatrixDimension dimension;
+    private IMatrixDimension sourceDimension;
     private DimensionGroup[] groups;
     private NullConversion nullConversion;
 
     public GroupComparisonFunction(MannWhitneyWilcoxonTest test,
-                                   IMatrixDimension dimension,
+                                   IMatrixDimension sourceDimension,
                                    IMatrixLayer<Double> valueLayer,
                                    NullConversion nullConversion,
                                    DimensionGroup... groups) {
         this.test = test;
-        this.dimension = dimension;
+        this.sourceDimension = sourceDimension;
         this.valueLayer = valueLayer;
         this.groups = groups;
         this.nullConversion = nullConversion;
@@ -81,16 +81,16 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, 
             Iterable<Double> group1 =
                     filter(
                             transform(
-                                    position.iterate(valueLayer, dimension).filter(dimensionGroup1.getPredicate()), nullConversion),
+                                    position.iterate(valueLayer, sourceDimension).filter(dimensionGroup1.getPredicate()), nullConversion),
                             notNull());
             Iterable<Double> group2 =
                     filter(
                             transform(
-                                    position.iterate(valueLayer, dimension).filter(dimensionGroup2.getPredicate()), nullConversion),
+                                    position.iterate(valueLayer, sourceDimension).filter(dimensionGroup2.getPredicate()), nullConversion),
                             notNull());
 
             resultHashMap.put(
-                    dimensionGroup1.getName() + " VS " + dimensionGroup2.getName(),
+                    dimensionGroup1.getName() + "<VS>" + dimensionGroup2.getName(),
                     test.processTest(group1, group2));
 
         }

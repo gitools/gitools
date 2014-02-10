@@ -24,19 +24,24 @@ package org.gitools.analysis.groupcomparison;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -65,15 +70,34 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
         MannWhitneyWilcoxonTest test = (MannWhitneyWilcoxonTest) analysis.getTest();
 
-        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, new ArrayList<String>());
+        DimensionGroup[] groups = analysis.getGroups().toArray(new DimensionGroup[analysis.getGroups().size()]);
+        ArrayList<String> resultColnames = new ArrayList<>();
+        AnnotationMatrix resultColumnAnnotations = new AnnotationMatrix();
+
+        Iterator<int[]> combIterator = CombinatoricsUtils.combinationsIterator(groups.length, 2);
+        while (combIterator.hasNext()) {
+            int[] groupIndices = combIterator.next();
+
+            DimensionGroup dimensionGroup1 = groups[groupIndices[0]];
+            DimensionGroup dimensionGroup2 = groups[groupIndices[1]];
+
+            String combName = dimensionGroup1.getName() + "<VS>" + dimensionGroup2.getName();
+            resultColnames.add(combName);
+            resultColumnAnnotations.setAnnotation(combName ,"Group 1", dimensionGroup1.getName());
+            resultColumnAnnotations.setAnnotation(combName, "Group 2", dimensionGroup2.getName());
+        }
+
+        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, resultColnames);
         HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, sourceRows);
 
-        IMatrix resultsMatrix = new HashMatrix(
-                adapter.getMatrixLayers(),
-                resultsRows,
-                resultColumns
+        Heatmap resultHeatmap = new Heatmap(
+                new HashMatrix(
+                    adapter.getMatrixLayers(),
+                    resultsRows,
+                    resultColumns
+            )
         );
-
+        resultHeatmap.getColumns().addAnnotations(resultColumnAnnotations);
         // Prepare group predicates
         NullConversion nullConversionFunction = new NullConversion(analysis.getNullConversion());
 
@@ -87,33 +111,33 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
                                 sourceColumns,
                                 layer,
                                 nullConversionFunction,
-                                analysis.getGroups().toArray(new DimensionGroup[analysis.getGroups().size()]))
+                                groups)
                 )
-                .store(resultsMatrix, new MapLayerAdapter<>(resultColumns, adapter));
+                .store(resultHeatmap, new MapLayerAdapter<>(resultColumns, adapter));
 
         // Run multiple test correction
-        IMatrixPosition position = resultsMatrix.newPosition().set(resultColumns, test.getName());
+        IMatrixPosition position = resultHeatmap.newPosition().set(resultColumns, test.getName());
         IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
 
         // Left p-Value
         position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)
                 .transform(mtcFunction)
-                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-left-p-value"));
+                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-left-p-value"));
 
         // Right p-Value
         position.iterate(adapter.getLayer(Double.class, "right-p-value"), resultsRows)
                 .transform(mtcFunction)
-                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-right-p-value"));
+                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-right-p-value"));
 
         // Two-tail p-Value
         position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), resultsRows)
                 .transform(mtcFunction)
-                .store(resultsMatrix, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
+                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
 
         // Finish
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
-        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
+        analysis.setResults(new ResourceReference<>("results", resultHeatmap));
         monitor.end();
     }
 
