@@ -75,7 +75,7 @@ public class GroupComparisonResult extends CommonResult {
     }
 
 
-    @LayerDef(id = "U1", name = "U1", description = "Mann–Whitney U1 statistic for one-sided alternative 'greater'")
+    @LayerDef(id = "U1", name = "U1", description = "Mann–Whitney U1 statistic used to calculate one-sided alternative 'less'")
     public double getU1() {
         return U1;
     }
@@ -84,7 +84,7 @@ public class GroupComparisonResult extends CommonResult {
         U1 = u1;
     }
 
-    @LayerDef(id = "U2", name = "U2", description = "Mann–Whitney U2 statistic for one-sided alternative 'less'")
+    @LayerDef(id = "U2", name = "U2", description = "Mann–Whitney U2 statistic used to calculate one-sided alternative 'greater'")
     public double getU2() {
         return U2;
     }

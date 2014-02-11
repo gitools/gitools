@@ -82,7 +82,9 @@ public class MannWhitneyWilcoxonTest extends AbstractTest {
 
         boolean firstGreater = U1 > U2;
 
+        // if U1 smaller use computed value for left tail
         double leftTail = firstGreater ? 1 - oneTail : oneTail;
+        // if U2 smaller, computed value for right tail
         double rightTail = firstGreater ? oneTail : 1 - oneTail;
         double twoTail = 2 * oneTail;
 
