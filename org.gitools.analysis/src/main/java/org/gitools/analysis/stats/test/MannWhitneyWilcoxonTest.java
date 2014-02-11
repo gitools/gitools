@@ -49,7 +49,7 @@ public class MannWhitneyWilcoxonTest extends AbstractTest {
         double[] y = Doubles.toArray(Lists.newArrayList(group2));
 
         if (x.length == 0 || y.length == 0) {
-            return new GroupComparisonResult(x.length + y.length, x.length, y.length, Double.NaN, Double.NaN, Double.NaN);
+            return new GroupComparisonResult(x.length + y.length, x.length, y.length, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
         }
 
         final double[] z = concatenateSamples(x, y);
@@ -86,7 +86,7 @@ public class MannWhitneyWilcoxonTest extends AbstractTest {
         double rightTail = firstGreater ? oneTail : 1 - oneTail;
         double twoTail = 2 * oneTail;
 
-        return new GroupComparisonResult(x.length + y.length, x.length, y.length, leftTail, rightTail, twoTail);
+        return new GroupComparisonResult(x.length + y.length, x.length, y.length, leftTail, rightTail, twoTail, U1, U2);
 
     }
 

@@ -68,7 +68,7 @@
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties>
-          <background color="15263976"/>
+          <background color="-1513240"/>
         </properties>
       </component>
       <component id="5277e" class="javax.swing.JRadioButton" binding="matrixRadioButton" default-binding="true">

@@ -161,13 +161,13 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                     if (layer.getId().contains("p-value")) {
                         layer.setDecorator(new PValueDecorator());
                     }
-                    heatmap.getLayers().get("log-p-value-sum").setDecorator(
+                    heatmap.getLayers().get("p-value-log-sum").setDecorator(
                             new ZScoreDecorator(1, 10)
                     );
 
                 }
 
-                heatmap.getLayers().setTopLayerById("log-p-value-sum");
+                heatmap.getLayers().setTopLayerById("p-value-log-sum");
 
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 

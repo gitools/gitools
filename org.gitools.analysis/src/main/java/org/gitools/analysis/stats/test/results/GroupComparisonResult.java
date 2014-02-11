@@ -28,32 +28,22 @@ public class GroupComparisonResult extends CommonResult {
 
     private int N_group1;
     private int N_group2;
-    private double logPValueSum;
+    private double U1;
+    private double U2;
+    private double pValueLogSum;
 
     public GroupComparisonResult() {
         super(0, 0.0, 0.0, 0.0);
     }
 
-    public GroupComparisonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue) {
-        super(N, leftPvalue, rightPvalue, twoTailPvalue);
-        logPValueSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
-    }
-
-    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue) {
+    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue, double U1, double U2) {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
         this.N_group1 = N_group1;
         this.N_group2 = N_group2;
-        logPValueSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
-    }
-
-    @LayerDef(id = "log-p-value-sum", name = "Log P-Value Sum", description = "Score combining left and right p-values.")
-    public double getLogPValueSum() {
-        return logPValueSum;
-    }
-
-    public void setLogPValueSum(double logPValueSum) {
-        this.logPValueSum = logPValueSum;
+        this.U1 = U1;
+        this.U2 = U2;
+        pValueLogSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
     }
 
     @LayerDef(id = "N-group1", name = "N Group 1", description = "Number of elements in Group 1")
@@ -75,4 +65,31 @@ public class GroupComparisonResult extends CommonResult {
     }
 
 
+    @LayerDef(id = "p-value-log-sum", name = "P-Value Log Sum", description = "Score combining left and right p-values.")
+    public double getpValueLogSum() {
+        return pValueLogSum;
+    }
+
+    public void setpValueLogSum(double pValueLogSum) {
+        this.pValueLogSum = pValueLogSum;
+    }
+
+
+    @LayerDef(id = "U1", name = "U1", description = "Mann–Whitney U1 statistic for one-sided alternative 'greater'")
+    public double getU1() {
+        return U1;
+    }
+
+    public void setU1(double u1) {
+        U1 = u1;
+    }
+
+    @LayerDef(id = "U2", name = "U2", description = "Mann–Whitney U2 statistic for one-sided alternative 'less'")
+    public double getU2() {
+        return U2;
+    }
+
+    public void setU2(double u2) {
+        U2 = u2;
+    }
 }
