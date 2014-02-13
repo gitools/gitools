@@ -84,6 +84,22 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
     }
 
     @Override
+    public void removeAnnotations(String label) {
+
+        // Remove label
+        this.labels.remove(label);
+
+        // Remove metadata
+        for (String key : layersMetadata.keySet()) {
+            layersMetadata.get(key).remove(label);
+        }
+
+        // Remove layer values
+        removeLayer(getLayers().get(label));
+
+    }
+
+    @Override
     public String getAnnotation(String identifier, String label) {
         return get(getLayer(label), identifier);
     }
