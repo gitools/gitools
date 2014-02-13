@@ -29,6 +29,8 @@ public interface IAnnotations extends IMatrix {
 
     Collection<String> getLabels();
 
+    void removeAnnotations(String label);
+
     Collection<String> getMetadataKeys();
 
     String getAnnotation(String identifier, String label);

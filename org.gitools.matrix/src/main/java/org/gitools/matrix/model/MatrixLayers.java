@@ -103,6 +103,11 @@ public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
         idToIndex.put(matrixLayer.getId(), layers.indexOf(matrixLayer));
     }
 
+    public void remove(T matrixLayer) {
+        layers.remove(matrixLayer);
+        idToIndex.remove(matrixLayer.getId());
+    }
+
 
     @Override
     public Iterator<T> iterator() {
