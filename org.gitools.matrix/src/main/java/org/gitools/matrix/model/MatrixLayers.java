@@ -24,12 +24,7 @@ package org.gitools.matrix.model;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
 
@@ -106,6 +101,9 @@ public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
     public void remove(T matrixLayer) {
         layers.remove(matrixLayer);
         idToIndex.remove(matrixLayer.getId());
+        for (T layer : layers) {
+            idToIndex.put(layer.getId(), layers.indexOf(layer));
+        }
     }
 
 

@@ -22,18 +22,19 @@
 package org.gitools.matrix.model.matrix;
 
 import com.google.common.base.Strings;
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
 
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
@@ -85,9 +86,6 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
     @Override
     public void removeAnnotations(String label) {
-
-        // Remove label
-        this.labels.remove(label);
 
         // Remove metadata
         for (String key : layersMetadata.keySet()) {
