@@ -1,3 +1,24 @@
+/*
+ * #%L
+ * org.gitools.utils
+ * %%
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
 /**
  Copyright 2005 Bytecode Pty Ltd.
 
@@ -14,7 +35,7 @@
  limitations under the License.
  */
 
-package org.gitools.utils.csv;
+package org.gitools.utils.text;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -177,7 +198,7 @@ public class CSVReader implements Closeable {
      * tokens.
      *
      * @return a List of String[], with each String[] representing a line of the
-     *         file.
+     * file.
      * @throws IOException if bad things happen during the read
      */
 
@@ -198,7 +219,7 @@ public class CSVReader implements Closeable {
      * Reads the next line from the buffer and converts to a string array.
      *
      * @return a string array with each comma-separated element as a separate
-     *         entry.
+     * entry.
      * @throws IOException if bad things happen during the read
      */
 

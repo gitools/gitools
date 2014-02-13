@@ -21,27 +21,23 @@
  */
 package org.gitools.ui.app.fileimport;
 
-import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.ui.app.fileimport.wizard.csv.CsvImportWizard;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.wizard.excel.ExcelImportWizard;
+import org.gitools.ui.app.fileimport.wizard.text.FlatTextImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ImportManager {
 
     private static ImportManager INSTANCE = new ImportManager();
+
     public static ImportManager get() {
         return INSTANCE;
     }
 
-    private ImportWizard DEFAULT_TEXT_WIZARD_IMPORT = new CsvImportWizard();
+    private ImportWizard DEFAULT_TEXT_WIZARD_IMPORT = new FlatTextImportWizard();
     private Map<FileFormatFilter, ImportWizard> wizards = new HashMap<>();
 
     private ImportManager() {

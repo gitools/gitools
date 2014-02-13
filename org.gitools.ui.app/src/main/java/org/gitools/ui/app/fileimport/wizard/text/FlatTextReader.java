@@ -19,14 +19,15 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.utils.csv.CSVReader;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.text.CSVReader;
+import org.gitools.utils.text.ReaderProfile;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -34,64 +35,56 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvReader implements JobRunnable, Closeable {
+import static org.gitools.utils.text.ReaderProfile.*;
 
-    public static String TAB = "Tab";
-    public static String COMMA = "Comma";
-    public static String[] SEPARATORS = new String[] { CsvReader.TAB, CsvReader.COMMA };
+public class FlatTextReader implements JobRunnable, Closeable {
 
     private final IResourceLocator locator;
-    private String separator = TAB;
     private CSVReader reader = null;
-    private List<CsvHeader> headers;
+    private List<FlatTextHeader> headers;
 
-    public CsvReader(IResourceLocator locator) {
+    private ReaderProfile readerProfile;
+
+    public FlatTextReader(IResourceLocator locator) {
         super();
         this.locator = locator;
 
+        readerProfile = new ReaderProfile();
+
         // Choose COMMA separator if it's a CSV
         if ("csv".equalsIgnoreCase(locator.getExtension())) {
-            setSeparator(CsvReader.COMMA);
+            readerProfile.setSeparator(COMMA);
         } else if ("tsv".equalsIgnoreCase(locator.getExtension()) || "tab".equalsIgnoreCase(locator.getExtension())) {
-            setSeparator(CsvReader.TAB);
+            readerProfile.setSeparator(TAB);
         } else {
             // try to guess:
             int recordOfFields = 0;
             for (String sep : SEPARATORS) {
-                String oldSep = separator;
-                setSeparator(sep);
+                String oldSep = readerProfile.getSeparator();
+                readerProfile.setSeparator(sep);
                 run(new NullProgressMonitor());
                 if (headers.size() < recordOfFields) {
-                    setSeparator(oldSep);
+                    readerProfile.setSeparator(oldSep);
                 } else {
                     recordOfFields = headers.size();
                 }
             }
         }
-
-
     }
 
-    public String getSeparator() {
-        return separator;
-    }
-
-    public void setSeparator(String separator) {
-        this.separator = separator;
-    }
 
     @Override
     public void run(IProgressMonitor monitor) {
         monitor.begin("Opening [" + locator.getName() + "]", 0);
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new InputStreamReader(locator.openInputStream(monitor)), (COMMA.equals(separator) ? ',' : '\t'));
+            reader = new CSVReader(new InputStreamReader(locator.openInputStream(monitor)), (COMMA.equals(readerProfile.getSeparator()) ? ',' : '\t'));
 
             // Load headers
             String[] line = reader.readNext();
             headers = new ArrayList<>(line.length);
             for (int i=0; i < line.length; i++) {
-                headers.add(new CsvHeader(line[i], i, 0));
+                headers.add(new FlatTextHeader(line[i], i, 0));
             }
             reader.close();
 
@@ -107,13 +100,13 @@ public class CsvReader implements JobRunnable, Closeable {
     public String[] readNext() throws IOException {
 
         if (reader==null) {
-            reader = new CSVReader(new InputStreamReader(locator.openInputStream(NullProgressMonitor.get())), (COMMA.equals(separator) ? ',' : '\t'));
+            reader = new CSVReader(new InputStreamReader(locator.openInputStream(NullProgressMonitor.get())), (COMMA.equals(readerProfile.getSeparator()) ? ',' : '\t'));
         }
 
         return reader.readNext();
     }
 
-    public List<CsvHeader> getHeaders() {
+    public List<FlatTextHeader> getHeaders() {
         return headers;
     }
 
@@ -126,6 +119,13 @@ public class CsvReader implements JobRunnable, Closeable {
         return 0;
     }
 
+    public ReaderProfile getReaderProfile() {
+        return readerProfile;
+    }
+
+    public void setReaderProfile(ReaderProfile readerProfile) {
+        this.readerProfile = readerProfile;
+    }
 
     @Override
     public void close() throws IOException {

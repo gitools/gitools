@@ -22,14 +22,14 @@
 package org.gitools.matrix.format;
 
 import com.google.common.base.Strings;
-import org.gitools.resource.AbstractResourceFormat;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.utils.csv.CSVParser;
-import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.resource.AbstractResourceFormat;
+import org.gitools.utils.text.CSVParser;
+import org.gitools.utils.text.CSVReader;
+import org.gitools.utils.text.RawFlatTextWriter;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.InputStream;
@@ -43,6 +43,7 @@ import java.util.List;
 public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMatrix> {
 
     private static AnnotationMatrixFormat INSTANCE = new AnnotationMatrixFormat();
+
     public static AnnotationMatrixFormat get() {
         return INSTANCE;
     }
@@ -114,7 +115,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
     protected void writeResource(IResourceLocator resourceLocator, AnnotationMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
         try {
             OutputStream out = resourceLocator.openOutputStream();
-            RawCsvWriter writer = new RawCsvWriter(new OutputStreamWriter(out), '\t', '"');
+            RawFlatTextWriter writer = new RawFlatTextWriter(new OutputStreamWriter(out), '\t', '"');
 
             // Header
             List<String> labels = new ArrayList<>();

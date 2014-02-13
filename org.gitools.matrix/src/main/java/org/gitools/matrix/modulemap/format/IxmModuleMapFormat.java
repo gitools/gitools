@@ -21,24 +21,16 @@
  */
 package org.gitools.matrix.modulemap.format;
 
-import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.utils.csv.CSVReader;
+import org.gitools.api.resource.IResourceLocator;
+import org.gitools.matrix.modulemap.HashModuleMap;
+import org.gitools.utils.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 @ApplicationScoped
 public class IxmModuleMapFormat extends AbstractModuleMapFormat {

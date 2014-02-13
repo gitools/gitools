@@ -1,4 +1,4 @@
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 /*
  * #%L
@@ -32,9 +32,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import static org.gitools.utils.text.ReaderProfile.SEPARATORS;
+
 public class SelectDataLayoutPage extends AbstractWizardPage {
 
-    private CsvReader reader;
+    private FlatTextReader reader;
 
     private JPanel mainPanel;
 
@@ -44,18 +46,18 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private JTextPane dataFormatTextPane;
     private JTextPane preview;
 
-    private DefaultComboBoxModel separator;
+    private DefaultComboBoxModel separatorsModel;
 
 
-    public SelectDataLayoutPage(CsvReader csvReader) {
-        this.reader = csvReader;
+    public SelectDataLayoutPage(FlatTextReader flatTextReader) {
+        this.reader = flatTextReader;
 
-        separator = new DefaultComboBoxModel(CsvReader.SEPARATORS);
-        separatorCombo.setModel(separator);
+        separatorsModel = new DefaultComboBoxModel(SEPARATORS);
+        separatorCombo.setModel(separatorsModel);
         separatorCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                reader.setSeparator((String) separator.getSelectedItem());
+                reader.getReaderProfile().setSeparator((String) separatorsModel.getSelectedItem());
                 updateParsing();
             }
         });
@@ -63,6 +65,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //TODO: set correct profile (Table / tab)
                 updateControls();
             }
         };
@@ -71,7 +74,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         dataFormatTextPane.setContentType("text/html");
         setComplete(true);
 
-        separator.setSelectedItem(reader.getSeparator());
+        separatorsModel.setSelectedItem(reader.getReaderProfile().getSeparator());
     }
 
     @Override
@@ -108,7 +111,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private void updateParsing() {
 
         reader.run(NullProgressMonitor.get());
-        List<CsvHeader> allHeaders = reader.getHeaders();
+        List<FlatTextHeader> allHeaders = reader.getHeaders();
 
         StringBuilder table = new StringBuilder("");
         table.append("<html><head>" +
@@ -125,7 +128,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
                 "  }" +
                 "</style>" +
                 "</head><body><table><tr>");
-        for (CsvHeader header : allHeaders) {
+        for (FlatTextHeader header : allHeaders) {
             table.append("<th>" + header.getLabel() + "</th>");
         }
         table.append("<tr></html></body></table");
@@ -139,15 +142,15 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
             setMessage(MessageStatus.ERROR, "Only " + allHeaders.size() + " columns detected.");
             setComplete(false);
         }
-        separator.setSelectedItem(reader.getSeparator());
+        separatorsModel.setSelectedItem(reader.getReaderProfile().getSeparator());
 
     }
 
-    public CsvReader getReader() {
+    public FlatTextReader getReader() {
         return reader;
     }
 
-    public void setReader(CsvReader reader) {
+    public void setReader(FlatTextReader reader) {
         this.reader = reader;
     }
 

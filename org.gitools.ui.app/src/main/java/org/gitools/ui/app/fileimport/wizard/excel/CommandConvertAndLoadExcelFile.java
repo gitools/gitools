@@ -21,15 +21,15 @@
  */
 package org.gitools.ui.app.fileimport.wizard.excel;
 
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
-import org.gitools.api.ApplicationContext;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.utils.text.RawFlatTextWriter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -62,11 +62,11 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
     protected IResource loadResource(IProgressMonitor monitor) {
         monitor.begin("Converting excel file", reader.getLastRowNum());
         File tmpFile;
-        RawCsvWriter out;
+        RawFlatTextWriter out;
 
         try {
             tmpFile = File.createTempFile("gitools", reader.getLocator().getBaseName() + ".tdm");
-            out = new RawCsvWriter(new FileWriter(tmpFile), '\t', '"');
+            out = new RawFlatTextWriter(new FileWriter(tmpFile), '\t', '"');
         } catch (IOException e) {
             throw new RuntimeException("Error opening temporal file");
         }

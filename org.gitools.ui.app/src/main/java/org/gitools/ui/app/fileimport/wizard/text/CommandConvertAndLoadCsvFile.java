@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
@@ -42,9 +42,9 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
     private final int columnId;
     private final int rowId;
     private final List<Integer> values;
-    private final CsvReader reader;
+    private final FlatTextReader reader;
 
-    public CommandConvertAndLoadCsvFile(int columnId, int rowId, List<Integer> values, CsvReader reader) {
+    public CommandConvertAndLoadCsvFile(int columnId, int rowId, List<Integer> values, FlatTextReader reader) {
         super(reader.getLocator().getURL().toString());
 
         this.columnId = columnId;
@@ -69,7 +69,7 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
             }
 
             MatrixLayer<Double> layers[] = new MatrixLayer[values.size()];
-            for (int i=0; i < values.size(); i++) {
+            for (int i = 0; i < values.size(); i++) {
                 layers[i] = new MatrixLayer<>(header[values.get(i)], Double.class);
             }
 

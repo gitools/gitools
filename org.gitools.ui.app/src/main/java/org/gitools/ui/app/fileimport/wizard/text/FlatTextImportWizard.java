@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
@@ -36,7 +36,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import java.io.IOException;
 import java.util.List;
 
-public class CsvImportWizard extends AbstractWizard implements ImportWizard {
+public class FlatTextImportWizard extends AbstractWizard implements ImportWizard {
 
     private static FileFormat[] FILE_FORMATS = new FileFormat[] { new FileFormat("CSV", "csv"), new FileFormat("TSV", "tsv"), new FileFormat("TXT", "txt") };
     private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Text files", FILE_FORMATS);
@@ -45,7 +45,7 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
     private SelectDataLayoutPage selectDataLayoutPage;
     private SelectColumnsPage selectColumnsPage;
 
-    public CsvImportWizard() {
+    public FlatTextImportWizard() {
         setTitle("Import a CSV file");
         setHelpContext("import_csv");
     }
@@ -62,7 +62,7 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new CsvReader(locator));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator));
         addPage(selectDataLayoutPage);
 
         selectColumnsPage = new SelectColumnsPage();
@@ -86,7 +86,7 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
 
     @Override
     public void performFinish() {
-        CsvReader reader = selectColumnsPage.getReader();
+        FlatTextReader reader = selectColumnsPage.getReader();
         int columns = selectColumnsPage.getSelectedColumn();
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();

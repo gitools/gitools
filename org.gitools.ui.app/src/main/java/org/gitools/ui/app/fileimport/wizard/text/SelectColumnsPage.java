@@ -1,4 +1,4 @@
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 /*
  * #%L
@@ -34,7 +34,7 @@ import java.util.List;
 
 public class SelectColumnsPage extends AbstractWizardPage {
 
-    private CsvReader reader;
+    private FlatTextReader reader;
 
     private JPanel mainPanel;
     private JComboBox rowsCellsCombo;
@@ -83,7 +83,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
     private void updateParsing() {
 
         reader.run(NullProgressMonitor.get());
-        List<CsvHeader> allHeaders = reader.getHeaders();
+        List<FlatTextHeader> allHeaders = reader.getHeaders();
 
 
         rowsCells = new DefaultComboBoxModel(allHeaders.toArray());
@@ -104,7 +104,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     }
 
-    private void createCheckListItems(List<CsvHeader> headers) {
+    private void createCheckListItems(List<FlatTextHeader> headers) {
         values = new CheckListItem[headers.size()];
         for (int i = 0; i < headers.size(); i++) {
             values[i] = new CheckListItem(headers.get(i));
@@ -127,21 +127,21 @@ public class SelectColumnsPage extends AbstractWizardPage {
         return false;
     }
 
-    public CsvReader getReader() {
+    public FlatTextReader getReader() {
         return reader;
     }
 
-    public void setReader(CsvReader reader) {
+    public void setReader(FlatTextReader reader) {
         this.reader = reader;
     }
 
     public int getSelectedColumn() {
-        CsvHeader column = (CsvHeader) colsCells.getSelectedItem();
+        FlatTextHeader column = (FlatTextHeader) colsCells.getSelectedItem();
         return column.getPos();
     }
 
     public int getSelectedRow() {
-        CsvHeader row = (CsvHeader) rowsCells.getSelectedItem();
+        FlatTextHeader row = (FlatTextHeader) rowsCells.getSelectedItem();
         return row.getPos();
     }
 
@@ -160,14 +160,14 @@ public class SelectColumnsPage extends AbstractWizardPage {
     }
 
     private class CheckListItem {
-        private final CsvHeader header;
+        private final FlatTextHeader header;
         private boolean isSelected = false;
 
-        public CheckListItem(CsvHeader header) {
+        public CheckListItem(FlatTextHeader header) {
             this.header = header;
         }
 
-        public CsvHeader getHeader() {
+        public FlatTextHeader getHeader() {
             return header;
         }
 

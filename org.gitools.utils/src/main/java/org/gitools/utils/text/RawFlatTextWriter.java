@@ -19,19 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.csv;
+package org.gitools.utils.text;
 
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Arrays;
 
-public class RawCsvWriter {
+public class RawFlatTextWriter {
 
     private final PrintWriter out;
     private final char separator;
     private final char quote;
 
-    public RawCsvWriter(Writer writer, char separator, char quote) {
+    public RawFlatTextWriter(Writer writer, char separator, char quote) {
         this.out = new PrintWriter(writer);
         this.separator = separator;
         this.quote = quote;

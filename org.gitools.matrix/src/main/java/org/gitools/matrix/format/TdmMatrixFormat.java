@@ -21,31 +21,26 @@
  */
 package org.gitools.matrix.format;
 
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.utils.csv.CSVReader;
-import org.gitools.utils.csv.RawCsvWriter;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.utils.datafilters.DoubleTranslator;
 import org.gitools.utils.fileutils.IOUtils;
+import org.gitools.utils.text.CSVReader;
+import org.gitools.utils.text.RawFlatTextWriter;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.util.concurrent.CancellationException;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
 public class TdmMatrixFormat extends AbstractMatrixFormat {
@@ -69,7 +64,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             }
 
             MatrixLayer<Double> layers[] = new MatrixLayer[header.length - 2];
-            for (int i=2; i < header.length; i++) {
+            for (int i = 2; i < header.length; i++) {
                 layers[i - 2] = new MatrixLayer<>(header[i], Double.class);
             }
 
@@ -124,7 +119,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
     private void writeCells(Writer writer, IMatrix resultsMatrix, IProgressMonitor progressMonitor) {
 
-        RawCsvWriter out = new RawCsvWriter(writer, '\t', '"');
+        RawFlatTextWriter out = new RawFlatTextWriter(writer, '\t', '"');
 
         out.writeQuotedValue("column");
         out.writeSeparator();
@@ -148,7 +143,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
     }
 
-    private void writeLine(RawCsvWriter out, IMatrix resultsMatrix, String column, String row, IProgressMonitor progressMonitor) {
+    private void writeLine(RawFlatTextWriter out, IMatrix resultsMatrix, String column, String row, IProgressMonitor progressMonitor) {
 
         out.writeQuotedValue(column);
         out.writeSeparator();

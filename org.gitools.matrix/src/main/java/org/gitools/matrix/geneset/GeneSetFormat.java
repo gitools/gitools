@@ -21,19 +21,14 @@
  */
 package org.gitools.matrix.geneset;
 
-import org.gitools.resource.AbstractResourceFormat;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.utils.csv.CSVReader;
+import org.gitools.resource.AbstractResourceFormat;
+import org.gitools.utils.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 

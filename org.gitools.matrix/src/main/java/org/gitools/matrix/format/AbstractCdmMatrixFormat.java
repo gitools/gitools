@@ -21,28 +21,25 @@
  */
 package org.gitools.matrix.format;
 
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.utils.csv.CSVReader;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.utils.datafilters.DoubleTranslator;
+import org.gitools.utils.text.CSVReader;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 
 public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {

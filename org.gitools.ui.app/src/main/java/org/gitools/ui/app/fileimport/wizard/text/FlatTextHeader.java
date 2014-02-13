@@ -19,17 +19,17 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.csv;
+package org.gitools.ui.app.fileimport.wizard.text;
 
 import java.io.Serializable;
 
-public class CsvHeader implements Serializable {
+public class FlatTextHeader implements Serializable {
 
     private final int pos;
     private final int type;
     private final String label;
 
-    public CsvHeader(String label, int pos, int type) {
+    public FlatTextHeader(String label, int pos, int type) {
         this.label = label;
         this.pos = pos;
         this.type = type;
@@ -60,7 +60,7 @@ public class CsvHeader implements Serializable {
             return false;
         }
 
-        CsvHeader that = (CsvHeader) o;
+        FlatTextHeader that = (FlatTextHeader) o;
 
         if (pos != that.pos) {
             return false;

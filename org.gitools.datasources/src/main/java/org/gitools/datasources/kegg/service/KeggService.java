@@ -24,7 +24,7 @@ package org.gitools.datasources.kegg.service;
 import org.gitools.datasources.kegg.service.domain.IdConversion;
 import org.gitools.datasources.kegg.service.domain.KeggOrganism;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
-import org.gitools.utils.csv.CSVReader;
+import org.gitools.utils.text.CSVReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
