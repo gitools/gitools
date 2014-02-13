@@ -21,6 +21,7 @@
  */
 package org.gitools.analysis.groupcomparison;
 
+import com.google.common.collect.Iterables;
 import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
@@ -89,9 +90,18 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, 
                                     position.iterate(valueLayer, sourceDimension).filter(dimensionGroup2.getPredicate()), nullConversion),
                             notNull());
 
+            GroupComparisonResult result = null;
+            if (Iterables.size(group1) < 3 || Iterables.size(group2) < 3) {
+                result = test.getNullResult(Iterables.size(group1) + Iterables.size(group2),
+                        Iterables.size(group1),
+                        Iterables.size(group2));
+            } else {
+                result = test.processTest(group1, group2);
+            }
+
             resultHashMap.put(
                     dimensionGroup1.getName() + " VS " + dimensionGroup2.getName(),
-                    test.processTest(group1, group2));
+                    result);
 
         }
 

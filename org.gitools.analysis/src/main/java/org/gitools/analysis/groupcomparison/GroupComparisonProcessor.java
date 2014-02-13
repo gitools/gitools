@@ -32,11 +32,18 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.decorator.impl.PValueDecorator;
+import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
+import org.gitools.utils.color.ColorGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -136,6 +143,53 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
 
         }
 
+        // Results formatting
+
+        for (HeatmapLayer resultLayer : resultHeatmap.getLayers()) {
+            if (resultLayer.getId().contains("p-value")) {
+                resultLayer.setDecorator(new PValueDecorator());
+            }
+            resultHeatmap.getLayers().get("p-value-log-sum").setDecorator(
+                    new ZScoreDecorator(1.279, 10)
+            );
+
+        }
+
+        resultHeatmap.getLayers().setTopLayerById("p-value-log-sum");
+        resultHeatmap.setTitle(analysis.getTitle() + " (results)");
+
+        //resultHeatmap.getColumns().addHeader();
+        if (analysis.getRowHeaders() != null) {
+            if (analysis.getRowAnnotations() != null) {
+                resultHeatmap.getRows().addAnnotations(analysis.getRowAnnotations());
+            }
+
+            for (HeatmapHeader hh : analysis.getRowHeaders()) {
+                resultHeatmap.getRows().addHeader(hh);
+                hh.init(resultHeatmap.getRows());
+            }
+        }
+
+
+        // generate colors for annation
+        ColorGenerator cg = new ColorGenerator();
+        ArrayList<ColoredLabel> group1List = new ArrayList<ColoredLabel>();
+        ArrayList<ColoredLabel> group2List = new ArrayList<ColoredLabel>();
+        for (DimensionGroup g : analysis.getGroups()) {
+            group1List.add(new ColoredLabel(g.getName(), cg.next(g.getName())));
+            group2List.add(new ColoredLabel(g.getName(), cg.next(g.getName())));
+        }
+
+        HeatmapColoredLabelsHeader group1Header = new HeatmapColoredLabelsHeader(resultHeatmap.getColumns());
+        group1Header.setClusters(group1List);
+        group1Header.setAnnotationPattern("${Group 1}");
+        group1Header.setTitle("Group 1");
+        HeatmapColoredLabelsHeader group2Header = new HeatmapColoredLabelsHeader(resultHeatmap.getColumns());
+        group2Header.setClusters(group2List);
+        group2Header.setAnnotationPattern("${Group 2}");
+        group2Header.setTitle("Group 2");
+        resultHeatmap.getColumns().addHeader(group1Header);
+        resultHeatmap.getColumns().addHeader(group2Header);
 
         // Finish
         analysis.setStartTime(startTime);

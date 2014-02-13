@@ -28,9 +28,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
@@ -157,34 +154,10 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
-                monitor.begin("Creating new heatmap from results ...", 1);
+                monitor.begin("Obtaining heatmap from results ...", 1);
 
-                Heatmap heatmap = new Heatmap(analysis.getResults().get());
-
-                for (HeatmapLayer layer : heatmap.getLayers()) {
-                    if (layer.getId().contains("p-value")) {
-                        layer.setDecorator(new PValueDecorator());
-                    }
-                    heatmap.getLayers().get("p-value-log-sum").setDecorator(
-                            new ZScoreDecorator(1.279, 10)
-                    );
-
-                }
-
-                heatmap.getLayers().setTopLayerById("p-value-log-sum");
-
-                heatmap.setTitle(analysis.getTitle() + " (results)");
-
-                if (analysis.getRowHeaders() != null) {
-                    if (analysis.getRowAnnotations() != null) {
-                        heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
-                    }
-
-                    for (HeatmapHeader hh : analysis.getRowHeaders()) {
-                        heatmap.getRows().addHeader(hh);
-                        hh.init(heatmap.getRows());
-                    }
-                }
+                // Group comparison analysis contains a Heatmap (not Matrix)
+                Heatmap heatmap = (Heatmap) analysis.getResults().get();
 
                 final HeatmapEditor editor = new HeatmapEditor(heatmap);
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
