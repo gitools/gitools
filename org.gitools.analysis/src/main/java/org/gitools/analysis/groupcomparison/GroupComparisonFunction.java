@@ -90,7 +90,7 @@ public class GroupComparisonFunction extends AbstractMatrixFunction<Map<String, 
                             notNull());
 
             resultHashMap.put(
-                    dimensionGroup1.getName() + "<VS>" + dimensionGroup2.getName(),
+                    dimensionGroup1.getName() + " VS " + dimensionGroup2.getName(),
                     test.processTest(group1, group2));
 
         }

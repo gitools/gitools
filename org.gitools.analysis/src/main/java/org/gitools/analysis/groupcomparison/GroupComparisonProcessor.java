@@ -41,7 +41,6 @@ import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -81,7 +80,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
             DimensionGroup dimensionGroup1 = groups[groupIndices[0]];
             DimensionGroup dimensionGroup2 = groups[groupIndices[1]];
 
-            String combName = dimensionGroup1.getName() + "<VS>" + dimensionGroup2.getName();
+            String combName = dimensionGroup1.getName() + " VS " + dimensionGroup2.getName();
             resultColnames.add(combName);
             resultColumnAnnotations.setAnnotation(combName ,"Group 1", dimensionGroup1.getName());
             resultColumnAnnotations.setAnnotation(combName, "Group 2", dimensionGroup2.getName());
@@ -116,23 +115,27 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
                 .store(resultHeatmap, new MapLayerAdapter<>(resultColumns, adapter));
 
         // Run multiple test correction
-        IMatrixPosition position = resultHeatmap.newPosition().set(resultColumns, test.getName());
+        IMatrixPosition position = resultHeatmap.newPosition();
         IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
 
-        // Left p-Value
-        position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)
-                .transform(mtcFunction)
-                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-left-p-value"));
+        for (String condition : position.iterate(resultColumns)) {
+            // Left p-Value
+            position.iterate(adapter.getLayer(Double.class, "left-p-value"), resultsRows)
+                    .transform(mtcFunction)
+                    .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-left-p-value"));
 
-        // Right p-Value
-        position.iterate(adapter.getLayer(Double.class, "right-p-value"), resultsRows)
-                .transform(mtcFunction)
-                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-right-p-value"));
+            // Right p-Value
+            position.iterate(adapter.getLayer(Double.class, "right-p-value"), resultsRows)
+                    .transform(mtcFunction)
+                    .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-right-p-value"));
 
-        // Two-tail p-Value
-        position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), resultsRows)
-                .transform(mtcFunction)
-                .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
+            // Two-tail p-Value
+            position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), resultsRows)
+                    .transform(mtcFunction)
+                    .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
+
+        }
+
 
         // Finish
         analysis.setStartTime(startTime);

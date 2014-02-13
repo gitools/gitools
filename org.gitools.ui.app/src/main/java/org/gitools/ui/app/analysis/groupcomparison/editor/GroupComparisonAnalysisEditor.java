@@ -62,7 +62,11 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
 
         context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
-        context.put("mtc", analysis.getMtc());
+        if (analysis.getMtc().equals("bh")) {
+            context.put("mtc", "Benjamini Hochberg FDR");
+        } else if (analysis.getMtc().equals("bonferroni")) {
+            context.put("mtc", "Bonferroni");
+        }
 
         fileRef = analysis.getResults().getLocator();
         context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
@@ -162,7 +166,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                         layer.setDecorator(new PValueDecorator());
                     }
                     heatmap.getLayers().get("p-value-log-sum").setDecorator(
-                            new ZScoreDecorator(1, 10)
+                            new ZScoreDecorator(1.279, 10)
                     );
 
                 }
