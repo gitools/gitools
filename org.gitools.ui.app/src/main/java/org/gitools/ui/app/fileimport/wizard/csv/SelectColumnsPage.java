@@ -23,12 +23,10 @@ package org.gitools.ui.app.fileimport.wizard.csv;
  */
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.utils.progressmonitor.*;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -42,9 +40,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
     private JComboBox rowsCellsCombo;
     private JComboBox columnsCellsCombo;
     private JList valueCellsList;
-    private JComboBox separatorCombo;
 
-    private DefaultComboBoxModel separator;
     private DefaultComboBoxModel rowsCells;
     private DefaultComboBoxModel colsCells;
     private CheckListItem[] values;
@@ -58,16 +54,6 @@ public class SelectColumnsPage extends AbstractWizardPage {
     public void updateControls() {
 
         try {
-
-            separator = new DefaultComboBoxModel(CsvReader.SEPARATORS);
-            separatorCombo.setModel(separator);
-            separatorCombo.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    reader.setSeparator( (String) separator.getSelectedItem() );
-                    updateParsing();
-                }
-            });
 
             valueCellsList.setCellRenderer(new CheckListRenderer());
             valueCellsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -99,7 +85,6 @@ public class SelectColumnsPage extends AbstractWizardPage {
         reader.run(NullProgressMonitor.get());
         List<CsvHeader> allHeaders = reader.getHeaders();
 
-        separator.setSelectedItem(reader.getSeparator());
 
         rowsCells = new DefaultComboBoxModel(allHeaders.toArray());
         rowsCellsCombo.setModel(rowsCells);

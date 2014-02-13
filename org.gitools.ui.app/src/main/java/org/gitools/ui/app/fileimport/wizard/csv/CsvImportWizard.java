@@ -30,6 +30,7 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
+import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.io.IOException;
@@ -61,16 +62,26 @@ public class CsvImportWizard extends AbstractWizard implements ImportWizard {
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage();
-        selectDataLayoutPage.setReader(new CsvReader(locator));
+        selectDataLayoutPage = new SelectDataLayoutPage(new CsvReader(locator));
         addPage(selectDataLayoutPage);
 
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
-        selectColumnsPage.setReader(new CsvReader(locator));
 
         addPage(selectColumnsPage);
 
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+
+        IWizardPage nextPage = super.getNextPage(getCurrentPage());
+
+        if (nextPage.equals(selectColumnsPage)) {
+            selectColumnsPage.setReader(selectDataLayoutPage.getReader());
+        }
+
+        return nextPage;
     }
 
     @Override

@@ -22,8 +22,6 @@
 package org.gitools.ui.app.fileimport.wizard.csv;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -54,7 +52,23 @@ public class CsvReader implements JobRunnable, Closeable {
         // Choose COMMA separator if it's a CSV
         if ("csv".equalsIgnoreCase(locator.getExtension())) {
             setSeparator(CsvReader.COMMA);
+        } else if ("tsv".equalsIgnoreCase(locator.getExtension()) || "tab".equalsIgnoreCase(locator.getExtension())) {
+            setSeparator(CsvReader.TAB);
+        } else {
+            // try to guess:
+            int recordOfFields = 0;
+            for (String sep : SEPARATORS) {
+                String oldSep = separator;
+                setSeparator(sep);
+                run(new NullProgressMonitor());
+                if (headers.size() < recordOfFields) {
+                    setSeparator(oldSep);
+                } else {
+                    recordOfFields = headers.size();
+                }
+            }
         }
+
 
     }
 
@@ -88,8 +102,6 @@ public class CsvReader implements JobRunnable, Closeable {
         }
         monitor.end();
         // Read the header
-
-
     }
 
     public String[] readNext() throws IOException {

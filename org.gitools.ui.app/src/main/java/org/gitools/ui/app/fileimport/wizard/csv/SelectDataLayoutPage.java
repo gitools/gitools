@@ -23,6 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.csv;
  */
 
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
@@ -41,11 +42,24 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private JRadioButton tableRadioButton;
     private JRadioButton matrixRadioButton;
     private JTextPane dataFormatTextPane;
+    private JTextPane preview;
 
     private DefaultComboBoxModel separator;
 
 
-    public SelectDataLayoutPage() {
+    public SelectDataLayoutPage(CsvReader csvReader) {
+        this.reader = csvReader;
+
+        separator = new DefaultComboBoxModel(CsvReader.SEPARATORS);
+        separatorCombo.setModel(separator);
+        separatorCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reader.setSeparator((String) separator.getSelectedItem());
+                updateParsing();
+            }
+        });
+
         ActionListener listener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,7 +69,9 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         tableRadioButton.addActionListener(listener);
         matrixRadioButton.addActionListener(listener);
         dataFormatTextPane.setContentType("text/html");
+        setComplete(true);
 
+        separator.setSelectedItem(reader.getSeparator());
     }
 
     @Override
@@ -67,29 +83,18 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     public void updateControls() {
 
         try {
-
-            separator = new DefaultComboBoxModel(CsvReader.SEPARATORS);
-            separatorCombo.setModel(separator);
-            separatorCombo.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    reader.setSeparator((String) separator.getSelectedItem());
-                    updateParsing();
-                }
-            });
-
             updateParsing();
 
             if (tableRadioButton.isSelected()) {
                 dataFormatTextPane.setText("<html><body>" +
                         "Each line is a heatmap cell: Two fields describing Column and Row id.<br>" +
-                        "The other fields are data points, therefore multiple per cell.<br>" +
+                        "The other fields are data points, therefore <b>multiple per cell</b>.<br>" +
                         "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_TABLE.toString() + "\">" +
                         "</body></html>");
             } else if (matrixRadioButton.isSelected()) {
                 dataFormatTextPane.setText("<html><body>" +
                         "The first row and column of the file are the Column and Row ids <br>" +
-                        "Only one data point per cell is possible.<br>" +
+                        "<b>Only one data point per cell is possible</b>.<br>" +
                         "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_MATRIX.toString() + "\">" +
                         "</body></html>");
             }
@@ -105,15 +110,37 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         reader.run(NullProgressMonitor.get());
         List<CsvHeader> allHeaders = reader.getHeaders();
 
+        StringBuilder table = new StringBuilder("");
+        table.append("<html><head>" +
+                "<style>" +
+                " th {\n" +
+                "    border-collapse: collapse;\n" +
+                "    border: 2px solid black;\n" +
+                "    white-space: nowrap;\n" +
+                "  }\n" +
+                " td {\n" +
+                "    border-collapse: collapse;\n" +
+                "    border: 1px solid black;\n" +
+                "    white-space: nowrap;\n" +
+                "  }" +
+                "</style>" +
+                "</head><body><table><tr>");
+        for (CsvHeader header : allHeaders) {
+            table.append("<th>" + header.getLabel() + "</th>");
+        }
+        table.append("<tr></html></body></table");
+        preview.setText(table.toString());
+
+
+        if (allHeaders.size() > 3) {
+            setComplete(true);
+            setMessage(MessageStatus.INFO, "Select Data Layout.");
+        } else {
+            setMessage(MessageStatus.ERROR, "Only " + allHeaders.size() + " columns detected.");
+            setComplete(false);
+        }
         separator.setSelectedItem(reader.getSeparator());
 
-    }
-
-    @Override
-    public boolean isComplete() {
-
-
-        return false;
     }
 
     public CsvReader getReader() {
