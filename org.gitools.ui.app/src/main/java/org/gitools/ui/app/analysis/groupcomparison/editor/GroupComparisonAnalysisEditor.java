@@ -65,6 +65,10 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
             context.put("mtc", "Bonferroni");
         }
 
+        if (analysis.getProperties().size() > 0) {
+            context.put("analysis.attributes", analysis.getProperties());
+        }
+
         fileRef = analysis.getResults().getLocator();
         context.put("resultsFile", fileRef != null ? fileRef.getName() : "Not defined");
 

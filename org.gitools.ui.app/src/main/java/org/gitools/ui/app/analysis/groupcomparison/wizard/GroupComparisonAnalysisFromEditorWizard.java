@@ -147,6 +147,7 @@ public class GroupComparisonAnalysisFromEditorWizard extends AbstractWizard {
         a.setColumnHeaders(columnHeaders);
 
         a.addGroups(groupingPage.getGroups());
+        a.setProperties(analysisDetailsPage.getAnalysisProperties());
         return a;
     }
 
