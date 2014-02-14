@@ -5,20 +5,18 @@
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:148px:grow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:d:grow"/>
-    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:117px:grow"/>
+    <rowspec value="top:5dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:77px:grow"/>
+    <rowspec value="center:120px:grow"/>
     <colspec value="right:190px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="339" height="344"/>
+      <xy x="20" y="20" width="339" height="358"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -26,7 +24,7 @@
       <component id="6009f" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-horz="false"/>
         </constraints>
         <properties>
           <font style="1"/>
@@ -44,7 +42,7 @@
       <component id="55851" class="javax.swing.JLabel">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-horz="false"/>
         </constraints>
         <properties>
           <font style="1"/>
@@ -82,9 +80,9 @@
           <text value="Matrix"/>
         </properties>
       </component>
-      <scrollpane id="5559c">
+      <scrollpane id="5559c" binding="previewScrollPane">
         <constraints>
-          <grid row="10" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -100,21 +98,14 @@
       </scrollpane>
       <component id="21375" class="javax.swing.JLabel">
         <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-horz="false"/>
         </constraints>
         <properties>
           <font style="1"/>
           <labelFor value="f0939"/>
-          <text value="Preview:"/>
+          <text value="File Preview:"/>
         </properties>
-      </component>
-      <component id="f21e8" class="javax.swing.JSeparator">
-        <constraints>
-          <grid row="6" column="0" row-span="2" col-span="5" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false" defaultalign-vert="false"/>
-        </constraints>
-        <properties/>
       </component>
     </children>
   </grid>

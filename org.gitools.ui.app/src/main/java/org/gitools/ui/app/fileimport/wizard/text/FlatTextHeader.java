@@ -25,9 +25,9 @@ import java.io.Serializable;
 
 public class FlatTextHeader implements Serializable {
 
-    private final int pos;
-    private final int type;
-    private final String label;
+    protected final int pos;
+    protected final int type;
+    protected final String label;
 
     public FlatTextHeader(String label, int pos, int type) {
         this.label = label;

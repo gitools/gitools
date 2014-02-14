@@ -69,14 +69,14 @@ public class CSVReader implements Closeable {
     /**
      * The default line to start reading.
      */
-    private static final int DEFAULT_SKIP_LINES = 0;
+    public static final int DEFAULT_SKIP_LINES = 0;
 
     /*
     * The default comment character. All lines that start with this
     * character will be skipped.
     *
     */
-    private static final char DEFAULT_COMMENT_CHARACTER = '#';
+    public static final char DEFAULT_COMMENT_CHARACTER = '#';
 
     /**
      * Constructs CSVReader using a comma for the separator.

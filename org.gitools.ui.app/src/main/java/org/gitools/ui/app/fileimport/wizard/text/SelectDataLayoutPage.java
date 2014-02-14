@@ -26,13 +26,17 @@ import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.text.MatrixReaderProfile;
+import org.gitools.utils.text.Separator;
+import org.gitools.utils.text.TableReaderProfile;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import static org.gitools.utils.text.ReaderProfile.SEPARATORS;
+import static org.gitools.utils.text.ReaderProfile.MATRIX;
+import static org.gitools.utils.text.ReaderProfile.TABLE;
 
 public class SelectDataLayoutPage extends AbstractWizardPage {
 
@@ -45,6 +49,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private JRadioButton matrixRadioButton;
     private JTextPane dataFormatTextPane;
     private JTextPane preview;
+    private JScrollPane previewScrollPane;
 
     private DefaultComboBoxModel separatorsModel;
 
@@ -52,25 +57,31 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     public SelectDataLayoutPage(FlatTextReader flatTextReader) {
         this.reader = flatTextReader;
 
-        separatorsModel = new DefaultComboBoxModel(SEPARATORS);
+        separatorsModel = new DefaultComboBoxModel(Separator.values());
         separatorCombo.setModel(separatorsModel);
         separatorCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                reader.getReaderProfile().setSeparator((String) separatorsModel.getSelectedItem());
+                reader.getReaderProfile().setSeparator((Separator) separatorsModel.getSelectedItem());
                 updateParsing();
             }
         });
 
-        ActionListener listener = new ActionListener() {
+        matrixRadioButton.setSelected(reader.getReaderProfile().getLayout().equals(MATRIX));
+        tableRadioButton.setSelected(reader.getReaderProfile().getLayout().equals(TABLE));
+        ActionListener layoutListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: set correct profile (Table / tab)
+                if (tableRadioButton.isSelected()) {
+                    reader.setReaderProfile(TableReaderProfile.fromProfile(reader.getReaderProfile()));
+                } else if (matrixRadioButton.isSelected()) {
+                    reader.setReaderProfile(MatrixReaderProfile.fromProfile(reader.getReaderProfile()));
+                }
                 updateControls();
             }
         };
-        tableRadioButton.addActionListener(listener);
-        matrixRadioButton.addActionListener(listener);
+        tableRadioButton.addActionListener(layoutListener);
+        matrixRadioButton.addActionListener(layoutListener);
         dataFormatTextPane.setContentType("text/html");
         setComplete(true);
 
@@ -113,26 +124,15 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         reader.run(NullProgressMonitor.get());
         List<FlatTextHeader> allHeaders = reader.getHeaders();
 
-        StringBuilder table = new StringBuilder("");
-        table.append("<html><head>" +
-                "<style>" +
-                " th {\n" +
-                "    border-collapse: collapse;\n" +
-                "    border: 2px solid black;\n" +
-                "    white-space: nowrap;\n" +
-                "  }\n" +
-                " td {\n" +
-                "    border-collapse: collapse;\n" +
-                "    border: 1px solid black;\n" +
-                "    white-space: nowrap;\n" +
-                "  }" +
-                "</style>" +
-                "</head><body><table><tr>");
-        for (FlatTextHeader header : allHeaders) {
-            table.append("<th>" + header.getLabel() + "</th>");
-        }
-        table.append("<tr></html></body></table");
-        preview.setText(table.toString());
+
+        double horizontal = (double) previewScrollPane.getHorizontalScrollBar().getValue() / (double) previewScrollPane.getHorizontalScrollBar().getMaximum();
+        double vertical = (double) previewScrollPane.getVerticalScrollBar().getValue() / (double) previewScrollPane.getVerticalScrollBar().getMaximum();
+
+        StringBuilder htmlTable = getHTMLTable();
+        preview.setText(htmlTable.toString());
+
+        previewScrollPane.getHorizontalScrollBar().setValue((int) horizontal * previewScrollPane.getHorizontalScrollBar().getMaximum());
+        previewScrollPane.getVerticalScrollBar().setValue((int) vertical * previewScrollPane.getHorizontalScrollBar().getMaximum());
 
 
         if (allHeaders.size() > 3) {
@@ -144,6 +144,52 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         }
         separatorsModel.setSelectedItem(reader.getReaderProfile().getSeparator());
 
+    }
+
+    private StringBuilder getHTMLTable() {
+        StringBuilder htmlTable = new StringBuilder("");
+        //header
+        htmlTable.append("<html><head>" +
+                "<style>" +
+                " th {\n" +
+                "    border-collapse: collapse;\n" +
+                "    border: 2px solid black;\n" +
+                "    white-space: nowrap;\n" +
+                "  }\n" +
+                " td {\n" +
+                "    border-collapse: collapse;\n" +
+                "    border: 1px solid black;\n" +
+                "    white-space: nowrap;\n" +
+                "  }" +
+                " body, td, th {\n" +
+                "    font-size: 9pt;\n" +
+                "  }" +
+                "</style>" +
+                "</head><body><table><tr>");
+        for (FlatTextHeader header : reader.getHeaders()) {
+            htmlTable.append("<th>" + header.getLabel() + "</th>");
+        }
+        htmlTable.append("</tr>");
+
+
+        // preview
+
+        boolean matrix = reader.getReaderProfile().getLayout().equals(MATRIX);
+        for (List<FlatTextField> line : reader.getPreview()) {
+            htmlTable.append("<tr>");
+            for (FlatTextField field : line) {
+                String celltype = (matrix && field.getPos() == 0) ? "th" : "td";
+                htmlTable.append("<" + celltype + ">");
+                htmlTable.append(field.getLabel());
+                htmlTable.append("</" + celltype + ">");
+            }
+            htmlTable.append("</tr>");
+        }
+
+
+        //end
+        htmlTable.append("</html></body></table");
+        return htmlTable;
     }
 
     public FlatTextReader getReader() {

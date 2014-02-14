@@ -26,12 +26,21 @@ public class MatrixReaderProfile extends ReaderProfile {
     int rowIdsPosition;
     int columnIdsPosition;
 
-    public MatrixReaderProfile() {
+    private MatrixReaderProfile() {
         super();
         this.name = "defaultMatrix";
         this.rowIdsPosition = 0;
         this.columnIdsPosition = 0;
         this.layout = MATRIX;
+    }
+
+    public static MatrixReaderProfile fromProfile(ReaderProfile profile) {
+        MatrixReaderProfile newProfile = new MatrixReaderProfile();
+        newProfile.setCommentChar(profile.getCommentChar());
+        newProfile.setIgnoredColumns(profile.getIgnoredColumns());
+        newProfile.setSeparator(profile.getSeparator());
+        newProfile.setSkipLines(profile.getSkipLines());
+        return newProfile;
     }
 
     public int getColumnIdsPosition() {

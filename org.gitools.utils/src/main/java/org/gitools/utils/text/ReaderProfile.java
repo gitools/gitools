@@ -22,46 +22,47 @@
 package org.gitools.utils.text;
 
 
-public class ReaderProfile {
-    public static String TAB = "Tab";
-    public static String COMMA = "Comma";
-    public static String[] SEPARATORS = new String[]{TAB, COMMA};
+public abstract class ReaderProfile {
 
     public static String TABLE = "Table";
     public static String MATRIX = "Matrix";
     public static String[] FILE_LAYOUTS = new String[]{MATRIX, TABLE};
 
     String name;
-    String separator;
+    Separator separator;
     String layout;
-    int firstLine;
-    String commentChar;
+    int skipLines;
+    char commentChar;
     String metaDataChar = "#?";
     int[] ignoredColumns;
 
 
-    public ReaderProfile() {
+    protected ReaderProfile() {
         this.name = "default";
-        this.separator = TAB;
-        this.firstLine = 1;
-        this.commentChar = "#";
+        this.separator = Separator.TAB;
+        this.skipLines = 0;
+        this.commentChar = '#';
         this.ignoredColumns = new int[0];
     }
 
-    public String getCommentChar() {
+    public static ReaderProfile fromProfile(ReaderProfile profile) {
+        return profile;
+    }
+
+    public char getCommentChar() {
         return commentChar;
     }
 
-    public void setCommentChar(String commentChar) {
+    public void setCommentChar(char commentChar) {
         this.commentChar = commentChar;
     }
 
 
-    public String getSeparator() {
+    public Separator getSeparator() {
         return separator;
     }
 
-    public void setSeparator(String separator) {
+    public void setSeparator(Separator separator) {
         this.separator = separator;
     }
 
@@ -73,12 +74,12 @@ public class ReaderProfile {
         this.layout = layout;
     }
 
-    public int getFirstLine() {
-        return firstLine;
+    public int getSkipLines() {
+        return skipLines;
     }
 
-    public void setFirstLine(int firstLine) {
-        this.firstLine = firstLine;
+    public void setSkipLines(int skipLines) {
+        this.skipLines = skipLines;
     }
 
     public String getMetaDataChar() {

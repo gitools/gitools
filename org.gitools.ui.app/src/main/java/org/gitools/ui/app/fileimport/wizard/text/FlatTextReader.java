@@ -26,8 +26,10 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.text.CSVParser;
 import org.gitools.utils.text.CSVReader;
 import org.gitools.utils.text.ReaderProfile;
+import org.gitools.utils.text.Separator;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -35,21 +37,23 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.gitools.utils.text.ReaderProfile.*;
+import static org.gitools.utils.text.Separator.COMMA;
+import static org.gitools.utils.text.Separator.TAB;
 
 public class FlatTextReader implements JobRunnable, Closeable {
 
     private final IResourceLocator locator;
     private CSVReader reader = null;
     private List<FlatTextHeader> headers;
+    private int previewLength = 20;
+    private List<List<FlatTextField>> preview;
 
     private ReaderProfile readerProfile;
 
-    public FlatTextReader(IResourceLocator locator) {
+    public FlatTextReader(IResourceLocator locator, ReaderProfile profile) {
         super();
         this.locator = locator;
-
-        readerProfile = new ReaderProfile();
+        this.readerProfile = profile;
 
         // Choose COMMA separator if it's a CSV
         if ("csv".equalsIgnoreCase(locator.getExtension())) {
@@ -59,8 +63,8 @@ public class FlatTextReader implements JobRunnable, Closeable {
         } else {
             // try to guess:
             int recordOfFields = 0;
-            for (String sep : SEPARATORS) {
-                String oldSep = readerProfile.getSeparator();
+            for (Separator sep : Separator.values()) {
+                Separator oldSep = readerProfile.getSeparator();
                 readerProfile.setSeparator(sep);
                 run(new NullProgressMonitor());
                 if (headers.size() < recordOfFields) {
@@ -78,13 +82,27 @@ public class FlatTextReader implements JobRunnable, Closeable {
         monitor.begin("Opening [" + locator.getName() + "]", 0);
         CSVReader reader = null;
         try {
-            reader = new CSVReader(new InputStreamReader(locator.openInputStream(monitor)), (COMMA.equals(readerProfile.getSeparator()) ? ',' : '\t'));
+            reader = newCSVReader(monitor);
+
 
             // Load headers
             String[] line = reader.readNext();
             headers = new ArrayList<>(line.length);
             for (int i=0; i < line.length; i++) {
                 headers.add(new FlatTextHeader(line[i], i, 0));
+            }
+
+            //Load preview
+            if (previewLength > 0) {
+                preview = new ArrayList<>();
+                for (int i = 0; i < previewLength; i++) {
+                    line = reader.readNext();
+                    ArrayList<FlatTextField> fields = new ArrayList<FlatTextField>(line.length);
+                    for (int j = 0; j < line.length; j++) {
+                        fields.add(new FlatTextField(line[j], j, 0, i));
+                    }
+                    preview.add(fields);
+                }
             }
             reader.close();
 
@@ -97,10 +115,23 @@ public class FlatTextReader implements JobRunnable, Closeable {
         // Read the header
     }
 
+    private CSVReader newCSVReader(IProgressMonitor monitor) throws IOException {
+        reader = new CSVReader(
+                new InputStreamReader(locator.openInputStream(monitor)),
+                readerProfile.getSeparator().getChar(),
+                CSVParser.DEFAULT_QUOTE_CHARACTER,
+                CSVParser.DEFAULT_ESCAPE_CHARACTER,
+                readerProfile.getCommentChar(),
+                readerProfile.getSkipLines(),
+                CSVParser.DEFAULT_STRICT_QUOTES,
+                CSVParser.DEFAULT_IGNORE_LEADING_WHITESPACE);
+        return reader;
+    }
+
     public String[] readNext() throws IOException {
 
         if (reader==null) {
-            reader = new CSVReader(new InputStreamReader(locator.openInputStream(NullProgressMonitor.get())), (COMMA.equals(readerProfile.getSeparator()) ? ',' : '\t'));
+            reader = newCSVReader(new NullProgressMonitor());
         }
 
         return reader.readNext();
@@ -108,6 +139,10 @@ public class FlatTextReader implements JobRunnable, Closeable {
 
     public List<FlatTextHeader> getHeaders() {
         return headers;
+    }
+
+    public List<List<FlatTextField>> getPreview() {
+        return preview;
     }
 
     public IResourceLocator getLocator() {

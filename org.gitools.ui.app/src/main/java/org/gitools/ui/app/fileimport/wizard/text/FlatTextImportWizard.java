@@ -32,6 +32,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.text.TableReaderProfile;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,8 +47,8 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     private SelectColumnsPage selectColumnsPage;
 
     public FlatTextImportWizard() {
-        setTitle("Import a CSV file");
-        setHelpContext("import_csv");
+        setTitle("Import a text file");
+        setHelpContext("import_text");
     }
 
     @Override
@@ -62,7 +63,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, new TableReaderProfile()));
         addPage(selectDataLayoutPage);
 
         selectColumnsPage = new SelectColumnsPage();

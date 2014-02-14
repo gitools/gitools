@@ -36,6 +36,15 @@ public class TableReaderProfile extends ReaderProfile {
         this.layout = TABLE;
     }
 
+    public static TableReaderProfile fromProfile(ReaderProfile profile) {
+        TableReaderProfile newProfile = new TableReaderProfile();
+        newProfile.setCommentChar(profile.getCommentChar());
+        newProfile.setIgnoredColumns(profile.getIgnoredColumns());
+        newProfile.setSeparator(profile.getSeparator());
+        newProfile.setSkipLines(profile.getSkipLines());
+        return newProfile;
+    }
+
     /**
      * Which columns in the flat text are mapped as heatmap column id
      */
