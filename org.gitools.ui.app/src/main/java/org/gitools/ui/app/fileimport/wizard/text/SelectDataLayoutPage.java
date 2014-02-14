@@ -124,15 +124,10 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         reader.run(NullProgressMonitor.get());
         List<FlatTextHeader> allHeaders = reader.getHeaders();
 
-
-        double horizontal = (double) previewScrollPane.getHorizontalScrollBar().getValue() / (double) previewScrollPane.getHorizontalScrollBar().getMaximum();
-        double vertical = (double) previewScrollPane.getVerticalScrollBar().getValue() / (double) previewScrollPane.getVerticalScrollBar().getMaximum();
-
         StringBuilder htmlTable = getHTMLTable();
         preview.setText(htmlTable.toString());
 
-        previewScrollPane.getHorizontalScrollBar().setValue((int) horizontal * previewScrollPane.getHorizontalScrollBar().getMaximum());
-        previewScrollPane.getVerticalScrollBar().setValue((int) vertical * previewScrollPane.getHorizontalScrollBar().getMaximum());
+        preview.setCaretPosition(0);
 
 
         if (allHeaders.size() > 3) {
@@ -149,23 +144,9 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private StringBuilder getHTMLTable() {
         StringBuilder htmlTable = new StringBuilder("");
         //header
-        htmlTable.append("<html><head>" +
-                "<style>" +
-                " th {\n" +
-                "    border-collapse: collapse;\n" +
-                "    border: 2px solid black;\n" +
-                "    white-space: nowrap;\n" +
-                "  }\n" +
-                " td {\n" +
-                "    border-collapse: collapse;\n" +
-                "    border: 1px solid black;\n" +
-                "    white-space: nowrap;\n" +
-                "  }" +
-                " body, td, th {\n" +
-                "    font-size: 9pt;\n" +
-                "  }" +
-                "</style>" +
-                "</head><body><table><tr>");
+        htmlTable.append("<html><head>");
+        htmlTable.append(PreviewHTMLs.CSS);
+        htmlTable.append("</head><body><table><tr>");
         for (FlatTextHeader header : reader.getHeaders()) {
             htmlTable.append("<th>" + header.getLabel() + "</th>");
         }

@@ -45,6 +45,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     private IResourceLocator locator;
     private SelectDataLayoutPage selectDataLayoutPage;
     private SelectColumnsPage selectColumnsPage;
+    private SelectTableColumnsPage selectTableColumnsPage;
 
     public FlatTextImportWizard() {
         setTitle("Import a text file");
@@ -66,10 +67,13 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
         selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, new TableReaderProfile()));
         addPage(selectDataLayoutPage);
 
-        selectColumnsPage = new SelectColumnsPage();
-        selectColumnsPage.setTitle("Select rows, columns and values headers");
+        selectTableColumnsPage = new SelectTableColumnsPage();
+        selectTableColumnsPage.setTitle("Columns purpose");
+        addPage(selectTableColumnsPage);
 
-        addPage(selectColumnsPage);
+        //selectColumnsPage = new SelectColumnsPage();
+        //selectColumnsPage.setTitle("Select rows, columns and values headers");
+        //addPage(selectColumnsPage);
 
     }
 
@@ -77,6 +81,10 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     public IWizardPage getNextPage(IWizardPage page) {
 
         IWizardPage nextPage = super.getNextPage(getCurrentPage());
+
+        if (nextPage.equals(selectTableColumnsPage)) {
+            selectTableColumnsPage.setReader(selectDataLayoutPage.getReader());
+        }
 
         if (nextPage.equals(selectColumnsPage)) {
             selectColumnsPage.setReader(selectDataLayoutPage.getReader());
