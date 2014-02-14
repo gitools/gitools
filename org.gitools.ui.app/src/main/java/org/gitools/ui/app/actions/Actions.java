@@ -54,7 +54,6 @@ public class Actions {
     public static final BaseAction exitAction = new ExitAction();
 
     // Import
-    public static final BaseAction importIntogenOncomodulesAction = new ImportIntogenOncomodulesAction();
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
     public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
     public static final BaseAction importKeggModulesAction = new ImportKeggModulesAction();

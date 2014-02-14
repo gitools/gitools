@@ -37,8 +37,6 @@ public class MenuActionSet extends ActionSet {
 
     public static MenuActionSet INSTANCE = new MenuActionSet();
 
-    private static final long serialVersionUID = -7702905459240675073L;
-
     public MenuActionSet() {
         super(new BaseAction[]{
                 new ActionSet("File", KeyEvent.VK_F,
@@ -87,7 +85,6 @@ public class MenuActionSet extends ActionSet {
                         new BaseAction[]{
                                 new ActionSet("Modules", KeyEvent.VK_M, IconNames.empty16,
                                         new BaseAction[]{
-                                                Actions.importIntogenOncomodulesAction,
                                                 Actions.importKeggModulesAction,
                                                 Actions.importGoModulesAction,
                                                 Actions.importBioMartModulesAction

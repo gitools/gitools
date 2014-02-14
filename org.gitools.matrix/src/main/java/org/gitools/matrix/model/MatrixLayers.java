@@ -79,6 +79,10 @@ public class MatrixLayers<T extends IMatrixLayer> implements IMatrixLayers<T> {
     @Override
     public T get(String layer) {
 
+        if (layer == null) {
+            return null;
+        }
+
         int index = indexOf(layer);
 
         if (index == -1) {

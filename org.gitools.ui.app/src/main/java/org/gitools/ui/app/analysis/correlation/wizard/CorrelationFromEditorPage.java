@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.app.analysis.correlation.wizard;
 
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -31,13 +33,14 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 public class CorrelationFromEditorPage extends AbstractWizardPage {
 
     /**
      * Creates new form CorrelationPage
      */
-    public CorrelationFromEditorPage(String[] attributeNames) {
+    public CorrelationFromEditorPage(IMatrixViewLayers<? extends IMatrixLayer> layers) {
         super();
 
         initComponents();
@@ -48,7 +51,12 @@ public class CorrelationFromEditorPage extends AbstractWizardPage {
 
         setComplete(true);
 
-        attributeCb.setModel(new DefaultComboBoxModel(attributeNames));
+        Vector<IMatrixLayer> layersModel = new Vector<>();
+        for (IMatrixLayer layer : layers) {
+            layersModel.add(layer);
+        }
+        attributeCb.setModel(new DefaultComboBoxModel(layersModel));
+        attributeCb.setSelectedItem(layers.getTopLayer());
 
         replaceEmptyValuesCheck.addActionListener(new ActionListener() {
             @Override

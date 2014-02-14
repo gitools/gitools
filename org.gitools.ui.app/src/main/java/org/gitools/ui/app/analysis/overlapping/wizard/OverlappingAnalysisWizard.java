@@ -22,77 +22,36 @@
 package org.gitools.ui.app.analysis.overlapping.wizard;
 
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.ApplicationContext;
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.matrix.FileFormats;
-import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.app.analysis.wizard.DataFilePage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
-import org.gitools.ui.app.analysis.wizard.ExamplePage;
-import org.gitools.ui.app.examples.ExamplesManager;
-import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
-import javax.swing.*;
-import java.io.File;
+public class OverlappingAnalysisWizard extends AnalysisWizard<OverlappingAnalysis> {
 
-public class OverlappingAnalysisWizard extends AbstractWizard {
-
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + OverlappingAnalysisFormat.EXTENSION;
-    private static final String EXAMPLE_DATA_FILE = "8_kidney_6_brain_downreg_annot.cdm.gz";
-
-    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.COMPRESSED_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
-
-    private ExamplePage examplePage;
-    private DataFilePage dataPage;
     private DataFilterPage dataFilterPage;
     private OverlappingAnalysisWizardPage overlappingPage;
-    private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    private boolean examplePageEnabled;
-    private boolean dataFromMemory;
-    private IMatrixLayers attributes;
-    private boolean saveFilePageEnabled;
+    private IMatrixView data;
 
-
-    public OverlappingAnalysisWizard() {
+    public OverlappingAnalysisWizard(IMatrixView data) {
         super();
-
-        examplePageEnabled = true;
-        dataFromMemory = false;
-        saveFilePageEnabled = true;
 
         setTitle("Overlapping analysis");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_OVERLAPPING, 96));
         setHelpContext("analysis_overlapping");
+
+        this.data = data;
     }
 
     @Override
     public void addPages() {
-        // Example
-        if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
-            examplePage = new ExamplePage("an overlapping analysis");
-            examplePage.setTitle("Overlapping analysis");
-            addPage(examplePage);
-        }
-
-        // Data
-        if (!dataFromMemory) {
-            dataPage = new DataFilePage(dataFormats);
-            addPage(dataPage);
-        }
 
         // Data filters
         dataFilterPage = new DataFilterPage();
@@ -104,152 +63,29 @@ public class OverlappingAnalysisWizard extends AbstractWizard {
 
         // Overlapping parameters
         overlappingPage = new OverlappingAnalysisWizardPage();
-        overlappingPage.setAttributes(attributes);
+        overlappingPage.setAttributes(data.getLayers());
         addPage(overlappingPage);
-
-        // Destination
-        if (saveFilePageEnabled) {
-            saveFilePage = new org.gitools.ui.app.wizard.common.SaveFilePage();
-            saveFilePage.setTitle("Select destination file");
-            saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-            saveFilePage.setFormats(new FileFormat[]{OverlappingAnalysisFormat.FILE_FORMAT});
-            saveFilePage.setFormatsVisible(false);
-            addPage(saveFilePage);
-        }
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
         addPage(analysisDetailsPage);
     }
 
+    public OverlappingAnalysis createAnalysis() {
 
-    @Override
-    public void pageLeft(IWizardPage currentPage) {
-        if (currentPage == examplePage) {
-            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
+        OverlappingAnalysis analysis = new OverlappingAnalysis();
+        analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
+        analysis.setDescription(analysisDetailsPage.getAnalysisDescription());
+        analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
+        analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
+        analysis.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
+        analysis.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
+        analysis.setAttributeName(overlappingPage.getAttributeName());
+        analysis.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ? overlappingPage.getReplaceNanValue() : null);
+        analysis.setTransposeData(overlappingPage.isTransposeEnabled());
+        analysis.setSourceData(new ResourceReference<IMatrix>("source-data", data));
 
-            if (examplePage.isExampleEnabled()) {
-                JobThread.execute(Application.get(), new JobRunnable() {
-                    @Override
-                    public void run(IProgressMonitor monitor) {
-
-                        final File basePath = ExamplesManager.getDefault().resolvePath("overlap", monitor);
-
-                        if (basePath == null) {
-                            throw new RuntimeException("Unexpected error: There are no examples available");
-                        }
-
-                        File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-
-                        try {
-                            monitor.begin("Loading example parameters ...", 1);
-
-                            final OverlappingAnalysis a = ApplicationContext.getPersistenceManager().load(analysisFile, OverlappingAnalysis.class, monitor);
-
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setAnalysis(a);
-
-                                    dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
-                                    saveFilePage.setFileNameWithoutExtension("example");
-                                }
-                            });
-
-                            monitor.end();
-                        } catch (Exception ex) {
-                            monitor.exception(ex);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public boolean canFinish() {
-        IWizardPage page = getCurrentPage();
-
-        boolean canFinish = super.canFinish();
-        canFinish |= page == saveFilePage && page.isComplete();
-
-        return canFinish;
-    }
-
-    public boolean isExamplePageEnabled() {
-        return examplePageEnabled;
-    }
-
-    public void setExamplePageEnabled(boolean examplePageEnabled) {
-        this.examplePageEnabled = examplePageEnabled;
-    }
-
-    public boolean isDataFromMemory() {
-        return dataFromMemory;
-    }
-
-    public void setDataFromMemory(boolean dataFromMemory) {
-        this.dataFromMemory = dataFromMemory;
-    }
-
-    public void setAttributes(IMatrixLayers attributes) {
-        this.attributes = attributes;
-    }
-
-    public boolean isSaveFilePageEnabled() {
-        return saveFilePageEnabled;
-    }
-
-    public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
-        this.saveFilePageEnabled = saveFilePageEnabled;
-    }
-
-
-    public OverlappingAnalysis getAnalysis() {
-        OverlappingAnalysis a = new OverlappingAnalysis();
-
-        a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisDescription());
-        a.setProperties(analysisDetailsPage.getAnalysisProperties());
-
-        a.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());
-        a.setBinaryCutoffCmp(dataFilterPage.getBinaryCutoffCmp());
-        a.setBinaryCutoffValue(dataFilterPage.getBinaryCutoffValue());
-
-        a.setAttributeName(overlappingPage.getAttributeName());
-        a.setReplaceNanValue(overlappingPage.isReplaceNanValuesEnabled() ? overlappingPage.getReplaceNanValue() : null);
-        a.setTransposeData(overlappingPage.isTransposeEnabled());
-
-        return a;
-    }
-
-    private void setAnalysis(OverlappingAnalysis a) {
-        analysisDetailsPage.setAnalysisTitle(a.getTitle());
-        analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
-
-        dataFilterPage.setBinaryCutoffEnabled(a.isBinaryCutoffEnabled());
-        dataFilterPage.setBinaryCutoffCmp(a.getBinaryCutoffCmp());
-        dataFilterPage.setBinaryCutoffValue(a.getBinaryCutoffValue());
-
-        overlappingPage.setReplaceNanValuesEnabled(a.getReplaceNanValue() != null);
-        if (a.getReplaceNanValue() != null) {
-            overlappingPage.setReplaceNanValue(a.getReplaceNanValue());
-        }
-
-        overlappingPage.setTransposeEnabled(a.isTransposeData());
-    }
-
-    public DataFilePage getDataFilePage() {
-        return dataPage;
-    }
-
-    public String getWorkdir() {
-        return saveFilePage.getFolder();
-    }
-
-    public String getFileName() {
-        return saveFilePage.getFileName();
+        return analysis;
     }
 
 }

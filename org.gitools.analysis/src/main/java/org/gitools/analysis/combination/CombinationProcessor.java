@@ -81,8 +81,11 @@ public class CombinationProcessor implements AnalysisProcessor {
         // Set size and p-value layers
         String sizeLayer = analysis.getSizeLayer();
         String pvalueLayer = analysis.getValueLayer();
+
         if (pvalueLayer == null) {
-            pvalueLayer = data.getLayers().iterator().next().getId();
+            for (IMatrixLayer layer : data.getLayers()) {
+                pvalueLayer = layer.getId();
+            }
         }
 
         // Prepare results matrix
@@ -93,8 +96,8 @@ public class CombinationProcessor implements AnalysisProcessor {
                         combineDimension,
                         iterateDimension,
                         moduleMap,
-                        (IMatrixLayer<Number>) data.getLayers().get(sizeLayer),
-                        (IMatrixLayer<Double>) data.getLayers().get(pvalueLayer))
+                        sizeLayer,
+                        pvalueLayer)
         ));
 
         analysis.setStartTime(startTime);
@@ -103,7 +106,7 @@ public class CombinationProcessor implements AnalysisProcessor {
         monitor.end();
     }
 
-    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimensionKey combineDimension, MatrixDimensionKey iterateDimension, IModuleMap moduleMap, IMatrixLayer<? extends Number> sizeLayer, IMatrixLayer<? extends Double> valueLayer) {
+    private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimensionKey combineDimension, MatrixDimensionKey iterateDimension, IModuleMap moduleMap, String sizeLayerId, String valueLayerId) {
 
         final IMatrix results = new HashMatrix(
                 new MatrixLayers(LAYER_N, LAYER_Z_SCORE, LAYER_P_VALUE),
@@ -112,6 +115,9 @@ public class CombinationProcessor implements AnalysisProcessor {
         );
 
         monitor.begin("Running combination analysis ...", moduleMap.getModules().size() * data.getDimension(iterateDimension).size());
+
+        IMatrixLayer<Double> valueLayer = data.getLayers().get(valueLayerId);
+        IMatrixLayer<Number> sizeLayer = data.getLayers().get(sizeLayerId);
 
         for (String row : data.getDimension(iterateDimension)) {
 

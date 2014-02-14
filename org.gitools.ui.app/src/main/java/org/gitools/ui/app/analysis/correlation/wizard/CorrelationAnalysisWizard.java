@@ -22,32 +22,38 @@
 package org.gitools.ui.app.analysis.correlation.wizard;
 
 import org.gitools.analysis.correlation.CorrelationAnalysis;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class CorrelationAnalysisWizard extends AbstractWizard {
+import static com.google.common.base.Predicates.in;
 
-    private final String[] attributeNames;
+public class CorrelationAnalysisWizard extends AnalysisWizard<CorrelationAnalysis> {
+
+    private final IMatrixView data;
 
     private CorrelationFromEditorPage corrPage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public CorrelationAnalysisWizard(String[] attributeNames) {
+    public CorrelationAnalysisWizard(IMatrixView data) {
         super();
 
         setTitle("Correlation analysis");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CORRELATION, 96));
 
-        this.attributeNames = attributeNames;
+        this.data = data;
     }
 
     @Override
     public void addPages() {
         // Correlation method
-        corrPage = new CorrelationFromEditorPage(attributeNames);
+        corrPage = new CorrelationFromEditorPage(data.getLayers());
         addPage(corrPage);
 
         // Analysis details
@@ -56,28 +62,17 @@ public class CorrelationAnalysisWizard extends AbstractWizard {
     }
 
     @Override
-    public boolean canFinish() {
-        boolean canFinish = super.canFinish();
+    public CorrelationAnalysis createAnalysis() {
 
-        IWizardPage page = getCurrentPage();
+        CorrelationAnalysis analysis = new CorrelationAnalysis();
+        analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
+        analysis.setDescription(analysisDetailsPage.getAnalysisDescription());
+        analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
+        analysis.setAttributeIndex(corrPage.getAttributeIndex());
+        analysis.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);
+        analysis.setTransposeData(corrPage.isTransposeEnabled());
+        analysis.setData(new ResourceReference<IMatrix>("data", data));
 
-        canFinish |= page.isComplete() && (page == corrPage);
-
-        return canFinish;
-    }
-
-
-    public CorrelationAnalysis getAnalysis() {
-        CorrelationAnalysis a = new CorrelationAnalysis();
-
-        a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisDescription());
-        a.setProperties(analysisDetailsPage.getAnalysisProperties());
-
-        a.setAttributeIndex(corrPage.getAttributeIndex());
-        a.setReplaceNanValue(corrPage.isReplaceNanValuesEnabled() ? corrPage.getReplaceNanValue() : null);
-        a.setTransposeData(corrPage.isTransposeEnabled());
-
-        return a;
+        return analysis;
     }
 }

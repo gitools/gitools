@@ -22,6 +22,7 @@
 package org.gitools.ui.app.heatmap.panel.details.boxes;
 
 import com.alee.extended.label.WebLinkLabel;
+import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.label.WebLabel;
@@ -31,7 +32,6 @@ import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.SwingUtils;
-import info.clearthought.layout.TableLayout;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;

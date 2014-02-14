@@ -38,8 +38,9 @@ import java.awt.event.ActionEvent;
 
 public abstract class AbstractAnalysisAction<A extends Analysis> extends HeatmapAction {
 
-    public AbstractAnalysisAction(String name) {
+    public AbstractAnalysisAction(String name, int mnemonic) {
         super(name);
+        setMnemonic(mnemonic);
     }
 
     @Override

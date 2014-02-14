@@ -35,10 +35,7 @@ import java.awt.event.KeyEvent;
 public class OncodriveAnalysisAction extends AbstractAnalysisAction<OncodriveAnalysis> {
 
     public OncodriveAnalysisAction() {
-        super("OncoDrive...");
-
-        setDesc("Run an oncodrive analysis");
-        setMnemonic(KeyEvent.VK_O);
+        super("OncoDrive...", KeyEvent.VK_O);
     }
 
     @Override

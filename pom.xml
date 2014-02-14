@@ -218,7 +218,7 @@
             <dependency>
                 <groupId>weblookandfeel</groupId>
                 <artifactId>weblookandfeel</artifactId>
-                <version>1.25</version>
+                <version>1.26</version>
             </dependency>
 
             <dependency>

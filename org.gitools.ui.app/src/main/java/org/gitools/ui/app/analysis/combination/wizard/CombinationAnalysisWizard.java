@@ -23,118 +23,59 @@ package org.gitools.ui.app.analysis.combination.wizard;
 
 
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.analysis.combination.ConvertMatrixToModuleMapResourceReference;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.resource.IResourceFormat;
-import org.gitools.api.ApplicationContext;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.FileFormats;
-import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
-import org.gitools.matrix.format.CmatrixMatrixFormat;
-import org.gitools.matrix.format.TdmMatrixFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
-import org.gitools.ui.app.analysis.wizard.DataFilePage;
-import org.gitools.ui.app.analysis.wizard.ExamplePage;
 import org.gitools.ui.app.analysis.wizard.SelectFilePage;
-import org.gitools.ui.app.examples.ExamplesManager;
-import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 
-import javax.swing.*;
 import java.io.File;
 
-public class CombinationAnalysisWizard extends AbstractWizard {
-
-    private static final String EXAMPLE_ANALYSIS_FILE = "analysis." + CombinationAnalysisFormat.EXTENSION;
-    private static final String EXAMPLE_DATA_FILE = "19_lung_10_breast_upreg_annot.cdm.gz";
-    private static final String EXAMPLE_COLUM_SETS_FILE = "lung_breast_experiments_annotated.tcm";
-
-    private static final FileFormat[] dataFormats = new FileFormat[]{FileFormats.MULTIVALUE_DATA_MATRIX, FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.COMPRESSED_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
+public class CombinationAnalysisWizard extends AnalysisWizard<CombinationAnalysis> {
 
     private static final FileFormat[] columnSetsFormats = new FileFormat[]{FileFormats.GENE_MATRIX, FileFormats.GENE_MATRIX_TRANSPOSED, FileFormats.DOUBLE_MATRIX, FileFormats.DOUBLE_BINARY_MATRIX, FileFormats.MODULES_2C_MAP, FileFormats.MODULES_INDEXED_MAP};
 
-    private ExamplePage examplePage;
-    private DataFilePage dataPage;
     private CombinationAnalysisParamsPage combinationParamsPage;
     private SelectFilePage columnSetsPage;
-    private SaveFilePage saveFilePage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    private boolean examplePageEnabled;
-    private boolean dataFromMemory;
+    private IMatrixView data;
 
-    private String[] attributes;
-    private boolean saveFilePageEnabled;
-
-    private File dataFile;
-
-    public CombinationAnalysisWizard() {
+    public CombinationAnalysisWizard(IMatrixView data) {
         super();
-
-        examplePageEnabled = true;
-        dataFromMemory = false;
-        saveFilePageEnabled = true;
 
         setTitle("Combination analysis");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_COMBINATION, 96));
         setHelpContext("analysis_combination");
+
+        this.data = data;
     }
 
     @Override
     public void addPages() {
-        // Example
-        if (examplePageEnabled && Settings.getDefault().isShowCombinationExamplePage()) {
-            examplePage = new ExamplePage("a combination analysis");
-            examplePage.setTitle("Combination analysis");
-            addPage(examplePage);
-        }
-
-        // Data
-        if (!dataFromMemory) {
-            dataPage = new DataFilePage(dataFormats);
-            addPage(dataPage);
-        }
 
         // Combination parameters
-        combinationParamsPage = new CombinationAnalysisParamsPage();
-        combinationParamsPage.setAttributes(attributes);
+        combinationParamsPage = new CombinationAnalysisParamsPage(data.getLayers());
         addPage(combinationParamsPage);
 
         // Set of columns
-        columnSetsPage = new SelectFilePage(columnSetsFormats) {
-            @Override
-            protected String getLastPath() {
-                return Settings.getDefault().getLastMapPath();
-            }
-
-            @Override
-            protected void setLastPath(String path) {
-                Settings.getDefault().setLastMapPath(path);
-            }
-        };
+        columnSetsPage = new SelectFilePage(columnSetsFormats);
         columnSetsPage.setTitle("Select sets of columns/rows to combine");
         columnSetsPage.setMessage(MessageStatus.INFO, "Leave blank to combine all the columns");
         columnSetsPage.setBlankFileAllowed(true);
         addPage(columnSetsPage);
-
-        // Destination
-        if (saveFilePageEnabled) {
-            saveFilePage = new org.gitools.ui.app.wizard.common.SaveFilePage();
-            saveFilePage.setTitle("Select destination file");
-            saveFilePage.setFolder(Settings.getDefault().getLastWorkPath());
-            saveFilePage.setFormats(new FileFormat[]{CombinationAnalysisFormat.FILE_FORMAT});
-            saveFilePage.setFormatsVisible(false);
-            addPage(saveFilePage);
-        }
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
@@ -142,159 +83,25 @@ public class CombinationAnalysisWizard extends AbstractWizard {
     }
 
     @Override
-    public void pageEntered(IWizardPage page) {
-        if (combinationParamsPage.equals(page)) {
-            if (!dataFromMemory && (dataFile == null || !dataPage.getFile().equals(dataFile))) {
-                JobThread.execute(Application.get(), new JobRunnable() {
-                    @Override
-                    public void run(IProgressMonitor monitor) {
-                        monitor.begin("Reading data header ...", 1);
+    public CombinationAnalysis createAnalysis() {
 
-                        try {
-                            dataFile = dataPage.getFile();
-
-                            IResourceFormat dataFormat = ApplicationContext.getPersistenceManager().getFormat(dataFile.getName(), IMatrix.class);
-                            if (dataFormat instanceof TdmMatrixFormat) {
-                                attributes = TdmMatrixFormat.readHeader(dataFile);
-                            } else if (dataFormat instanceof CmatrixMatrixFormat) {
-                                attributes = CmatrixMatrixFormat.readHeader(dataFile);
-                            } else {
-                                attributes = null;
-                            }
-
-                            combinationParamsPage.setAttributes(attributes);
-                        } catch (Exception ex) {
-                            monitor.exception(ex);
-                        }
-                        monitor.end();
-                    }
-                });
-            }
+        CombinationAnalysis analysis = new CombinationAnalysis();
+        analysis.setData(new ResourceReference<IMatrix>("data", data));
+        analysis.setTitle(analysisDetailsPage.getAnalysisTitle());
+        analysis.setDescription(analysisDetailsPage.getAnalysisDescription());
+        analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
+        analysis.setSizeLayer(combinationParamsPage.getSizeLayerId());
+        analysis.setValueLayer(combinationParamsPage.getPvalueLayerId());
+        analysis.setTransposeData(combinationParamsPage.isTransposeEnabled());
+        File columnSetsFile = columnSetsPage.getFile();
+        String columnsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
+        IResourceFormat columnsFormat = columnSetsFile != null ? columnSetsPage.getFileFormat().getFormat(IModuleMap.class) : null;
+        if (columnsPath != null) {
+            ResourceReference<IModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
+            analysis.setGroupsMap(columnsMap);
         }
+        return analysis;
+
     }
 
-    @Override
-    public void pageLeft(IWizardPage currentPage) {
-        if (currentPage == examplePage) {
-            Settings.getDefault().setShowCombinationExamplePage(examplePage.isShowAgain());
-
-            if (examplePage.isExampleEnabled()) {
-                JobThread.execute(Application.get(), new JobRunnable() {
-                    @Override
-                    public void run(IProgressMonitor monitor) {
-
-                        final File basePath = ExamplesManager.getDefault().resolvePath("combination", monitor);
-
-                        if (basePath == null) {
-                            throw new RuntimeException("Unexpected error: There are no examples available");
-                        }
-
-                        File analysisFile = new File(basePath, EXAMPLE_ANALYSIS_FILE);
-
-                        try {
-                            final CombinationAnalysis a = ApplicationContext.getPersistenceManager().load(analysisFile, CombinationAnalysis.class, monitor);
-
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setAnalysis(a);
-
-                                    dataPage.setFile(new File(basePath, EXAMPLE_DATA_FILE));
-                                    columnSetsPage.setFile(new File(basePath, EXAMPLE_COLUM_SETS_FILE));
-                                    saveFilePage.setFileNameWithoutExtension("example");
-                                }
-                            });
-                        } catch (Exception ex) {
-                            monitor.exception(ex);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    @Override
-    public boolean canFinish() {
-        IWizardPage page = getCurrentPage();
-
-        boolean canFinish = super.canFinish();
-        canFinish |= page == saveFilePage && page.isComplete();
-
-        return canFinish;
-    }
-
-    public boolean isExamplePageEnabled() {
-        return examplePageEnabled;
-    }
-
-    public void setExamplePageEnabled(boolean examplePageEnabled) {
-        this.examplePageEnabled = examplePageEnabled;
-    }
-
-    public boolean isDataFromMemory() {
-        return dataFromMemory;
-    }
-
-    public void setDataFromMemory(boolean dataFromMemory) {
-        this.dataFromMemory = dataFromMemory;
-    }
-
-
-    public void setAttributes(String[] attributes) {
-        this.attributes = attributes;
-    }
-
-    public boolean isSaveFilePageEnabled() {
-        return saveFilePageEnabled;
-    }
-
-    public void setSaveFilePageEnabled(boolean saveFilePageEnabled) {
-        this.saveFilePageEnabled = saveFilePageEnabled;
-    }
-
-
-    public CombinationAnalysis getAnalysis() {
-        CombinationAnalysis a = new CombinationAnalysis();
-
-        a.setTitle(analysisDetailsPage.getAnalysisTitle());
-        a.setDescription(analysisDetailsPage.getAnalysisDescription());
-        a.setProperties(analysisDetailsPage.getAnalysisProperties());
-
-        IMatrixLayer attr = combinationParamsPage.getSizeAttribute();
-        String sizeAttrName = attr != null ? attr.getId() : null;
-        a.setSizeLayer(sizeAttrName);
-
-        attr = combinationParamsPage.getPvalueAttribute();
-        String pvalueAttrName = attr != null ? attr.getId() : null;
-        a.setValueLayer(pvalueAttrName);
-
-        a.setTransposeData(combinationParamsPage.isTransposeEnabled());
-
-        return a;
-    }
-
-    private void setAnalysis(CombinationAnalysis a) {
-        analysisDetailsPage.setAnalysisTitle(a.getTitle());
-        analysisDetailsPage.setAnalysisNotes(a.getDescription());
-        analysisDetailsPage.setAnalysisAttributes(a.getProperties());
-        combinationParamsPage.setPreferredSizeAttr(a.getSizeLayer());
-        combinationParamsPage.setPreferredPvalueAttr(a.getValueLayer());
-        combinationParamsPage.setTransposeEnabled(a.isTransposeData());
-    }
-
-    public DataFilePage getDataFilePage() {
-        return dataPage;
-    }
-
-    public CombinationAnalysisParamsPage getCombinationParamsPage() {
-        return combinationParamsPage;
-    }
-
-    public SelectFilePage getColumnSetsPage() {
-        return columnSetsPage;
-    }
-
-    public SaveFilePage getSaveFilePage() {
-        return saveFilePage;
-    }
 }

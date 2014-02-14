@@ -21,110 +21,36 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.analysis.combination.CombinationCommand;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.api.resource.IResourceFormat;
-import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.analysis.combination.CombinationProcessor;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.combination.wizard.CombinationAnalysisWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
-public class CombinationsAction extends HeatmapAction {
+public class CombinationsAction extends AbstractAnalysisAction<CombinationAnalysis> {
 
     public CombinationsAction() {
-        super("Combinations...");
-        setMnemonic(KeyEvent.VK_M);
+        super("Combinations...", KeyEvent.VK_M);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected AbstractEditor newEditor(CombinationAnalysis analysis) {
+        return new CombinationAnalysisEditor(analysis);
+    }
 
-        IMatrixView matrixView = getHeatmap();
+    @Override
+    protected AnalysisWizard<? extends CombinationAnalysis> newWizard(Heatmap heatmap) {
+        return new CombinationAnalysisWizard(heatmap);
+    }
 
-        final CombinationAnalysisWizard wizard = new CombinationAnalysisWizard();
-        wizard.setExamplePageEnabled(false);
-        wizard.setDataFromMemory(true);
-
-        IMatrixLayers layers = matrixView.getLayers();
-        String[] attributes = new String[layers.size()];
-
-        for (int i = 0; i < layers.size(); i++) {
-            attributes[i] = layers.get(i).getId();
-        }
-
-        wizard.setAttributes(attributes);
-        wizard.setSaveFilePageEnabled(false);
-
-        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
-
-        wizDlg.open();
-
-        if (wizDlg.isCancelled()) {
-            return;
-        }
-
-        final CombinationAnalysis analysis = wizard.getAnalysis();
-        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
-
-        File columnSetsFile = wizard.getColumnSetsPage().getFile();
-        String columnSetsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-        IResourceFormat columnSetsFormat = columnSetsFile != null ? wizard.getColumnSetsPage().getFileFormat().getFormat(IModuleMap.class) : null;
-
-        final CombinationCommand cmd = new CombinationCommand(analysis, null, null, columnSetsFormat, columnSetsPath, null, null);
-        cmd.setStoreAnalysis(false);
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    cmd.run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final CombinationAnalysisEditor editor = new CombinationAnalysisEditor(analysis);
-
-                    String ext = FilenameUtils.getExtension(getSelectedEditor().getName());
-                    String analysisTitle = analysis.getTitle();
-
-                    if (!analysisTitle.equals("")) {
-                        editor.setName(analysis.getTitle() + "." + CombinationAnalysisFormat.EXTENSION);
-                    } else {
-                        editor.setName(getEditorsPanel().deriveName(getSelectedEditor().getName(), ext, "", CombinationAnalysisFormat.EXTENSION));
-                    }
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Done.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
+    @Override
+    protected AnalysisProcessor newProcessor(CombinationAnalysis analysis) {
+        return new CombinationProcessor(analysis);
     }
 }

@@ -90,13 +90,4 @@ public class DataFilePage extends SelectFilePage {
 
     }
 
-    @Override
-    protected String getLastPath() {
-        return Settings.getDefault().getLastDataPath();
-    }
-
-    @Override
-    protected void setLastPath(String path) {
-        Settings.getDefault().setLastDataPath(path);
-    }
 }

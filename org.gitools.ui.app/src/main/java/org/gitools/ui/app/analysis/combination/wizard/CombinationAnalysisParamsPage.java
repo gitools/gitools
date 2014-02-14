@@ -22,123 +22,56 @@
 package org.gitools.ui.app.analysis.combination.wizard;
 
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
+import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
+import java.util.Vector;
 
 public class CombinationAnalysisParamsPage extends AbstractWizardPage {
 
+    private static IMatrixLayer ALL_COLUMNS = new MatrixLayer("null-selection", Void.class, "All columns with the same weight", "");
 
-    private String[] attrs;
+    public CombinationAnalysisParamsPage(IMatrixViewLayers<?> layers) {
 
-    private static class AttrOption {
-        private String name;
-        private IMatrixLayer attr;
-
-        public AttrOption(String name) {
-            this.name = name;
-        }
-
-        public AttrOption(IMatrixLayer attr) {
-            this.attr = attr;
-        }
-
-        public IMatrixLayer getAttr() {
-            return attr;
-        }
-
-        @Override
-        public String toString() {
-            return attr != null ? attr.getName() : name;
-        }
-    }
-
-    private String preferredSizeAttr;
-    private String preferredPvalueAttr;
-
-    public CombinationAnalysisParamsPage() {
         initComponents();
-
-        dissableAttrCb();
 
         setTitle("Configure combination options");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
-
         setComplete(true);
-    }
 
-    private void dissableAttrCb() {
-        sizeAttrCb.setModel(new DefaultComboBoxModel());
-        sizeAttrLabel.setEnabled(false);
-        sizeAttrCb.setEnabled(false);
-        pvalueAttrCb.setModel(new DefaultComboBoxModel());
-        pvalueAttrLabel.setEnabled(false);
-        pvalueAttrCb.setEnabled(false);
-    }
+        Vector<IMatrixLayer> pvalueLayers = new Vector<>();
+        Vector<IMatrixLayer> sizeLayers = new Vector<>();
 
-    public void setAttributes(String[] attrs) {
-        this.attrs = attrs;
-
-        if (attrs != null) {
-            AttrOption[] sizeAttrs = new AttrOption[attrs.length + 1];
-            sizeAttrs[0] = new AttrOption("All columns with the same weight");
-            for (int i = 0; i < attrs.length; i++)
-                sizeAttrs[i + 1] = new AttrOption(attrs[(i)]);
-            sizeAttrCb.setModel(new DefaultComboBoxModel(sizeAttrs));
-
-            AttrOption[] pvalueAttrs = new AttrOption[attrs.length];
-            for (int i = 0; i < attrs.length; i++)
-                pvalueAttrs[i] = new AttrOption(attrs[i]);
-            pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
-
-            int sizeIndex = -1;
-            int pvalueIndex = -1;
-            int i = 0;
-            for (String aid : attrs) {
-                if (sizeIndex == -1 && (aid.equals(preferredSizeAttr) || aid.matches("^(n|N)$"))) {
-                    sizeIndex = i;
-                }
-
-                if (pvalueIndex == -1 && (aid.equals(preferredPvalueAttr) || aid.matches("^(right-|.*)p-value$"))) {
-                    pvalueIndex = i;
-                }
-
-                i++;
-            }
-
-            sizeIndex = sizeIndex == -1 ? 0 : sizeIndex + 1;
-            pvalueIndex = pvalueIndex == -1 ? 0 : pvalueIndex + 1;
-            sizeAttrCb.setSelectedIndex(sizeIndex);
-            pvalueAttrCb.setSelectedIndex(pvalueIndex);
-            sizeAttrLabel.setEnabled(true);
-            sizeAttrCb.setEnabled(true);
-            pvalueAttrLabel.setEnabled(true);
-            pvalueAttrCb.setEnabled(true);
-        } else {
-            dissableAttrCb();
+        sizeLayers.add(ALL_COLUMNS);
+        for (IMatrixLayer layer : layers) {
+            //TODO Add only valid layers. Ex: skip 'string' layers
+            sizeLayers.add(layer);
+            pvalueLayers.add(layer);
         }
+
+        sizeAttrCb.setModel(new DefaultComboBoxModel(sizeLayers));
+        pvalueAttrCb.setModel(new DefaultComboBoxModel(pvalueLayers));
+        pvalueAttrCb.setSelectedItem(layers.getTopLayer());
+
+/*        sizeAttrLabel.setEnabled(true);
+        sizeAttrCb.setEnabled(true);
+        pvalueAttrLabel.setEnabled(true);
+        pvalueAttrCb.setEnabled(true); */
+
     }
 
-    public void setPreferredSizeAttr(String preferredSizeAttr) {
-        this.preferredSizeAttr = preferredSizeAttr;
+    public String getSizeLayerId() {
+        IMatrixLayer sizeLayer = (IMatrixLayer) sizeAttrCb.getSelectedItem();
+        return (sizeLayer == ALL_COLUMNS ? null : sizeLayer.getId());
     }
 
-    public void setPreferredPvalueAttr(String preferredPvalueAttr) {
-        this.preferredPvalueAttr = preferredPvalueAttr;
-    }
-
-
-    public IMatrixLayer getSizeAttribute() {
-        AttrOption option = (AttrOption) sizeAttrCb.getSelectedItem();
-        return option != null ? option.getAttr() : null;
-    }
-
-
-    public IMatrixLayer getPvalueAttribute() {
-        AttrOption option = (AttrOption) pvalueAttrCb.getSelectedItem();
-        return option != null ? option.getAttr() : null;
+    public String getPvalueLayerId() {
+        return ((IMatrixLayer) pvalueAttrCb.getSelectedItem()).getId();
     }
 
     public boolean isTransposeEnabled() {
@@ -168,7 +101,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         pvalueAttrLabel = new javax.swing.JLabel();
         pvalueAttrCb = new javax.swing.JComboBox();
 
-        sizeAttrLabel.setText("Size attribute");
+        sizeAttrLabel.setText("Size layer");
 
         jLabel2.setText("Apply to:");
 
@@ -179,7 +112,7 @@ public class CombinationAnalysisParamsPage extends AbstractWizardPage {
         applyButtonGroup.add(applyToRowsRb);
         applyToRowsRb.setText("Rows");
 
-        pvalueAttrLabel.setText("P-value attribute");
+        pvalueAttrLabel.setText("P-value layer");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

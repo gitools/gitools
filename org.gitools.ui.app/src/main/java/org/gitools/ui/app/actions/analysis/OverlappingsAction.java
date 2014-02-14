@@ -21,108 +21,36 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
-import static com.google.common.base.Predicates.in;
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingProcessor;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.app.analysis.overlapping.wizard.OverlappingAnalysisWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class OverlappingsAction extends HeatmapAction {
+public class OverlappingsAction extends AbstractAnalysisAction<OverlappingAnalysis> {
 
     public OverlappingsAction() {
-        super("Overlapping...");
-        setMnemonic(KeyEvent.VK_V);
+        super("Overlapping...", KeyEvent.VK_V);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = getHeatmap();
+    protected AbstractEditor newEditor(OverlappingAnalysis analysis) {
+        return new OverlappingAnalysisEditor(analysis);
+    }
 
-        final OverlappingAnalysisWizard wiz = new OverlappingAnalysisWizard();
-        wiz.setExamplePageEnabled(false);
-        wiz.setDataFromMemory(true);
-        wiz.setAttributes(matrixView.getLayers());
-        wiz.setSaveFilePageEnabled(false);
+    @Override
+    protected AnalysisWizard<? extends OverlappingAnalysis> newWizard(Heatmap heatmap) {
+        return new OverlappingAnalysisWizard(heatmap);
+    }
 
-        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-
-        dlg.open();
-
-        if (dlg.isCancelled()) {
-            return;
-        }
-
-        final OverlappingAnalysis analysis = wiz.getAnalysis();
-
-        if (!analysis.isTransposeData()) {
-            if (matrixView.getColumns().getSelected().size() > 0) {
-                Heatmap mv = new Heatmap(matrixView);
-                mv.getColumns().show(in(mv.getColumns().getSelected()));
-                matrixView = mv;
-            }
-        } else {
-            if (matrixView.getRows().getSelected().size() > 0) {
-                Heatmap mv = new Heatmap(matrixView);
-                mv.getRows().show(in(mv.getRows().getSelected()));
-                matrixView = mv;
-            }
-        }
-
-        analysis.setSourceData(new ResourceReference<IMatrix>("source-data", matrixView));
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    new OverlappingProcessor(analysis).run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final OverlappingAnalysisEditor editor = new OverlappingAnalysisEditor(analysis);
-
-                    String ext = FilenameUtils.getExtension(getSelectedEditor().getName());
-
-                    String analysisTitle = analysis.getTitle();
-
-                    if (!analysisTitle.equals("")) {
-                        editor.setName(analysis.getTitle() + "." + OverlappingAnalysisFormat.EXTENSION);
-                    } else {
-                        editor.setName(getEditorsPanel().deriveName(getSelectedEditor().getName(), ext, "", OverlappingAnalysisFormat.EXTENSION));
-                    }
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Done.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
+    @Override
+    protected AnalysisProcessor newProcessor(OverlappingAnalysis analysis) {
+        return new OverlappingProcessor(analysis);
     }
 }

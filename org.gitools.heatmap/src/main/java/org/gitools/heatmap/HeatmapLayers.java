@@ -168,6 +168,11 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     @Override
     public HeatmapLayer get(String layer) {
+
+        if (layer == null) {
+            return null;
+        }
+
         return layers.get(indexOf(layer));
     }
 

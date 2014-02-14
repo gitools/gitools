@@ -187,4 +187,8 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+    public String toString() {
+        return (name != null ? name : id);
+    }
 }

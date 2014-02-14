@@ -38,7 +38,9 @@ public final class ToolBarActionSet extends ActionSet {
                 BaseAction.separator,
                 Actions.openGenomeSpace,
                 Actions.openIntegrativeGenomicViewerAction,
-                Actions.snapshotAction}
+                Actions.snapshotAction,
+                Actions.searchRowsAction
+        }
         );
     }
 

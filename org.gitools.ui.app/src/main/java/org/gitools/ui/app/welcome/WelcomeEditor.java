@@ -21,25 +21,19 @@
  */
 package org.gitools.ui.app.welcome;
 
-import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.app.actions.file.*;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.app.examples.ExamplesManager;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.HtmlEditor;
-import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class WelcomeEditor extends HtmlEditor {
@@ -58,48 +52,6 @@ public class WelcomeEditor extends HtmlEditor {
     @Override
     protected void performAction(String name, Map<String, String> params) {
         switch (name) {
-            case "download":
-                switch (params.get("source")) {
-                    case "intogen": {
-                        IntogenTypeDialog dlg = new IntogenTypeDialog(Application.get());
-                        dlg.setVisible(true);
-                        if (!dlg.isCancelled()) {
-                            switch (dlg.getSelection()) {
-                                case IntogenTypeDialog.MATRIX:
-                                    new ImportIntogenMatrixAction().actionPerformed(new ActionEvent(this, 0, name));
-                                    break;
-
-                                case IntogenTypeDialog.ONCOMODULES:
-                                    new ImportIntogenOncomodulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                                    break;
-                            }
-                        }
-                        break;
-                    }
-                    case "go":
-                        new ImportGoModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-                    case "biomart": {
-                        BiomartTypeDialog dlg = new BiomartTypeDialog(Application.get());
-                        dlg.setVisible(true);
-                        if (!dlg.isCancelled()) {
-                            switch (dlg.getSelection()) {
-                                case BiomartTypeDialog.TABLE:
-                                    new ImportBiomartTableAction().actionPerformed(new ActionEvent(this, 0, name));
-                                    break;
-
-                                case BiomartTypeDialog.MODULES:
-                                    new ImportBiomartModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                                    break;
-                            }
-                        }
-                        break;
-                    }
-                    case "kegg":
-                        new ImportKeggModulesAction().actionPerformed(new ActionEvent(this, 0, name));
-                        break;
-                }
-                break;
             case "open": {
                 switch (params.get("ref")) {
                     case "filesystem":
@@ -127,25 +79,11 @@ public class WelcomeEditor extends HtmlEditor {
     public void doVisible() {
     }
 
-    private void downloadExamples(final String path) {
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    File pathFile = new File(path);
-                    URL url = new URL("http://webstart.gitools.org/examples.zip");
-                    ExamplesManager.downloadAndExtract(pathFile, monitor, url);
-                } catch (Exception ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
-    }
-
     private static URL getWelcomeURL() {
         try {
             URL url = new URL("http://www.gitools.org/welcome");
             URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(4000);
 
             if(connection.getContentLength() != -1){
                 return url;

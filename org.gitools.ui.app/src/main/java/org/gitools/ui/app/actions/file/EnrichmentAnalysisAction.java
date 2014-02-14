@@ -36,10 +36,8 @@ import java.awt.event.KeyEvent;
 public class EnrichmentAnalysisAction extends AbstractAnalysisAction<EnrichmentAnalysis> {
 
     public EnrichmentAnalysisAction() {
-        super("Enrichment...");
-
+        super("Enrichment...", KeyEvent.VK_E);
         setDesc("Run an enrichment analysis");
-        setMnemonic(KeyEvent.VK_E);
         setSmallIconFromResource(IconNames.empty16);
     }
 

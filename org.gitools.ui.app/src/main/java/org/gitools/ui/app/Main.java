@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app;
 
-import com.alee.managers.language.LanguageManager;
+import com.alee.laf.WebLookAndFeel;
 import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
@@ -30,7 +30,6 @@ import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.LaFManager;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.os.SystemInfo;
 import org.gitools.ui.app.settings.Settings;
@@ -61,7 +60,8 @@ public class Main {
         }
 
         // Initialize look and feel
-        LaFManager.install();
+        WebLookAndFeel.install();
+        WebLookAndFeel.initializeManagers();
 
         // Force silence lobobrowser loggers
         try {

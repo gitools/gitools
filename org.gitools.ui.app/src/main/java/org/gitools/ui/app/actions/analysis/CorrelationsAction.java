@@ -21,108 +21,36 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
-import static com.google.common.base.Predicates.in;
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class CorrelationsAction extends HeatmapAction {
+public class CorrelationsAction extends AbstractAnalysisAction<CorrelationAnalysis> {
 
     public CorrelationsAction() {
-        super("Correlations...");
-
-        setMnemonic(KeyEvent.VK_C);
+        super("Correlations...", KeyEvent.VK_C);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected AbstractEditor newEditor(CorrelationAnalysis analysis) {
+        return new CorrelationAnalysisEditor(analysis);
+    }
 
-        IMatrixView matrixView = getHeatmap();
-        IMatrixLayers attributes = matrixView.getLayers();
-        String[] attributeNames = new String[attributes.size()];
-        for (int i = 0; i < attributes.size(); i++)
-            attributeNames[i] = attributes.get(i).getName();
+    @Override
+    protected AnalysisWizard<? extends CorrelationAnalysis> newWizard(Heatmap heatmap) {
+        return new CorrelationAnalysisWizard(heatmap);
+    }
 
-        CorrelationAnalysisWizard wiz = new CorrelationAnalysisWizard(attributeNames);
-        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-        dlg.setVisible(true);
-
-        if (dlg.isCancelled()) {
-            return;
-        }
-
-        final CorrelationAnalysis analysis = wiz.getAnalysis();
-
-        if (!analysis.isTransposeData()) {
-            if (matrixView.getColumns().getSelected().size() > 0) {
-                Heatmap mv = new Heatmap(matrixView);
-                mv.getColumns().show(in(mv.getColumns().getSelected()));
-                matrixView = mv;
-            }
-        } else {
-            if (matrixView.getRows().getSelected().size() > 0) {
-                Heatmap mv = new Heatmap(matrixView);
-                mv.getRows().show(in(mv.getRows().getSelected()));
-                matrixView = mv;
-            }
-        }
-
-        analysis.setData(new ResourceReference<IMatrix>("data", matrixView));
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    new CorrelationProcessor(analysis).run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final CorrelationAnalysisEditor editor = new CorrelationAnalysisEditor(analysis);
-
-                    String ext = FilenameUtils.getExtension(getSelectedEditor().getName());
-                    String analysisTitle = analysis.getTitle();
-
-                    if (!analysisTitle.equals("")) {
-                        editor.setName(analysis.getTitle() + "." + CorrelationAnalysisFormat.EXTENSION);
-                    } else {
-                        editor.setName(getEditorsPanel().deriveName(getSelectedEditor().getName(), ext, "", CorrelationAnalysisFormat.EXTENSION));
-                    }
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Done.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
+    @Override
+    protected AnalysisProcessor newProcessor(CorrelationAnalysis analysis) {
+        return new CorrelationProcessor(analysis);
     }
 }

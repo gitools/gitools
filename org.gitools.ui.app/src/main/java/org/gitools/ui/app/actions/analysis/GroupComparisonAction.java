@@ -21,89 +21,36 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
-import org.apache.commons.io.FilenameUtils;
+import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.analysis.editor.AnalysisEditor;
+import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
-import org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonAnalysisFromEditorWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonAnalysisWizard;
+import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class GroupComparisonAction extends HeatmapAction {
+public class GroupComparisonAction extends AbstractAnalysisAction<GroupComparisonAnalysis> {
 
     public GroupComparisonAction() {
-        super("Group comparison...");
-        setMnemonic(KeyEvent.VK_G);
+        super("Group comparison...", KeyEvent.VK_G);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
-        final IEditor currentEditor = editorPanel.getSelectedEditor();
+    protected AbstractEditor newEditor(GroupComparisonAnalysis analysis) {
+        return new GroupComparisonAnalysisEditor(analysis);
+    }
 
-        GroupComparisonAnalysisFromEditorWizard wiz = new GroupComparisonAnalysisFromEditorWizard(getHeatmap());
-        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-        dlg.setVisible(true);
+    @Override
+    protected AnalysisWizard<? extends GroupComparisonAnalysis> newWizard(Heatmap heatmap) {
+        return new GroupComparisonAnalysisWizard(heatmap);
+    }
 
-        if (dlg.isCancelled()) {
-            return;
-        }
-
-        final GroupComparisonAnalysis analysis = wiz.getAnalysis();
-
-        JobThread.execute(Application.get(), new JobRunnable() {
-            @Override
-            public void run(IProgressMonitor monitor) {
-                try {
-                    new GroupComparisonProcessor(analysis).run(monitor);
-
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
-
-                    final AnalysisEditor editor = new GroupComparisonAnalysisEditor(analysis);
-                    //TODO: adapt to group comparison analysis
-
-                    String ext = FilenameUtils.getExtension(currentEditor.getName());
-                    String analysisTitle = analysis.getTitle();
-
-                    if (!analysisTitle.equals("")) {
-                        editor.setName(analysis.getTitle() + "." + GroupComparisonAnalysisFormat.EXTENSION);
-                    } else {
-                        editor.setName(editorPanel.deriveName(currentEditor.getName(), ext, "", GroupComparisonAnalysisFormat.EXTENSION));
-                    }
-
-
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
-                        }
-                    });
-
-                    monitor.end();
-
-                    Application.get().setStatusText("Done.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
-            }
-        });
-
+    @Override
+    protected AnalysisProcessor newProcessor(GroupComparisonAnalysis analysis) {
+        return new GroupComparisonProcessor(analysis);
     }
 }

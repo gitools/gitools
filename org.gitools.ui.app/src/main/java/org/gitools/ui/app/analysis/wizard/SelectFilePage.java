@@ -23,6 +23,7 @@ package org.gitools.ui.app.analysis.wizard;
 
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -38,16 +39,11 @@ import java.io.File;
 
 public class SelectFilePage extends AbstractWizardPage {
 
-    private static final long serialVersionUID = 3840797252370672587L;
-
     private static final FileFormat anyFileFormat = new FileFormat("Any file format", "", false, false);
-
     private static final FileFormat[] defaultFormats = new FileFormat[]{anyFileFormat};
-
 
     private final FileFormat[] formats;
     private boolean blankFileAllowed;
-    private String lastPath;
 
     public SelectFilePage(FileFormat[] formats) {
         setTitle("Select file");
@@ -85,7 +81,7 @@ public class SelectFilePage extends AbstractWizardPage {
 
         setMessage(MessageStatus.INFO, "");
 
-        boolean complete = true;
+        boolean complete;
 
         String path = filePath.getText().trim().toLowerCase();
         if (!path.isEmpty()) {
@@ -120,14 +116,11 @@ public class SelectFilePage extends AbstractWizardPage {
     }
 
     protected String getLastPath() {
-        if (lastPath == null) {
-            lastPath = new File(".").getAbsolutePath();
-        }
-        return lastPath;
+        return Settings.getDefault().getLastDataPath();
     }
 
     protected void setLastPath(String path) {
-        this.lastPath = path;
+        Settings.getDefault().setLastDataPath(path);
     }
 
     /**
