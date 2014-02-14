@@ -72,7 +72,8 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
                     } else if (theList.equals(columnsHeaderLists)) {
                         updateIdPreview(columnsHeaderLists);
                     } else {
-                        updateColumnPreview((FlatTextHeader) theList.getSelectedValue());
+                        int i = theList.getLeadSelectionIndex();
+                        updateColumnPreview((FlatTextHeader) theList.getModel().getElementAt(i));
                     }
                 }
             }
@@ -231,7 +232,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
             FlatTextHeader h = (FlatTextHeader) value;
-            String newValue = h.getLabel() + " (column " + h.getPos() + ")";
+            String newValue = h.getLabel() + " (column " + h.getPos() + 1 + ")";
 
             Component c = super.getListCellRendererComponent(list, newValue, index, isSelected, cellHasFocus);
             if (bold) {

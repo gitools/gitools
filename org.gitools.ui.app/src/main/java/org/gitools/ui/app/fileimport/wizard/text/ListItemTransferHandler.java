@@ -78,6 +78,7 @@ class ListItemTransferHandler extends TransferHandler {
 
         try {
             Object[] values = (Object[]) info.getTransferable().getTransferData(localObjectFlavor);
+            target.setSelectedIndices(new int[0]);
             for (int i = 0; i < values.length; i++) {
                 int idx = index++;
                 listModel.add(idx, values[i]);
