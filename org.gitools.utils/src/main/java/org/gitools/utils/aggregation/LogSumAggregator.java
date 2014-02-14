@@ -21,8 +21,9 @@
  */
 package org.gitools.utils.aggregation;
 
-import static org.apache.commons.math3.stat.StatUtils.sumLog;
 import org.gitools.api.analysis.IAggregator;
+
+import static org.apache.commons.math3.stat.StatUtils.sumLog;
 
 public class LogSumAggregator extends AbstractAggregator {
 

@@ -33,12 +33,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LinearTwoSidedColorScale extends NumericColorScale {
-
 
     private ColorScalePoint min;
     private ColorScalePoint mid;
@@ -98,11 +94,6 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
     public ColorScalePoint getMid() {
         return mid;
-    }
-
-    public void setMid(ColorScalePoint mid) {
-        this.mid = mid;
-        updateRangesList();
     }
 
     public ColorScalePoint getMax() {

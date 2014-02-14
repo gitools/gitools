@@ -23,12 +23,7 @@ package org.gitools.matrix.sort.mutualexclusion;
 
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.SortDirection;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.IMatrixPredicate;
+import org.gitools.api.matrix.*;
 import org.gitools.utils.aggregation.SumAbsAggregator;
 
 import java.util.Comparator;

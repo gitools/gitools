@@ -26,9 +26,9 @@ import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.platform.settings.ISettingsSection;
-import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -62,11 +62,11 @@ public class FormatSection implements ISettingsSection {
 
         detailsFormatComboBox.setModel(
                 new ComboBoxAdapter<>(
-                    new SelectionInList<>(
-                            FORMATTERS,
-                            new PropertyAdapter<>(layer, HeatmapLayer.PROPERTY_LONG_FORMATTER)
-                    )
-        ));
+                        new SelectionInList<>(
+                                FORMATTERS,
+                                new PropertyAdapter<>(layer, HeatmapLayer.PROPERTY_LONG_FORMATTER)
+                        )
+                ));
 
     }
 

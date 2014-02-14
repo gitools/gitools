@@ -22,20 +22,15 @@
 package org.gitools.ui.app.dialog.attributes;
 
 import org.gitools.ui.app.dialog.ListDialog;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.FileChooserUtils;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

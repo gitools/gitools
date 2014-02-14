@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
@@ -41,6 +40,8 @@ import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 
 public class AddHeaderAction extends HeatmapDimensionAction {
 

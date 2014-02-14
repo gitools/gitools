@@ -21,16 +21,12 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.actions.BaseAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-
-/**
- * @noinspection ALL
- */
 public class ExitAction extends BaseAction {
 
     private static final long serialVersionUID = -2861462318817904958L;

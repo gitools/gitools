@@ -22,11 +22,10 @@
 package org.gitools.matrix.model.hashmatrix;
 
 import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.matrix.model.AbstractMatrix;
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.matrix.model.AbstractMatrix;
+import org.gitools.matrix.model.MatrixLayers;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

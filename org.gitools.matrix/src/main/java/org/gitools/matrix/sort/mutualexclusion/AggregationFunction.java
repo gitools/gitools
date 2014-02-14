@@ -22,11 +22,11 @@
 package org.gitools.matrix.sort.mutualexclusion;
 
 import com.google.common.collect.Sets;
-import org.gitools.matrix.model.AbstractMatrixFunction;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.matrix.model.AbstractMatrixFunction;
 
 import java.util.Set;
 

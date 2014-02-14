@@ -25,6 +25,7 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveProcessor;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.app.actions.analysis.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.OncodriveAnalysisWizard;

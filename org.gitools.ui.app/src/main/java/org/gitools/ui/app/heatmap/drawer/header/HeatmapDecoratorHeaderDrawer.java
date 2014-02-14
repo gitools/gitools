@@ -23,8 +23,8 @@ package org.gitools.ui.app.heatmap.drawer.header;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.decorator.Decoration;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 

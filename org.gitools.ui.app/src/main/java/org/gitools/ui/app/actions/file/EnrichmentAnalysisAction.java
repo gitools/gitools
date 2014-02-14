@@ -26,6 +26,7 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.analysis.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.EnrichmentAnalysisWizard;

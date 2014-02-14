@@ -21,13 +21,12 @@
  */
 package org.gitools.matrix.model.iterable;
 
-import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPositionMapping;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
 
 public class NoMapping implements IMatrixPositionMapping {
-
 
     @Override
     public void map(IMatrixPosition from, IMatrixPosition to) {

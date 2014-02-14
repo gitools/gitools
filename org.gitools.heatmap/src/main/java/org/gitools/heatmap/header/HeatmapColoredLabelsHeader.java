@@ -23,9 +23,9 @@ package org.gitools.heatmap.header;
 
 import com.google.common.base.Function;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.matrix.filter.PatternFunction;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

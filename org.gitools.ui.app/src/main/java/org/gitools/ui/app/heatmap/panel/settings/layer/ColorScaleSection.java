@@ -29,8 +29,8 @@ import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanels;
-import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.app.settings.decorators.SaveDecoratorDialog;
+import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,7 +105,6 @@ public class ColorScaleSection implements ISettingsSection {
     private void createUIComponents() {
         this.decoratorPanels = new DecoratorPanelContainer();
     }
-
 
 
 }

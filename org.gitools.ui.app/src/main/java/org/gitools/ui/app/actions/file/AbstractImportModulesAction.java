@@ -22,14 +22,14 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.api.ApplicationContext;
-import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.matrix.MatrixUtils;
 import org.gitools.datasources.kegg.modules.EnsemblKeggModulesImporter;
+import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.format.GmtMatrixFormat;
 import org.gitools.matrix.format.GmxMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;

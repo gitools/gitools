@@ -26,12 +26,12 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.sort.MutualExclusionSortPage;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.sort.MutualExclusionSortPage;
 
 import java.awt.event.ActionEvent;
 

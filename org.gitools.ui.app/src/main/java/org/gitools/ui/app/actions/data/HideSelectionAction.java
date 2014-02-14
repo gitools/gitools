@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.data;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.IconNames;
@@ -33,6 +32,8 @@ import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class HideSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 

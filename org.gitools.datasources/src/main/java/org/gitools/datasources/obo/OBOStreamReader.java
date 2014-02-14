@@ -30,9 +30,6 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @noinspection ALL
- */
 public class OBOStreamReader implements OBOEventTypes {
 
     private static final Pattern STANZA_NAME_PATTERN = Pattern.compile("^\\[(.*)\\][ \\t]*(?:!(.*))?$");
@@ -62,9 +59,9 @@ public class OBOStreamReader implements OBOEventTypes {
 
     private OBOStreamReader(OBOStream stream) {
         this.stream = stream;
-        streamStack = new Stack<OBOStream>();
+        streamStack = new Stack<>();
 
-        tokens = new LinkedList<OBOEvent>();
+        tokens = new LinkedList<>();
         tokens.offer(new OBOEvent(DOCUMENT_START, 0));
 
         headerStarted = false;
@@ -105,7 +102,6 @@ public class OBOStreamReader implements OBOEventTypes {
                 }
 
                 String stzName = stanzaMatcher.group(1);
-                //String stzName = line.substring(1, line.length() - 1);
                 tokens.offer(new OBOEvent(STANZA_START, pos, stzName));
                 stanzaName = stzName;
             } else if (commentMatcher.matches()) {

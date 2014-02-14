@@ -21,8 +21,8 @@
  */
 package org.gitools.matrix.model.compressmatrix;
 
-import org.gitools.matrix.model.AbstractMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.matrix.model.AbstractMatrixDimension;
 
 import java.util.HashMap;
 import java.util.Map;

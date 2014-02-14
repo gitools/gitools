@@ -22,11 +22,11 @@
 package org.gitools.ui.app.analysis.htest.editor;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 
 public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<EnrichmentAnalysis> {
 

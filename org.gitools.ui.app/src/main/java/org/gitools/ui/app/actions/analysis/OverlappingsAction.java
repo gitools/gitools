@@ -25,7 +25,6 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.analysis.overlapping.OverlappingProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.app.analysis.overlapping.wizard.OverlappingAnalysisWizard;

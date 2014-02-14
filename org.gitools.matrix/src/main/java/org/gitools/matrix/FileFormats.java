@@ -21,16 +21,10 @@
  */
 package org.gitools.matrix;
 
-import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.matrix.format.BdmMatrixFormat;
-import org.gitools.matrix.format.CmatrixMatrixFormat;
-import org.gitools.matrix.format.GmtMatrixFormat;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.matrix.format.*;
 import org.gitools.matrix.modulemap.format.IxmModuleMapFormat;
 import org.gitools.matrix.modulemap.format.TcmModuleMapFormat;
-import org.gitools.matrix.format.CdmMatrixFormat;
-import org.gitools.matrix.format.GctMatrixFormat;
-import org.gitools.matrix.format.GmxMatrixFormat;
-import org.gitools.api.persistence.FileFormat;
 
 @Deprecated
 public class FileFormats {

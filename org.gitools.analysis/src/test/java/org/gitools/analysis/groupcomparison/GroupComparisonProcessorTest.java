@@ -23,7 +23,6 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AssertMatrix;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.api.matrix.IMatrix;
 import org.junit.Test;
 

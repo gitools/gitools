@@ -21,22 +21,15 @@
  */
 package org.gitools.ui.app.datasources.biomart.wizard;
 
-import org.gitools.datasources.biomart.BiomartService;
-import org.gitools.datasources.biomart.restful.model.Attribute;
-import org.gitools.datasources.biomart.restful.model.AttributeDescription;
-import org.gitools.datasources.biomart.restful.model.Dataset;
-import org.gitools.datasources.biomart.restful.model.DatasetConfig;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.Filter;
-import org.gitools.datasources.biomart.restful.model.MartLocation;
-import org.gitools.datasources.biomart.restful.model.Query;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.datasources.biomart.BiomartService;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.wizard.common.SaveFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 
 import java.io.File;
 import java.util.List;

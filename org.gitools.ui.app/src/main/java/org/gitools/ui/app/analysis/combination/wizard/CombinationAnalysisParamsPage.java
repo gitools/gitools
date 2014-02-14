@@ -22,7 +22,6 @@
 package org.gitools.ui.app.analysis.combination.wizard;
 
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.ui.app.IconNames;

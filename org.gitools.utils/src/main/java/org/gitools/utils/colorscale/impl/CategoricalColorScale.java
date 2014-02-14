@@ -23,10 +23,10 @@ package org.gitools.utils.colorscale.impl;
 
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
+import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.util.ColorConstants;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,9 +34,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CategoricalColorScale extends NumericColorScale {
 
@@ -47,13 +44,7 @@ public class CategoricalColorScale extends NumericColorScale {
         this(new double[]{1.0, 2.0});
     }
 
-    public CategoricalColorScale(ColorScalePoint[] points) {
-        super();
-        this.points = points;
-    }
-
     public CategoricalColorScale(double pointValues[]) {
-
         setValues(pointValues);
     }
 
@@ -157,14 +148,6 @@ public class CategoricalColorScale extends NumericColorScale {
         return points[points.length - 1].getValue();
     }
 
-    public boolean isCagetoricalSpans() {
-        return cagetoricalSpans;
-    }
-
-    public void setCagetoricalSpans(boolean cagetoricalSpans) {
-        this.cagetoricalSpans = cagetoricalSpans;
-    }
-
     public ColorScalePoint[] getPointObjects() {
         return this.points;
     }
@@ -199,7 +182,6 @@ public class CategoricalColorScale extends NumericColorScale {
             }
         }
     }
-
 
     @Override
     public IAggregator defaultAggregator() {

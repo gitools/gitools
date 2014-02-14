@@ -25,7 +25,7 @@ import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.component.EditorTabComponent;
-import org.gitools.ui.platform.idea.Gray;
+import org.gitools.ui.platform.component.scrollbar.Gray;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -47,12 +47,6 @@ public class EditorsPanel extends WebTabbedPane {
 
         setTabbedPaneStyle(TabbedPaneStyle.attached);
 
-        /*
-        setSelectedBottomBg(Color.WHITE);
-        setBottomBg(Color.WHITE);
-        setTopBg(Color.WHITE);
-        setSelectedTopBg(Color.WHITE);
-        */
         setBackground(Gray._248);
 
         createComponents();

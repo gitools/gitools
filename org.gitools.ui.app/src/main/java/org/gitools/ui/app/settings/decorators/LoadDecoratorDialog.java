@@ -22,19 +22,16 @@
 package org.gitools.ui.app.settings.decorators;
 
 import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.app.utils.DocumentChangeListener;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 public class LoadDecoratorDialog<T> extends javax.swing.JDialog {

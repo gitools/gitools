@@ -21,12 +21,13 @@
  */
 package org.gitools.utils.aggregation;
 
+import org.gitools.api.analysis.IAggregator;
+
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.isEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.primitives.Doubles.toArray;
-import org.gitools.api.analysis.IAggregator;
 
 abstract class AbstractAggregator implements IAggregator {
 
@@ -48,13 +49,10 @@ abstract class AbstractAggregator implements IAggregator {
         return aggregateNoNulls(toArray(newArrayList(noNullValues)));
     }
 
-    /**
-     * Aggregate no null values.
-     *
-     * @param values All the values to aggregate without nulls and at least one value.
-     * @return the aggregated result
-     */
-    protected abstract Double aggregateNoNulls(double[] values);
+    @Deprecated
+    protected Double aggregateNoNulls(double[] values) {
+        return null;
+    }
 
     public String toString() {
         return name;

@@ -22,13 +22,7 @@
 package org.gitools.ui.app.actions.data;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.matrix.view.Direction;
-import static org.gitools.api.matrix.view.Direction.DOWN;
-import static org.gitools.api.matrix.view.Direction.LEFT;
-import static org.gitools.api.matrix.view.Direction.RIGHT;
-import static org.gitools.api.matrix.view.Direction.UP;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.DimensionIcons;
 import org.gitools.ui.app.IconNames;
@@ -36,6 +30,10 @@ import org.gitools.ui.app.actions.HeatmapDimensionAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import static org.gitools.api.matrix.view.Direction.*;
 
 public class MoveSelectionAction extends HeatmapDimensionAction {
 

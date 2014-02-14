@@ -26,14 +26,16 @@ import org.gitools.api.matrix.IMatrixFunction;
 public class MTCFactory {
 
     public static String[] getMethods() {
-        return new String[] { "bonferroni", "bh"};
+        return new String[]{"bonferroni", "bh"};
     }
 
     public static IMatrixFunction<Double, Double> createFunction(String mtc) {
 
         switch (mtc) {
-            case "bonferroni": return new BonferroniMtcFunction();
-            case "bh": return new BenjaminiHochbergFdrMtcFunction();
+            case "bonferroni":
+                return new BonferroniMtcFunction();
+            case "bh":
+                return new BenjaminiHochbergFdrMtcFunction();
         }
 
         throw new UnsupportedOperationException("Unknown MTC function '" + mtc + "'");

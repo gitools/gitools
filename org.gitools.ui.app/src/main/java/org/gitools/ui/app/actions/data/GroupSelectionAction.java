@@ -21,11 +21,6 @@
  */
 package org.gitools.ui.app.actions.data;
 
-import static com.google.common.base.Predicates.in;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Lists.newArrayList;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.HeatmapDimension;
@@ -36,6 +31,12 @@ import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class GroupSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 

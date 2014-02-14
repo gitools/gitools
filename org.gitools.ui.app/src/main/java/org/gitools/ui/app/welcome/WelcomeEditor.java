@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.app.welcome;
 
-import org.gitools.ui.app.actions.file.*;
+import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
+import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.platform.Application;
@@ -85,7 +86,7 @@ public class WelcomeEditor extends HtmlEditor {
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(4000);
 
-            if(connection.getContentLength() != -1){
+            if (connection.getContentLength() != -1) {
                 return url;
             }
 

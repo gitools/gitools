@@ -76,13 +76,13 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
                 formatSection,
                 sortSection,
                 detailsSection
-                );
+        );
 
         SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName()) {
 
             @Override
             protected void apply() {
-                 getHeatmap().getLayers().updateLayers();
+                getHeatmap().getLayers().updateLayers();
             }
         };
 

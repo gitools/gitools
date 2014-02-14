@@ -23,7 +23,7 @@ package org.gitools.matrix.filter;
 
 import com.google.common.base.Function;
 import org.gitools.api.matrix.IAnnotations;
-import org.gitools.utils.textpatt.TextPattern;
+import org.gitools.utils.textpattern.TextPattern;
 
 public class PatternFunction implements Function<String, String>, TextPattern.VariableValueResolver {
 

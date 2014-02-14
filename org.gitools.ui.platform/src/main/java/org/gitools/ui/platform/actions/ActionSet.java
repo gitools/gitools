@@ -43,7 +43,7 @@ public class ActionSet extends BaseAction {
     public ActionSet(String name, int mnemonic, String icon, BaseAction[] actions) {
         this(name, mnemonic, actions);
 
-        if (icon!=null) {
+        if (icon != null) {
             setSmallIconFromResource(icon);
         }
     }
@@ -51,7 +51,7 @@ public class ActionSet extends BaseAction {
     public ActionSet(String name, Integer mnemonic, BaseAction[] actions) {
         super(name, null);
 
-        if (actions!=null) {
+        if (actions != null) {
             this.actions = Arrays.asList(actions);
         } else {
             this.actions = Collections.EMPTY_LIST;
@@ -59,7 +59,7 @@ public class ActionSet extends BaseAction {
 
         setEnabled(true);
 
-        if (mnemonic!=null) {
+        if (mnemonic != null) {
             setMnemonic(mnemonic);
         }
     }

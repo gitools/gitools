@@ -21,10 +21,10 @@
  */
 package org.gitools.matrix.model.matrix.element;
 
-import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.api.matrix.ILayerAdapter;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 
 import java.lang.reflect.InvocationTargetException;

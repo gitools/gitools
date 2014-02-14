@@ -21,19 +21,19 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 
-import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.ApplicationContext;
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.api.resource.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.utils.LogUtils;
 import org.gitools.ui.app.wizard.common.AnnotationOption;
+import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;

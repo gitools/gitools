@@ -29,9 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement(name = "MartRegistry")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MartRegistry {
@@ -50,12 +47,6 @@ public class MartRegistry {
     public MartRegistry(List<MartLocation> locations) {
         this.locations = locations;
     }
-
-	/*public MartRegistry(List<Mart> marts) {
-        this.locations = new ArrayList<MartLocation>(marts.size());
-		for (Mart mart : marts)
-			locations.add(new MartLocation(mart));
-	}*/
 
     public List<MartLocation> getLocations() {
         return locations;

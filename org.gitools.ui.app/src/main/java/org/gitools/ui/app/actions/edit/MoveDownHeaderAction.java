@@ -68,6 +68,6 @@ public class MoveDownHeaderAction extends HeatmapDimensionAction implements IHea
 
         this.header = object;
 
-        setEnabled(header != null && (getHeaderCurrentIndex()+1) < getDimension().getHeaders().size());
+        setEnabled(header != null && (getHeaderCurrentIndex() + 1) < getDimension().getHeaders().size());
     }
 }

@@ -31,19 +31,15 @@ import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.DynamicActionsManage
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.ui.platform.idea.JBScrollBar;
-import static org.gitools.utils.events.EventUtils.isAny;
+import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static org.gitools.utils.events.EventUtils.isAny;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -110,14 +106,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         inputProcessor = new HeatmapPanelInputProcessor(this);
 
-        colSB = new JBScrollBar(JScrollBar.HORIZONTAL);
+        colSB = new ThinScrollBar(JScrollBar.HORIZONTAL);
         colSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 updateViewPorts();
             }
         });
-        rowSB = new JBScrollBar(JScrollBar.VERTICAL);
+        rowSB = new ThinScrollBar(JScrollBar.VERTICAL);
         rowSB.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {

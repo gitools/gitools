@@ -22,27 +22,18 @@
 package org.gitools.datasources.biomart.restful;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.BiomartServiceException;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.queryhandler.TsvFileQueryHandler;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.datasources.biomart.settings.BiomartSource;
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.utils.benchmark.TimeCounter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,19 +41,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class BiomartRestfulService implements BiomartService {
-
-    private static Logger log = LoggerFactory.getLogger(BiomartRestfulService.class.getName());
 
     private static final String FORMAT_TSV = "TSV";
     private static final String FORMAT_TSV_GZ = "GZ";
-    public static final String SERVICE_PORT_NAME = "BioMartSoapPort";
-    public static final String SERVICE_NAME = "BioMartSoapService";
-    public static final String NAMESPACE = "MartServiceSoap";
-
 
     private final FileFormat[] supportedFormats = new FileFormat[]{new FileFormat("Tab Separated Fields", "tsv", true, false), new FileFormat("Tab Separated Fields GZip compressed", "tsv.gz", true, false)};
 
@@ -216,21 +198,9 @@ public class BiomartRestfulService implements BiomartService {
         }
     }
 
-
-    @Override
-    public FileFormat[] getSupportedFormats() {
-        return supportedFormats;
-    }
-
     //FIXME Use JAXB !!!
     //FIXME review filter xml parsing
     private String createQueryXml(Query query, String format, boolean encoded) {
-        /*JAXBContext context = JAXBContext.newInstance(Query.class);
-        Marshaller m = context.createMarshaller();
-		m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		m.setProperty(Marshaller.JAXB_FRAGMENT, false);
-		m.marshal(query, sw);
-		sw.close();*/
 
         StringWriter sw = new StringWriter();
         sw.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE Query>");

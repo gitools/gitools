@@ -25,19 +25,19 @@ import org.gitools.api.analysis.IAggregator;
 
 public class AggregatorFactory {
 
-    private static IAggregator[] AGGREGATORS = new IAggregator[] {
-                                    MultAggregator.INSTANCE,
-                                    SumAggregator.INSTANCE,
-                                    SumAbsAggregator.INSTANCE,
-                                    MeanAggregator.INSTANCE,
-                                    LogSumAggregator.INSTANCE,
-                                    StdDevAggregator.INSTANCE,
-                                    VarianceAggregator.INSTANCE,
-                                    FrequencyAggregator.INSTANCE,
-                                    NonZeroCountAggregator.INSTANCE,
-                                    MinAggregator.INSTANCE,
-                                    MaxAggregator.INSTANCE
-                        };
+    private static IAggregator[] AGGREGATORS = new IAggregator[]{
+            MultAggregator.INSTANCE,
+            SumAggregator.INSTANCE,
+            SumAbsAggregator.INSTANCE,
+            MeanAggregator.INSTANCE,
+            LogSumAggregator.INSTANCE,
+            StdDevAggregator.INSTANCE,
+            VarianceAggregator.INSTANCE,
+            FrequencyAggregator.INSTANCE,
+            NonZeroCountAggregator.INSTANCE,
+            MinAggregator.INSTANCE,
+            MaxAggregator.INSTANCE
+    };
 
     public static IAggregator[] getAggregatorsArray() {
         return AGGREGATORS;

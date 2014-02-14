@@ -26,15 +26,7 @@ import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.data.FastSortValueAction;
 import org.gitools.ui.app.actions.data.GroupSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
-import org.gitools.ui.app.actions.edit.AddHeaderAction;
-import org.gitools.ui.app.actions.edit.EditHeaderAction;
-import org.gitools.ui.app.actions.edit.EditLayerAction;
-import org.gitools.ui.app.actions.edit.InvertSelectionAction;
-import org.gitools.ui.app.actions.edit.MoveDownHeaderAction;
-import org.gitools.ui.app.actions.edit.MoveDownLayerAction;
-import org.gitools.ui.app.actions.edit.MoveUpHeaderAction;
-import org.gitools.ui.app.actions.edit.MoveUpLayerAction;
-import org.gitools.ui.app.actions.edit.RemoveHeaderAction;
+import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -43,7 +35,7 @@ public class PopupMenuActions {
 
     private static ActionSet getHeatmapMenu(MatrixDimensionKey dimensionKey) {
 
-        return new ActionSet(new BaseAction[] {
+        return new ActionSet(new BaseAction[]{
                 Actions.selectAllAction,
                 Actions.selectLabelHeaderAction,
                 new GroupSelectionAction(dimensionKey),
@@ -72,7 +64,7 @@ public class PopupMenuActions {
     public static final ActionSet COLUMNS = getHeatmapMenu(MatrixDimensionKey.COLUMNS);
 
     // Details popup menus
-    public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[] {
+    public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.ROWS, "Edit..."),
             BaseAction.separator,
             new MoveUpHeaderAction("Move up", MatrixDimensionKey.ROWS),
@@ -81,7 +73,7 @@ public class PopupMenuActions {
             new RemoveHeaderAction(MatrixDimensionKey.ROWS, "Remove")
     });
 
-    public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[] {
+    public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.COLUMNS, "Edit..."),
             BaseAction.separator,
             new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS),
@@ -90,13 +82,12 @@ public class PopupMenuActions {
             new RemoveHeaderAction(MatrixDimensionKey.COLUMNS, "Remove")
     });
 
-    public static final ActionSet DETAILS_LAYERS = new ActionSet( new BaseAction[] {
+    public static final ActionSet DETAILS_LAYERS = new ActionSet(new BaseAction[]{
             new EditLayerAction("Edit..."),
             BaseAction.separator,
             new MoveUpLayerAction(),
             new MoveDownLayerAction()
     });
-
 
 
 }

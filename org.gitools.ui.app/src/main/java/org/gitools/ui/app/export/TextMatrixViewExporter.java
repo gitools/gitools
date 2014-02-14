@@ -26,16 +26,14 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.ValueTranslator;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.utils.fileutils.IOUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.zip.GZIPOutputStream;
 
 public class TextMatrixViewExporter {
 
     public static void exportMatrix(IMatrixView matrixView, IMatrixLayer layer, File file) throws IOException {
-        PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
+        PrintWriter pw = new PrintWriter(openWriter(file));
 
         IMatrixDimension rows = matrixView.getRows();
         IMatrixDimension columns = matrixView.getColumns();
@@ -61,7 +59,7 @@ public class TextMatrixViewExporter {
 
     public static void exportTable(IMatrixView matrixView, int[] propIndices, File file) throws IOException {
 
-        PrintWriter pw = new PrintWriter(IOUtils.openWriter(file));
+        PrintWriter pw = new PrintWriter(openWriter(file));
 
         IMatrixLayers layers = matrixView.getLayers();
         IMatrixDimension rows = matrixView.getRows();
@@ -88,5 +86,17 @@ public class TextMatrixViewExporter {
             }
         }
         pw.close();
+    }
+
+    private static Writer openWriter(File path) throws IOException {
+        if (path == null) {
+            return null;
+        }
+
+        if (path.getName().endsWith(".gz")) {
+            return new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(path, false)));
+        } else {
+            return new BufferedWriter(new FileWriter(path, false));
+        }
     }
 }

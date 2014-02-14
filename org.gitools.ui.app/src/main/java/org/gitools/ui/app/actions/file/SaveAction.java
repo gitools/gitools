@@ -25,6 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -58,7 +59,8 @@ public class SaveAction extends BaseAction {
         EditorsPanel editorPanel;
         editorPanel = Application.get().getEditorsPanel();
 
-        return editorPanel.getSelectedEditor().isSaveAllowed() && editorPanel.getSelectedEditor().isDirty();
+        AbstractEditor selectedEditor = editorPanel.getSelectedEditor();
+        return selectedEditor != null && selectedEditor.isSaveAllowed() && selectedEditor.isDirty();
     }
 
     @Override

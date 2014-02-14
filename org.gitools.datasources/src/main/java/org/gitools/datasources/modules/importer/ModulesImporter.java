@@ -31,8 +31,6 @@ public interface ModulesImporter {
 
     FeatureCategory[] getFeatureCategories() throws ModulesImporterException;
 
-    // Importer state
-
     ModuleCategory getModuleCategory();
 
     void setModuleCategory(ModuleCategory category);

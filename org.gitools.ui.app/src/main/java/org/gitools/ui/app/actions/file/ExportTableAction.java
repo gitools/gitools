@@ -27,11 +27,11 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.dialog.attributes.AttributesSelectionDialog;
 import org.gitools.ui.app.export.TextMatrixViewExporter;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChooserUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

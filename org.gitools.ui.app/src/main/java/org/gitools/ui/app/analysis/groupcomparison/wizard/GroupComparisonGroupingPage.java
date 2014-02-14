@@ -26,7 +26,7 @@ import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringResults;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
-import org.gitools.analysis.groupcomparison.DimensionGroups.*;
+import org.gitools.analysis.groupcomparison.dimensiongroups.*;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.api.matrix.IMatrixLayer;

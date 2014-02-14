@@ -25,13 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MappingEngine {
 
@@ -179,10 +173,6 @@ public class MappingEngine {
     public MappingEngine() {
         this.context = new MappingContext();
         this.edges = new ArrayList<>();
-    }
-
-    public MappingContext getContext() {
-        return context;
     }
 
     public void addMapper(String src, String dst, Mapper proc) {

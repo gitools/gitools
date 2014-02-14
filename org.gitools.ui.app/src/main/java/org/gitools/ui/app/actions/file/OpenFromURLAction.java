@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -31,6 +30,8 @@ import org.gitools.ui.platform.progress.JobThread;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 public class OpenFromURLAction extends BaseAction {
 

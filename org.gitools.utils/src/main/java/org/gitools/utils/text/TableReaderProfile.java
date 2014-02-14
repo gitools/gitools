@@ -23,9 +23,9 @@ package org.gitools.utils.text;
 
 public class TableReaderProfile extends ReaderProfile {
 
-    int[] heatmapColumns;
-    int[] heatmapRows;
-    String fieldGlue;
+    private int[] heatmapColumns;
+    private int[] heatmapRows;
+    private String fieldGlue;
 
     public TableReaderProfile() {
         super();

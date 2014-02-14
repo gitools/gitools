@@ -22,7 +22,6 @@
 package org.gitools.ui.platform.panel;
 
 import org.lobobrowser.html.FormInput;
-import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleHtmlRendererContext;
@@ -84,7 +83,7 @@ public class Html4Panel extends JPanel {
             throw new LinkVetoException();
         } else if ("load".equalsIgnoreCase(rel)) {
             performLoad(href);
-        }else if ("_external".equalsIgnoreCase(target)) {
+        } else if ("_external".equalsIgnoreCase(target)) {
             try {
                 URI uri = new URI(href);
                 if (Desktop.isDesktopSupported()) {
@@ -115,10 +114,6 @@ public class Html4Panel extends JPanel {
 
     public void navigate(URL url) throws Exception {
         rcontext.navigate(url, "_this");
-    }
-
-    public HtmlRendererContext getHtmlRenderContext() {
-        return rcontext;
     }
 
     public static class LinkVetoException extends Exception {

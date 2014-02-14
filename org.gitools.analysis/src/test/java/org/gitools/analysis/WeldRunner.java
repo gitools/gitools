@@ -24,7 +24,6 @@ package org.gitools.analysis;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.persistence.IPersistenceManager;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
-import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.junit.runners.BlockJUnit4ClassRunner;

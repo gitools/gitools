@@ -23,19 +23,9 @@ package org.gitools.cli;
 
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.persistence.IPersistenceManager;
-import org.gitools.persistence.PersistenceManager;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.gitools.utils.tools.ToolManager;
-import org.gitools.utils.tools.ToolSet;
-import org.gitools.utils.tools.XmlToolSetResource;
-import org.gitools.utils.tools.exception.ToolException;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
-import org.kohsuke.args4j.CmdLineParser;
-
-import javax.enterprise.context.ApplicationScoped;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 
 public class Main {
 
@@ -43,7 +33,7 @@ public class Main {
 
     private static final String versionString = Main.class.getPackage().getImplementationVersion();
 
-    public static void main(String[] args) throws ToolException {
+    public static void main(String[] args) {
 
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();

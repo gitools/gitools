@@ -24,9 +24,9 @@ package org.gitools.utils.colorscale.impl;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.color.Colors;
+import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -35,9 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ZScoreColorScale extends NumericColorScale {
 
@@ -135,13 +132,6 @@ public class ZScoreColorScale extends NumericColorScale {
         updateRangesList();
     }
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public double getHalfAmplitude() {
-        return halfAmplitude;
-    }
-
     public void setHalfAmplitude(double halfAmplitude) {
         this.halfAmplitude = halfAmplitude;
         updateRangesList();
@@ -198,7 +188,6 @@ public class ZScoreColorScale extends NumericColorScale {
     public void setNonSignificantColor(Color nonSignificantColor) {
         this.nonSignificantColor = nonSignificantColor;
     }
-
 
     @Override
     public IAggregator defaultAggregator() {

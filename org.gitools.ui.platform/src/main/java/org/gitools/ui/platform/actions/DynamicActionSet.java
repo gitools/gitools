@@ -45,7 +45,7 @@ public abstract class DynamicActionSet extends ActionSet {
 
     protected <T extends BaseAction> T updateEnable(T action) {
 
-        if (editor!=null) {
+        if (editor != null) {
             action.updateEnabledByEditor(editor);
         }
 
@@ -62,9 +62,11 @@ public abstract class DynamicActionSet extends ActionSet {
 
     private class DynamicMenuListener implements MenuListener {
 
-        public void menuCanceled(MenuEvent e) { }
+        public void menuCanceled(MenuEvent e) {
+        }
 
-        public void menuDeselected(MenuEvent e) { }
+        public void menuDeselected(MenuEvent e) {
+        }
 
         public void menuSelected(MenuEvent e) {
             JMenu menu = (JMenu) e.getSource();

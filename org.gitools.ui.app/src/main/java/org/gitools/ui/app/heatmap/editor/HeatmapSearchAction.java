@@ -22,7 +22,6 @@
 package org.gitools.ui.app.heatmap.editor;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.platform.Application;
@@ -32,6 +31,8 @@ import org.gitools.ui.platform.editor.IEditor;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 
 public class HeatmapSearchAction extends HeatmapDimensionAction {
 

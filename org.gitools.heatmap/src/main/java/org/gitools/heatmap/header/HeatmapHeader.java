@@ -28,11 +28,7 @@ import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.FontXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.List;
@@ -131,7 +127,7 @@ public abstract class HeatmapHeader extends Model {
      * The title
      */
     public String getTitle() {
-        return (title==null) ? "" : title;
+        return (title == null) ? "" : title;
     }
 
     /**

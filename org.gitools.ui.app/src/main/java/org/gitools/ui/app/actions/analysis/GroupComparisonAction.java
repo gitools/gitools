@@ -25,7 +25,6 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonAnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;

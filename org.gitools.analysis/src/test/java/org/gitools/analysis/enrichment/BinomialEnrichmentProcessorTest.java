@@ -22,20 +22,19 @@
 package org.gitools.analysis.enrichment;
 
 
-import static junit.framework.Assert.assertEquals;
 import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.AssertMatrix;
-import org.gitools.analysis.correlation.CorrelationAnalysis;
-import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
-import static org.gitools.api.ApplicationContext.getProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static org.gitools.api.ApplicationContext.getProgressMonitor;
 
 public class BinomialEnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAnalysis> {
 

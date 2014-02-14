@@ -26,14 +26,12 @@ import java.awt.*;
 
 public class ColorXmlAdapter extends XmlAdapter<String, Color> {
 
-
     @Override
     public String marshal(Color v) throws Exception {
         String rgb = Integer.toHexString(v.getRGB());
         rgb = rgb.substring(2, rgb.length());
         return "#" + rgb;
     }
-
 
     @Override
     public Color unmarshal(String v) throws Exception {

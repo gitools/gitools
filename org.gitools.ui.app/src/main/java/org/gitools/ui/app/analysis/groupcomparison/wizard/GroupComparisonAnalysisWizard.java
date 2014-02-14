@@ -22,9 +22,9 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.ToolConfig;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
@@ -35,7 +35,6 @@ import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.CloneUtils;
 

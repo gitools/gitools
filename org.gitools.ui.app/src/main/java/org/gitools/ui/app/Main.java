@@ -28,11 +28,12 @@ import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.batch.CommandExecutor;
 import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
+import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
+import org.gitools.ui.platform.help.Tips;
 import org.gitools.ui.platform.os.SystemInfo;
-import org.gitools.ui.app.settings.Settings;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -77,6 +78,7 @@ public class Main {
 
         // Initialize help system
         try {
+            Tips.get().load(Main.class.getResourceAsStream("/help/tips.properties"));
             Help.get().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));
             Help.get().loadUrlMap(Main.class.getResourceAsStream("/help/help.mappings"));
         } catch (Exception ex) {

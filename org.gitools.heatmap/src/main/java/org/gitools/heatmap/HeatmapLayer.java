@@ -23,13 +23,13 @@ package org.gitools.heatmap;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.utils.events.EventUtils;
-import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -26,6 +26,5 @@ import org.gitools.api.analysis.IProgressMonitor;
 import java.io.IOException;
 
 public interface JobRunnable {
-
     void run(IProgressMonitor monitor) throws IOException;
 }

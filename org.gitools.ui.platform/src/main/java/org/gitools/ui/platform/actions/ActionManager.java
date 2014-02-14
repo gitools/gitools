@@ -52,11 +52,6 @@ public class ActionManager {
         actionMap = new HashMap<>();
     }
 
-    void addAction(BaseAction action) {
-        baseActions.add(action);
-        actionMap.put(action.getClass().getName(), action);
-    }
-
     public void addRootAction(BaseAction action) {
         rootActions.add(action);
     }

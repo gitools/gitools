@@ -25,6 +25,7 @@ import java.util.Map;
 
 
 public enum Separator {
+
     TAB("Tab", '\t'),
     COMMA("Comma", ','),
     SEMICOLON("Semicolon", ';');

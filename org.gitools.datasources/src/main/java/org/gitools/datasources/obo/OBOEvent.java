@@ -23,9 +23,6 @@ package org.gitools.datasources.obo;
 
 import java.lang.reflect.Field;
 
-/**
- * @noinspection ALL
- */
 public class OBOEvent implements OBOEventTypes {
 
     private final int type;

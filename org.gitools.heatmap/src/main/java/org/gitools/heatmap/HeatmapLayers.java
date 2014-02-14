@@ -27,20 +27,16 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
-import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.heatmap.decorator.DecoratorFactory;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.impl.LinearDecorator;
+import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.utils.events.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLayer> {
@@ -73,7 +69,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         this.layersIdToIndex = null;
 
         for (IMatrixLayer layer : matrixLayers) {
-            Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
+            Decorator defaultDecorator = new LinearDecorator();
             this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
         }
     }
@@ -94,7 +90,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
             // This is a new layer
             if (orderedLayer == null) {
-                Decorator defaultDecorator = DecoratorFactory.defaultDecorator(matrix, layer.getId());
+                Decorator defaultDecorator = new LinearDecorator();
                 orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
             }
 

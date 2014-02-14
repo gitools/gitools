@@ -40,7 +40,7 @@ public class OpenURLAction extends BaseAction {
     public OpenURLAction(String name, String url, int mnemonic, KeyStroke accelerator) {
         super(name, null, null, mnemonic);
 
-        if (accelerator!=null) {
+        if (accelerator != null) {
             setAccelerator(accelerator);
         }
 

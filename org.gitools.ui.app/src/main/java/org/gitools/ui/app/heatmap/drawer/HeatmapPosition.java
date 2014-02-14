@@ -23,8 +23,8 @@ package org.gitools.ui.app.heatmap.drawer;
 
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.MatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
+import org.gitools.matrix.model.MatrixPosition;
 
 public class HeatmapPosition extends MatrixPosition implements IMatrixPosition {
 

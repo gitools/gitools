@@ -21,16 +21,9 @@
  */
 package org.gitools.datasources.biomart.restful.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Filter", propOrder = {"name", "value", "excluded"})
 public class Filter {
@@ -53,7 +46,7 @@ public class Filter {
      * Gets the value of the name property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
 
     public String getName() {
@@ -76,7 +69,7 @@ public class Filter {
      * Gets the value of the value property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public Boolean getRadio() {
         return radio;

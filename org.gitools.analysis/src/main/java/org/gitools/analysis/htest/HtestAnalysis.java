@@ -21,13 +21,13 @@
  */
 package org.gitools.analysis.htest;
 
+import org.gitools.analysis.Analysis;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.analysis.Analysis;
 import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.analysis.ToolConfig;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;

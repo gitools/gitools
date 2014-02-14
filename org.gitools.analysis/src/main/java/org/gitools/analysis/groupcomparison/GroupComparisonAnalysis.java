@@ -23,8 +23,8 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.Analysis;
 import org.gitools.analysis.ToolConfig;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroupEnum;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IAnnotations;

@@ -21,11 +21,11 @@
  */
 package org.gitools.analysis.stats.test.factory;
 
+import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.calc.MeanStatistic;
 import org.gitools.analysis.stats.calc.MedianStatistic;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.Test;
-import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.test.ZscoreTest;
 
 import java.util.Map;

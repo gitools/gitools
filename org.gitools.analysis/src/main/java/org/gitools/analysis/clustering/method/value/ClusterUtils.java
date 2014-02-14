@@ -32,11 +32,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class ClusterUtils {
@@ -146,8 +142,8 @@ public class ClusterUtils {
     public static List<String> getLabels(ClusteringData clusterData) {
 
         List<String> labels = new ArrayList<>();
-        for (int i = 0; i < clusterData.getSize(); i++){
-                labels.add(clusterData.getLabel(i));
+        for (int i = 0; i < clusterData.getSize(); i++) {
+            labels.add(clusterData.getLabel(i));
         }
         return labels;
     }

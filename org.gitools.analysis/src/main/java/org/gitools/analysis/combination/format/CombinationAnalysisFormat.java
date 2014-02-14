@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.combination.format;
 
+import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.analysis.combination.CombinationAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 

@@ -22,21 +22,13 @@
 package org.gitools.datasources.kegg.modules;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.BiomartServiceException;
 import org.gitools.datasources.biomart.BiomartServiceFactory;
 import org.gitools.datasources.biomart.idmapper.EnsemblMapper;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
-import org.gitools.datasources.biomart.restful.model.Attribute;
-import org.gitools.datasources.biomart.restful.model.AttributeCollection;
-import org.gitools.datasources.biomart.restful.model.AttributeDescription;
-import org.gitools.datasources.biomart.restful.model.AttributeGroup;
-import org.gitools.datasources.biomart.restful.model.AttributePage;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.MartLocation;
-import org.gitools.datasources.biomart.restful.model.Query;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.datasources.biomart.settings.BiomartSource;
 import org.gitools.datasources.biomart.settings.BiomartSourceManager;
 import org.gitools.datasources.idmapper.MappingData;
@@ -47,29 +39,17 @@ import org.gitools.datasources.kegg.idmapper.KeggPathwaysMapper;
 import org.gitools.datasources.kegg.service.KeggService;
 import org.gitools.datasources.kegg.service.domain.KeggOrganism;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
-import org.gitools.datasources.modules.importer.FeatureCategory;
-import org.gitools.datasources.modules.importer.ModuleCategory;
-import org.gitools.datasources.modules.importer.ModulesImporter;
-import org.gitools.datasources.modules.importer.ModulesImporterException;
-import org.gitools.datasources.modules.importer.Organism;
-import org.gitools.datasources.modules.importer.Version;
+import org.gitools.datasources.modules.importer.*;
 import org.gitools.datasources.obo.OBOEvent;
 import org.gitools.datasources.obo.OBOEventTypes;
 import org.gitools.datasources.obo.OBOStreamReader;
+import org.gitools.matrix.modulemap.HashModuleMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOEventTypes {
 

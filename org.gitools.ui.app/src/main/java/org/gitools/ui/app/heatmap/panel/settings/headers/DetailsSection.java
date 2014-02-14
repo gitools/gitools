@@ -22,11 +22,12 @@
 package org.gitools.ui.app.heatmap.panel.settings.headers;
 
 import com.jgoodies.binding.PresentationModel;
-import static com.jgoodies.binding.adapter.Bindings.bind;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
+
+import static com.jgoodies.binding.adapter.Bindings.bind;
 
 public class DetailsSection implements ISettingsSection {
 

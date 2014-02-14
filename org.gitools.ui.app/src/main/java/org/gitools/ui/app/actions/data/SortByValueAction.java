@@ -29,10 +29,10 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.sort.ValueSortDialog;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.app.sort.ValueSortDialog;
 import org.gitools.utils.aggregation.AggregatorFactory;
 import org.gitools.utils.aggregation.MultAggregator;
 

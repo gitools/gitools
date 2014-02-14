@@ -22,18 +22,14 @@
 package org.gitools.ui.app.datasources.biomart.wizard;
 
 import org.gitools.datasources.biomart.BiomartService;
-import org.gitools.datasources.biomart.restful.model.AttributeDescription;
-import org.gitools.datasources.biomart.restful.model.AttributePage;
-import org.gitools.datasources.biomart.restful.model.DatasetConfig;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.MartLocation;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.app.datasources.biomart.panel.AttributesTreeModel.AttributeWrapper;
+import org.gitools.ui.app.wizard.common.FilteredTreePage;
+import org.gitools.ui.app.wizard.common.FilteredTreePanel;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.app.wizard.common.FilteredTreePage;
-import org.gitools.ui.app.wizard.common.FilteredTreePanel;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

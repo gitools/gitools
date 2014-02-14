@@ -23,21 +23,14 @@ package org.gitools.datasources.biomart.restful.model;
 
 import org.gitools.datasources.biomart.restful.model.xml.IntegerXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
+
 @XmlRootElement(name = "Query")
 @XmlAccessorType(XmlAccessType.FIELD)
-
 public class Query {
 
     @XmlAttribute(required = true)
@@ -73,7 +66,7 @@ public class Query {
      * Gets the value of the virtualSchemaName property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getVirtualSchemaName() {
         return virtualSchemaName;

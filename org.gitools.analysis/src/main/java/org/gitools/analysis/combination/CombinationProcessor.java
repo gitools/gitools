@@ -28,18 +28,19 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.modulemap.HashModuleMap;
-import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.matrix.modulemap.ModuleMapUtils;
-import org.gitools.api.resource.ResourceReference;
 
 import java.util.Date;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class CombinationProcessor implements AnalysisProcessor {
 

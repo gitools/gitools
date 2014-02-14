@@ -172,14 +172,14 @@ public abstract class AbstractHeatmapDrawer {
         g.setColor(SELECTED_COLOR);
         int cellSize = dimension.getFullSize();
         for (String s : dimension.getSelected()) {
-            fillLine(g, box, dimension.indexOf(s)*cellSize, cellSize, horizontal);
+            fillLine(g, box, dimension.indexOf(s) * cellSize, cellSize, horizontal);
         }
 
         // Draw row lead
         g.setColor(Color.DARK_GRAY);
         int lead = dimension.indexOf(dimension.getFocus());
         if (lead != -1) {
-            fillLine(g, box, (lead*cellSize)-1, 1, horizontal);
+            fillLine(g, box, (lead * cellSize) - 1, 1, horizontal);
             fillLine(g, box, ((lead + 1) * cellSize) - 1, 1, horizontal);
         }
     }

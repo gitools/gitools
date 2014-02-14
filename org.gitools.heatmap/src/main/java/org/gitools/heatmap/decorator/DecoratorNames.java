@@ -22,7 +22,6 @@
 package org.gitools.heatmap.decorator;
 
 public class DecoratorNames {
-
     public static final String BINARY = "Binary scale";
     public static final String LINEAR = "Linear scale";
     public static final String PVALUE = "P-Value scale";

@@ -26,8 +26,8 @@ import com.googlecode.vfsjfilechooser2.filechooser.AbstractVFSFileFilter;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.FileType;
-import org.gitools.ui.platform.Application;
 import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.Application;
 
 import javax.swing.*;
 import java.awt.*;

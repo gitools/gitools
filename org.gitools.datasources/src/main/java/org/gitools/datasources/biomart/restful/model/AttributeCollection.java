@@ -29,11 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
-
 public class AttributeCollection {
 
     @XmlAttribute

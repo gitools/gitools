@@ -24,15 +24,7 @@ package org.gitools.matrix.model.compressmatrix;
 import org.gitools.api.matrix.MatrixDimensionKey;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.Deflater;
 
 public abstract class AbstractCompressor {
@@ -84,7 +76,6 @@ public abstract class AbstractCompressor {
      * @param values The strings
      * @return The byte arrays
      * @throws java.io.UnsupportedEncodingException
-     *
      */
     public static byte[] stringToByteArray(String[] values) throws UnsupportedEncodingException {
         StringBuilder buffer = new StringBuilder(values.length * 10);

@@ -24,10 +24,10 @@ package org.gitools.ui.platform;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.MenuActionSet;
 import org.gitools.ui.app.actions.ToolBarActionSet;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.welcome.WelcomeEditor;
+import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.editor.EditorsPanel;
 
 import javax.swing.*;
 import java.awt.*;

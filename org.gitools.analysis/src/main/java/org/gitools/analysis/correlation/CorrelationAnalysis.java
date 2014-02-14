@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.correlation;
 
+import org.gitools.analysis.Analysis;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.analysis.Analysis;
 import org.gitools.api.resource.ResourceReference;
 
 import javax.xml.bind.annotation.XmlRootElement;

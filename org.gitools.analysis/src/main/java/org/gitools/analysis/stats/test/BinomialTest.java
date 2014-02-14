@@ -22,8 +22,6 @@
 package org.gitools.analysis.stats.test;
 
 import cern.jet.stat.Probability;
-import org.gitools.analysis.stats.calc.OnesCountStatistic;
-import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.BinomialResult;
 import org.gitools.analysis.stats.test.results.CommonResult;
 

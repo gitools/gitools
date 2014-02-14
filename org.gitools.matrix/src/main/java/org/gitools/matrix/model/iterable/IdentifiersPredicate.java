@@ -25,7 +25,7 @@ import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
-import org.gitools.utils.textpatt.TextPattern;
+import org.gitools.utils.textpattern.TextPattern;
 
 import java.util.Set;
 

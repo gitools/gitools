@@ -21,11 +21,11 @@
  */
 package org.gitools.heatmap.format;
 
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;

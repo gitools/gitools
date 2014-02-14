@@ -22,11 +22,7 @@
 package org.gitools.ui.app.datasources.biomart.wizard;
 
 import org.gitools.datasources.biomart.BiomartService;
-import org.gitools.datasources.biomart.restful.model.AttributeDescription;
-import org.gitools.datasources.biomart.restful.model.AttributePage;
-import org.gitools.datasources.biomart.restful.model.DatasetConfig;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.MartLocation;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.panel.BiomartAttributeListPanel;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;

@@ -22,16 +22,9 @@
 package org.gitools.matrix.model;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
-import org.gitools.matrix.model.iterable.ValueSourceIterable;
-import org.gitools.api.matrix.ILayerAdapter;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.api.matrix.IMatrixIterable;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
 import org.gitools.matrix.model.iterable.IdentifierSourceIterable;
+import org.gitools.matrix.model.iterable.ValueSourceIterable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +44,7 @@ public class MatrixPosition implements IMatrixPosition {
         this.dimensions = matrix.getDimensionKeys();
 
         this.identifiers = new String[dimensions.length];
-        for (int i=0; i < dimensions.length; i++) {
+        for (int i = 0; i < dimensions.length; i++) {
             this.identifiers[i] = matrix.getDimension(dimensions[i]).iterator().next();
         }
 

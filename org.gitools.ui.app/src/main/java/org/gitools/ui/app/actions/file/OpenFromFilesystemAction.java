@@ -22,30 +22,29 @@
 package org.gitools.ui.app.actions.file;
 
 import com.google.common.collect.ObjectArrays;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.resource.IResourceFormat;
-import static org.gitools.api.ApplicationContext.getPersistenceManager;
-import org.gitools.api.persistence.FileFormat;
-import org.gitools.matrix.FileFormats;
 import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
-import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceFormat;
+import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.FileChoose;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.utils.FileFormatFilter;
+import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.progress.JobThread;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -53,6 +52,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
 public class OpenFromFilesystemAction extends BaseAction {
 
@@ -91,9 +92,9 @@ public class OpenFromFilesystemAction extends BaseAction {
 
         Collections.addAll(filters,
                 new FileFormatFilter("All known formats", FileFormat.concat(
-                            ImportManager.get().getFileFormats(),
-                            ObjectArrays.concat(FORMAT_HEATMAPS, FORMAT_ANALYSIS, FileFormat.class)
-                        )),
+                        ImportManager.get().getFileFormats(),
+                        ObjectArrays.concat(FORMAT_HEATMAPS, FORMAT_ANALYSIS, FileFormat.class)
+                )),
                 new FileFormatFilter("Analysis", FORMAT_ANALYSIS),
 
                 new FileFormatFilter(HeatmapFormat.FILE_FORMAT),
@@ -114,7 +115,7 @@ public class OpenFromFilesystemAction extends BaseAction {
                 new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
         );
 
-        filters.addAll( ImportManager.get().getFileFormatFilters());
+        filters.addAll(ImportManager.get().getFileFormatFilters());
 
         final FileChoose fileChoose = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, filters.toArray(new FileFormatFilter[filters.size()]));
 

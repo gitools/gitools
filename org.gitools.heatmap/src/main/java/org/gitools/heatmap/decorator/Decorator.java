@@ -22,25 +22,15 @@
 package org.gitools.heatmap.decorator;
 
 import com.jgoodies.binding.beans.Model;
-import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
-import org.gitools.heatmap.decorator.impl.CorrelationDecorator;
-import org.gitools.heatmap.decorator.impl.LinearDecorator;
-import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.heatmap.decorator.impl.BinaryDecorator;
+import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.MatrixUtils;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

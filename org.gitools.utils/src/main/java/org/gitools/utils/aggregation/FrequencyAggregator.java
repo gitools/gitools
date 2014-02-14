@@ -32,12 +32,18 @@ public class FrequencyAggregator extends AbstractAggregator {
     }
 
     @Override
-    public Double aggregateNoNulls(double[] values) {
+    public Double aggregate(Iterable<Double> values) {
         double events = 0.0;
-        for (double value : values) {
-            if (value != 0.0) events++;
+        double size = 0.0;
+        for (Double value : values) {
+            if (value != null) {
+                if (value != 0.0) {
+                    events++;
+                }
+                size++;
+            }
         }
-        return events / values.length;
-    }
 
+        return events / size;
+    }
 }

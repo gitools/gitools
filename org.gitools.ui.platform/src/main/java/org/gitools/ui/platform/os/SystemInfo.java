@@ -72,8 +72,7 @@ public class SystemInfo {
             int cmp;
             if (p1.matches("\\d+") && p2.matches("\\d+")) {
                 cmp = new Integer(p1).compareTo(new Integer(p2));
-            }
-            else {
+            } else {
                 cmp = part1[idx].compareTo(part2[idx]);
             }
             if (cmp != 0) return cmp;
@@ -81,8 +80,7 @@ public class SystemInfo {
 
         if (part1.length == part2.length) {
             return 0;
-        }
-        else {
+        } else {
             boolean left = part1.length > idx;
             String[] parts = left ? part1 : part2;
 
@@ -91,8 +89,7 @@ public class SystemInfo {
                 int cmp;
                 if (p.matches("\\d+")) {
                     cmp = new Integer(p).compareTo(0);
-                }
-                else {
+                } else {
                     cmp = 1;
                 }
                 if (cmp != 0) return left ? cmp : -cmp;

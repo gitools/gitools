@@ -31,8 +31,6 @@ public abstract class BaseAction extends AbstractAction {
 
     private static final long serialVersionUID = 8312774908067146251L;
 
-    private static final String SELECTED_PROP = "selected";
-
     public static final BaseAction separator = new SeparatorAction();
 
     private boolean defaultEnabled;
@@ -113,11 +111,6 @@ public abstract class BaseAction extends AbstractAction {
         }
 
         return String.valueOf(desc);
-    }
-
-
-    protected ImageIcon getLargeIcon() {
-        return (ImageIcon) getValue(LARGE_ICON_KEY);
     }
 
     protected void setLargeIcon(ImageIcon icon) {

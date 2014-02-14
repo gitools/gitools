@@ -24,9 +24,6 @@ package org.gitools.datasources.biomart;
 import org.gitools.datasources.biomart.restful.BiomartRestfulService;
 import org.gitools.datasources.biomart.settings.BiomartSource;
 
-/**
- * @noinspection ALL
- */
 public class BiomartServiceFactory {
 
     private BiomartServiceFactory instance;
@@ -48,7 +45,6 @@ public class BiomartServiceFactory {
      * @param source
      * @return biomart service
      */
-
     public static BiomartService createService(BiomartSource source) throws BiomartServiceException {
         BiomartService bs = new BiomartRestfulService(source);
         return bs;

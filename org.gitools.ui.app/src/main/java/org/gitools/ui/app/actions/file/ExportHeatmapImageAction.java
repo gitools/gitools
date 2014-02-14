@@ -23,17 +23,17 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

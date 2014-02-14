@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.platform.progress;
 
-import org.gitools.ui.platform.help.GitoolsTips;
+import org.gitools.ui.platform.help.Tips;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,10 +31,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 class JobProgressDialog extends javax.swing.JDialog {
-
-    public void setTipsLabel(JLabel tipsLabel) {
-        this.tipsLabel = tipsLabel;
-    }
 
     public interface CancelListener {
         void cancelled();
@@ -56,7 +52,6 @@ class JobProgressDialog extends javax.swing.JDialog {
         infoLabel.setText("");
 
         if (showGitoolsTips) {
-            tips = new GitoolsTips();
             setTimerLoop();
         }
 
@@ -74,7 +69,7 @@ class JobProgressDialog extends javax.swing.JDialog {
     class ShowNewTip extends TimerTask {
         public void run() {
             if (infoLabel.getText().equals("")) {
-                tipsLabel.setText(tips.getRandomTip());
+                tipsLabel.setText(Tips.get().getRandomTip());
             }
         }
     }
@@ -149,8 +144,7 @@ class JobProgressDialog extends javax.swing.JDialog {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JLabel tipsLabel;
-    private GitoolsTips tips;
-    Timer timer;
+    private Timer timer;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 

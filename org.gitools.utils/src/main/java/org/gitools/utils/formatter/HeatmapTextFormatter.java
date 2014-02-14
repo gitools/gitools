@@ -31,7 +31,6 @@ public class HeatmapTextFormatter implements ITextFormatter {
     public static HeatmapTextFormatter FOUR_DECIMALS = new HeatmapTextFormatter("Four decimals", new DecimalFormat("########.####"));
     public static HeatmapTextFormatter TWO_DECIMALS = new HeatmapTextFormatter("Two decimals", new DecimalFormat("########.##"));
 
-
     private String name;
     private final StringBuilder sb;
     private final Formatter fmt;
@@ -45,7 +44,7 @@ public class HeatmapTextFormatter implements ITextFormatter {
     }
 
     protected String decimal(double value) {
-         return countFormat.format(value);
+        return countFormat.format(value);
     }
 
     @Override

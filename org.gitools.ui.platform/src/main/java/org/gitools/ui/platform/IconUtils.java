@@ -30,7 +30,6 @@ public class IconUtils {
 
     public static final String nullResourceImage = "/img/null.gif";
 
-
     public static Icon getIconResource(String name) {
         return getImageIconResource(name);
     }

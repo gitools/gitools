@@ -26,7 +26,6 @@ import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.MatrixViewSorter;
@@ -40,6 +39,8 @@ import org.gitools.utils.aggregation.MultAggregator;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class FastSortValueAction extends HeatmapDimensionAction {
 

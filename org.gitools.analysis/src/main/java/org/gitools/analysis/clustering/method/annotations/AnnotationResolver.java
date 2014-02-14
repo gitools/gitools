@@ -22,7 +22,7 @@
 package org.gitools.analysis.clustering.method.annotations;
 
 import org.gitools.api.matrix.IAnnotations;
-import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
+import org.gitools.utils.textpattern.TextPattern.VariableValueResolver;
 
 public class AnnotationResolver implements VariableValueResolver {
 

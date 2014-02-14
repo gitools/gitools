@@ -21,39 +21,13 @@
  */
 package org.gitools.utils;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import com.google.common.net.HttpHeaders;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpUtils {
-
-    public static void downloadFile(InputStream is, File outputFile) throws IOException {
-
-
-        OutputStream out = null;
-
-        try {
-            out = new FileOutputStream(outputFile);
-
-            byte[] buf = new byte[64 * 1024];
-            int bytesRead = 0;
-            while ((bytesRead = is.read(buf)) != -1) {
-                out.write(buf, 0, bytesRead);
-            }
-        } finally {
-            if (is != null) {
-                is.close();
-            }
-            if (out != null) {
-                out.flush();
-                out.close();
-            }
-        }
-    }
 
     public static long getContentLength(URL url) {
 
@@ -69,7 +43,7 @@ public class HttpUtils {
             return -1;
         }
 
-        String contentLengthString = conn.getHeaderField("Content-Length");
+        String contentLengthString = conn.getHeaderField(HttpHeaders.CONTENT_LENGTH);
         conn.disconnect();
 
         if (contentLengthString == null) {

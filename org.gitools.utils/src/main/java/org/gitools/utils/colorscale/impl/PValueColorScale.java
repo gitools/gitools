@@ -24,9 +24,9 @@ package org.gitools.utils.colorscale.impl;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.color.Colors;
+import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -132,7 +132,6 @@ public class PValueColorScale extends NumericColorScale {
         ArrayList<ColorScaleRange> rangesList = getInternalScaleRanges();
         rangesList.clear();
 
-        double[] points = getPoints();
         double min = getMinValue();
         double max = getMaxValue();
         double mid = getSignificanceLevel();

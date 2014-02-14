@@ -21,13 +21,7 @@
  */
 package org.gitools.heatmap.decorator;
 
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.heatmap.decorator.impl.BinaryDecorator;
-import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
-import org.gitools.heatmap.decorator.impl.CorrelationDecorator;
-import org.gitools.heatmap.decorator.impl.LinearDecorator;
-import org.gitools.heatmap.decorator.impl.PValueDecorator;
+import org.gitools.heatmap.decorator.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,38 +68,8 @@ public class DecoratorFactory {
         return null;
     }
 
-
     public static List<DecoratorDescriptor> getDescriptors() {
         return descriptors;
-    }
-
-    @Deprecated
-    public static Decorator defaultDecorator(IMatrix matrix, String layer) {
-
-        /*
-        Decorator decorator;
-
-        if (matrix instanceof ObjectMatrix) {
-            ObjectMatrix om = (ObjectMatrix) matrix;
-
-            Class<?> c = om.getObjectCellAdapter().getElementClass();
-
-            if (CommonResult.class.isAssignableFrom(c) || ZScoreResult.class == c) {
-                decorator = new ZScoreDecorator();
-            } else if (CommonResult.class.isAssignableFrom(c) || CommonResult.class == c) {
-                decorator = new PValueDecorator();
-            } else {
-                decorator = new LinearDecorator();
-            }
-
-        } else {
-            decorator = new LinearDecorator();
-        }
-
-        return decorator;
-        */
-
-        return new LinearDecorator();
     }
 
 }

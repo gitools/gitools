@@ -40,11 +40,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.progressmonitor.ProgressMonitor;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 

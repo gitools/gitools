@@ -21,12 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
 import org.gitools.resource.Resource;
 
 import java.util.HashMap;

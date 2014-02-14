@@ -65,6 +65,6 @@ public class MoveDownLayerAction extends HeatmapAction implements IHeatmapLayerA
     @Override
     public void onConfigure(HeatmapLayer object, HeatmapPosition position) {
         this.layer = object;
-        setEnabled(layer != null && (getHeaderCurrentIndex()+1) < getHeatmap().getLayers().size());
+        setEnabled(layer != null && (getHeaderCurrentIndex() + 1) < getHeatmap().getLayers().size());
     }
 }

@@ -40,7 +40,7 @@ public class ManhattanDistance implements DistanceMeasure {
             Double p1 = ai.next();
             Double p2 = bi.next();
 
-            if (p1==null || p2==null) {
+            if (p1 == null || p2 == null) {
                 continue;
             }
 

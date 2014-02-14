@@ -23,8 +23,8 @@ package org.gitools.matrix.sort;
 
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.SortDirection;
 
 import java.util.Comparator;
 

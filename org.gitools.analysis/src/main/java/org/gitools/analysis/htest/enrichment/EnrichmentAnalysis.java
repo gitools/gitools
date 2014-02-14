@@ -22,8 +22,6 @@
 package org.gitools.analysis.htest.enrichment;
 
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.geneset.GeneSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

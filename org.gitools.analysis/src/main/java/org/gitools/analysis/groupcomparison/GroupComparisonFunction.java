@@ -22,7 +22,7 @@
 package org.gitools.analysis.groupcomparison;
 
 import com.google.common.collect.Iterables;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;

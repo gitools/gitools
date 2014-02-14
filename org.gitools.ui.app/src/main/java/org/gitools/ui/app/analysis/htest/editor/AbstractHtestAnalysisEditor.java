@@ -24,14 +24,14 @@ package org.gitools.ui.app.analysis.htest.editor;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.analysis.ToolConfig;
 import org.gitools.heatmap.decorator.impl.BinaryDecorator;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;

@@ -33,11 +33,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 public class WizardDialog extends AbstractDialog {
 
@@ -67,8 +64,8 @@ public class WizardDialog extends AbstractDialog {
         setPreferredSize(new Dimension(800, 600));
         setLocationRelativeTo(owner);
 
-        pageControlsMap = new HashMap<String, JComponent>();
-        pageHistory = new Stack<IWizardPage>();
+        pageControlsMap = new HashMap<>();
+        pageHistory = new Stack<>();
 
         wizard.addWizardUpdateListener(new IWizardUpdateListener() {
             @Override
@@ -88,7 +85,6 @@ public class WizardDialog extends AbstractDialog {
 
         cancelled = true;
     }
-
 
     IWizard getWizard() {
         return currentPage != null ? currentPage.getWizard() : null;
@@ -162,7 +158,6 @@ public class WizardDialog extends AbstractDialog {
         pagePanel = new JPanel(new BorderLayout());
         return pagePanel;
     }
-
 
     @Override
     protected List<JButton> createButtons() {

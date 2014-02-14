@@ -21,14 +21,15 @@
  */
 package org.gitools.matrix;
 
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.MatrixDimensionKey;
 
+@Deprecated
 public class MatrixUtils {
 
     public static interface DoubleCast {

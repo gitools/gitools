@@ -29,12 +29,7 @@ import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.AbstractMatrixFunction;
@@ -48,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 
 public class OncodriveProcessor implements AnalysisProcessor {
 
@@ -74,7 +71,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
                 adapter.getMatrixLayers(),
                 genes,
                 sampleModules
-                );
+        );
 
         // Start Oncodrive analysis
         for (final String module : sampleModules) {
@@ -85,7 +82,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
             for (String sample : moduleMap.getMappingItems(module)) {
                 Iterables.addAll(population, position.set(samples, sample).iterate(layer, genes));
             }
-            test.processPopulation( population );
+            test.processPopulation(population);
 
             // Module samples
             final Set<String> moduleSamples = moduleMap.getMappingItems(module);

@@ -36,7 +36,9 @@ public class ResourceReferenceXmlElement {
     @XmlAttribute
     private String path;
 
+    @SuppressWarnings("UnusedDeclaration")
     public ResourceReferenceXmlElement() {
+        // JAXB requirement
     }
 
     public ResourceReferenceXmlElement(String format, String path) {

@@ -29,11 +29,7 @@ import org.gitools.datasources.idmapper.MappingNode;
 import org.gitools.datasources.kegg.service.KeggService;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
 

@@ -23,20 +23,20 @@ package org.gitools.analysis.enrichment;
 
 
 import junit.framework.Assert;
-import static junit.framework.Assert.assertEquals;
 import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.AssertMatrix;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
-import static org.gitools.api.ApplicationContext.getProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static org.gitools.api.ApplicationContext.getProgressMonitor;
 
 public class ZScoreEnrichmentProcessorTest extends AbstractProcessorTest<EnrichmentAnalysis> {
 

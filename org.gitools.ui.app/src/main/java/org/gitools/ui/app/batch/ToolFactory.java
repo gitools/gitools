@@ -21,11 +21,7 @@
  */
 package org.gitools.ui.app.batch;
 
-import org.gitools.ui.app.batch.tools.AddHeaderColoredLabelsTool;
-import org.gitools.ui.app.batch.tools.AddHeaderTextLabelsTool;
-import org.gitools.ui.app.batch.tools.ITool;
-import org.gitools.ui.app.batch.tools.LoadTool;
-import org.gitools.ui.app.batch.tools.VersionTool;
+import org.gitools.ui.app.batch.tools.*;
 
 import java.util.HashMap;
 import java.util.Map;

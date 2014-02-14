@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.actions.help;
 
+import org.gitools.ui.app.welcome.WelcomeEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.app.welcome.WelcomeEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

@@ -22,21 +22,17 @@
 package org.gitools.heatmap;
 
 import com.google.common.collect.Lists;
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
-import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.HashSet;

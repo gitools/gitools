@@ -25,7 +25,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 
 public class ProgressMonitor {
 
-
     private static final ThreadLocal<IProgressMonitor> progressMonitorThreadLocal = new ThreadLocal<IProgressMonitor>() {
 
         @Override

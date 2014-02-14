@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.app.actions.data;
 
-import static com.google.common.collect.Iterables.transform;
-import static org.apache.commons.lang.StringUtils.isEmpty;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.actions.HeatmapAction;
@@ -33,6 +31,9 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+
+import static com.google.common.collect.Iterables.transform;
+import static org.apache.commons.lang.StringUtils.isEmpty;
 
 
 public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {

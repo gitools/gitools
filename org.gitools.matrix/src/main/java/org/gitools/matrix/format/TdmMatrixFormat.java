@@ -30,14 +30,14 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.utils.datafilters.DoubleTranslator;
-import org.gitools.utils.fileutils.IOUtils;
 import org.gitools.utils.text.CSVReader;
 import org.gitools.utils.text.RawFlatTextWriter;
+import org.gitools.utils.translators.DoubleTranslator;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
 import java.util.concurrent.CancellationException;
+import java.util.zip.GZIPInputStream;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -174,7 +174,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         String[] matrixHeaders = null;
         try {
-            Reader reader = IOUtils.openReader(file);
+            Reader reader = openReader(file);
 
             CSVReader parser = new CSVReader(reader);
 
@@ -192,6 +192,18 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             throw new PersistenceException(e);
         }
         return matrixHeaders;
+    }
+
+    private static Reader openReader(File path) throws IOException {
+        if (path == null) {
+            return null;
+        }
+
+        if (path.getName().endsWith(".gz")) {
+            return new InputStreamReader(new GZIPInputStream(new FileInputStream(path)));
+        } else {
+            return new BufferedReader(new FileReader(path));
+        }
     }
 
 }

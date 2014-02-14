@@ -21,8 +21,9 @@
  */
 package org.gitools.utils.aggregation;
 
-import static org.apache.commons.math3.stat.StatUtils.max;
 import org.gitools.api.analysis.IAggregator;
+
+import java.util.Iterator;
 
 public class MaxAggregator extends AbstractAggregator {
 
@@ -33,8 +34,23 @@ public class MaxAggregator extends AbstractAggregator {
     }
 
     @Override
-    public Double aggregateNoNulls(double[] values) {
-        return max(values);
+    public Double aggregate(Iterable<Double> values) {
+
+        Iterator<Double> iterator = values.iterator();
+
+        if (!iterator.hasNext()) {
+            return null;
+        }
+
+        Double max = iterator.next();
+        while(iterator.hasNext()) {
+            Double next = iterator.next();
+            if (next!=null && next > max) {
+                max = next;
+            }
+        }
+
+        return max;
     }
 
 }

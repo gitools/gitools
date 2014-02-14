@@ -34,7 +34,7 @@ public class MeanStatistic implements Statistic {
         double sum = 0.0;
         int size = 0;
 
-        for(Double value : values) {
+        for (Double value : values) {
             if (value != null) {
                 sum += value;
                 size++;

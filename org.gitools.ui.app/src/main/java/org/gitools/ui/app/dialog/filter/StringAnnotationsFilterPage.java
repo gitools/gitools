@@ -23,25 +23,19 @@ package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.wizard.common.PatternSourcePage;
+import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 

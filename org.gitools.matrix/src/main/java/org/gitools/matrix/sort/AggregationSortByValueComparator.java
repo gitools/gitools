@@ -22,19 +22,20 @@
 package org.gitools.matrix.sort;
 
 import com.google.common.collect.Sets;
-import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.matrix.model.iterable.PositionMapping;
-import org.gitools.matrix.sort.mutualexclusion.AggregationFunction;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.matrix.model.iterable.PositionMapping;
+import org.gitools.matrix.sort.mutualexclusion.AggregationFunction;
 
 import java.util.Comparator;
 import java.util.Set;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AggregationSortByValueComparator implements Comparator<String> {
 

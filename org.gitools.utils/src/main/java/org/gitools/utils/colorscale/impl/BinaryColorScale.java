@@ -23,9 +23,9 @@ package org.gitools.utils.colorscale.impl;
 
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
+import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
-import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 

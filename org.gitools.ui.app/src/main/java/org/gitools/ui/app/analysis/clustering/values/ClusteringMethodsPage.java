@@ -31,9 +31,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ClusteringMethodsPage extends AbstractWizardPage {
 
     public ClusteringMethodsPage() {

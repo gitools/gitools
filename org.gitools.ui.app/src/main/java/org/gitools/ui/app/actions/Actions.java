@@ -21,15 +21,12 @@
  */
 package org.gitools.ui.app.actions;
 
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.ui.app.actions.analysis.CombinationsAction;
 import org.gitools.ui.app.actions.analysis.CorrelationsAction;
 import org.gitools.ui.app.actions.analysis.GroupComparisonAction;
 import org.gitools.ui.app.actions.analysis.OverlappingsAction;
 import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
-import org.gitools.ui.app.actions.edit.AddLayerAction;
 import org.gitools.ui.app.actions.edit.SelectAllAction;
 import org.gitools.ui.app.actions.edit.SelectLabelHeaderAction;
 import org.gitools.ui.app.actions.edit.UnselectAllAction;
@@ -38,6 +35,9 @@ import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.app.imageviewer.HeatmapCreateImageAction;
 import org.gitools.ui.platform.actions.ActionManager;
 import org.gitools.ui.platform.actions.BaseAction;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class Actions {
 
@@ -73,7 +73,6 @@ public class Actions {
     public static final BaseAction unselectAllAction = new UnselectAllAction();
     public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
     public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
-    public static final BaseAction addLayerHeader = new AddLayerAction();
 
     public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
 

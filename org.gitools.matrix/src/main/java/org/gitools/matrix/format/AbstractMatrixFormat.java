@@ -21,9 +21,9 @@
  */
 package org.gitools.matrix.format;
 
-import org.gitools.resource.AbstractResourceFormat;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.resource.AbstractResourceFormat;
 
 public abstract class AbstractMatrixFormat extends AbstractResourceFormat<IMatrix> {
 

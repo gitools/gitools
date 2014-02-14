@@ -25,10 +25,10 @@ import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.IPersistenceManager;
 import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.api.resource.IResourceFilter;
 import org.gitools.persistence.locators.filters.cache.CacheResourceManager;
 import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
 import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
@@ -50,10 +50,12 @@ import java.util.Map;
 public class PersistenceManager implements Serializable, IPersistenceManager {
 
 
-    @Inject @Any
+    @Inject
+    @Any
     private Instance<IResourceFilter> resourceFilters;
 
-    @Inject @Any
+    @Inject
+    @Any
     private Instance<IResourceFormat<?>> resourceFormats;
 
     private final List<IResourceFilter> filters = new ArrayList<>();
@@ -61,10 +63,6 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
     private final Map<Class<? extends IResource>, String> classToDefaultExtension = new HashMap<>();
 
     public PersistenceManager() {
-    }
-
-    public PersistenceManager(Instance<IResourceFilter> resourceFilters, Instance<IResourceFormat<?>> resourceFormats) {
-
     }
 
     @PostConstruct

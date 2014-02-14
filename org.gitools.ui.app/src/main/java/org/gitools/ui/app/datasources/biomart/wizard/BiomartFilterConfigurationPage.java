@@ -22,13 +22,7 @@
 package org.gitools.ui.app.datasources.biomart.wizard;
 
 import org.gitools.datasources.biomart.BiomartService;
-import org.gitools.datasources.biomart.restful.model.DatasetConfig;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.Filter;
-import org.gitools.datasources.biomart.restful.model.FilterCollection;
-import org.gitools.datasources.biomart.restful.model.FilterGroup;
-import org.gitools.datasources.biomart.restful.model.FilterPage;
-import org.gitools.datasources.biomart.restful.model.Option;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.filter.FilterCollectionPanel;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;

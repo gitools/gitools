@@ -26,14 +26,10 @@ import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
-/**
- * @noinspection ALL
- */
 public class JobThread implements JobRunnable {
 
     private final Window parent;
@@ -50,10 +46,6 @@ public class JobThread implements JobRunnable {
         new JobThread(parent, runnable).execute();
     }
 
-    public static void executeAndWait(Window parent, JobRunnable runnable) {
-        new JobThread(parent, runnable).executeAndWait();
-    }
-
     private JobThread(Window parent, JobRunnable runnable) {
         this.parent = parent;
         this.runnable = runnable;
@@ -67,14 +59,6 @@ public class JobThread implements JobRunnable {
     public Window getParent() {
         return parent;
     }
-
-    /*public synchronized boolean isCancelled() {
-        return cancelled;
-    }
-
-    public synchronized void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }*/
 
     Thread getThread() {
         return thread;
@@ -188,20 +172,6 @@ public class JobThread implements JobRunnable {
 
         getDlg().setModal(true);
         getDlg().setVisible(true);
-    }
-
-    void executeAndWait() {
-
-        getDlg().setModal(true);
-        getDlg().setVisible(true);
-
-        try {
-            SwingUtilities.invokeAndWait(newRunnable());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean isCancelled() {

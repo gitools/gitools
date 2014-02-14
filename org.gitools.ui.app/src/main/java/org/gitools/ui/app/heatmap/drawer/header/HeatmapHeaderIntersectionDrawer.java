@@ -33,11 +33,8 @@ import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
 

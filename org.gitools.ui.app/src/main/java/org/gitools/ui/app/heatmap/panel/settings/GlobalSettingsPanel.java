@@ -28,8 +28,8 @@ import com.jgoodies.binding.value.AbstractValueModel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.resource.Resource;
-import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
 

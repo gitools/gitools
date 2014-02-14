@@ -28,14 +28,13 @@ public abstract class ReaderProfile {
     public static String MATRIX = "Matrix";
     public static String[] FILE_LAYOUTS = new String[]{MATRIX, TABLE};
 
-    String name;
-    Separator separator;
-    String layout;
-    int skipLines;
-    char commentChar;
-    String metaDataChar = "#?";
-    int[] ignoredColumns;
-
+    protected String name;
+    private Separator separator;
+    protected String layout;
+    private int skipLines;
+    private char commentChar;
+    private String metaDataChar = "#?";
+    private int[] ignoredColumns;
 
     protected ReaderProfile() {
         this.name = "default";

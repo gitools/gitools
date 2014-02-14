@@ -26,8 +26,8 @@ public interface IAggregator {
     /**
      * Aggregate all the values. The null values are skipped.
      *
-     * @param data the data vector to aggregate
+     * @param values the data vector to aggregate
      * @return The aggregation. NaN if all are NaNs.
      */
-    Double aggregate(Iterable<Double> data);
+    Double aggregate(Iterable<Double> values);
 }

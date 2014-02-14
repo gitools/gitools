@@ -23,13 +23,14 @@ package org.gitools.analysis.combination;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.matrix.modulemap.HashModuleMap;
-import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.matrix.modulemap.HashModuleMap;
 
+@Deprecated
 public class ConvertMatrixToModuleMapResourceReference extends ResourceReference<IModuleMap> {
 
     public ConvertMatrixToModuleMapResourceReference(IResourceLocator locator, IResourceFormat resourceFormat) {

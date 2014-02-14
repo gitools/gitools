@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

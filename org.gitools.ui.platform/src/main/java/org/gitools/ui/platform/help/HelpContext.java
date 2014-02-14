@@ -21,19 +21,12 @@
  */
 package org.gitools.ui.platform.help;
 
-/**
- * @noinspection ALL
- */
 public class HelpContext {
 
     private final String id;
 
     public HelpContext(String id) {
         this.id = id;
-    }
-
-    public HelpContext(Class<?> cls) {
-        this.id = cls.getCanonicalName();
     }
 
     public String getId() {

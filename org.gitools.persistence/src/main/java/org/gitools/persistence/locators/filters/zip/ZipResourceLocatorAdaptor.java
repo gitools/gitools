@@ -23,9 +23,9 @@ package org.gitools.persistence.locators.filters.zip;
 
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.filters.FilterResourceLocator;
-import org.gitools.api.resource.IResourceFilter;
 
 import java.io.IOException;
 import java.io.InputStream;

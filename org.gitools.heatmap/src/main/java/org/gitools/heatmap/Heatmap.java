@@ -148,8 +148,6 @@ public class Heatmap extends Resource implements IMatrixView {
             diagonalRows = new MirrorDimension(columns, rows);
         }
 
-        particularInitialization(matrix);
-
     }
 
     public boolean isDiagonal() {
@@ -222,24 +220,6 @@ public class Heatmap extends Resource implements IMatrixView {
     @Override
     public MatrixDimensionKey[] getDimensionKeys() {
         return dimensions;
-    }
-
-    @Deprecated
-    private void particularInitialization(IMatrix matrix) {
-        /*if (matrix instanceof DoubleBinaryMatrix) {
-            for (HeatmapLayer layer : getLayers()) {
-                BinaryDecorator decorator = new BinaryDecorator();
-                decorator.setCutoff(1.0);
-                decorator.setComparator(CutoffCmp.EQ);
-                layer.setDecorator(decorator);
-            }
-
-            getRows().setGridSize(0);
-            getColumns().setGridSize(0);
-        } else if (matrix instanceof DoubleMatrix) {
-            getRows().setGridSize(0);
-            getColumns().setGridSize(0);
-        } */
     }
 
 }

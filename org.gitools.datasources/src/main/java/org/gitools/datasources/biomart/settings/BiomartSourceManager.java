@@ -27,12 +27,7 @@ import org.slf4j.LoggerFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.List;
 
 public class BiomartSourceManager {
@@ -127,13 +122,6 @@ public class BiomartSourceManager {
 
     public List<BiomartSource> getSources() {
         return biomartSources.getSources();
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public void setSources(List<BiomartSource> sources) {
-        biomartSources.setSources(sources);
     }
 
     private void addSource(BiomartSource source) {

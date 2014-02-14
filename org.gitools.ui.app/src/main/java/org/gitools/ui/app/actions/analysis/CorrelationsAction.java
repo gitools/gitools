@@ -25,7 +25,6 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.file.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;

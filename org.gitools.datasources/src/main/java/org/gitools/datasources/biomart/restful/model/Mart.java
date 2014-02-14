@@ -54,8 +54,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * @noinspection ALL
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "mart", propOrder = {"name", "displayName", "database", "host", "path", "port", "visible", "_default", "serverVirtualSchema", "includeDatasets", "martUser", "redirect"})
@@ -88,7 +86,7 @@ class Mart {
      * Gets the value of the name property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getName() {
         return name;
@@ -108,7 +106,7 @@ class Mart {
      * Gets the value of the displayName property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getDisplayName() {
         return displayName;
@@ -128,7 +126,7 @@ class Mart {
      * Gets the value of the database property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getDatabase() {
         return database;
@@ -148,7 +146,7 @@ class Mart {
      * Gets the value of the host property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getHost() {
         return host;
@@ -168,7 +166,7 @@ class Mart {
      * Gets the value of the path property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getPath() {
         return path;
@@ -188,7 +186,7 @@ class Mart {
      * Gets the value of the port property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getPort() {
         return port;
@@ -236,7 +234,7 @@ class Mart {
      * Gets the value of the serverVirtualSchema property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getServerVirtualSchema() {
         return serverVirtualSchema;
@@ -256,7 +254,7 @@ class Mart {
      * Gets the value of the includeDatasets property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getIncludeDatasets() {
         return includeDatasets;
@@ -276,7 +274,7 @@ class Mart {
      * Gets the value of the martUser property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getMartUser() {
         return martUser;

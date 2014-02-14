@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import static com.google.common.collect.Lists.reverse;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
@@ -30,6 +29,8 @@ import org.gitools.ui.app.actions.HeatmapDynamicActionSet;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+
+import static com.google.common.collect.Lists.reverse;
 
 public class ColumnsActionSet extends HeatmapDynamicActionSet {
 

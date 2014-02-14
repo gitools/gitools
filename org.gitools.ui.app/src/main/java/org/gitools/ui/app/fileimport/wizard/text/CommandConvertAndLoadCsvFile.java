@@ -29,7 +29,7 @@ import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.utils.datafilters.DoubleTranslator;
+import org.gitools.utils.translators.DoubleTranslator;
 
 import java.util.List;
 import java.util.concurrent.CancellationException;

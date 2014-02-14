@@ -24,9 +24,6 @@ package org.gitools.datasources.biomart.settings;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BiomartSource {
 

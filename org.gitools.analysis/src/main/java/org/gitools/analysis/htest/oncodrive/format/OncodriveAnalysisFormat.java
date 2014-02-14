@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.htest.oncodrive.format;
 
+import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 

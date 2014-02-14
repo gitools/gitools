@@ -22,25 +22,17 @@
 package org.gitools.analysis.correlation;
 
 
-import static junit.framework.Assert.assertEquals;
 import org.gitools.analysis.AbstractProcessorTest;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.AssertMatrix;
-import org.gitools.analysis.WeldRunner;
-import static org.gitools.api.ApplicationContext.getPersistenceManager;
-import static org.gitools.api.ApplicationContext.getProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.resource.IResourceFormat;
-import org.gitools.api.resource.IResourceLocator;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.persistence.locators.UrlResourceLocator;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static org.gitools.api.ApplicationContext.getProgressMonitor;
 
 public class CorrelationProcessorTest extends AbstractProcessorTest<CorrelationAnalysis> {
 

@@ -27,12 +27,8 @@ import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResource;
-import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.api.resource.ResourceReference;
-import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -129,7 +125,6 @@ public class ResourceEditor<R extends IResource> extends AbstractEditor<R> {
 
     protected void onClose() {
     }
-
 
 
 }

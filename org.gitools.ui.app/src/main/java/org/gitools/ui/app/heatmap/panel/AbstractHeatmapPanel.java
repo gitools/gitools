@@ -27,12 +27,13 @@ import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderDrawer;
-import static org.gitools.utils.events.EventUtils.isAny;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static org.gitools.utils.events.EventUtils.isAny;
 
 class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 

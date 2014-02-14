@@ -22,24 +22,19 @@
 package org.gitools.matrix.format;
 
 import org.apache.commons.io.IOUtils;
-import org.gitools.resource.AbstractResourceFormat;
-import org.gitools.matrix.model.compressmatrix.AbstractCompressor;
-import org.gitools.matrix.model.compressmatrix.CompressDimension;
-import org.gitools.matrix.model.compressmatrix.CompressMatrix;
-import org.gitools.matrix.model.compressmatrix.CompressRow;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.matrix.model.compressmatrix.AbstractCompressor;
+import org.gitools.matrix.model.compressmatrix.CompressDimension;
+import org.gitools.matrix.model.compressmatrix.CompressMatrix;
+import org.gitools.matrix.model.compressmatrix.CompressRow;
+import org.gitools.resource.AbstractResourceFormat;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;

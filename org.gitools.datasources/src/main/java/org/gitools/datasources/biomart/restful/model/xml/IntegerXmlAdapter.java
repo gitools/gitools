@@ -23,12 +23,7 @@ package org.gitools.datasources.biomart.restful.model.xml;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-
-/**
- * @noinspection ALL
- */
 public class IntegerXmlAdapter extends XmlAdapter<String, Integer> {
-
 
     @Override
     public Integer unmarshal(String v) throws Exception {

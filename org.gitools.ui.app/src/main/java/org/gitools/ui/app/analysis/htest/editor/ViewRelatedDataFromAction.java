@@ -21,13 +21,12 @@
  */
 package org.gitools.ui.app.analysis.htest.editor;
 
-import static com.google.common.base.Predicates.in;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
@@ -38,6 +37,8 @@ import org.gitools.ui.platform.editor.EditorsPanel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Set;
+
+import static com.google.common.base.Predicates.in;
 
 
 public class ViewRelatedDataFromAction extends HeatmapDimensionAction {

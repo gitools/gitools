@@ -21,30 +21,27 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import static com.google.common.base.Predicates.in;
-import static com.google.common.base.Predicates.not;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Sets.newHashSet;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.wizard.common.ExportHeatmapLabelsWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.wizard.common.ExportHeatmapLabelsWizard;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Sets.newHashSet;
 
 public class ExportHeatmapLabelsAction extends HeatmapAction {
 

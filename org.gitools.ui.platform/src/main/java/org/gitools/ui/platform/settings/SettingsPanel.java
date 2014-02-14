@@ -29,7 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SettingsPanel implements ISettingsPanel {
+public class SettingsPanel {
 
     private String title = "";
     private Icon logo;
@@ -55,7 +55,6 @@ public class SettingsPanel implements ISettingsPanel {
         }
     }
 
-    @Override
     public String getTitle() {
         return title;
     }
@@ -64,7 +63,6 @@ public class SettingsPanel implements ISettingsPanel {
         this.title = title;
     }
 
-    @Override
     public Icon getLogo() {
         return logo;
     }
@@ -73,7 +71,6 @@ public class SettingsPanel implements ISettingsPanel {
         this.logo = logo;
     }
 
-    @Override
     public MessageStatus getStatus() {
         return status;
     }
@@ -82,7 +79,6 @@ public class SettingsPanel implements ISettingsPanel {
         this.status = status;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }
@@ -96,12 +92,10 @@ public class SettingsPanel implements ISettingsPanel {
         return this;
     }
 
-    @Override
     public String[] getSectionNames() {
         return sections.keySet().toArray(new String[sections.size()]);
     }
 
-    @Override
     public JComponent createComponents(String sectionName) {
 
         if (!sections.containsKey(sectionName)) {

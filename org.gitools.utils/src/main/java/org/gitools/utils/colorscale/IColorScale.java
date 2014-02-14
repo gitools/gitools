@@ -29,8 +29,6 @@ public interface IColorScale {
 
     Color valueColor(double value);
 
-
     IAggregator defaultAggregator();
-
 
 }

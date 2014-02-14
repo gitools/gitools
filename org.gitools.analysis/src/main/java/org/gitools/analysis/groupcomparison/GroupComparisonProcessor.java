@@ -23,7 +23,7 @@ package org.gitools.analysis.groupcomparison;
 
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
-import org.gitools.analysis.groupcomparison.DimensionGroups.DimensionGroup;
+import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
@@ -89,7 +89,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
 
             String combName = dimensionGroup1.getName() + " VS " + dimensionGroup2.getName();
             resultColnames.add(combName);
-            resultColumnAnnotations.setAnnotation(combName ,"Group 1", dimensionGroup1.getName());
+            resultColumnAnnotations.setAnnotation(combName, "Group 1", dimensionGroup1.getName());
             resultColumnAnnotations.setAnnotation(combName, "Group 2", dimensionGroup2.getName());
         }
 
@@ -98,10 +98,10 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
 
         Heatmap resultHeatmap = new Heatmap(
                 new HashMatrix(
-                    adapter.getMatrixLayers(),
-                    resultsRows,
-                    resultColumns
-            )
+                        adapter.getMatrixLayers(),
+                        resultsRows,
+                        resultColumns
+                )
         );
         resultHeatmap.getColumns().addAnnotations(resultColumnAnnotations);
         // Prepare group predicates

@@ -21,8 +21,6 @@
  */
 package org.gitools.api.resource;
 
-import org.gitools.api.resource.IResourceLocator;
-
 public interface IResourceFilter {
     String getSuffix();
 
@@ -30,8 +28,6 @@ public interface IResourceFilter {
 
     String removeExtension(String extension);
 
-
     IResourceLocator apply(IResourceLocator resourceLocator);
-
 
 }

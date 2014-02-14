@@ -33,14 +33,12 @@ import java.util.List;
 
 public class ActionSetUtils {
 
-
     public static JToolBar createToolBar(ActionSet actionSet) {
         WebToolBar toolBar = new WebToolBar(JToolBar.HORIZONTAL);
         toolBar.setFloatable(false);
         toolBar.setToolbarStyle(ToolbarStyle.attached);
         return createToolBar(toolBar, actionSet);
     }
-
 
     private static JToolBar createToolBar(JToolBar toolBar, ActionSet actionSet) {
 

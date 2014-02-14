@@ -42,7 +42,7 @@ public class FileFormatFilter extends FileFilter {
 
     public FileFormatFilter(FileFormat format) {
         this(format.getTitleWithExtension());
-        this.formats = new FileFormat[] { format };
+        this.formats = new FileFormat[]{format};
     }
 
     @Override

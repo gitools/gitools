@@ -27,9 +27,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-/**
- * @noinspection ALL
- */
 @XmlRootElement(name = "MartURLLocation")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MartLocation {

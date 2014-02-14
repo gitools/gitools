@@ -27,17 +27,9 @@ import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.restful.model.Attribute;
 import org.gitools.datasources.biomart.restful.model.Dataset;
 import org.gitools.datasources.biomart.restful.model.Query;
-import org.gitools.datasources.idmapper.AbstractMapper;
-import org.gitools.datasources.idmapper.MappingContext;
-import org.gitools.datasources.idmapper.MappingData;
-import org.gitools.datasources.idmapper.MappingException;
-import org.gitools.datasources.idmapper.MappingNode;
+import org.gitools.datasources.idmapper.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class EnsemblMapper extends AbstractMapper implements AllIds {
@@ -51,7 +43,6 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         this.service = service;
         this.dataset = dataset;
     }
-
 
     @Override
     public MappingData map(MappingContext context, MappingData data, MappingNode src, MappingNode dst, IProgressMonitor monitor) throws MappingException {

@@ -35,5 +35,4 @@ public class FontXmlElement {
         this.style = style;
         this.size = size;
     }
-
 }

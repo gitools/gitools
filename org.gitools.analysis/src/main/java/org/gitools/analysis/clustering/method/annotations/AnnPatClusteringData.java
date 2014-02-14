@@ -24,8 +24,8 @@ package org.gitools.analysis.clustering.method.annotations;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringDataInstance;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.utils.textpatt.TextPattern;
-import org.gitools.utils.textpatt.TextPattern.VariableValueResolver;
+import org.gitools.utils.textpattern.TextPattern;
+import org.gitools.utils.textpattern.TextPattern.VariableValueResolver;
 
 public class AnnPatClusteringData implements ClusteringData {
 
@@ -56,7 +56,7 @@ public class AnnPatClusteringData implements ClusteringData {
 
     @Override
     public ClusteringDataInstance getInstance(int index) {
-        return  getInstance(dimension.getLabel(index));
+        return getInstance(dimension.getLabel(index));
     }
 
     @Override

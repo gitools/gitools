@@ -27,12 +27,10 @@ import java.awt.*;
 
 public class FontXmlAdapter extends XmlAdapter<FontXmlElement, Font> {
 
-
     @Override
     public Font unmarshal(FontXmlElement v) throws Exception {
         return new Font(v.name, v.style, v.size);
     }
-
 
     @Override
     public FontXmlElement marshal(Font v) throws Exception {

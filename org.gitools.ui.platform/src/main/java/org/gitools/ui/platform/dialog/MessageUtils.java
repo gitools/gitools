@@ -28,9 +28,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @noinspection ALL
- */
 public class MessageUtils {
 
     private static final Logger log = Logger.getLogger(MessageUtils.class);
@@ -102,33 +99,6 @@ public class MessageUtils {
 
             return (Boolean) (returnValue.value);
 
-        }
-    }
-
-    public static String showInputDialog(final Frame parent, final String message, final String defaultValue) {
-
-        if (SwingUtilities.isEventDispatchThread()) {
-            String val = JOptionPane.showInputDialog(parent, message, defaultValue);
-            return val;
-        } else {
-            final ValueHolder returnValue = new ValueHolder();
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    String val = JOptionPane.showInputDialog(parent, message, defaultValue);
-                    returnValue.value = val;
-                }
-            };
-            try {
-                SwingUtilities.invokeAndWait(runnable);
-            } catch (InterruptedException e) {
-                log.error("Error in showMessage", e);
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                log.error("Error in showMessage", e);
-                throw new RuntimeException(e.getCause());
-            }
-
-            return (String) (returnValue.value);
         }
     }
 

@@ -31,7 +31,7 @@ public class AnnotationOption {
     }
 
     public String getDescription() {
-        return description == null ?  "" : description;
+        return description == null ? "" : description;
     }
 
     public AnnotationOption(String key, String description) {

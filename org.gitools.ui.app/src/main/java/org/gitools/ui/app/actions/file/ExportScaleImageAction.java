@@ -23,21 +23,20 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.app.scale.ScaleExportWizard;
+import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.scale.ScaleExportWizard;
-import org.gitools.ui.app.settings.Settings;
+import org.gitools.utils.colorscale.ColorScaleDrawer;
 import org.gitools.utils.colorscale.IColorScale;
-import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.imageio.ImageIO;
@@ -102,11 +101,6 @@ public class ExportScaleImageAction extends HeatmapAction {
                     monitor.info("File: " + file.getName());
 
                     ColorScaleDrawer drawer = new ColorScaleDrawer(scale, textFormatter);
-                    if (wz.isPartialRange()) {
-                        drawer.setZoomRangeMin(wz.getRangeMin());
-                        drawer.setZoomRangeMax(wz.getRangeMax());
-                    }
-                    //drawer.setPictureMode(true);
 
                     Dimension size = drawer.getSize();
                     size.width = wz.getScaleSize();

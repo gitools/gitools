@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
@@ -41,7 +40,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmapHeaderAction{
+public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
@@ -72,7 +71,7 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
         List<ISettingsSection> sections = new ArrayList<>();
 
-        sections.add( new DetailsSection(header) );
+        sections.add(new DetailsSection(header));
 
         if (header instanceof HeatmapDecoratorHeader) {
             sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
@@ -102,7 +101,6 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
     public void onConfigure(HeatmapHeader object, HeatmapPosition position) {
         setHeader(object);
     }
-
 
 
 }

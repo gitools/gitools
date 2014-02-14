@@ -64,7 +64,7 @@ public class ImportBiomartTableAction extends BaseAction {
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Downloading data...", 1);
                 Query query = wizard.getQuery();
-                String format = (String) wizard.getFormat().getExtension();
+                String format = wizard.getFormat().getExtension();
                 format = (format.endsWith("gz") ? BiomartModulesWizard.FORMAT_COMPRESSED_GZ : BiomartModulesWizard.FORMAT_PLAIN);
                 BiomartService service = wizard.getService();
                 try {

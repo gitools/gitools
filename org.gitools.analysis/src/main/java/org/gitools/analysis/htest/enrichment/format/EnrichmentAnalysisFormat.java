@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.htest.enrichment.format;
 
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 

@@ -22,10 +22,6 @@
 package org.gitools.analysis.stats.test;
 
 import cern.jet.stat.Probability;
-import static com.google.common.base.Predicates.notNull;
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.find;
-import static com.google.common.collect.Iterables.size;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.calc.Statistic;
@@ -34,6 +30,9 @@ import org.gitools.analysis.stats.test.results.ZScoreResult;
 
 import java.util.List;
 import java.util.Random;
+
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.*;
 
 public class ZscoreTest extends AbstractTest {
 
@@ -55,7 +54,7 @@ public class ZscoreTest extends AbstractTest {
     public void processPopulation(Iterable<Double> population) {
 
         Double seed = find(population, notNull());
-        this.random = new Random( seed.longValue() );
+        this.random = new Random(seed.longValue());
         this.population = Lists.newArrayList(population);
     }
 
@@ -87,8 +86,8 @@ public class ZscoreTest extends AbstractTest {
     }
 
 
-    public List<Double> randomSample(List<Double> items, int m){
-        for(int i=0;i<m;i++){
+    public List<Double> randomSample(List<Double> items, int m) {
+        for (int i = 0; i < m; i++) {
             int pos = i + random.nextInt(items.size() - i);
             Double tmp = items.get(pos);
             items.set(pos, items.get(i));

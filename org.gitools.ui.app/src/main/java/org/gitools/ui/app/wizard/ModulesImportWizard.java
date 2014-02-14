@@ -21,15 +21,15 @@
  */
 package org.gitools.ui.app.wizard;
 
-import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.app.wizard.common.SaveFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 
 public class ModulesImportWizard extends AbstractWizard {
 

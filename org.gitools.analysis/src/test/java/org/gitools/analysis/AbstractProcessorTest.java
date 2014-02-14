@@ -22,8 +22,6 @@
 package org.gitools.analysis;
 
 
-import static org.gitools.api.ApplicationContext.getPersistenceManager;
-import static org.gitools.api.ApplicationContext.getProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
@@ -34,6 +32,9 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.gitools.api.ApplicationContext.getPersistenceManager;
+import static org.gitools.api.ApplicationContext.getProgressMonitor;
 
 @RunWith(WeldRunner.class)
 public abstract class AbstractProcessorTest<A extends Analysis> {

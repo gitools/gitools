@@ -21,9 +21,6 @@
  */
 package org.gitools.datasources.obo;
 
-/**
- * @noinspection ALL
- */
 public interface OBOEventTypes {
 
     static final int UNKNOWN = -1;

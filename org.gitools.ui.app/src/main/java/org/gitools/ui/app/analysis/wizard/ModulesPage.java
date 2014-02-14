@@ -21,17 +21,17 @@
  */
 package org.gitools.ui.app.analysis.wizard;
 
-import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.dialog.MessageStatus;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.app.utils.FileChooserUtils;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

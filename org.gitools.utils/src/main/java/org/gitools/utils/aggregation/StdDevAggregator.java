@@ -21,9 +21,10 @@
  */
 package org.gitools.utils.aggregation;
 
+import org.gitools.api.analysis.IAggregator;
+
 import static org.apache.commons.math3.stat.StatUtils.variance;
 import static org.apache.commons.math3.util.FastMath.sqrt;
-import org.gitools.api.analysis.IAggregator;
 
 public class StdDevAggregator extends AbstractAggregator {
 

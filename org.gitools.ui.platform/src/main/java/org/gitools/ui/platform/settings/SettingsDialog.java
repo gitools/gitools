@@ -36,7 +36,7 @@ import java.util.List;
 
 public abstract class SettingsDialog extends AbstractDialog {
 
-    private final ISettingsPanel panel;
+    private final SettingsPanel panel;
 
     private JButton closeButton;
 
@@ -46,7 +46,7 @@ public abstract class SettingsDialog extends AbstractDialog {
 
     private JPanel sectionPanel;
 
-    public SettingsDialog(Window owner, ISettingsPanel panel, String selectedSection) {
+    public SettingsDialog(Window owner, SettingsPanel panel, String selectedSection) {
         super(owner, panel.getTitle(), panel.getLogo());
 
         setMinimumSize(new Dimension(700, 500));
@@ -70,9 +70,8 @@ public abstract class SettingsDialog extends AbstractDialog {
         // Selected panel
         for (String section : panel.getSectionNames()) {
             JComponent components = panel.createComponents(section);
-            components.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+            components.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             JScrollPane scrollPane = new JScrollPane(components);
-            //scrollPane.setMinimumSize(new Dimension(300, 400));
             selectedPanel.add(scrollPane, section);
         }
 

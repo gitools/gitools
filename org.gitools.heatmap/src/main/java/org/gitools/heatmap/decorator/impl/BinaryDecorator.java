@@ -21,21 +21,17 @@
  */
 package org.gitools.heatmap.decorator.impl;
 
-import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.decorator.Decoration;
+import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.BinaryColorScale;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 

@@ -24,7 +24,6 @@ package org.gitools.api.modulemap;
 
 import org.gitools.api.resource.IResource;
 
-import java.util.Collection;
 import java.util.Set;
 
 public interface IModuleMap extends IResource {

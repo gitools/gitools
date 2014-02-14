@@ -24,15 +24,11 @@ package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 
 /**
  * @noinspection ALL

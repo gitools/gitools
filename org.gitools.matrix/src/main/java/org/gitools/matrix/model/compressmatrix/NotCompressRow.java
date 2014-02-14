@@ -131,7 +131,6 @@ public class NotCompressRow {
      * @param values
      * @return
      * @throws java.io.UnsupportedEncodingException
-     *
      */
     private byte[] createColumnLine(double[] values) throws UnsupportedEncodingException {
         byte[] bytes = new byte[8 * values.length];

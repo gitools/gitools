@@ -27,8 +27,8 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.matrix.MatrixUtils;
+import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.impl.ZScoreColorScale;
-import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 

@@ -24,15 +24,11 @@ package org.gitools.ui.app.analysis.correlation.wizard;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
-
-import static com.google.common.base.Predicates.in;
 
 public class CorrelationAnalysisWizard extends AnalysisWizard<CorrelationAnalysis> {
 

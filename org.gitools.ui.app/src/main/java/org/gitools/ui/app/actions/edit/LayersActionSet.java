@@ -24,7 +24,6 @@ package org.gitools.ui.app.actions.edit;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.HeatmapDynamicActionSet;
 
 import javax.swing.*;
@@ -43,7 +42,7 @@ public class LayersActionSet extends HeatmapDynamicActionSet {
         menu.removeAll();
 
         HeatmapLayers layers = heatmap.getLayers();
-        int i=1;
+        int i = 1;
         for (HeatmapLayer layer : layers) {
 
             JMenuItem menuItem = new JMenuItem(new EditLayerAction(layer));
@@ -59,7 +58,5 @@ public class LayersActionSet extends HeatmapDynamicActionSet {
             i++;
         }
 
-        menu.addSeparator();
-        menu.add(Actions.addLayerHeader);
     }
 }

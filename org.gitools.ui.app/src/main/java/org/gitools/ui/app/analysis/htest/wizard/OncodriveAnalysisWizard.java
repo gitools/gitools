@@ -106,7 +106,7 @@ public class OncodriveAnalysisWizard extends AnalysisWizard<OncodriveAnalysis> {
 
         // Population
         File populationFile = dataFilterPage.getPopulationFile();
-        if (populationFile!=null) {
+        if (populationFile != null) {
             analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), GeneSet.class));
             analysis.setPopulationDefaultValue(dataFilterPage.getPopulationDefaultValue());
         }

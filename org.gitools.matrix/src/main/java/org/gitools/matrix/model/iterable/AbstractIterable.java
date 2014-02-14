@@ -24,15 +24,7 @@ package org.gitools.matrix.model.iterable;
 import com.google.common.collect.Iterators;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.ILayerAdapter;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixIterable;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.IMatrixPositionMapping;
-import org.gitools.api.matrix.IMatrixPredicate;
+import org.gitools.api.matrix.*;
 
 import java.util.Comparator;
 import java.util.Set;

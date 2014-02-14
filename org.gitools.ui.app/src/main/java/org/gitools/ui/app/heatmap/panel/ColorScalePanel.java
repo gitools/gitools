@@ -24,9 +24,7 @@ package org.gitools.ui.app.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.HeatmapLayers;
-import org.gitools.utils.colorscale.IColorScale;
-import org.gitools.utils.colorscale.drawer.ColorScaleDrawer;
-import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.utils.colorscale.ColorScaleDrawer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +61,6 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener {
     }
 
     public void update() {
-        drawer.resetZoom();
         setPreferredSize(drawer.getSize());
         repaint();
     }

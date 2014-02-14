@@ -21,8 +21,8 @@
  */
 package org.gitools.analysis.combination;
 
-import org.gitools.api.matrix.IMatrix;
 import org.gitools.analysis.Analysis;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 

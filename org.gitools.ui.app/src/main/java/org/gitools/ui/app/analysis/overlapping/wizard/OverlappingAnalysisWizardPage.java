@@ -23,12 +23,11 @@ package org.gitools.ui.app.analysis.overlapping.wizard;
 
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.app.utils.DocumentChangeListener;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

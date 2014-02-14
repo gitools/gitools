@@ -29,9 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-/**
- * @noinspection ALL
- */
 class OBOStream {
 
     private URL baseUrl;
@@ -125,7 +122,6 @@ class OBOStream {
         while (line != null && line.endsWith("\\")) {
             line = line.substring(0, line.length() - 1);
             completeLine.append(line);
-            //escapeCharsAndRemoveComments(line, completeLine);
             line = reader.readLine();
             linePos++;
             if (line != null) {
@@ -136,7 +132,6 @@ class OBOStream {
         if (line != null) {
             completeLine.append(line);
         }
-        //escapeCharsAndRemoveComments(line, completeLine);
 
         if (line == null && completeLine.length() == 0) {
             return null;

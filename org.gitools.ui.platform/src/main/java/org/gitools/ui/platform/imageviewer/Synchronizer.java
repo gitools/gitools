@@ -102,7 +102,7 @@ class Synchronizer {
     private void updateScroll(ImageViewer viewer, ImageViewer reference) {
         if (reference == viewer) return;
         /*
-		 * Note that this method may be called during a resize, before the viewport has had a chance to reshape itself
+         * Note that this method may be called during a resize, before the viewport has had a chance to reshape itself
 		 * so we cannot rely on the view rectangle.
 		 */
         viewer.getScrollPane().getHorizontalScrollBar().getModel().setValue(reference.getScrollPane().getHorizontalScrollBar().getModel().getValue());

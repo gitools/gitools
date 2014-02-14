@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.groupcomparison.format;
 
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 

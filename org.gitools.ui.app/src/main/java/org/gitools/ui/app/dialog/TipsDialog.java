@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.dialog;
 
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.help.GitoolsTips;
 import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.help.Tips;
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.tips.TipLoader;
 import org.jdesktop.swingx.tips.TipOfTheDayModel;
@@ -32,7 +32,6 @@ import java.util.Properties;
 import java.util.Random;
 
 public class TipsDialog {
-    private final GitoolsTips gitoolsTips = new GitoolsTips();
 
     public TipsDialog() {
     }
@@ -40,7 +39,7 @@ public class TipsDialog {
 
     public void show(boolean forceShow) {
 
-        Properties tipProperties = gitoolsTips.getTips();
+        Properties tipProperties = Tips.get().getTips();
 
         TipOfTheDayModel loadedTips = TipLoader.load(tipProperties);
 

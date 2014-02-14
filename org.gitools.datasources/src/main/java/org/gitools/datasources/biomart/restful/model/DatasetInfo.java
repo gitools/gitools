@@ -27,9 +27,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "datasetInfo", propOrder = {"name", "displayName", "type", "visible", "_interface"})
 public class DatasetInfo {
@@ -52,7 +49,7 @@ public class DatasetInfo {
      * Gets the value of the name property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getName() {
         return name;
@@ -72,7 +69,7 @@ public class DatasetInfo {
      * Gets the value of the displayName property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getDisplayName() {
         return displayName;
@@ -92,7 +89,7 @@ public class DatasetInfo {
      * Gets the value of the type property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getType() {
         return type;
@@ -126,7 +123,7 @@ public class DatasetInfo {
      * Gets the value of the interface property.
      *
      * @return possible object is
-     *         {@link String }
+     * {@link String }
      */
     public String getInterface() {
         return _interface;

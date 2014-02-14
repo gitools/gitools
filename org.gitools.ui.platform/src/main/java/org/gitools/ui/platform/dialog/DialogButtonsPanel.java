@@ -25,9 +25,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class DialogButtonsPanel extends JPanel {
 
     private static final long serialVersionUID = 738021254078143859L;
@@ -46,13 +43,7 @@ public class DialogButtonsPanel extends JPanel {
         setButtons(buttons);
 
         setLayout(new BorderLayout());
-        //add(new JSeparator(SwingConstants.HORIZONTAL), BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.CENTER);
-    }
-
-
-    public List<JButton> getButtons() {
-        return buttons;
     }
 
     void setButtons(List<JButton> buttons) {

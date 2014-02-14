@@ -22,20 +22,21 @@
 package org.gitools.ui.app.sort;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.app.wizard.common.PatternSourcePage;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.wizard.common.PatternSourcePage;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AnnotationSortPage extends AbstractWizardPage {
 

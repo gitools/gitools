@@ -22,9 +22,9 @@
 package org.gitools.ui.app.wizard.common;
 
 import com.googlecode.vfsjfilechooser2.VFSJFileChooser;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.app.utils.VFSFileFilterAdaptor;
+import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 import java.awt.*;

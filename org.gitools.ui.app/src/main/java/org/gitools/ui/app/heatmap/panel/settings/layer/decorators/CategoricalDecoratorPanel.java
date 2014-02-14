@@ -23,12 +23,12 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.value.ValueModel;
-import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.app.dialog.EditCategoricalScaleDialog;
+import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.AbstractDialog;
-import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
 import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.impl.CategoricalColorScale;

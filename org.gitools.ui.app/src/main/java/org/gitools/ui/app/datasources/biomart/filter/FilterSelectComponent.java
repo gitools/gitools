@@ -21,12 +21,7 @@
  */
 package org.gitools.ui.app.datasources.biomart.filter;
 
-import org.gitools.datasources.biomart.restful.model.Filter;
-import org.gitools.datasources.biomart.restful.model.FilterDescription;
-import org.gitools.datasources.biomart.restful.model.FilterGroup;
-import org.gitools.datasources.biomart.restful.model.FilterPage;
-import org.gitools.datasources.biomart.restful.model.Option;
-import org.gitools.datasources.biomart.restful.model.PushAction;
+import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.wizard.BiomartFilterConfigurationPage.CollectionsPanelsCache;
 
 import javax.swing.*;

@@ -22,9 +22,9 @@
 package org.gitools.ui.app.heatmap.header.wizard;
 
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.app.utils.FontUtils;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.app.utils.FontUtils;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

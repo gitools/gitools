@@ -24,10 +24,10 @@ package org.gitools.heatmap.header;
 import com.google.common.base.Function;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.matrix.filter.AnnotationFunction;
 import org.gitools.matrix.filter.NoTransformFunction;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.heatmap.decorator.DetailsDecoration;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

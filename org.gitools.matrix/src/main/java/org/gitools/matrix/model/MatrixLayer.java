@@ -26,7 +26,7 @@ import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
-import org.gitools.utils.datafilters.ValueTranslatorFactory;
+import org.gitools.utils.translators.ValueTranslatorFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

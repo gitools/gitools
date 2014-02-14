@@ -23,21 +23,12 @@ package org.gitools.datasources.biomart;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
-import org.gitools.datasources.biomart.restful.model.AttributePage;
-import org.gitools.datasources.biomart.restful.model.DatasetConfig;
-import org.gitools.datasources.biomart.restful.model.DatasetInfo;
-import org.gitools.datasources.biomart.restful.model.FilterPage;
-import org.gitools.datasources.biomart.restful.model.MartLocation;
-import org.gitools.datasources.biomart.restful.model.Query;
-import org.gitools.api.persistence.FileFormat;
+import org.gitools.datasources.biomart.restful.model.*;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public interface BiomartService {
 
     List<MartLocation> getRegistry() throws BiomartServiceException;
@@ -49,8 +40,6 @@ public interface BiomartService {
     List<AttributePage> getAttributes(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException;
 
     List<FilterPage> getFilters(MartLocation mart, DatasetInfo dataset) throws BiomartServiceException;
-
-    FileFormat[] getSupportedFormats();
 
     InputStream queryAsStream(Query query, String format) throws BiomartServiceException;
 

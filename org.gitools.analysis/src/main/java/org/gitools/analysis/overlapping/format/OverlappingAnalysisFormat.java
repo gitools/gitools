@@ -21,9 +21,9 @@
  */
 package org.gitools.analysis.overlapping.format;
 
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.resource.AbstractXmlFormat;
-import org.gitools.analysis.overlapping.OverlappingAnalysis;
 
 import javax.enterprise.context.ApplicationScoped;
 

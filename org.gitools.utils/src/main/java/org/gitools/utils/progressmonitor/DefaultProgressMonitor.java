@@ -95,10 +95,6 @@ public class DefaultProgressMonitor implements IProgressMonitor {
         return worked;
     }
 
-    protected long getTotalWork() {
-        return totalWork;
-    }
-
     @Override
     public IProgressMonitor subtask() {
         return new DefaultProgressMonitor(this);

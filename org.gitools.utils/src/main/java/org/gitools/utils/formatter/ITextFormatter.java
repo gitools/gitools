@@ -23,14 +23,8 @@ package org.gitools.utils.formatter;
 
 import java.io.Serializable;
 
-/**
- * Created with IntelliJ IDEA.
- * User: mschroeder
- * Date: 9/16/13
- * Time: 4:06 PM
- * To change this template use File | Settings | File Templates.
- */
 public interface ITextFormatter extends Serializable {
 
     String format(Object value);
+
 }

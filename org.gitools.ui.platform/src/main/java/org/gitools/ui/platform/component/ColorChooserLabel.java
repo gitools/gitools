@@ -28,9 +28,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ColorChooserLabel extends JLabel implements MouseListener {
 
     private static final long serialVersionUID = -2974772763040220614L;

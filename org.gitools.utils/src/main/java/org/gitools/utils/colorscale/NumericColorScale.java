@@ -22,7 +22,6 @@
 package org.gitools.utils.colorscale;
 
 import org.gitools.utils.color.Colors;
-import org.gitools.utils.colorscale.util.ColorConstants;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,9 +30,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * @noinspection ALL
- */
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class NumericColorScale implements IColorScale, IColorScaleHtml {
 
@@ -53,7 +49,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
 
     protected NumericColorScale() {
         super();
-        rangesList = new ArrayList<ColorScaleRange>();
+        rangesList = new ArrayList<>();
     }
 
 
@@ -99,10 +95,6 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
         if (Double.isNaN(value)) {
             return getNotANumberColor();
         }
-        //        else if (value == Double.POSITIVE_INFINITY)
-        //            return getPosInfinityColor();
-        //        else if (value == Double.NEGATIVE_INFINITY)
-        //            return getNegInfinityColor();
 
         return null;
     }
@@ -112,32 +104,6 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
             return ColorConstants.notANumberColor;
         }
         return notANumberColor;
-    }
-
-    public void setNotANumberColor(Color notANumberColor) {
-        this.notANumberColor = notANumberColor;
-    }
-
-    public Color getPosInfinityColor() {
-        if (posInfinityColor == null) {
-            return ColorConstants.posInfinityColor;
-        }
-        return posInfinityColor;
-    }
-
-    public void setPosInfinityColor(Color posInfinityColor) {
-        this.posInfinityColor = posInfinityColor;
-    }
-
-    public Color getNegInfinityColor() {
-        if (negInfinityColor == null) {
-            return ColorConstants.negInfinityColor;
-        }
-        return negInfinityColor;
-    }
-
-    public void setNegInfinityColor(Color negInfinityColor) {
-        this.negInfinityColor = negInfinityColor;
     }
 
     public Color getEmptyColor() {
@@ -160,7 +126,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
 
     protected ArrayList<ColorScaleRange> getInternalScaleRanges() {
         if (rangesList == null) {
-            rangesList = new ArrayList<ColorScaleRange>();
+            rangesList = new ArrayList<>();
         }
         return rangesList;
     }
@@ -169,7 +135,7 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
         rangesList.clear();
 
         double[] points = getPoints();
-        double min = Double.NaN;
+        double min;
         double max = Double.NaN;
         for (int i = 0; i < points.length; i++) {
             min = max;

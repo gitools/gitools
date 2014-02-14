@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.clustering.hierarchical;
 
-import static com.google.common.collect.Lists.newArrayList;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.matrix.IMatrix;
@@ -34,8 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class HierarchicalClusterer {
-    
+
     private LinkageStrategy linkageStrategy;
     private DistanceMeasure measure;
 

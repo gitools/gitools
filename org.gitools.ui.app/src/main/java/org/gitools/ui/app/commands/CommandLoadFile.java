@@ -35,7 +35,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
-import static org.gitools.api.ApplicationContext.getPersistenceManager;
+import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
@@ -43,7 +43,6 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.api.resource.ResourceReference;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -67,6 +66,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.CancellationException;
+
+import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
 public class CommandLoadFile extends AbstractCommand {
 
@@ -135,7 +136,7 @@ public class CommandLoadFile extends AbstractCommand {
         return;
     }
 
-    protected IResource loadResource( IProgressMonitor monitor ) {
+    protected IResource loadResource(IProgressMonitor monitor) {
         return getPersistenceManager().load(getResourceLocator(), getFormat(), monitor);
     }
 

@@ -52,15 +52,15 @@ public class FisherTest extends AbstractTest {
     @Override
     public CommonResult processTest(Iterable<Double> values) {
 
-        int notOnes=0, ones=0;
+        int notOnes = 0, ones = 0;
         for (Double value : values) {
-             if (value != null) {
-                 if (value == 1.0) {
-                     ones++;
-                 } else {
-                     notOnes++;
-                 }
-             }
+            if (value != null) {
+                if (value == 1.0) {
+                    ones++;
+                } else {
+                    notOnes++;
+                }
+            }
         }
 
         FisherExactTest fisher = new FisherExactTest(ones, notOnes, (populationOnes - ones), (populationNotOnes - notOnes));

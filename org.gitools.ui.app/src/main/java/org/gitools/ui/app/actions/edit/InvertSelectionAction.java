@@ -21,8 +21,6 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import static com.google.common.base.Predicates.in;
-import static com.google.common.base.Predicates.not;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
@@ -31,6 +29,9 @@ import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAct
 import org.gitools.ui.platform.Application;
 
 import java.awt.event.ActionEvent;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
 
 public class InvertSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 

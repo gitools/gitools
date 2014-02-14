@@ -39,7 +39,6 @@ public interface IWizard {
 
     void setCurrentPage(IWizardPage currentPage);
 
-
     IWizardPage getNextPage(IWizardPage page);
 
     IWizardPage getPreviousPage(IWizardPage page);

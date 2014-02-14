@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.platform.help;
 
-import org.gitools.ui.platform.PropertiesExpansion;
-
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,28 +34,9 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Help {
+public class Help {
 
     private static Help instance;
-
-    public static class UrlMap {
-        private final Pattern pattern;
-        private final String url;
-
-        public UrlMap(Pattern pattern, String url) {
-            this.pattern = pattern;
-            this.url = url;
-        }
-
-        public Pattern getPattern() {
-            return pattern;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-    }
-
     private final PropertiesExpansion properties;
     private final List<UrlMap> urlMap;
 
@@ -71,7 +51,7 @@ public abstract class Help {
 
     public static Help get() {
         if (instance == null) {
-            instance = new DesktopNavigatorHelp();
+            instance = new Help();
         }
 
         return instance;
@@ -103,7 +83,6 @@ public abstract class Help {
         br.close();
     }
 
-
     URL getHelpUrl(HelpContext context) throws MalformedURLException {
         String id = context.getId();
         String urlStr = null; // FIXME Use a default url
@@ -121,8 +100,14 @@ public abstract class Help {
         return new URL(urlStr);
     }
 
-    public abstract void showHelp(HelpContext context) throws HelpException;
-
+    public void showHelp(HelpContext context) throws HelpException {
+        try {
+            URL url = getHelpUrl(context);
+            Desktop.getDesktop().browse(url.toURI());
+        } catch (Exception ex) {
+            throw new HelpException(ex);
+        }
+    }
 
     private String expandPattern(Properties properties, String pattern) {
 
@@ -185,5 +170,23 @@ public abstract class Help {
         }
 
         return output.toString();
+    }
+
+    public static class UrlMap {
+        private final Pattern pattern;
+        private final String url;
+
+        public UrlMap(Pattern pattern, String url) {
+            this.pattern = pattern;
+            this.url = url;
+        }
+
+        public Pattern getPattern() {
+            return pattern;
+        }
+
+        public String getUrl() {
+            return url;
+        }
     }
 }

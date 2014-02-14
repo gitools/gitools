@@ -24,9 +24,9 @@ package org.gitools.ui.app.datasources.biomart.wizard;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.DatasetInfo;
 import org.gitools.datasources.biomart.restful.model.MartLocation;
+import org.gitools.ui.app.wizard.common.FilteredListPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.ui.app.wizard.common.FilteredListPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

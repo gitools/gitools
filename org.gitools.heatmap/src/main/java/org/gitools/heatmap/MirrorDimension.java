@@ -21,11 +21,10 @@
  */
 package org.gitools.heatmap;
 
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.api.matrix.IAnnotations;
-import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 
 import java.awt.*;

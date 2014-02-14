@@ -22,18 +22,18 @@
 package org.gitools.heatmap;
 
 import com.google.common.collect.Lists;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.SortDirection;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.sort.AggregationSortByValueComparator;
 import org.gitools.matrix.sort.SingleSortByValueComparator;
 import org.gitools.matrix.sort.SortByLabelComparator;
 import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.SortDirection;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import java.beans.PropertyChangeListener;

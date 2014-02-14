@@ -24,7 +24,6 @@ package org.gitools.ui.app.analysis.htest.wizard;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -33,7 +32,6 @@ import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
 import org.gitools.ui.app.analysis.wizard.ModulesPage;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.wizard.AbstractWizard;
 
 import java.io.File;
 
@@ -107,14 +105,13 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
 
         // Population
         File populationFile = dataFilterPage.getPopulationFile();
-        if (populationFile!=null) {
+        if (populationFile != null) {
             analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), GeneSet.class));
             analysis.setPopulationDefaultValue(dataFilterPage.getPopulationDefaultValue());
         }
 
         return analysis;
     }
-
 
 
 }

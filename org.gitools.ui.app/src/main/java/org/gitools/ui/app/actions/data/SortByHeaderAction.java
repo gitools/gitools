@@ -22,8 +22,6 @@
 package org.gitools.ui.app.actions.data;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import static org.gitools.api.matrix.SortDirection.ASCENDING;
-import static org.gitools.api.matrix.SortDirection.DESCENDING;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -36,6 +34,9 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
 import java.awt.event.ActionEvent;
+
+import static org.gitools.api.matrix.SortDirection.ASCENDING;
+import static org.gitools.api.matrix.SortDirection.DESCENDING;
 
 
 public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {

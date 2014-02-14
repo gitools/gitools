@@ -26,10 +26,10 @@ import org.gitools.datasources.modules.importer.ModuleCategory;
 import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.datasources.modules.importer.Organism;
 import org.gitools.datasources.modules.importer.Version;
+import org.gitools.ui.app.wizard.common.FilteredListPage;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.ui.app.wizard.common.FilteredListPage;
 
 import javax.swing.*;
 

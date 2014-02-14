@@ -22,12 +22,7 @@
 package org.gitools.analysis;
 
 import junit.framework.Assert;
-import org.gitools.api.matrix.IMatrix;
-
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.*;
 
 public class AssertMatrix {
 
@@ -43,7 +38,7 @@ public class AssertMatrix {
     static public void assertEquals(IMatrix m1, IMatrix m2, double delta) {
 
         for (MatrixDimensionKey key : m1.getDimensionKeys()) {
-           assertEquals(m1.getDimension(key), m2.getDimension(key));
+            assertEquals(m1.getDimension(key), m2.getDimension(key));
         }
 
         Assert.assertEquals(m1.getLayers().size(), m2.getLayers().size());
@@ -93,7 +88,7 @@ public class AssertMatrix {
         }
 
         if (v1 instanceof Double) {
-            Assert.assertEquals(message, ((Double) v1).doubleValue(), ((Double)v2).doubleValue(), delta);
+            Assert.assertEquals(message, ((Double) v1).doubleValue(), ((Double) v2).doubleValue(), delta);
             return;
         }
 
@@ -101,7 +96,7 @@ public class AssertMatrix {
     }
 
     static public void assertEquals(IMatrixDimension d1, IMatrixDimension d2) {
-        Assert.assertEquals("Dimension '"+d1.getId()+"' size", d1.size(), d2.size());
+        Assert.assertEquals("Dimension '" + d1.getId() + "' size", d1.size(), d2.size());
 
         for (String id : d1) {
             Assert.assertTrue(d2.contains(id));
