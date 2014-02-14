@@ -130,7 +130,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         preview.setCaretPosition(0);
 
 
-        if (allHeaders.size() > 3) {
+        if (allHeaders.size() > 2) {
             setComplete(true);
             setMessage(MessageStatus.INFO, "Select Data Layout.");
         } else {
