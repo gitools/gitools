@@ -27,8 +27,6 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -96,11 +94,9 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void performFinish() {
         FlatTextReader reader = selectColumnsPage.getReader();
-        int columns = selectColumnsPage.getSelectedColumn();
-        int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
-        JobRunnable loadFile = new CommandConvertAndLoadCsvFile(columns, rows, values, reader);
-        JobThread.execute(Application.get(), loadFile);
+        //JobRunnable loadFile = new CommandConvertAndLoadCsvFile(columns, rows, values, reader);
+        //JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
     }
 
