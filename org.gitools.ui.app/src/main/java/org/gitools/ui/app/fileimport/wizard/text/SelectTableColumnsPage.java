@@ -212,7 +212,23 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
 
     @Override
     public void finish() throws ReaderProfileValidationException {
+
+        TableReaderProfile profile = (TableReaderProfile) reader.getReaderProfile();
+
+        profile.setHeatmapRowsIds(getPositions(rowsHeaderList));
+        profile.setHeatmapColumnsIds(getPositions(columnsHeaderLists));
+        profile.setDataColumns(getPositions(valuesHeaderList));
+        profile.setIgnoredColumns(getPositions(ignoredHeaderList));
+
         reader.getReaderProfile().validate(allheaders);
+    }
+
+    private int[] getPositions(JList<FileHeader> headerList) {
+        int[] indices = new int[headerList.getModel().getSize()];
+        for (int i = 0; i < indices.length; i++) {
+            indices[i] = headerList.getModel().getElementAt(i).getPos();
+        }
+        return indices;
     }
 
     @Override

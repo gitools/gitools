@@ -107,16 +107,10 @@ public abstract class ReaderProfile {
         this.ignoredColumns = ignoredColumns;
     }
 
-    /**
-     * Which columns in the flat text are mapped as heatmap column id
-     */
     public int[] getDataColumns() {
         return dataColumns;
     }
 
-    /**
-     * @param dataColumns: indices of columns mapped to heatmap row ids
-     */
     public void setDataColumns(int[] dataColumns) {
         this.dataColumns = dataColumns;
     }

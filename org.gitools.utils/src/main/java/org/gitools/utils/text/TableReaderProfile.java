@@ -111,6 +111,20 @@ public class TableReaderProfile extends ReaderProfile {
     }
 
     /**
+     * Which columns in the flat text are mapped as heatmap column id
+     */
+    public int[] getHeatmapColumnsIds() {
+        return heatmapColumnsIds;
+    }
+
+    /**
+     * @param heatmapColumnsIds: indices of columns mapped to heatmap row ids
+     */
+    public void setHeatmapColumnsIds(int[] heatmapColumnsIds) {
+        this.dataColumns = heatmapColumnsIds;
+    }
+
+    /**
      * @param fieldGlue String to glue id fields together.
      */
     public void setFieldGlue(String fieldGlue) {
