@@ -94,11 +94,16 @@ public class FlatTextReader implements JobRunnable, Closeable {
                 preview = new ArrayList<>();
                 for (int i = 0; i < previewLength; i++) {
                     line = reader.readNext();
-                    ArrayList<FileField> fields = new ArrayList<FileField>(line.length);
-                    for (int j = 0; j < line.length; j++) {
-                        fields.add(new FileField(line[j], j, 0, i));
+                    if (line != null) {
+                        ArrayList<FileField> fields = new ArrayList<FileField>(line.length);
+                        for (int j = 0; j < line.length; j++) {
+                            fields.add(new FileField(line[j], j, 0, i));
+                        }
+                        preview.add(fields);
+                    } else {
+                        previewLength = i;
                     }
-                    preview.add(fields);
+
                 }
             }
             reader.close();

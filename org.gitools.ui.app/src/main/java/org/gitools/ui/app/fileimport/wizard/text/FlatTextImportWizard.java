@@ -30,6 +30,7 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.text.ReaderProfile;
 import org.gitools.utils.text.ReaderProfileValidationException;
 import org.gitools.utils.text.TableReaderProfile;
 
@@ -42,8 +43,8 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
     private IResourceLocator locator;
     private SelectDataLayoutPage selectDataLayoutPage;
-    private SelectColumnsPage selectColumnsPage;
     private SelectTableColumnsPage selectTableColumnsPage;
+    private SelectMatrixColumnsPage selectMatrixColumnsPage;
 
     public FlatTextImportWizard() {
         setTitle("Import a text file");
@@ -66,13 +67,12 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();
-        selectTableColumnsPage.setTitle("Columns purpose");
+        selectTableColumnsPage.setTitle("Table format");
         addPage(selectTableColumnsPage);
 
-        //selectColumnsPage = new SelectColumnsPage();
-        //selectColumnsPage.setTitle("Select rows, columns and values headers");
-        //addPage(selectColumnsPage);
-
+        selectMatrixColumnsPage = new SelectMatrixColumnsPage();
+        selectMatrixColumnsPage.setTitle("Matrix format");
+        addPage(selectMatrixColumnsPage);
     }
 
     @Override
@@ -80,15 +80,26 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
         IWizardPage nextPage = super.getNextPage(getCurrentPage());
 
-        if (nextPage.equals(selectTableColumnsPage)) {
-            selectTableColumnsPage.setReader(selectDataLayoutPage.getReader());
-        }
 
-        if (nextPage.equals(selectColumnsPage)) {
-            selectColumnsPage.setReader(selectDataLayoutPage.getReader());
+        if (selectDataLayoutPage.equals(page)) {
+            String layout = selectDataLayoutPage.getReader().getReaderProfile().getLayout();
+            if (layout.equals(ReaderProfile.MATRIX)) {
+                selectMatrixColumnsPage.setReader(selectDataLayoutPage.getReader());
+                nextPage = selectMatrixColumnsPage;
+            } else if (layout.equals(ReaderProfile.TABLE)) {
+                selectTableColumnsPage.setReader(selectDataLayoutPage.getReader());
+                nextPage = selectTableColumnsPage;
+            }
         }
-
         return nextPage;
+    }
+
+    @Override
+    public boolean isLastPage(IWizardPage page) {
+        if (page.equals(selectTableColumnsPage) || page.equals(selectMatrixColumnsPage))
+            return true;
+
+        return super.isLastPage(page);
     }
 
     @Override

@@ -55,6 +55,10 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     public SelectDataLayoutPage(FlatTextReader flatTextReader) {
         this.reader = flatTextReader;
 
+        if (reader.getHeaders().get(0).getLabel().equals("")) {
+            reader.setReaderProfile(MatrixReaderProfile.fromProfile(reader.getReaderProfile()));
+        }
+
         separatorsModel = new DefaultComboBoxModel(Separator.values());
         separatorCombo.setModel(separatorsModel);
         separatorCombo.addActionListener(new ActionListener() {

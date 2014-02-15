@@ -55,7 +55,7 @@ public abstract class ReaderProfile {
         this.skipLines = 0;
         this.commentChar = '#';
         this.ignoredColumns = new int[0];
-        this.dataColumns = new int[]{0};
+        this.dataColumns = new int[0];
     }
 
     public static ReaderProfile fromProfile(ReaderProfile profile) {
