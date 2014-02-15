@@ -26,9 +26,7 @@ import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.gitools.utils.text.MatrixReaderProfile;
-import org.gitools.utils.text.Separator;
-import org.gitools.utils.text.TableReaderProfile;
+import org.gitools.utils.text.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -122,7 +120,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private void updateParsing() {
 
         reader.run(NullProgressMonitor.get());
-        List<FlatTextHeader> allHeaders = reader.getHeaders();
+        List<FileHeader> allHeaders = reader.getHeaders();
 
         StringBuilder htmlTable = getHTMLTable();
         preview.setText(htmlTable.toString());
@@ -147,7 +145,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         htmlTable.append("<html><head>");
         htmlTable.append(PreviewHTMLs.CSS);
         htmlTable.append("</head><body><table><tr>");
-        for (FlatTextHeader header : reader.getHeaders()) {
+        for (FileHeader header : reader.getHeaders()) {
             htmlTable.append("<th>" + header.getLabel() + "</th>");
         }
         htmlTable.append("</tr>");
@@ -156,9 +154,9 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         // preview
 
         boolean matrix = reader.getReaderProfile().getLayout().equals(MATRIX);
-        for (List<FlatTextField> line : reader.getPreview()) {
+        for (List<FileField> line : reader.getPreview()) {
             htmlTable.append("<tr>");
-            for (FlatTextField field : line) {
+            for (FileField field : line) {
                 String celltype = (matrix && field.getPos() == 0) ? "th" : "td";
                 htmlTable.append("<" + celltype + ">");
                 htmlTable.append(field.getLabel());

@@ -26,10 +26,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.gitools.utils.text.CSVParser;
-import org.gitools.utils.text.CSVReader;
-import org.gitools.utils.text.ReaderProfile;
-import org.gitools.utils.text.Separator;
+import org.gitools.utils.text.*;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -44,9 +41,9 @@ public class FlatTextReader implements JobRunnable, Closeable {
 
     private final IResourceLocator locator;
     private CSVReader reader = null;
-    private List<FlatTextHeader> headers;
+    private List<FileHeader> headers;
     private int previewLength = 20;
-    private List<List<FlatTextField>> preview;
+    private List<List<FileField>> preview;
 
     private ReaderProfile readerProfile;
 
@@ -89,7 +86,7 @@ public class FlatTextReader implements JobRunnable, Closeable {
             String[] line = reader.readNext();
             headers = new ArrayList<>(line.length);
             for (int i=0; i < line.length; i++) {
-                headers.add(new FlatTextHeader(line[i], i, 0));
+                headers.add(new FileHeader(line[i], i, 0));
             }
 
             //Load preview
@@ -97,9 +94,9 @@ public class FlatTextReader implements JobRunnable, Closeable {
                 preview = new ArrayList<>();
                 for (int i = 0; i < previewLength; i++) {
                     line = reader.readNext();
-                    ArrayList<FlatTextField> fields = new ArrayList<FlatTextField>(line.length);
+                    ArrayList<FileField> fields = new ArrayList<FileField>(line.length);
                     for (int j = 0; j < line.length; j++) {
-                        fields.add(new FlatTextField(line[j], j, 0, i));
+                        fields.add(new FileField(line[j], j, 0, i));
                     }
                     preview.add(fields);
                 }
@@ -137,11 +134,11 @@ public class FlatTextReader implements JobRunnable, Closeable {
         return reader.readNext();
     }
 
-    public List<FlatTextHeader> getHeaders() {
+    public List<FileHeader> getHeaders() {
         return headers;
     }
 
-    public List<List<FlatTextField>> getPreview() {
+    public List<List<FileField>> getPreview() {
         return preview;
     }
 

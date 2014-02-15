@@ -19,14 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.text;
+package org.gitools.utils.text;
 
-public class FlatTextField extends FlatTextHeader {
+public class FileField extends FileHeader {
 
     protected final int line;
 
 
-    public FlatTextField(String label, int pos, int type, int line) {
+    public FileField(String label, int pos, int type, int line) {
         super(label, pos, type);
         this.line = line;
     }

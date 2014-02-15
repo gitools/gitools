@@ -22,6 +22,8 @@
 package org.gitools.utils.text;
 
 
+import java.util.List;
+
 public abstract class ReaderProfile {
 
     public static String TABLE = "Table";
@@ -29,12 +31,23 @@ public abstract class ReaderProfile {
     public static String[] FILE_LAYOUTS = new String[]{MATRIX, TABLE};
 
     protected String name;
-    private Separator separator;
+    protected Separator separator;
     protected String layout;
-    private int skipLines;
-    private char commentChar;
-    private String metaDataChar = "#?";
-    private int[] ignoredColumns;
+    protected int skipLines;
+    protected char commentChar;
+    protected String metaDataChar = "#?";
+
+    /**
+     * columns where the heatmap data will be found
+     */
+    protected int[] dataColumns;
+
+    /**
+     * columns that will be ignored upon reading
+     */
+    protected int[] ignoredColumns;
+
+    public abstract void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException;
 
     protected ReaderProfile() {
         this.name = "default";
@@ -42,6 +55,7 @@ public abstract class ReaderProfile {
         this.skipLines = 0;
         this.commentChar = '#';
         this.ignoredColumns = new int[0];
+        this.dataColumns = new int[]{0};
     }
 
     public static ReaderProfile fromProfile(ReaderProfile profile) {
@@ -91,5 +105,19 @@ public abstract class ReaderProfile {
 
     public void setIgnoredColumns(int[] ignoredColumns) {
         this.ignoredColumns = ignoredColumns;
+    }
+
+    /**
+     * Which columns in the flat text are mapped as heatmap column id
+     */
+    public int[] getDataColumns() {
+        return dataColumns;
+    }
+
+    /**
+     * @param dataColumns: indices of columns mapped to heatmap row ids
+     */
+    public void setDataColumns(int[] dataColumns) {
+        this.dataColumns = dataColumns;
     }
 }

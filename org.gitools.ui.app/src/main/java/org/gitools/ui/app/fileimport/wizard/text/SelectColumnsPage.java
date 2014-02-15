@@ -24,6 +24,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.gitools.utils.text.FileHeader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +84,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
     private void updateParsing() {
 
         reader.run(NullProgressMonitor.get());
-        List<FlatTextHeader> allHeaders = reader.getHeaders();
+        List<FileHeader> allHeaders = reader.getHeaders();
 
 
         rowsCells = new DefaultComboBoxModel(allHeaders.toArray());
@@ -104,7 +105,7 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
     }
 
-    private void createCheckListItems(List<FlatTextHeader> headers) {
+    private void createCheckListItems(List<FileHeader> headers) {
         values = new CheckListItem[headers.size()];
         for (int i = 0; i < headers.size(); i++) {
             values[i] = new CheckListItem(headers.get(i));
@@ -136,12 +137,12 @@ public class SelectColumnsPage extends AbstractWizardPage {
     }
 
     public int getSelectedColumn() {
-        FlatTextHeader column = (FlatTextHeader) colsCells.getSelectedItem();
+        FileHeader column = (FileHeader) colsCells.getSelectedItem();
         return column.getPos();
     }
 
     public int getSelectedRow() {
-        FlatTextHeader row = (FlatTextHeader) rowsCells.getSelectedItem();
+        FileHeader row = (FileHeader) rowsCells.getSelectedItem();
         return row.getPos();
     }
 
@@ -160,14 +161,14 @@ public class SelectColumnsPage extends AbstractWizardPage {
     }
 
     private class CheckListItem {
-        private final FlatTextHeader header;
+        private final FileHeader header;
         private boolean isSelected = false;
 
-        public CheckListItem(FlatTextHeader header) {
+        public CheckListItem(FileHeader header) {
             this.header = header;
         }
 
-        public FlatTextHeader getHeader() {
+        public FileHeader getHeader() {
             return header;
         }
 

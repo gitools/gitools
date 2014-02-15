@@ -19,17 +19,17 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.text;
+package org.gitools.utils.text;
 
 import java.io.Serializable;
 
-public class FlatTextHeader implements Serializable {
+public class FileHeader implements Serializable {
 
     protected final int pos;
     protected final int type;
     protected final String label;
 
-    public FlatTextHeader(String label, int pos, int type) {
+    public FileHeader(String label, int pos, int type) {
         this.label = label;
         this.pos = pos;
         this.type = type;
@@ -60,7 +60,7 @@ public class FlatTextHeader implements Serializable {
             return false;
         }
 
-        FlatTextHeader that = (FlatTextHeader) o;
+        FileHeader that = (FileHeader) o;
 
         if (pos != that.pos) {
             return false;

@@ -30,10 +30,10 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
+import org.gitools.utils.text.ReaderProfileValidationException;
 import org.gitools.utils.text.TableReaderProfile;
 
 import java.io.IOException;
-import java.util.List;
 
 public class FlatTextImportWizard extends AbstractWizard implements ImportWizard {
 
@@ -93,11 +93,22 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
     @Override
     public void performFinish() {
-        FlatTextReader reader = selectColumnsPage.getReader();
-        List<Integer> values = selectColumnsPage.getSelectedValues();
-        //JobRunnable loadFile = new CommandConvertAndLoadCsvFile(columns, rows, values, reader);
-        //JobThread.execute(Application.get(), loadFile);
-        Application.get().setStatusText("Done.");
+        if (getCurrentPage() instanceof IFileImportStep) {
+            IFileImportStep page = (IFileImportStep) getCurrentPage();
+            try {
+                page.finish();
+            } catch (ReaderProfileValidationException e) {
+                e.printStackTrace();
+            }
+
+            FlatTextReader reader = page.getReader();
+            //new CommandConvertAndLoadCsvFile();
+            //List<Integer> values = selectColumnsPage.getSelectedValues();
+            Application.get().setStatusText("Done.");
+        } else {
+            throw new RuntimeException("Premature finish");
+        }
+
     }
 
 

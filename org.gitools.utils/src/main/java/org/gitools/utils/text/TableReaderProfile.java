@@ -21,17 +21,22 @@
  */
 package org.gitools.utils.text;
 
+import com.google.common.primitives.Ints;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class TableReaderProfile extends ReaderProfile {
 
-    private int[] heatmapColumns;
-    private int[] heatmapRows;
+    private int[] heatmapColumnsIds;
+    private int[] heatmapRowsIds;
     private String fieldGlue;
 
     public TableReaderProfile() {
         super();
         this.name = "deafultTable";
-        this.heatmapColumns = new int[]{0};
-        this.heatmapRows = new int[]{1};
+        this.heatmapColumnsIds = new int[]{0};
+        this.heatmapRowsIds = new int[]{1};
         this.fieldGlue = "-";
         this.layout = TABLE;
     }
@@ -45,32 +50,57 @@ public class TableReaderProfile extends ReaderProfile {
         return newProfile;
     }
 
-    /**
-     * Which columns in the flat text are mapped as heatmap column id
-     */
-    public int[] getHeatmapColumns() {
-        return heatmapColumns;
-    }
+    @Override
+    public void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException {
 
-    /**
-     * @param heatmapColumns: indices of columns mapped to heatmap row ids
-     */
-    public void setHeatmapColumns(int[] heatmapColumns) {
-        this.heatmapColumns = heatmapColumns;
+        if (heatmapColumnsIds.length == 0 ||
+                heatmapRowsIds.length == 0) {
+            throw new ReaderProfileValidationException(
+                    "At least one element is required for column Ids and row Ids"
+            );
+
+        }
+
+        List<Integer> intersect = new ArrayList<Integer>(Ints.asList(heatmapColumnsIds));
+        List<Integer> idUnion = new ArrayList<Integer>(Ints.asList(heatmapColumnsIds));
+        List<Integer> rows = new ArrayList<Integer>(Ints.asList(heatmapRowsIds));
+        idUnion.addAll(rows);
+
+        // Intersect?
+        intersect.retainAll(rows);
+        if (intersect.size() > 0) {
+            throw new ReaderProfileValidationException("An element cannot be specified as row and column Id.");
+        }
+
+        if (dataColumns.length == 0) {
+            List<Integer> dataIndices = new ArrayList<>();
+            List<Integer> ignored = Ints.asList(ignoredColumns);
+            for (FileHeader h : inFileHeaders) {
+                if ((!idUnion.contains(h.getPos())) && (!ignored.contains(h.getPos()))) {
+                    dataIndices.add(h.getPos());
+                }
+            }
+            dataColumns = Ints.toArray(dataIndices);
+            if (dataColumns.length == 0) {
+                throw new ReaderProfileValidationException(
+                        "No data columns available (too many ignored columns?)"
+                );
+            }
+        }
     }
 
     /**
      * Which columns in the flat text are mapped as heatmap row id
      */
-    public int[] getHeatmapRows() {
-        return heatmapRows;
+    public int[] getHeatmapRowsIds() {
+        return heatmapRowsIds;
     }
 
     /**
-     * @param heatmapRows indices of columns mapped to heatmap row ids
+     * @param heatmapRowsIds indices of columns mapped to heatmap row ids
      */
-    public void setHeatmapRows(int[] heatmapRows) {
-        this.heatmapRows = heatmapRows;
+    public void setHeatmapRowsIds(int[] heatmapRowsIds) {
+        this.heatmapRowsIds = heatmapRowsIds;
     }
 
     /**

@@ -24,6 +24,9 @@ package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.text.FileField;
+import org.gitools.utils.text.FileHeader;
+import org.gitools.utils.text.ReaderProfileValidationException;
 import org.gitools.utils.text.TableReaderProfile;
 
 import javax.swing.*;
@@ -33,20 +36,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class SelectTableColumnsPage extends AbstractWizardPage {
+public class SelectTableColumnsPage extends AbstractWizardPage implements IFileImportStep {
 
     private FlatTextReader reader;
 
     private JPanel mainPanel;
-    private JList<FlatTextHeader> valuesHeaderList;
-    private JList<FlatTextHeader> rowsHeaderList;
-    private JList<FlatTextHeader> columnsHeaderLists;
-    private JList<FlatTextHeader> ignoredHeaderList;
+    private JList<FileHeader> valuesHeaderList;
+    private JList<FileHeader> rowsHeaderList;
+    private JList<FileHeader> columnsHeaderLists;
+    private JList<FileHeader> ignoredHeaderList;
     private JTextPane previewPane;
-    private List<FlatTextHeader> allheaders;
-    private List<List<FlatTextField>> preview;
+    private List<FileHeader> allheaders;
+    private List<List<FileField>> preview;
 
-    private void initJList(JList<FlatTextHeader> list, ListItemTransferHandler transferHandler, DefaultListModel<FlatTextHeader> dataModel, boolean bold, boolean smallText) {
+    private void initJList(JList<FileHeader> list, ListItemTransferHandler transferHandler, DefaultListModel<FileHeader> dataModel, boolean bold, boolean smallText) {
 
         list.setModel(dataModel);
         list.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -73,7 +76,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
                         updateIdPreview(columnsHeaderLists);
                     } else {
                         int i = theList.getLeadSelectionIndex();
-                        updateColumnPreview((FlatTextHeader) theList.getModel().getElementAt(i));
+                        updateColumnPreview((FileHeader) theList.getModel().getElementAt(i));
                     }
                 }
             }
@@ -91,14 +94,14 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
     }
 
-    private void updateIdPreview(JList<FlatTextHeader> headerList) {
+    private void updateIdPreview(JList<FileHeader> headerList) {
 
         String fieldGlue = ((TableReaderProfile) reader.getReaderProfile()).getFieldGlue();
 
         Integer[] pos = new Integer[headerList.getModel().getSize()];
         StringBuilder headerString = new StringBuilder("");
         for (int i = 0; i < pos.length; i++) {
-            FlatTextHeader h = headerList.getModel().getElementAt(i);
+            FileHeader h = headerList.getModel().getElementAt(i);
             pos[i] = h.getPos();
             if (i > 0) {
                 headerString.append(fieldGlue);
@@ -113,7 +116,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
                 PreviewHTMLs.CSS +
                 "<body><table>");
         html.append("<tr><th>" + headerString.toString() + "</th><tr>");
-        for (List<FlatTextField> line : preview) {
+        for (List<FileField> line : preview) {
 
             StringBuilder fieldString = new StringBuilder("");
             for (Integer i : pos) {
@@ -130,7 +133,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
 
     }
 
-    private void updateColumnPreview(FlatTextHeader selectedValue) {
+    private void updateColumnPreview(FileHeader selectedValue) {
 
         StringBuilder html = new StringBuilder("");
 
@@ -138,7 +141,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
                 PreviewHTMLs.CSS +
                 "<body><table>");
         html.append("<tr><th>" + selectedValue.getLabel() + "</th><tr>");
-        for (List<FlatTextField> line : preview) {
+        for (List<FileField> line : preview) {
             html.append("<tr><td>" + line.get(selectedValue.getPos()).getLabel() + "</td></tr>");
         }
         html.append("</table></body></html>");
@@ -178,12 +181,12 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
         if (allheaders == null) {
             this.preview = reader.getPreview();
             this.allheaders = reader.getHeaders();
-            DefaultListModel<FlatTextHeader> values = new DefaultListModel<FlatTextHeader>();
-            DefaultListModel<FlatTextHeader> ignored = new DefaultListModel<FlatTextHeader>();
-            DefaultListModel<FlatTextHeader> rows = new DefaultListModel<FlatTextHeader>();
-            DefaultListModel<FlatTextHeader> columns = new DefaultListModel<FlatTextHeader>();
+            DefaultListModel<FileHeader> values = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> ignored = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> rows = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> columns = new DefaultListModel<FileHeader>();
 
-            for (FlatTextHeader header : allheaders) {
+            for (FileHeader header : allheaders) {
                 if (columns.getSize() == 0) {
                     columns.addElement(header);
                 } else if (rows.getSize() == 0) {
@@ -207,7 +210,12 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
         }
     }
 
+    @Override
+    public void finish() throws ReaderProfileValidationException {
+        reader.getReaderProfile().validate(allheaders);
+    }
 
+    @Override
     public FlatTextReader getReader() {
         return reader;
     }
@@ -231,7 +239,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage {
 
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-            FlatTextHeader h = (FlatTextHeader) value;
+            FileHeader h = (FileHeader) value;
             String newValue = h.getLabel() + " (column " + h.getPos() + 1 + ")";
 
             Component c = super.getListCellRendererComponent(list, newValue, index, isSelected, cellHasFocus);

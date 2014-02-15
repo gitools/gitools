@@ -22,6 +22,11 @@
 package org.gitools.utils.text;
 
 
+import com.google.common.primitives.Ints;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MatrixReaderProfile extends ReaderProfile {
     int rowIdsPosition;
     int columnIdsPosition;
@@ -41,6 +46,32 @@ public class MatrixReaderProfile extends ReaderProfile {
         newProfile.setSeparator(profile.getSeparator());
         newProfile.setSkipLines(profile.getSkipLines());
         return newProfile;
+    }
+
+    @Override
+    public void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException {
+        if (rowIdsPosition < 0 || rowIdsPosition >= inFileHeaders.size()) {
+            throw new ReaderProfileValidationException("Matrix rows ids wrongly assigned: " + rowIdsPosition);
+        }
+        if (columnIdsPosition < 0) {
+            throw new ReaderProfileValidationException("Matrix columns ids wrongly assigned: " + columnIdsPosition);
+        }
+
+        if (dataColumns.length == 0) {
+            List<Integer> dataIndices = new ArrayList<>();
+            List<Integer> ignored = Ints.asList(ignoredColumns);
+            for (FileHeader h : inFileHeaders) {
+                if (h.getPos() != columnIdsPosition && (!ignored.contains(h.getPos()))) {
+                    dataIndices.add(h.getPos());
+                }
+            }
+            dataColumns = Ints.toArray(dataIndices);
+            if (dataColumns.length == 0) {
+                throw new ReaderProfileValidationException(
+                        "No data columns available (too many ignored columns?)"
+                );
+            }
+        }
     }
 
     public int getColumnIdsPosition() {
