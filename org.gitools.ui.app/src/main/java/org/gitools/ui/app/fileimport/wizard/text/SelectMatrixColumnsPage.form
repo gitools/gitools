@@ -12,9 +12,11 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="fill:d:grow"/>
-    <colspec value="fill:d:grow"/>
+    <colspec value="fill:158px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:166px:grow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
+    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="fill:d:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:208px:grow"/>
     <constraints>
@@ -25,7 +27,7 @@
     <children>
       <scrollpane id="1250">
         <constraints>
-          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="10" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -39,7 +41,7 @@
       </scrollpane>
       <scrollpane id="72341">
         <constraints>
-          <grid row="2" column="2" row-span="9" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="4" row-span="9" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -56,16 +58,16 @@
       <component id="91894" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-vert="false"/>
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Position of column identifiers"/>
+          <text value="Column Ids (fix)"/>
         </properties>
       </component>
       <component id="7493a" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
           <forms defaultalign-vert="false"/>
         </constraints>
         <properties>
@@ -76,17 +78,17 @@
       <component id="8569" class="javax.swing.JLabel">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-vert="false"/>
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Position of row identifier"/>
+          <text value="Position of row ids"/>
         </properties>
       </component>
       <component id="14136" class="javax.swing.JLabel">
         <constraints>
           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-vert="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-vert="false"/>
         </constraints>
         <properties>
           <font style="1"/>
@@ -95,7 +97,7 @@
       </component>
       <scrollpane id="ad9ce">
         <constraints>
-          <grid row="2" column="4" row-span="9" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="6" row-span="9" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <forms defaultalign-horz="false" defaultalign-vert="false"/>
         </constraints>
         <properties/>
@@ -114,7 +116,7 @@
       </scrollpane>
       <component id="49886" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
           <forms defaultalign-vert="false"/>
         </constraints>
         <properties>
@@ -125,16 +127,37 @@
       <component id="bfdc" class="javax.swing.JSpinner" binding="columnIdsSpinner">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-horz="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <enabled value="false"/>
+          <toolTipText value="not editable"/>
+        </properties>
       </component>
       <component id="25ee0" class="javax.swing.JSpinner" binding="rowIdsSpinner">
         <constraints>
           <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-          <forms defaultalign-horz="false"/>
+          <forms top="0" left="5" bottom="0" right="0" defaultalign-horz="false"/>
         </constraints>
         <properties/>
+      </component>
+      <component id="281bc" class="javax.swing.JButton" binding="previewRowIdsButton">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Preview"/>
+        </properties>
+      </component>
+      <component id="8676b" class="javax.swing.JButton" binding="previewColumnIdsButton">
+        <constraints>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Preview"/>
+        </properties>
       </component>
     </children>
   </grid>

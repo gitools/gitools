@@ -30,12 +30,13 @@ import org.gitools.utils.text.MatrixReaderProfile;
 import org.gitools.utils.text.ReaderProfileValidationException;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFileImportStep {
@@ -48,24 +49,99 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private JTextPane previewPane;
     private JSpinner columnIdsSpinner;
     private JSpinner rowIdsSpinner;
+    private JButton previewRowIdsButton;
+    private JButton previewColumnIdsButton;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
+    private FileHeader lastSelected;
+    private static String ID = "id";
+    private static String COLUMN = "column";
+    private String lastPreview;
+    private FileHeader rowIdsHeader;
+    private boolean rowIdsHeaderWasIgnored = true;
 
     public SelectMatrixColumnsPage() {
-        columnIdsSpinner.addPropertyChangeListener(new PropertyChangeListener() {
+
+        rowIdsSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (!evt.getNewValue().equals(evt.getOldValue()))
-                    updateIdPreview(columnIdsSpinner);
+            public void stateChanged(ChangeEvent e) {
+
+                updateRowIdHeader();
+
+                updateControls();
+
+                if (lastPreview == null) {
+                    return;
+                }
+
+                if (lastPreview.equals(ID)) {
+                    updateRowIdPreview();
+                } else {
+                    updateColumnPreview(lastSelected);
+                }
             }
         });
-        rowIdsSpinner.addPropertyChangeListener(new PropertyChangeListener() {
+        columnIdsSpinner.addChangeListener(new ChangeListener() {
             @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (!evt.getNewValue().equals(evt.getOldValue()))
-                    updateIdPreview(rowIdsSpinner);
+            public void stateChanged(ChangeEvent e) {
+
+                updateControls();
+
+                if (lastPreview == null) {
+                    return;
+                }
+
+                if (lastPreview.equals(ID)) {
+                    updateColumnIdPreview();
+                } else {
+                    updateColumnPreview(lastSelected);
+                }
             }
         });
+
+        previewColumnIdsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateColumnIdPreview();
+            }
+        });
+        previewRowIdsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateRowIdPreview();
+            }
+        });
+    }
+
+    private void updateRowIdHeader() {
+        FileHeader newHeader = allheaders.get((int) rowIdsSpinner.getValue() - 1);
+        FileHeader oldHeader = rowIdsHeader;
+
+        if (oldHeader == null)
+            return;
+
+        //add old header where it belongs
+        DefaultListModel restoreListModel;
+        if (rowIdsHeaderWasIgnored) {
+            restoreListModel = (DefaultListModel) ignoredHeaderList.getModel();
+        } else {
+            restoreListModel = (DefaultListModel) valuesHeaderList.getModel();
+        }
+        restoreListModel.add(0, oldHeader);
+
+
+        //remove old header
+        DefaultListModel removeListModel = (DefaultListModel) valuesHeaderList.getModel();
+        if (removeListModel.contains(newHeader)) {
+            rowIdsHeaderWasIgnored = false;
+        } else {
+            removeListModel = (DefaultListModel) ignoredHeaderList.getModel();
+            rowIdsHeaderWasIgnored = true;
+        }
+        removeListModel.removeElement(newHeader);
+        rowIdsHeader = newHeader;
+
+
     }
 
     private void initJList(JList<FileHeader> list, ListItemTransferHandler transferHandler, DefaultListModel<FileHeader> dataModel, boolean bold, boolean smallText) {
@@ -107,36 +183,59 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         map.put(TransferHandler.getPasteAction().getValue(Action.NAME), dummy);
     }
 
-    private void updateIdPreview(JSpinner headerList) {
+    private void updateRowIdPreview() {
 
 
-        Integer[] pos = new Integer[]{(int) headerList.getModel().getValue()};
-        StringBuilder headerString = new StringBuilder("");
-
-        StringBuilder html = new StringBuilder("Ids");
+        int rowPos = (int) rowIdsSpinner.getModel().getValue() - 1;
+        int colPos = (int) columnIdsSpinner.getModel().getValue() - 1;
+        StringBuilder html = new StringBuilder("");
 
         html.append("<html>" +
                 PreviewHTMLs.CSS +
                 "<body><table>");
-        html.append("<tr><th>" + headerString.toString() + "</th><tr>");
+        html.append("<tr><th>Row Ids</th><tr>");
         for (List<FileField> line : preview) {
-
-            StringBuilder fieldString = new StringBuilder("");
-            for (Integer i : pos) {
-                if (fieldString.length() > 0) fieldString.append("");
-                fieldString.append(line.get(i).getLabel());
+            FileField f = line.get(rowPos);
+            if (f.getLine() > colPos) {
+                html.append("<tr><td>" + f.getLabel() + "</td></tr>");
             }
-
-            html.append("<tr><td>" + fieldString.toString() + "</td></tr>");
         }
         html.append("</table></body></html>");
 
         previewPane.setText(html.toString());
         previewPane.setCaretPosition(0);
+        lastPreview = this.ID;
+
+    }
+
+    private void updateColumnIdPreview() {
+
+
+        int rowPos = (int) rowIdsSpinner.getModel().getValue() - 1;
+        StringBuilder html = new StringBuilder("");
+
+        html.append("<html>" +
+                PreviewHTMLs.CSS +
+                "<body><table>");
+        html.append("<tr><th>Column Ids</th><tr>");
+        for (int i = 0; i < valuesHeaderList.getModel().getSize(); i++) {
+            html.append("<tr><td>" + valuesHeaderList.getModel().getElementAt(i).getLabel() + "</td></tr>");
+        }
+
+        html.append("</table></body></html>");
+
+        previewPane.setText(html.toString());
+        previewPane.setCaretPosition(0);
+        lastPreview = this.ID;
+
 
     }
 
     private void updateColumnPreview(FileHeader selectedValue) {
+
+
+        if (selectedValue == null)
+            return;
 
         StringBuilder html = new StringBuilder("");
 
@@ -145,12 +244,16 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
                 "<body><table>");
         html.append("<tr><th>" + selectedValue.getLabel() + "</th><tr>");
         for (List<FileField> line : preview) {
+            FileField f = line.get(selectedValue.getPos());
+            if (f.getLine() < (int) rowIdsSpinner.getModel().getValue())
+                continue;
             html.append("<tr><td>" + line.get(selectedValue.getPos()).getLabel() + "</td></tr>");
         }
         html.append("</table></body></html>");
 
         previewPane.setText(html.toString());
         previewPane.setCaretPosition(0);
+        lastPreview = this.COLUMN;
 
     }
 
@@ -192,14 +295,12 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
             DefaultListModel<FileHeader> ignored = new DefaultListModel<FileHeader>();
 
             for (FileHeader header : allheaders) {
-
-                try {
-                    Double v = Double.valueOf(preview.get(0).get(header.getPos()).getLabel());
+                if (header.getPos() != (int) rowIdsSpinner.getValue() - 1) {
                     values.addElement(header);
-                } catch (NumberFormatException e) {
-                    ignored.addElement(header);
+                } else {
+                    rowIdsHeader = header;
+                    rowIdsHeaderWasIgnored = true;
                 }
-
             }
 
             ListItemTransferHandler transferHandler = new ListItemTransferHandler();

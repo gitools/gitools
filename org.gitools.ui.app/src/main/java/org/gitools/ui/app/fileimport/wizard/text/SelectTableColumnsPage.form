@@ -12,9 +12,9 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="fill:d:grow"/>
-    <colspec value="fill:d:grow"/>
+    <colspec value="fill:211px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:166px:grow"/>
+    <colspec value="fill:243px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:208px:grow"/>
     <constraints>
@@ -45,11 +45,9 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="27a96" class="javax.swing.JList" binding="valuesHeaderList">
+          <component id="9e947" class="javax.swing.JList" binding="ignoredHeaderList">
             <constraints/>
-            <properties>
-              <model/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </scrollpane>
@@ -75,9 +73,11 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="9e947" class="javax.swing.JList" binding="ignoredHeaderList">
+          <component id="27a96" class="javax.swing.JList" binding="valuesHeaderList">
             <constraints/>
-            <properties/>
+            <properties>
+              <model/>
+            </properties>
           </component>
         </children>
       </scrollpane>
@@ -98,7 +98,7 @@
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Ignored Columns"/>
+          <text value="Cell Values"/>
         </properties>
       </component>
       <component id="8569" class="javax.swing.JLabel">
@@ -118,7 +118,7 @@
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Heatmap values"/>
+          <text value="Ignored Columns"/>
         </properties>
       </component>
       <scrollpane id="ad9ce">
