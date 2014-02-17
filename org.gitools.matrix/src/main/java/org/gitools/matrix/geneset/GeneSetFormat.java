@@ -46,7 +46,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
     protected GeneSet readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         progressMonitor.begin("Reading ...", 1);
 
-        final Map<String, Integer> labelMap = new HashMap<>();
+        GeneSet labels = new GeneSet();
 
 
         try {
@@ -63,25 +63,18 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
                     throw new PersistenceException("Only one column is allowed at line " + parser.getLineNumber());
                 }
 
-                Integer index = labelMap.get(fields[0]);
-                if (index == null) {
-                    labelMap.put(fields[0], labelMap.size());
-                }
+                labels.add(fields[0]);
+
             }
 
             in.close();
 
-            progressMonitor.info(labelMap.size() + " rows");
+            progressMonitor.info(labels.size() + " rows");
 
             progressMonitor.end();
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
-
-        GeneSet labels = new GeneSet();
-        labels.addAll(labelMap.keySet());
-        for (Map.Entry<String, Integer> entry : labelMap.entrySet())
-            labels.set(entry.getValue(), entry.getKey());
 
         return labels;
     }

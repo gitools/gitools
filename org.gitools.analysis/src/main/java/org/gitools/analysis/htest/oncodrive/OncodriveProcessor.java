@@ -21,7 +21,12 @@
  */
 package org.gitools.analysis.htest.oncodrive;
 
+import com.google.common.base.Function;
+import static com.google.common.base.Functions.constant;
 import com.google.common.collect.Iterables;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Sets.intersection;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
@@ -43,6 +48,7 @@ import org.gitools.matrix.modulemap.HashModuleMap;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -85,6 +91,21 @@ public class OncodriveProcessor implements AnalysisProcessor {
             cutoffFunction = new IdentityMatrixFunction<>();
         }
 
+        // Detect the list of items presents in the population and not in the data matrix
+        final Set<String> missingBackgroundItems = new HashSet<>();
+        final Function<Object, Double> backgroundValue = constant(analysis.getPopulationDefaultValue());
+
+        if (analysis.getPopulation() != null) {
+
+            Set<String> background = analysis.getPopulation().get();
+
+            missingBackgroundItems.addAll( background );
+
+            for (String item : genes) {
+                missingBackgroundItems.remove(item);
+            }
+        }
+
         // Start Oncodrive analysis
         for (final String module : sampleModules) {
 
@@ -94,7 +115,14 @@ public class OncodriveProcessor implements AnalysisProcessor {
             for (String sample : moduleMap.getMappingItems(module)) {
                 Iterables.addAll(population, position.set(samples, sample).iterate(layer, genes).transform(cutoffFunction));
             }
-            test.processPopulation(population);
+
+            test.processPopulation(
+                    concat(
+                            population,
+                            transform(missingBackgroundItems, backgroundValue)
+                    )
+            );
+
 
             // Module samples
             final Set<String> moduleSamples = moduleMap.getMappingItems(module);

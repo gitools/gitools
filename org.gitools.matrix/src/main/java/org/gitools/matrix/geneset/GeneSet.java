@@ -26,8 +26,9 @@ import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
-public class GeneSet extends ArrayList<String> implements IResource {
+public class GeneSet extends LinkedHashSet<String> implements IResource {
 
     private IResourceLocator locator;
 

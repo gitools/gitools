@@ -21,6 +21,13 @@
  */
 package org.gitools.analysis.htest.enrichment;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import static com.google.common.base.Functions.constant;
+import com.google.common.collect.Iterables;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Sets.intersection;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
@@ -29,10 +36,16 @@ import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.AbstractMatrixFunction;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixIterable;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
@@ -42,10 +55,10 @@ import org.gitools.utils.cutoffcmp.CutoffMatrixFunction;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
-
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class EnrichmentProcessor implements AnalysisProcessor {
 
@@ -83,6 +96,25 @@ public class EnrichmentProcessor implements AnalysisProcessor {
             cutoffFunction = new IdentityMatrixFunction<>();
         }
 
+        // Detect the list of items presents in the population and not in the data matrix
+        final Set<String> missingBackgroundItems = new HashSet<>();
+        final Function<Object, Double> backgroundValue = constant(analysis.getPopulationDefaultValue());
+
+        if (analysis.getPopulation() != null) {
+
+            Set<String> background = analysis.getPopulation().get();
+
+            if (analysis.isDiscardNonMappedRows()) {
+                background = intersection(background, moduleMap.getItems());
+            }
+
+            missingBackgroundItems.addAll( background );
+
+            for (String item : items) {
+                missingBackgroundItems.remove(item);
+            }
+        }
+
         // Run enrichment
         data.newPosition().iterate(layer, conditions)
                 .monitor(monitor, "Running enrichment analysis")
@@ -92,11 +124,21 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                     public Map<String, CommonResult> apply(Double value, IMatrixPosition position) {
 
                         IMatrixIterable<Double> population = position.iterate(layer, items);
+
+                        // Discard not mapped items
                         if (analysis.isDiscardNonMappedRows()) {
                             population = population.filter(moduleMap.getItems());
                         }
 
-                        test.processPopulation(population.transform(cutoffFunction));
+                        // Apply cutoff
+                        population = population.transform(cutoffFunction);
+
+                        test.processPopulation(
+                                concat(
+                                        population,
+                                        transform(missingBackgroundItems, backgroundValue)
+                                )
+                        );
 
                         Map<String, CommonResult> results = new HashMap<>();
                         for (String module : moduleMap.getModules()) {
@@ -105,10 +147,24 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                                 throw new CancellationException();
                             }
 
+                            Set<String> moduleItems = moduleMap.getMappingItems(module);
+
                             Iterable<Double> moduleValues = position
                                     .iterate(layer, items)
-                                    .filter(moduleMap.getMappingItems(module))
+                                    .filter(moduleItems)
                                     .transform(cutoffFunction);
+
+                            if (!missingBackgroundItems.isEmpty()) {
+
+                                moduleValues = concat(
+                                        moduleValues,
+                                        transform(
+                                                intersection(missingBackgroundItems, moduleItems),
+                                                backgroundValue
+                                        )
+                                );
+
+                            }
 
                             CommonResult result = test.processTest(moduleValues);
                             if (result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
