@@ -118,4 +118,12 @@ public abstract class ReaderProfile {
     public void setValueColumns(int[] valueColumns) {
         this.valueColumns = valueColumns;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

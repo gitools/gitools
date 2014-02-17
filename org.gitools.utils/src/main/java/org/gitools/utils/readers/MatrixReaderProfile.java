@@ -33,7 +33,7 @@ public class MatrixReaderProfile extends ReaderProfile {
     int rowIdsPosition;
     int columnIdsPosition;
 
-    private MatrixReaderProfile() {
+    public MatrixReaderProfile() {
         super();
         this.name = "defaultMatrix";
         this.rowIdsPosition = 0;
