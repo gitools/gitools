@@ -36,6 +36,10 @@ public interface IPersistenceManager {
 
     String getDefaultExtension(Class<? extends IResource> resourceClass);
 
+    IResourceLocator applyCache(IResourceLocator resourceLocator);
+
+    IResourceLocator applyFilters(IResourceLocator resourceLocator);
+
     @Deprecated
     <R extends IResource> R load(File file, Class<R> resourceClass, IProgressMonitor progressMonitor);
 

@@ -162,7 +162,7 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
     public <R extends IResource> R load(IResourceLocator resourceLocator, IResourceFormat<R> resourceFormat, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Use cached locator if exists
-        IResourceLocator filteredResourceLocator = CacheResourceManager.get().getCacheResourceLocator(resourceLocator);
+        IResourceLocator filteredResourceLocator = applyCache(resourceLocator);
 
         // Add filters
         filteredResourceLocator = applyFilters(filteredResourceLocator);
@@ -182,6 +182,10 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         resource.setLocator(resourceLocator);
 
         return resource;
+    }
+
+    public IResourceLocator applyCache(IResourceLocator resourceLocator) {
+        return CacheResourceManager.get().getCacheResourceLocator(resourceLocator);
     }
 
     @Override
@@ -228,8 +232,7 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         filters.add(resourceFilter);
     }
 
-
-    private IResourceLocator applyFilters(IResourceLocator resourceLocator) {
+    public IResourceLocator applyFilters(IResourceLocator resourceLocator) {
         for (IResourceFilter filter : filters) {
             resourceLocator = filter.apply(resourceLocator);
         }

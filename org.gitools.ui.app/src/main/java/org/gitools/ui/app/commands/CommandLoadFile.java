@@ -43,6 +43,7 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.persistence.PersistenceManager;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -149,7 +150,12 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     public ImportWizard getConfigWizard() {
-        return ImportManager.get().getWizard(getResourceLocator());
+
+        IResourceLocator locator = getResourceLocator();
+        locator = getPersistenceManager().applyCache( locator );
+        locator = getPersistenceManager().applyFilters( locator );
+
+        return ImportManager.get().getWizard(locator);
     }
 
     private IResourceFormat getFormat() {
