@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.model;
+package org.gitools.api.matrix;
 
 import org.gitools.api.matrix.IMatrixFunction;
 import org.gitools.api.matrix.IMatrixIterable;

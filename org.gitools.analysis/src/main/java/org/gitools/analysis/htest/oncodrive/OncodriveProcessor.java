@@ -26,15 +26,17 @@ import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
 import org.gitools.matrix.model.iterable.PositionMapping;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.modulemap.HashModuleMap;
@@ -45,6 +47,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import org.gitools.utils.cutoffcmp.CutoffMatrixFunction;
 
 public class OncodriveProcessor implements AnalysisProcessor {
 
@@ -73,6 +76,15 @@ public class OncodriveProcessor implements AnalysisProcessor {
                 sampleModules
         );
 
+        //TODO Improve enrichment wizard and rewrite EnrichmentAnalysis.
+        // The cutoff is a property of the test and not an analysis property.
+        final IMatrixFunction<Double, Double> cutoffFunction;
+        if (analysis.isBinaryCutoffEnabled() && !ZscoreTest.class.isAssignableFrom(test.getClass())) {
+            cutoffFunction = new CutoffMatrixFunction(analysis.getBinaryCutoffCmp(), analysis.getBinaryCutoffValue());
+        } else {
+            cutoffFunction = new IdentityMatrixFunction<>();
+        }
+
         // Start Oncodrive analysis
         for (final String module : sampleModules) {
 
@@ -80,7 +92,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
             List<Double> population = new ArrayList<>();
             IMatrixPosition position = data.newPosition();
             for (String sample : moduleMap.getMappingItems(module)) {
-                Iterables.addAll(population, position.set(samples, sample).iterate(layer, genes));
+                Iterables.addAll(population, position.set(samples, sample).iterate(layer, genes).transform(cutoffFunction));
             }
             test.processPopulation(population);
 
@@ -101,7 +113,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
                         public CommonResult apply(Double value, IMatrixPosition position) {
 
                             // Values of the current module
-                            Iterable<Double> moduleValues = position.iterate(layer, samples).filter(moduleSamples);
+                            Iterable<Double> moduleValues = position.iterate(layer, samples).filter(moduleSamples).transform(cutoffFunction);
 
                             // Execute the test
                             return test.processTest(moduleValues);

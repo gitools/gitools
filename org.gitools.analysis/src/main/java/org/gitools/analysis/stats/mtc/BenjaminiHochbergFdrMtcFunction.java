@@ -26,7 +26,7 @@ import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.matrix.filter.NotNullPredicate;
-import org.gitools.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.AbstractMatrixFunction;
 
 import java.util.HashMap;
 import java.util.Map;

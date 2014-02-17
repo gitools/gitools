@@ -29,7 +29,7 @@ import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.AbstractMatrixFunction;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

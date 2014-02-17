@@ -24,7 +24,7 @@ package org.gitools.analysis.stats.mtc;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.matrix.filter.NullPredicate;
-import org.gitools.matrix.model.AbstractMatrixFunction;
+import org.gitools.api.matrix.AbstractMatrixFunction;
 
 public class BonferroniMtcFunction extends AbstractMatrixFunction<Double, Double> {
 
