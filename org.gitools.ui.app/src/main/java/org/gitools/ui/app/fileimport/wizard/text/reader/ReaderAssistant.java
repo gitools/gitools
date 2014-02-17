@@ -1,6 +1,6 @@
 /*
  * #%L
- * org.gitools.utils
+ * org.gitools.ui.app
  * %%
  * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,11 +19,32 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
+package org.gitools.ui.app.fileimport.wizard.text.reader;
 
-package org.gitools.utils.text;
 
-public class ReaderProfileValidationException extends Exception {
-    public ReaderProfileValidationException(String message) {
-        super(message);
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.matrix.model.MatrixLayer;
+
+public abstract class ReaderAssistant {
+
+
+    protected final FlatTextReader reader;
+    protected MatrixLayer[] heatmapLayers;
+
+    public ReaderAssistant(FlatTextReader reader) {
+        this.reader = reader;
+        update();
     }
+
+    abstract public void fillMatrix(IMatrix matrix);
+
+    public abstract String[] getHeatmapHeaders();
+
+    public abstract void update();
+
+    public MatrixLayer[] getHeatmapLayers() {
+        return heatmapLayers;
+    }
+
+
 }

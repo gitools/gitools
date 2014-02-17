@@ -22,6 +22,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
  * #L%
  */
 
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.text.FileField;
@@ -317,9 +318,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
 
         profile.setRowIdsPosition((int) rowIdsSpinner.getValue() - 1);
         profile.setColumnIdsPosition((int) columnIdsSpinner.getValue() - 1);
-        profile.setDataColumns(getPositions(valuesHeaderList));
+        profile.setValueColumns(getPositions(valuesHeaderList));
         profile.setIgnoredColumns(getPositions(ignoredHeaderList));
-
         reader.getReaderProfile().validate(allheaders);
     }
 
@@ -356,7 +356,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
             FileHeader h = (FileHeader) value;
-            String newValue = h.getLabel() + " (column " + h.getPos() + 1 + ")";
+            String newValue = h.getLabel() + " (column " + (h.getPos() + 1) + ")";
 
             Component c = super.getListCellRendererComponent(list, newValue, index, isSelected, cellHasFocus);
             if (bold) {

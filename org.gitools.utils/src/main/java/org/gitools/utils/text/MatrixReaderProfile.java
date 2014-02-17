@@ -57,50 +57,26 @@ public class MatrixReaderProfile extends ReaderProfile {
             throw new ReaderProfileValidationException("Matrix columns ids wrongly assigned: " + columnIdsPosition);
         }
 
-        if (dataColumns.length == 0) {
-            List<Integer> dataIndices = new ArrayList<>();
+        if (valueColumns.length == 0) {
+            List<Integer> valueIndices = new ArrayList<>();
             List<Integer> ignored = Ints.asList(ignoredColumns);
             for (FileHeader h : inFileHeaders) {
                 if (h.getPos() != columnIdsPosition && (!ignored.contains(h.getPos()))) {
-                    dataIndices.add(h.getPos());
+                    valueIndices.add(h.getPos());
                 }
             }
-            dataColumns = Ints.toArray(dataIndices);
-            if (dataColumns.length == 0) {
+            valueColumns = Ints.toArray(valueIndices);
+            if (valueColumns.length == 0) {
                 throw new ReaderProfileValidationException(
-                        "No data columns available (too many ignored columns?)"
+                        "No data value columns available (too many ignored columns?)"
                 );
             }
         }
     }
 
     @Override
-    public String getColId(String[] fields) {
-        return null;
-    }
-
-    @Override
-    public String getRowId(String[] fields) {
-        return null;
-    }
-
-    @Override
-    public String[] getDataFields(String[] fields) {
-        return new String[0];
-    }
-
-    @Override
-    public int getDataColumnsNumber() {
-        return 0;
-    }
-
-    @Override
-    public String[] getHeatmapHeaders() {
-        return new String[0];
-    }
-
-    public int getColumnIdsPosition() {
-        return columnIdsPosition;
+    public int getValueColumnsNumber() {
+        return 1;
     }
 
     /**

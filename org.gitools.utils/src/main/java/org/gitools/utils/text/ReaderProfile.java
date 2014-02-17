@@ -40,7 +40,7 @@ public abstract class ReaderProfile {
     /**
      * columns where the heatmap data will be found
      */
-    protected int[] dataColumns;
+    protected int[] valueColumns;
 
     /**
      * columns that will be ignored upon reading
@@ -49,16 +49,7 @@ public abstract class ReaderProfile {
 
     public abstract void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException;
 
-    public abstract String getColId(String[] fields);
-
-    public abstract String getRowId(String[] fields);
-
-    public abstract String[] getDataFields(String[] fields);
-
-    public abstract int getDataColumnsNumber();
-
-    public abstract String[] getHeatmapHeaders();
-
+    public abstract int getValueColumnsNumber();
 
     protected ReaderProfile() {
         this.name = "default";
@@ -66,7 +57,7 @@ public abstract class ReaderProfile {
         this.skipLines = 0;
         this.commentChar = '#';
         this.ignoredColumns = new int[0];
-        this.dataColumns = new int[0];
+        this.valueColumns = new int[0];
     }
 
     public static ReaderProfile fromProfile(ReaderProfile profile) {
@@ -118,11 +109,11 @@ public abstract class ReaderProfile {
         this.ignoredColumns = ignoredColumns;
     }
 
-    public int[] getDataColumns() {
-        return dataColumns;
+    public int[] getValueColumns() {
+        return valueColumns;
     }
 
-    public void setDataColumns(int[] dataColumns) {
-        this.dataColumns = dataColumns;
+    public void setValueColumns(int[] valueColumns) {
+        this.valueColumns = valueColumns;
     }
 }

@@ -19,12 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.text;
+package org.gitools.ui.app.fileimport.wizard.text.reader;
 
-import org.apache.commons.io.IOUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.text.*;
 
@@ -37,7 +35,7 @@ import java.util.List;
 import static org.gitools.utils.text.Separator.COMMA;
 import static org.gitools.utils.text.Separator.TAB;
 
-public class FlatTextReader implements JobRunnable, Closeable {
+public class FlatTextReader implements Closeable {
 
     private final IResourceLocator locator;
     private CSVReader reader = null;
@@ -45,19 +43,39 @@ public class FlatTextReader implements JobRunnable, Closeable {
     private int previewLength = 20;
     private List<List<FileField>> preview;
     private ReaderProfile readerProfile;
+    private ReaderAssistant readerAssistant;
     private boolean previewMode;
-
-    private String[] currentFields;
-    private String currentRowId;
-    private String currentColId;
+    private String[] currentLine;
 
 
     public FlatTextReader(IResourceLocator locator, boolean previewMode, ReaderProfile profile) {
         super();
         this.locator = locator;
-        this.readerProfile = profile;
+        this.readerProfile = profile == null ? new TableReaderProfile() : profile;
         this.previewMode = previewMode;
+        guessSeparator(locator);
+        loadHead(new NullProgressMonitor());
+        if (profile == null) {
+            this.readerProfile = guessDataLayout();
+        }
+        setAssistant(readerProfile);
+    }
 
+    public FlatTextReader(IResourceLocator locator, boolean previewMode) {
+        this(locator, previewMode, null);
+    }
+
+    private ReaderProfile guessDataLayout() {
+
+        // if top left field is empty, layout is probably a matrix
+        if (getFileHeaders().get(0).getLabel().equals("")) {
+            return MatrixReaderProfile.fromProfile(readerProfile);
+        } else {
+            return readerProfile;
+        }
+    }
+
+    private void guessSeparator(IResourceLocator locator) {
         // Choose COMMA separator if it's a CSV
         if ("csv".equalsIgnoreCase(locator.getExtension())) {
             readerProfile.setSeparator(COMMA);
@@ -69,7 +87,7 @@ public class FlatTextReader implements JobRunnable, Closeable {
             for (Separator sep : Separator.values()) {
                 Separator oldSep = readerProfile.getSeparator();
                 readerProfile.setSeparator(sep);
-                run(new NullProgressMonitor());
+                loadHead(new NullProgressMonitor());
                 if (headers.size() < recordOfFields) {
                     readerProfile.setSeparator(oldSep);
                 } else {
@@ -79,19 +97,23 @@ public class FlatTextReader implements JobRunnable, Closeable {
         }
     }
 
+    private void setAssistant(ReaderProfile profile) {
+        this.readerAssistant = profile.getLayout().equals(ReaderProfile.MATRIX) ?
+                new MatrixReaderAssistant(this) : new TableReaderAssistant(this);
+    }
 
-    @Override
-    public void run(IProgressMonitor monitor) {
+
+    public void loadHead(IProgressMonitor monitor) {
         monitor.begin("Opening [" + locator.getName() + "]", 0);
-        CSVReader reader = null;
+        reader = null;
         try {
             reader = newCSVReader(monitor);
 
 
-            // Load headers
+            // Load file headers
             String[] line = reader.readNext();
             headers = new ArrayList<>(line.length);
-            for (int i=0; i < line.length; i++) {
+            for (int i = 0; i < line.length; i++) {
                 headers.add(new FileHeader(line[i], i, 0));
             }
 
@@ -110,16 +132,17 @@ public class FlatTextReader implements JobRunnable, Closeable {
                         previewLength = i;
                     }
                 }
+                reader.close();
             }
-            //reader.close();
+
+            if (readerAssistant != null) {
+                readerAssistant.update();
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(reader);
         }
         monitor.end();
-        // Read the header
     }
 
     private CSVReader newCSVReader(IProgressMonitor monitor) throws IOException {
@@ -137,18 +160,14 @@ public class FlatTextReader implements JobRunnable, Closeable {
 
     public boolean readNext() throws IOException {
 
-        if (reader==null) {
-            run(new NullProgressMonitor());
+        if (reader == null) {
+            loadHead(new NullProgressMonitor());
         }
 
-        String[] line = reader.readNext();
-        if (line == null) {
+        currentLine = reader.readNext();
+        if (currentLine == null) {
             return false;
         }
-        //TODO: prepare next line
-        currentColId = readerProfile.getColId(line);
-        currentRowId = readerProfile.getRowId(line);
-        currentFields = readerProfile.getDataFields(line);
         return true;
     }
 
@@ -175,38 +194,26 @@ public class FlatTextReader implements JobRunnable, Closeable {
 
     public void setReaderProfile(ReaderProfile readerProfile) {
         this.readerProfile = readerProfile;
+        setAssistant(readerProfile);
+    }
+
+    public ReaderAssistant getReaderAssistant() {
+        return readerAssistant;
     }
 
     @Override
     public void close() throws IOException {
-        if (reader!=null) {
+        if (reader != null) {
             reader.close();
         }
     }
 
     public void setPreviewMode(boolean previewMode) {
         this.previewMode = previewMode;
-        reader = null;
-        run(new NullProgressMonitor());
+        loadHead(new NullProgressMonitor());
     }
 
-    public String getColId(String[] fields) {
-        return currentColId;
-    }
-
-    public String getRowId(String[] fields) {
-        return currentRowId;
-    }
-
-    public String[] getFields() {
-        return currentFields;
-    }
-
-    public int getLayerNumber() {
-        return readerProfile.getDataColumnsNumber();
-    }
-
-    public String[] getHeatmapHeaders() {
-        return readerProfile.getHeatmapHeaders();
+    public String[] getCurrentLine() {
+        return currentLine;
     }
 }

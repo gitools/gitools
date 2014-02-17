@@ -29,8 +29,8 @@ import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.utils.text.ReaderProfile;
-import org.gitools.utils.translators.DoubleTranslator;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.ReaderAssistant;
 
 import java.util.concurrent.CancellationException;
 
@@ -57,38 +57,29 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
 
         try {
 
+            reader.setPreviewMode(false);
+
             if (reader.getFileHeaders().size() < 3) {
                 throw new PersistenceException("At least 3 fields expected on one line.");
             }
 
-            String[] heatmapHeaders = reader.getHeatmapHeaders();
-            MatrixLayer<Double> layers[] = new MatrixLayer[reader.getLayerNumber()];
-            for (int i = 0; i < heatmapHeaders.length; i++) {
-                layers[i] = new MatrixLayer<>(heatmapHeaders[i], Double.class);
-            }
+            ReaderAssistant assistant = reader.getReaderAssistant();
 
-            HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
+            MatrixLayer[] layers = assistant.getHeatmapLayers();
+            HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<>(layers), ROWS, COLUMNS);
 
-            // read body
+            // read the file body
             while ((reader.readNext())) {
 
                 if (progressMonitor.isCancelled()) {
                     throw new CancellationException();
                 }
 
-                if (reader.getReaderProfile().getLayout().equals(ReaderProfile.TABLE)) {
-                    final String[] fields = reader.getFields();
-                    final String columnId = reader.getColId(fields);
-                    final String rowId = reader.getRowId(fields);
-
-                    for (int i = 0; i < fields.length; i++) {
-                        Double value = DoubleTranslator.get().stringToValue(fields[fields.length]);
-                        resultsMatrix.set(layers[i], value, rowId, columnId);
-                    }
-                } else if (reader.getReaderProfile().getLayout().equals(ReaderProfile.MATRIX)) {
-                    //TODO matrix fill
-                }
+                // Write the read line into the Matrix
+                assistant.fillMatrix(resultsMatrix);
             }
+
+            reader.close();
 
             return resultsMatrix;
 

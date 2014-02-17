@@ -61,9 +61,9 @@ public class TableReaderProfile extends ReaderProfile {
 
         }
 
-        List<Integer> intersect = new ArrayList<Integer>(Ints.asList(heatmapColumnsIds));
-        List<Integer> idUnion = new ArrayList<Integer>(Ints.asList(heatmapColumnsIds));
-        List<Integer> rows = new ArrayList<Integer>(Ints.asList(heatmapRowsIds));
+        List<Integer> intersect = new ArrayList<>(Ints.asList(heatmapColumnsIds));
+        List<Integer> idUnion = new ArrayList<>(Ints.asList(heatmapColumnsIds));
+        List<Integer> rows = new ArrayList<>(Ints.asList(heatmapRowsIds));
         idUnion.addAll(rows);
 
         // Intersect?
@@ -72,62 +72,28 @@ public class TableReaderProfile extends ReaderProfile {
             throw new ReaderProfileValidationException("An element cannot be specified as row and column Id.");
         }
 
-        if (dataColumns.length == 0) {
-            List<Integer> dataIndices = new ArrayList<>();
+        if (valueColumns.length == 0) {
+            List<Integer> valueIndices = new ArrayList<>();
             List<Integer> ignored = Ints.asList(ignoredColumns);
             for (FileHeader h : inFileHeaders) {
                 if ((!idUnion.contains(h.getPos())) && (!ignored.contains(h.getPos()))) {
-                    dataIndices.add(h.getPos());
+                    valueIndices.add(h.getPos());
                 }
             }
-            dataColumns = Ints.toArray(dataIndices);
-            if (dataColumns.length == 0) {
+            valueColumns = Ints.toArray(valueIndices);
+            if (valueColumns.length == 0) {
                 throw new ReaderProfileValidationException(
-                        "No data columns available (too many ignored columns?)"
+                        "No data value columns available (too many ignored columns?)"
                 );
             }
         }
     }
 
     @Override
-    public String getColId(String[] fields) {
-        return composeId(fields, heatmapColumnsIds);
+    public int getValueColumnsNumber() {
+        return valueColumns.length;
     }
 
-    @Override
-    public String getRowId(String[] fields) {
-        return composeId(fields, heatmapRowsIds);
-    }
-
-    private String composeId(String[] fields, int[] indices) {
-        StringBuilder id = new StringBuilder("");
-        for (int i = 0; i < indices.length; i++) {
-            if (!fields.equals("")) {
-                id.append(fieldGlue);
-            }
-            id.append(fields[indices[i]]);
-        }
-        return id.toString();
-    }
-
-    @Override
-    public String[] getDataFields(String[] fields) {
-        String[] data = new String[dataColumns.length];
-        for (int i = 0; i < dataColumns.length; i++) {
-            data[i] = fields[dataColumns[i]];
-        }
-        return data;
-    }
-
-    @Override
-    public int getDataColumnsNumber() {
-        return dataColumns.length;
-    }
-
-    @Override
-    public String[] getHeatmapHeaders() {
-        return new String[0];
-    }
 
     /**
      * Which columns in the flat text are mapped as heatmap row id
@@ -161,7 +127,7 @@ public class TableReaderProfile extends ReaderProfile {
      * @param heatmapColumnsIds: indices of columns mapped to heatmap row ids
      */
     public void setHeatmapColumnsIds(int[] heatmapColumnsIds) {
-        this.dataColumns = heatmapColumnsIds;
+        this.heatmapColumnsIds = heatmapColumnsIds;
     }
 
     /**

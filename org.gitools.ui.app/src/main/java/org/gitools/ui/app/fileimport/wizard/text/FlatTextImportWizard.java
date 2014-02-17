@@ -25,6 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -34,7 +35,6 @@ import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.text.ReaderProfile;
 import org.gitools.utils.text.ReaderProfileValidationException;
-import org.gitools.utils.text.TableReaderProfile;
 
 import java.io.IOException;
 
@@ -65,7 +65,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, true, new TableReaderProfile()));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, true));
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();

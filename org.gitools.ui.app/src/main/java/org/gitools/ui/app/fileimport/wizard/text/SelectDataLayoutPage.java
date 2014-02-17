@@ -23,6 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
  */
 
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -119,7 +120,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
 
     private void updateParsing() {
 
-        reader.run(NullProgressMonitor.get());
+        reader.loadHead(NullProgressMonitor.get());
         List<FileHeader> allHeaders = reader.getFileHeaders();
 
         StringBuilder htmlTable = getHTMLTable();
