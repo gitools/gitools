@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-ui-app
+ * org.gitools.utils
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,12 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.excel;
 
-import org.gitools.utils.readers.FileHeader;
+package org.gitools.utils.readers.profile;
 
-public class ExcelHeader extends FileHeader {
-    public ExcelHeader(String label, int pos, int type) {
-        super(label, pos, type);
+public class ReaderProfileValidationException extends Exception {
+    public ReaderProfileValidationException(String message) {
+        super(message);
     }
 }

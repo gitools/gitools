@@ -27,15 +27,19 @@ import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.gitools.utils.text.*;
+import org.gitools.utils.readers.FileField;
+import org.gitools.utils.readers.FileHeader;
+import org.gitools.utils.readers.MatrixReaderProfile;
+import org.gitools.utils.readers.profile.Separator;
+import org.gitools.utils.readers.profile.TableReaderProfile;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import static org.gitools.utils.text.ReaderProfile.MATRIX;
-import static org.gitools.utils.text.ReaderProfile.TABLE;
+import static org.gitools.utils.readers.profile.ReaderProfile.MATRIX;
+import static org.gitools.utils.readers.profile.ReaderProfile.TABLE;
 
 public class SelectDataLayoutPage extends AbstractWizardPage {
 

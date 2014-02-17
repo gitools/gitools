@@ -27,9 +27,9 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.resource.AbstractResourceFormat;
-import org.gitools.utils.text.CSVParser;
-import org.gitools.utils.text.CSVReader;
-import org.gitools.utils.text.RawFlatTextWriter;
+import org.gitools.utils.readers.text.CSVParser;
+import org.gitools.utils.readers.text.CSVReader;
+import org.gitools.utils.readers.text.RawFlatTextWriter;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.InputStream;

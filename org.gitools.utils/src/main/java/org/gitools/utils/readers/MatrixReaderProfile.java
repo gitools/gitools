@@ -19,10 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.text;
+package org.gitools.utils.readers;
 
 
 import com.google.common.primitives.Ints;
+import org.gitools.utils.readers.profile.ReaderProfile;
+import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,7 +24,14 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
-import org.gitools.utils.text.*;
+import org.gitools.utils.readers.FileField;
+import org.gitools.utils.readers.FileHeader;
+import org.gitools.utils.readers.MatrixReaderProfile;
+import org.gitools.utils.readers.profile.ReaderProfile;
+import org.gitools.utils.readers.profile.Separator;
+import org.gitools.utils.readers.profile.TableReaderProfile;
+import org.gitools.utils.readers.text.CSVParser;
+import org.gitools.utils.readers.text.CSVReader;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -32,8 +39,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.gitools.utils.text.Separator.COMMA;
-import static org.gitools.utils.text.Separator.TAB;
+import static org.gitools.utils.readers.profile.Separator.COMMA;
+import static org.gitools.utils.readers.profile.Separator.TAB;
 
 public class FlatTextReader implements Closeable {
 

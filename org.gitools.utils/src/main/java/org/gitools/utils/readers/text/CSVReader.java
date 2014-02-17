@@ -35,7 +35,7 @@
  limitations under the License.
  */
 
-package org.gitools.utils.text;
+package org.gitools.utils.readers.text;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

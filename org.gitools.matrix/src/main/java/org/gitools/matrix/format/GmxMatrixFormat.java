@@ -30,7 +30,7 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.utils.text.CSVReader;
+import org.gitools.utils.readers.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;

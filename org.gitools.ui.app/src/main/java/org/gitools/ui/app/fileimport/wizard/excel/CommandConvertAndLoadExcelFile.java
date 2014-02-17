@@ -29,7 +29,7 @@ import org.gitools.api.resource.IResourceFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.utils.text.RawFlatTextWriter;
+import org.gitools.utils.readers.text.RawFlatTextWriter;
 
 import java.io.File;
 import java.io.FileWriter;

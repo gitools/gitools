@@ -33,8 +33,8 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.utils.text.ReaderProfile;
-import org.gitools.utils.text.ReaderProfileValidationException;
+import org.gitools.utils.readers.profile.ReaderProfile;
+import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 import java.io.IOException;
 

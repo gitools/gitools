@@ -23,7 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
 
 
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
-import org.gitools.utils.text.ReaderProfileValidationException;
+import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 public interface IFileImportStep {
 

@@ -30,8 +30,8 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.utils.text.CSVReader;
-import org.gitools.utils.text.RawFlatTextWriter;
+import org.gitools.utils.readers.text.CSVReader;
+import org.gitools.utils.readers.text.RawFlatTextWriter;
 import org.gitools.utils.translators.DoubleTranslator;
 
 import javax.enterprise.context.ApplicationScoped;

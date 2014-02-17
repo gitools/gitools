@@ -24,8 +24,8 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.utils.text.FileHeader;
-import org.gitools.utils.text.TableReaderProfile;
+import org.gitools.utils.readers.FileHeader;
+import org.gitools.utils.readers.profile.TableReaderProfile;
 import org.gitools.utils.translators.DoubleTranslator;
 
 import java.util.List;

@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.text;
+package org.gitools.utils.readers;
 
 import java.io.Serializable;
 

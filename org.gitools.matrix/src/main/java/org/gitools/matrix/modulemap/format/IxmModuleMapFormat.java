@@ -26,7 +26,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.modulemap.HashModuleMap;
-import org.gitools.utils.text.CSVReader;
+import org.gitools.utils.readers.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;

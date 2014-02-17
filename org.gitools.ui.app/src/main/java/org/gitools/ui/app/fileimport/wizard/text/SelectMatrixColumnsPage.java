@@ -25,10 +25,10 @@ package org.gitools.ui.app.fileimport.wizard.text;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.utils.text.FileField;
-import org.gitools.utils.text.FileHeader;
-import org.gitools.utils.text.MatrixReaderProfile;
-import org.gitools.utils.text.ReaderProfileValidationException;
+import org.gitools.utils.readers.FileField;
+import org.gitools.utils.readers.FileHeader;
+import org.gitools.utils.readers.MatrixReaderProfile;
+import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

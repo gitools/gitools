@@ -19,12 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.fileimport.wizard.excel;
+package org.gitools.utils.readers;
 
-import org.gitools.utils.readers.FileHeader;
+public class FileField extends FileHeader {
 
-public class ExcelHeader extends FileHeader {
-    public ExcelHeader(String label, int pos, int type) {
+    protected final int line;
+
+
+    public FileField(String label, int pos, int type, int line) {
         super(label, pos, type);
+        this.line = line;
+    }
+
+    public int getLine() {
+        return line;
     }
 }
