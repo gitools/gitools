@@ -74,6 +74,31 @@ public class MatrixReaderProfile extends ReaderProfile {
         }
     }
 
+    @Override
+    public String getColId(String[] fields) {
+        return null;
+    }
+
+    @Override
+    public String getRowId(String[] fields) {
+        return null;
+    }
+
+    @Override
+    public String[] getDataFields(String[] fields) {
+        return new String[0];
+    }
+
+    @Override
+    public int getDataColumnsNumber() {
+        return 0;
+    }
+
+    @Override
+    public String[] getHeatmapHeaders() {
+        return new String[0];
+    }
+
     public int getColumnIdsPosition() {
         return columnIdsPosition;
     }

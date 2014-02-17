@@ -27,6 +27,8 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -38,7 +40,7 @@ import java.io.IOException;
 
 public class FlatTextImportWizard extends AbstractWizard implements ImportWizard {
 
-    private static FileFormat[] FILE_FORMATS = new FileFormat[] { new FileFormat("CSV", "csv"), new FileFormat("TSV", "tsv"), new FileFormat("TXT", "txt") };
+    private static FileFormat[] FILE_FORMATS = new FileFormat[]{new FileFormat("CSV", "csv"), new FileFormat("TSV", "tsv"), new FileFormat("TXT", "txt")};
     private static FileFormatFilter FILE_FORMAT_FILTER = new FileFormatFilter("Text files", FILE_FORMATS);
 
     private IResourceLocator locator;
@@ -63,7 +65,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, new TableReaderProfile()));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, true, new TableReaderProfile()));
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();
@@ -113,8 +115,8 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
             }
 
             FlatTextReader reader = page.getReader();
-            //new CommandConvertAndLoadCsvFile();
-            //List<Integer> values = selectColumnsPage.getSelectedValues();
+            JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader);
+            JobThread.execute(Application.get(), loadFile);
             Application.get().setStatusText("Done.");
         } else {
             throw new RuntimeException("Premature finish");

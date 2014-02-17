@@ -29,9 +29,9 @@ import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.commands.CommandLoadFile;
+import org.gitools.utils.text.ReaderProfile;
 import org.gitools.utils.translators.DoubleTranslator;
 
-import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
@@ -39,17 +39,11 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
 
-    private final int columnId;
-    private final int rowId;
-    private final List<Integer> values;
     private final FlatTextReader reader;
 
-    public CommandConvertAndLoadCsvFile(int columnId, int rowId, List<Integer> values, FlatTextReader reader) {
-        super(reader.getLocator().getURL().toString());
 
-        this.columnId = columnId;
-        this.rowId = rowId;
-        this.values = values;
+    public CommandConvertAndLoadCsvFile(FlatTextReader reader) {
+        super(reader.getLocator().getURL().toString());
         this.reader = reader;
     }
 
@@ -63,32 +57,36 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
 
         try {
 
-            String[] header = reader.readNext();
-            if (header.length < 3) {
+            if (reader.getFileHeaders().size() < 3) {
                 throw new PersistenceException("At least 3 fields expected on one line.");
             }
 
-            MatrixLayer<Double> layers[] = new MatrixLayer[values.size()];
-            for (int i = 0; i < values.size(); i++) {
-                layers[i] = new MatrixLayer<>(header[values.get(i)], Double.class);
+            String[] heatmapHeaders = reader.getHeatmapHeaders();
+            MatrixLayer<Double> layers[] = new MatrixLayer[reader.getLayerNumber()];
+            for (int i = 0; i < heatmapHeaders.length; i++) {
+                layers[i] = new MatrixLayer<>(heatmapHeaders[i], Double.class);
             }
 
             HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
 
             // read body
-            String fields[];
-            while ((fields = reader.readNext()) != null) {
+            while ((reader.readNext())) {
 
                 if (progressMonitor.isCancelled()) {
                     throw new CancellationException();
                 }
 
-                final String columnId = fields[this.columnId];
-                final String rowId = fields[this.rowId];
+                if (reader.getReaderProfile().getLayout().equals(ReaderProfile.TABLE)) {
+                    final String[] fields = reader.getFields();
+                    final String columnId = reader.getColId(fields);
+                    final String rowId = reader.getRowId(fields);
 
-                for (int i = 0; i < values.size(); i++) {
-                    Double value = DoubleTranslator.get().stringToValue(fields[values.get(i)]);
-                    resultsMatrix.set(layers[i], value, rowId, columnId);
+                    for (int i = 0; i < fields.length; i++) {
+                        Double value = DoubleTranslator.get().stringToValue(fields[fields.length]);
+                        resultsMatrix.set(layers[i], value, rowId, columnId);
+                    }
+                } else if (reader.getReaderProfile().getLayout().equals(ReaderProfile.MATRIX)) {
+                    //TODO matrix fill
                 }
             }
 

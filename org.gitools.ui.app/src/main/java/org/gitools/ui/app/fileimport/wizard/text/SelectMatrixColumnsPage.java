@@ -286,7 +286,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private void fillComponents() {
         if (allheaders == null) {
             this.preview = reader.getPreview();
-            this.allheaders = reader.getHeaders();
+            this.allheaders = reader.getFileHeaders();
 
             rowIdsSpinner.setValue(1);
             columnIdsSpinner.setValue(1);

@@ -49,6 +49,17 @@ public abstract class ReaderProfile {
 
     public abstract void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException;
 
+    public abstract String getColId(String[] fields);
+
+    public abstract String getRowId(String[] fields);
+
+    public abstract String[] getDataFields(String[] fields);
+
+    public abstract int getDataColumnsNumber();
+
+    public abstract String[] getHeatmapHeaders();
+
+
     protected ReaderProfile() {
         this.name = "default";
         this.separator = Separator.TAB;

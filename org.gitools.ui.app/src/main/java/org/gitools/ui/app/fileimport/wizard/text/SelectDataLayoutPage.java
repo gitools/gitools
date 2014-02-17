@@ -120,7 +120,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private void updateParsing() {
 
         reader.run(NullProgressMonitor.get());
-        List<FileHeader> allHeaders = reader.getHeaders();
+        List<FileHeader> allHeaders = reader.getFileHeaders();
 
         StringBuilder htmlTable = getHTMLTable();
         preview.setText(htmlTable.toString());
@@ -145,7 +145,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         htmlTable.append("<html><head>");
         htmlTable.append(PreviewHTMLs.CSS);
         htmlTable.append("</head><body><table><tr>");
-        for (FileHeader header : reader.getHeaders()) {
+        for (FileHeader header : reader.getFileHeaders()) {
             htmlTable.append("<th>" + header.getLabel() + "</th>");
         }
         htmlTable.append("</tr>");

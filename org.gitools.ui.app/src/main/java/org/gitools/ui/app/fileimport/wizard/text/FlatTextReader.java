@@ -44,13 +44,19 @@ public class FlatTextReader implements JobRunnable, Closeable {
     private List<FileHeader> headers;
     private int previewLength = 20;
     private List<List<FileField>> preview;
-
     private ReaderProfile readerProfile;
+    private boolean previewMode;
 
-    public FlatTextReader(IResourceLocator locator, ReaderProfile profile) {
+    private String[] currentFields;
+    private String currentRowId;
+    private String currentColId;
+
+
+    public FlatTextReader(IResourceLocator locator, boolean previewMode, ReaderProfile profile) {
         super();
         this.locator = locator;
         this.readerProfile = profile;
+        this.previewMode = previewMode;
 
         // Choose COMMA separator if it's a CSV
         if ("csv".equalsIgnoreCase(locator.getExtension())) {
@@ -90,7 +96,7 @@ public class FlatTextReader implements JobRunnable, Closeable {
             }
 
             //Load preview
-            if (previewLength > 0) {
+            if (previewLength > 0 && previewMode) {
                 preview = new ArrayList<>();
                 for (int i = 0; i < previewLength; i++) {
                     line = reader.readNext();
@@ -103,10 +109,9 @@ public class FlatTextReader implements JobRunnable, Closeable {
                     } else {
                         previewLength = i;
                     }
-
                 }
             }
-            reader.close();
+            //reader.close();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -118,7 +123,7 @@ public class FlatTextReader implements JobRunnable, Closeable {
     }
 
     private CSVReader newCSVReader(IProgressMonitor monitor) throws IOException {
-        reader = new CSVReader(
+        CSVReader reader = new CSVReader(
                 new InputStreamReader(locator.openInputStream(monitor)),
                 readerProfile.getSeparator().getChar(),
                 CSVParser.DEFAULT_QUOTE_CHARACTER,
@@ -130,16 +135,24 @@ public class FlatTextReader implements JobRunnable, Closeable {
         return reader;
     }
 
-    public String[] readNext() throws IOException {
+    public boolean readNext() throws IOException {
 
         if (reader==null) {
-            reader = newCSVReader(new NullProgressMonitor());
+            run(new NullProgressMonitor());
         }
 
-        return reader.readNext();
+        String[] line = reader.readNext();
+        if (line == null) {
+            return false;
+        }
+        //TODO: prepare next line
+        currentColId = readerProfile.getColId(line);
+        currentRowId = readerProfile.getRowId(line);
+        currentFields = readerProfile.getDataFields(line);
+        return true;
     }
 
-    public List<FileHeader> getHeaders() {
+    public List<FileHeader> getFileHeaders() {
         return headers;
     }
 
@@ -169,5 +182,31 @@ public class FlatTextReader implements JobRunnable, Closeable {
         if (reader!=null) {
             reader.close();
         }
+    }
+
+    public void setPreviewMode(boolean previewMode) {
+        this.previewMode = previewMode;
+        reader = null;
+        run(new NullProgressMonitor());
+    }
+
+    public String getColId(String[] fields) {
+        return currentColId;
+    }
+
+    public String getRowId(String[] fields) {
+        return currentRowId;
+    }
+
+    public String[] getFields() {
+        return currentFields;
+    }
+
+    public int getLayerNumber() {
+        return readerProfile.getDataColumnsNumber();
+    }
+
+    public String[] getHeatmapHeaders() {
+        return readerProfile.getHeatmapHeaders();
     }
 }

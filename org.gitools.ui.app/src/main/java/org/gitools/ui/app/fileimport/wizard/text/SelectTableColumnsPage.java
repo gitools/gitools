@@ -180,7 +180,7 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
     private void fillLists() {
         if (allheaders == null) {
             this.preview = reader.getPreview();
-            this.allheaders = reader.getHeaders();
+            this.allheaders = reader.getFileHeaders();
             DefaultListModel<FileHeader> values = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> ignored = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> rows = new DefaultListModel<FileHeader>();

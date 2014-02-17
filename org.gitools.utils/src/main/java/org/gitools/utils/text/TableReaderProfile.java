@@ -89,6 +89,46 @@ public class TableReaderProfile extends ReaderProfile {
         }
     }
 
+    @Override
+    public String getColId(String[] fields) {
+        return composeId(fields, heatmapColumnsIds);
+    }
+
+    @Override
+    public String getRowId(String[] fields) {
+        return composeId(fields, heatmapRowsIds);
+    }
+
+    private String composeId(String[] fields, int[] indices) {
+        StringBuilder id = new StringBuilder("");
+        for (int i = 0; i < indices.length; i++) {
+            if (!fields.equals("")) {
+                id.append(fieldGlue);
+            }
+            id.append(fields[indices[i]]);
+        }
+        return id.toString();
+    }
+
+    @Override
+    public String[] getDataFields(String[] fields) {
+        String[] data = new String[dataColumns.length];
+        for (int i = 0; i < dataColumns.length; i++) {
+            data[i] = fields[dataColumns[i]];
+        }
+        return data;
+    }
+
+    @Override
+    public int getDataColumnsNumber() {
+        return dataColumns.length;
+    }
+
+    @Override
+    public String[] getHeatmapHeaders() {
+        return new String[0];
+    }
+
     /**
      * Which columns in the flat text are mapped as heatmap row id
      */
