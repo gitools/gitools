@@ -48,6 +48,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     private SelectTableColumnsPage selectTableColumnsPage;
     private SelectMatrixColumnsPage selectMatrixColumnsPage;
     private IProgressMonitor monitor;
+    private WizardDialog wizDlg;
 
     public FlatTextImportWizard() {
         setTitle("Import a text file");
@@ -115,6 +116,9 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
                 e.printStackTrace();
             }
 
+            // validation succeded, close dialog and read file
+
+            wizDlg.setVisible(false);
             FlatTextImporter reader = page.getReader();
             JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader);
             JobThread.execute(Application.get(), loadFile);
@@ -130,7 +134,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     public void run(IProgressMonitor monitor) throws IOException {
         init();
         this.monitor = monitor;
-        WizardDialog wizDlg = new WizardDialog(Application.get(), this);
+        this.wizDlg = new WizardDialog(Application.get(), this);
         wizDlg.open();
     }
 }

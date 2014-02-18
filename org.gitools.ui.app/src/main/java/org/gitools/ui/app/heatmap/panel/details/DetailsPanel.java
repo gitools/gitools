@@ -37,6 +37,7 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 
+import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -51,6 +52,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
     private DetailsBox columnsBox;
     private DetailsBox rowsBox;
     private DetailsBox layersBox;
+    private JLabel hintLabel;
 
 
     /**
@@ -134,6 +136,11 @@ public class DetailsPanel extends JXTaskPaneContainer {
                 }
             }
         });
+
+        hintLabel = new JLabel();
+        hintLabel.setText("<html><body>Right or double click on any layer or header id to " +
+                "<b>adjust visualization and other settings</b>.</body></html>");
+        add(hintLabel);
 
         update(heatmap.getRows(), rowsBox);
         update(heatmap.getColumns(), columnsBox);
