@@ -95,13 +95,8 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_METHOD, 96));
 
-        String[] layerOptions = new String[heatmap.getLayers().size() + 1];
-        layerOptions[0] = "";
-        System.arraycopy(heatmap.getLayers().getIds(), 0, layerOptions, 1, heatmap.getLayers().size());
-        layerCb.setModel(new DefaultComboBoxModel(layerOptions));
-        if (layerOptions.length == 2) {
-            layerCb.setSelectedIndex(1);
-        }
+        layerCb.setModel(new DefaultComboBoxModel(heatmap.getLayers().getIds()));
+        layerCb.setSelectedItem(heatmap.getLayers().getTopLayer().getId());
 
         groupsTable.setModel(tableModel);
 
