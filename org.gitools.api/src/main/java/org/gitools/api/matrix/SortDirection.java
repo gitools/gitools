@@ -42,10 +42,10 @@ public enum SortDirection {
             return 0;
         }
         if (o1 == null) {
-            return (factor);
+            return 1;
         }
         if (o2 == null) {
-            return (-1 * factor);
+            return -1;
         }
 
         return ((Comparable) o1).compareTo(o2) * factor;
