@@ -286,7 +286,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
 
         // Are there at least two groups?
-        isComplete = tableModel.getRowCount() > 1 & layerCb.getSelectedIndex() > 0;
+        isComplete = tableModel.getRowCount() > 1 & layerCb.getSelectedItem() != null;
 
         if (!isComplete) {
             setMessage(MessageStatus.INFO, "Create at least 2 groups to compare and select data layer for group comparison");

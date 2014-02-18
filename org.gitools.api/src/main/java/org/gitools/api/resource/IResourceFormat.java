@@ -30,6 +30,8 @@ public interface IResourceFormat<R extends IResource> {
 
     String getExtension();
 
+    boolean isDefaultExtension();
+
     Class<R> getResourceClass();
 
     boolean isConfigurable();

@@ -54,6 +54,10 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
         super(EXTENSION, AnnotationMatrix.class);
     }
 
+    @Override
+    public boolean isDefaultExtension() {
+        return true;
+    }
 
     @Override
     protected AnnotationMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {

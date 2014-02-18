@@ -59,6 +59,11 @@ public abstract class AbstractResourceFormat<R extends IResource> implements IRe
     }
 
     @Override
+    public boolean isDefaultExtension() {
+        return false;
+    }
+
+    @Override
     public final void configure(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
         configureResource(resourceLocator, progressMonitor);
     }

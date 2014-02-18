@@ -25,6 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
@@ -43,7 +44,7 @@ import java.util.Map;
 public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysis> {
 
     public CombinationAnalysisEditor(CombinationAnalysis analysis) {
-        super(analysis, "/vm/analysis/combination/analysis_details.vm");
+        super(analysis, "/vm/analysis/combination/analysis_details.vm", CombinationAnalysisFormat.EXTENSION);
     }
 
     @Override
@@ -106,13 +107,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
             public void run(IProgressMonitor monitor) {
                 try {
                     monitor.begin("Creating new heatmap from data ...", 1);
-
-                    Heatmap heatmap = new Heatmap(analysis.getData().get());
-                    heatmap.setTitle(analysis.getTitle() + " (data)");
-
-                    final HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-                    editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-data", ""));
+                    final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
 
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
@@ -131,6 +126,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
     }
 
     private void newResultsHeatmap() {
+
         final CombinationAnalysis analysis = getModel();
         if (analysis.getResults() == null) {
             Application.get().setStatusText("Analysis doesn't contain results.");
@@ -145,12 +141,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
                 monitor.begin("Creating new heatmap from results ...", 1);
 
                 try {
-                    Heatmap heatmap = new Heatmap(analysis.getResults().get());
-                    heatmap.getLayers().setTopLayerById("right-p-value");
-                    heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
-                    heatmap.setTitle(analysis.getTitle() + " (results)");
-
-                    final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                    final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                     editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                     editor.setName(editorPanel.deriveName(getName(), CombinationAnalysisFormat.EXTENSION, "-results", ""));
@@ -169,9 +160,24 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
         });
     }
 
+    @Deprecated
+    private Heatmap createDataHeatmap(CombinationAnalysis analysis) {
 
-    private static Heatmap createHeatmap(CombinationAnalysis analysis) {
+        IMatrix data = analysis.getData().get();
+        if (Heatmap.class.isAssignableFrom(data.getClass())) {
+            return (Heatmap) data;
+        }
+
+        Heatmap heatmap = new Heatmap(data);
+        heatmap.setTitle(analysis.getTitle() + " (data)");
+        return heatmap;
+    }
+
+    @Deprecated
+    private Heatmap createResultsHeatmap(CombinationAnalysis analysis) {
         Heatmap heatmap = new Heatmap(analysis.getResults().get());
+        heatmap.getLayers().setTopLayerById("right-p-value");
+        heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
         heatmap.setTitle(analysis.getTitle() + " (results)");
         return heatmap;
     }

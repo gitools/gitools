@@ -55,6 +55,11 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     @Override
+    public boolean isDefaultExtension() {
+        return true;
+    }
+
+    @Override
     protected void configureResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
     }
 

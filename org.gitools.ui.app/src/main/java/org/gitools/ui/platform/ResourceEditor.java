@@ -26,9 +26,10 @@ import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.resource.Resource;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -40,7 +41,7 @@ import javax.swing.*;
 import java.io.File;
 import java.net.URISyntaxException;
 
-public class ResourceEditor<R extends IResource> extends AbstractEditor<R> {
+public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<R> {
 
     private R resource;
 
@@ -86,6 +87,42 @@ public class ResourceEditor<R extends IResource> extends AbstractEditor<R> {
         }
 
         setDirty(false);
+    }
+
+    protected String getFileName() {
+        return getModel().getTitle();
+    }
+
+    protected abstract FileFormat[] getFileFormats();
+
+    @Override
+    public void doSaveAs(IProgressMonitor monitor) {
+
+        File file = getFile();
+        if (file != null) {
+            Settings.getDefault().setLastPath(file.getParent());
+        }
+
+        SaveFileWizard wiz = SaveFileWizard.createSimple(
+                "Save",
+                getFileName(),
+                Settings.getDefault().getLastPath(),
+                getFileFormats()
+        );
+
+        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
+        dlg.setVisible(true);
+        if (dlg.isCancelled()) {
+            return;
+        }
+
+        Settings.getDefault().setLastPath(wiz.getFolder());
+        file = wiz.getPathAsFile();
+        setFile(file);
+
+        resource.setLocator(new UrlResourceLocator(file));
+        doSave(monitor);
+
     }
 
     @Override

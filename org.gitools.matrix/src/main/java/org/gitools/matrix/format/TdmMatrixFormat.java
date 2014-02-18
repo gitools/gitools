@@ -52,6 +52,11 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     }
 
     @Override
+    public boolean isDefaultExtension() {
+        return true;
+    }
+
+    @Override
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         try {

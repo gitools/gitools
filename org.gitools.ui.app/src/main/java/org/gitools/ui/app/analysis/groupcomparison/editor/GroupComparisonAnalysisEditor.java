@@ -24,7 +24,10 @@ package org.gitools.ui.app.analysis.groupcomparison.editor;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
+import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
@@ -46,9 +49,8 @@ import java.util.Map;
 public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupComparisonAnalysis> {
 
     public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
-        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm");
+        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", GroupComparisonAnalysisFormat.EXTENSION);
     }
-
 
     @Override
     protected void prepareContext(VelocityContext context) {
@@ -106,24 +108,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                Heatmap heatmap = new Heatmap(analysis.getData().get());
-                heatmap.setTitle(analysis.getTitle() + " (data)");
-
-                if (analysis.getRowAnnotations() != null) {
-                    heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
-                }
-                if (analysis.getRowHeaders() != null)
-                    copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
-
-                if (analysis.getColumnAnnotations() != null) {
-                    heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
-                }
-                if (analysis.getColumnHeaders() != null)
-                    copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());
-
-                final HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-
+                final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-data", ""));
 
                 SwingUtilities.invokeLater(new Runnable() {
@@ -135,13 +120,6 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                 });
             }
         });
-    }
-
-
-    private void copyHeaders(HeatmapDimension dim, List<HeatmapHeader> headers) {
-        for (HeatmapHeader hh : headers) {
-            dim.addHeader(hh);
-        }
     }
 
     private void newResultsHeatmap() {
@@ -160,10 +138,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Obtaining heatmap from results ...", 1);
 
-                // Group comparison analysis contains a Heatmap (not Matrix)
-                Heatmap heatmap = (Heatmap) analysis.getResults().get();
-
-                final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
@@ -177,5 +152,51 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                 });
             }
         });
+    }
+
+    @Deprecated
+    private Heatmap createDataHeatmap(GroupComparisonAnalysis analysis) {
+
+        IMatrix data = analysis.getData().get();
+        if (Heatmap.class.isAssignableFrom(data.getClass())) {
+            return (Heatmap) data;
+        }
+
+        Heatmap heatmap = new Heatmap(data);
+        /*
+        heatmap.setTitle(analysis.getTitle() + " (data)");
+
+        if (analysis.getRowAnnotations() != null) {
+            heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
+        }
+        if (analysis.getRowHeaders() != null)
+            copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
+
+        if (analysis.getColumnAnnotations() != null) {
+            heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
+        }
+        if (analysis.getColumnHeaders() != null)
+            copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());*/
+
+        return heatmap;
+    }
+
+    @Deprecated
+    private Heatmap createResultsHeatmap(GroupComparisonAnalysis analysis) {
+
+        IMatrix results = analysis.getResults().get();
+        if (Heatmap.class.isAssignableFrom(results.getClass())) {
+            return (Heatmap) results;
+        }
+
+        Heatmap heatmap = new Heatmap(results);
+        return heatmap;
+
+    }
+
+    private void copyHeaders(HeatmapDimension dim, List<HeatmapHeader> headers) {
+        for (HeatmapHeader hh : headers) {
+            dim.addHeader(hh);
+        }
     }
 }

@@ -21,13 +21,46 @@
  */
 package org.gitools.ui.app.analysis.htest.editor;
 
+import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
+import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.decorator.impl.PValueDecorator;
+import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 
 public class OncodriveAnalysisEditor extends AbstractHtestAnalysisEditor<OncodriveAnalysis> {
 
     public OncodriveAnalysisEditor(OncodriveAnalysis analysis) {
         super(analysis, "/vm/analysis/oncodrive/analysis_details.vm", OncodriveAnalysisFormat.EXTENSION);
+    }
+
+    @Override
+    protected String getFileName() {
+        return getModel().getTitle();
+    }
+
+    @Override
+    protected FileFormat[] getFileFormats() {
+        return new FileFormat[] { OncodriveAnalysisFormat.FILE_FORMAT };
+    }
+
+    @Override
+    protected Heatmap createResultsHeatmap(OncodriveAnalysis analysis) {
+
+        IMatrix results = analysis.getResults().get();
+
+        if (results instanceof Heatmap) {
+            return (Heatmap) results;
+        }
+
+        //Deprecated
+        Heatmap heatmap = new Heatmap(results);
+        heatmap.setTitle(analysis.getTitle() + " (results)");
+        return heatmap;
     }
 
 }

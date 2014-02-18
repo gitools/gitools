@@ -45,6 +45,10 @@ public class TcmModuleMapFormat extends AbstractModuleMapFormat {
         super(EXTENSION);
     }
 
+    @Override
+    public boolean isDefaultExtension() {
+        return true;
+    }
 
     @Override
     protected IModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {

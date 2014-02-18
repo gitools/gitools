@@ -84,7 +84,7 @@ public class WelcomeEditor extends HtmlEditor {
         try {
             URL url = new URL("http://www.gitools.org/welcome");
             URLConnection connection = url.openConnection();
-            connection.setConnectTimeout(4000);
+            connection.setConnectTimeout(10000);
 
             if (connection.getContentLength() != -1) {
                 return url;

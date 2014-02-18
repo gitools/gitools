@@ -33,6 +33,11 @@ public class DimensionGroup {
     protected Integer groupSize;
 
 
+    @SuppressWarnings("UnusedDeclaration")
+    public DimensionGroup() {
+        //JAXB Requirement
+    }
+
     public DimensionGroup(String name, IMatrixPredicate predicate, DimensionGroupEnum groupType, String property) {
         this.name = name;
         this.predicate = predicate;

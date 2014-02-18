@@ -29,6 +29,7 @@ import org.gitools.analysis.htest.HtestAnalysis;
 import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.BinaryDecorator;
@@ -48,13 +49,9 @@ import java.util.Map;
 
 public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> extends AnalysisEditor<T> {
 
-    private String formatExtension;
-
     protected AbstractHtestAnalysisEditor(T analysis, String template, String formatExtension) {
-        super(analysis, template);
-        this.formatExtension = formatExtension;
+        super(analysis, template, formatExtension);
     }
-
 
     @Override
     protected void prepareContext(VelocityContext context) {
@@ -132,22 +129,12 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         }
 
         final EditorsPanel editorPanel = Application.get().getEditorsPanel();
-
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                Heatmap heatmap = new Heatmap(analysis.getData().get());
-                String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
-                if (!testName.equals(TestFactory.ZSCORE_TEST)) {
-                    heatmap.getLayers().get(0).setDecorator(new BinaryDecorator());
-                }
-                heatmap.setTitle(analysis.getTitle() + " (data)");
-
-                final HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-                editor.setName(editorPanel.deriveName(getName(), formatExtension, "-data", ""));
+                final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
@@ -168,17 +155,11 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         }
 
         final EditorsPanel editorPanel = Application.get().getEditorsPanel();
-
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
-
-                final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
-                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
-
-                editor.setName(editorPanel.deriveName(getName(), EnrichmentAnalysisFormat.EXTENSION, "-results", ""));
-
+                final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -190,10 +171,27 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         });
     }
 
-    protected Heatmap createHeatmap(T analysis) {
-        Heatmap heatmap = new Heatmap(analysis.getResults().get());
-        heatmap.setTitle(analysis.getTitle() + " (results)");
+    @Deprecated
+    protected abstract Heatmap createResultsHeatmap(T analysis);
+
+    @Deprecated
+    protected Heatmap createDataHeatmap(T analysis) {
+
+        IMatrix data = analysis.getData().get();
+
+        if (data instanceof Heatmap) {
+            return (Heatmap) data;
+        }
+
+        Heatmap heatmap = new Heatmap(data);
+        String testName = analysis.getTestConfig().getConfiguration().get(TestFactory.TEST_NAME_PROPERTY);
+        if (!testName.equals(TestFactory.ZSCORE_TEST)) {
+            heatmap.getLayers().get(0).setDecorator(new BinaryDecorator());
+        }
+        heatmap.setTitle(analysis.getTitle() + " (data)");
+
         return heatmap;
     }
+
 
 }

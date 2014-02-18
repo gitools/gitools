@@ -23,6 +23,12 @@ package org.gitools.ui.app.analysis.editor;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.Analysis;
+import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.persistence.FileFormat;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.decorator.impl.BinaryDecorator;
+import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.utils.LogUtils;
 import org.gitools.ui.platform.IconUtils;
@@ -42,15 +48,29 @@ public abstract class AnalysisEditor<A extends Analysis> extends ResourceEditor<
 
     private final String template;
     private TemplatePanel templatePanel;
+    private String formatExtension;
 
-    protected AnalysisEditor(A analysis, String template) {
+    protected AnalysisEditor(A analysis, String template, String formatExtension) {
         super(analysis);
 
+        this.formatExtension = formatExtension;
         this.template = template;
 
         setIcon(IconUtils.getIconResource(IconNames.LOGO_ANALYSIS_DETAILS16));
 
         createComponents();
+    }
+
+    @Override
+    protected FileFormat[] getFileFormats() {
+        return new FileFormat[] {
+                new FileFormat("Single file (*."+formatExtension+".zip)", formatExtension + ".zip", false, false),
+                new FileFormat("Multiple files (*."+formatExtension+")", formatExtension, false, false)
+        };
+    }
+
+    protected String getFormatExtension() {
+        return formatExtension;
     }
 
     private void createComponents() {

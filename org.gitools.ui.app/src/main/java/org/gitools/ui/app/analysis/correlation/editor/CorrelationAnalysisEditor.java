@@ -25,6 +25,7 @@ import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
@@ -44,7 +45,7 @@ import java.util.Map;
 public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysis> {
 
     public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {
-        super(analysis, "/vm/analysis/correlation/analysis_details.vm");
+        super(analysis, "/vm/analysis/correlation/analysis_details.vm", CorrelationAnalysisFormat.EXTENSION);
     }
 
     @Override
@@ -99,10 +100,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                Heatmap heatmap = new Heatmap(analysis.getData().get());
-                heatmap.setTitle(analysis.getTitle() + " (data)");
-
-                final HeatmapEditor editor = new HeatmapEditor(heatmap);
+                final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
 
                 editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-data", ""));
 
@@ -134,7 +132,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
                 Heatmap heatmap = new Heatmap(analysis.getResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), CorrelationAnalysisFormat.EXTENSION, "-results", ""));
@@ -150,11 +148,29 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
         });
     }
 
+    @Deprecated
+    private Heatmap createDataHeatmap(CorrelationAnalysis analysis) {
 
-    private static Heatmap createHeatmap(CorrelationAnalysis analysis) {
+        IMatrix data = analysis.getData().get();
+        if (Heatmap.class.isAssignableFrom(data.getClass())) {
+            return (Heatmap) data;
+        }
 
-        Heatmap heatmap = new Heatmap(analysis.getResults().get(), true);
+        Heatmap heatmap = new Heatmap(data);
+        heatmap.setTitle(analysis.getTitle() + " (data)");
 
+        return heatmap;
+    }
+
+    @Deprecated
+    private Heatmap createResultsHeatmap(CorrelationAnalysis analysis) {
+
+        IMatrix results = analysis.getResults().get();
+        if (Heatmap.class.isAssignableFrom(results.getClass())) {
+            return (Heatmap) results;
+        }
+
+        Heatmap heatmap = new Heatmap(results, true);
         heatmap.setTitle(analysis.getTitle() + " (results)");
 
         for (HeatmapLayer layer : heatmap.getLayers()) {

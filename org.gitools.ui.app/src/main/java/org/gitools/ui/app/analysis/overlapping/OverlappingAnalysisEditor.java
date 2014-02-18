@@ -49,7 +49,7 @@ import java.util.Map;
 public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysis> {
 
     public OverlappingAnalysisEditor(OverlappingAnalysis analysis) {
-        super(analysis, "/vm/analysis/overlapping/analysis_details.vm");
+        super(analysis, "/vm/analysis/overlapping/analysis_details.vm", OverlappingAnalysisFormat.EXTENSION);
     }
 
     @Override
@@ -104,13 +104,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
-
-                Heatmap heatmap = new Heatmap(analysis.getSourceData().get());
-                heatmap.setTitle(analysis.getTitle() + " (data)");
-
-                final HeatmapEditor editor = new HeatmapEditor(heatmap);
-
-                editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-data", ""));
+                final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
@@ -140,7 +134,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
                 Heatmap heatmap = new Heatmap(analysis.getCellResults().get());
                 heatmap.setTitle(analysis.getTitle() + " (results)");
 
-                final HeatmapEditor editor = new HeatmapEditor(createHeatmap(analysis));
+                final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
                 editor.setName(editorPanel.deriveName(getName(), OverlappingAnalysisFormat.EXTENSION, "-results", ""));
@@ -155,12 +149,32 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
             }
         });
 
+    }
+
+    @Deprecated
+    private Heatmap createDataHeatmap(OverlappingAnalysis analysis) {
+
+        IMatrix data = analysis.getSourceData().get();
+        if (Heatmap.class.isAssignableFrom(data.getClass())) {
+            return (Heatmap) data;
+        }
+
+        Heatmap heatmap = new Heatmap(data);
+        heatmap.setTitle(analysis.getTitle() + " (data)");
+
+        return heatmap;
 
     }
 
+    @Deprecated
+    private Heatmap createResultsHeatmap(OverlappingAnalysis analysis) {
 
-    private static Heatmap createHeatmap(OverlappingAnalysis analysis) {
-        Heatmap heatmap = new Heatmap(analysis.getCellResults().get(), true);
+        IMatrix results = analysis.getCellResults().get();
+        if (Heatmap.class.isAssignableFrom(results.getClass())) {
+            return (Heatmap) results;
+        }
+
+        Heatmap heatmap = new Heatmap(results, true);
         heatmap.setTitle(analysis.getTitle() + " (results)");
         for (HeatmapLayer layer : heatmap.getLayers()) {
 

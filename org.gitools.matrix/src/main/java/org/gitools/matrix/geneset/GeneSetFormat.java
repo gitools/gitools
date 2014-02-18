@@ -39,6 +39,10 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
         super(EXTENSION, GeneSet.class);
     }
 
+    @Override
+    public boolean isDefaultExtension() {
+        return true;
+    }
 
     @Override
     protected GeneSet readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
