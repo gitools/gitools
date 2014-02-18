@@ -22,12 +22,12 @@
 package org.gitools.ui.app.fileimport.wizard.text;
 
 
-import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 public interface IFileImportStep {
 
     void finish() throws ReaderProfileValidationException;
 
-    FlatTextReader getReader();
+    FlatTextImporter getReader();
 }

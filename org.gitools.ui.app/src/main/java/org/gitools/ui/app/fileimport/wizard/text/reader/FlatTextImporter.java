@@ -42,7 +42,7 @@ import java.util.List;
 import static org.gitools.utils.readers.profile.Separator.COMMA;
 import static org.gitools.utils.readers.profile.Separator.TAB;
 
-public class FlatTextReader implements Closeable {
+public class FlatTextImporter implements Closeable {
 
     private final IResourceLocator locator;
     private CSVReader reader = null;
@@ -55,7 +55,7 @@ public class FlatTextReader implements Closeable {
     private String[] currentLine;
 
 
-    public FlatTextReader(IResourceLocator locator, boolean previewMode, ReaderProfile profile) {
+    public FlatTextImporter(IResourceLocator locator, boolean previewMode, ReaderProfile profile) {
         super();
         this.locator = locator;
         this.readerProfile = profile == null ? new TableReaderProfile() : profile;
@@ -68,7 +68,7 @@ public class FlatTextReader implements Closeable {
         setAssistant(readerProfile);
     }
 
-    public FlatTextReader(IResourceLocator locator, boolean previewMode) {
+    public FlatTextImporter(IResourceLocator locator, boolean previewMode) {
         this(locator, previewMode, null);
     }
 

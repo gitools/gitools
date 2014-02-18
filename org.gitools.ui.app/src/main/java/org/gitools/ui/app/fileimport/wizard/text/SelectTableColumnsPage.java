@@ -22,7 +22,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
  * #L%
  */
 
-import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.readers.FileField;
@@ -39,7 +39,7 @@ import java.util.List;
 
 public class SelectTableColumnsPage extends AbstractWizardPage implements IFileImportStep {
 
-    private FlatTextReader reader;
+    private FlatTextImporter reader;
 
     private JPanel mainPanel;
     private JList<FileHeader> valuesHeaderList;
@@ -233,11 +233,11 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
     }
 
     @Override
-    public FlatTextReader getReader() {
+    public FlatTextImporter getReader() {
         return reader;
     }
 
-    public void setReader(FlatTextReader reader) {
+    public void setReader(FlatTextImporter reader) {
         this.reader = reader;
         fillLists();
     }

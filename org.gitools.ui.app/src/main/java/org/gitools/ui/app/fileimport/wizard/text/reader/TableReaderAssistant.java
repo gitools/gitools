@@ -37,7 +37,7 @@ public class TableReaderAssistant extends ReaderAssistant {
     private String currentRowId;
     private String[] currentFields;
 
-    public TableReaderAssistant(FlatTextReader reader) {
+    public TableReaderAssistant(FlatTextImporter reader) {
         super(reader);
     }
 

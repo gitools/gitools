@@ -25,7 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
-import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -65,7 +65,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextReader(locator, true));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextImporter(locator, true));
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();
@@ -114,7 +114,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
                 e.printStackTrace();
             }
 
-            FlatTextReader reader = page.getReader();
+            FlatTextImporter reader = page.getReader();
             JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader);
             JobThread.execute(Application.get(), loadFile);
             Application.get().setStatusText("Done.");

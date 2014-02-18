@@ -23,7 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.text;
  */
 
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -43,7 +43,7 @@ import static org.gitools.utils.readers.profile.ReaderProfile.TABLE;
 
 public class SelectDataLayoutPage extends AbstractWizardPage {
 
-    private FlatTextReader reader;
+    private FlatTextImporter reader;
 
     private JPanel mainPanel;
 
@@ -57,8 +57,8 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
     private DefaultComboBoxModel separatorsModel;
 
 
-    public SelectDataLayoutPage(FlatTextReader flatTextReader) {
-        this.reader = flatTextReader;
+    public SelectDataLayoutPage(FlatTextImporter flatTextImporter) {
+        this.reader = flatTextImporter;
 
         separatorsModel = new DefaultComboBoxModel(Separator.values());
         separatorCombo.setModel(separatorsModel);
@@ -176,11 +176,11 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         return htmlTable;
     }
 
-    public FlatTextReader getReader() {
+    public FlatTextImporter getReader() {
         return reader;
     }
 
-    public void setReader(FlatTextReader reader) {
+    public void setReader(FlatTextImporter reader) {
         this.reader = reader;
     }
 

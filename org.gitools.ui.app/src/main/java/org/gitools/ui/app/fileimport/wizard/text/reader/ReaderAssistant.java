@@ -28,10 +28,10 @@ import org.gitools.matrix.model.MatrixLayer;
 public abstract class ReaderAssistant {
 
 
-    protected final FlatTextReader reader;
+    protected final FlatTextImporter reader;
     protected MatrixLayer[] heatmapLayers;
 
-    public ReaderAssistant(FlatTextReader reader) {
+    public ReaderAssistant(FlatTextImporter reader) {
         this.reader = reader;
         update();
     }

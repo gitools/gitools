@@ -29,7 +29,7 @@ import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextReader;
+import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.app.fileimport.wizard.text.reader.ReaderAssistant;
 
 import java.util.concurrent.CancellationException;
@@ -39,10 +39,10 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
 
-    private final FlatTextReader reader;
+    private final FlatTextImporter reader;
 
 
-    public CommandConvertAndLoadCsvFile(FlatTextReader reader) {
+    public CommandConvertAndLoadCsvFile(FlatTextImporter reader) {
         super(reader.getLocator().getURL().toString());
         this.reader = reader;
     }

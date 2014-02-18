@@ -36,7 +36,7 @@ public class MatrixReaderAssistant extends ReaderAssistant {
     private String currentRowId;
     private String[] currentFields;
 
-    public MatrixReaderAssistant(FlatTextReader reader) {
+    public MatrixReaderAssistant(FlatTextImporter reader) {
         super(reader);
     }
 
