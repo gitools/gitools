@@ -22,7 +22,7 @@
 package org.gitools.heatmap.header;
 
 import com.google.common.base.Function;
-import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
@@ -113,7 +113,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
             decorator.setShowValue(true);
         }
 
-        IAnnotations annotations = getHeatmapDimension().getAnnotations();
+        IMatrix annotations = new ConvertStringToDoubleAdapter(getHeatmapDimension().getAnnotations());
 
         decorator.decorate(
                 decoration,
