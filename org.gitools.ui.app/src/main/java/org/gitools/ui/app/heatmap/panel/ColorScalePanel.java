@@ -42,6 +42,7 @@ public class ColorScalePanel extends JPanel implements PropertyChangeListener {
 
         // Listen
         heatmap.getLayers().addPropertyChangeListener(HeatmapLayers.PROPERTY_TOP_LAYER, this);
+        heatmap.getLayers().addPropertyChangeListener(Heatmap.PROPERTY_LAYERS, this);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, this);
 
         init();
