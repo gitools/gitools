@@ -97,7 +97,7 @@ public class UrlResourceLocator implements IResourceLocator {
             String name = getName();
             String extension = ApplicationContext.getPersistenceManager().getFormatExtension(name);
             int startExtension = name.lastIndexOf(extension);
-            baseName = name.substring(0, startExtension - 1);
+            baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
         }
 
         return baseName;
