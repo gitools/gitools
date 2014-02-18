@@ -47,6 +47,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     private SelectDataLayoutPage selectDataLayoutPage;
     private SelectTableColumnsPage selectTableColumnsPage;
     private SelectMatrixColumnsPage selectMatrixColumnsPage;
+    private IProgressMonitor monitor;
 
     public FlatTextImportWizard() {
         setTitle("Import a text file");
@@ -65,7 +66,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void addPages() {
 
-        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextImporter(locator, true));
+        selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextImporter(locator, monitor, true));
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();
@@ -128,6 +129,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     @Override
     public void run(IProgressMonitor monitor) throws IOException {
         init();
+        this.monitor = monitor;
         WizardDialog wizDlg = new WizardDialog(Application.get(), this);
         wizDlg.open();
     }

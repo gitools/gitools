@@ -23,7 +23,6 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.readers.FileField;
 import org.gitools.utils.readers.FileHeader;
 import org.gitools.utils.readers.MatrixReaderProfile;
@@ -53,23 +52,25 @@ public class FlatTextImporter implements Closeable {
     private ReaderAssistant readerAssistant;
     private boolean previewMode;
     private String[] currentLine;
+    private IProgressMonitor monitor;
 
 
-    public FlatTextImporter(IResourceLocator locator, boolean previewMode, ReaderProfile profile) {
+    public FlatTextImporter(IResourceLocator locator, IProgressMonitor monitor, boolean previewMode, ReaderProfile profile) {
         super();
+        this.monitor = monitor;
         this.locator = locator;
         this.readerProfile = profile == null ? new TableReaderProfile() : profile;
         this.previewMode = previewMode;
         guessSeparator(locator);
-        loadHead(new NullProgressMonitor());
+        loadHead(monitor);
         if (profile == null) {
             this.readerProfile = guessDataLayout();
         }
         setAssistant(readerProfile);
     }
 
-    public FlatTextImporter(IResourceLocator locator, boolean previewMode) {
-        this(locator, previewMode, null);
+    public FlatTextImporter(IResourceLocator locator, IProgressMonitor monitor, boolean previewMode) {
+        this(locator, monitor, previewMode, null);
     }
 
     private ReaderProfile guessDataLayout() {
@@ -94,7 +95,7 @@ public class FlatTextImporter implements Closeable {
             for (Separator sep : Separator.values()) {
                 Separator oldSep = readerProfile.getSeparator();
                 readerProfile.setSeparator(sep);
-                loadHead(new NullProgressMonitor());
+                loadHead(monitor);
                 if (headers.size() < recordOfFields) {
                     readerProfile.setSeparator(oldSep);
                 } else {
@@ -168,7 +169,7 @@ public class FlatTextImporter implements Closeable {
     public boolean readNext() throws IOException {
 
         if (reader == null) {
-            loadHead(new NullProgressMonitor());
+            loadHead(monitor);
         }
 
         currentLine = reader.readNext();
@@ -217,7 +218,7 @@ public class FlatTextImporter implements Closeable {
 
     public void setPreviewMode(boolean previewMode) {
         this.previewMode = previewMode;
-        loadHead(new NullProgressMonitor());
+        loadHead(monitor);
     }
 
     public String[] getCurrentLine() {
