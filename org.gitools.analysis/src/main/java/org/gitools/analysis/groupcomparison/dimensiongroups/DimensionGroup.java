@@ -23,7 +23,10 @@ package org.gitools.analysis.groupcomparison.dimensiongroups;
 
 import org.gitools.api.matrix.IMatrixPredicate;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DimensionGroup {
 
     protected String name = "";
