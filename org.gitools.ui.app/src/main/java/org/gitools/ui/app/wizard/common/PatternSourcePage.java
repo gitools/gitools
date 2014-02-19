@@ -418,6 +418,7 @@ public class PatternSourcePage extends AbstractWizardPage {
 
             if (file != null) {
                 hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), ApplicationContext.getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+                Settings.getDefault().setLastAnnotationPath(file.getParent());
                 updateControls();
                 //annFile.setText(file.getName());
             }
