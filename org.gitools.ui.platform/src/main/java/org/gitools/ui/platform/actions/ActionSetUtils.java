@@ -29,6 +29,7 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class ActionSetUtils {
@@ -70,6 +71,9 @@ public class ActionSetUtils {
         for (BaseAction a : actionSet.getActions()) {
             if (a instanceof SeparatorAction) {
                 popupMenu.addSeparator();
+            } else if (a instanceof PopupSectionTitleAction) {
+                popupMenu.add(createHeader(a));
+
             } else {
                 popupMenu.add(createPopupMenuItem(a));
             }
@@ -89,6 +93,15 @@ public class ActionSetUtils {
         };
         item.setAccelerator(null);
         return item;
+    }
+
+    private static JLabel createHeader(BaseAction a) {
+        JLabel label = new JLabel(a.getName());
+        label.setFont(label.getFont().deriveFont(10f));
+        label.setForeground(Color.gray);
+        label.setHorizontalAlignment(SwingConstants.LEFT);
+
+        return label;
     }
 
 

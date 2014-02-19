@@ -40,7 +40,7 @@ public class HideSelectionAction extends HeatmapDimensionAction implements IHeat
     private static final long serialVersionUID = 1453040322414160605L;
 
     public HideSelectionAction(MatrixDimensionKey key) {
-        super(key, "Hide selected");
+        super(key, "<html><i>Hide</i> selected<html>");
 
         setSmallIconFromResource(IconNames.get(key).getHide16());
         setLargeIconFromResource(IconNames.get(key).getHide24());

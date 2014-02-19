@@ -41,7 +41,7 @@ public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction impl
     private HeatmapHeader header;
 
     public CopyToClipboardSelectedLabelHeaderAction() {
-        super("Copy selected labels to clipboard");
+        super("<html><i>Copy</i> selected labels to clipboard<html>");
     }
 
     @Override

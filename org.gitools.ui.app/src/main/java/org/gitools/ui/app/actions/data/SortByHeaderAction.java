@@ -83,6 +83,6 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
         }
 
-        setName("Sort " + (header.isSortAscending() ? "ascending" : "descending") + " by '" + header.getTitle() + "'");
+        setName("<html><i>Sort</i> " + (header.isSortAscending() ? "ascending" : "descending") + " by <b>" + header.getTitle() + "</b></html>");
     }
 }

@@ -72,7 +72,7 @@ public class ShowOnlyLabelHeaderAction extends HeatmapAction implements IHeatmap
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
 
-            setName("Show only '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
+            setName("<html><i>Show</i> only <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
         }
 
     }

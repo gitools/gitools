@@ -76,7 +76,7 @@ public class Actions {
 
     public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
 
-    public static final BaseAction filterByLabel = new FilterByAnnotations();
+    public static final BaseAction filterByLabel = new FilterByAnnotationsAction();
 
     public static final BaseAction filterByValue = new FilterByValueAction();
 

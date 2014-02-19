@@ -39,7 +39,7 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
     private HeatmapColoredLabelsHeader coloredHeader;
 
     public HideThisLabelHeaderAction() {
-        super("Hide this label");
+        super("<html><i>Hide</i> this label</html>");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
 
-            setName("<html>Hide all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
+            setName("<html><i>Hide</i> all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
         }
 
     }

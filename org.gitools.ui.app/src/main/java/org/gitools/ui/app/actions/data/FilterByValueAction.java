@@ -44,7 +44,7 @@ public class FilterByValueAction extends HeatmapAction {
     private static final long serialVersionUID = -1582437709508438222L;
 
     public FilterByValueAction() {
-        super("Filter by values...");
+        super("<html><i>Filter</i> by values</html>");
     }
 
     @Override

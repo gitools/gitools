@@ -44,7 +44,7 @@ public class SortByValueAction extends HeatmapAction {
     private static final long serialVersionUID = -1582437709508438222L;
 
     public SortByValueAction() {
-        super("Sort by values...");
+        super("<html><i>Sort</i> by values");
 
         setDesc("Sort by heatmap values ...");
     }
