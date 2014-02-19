@@ -70,7 +70,7 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
 
-            setName("Hide all '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
+            setName("<html>Hide all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
         }
 
     }
