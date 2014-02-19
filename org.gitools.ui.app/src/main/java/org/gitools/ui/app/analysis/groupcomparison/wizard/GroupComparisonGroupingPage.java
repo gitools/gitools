@@ -23,7 +23,7 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.analysis.groupcomparison.dimensiongroups.*;
@@ -410,7 +410,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         // get all clusters from $pattern
 
         ClusteringData data = new AnnPatClusteringData(hdim, page.getPattern());
-        ClusteringResults results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
+        Clusters results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
 
         List<DimensionGroup> annGroups = new ArrayList<>();
         for (String groupAnnotationPattern : results.getClusters()) {

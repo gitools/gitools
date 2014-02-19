@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.clustering.values;
+package org.gitools.ui.app.analysis.clustering;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
@@ -35,7 +35,7 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
-public class ClusteringValueWizard extends AbstractWizard {
+public class ClusteringWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
 
@@ -48,7 +48,7 @@ public class ClusteringValueWizard extends AbstractWizard {
     private ClusteringOptionsPage optionsPage;
     private SaveFilePage newickPage;
 
-    public ClusteringValueWizard(Heatmap heatmap) {
+    public ClusteringWizard(Heatmap heatmap) {
         super();
 
         this.heatmap = heatmap;

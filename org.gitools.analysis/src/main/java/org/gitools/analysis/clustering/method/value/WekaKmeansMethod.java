@@ -23,7 +23,7 @@ package org.gitools.analysis.clustering.method.value;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.GenericClusteringResults;
 import org.gitools.api.analysis.IProgressMonitor;
 import weka.clusterers.SimpleKMeans;
@@ -52,7 +52,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
 
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
+    public Clusters cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
         try {
 
             if (iterations < 2) {
@@ -77,7 +77,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
             clusterer.buildClusterer(clusterWekaData);
 
-            ClusteringResults results = null;
+            Clusters results = null;
 
             if (!monitor.isCancelled()) {
 
@@ -112,7 +112,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
         } catch (Throwable ex) {
             if (ex instanceof OutOfMemoryError) {
-                throw new ClusteringException("Insufficient memory for HCL clustering. Increase memory size or try another clustering method", ex);
+                throw new ClusteringException("Insufficient memory for K-means clustering. Increase memory size or try another clustering method", ex);
             } else {
                 throw new ClusteringException(ex);
             }

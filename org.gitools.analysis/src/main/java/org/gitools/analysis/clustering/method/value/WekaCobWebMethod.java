@@ -23,7 +23,7 @@ package org.gitools.analysis.clustering.method.value;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.GenericClusteringResults;
 import org.gitools.api.analysis.IProgressMonitor;
 import weka.clusterers.Cobweb;
@@ -49,7 +49,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
 
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
+    public Clusters cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
         try {
 
             Instances structure = ClusterUtils.buildInstanceStructure(clusterData);
@@ -70,7 +70,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
             monitor.begin("Creating clustering model ...", clusterWekaData.getMatrixView().getSize() + 1);
 
-            ClusteringResults results = null;
+            Clusters results = null;
             Instance current;
             int j = 0;
 

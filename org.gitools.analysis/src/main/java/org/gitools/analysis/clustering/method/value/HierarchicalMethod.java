@@ -23,7 +23,7 @@ package org.gitools.analysis.clustering.method.value;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.distance.ManhattanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
@@ -36,7 +36,7 @@ public class HierarchicalMethod extends AbstractClusteringValueMethod {
     }
 
     @Override
-    public ClusteringResults cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
+    public Clusters cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
 
         if (!(clusterData instanceof MatrixClusteringData)) {
             return null;

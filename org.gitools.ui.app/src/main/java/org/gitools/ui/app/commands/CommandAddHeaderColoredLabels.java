@@ -24,7 +24,7 @@ package org.gitools.ui.app.commands;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -130,7 +130,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         return coloredLabels;
     }
 
-    public static void updateFromClusterResults(HeatmapColoredLabelsHeader header, ClusteringResults results) {
+    public static void updateFromClusterResults(HeatmapColoredLabelsHeader header, Clusters results) {
         ColorGenerator cg = new ColorGenerator();
 
         Collection<String> clusters = results.getClusters();
@@ -146,7 +146,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
     public static void autoGenerateColoredLabels(HeatmapColoredLabelsHeader header, ClusteringMethod clusteringMethod) {
 
         ClusteringData data = new AnnPatClusteringData(header.getHeatmapDimension(), header.getAnnotationPattern());
-        ClusteringResults results = null;
+        Clusters results = null;
         try {
             results = clusteringMethod.cluster(data, new DefaultProgressMonitor());
         } catch (ClusteringException e) {

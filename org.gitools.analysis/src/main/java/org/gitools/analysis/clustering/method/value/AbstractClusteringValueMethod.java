@@ -24,7 +24,7 @@ package org.gitools.analysis.clustering.method.value;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.api.analysis.IProgressMonitor;
 
 
@@ -36,7 +36,7 @@ public abstract class AbstractClusteringValueMethod implements ClusteringMethod 
 
     int classIndex;
 
-    public abstract ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
+    public abstract Clusters cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 
     public void setPreprocess(boolean preprocess) {
         this.preprocess = preprocess;

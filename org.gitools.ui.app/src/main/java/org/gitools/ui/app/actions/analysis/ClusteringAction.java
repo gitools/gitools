@@ -19,10 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.actions.data;
+package org.gitools.ui.app.actions.analysis;
 
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.HierarchicalClusteringResults;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
@@ -32,7 +32,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.analysis.clustering.values.ClusteringValueWizard;
+import org.gitools.ui.app.analysis.clustering.ClusteringWizard;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
 import org.gitools.ui.platform.Application;
@@ -45,12 +45,14 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
-public class ClusteringByValueAction extends HeatmapAction {
+public class ClusteringAction extends HeatmapAction {
 
-    public ClusteringByValueAction() {
+    public ClusteringAction() {
         super("Clustering...");
         setDesc("Cluster by values");
         setMnemonic(KeyEvent.VK_L);
@@ -60,7 +62,7 @@ public class ClusteringByValueAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
         final Heatmap heatmap = getHeatmap();
 
-        final ClusteringValueWizard wiz = new ClusteringValueWizard(heatmap);
+        final ClusteringWizard wiz = new ClusteringWizard(heatmap);
         WizardDialog wdlg = new WizardDialog(Application.get(), wiz);
         wdlg.setVisible(true);
         if (wdlg.isCancelled()) {
@@ -76,33 +78,33 @@ public class ClusteringByValueAction extends HeatmapAction {
                     monitor.begin("Clustering  ...", 1);
 
                     // Cluster data
-                    ClusteringResults results = method.cluster(wiz.getClusterData(), monitor);
-
-                    if (results instanceof Cluster) {
-                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor((Cluster) results));
-                        return;
-                    }
+                    Clusters results = method.cluster(wiz.getClusterData(), monitor);
 
                     // Target dimension
-                    HeatmapDimension hdim = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
-                    boolean hcl = results instanceof HierarchicalClusteringResults;
+                    HeatmapDimension clusteringDimension = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
 
                     // Save results as an annotation
                     String annotationLabel = wiz.getMethodName() + " " + heatmap.getLayers().get(wiz.getDataAttribute()).getId();
 
-                    AnnotationMatrix annotationMatrix = hdim.getAnnotations();
-                    if (hcl) {
-                        HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
-                        for (int l = 0; l < hresults.getTree().getDepth(); l++) {
-                            hresults.setLevel(l);
-                            Collection<String> clusters = results.getClusters();
-                            for (String cluster : clusters) {
-                                Set<String> items = results.getItems(cluster);
+                    AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
+                    if (results instanceof Cluster) {
 
-                                for (String item : items) {
-                                    annotationMatrix.setAnnotation(item, annotationLabel + " level " + l, cluster);
-                                }
+                        Cluster hresults = (Cluster) results;
+
+                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(hresults));
+
+                        int l=0;
+                        List<Cluster> children = hresults.getChildren();
+                        while (!children.isEmpty()) {
+                            l++;
+
+                            List<Cluster> nextLevel = new ArrayList<>();
+                            for (Cluster cluster : children) {
+                                annotationMatrix.setAnnotation(cluster.getName(), annotationLabel + " level " + l, cluster.getName());
+                                nextLevel.addAll(cluster.getChildren());
                             }
+
+                            children = nextLevel;
                         }
                     } else {
                         Collection<String> clusters = results.getClusters();
@@ -113,9 +115,37 @@ public class ClusteringByValueAction extends HeatmapAction {
                         }
                     }
 
+                    // Add header
+                    if (wiz.isHeaderSelected()) {
+
+                        if (results instanceof Cluster) {
+                            Cluster hresults = (Cluster) results;
+
+                            //int depth = hresults.getTree().getDepth();
+                            //depth = (depth > 10 ? 10 : depth);
+                            int depth = 3;
+                            for (int l = 0; l < depth; l++) {
+                                //hresults.setLevel(l);
+                                HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+                                CommandAddHeaderColoredLabels.updateFromClusterResults(header, hresults);
+                                header.setTitle(annotationLabel + " level " + l);
+                                header.setSize(4);
+                                header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
+                                clusteringDimension.addHeader(header);
+                            }
+                        } else {
+                            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, results);
+                            header.setTitle(annotationLabel);
+                            header.setAnnotationPattern("${" + annotationLabel + "}");
+                            clusteringDimension.addHeader(header);
+                        }
+
+                    }
+
                     // Sort the matrix
                     if (wiz.isSortDataSelected()) {
-                        ClusterUtils.updateVisibility(hdim, results.getClustersMap());
+                        ClusterUtils.updateVisibility(clusteringDimension, results.getClustersMap());
                     }
 
                     // Export newick file
@@ -125,32 +155,6 @@ public class ClusteringByValueAction extends HeatmapAction {
                         out.write(((HierarchicalClusteringResults) results).getTree().toString());
                         out.flush();
                         out.close();
-                    }
-
-                    // Add header
-                    if (wiz.isHeaderSelected()) {
-
-                        if (hcl) {
-                            HierarchicalClusteringResults hresults = (HierarchicalClusteringResults) results;
-                            int depth = hresults.getTree().getDepth();
-                            depth = (depth > 10 ? 10 : depth);
-                            for (int l = 0; l < depth; l++) {
-                                hresults.setLevel(l);
-                                HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
-                                CommandAddHeaderColoredLabels.updateFromClusterResults(header, hresults);
-                                header.setTitle(annotationLabel + " level " + l);
-                                header.setSize(4);
-                                header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
-                                hdim.addHeader(header);
-                            }
-                        } else {
-                            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
-                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, results);
-                            header.setTitle(annotationLabel);
-                            header.setAnnotationPattern("${" + annotationLabel + "}");
-                            hdim.addHeader(header);
-                        }
-
                     }
 
                     monitor.end();

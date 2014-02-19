@@ -56,7 +56,7 @@ public class MatrixClusteringData implements ClusteringData {
 
     @Override
     public int getSize() {
-        return matrix.getColumns().size();
+        return clusteringDimension.size();
     }
 
     @Override

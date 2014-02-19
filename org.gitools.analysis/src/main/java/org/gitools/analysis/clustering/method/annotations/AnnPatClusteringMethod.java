@@ -23,7 +23,7 @@ package org.gitools.analysis.clustering.method.annotations;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.GenericClusteringResults;
 import org.gitools.api.analysis.IProgressMonitor;
 
@@ -55,7 +55,7 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
      */
 
     @Override
-    public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) {
+    public Clusters cluster(ClusteringData data, IProgressMonitor monitor) {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
 
         Map<String, Set<String>> clusters = new HashMap<>();

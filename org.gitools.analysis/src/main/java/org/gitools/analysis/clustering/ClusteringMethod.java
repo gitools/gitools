@@ -25,6 +25,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 
 public interface ClusteringMethod {
 
-    public ClusteringResults cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
+    public Clusters cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 
 }

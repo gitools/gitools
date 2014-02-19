@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.clustering.values;
+package org.gitools.ui.app.analysis.clustering;
 
 import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
 import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;

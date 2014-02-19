@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.ui.app.actions.analysis.ClusteringAction;
 import org.gitools.ui.app.actions.analysis.CombinationsAction;
 import org.gitools.ui.app.actions.analysis.CorrelationsAction;
 import org.gitools.ui.app.actions.analysis.GroupComparisonAction;
@@ -106,7 +107,7 @@ public class Actions {
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 
-    public static final BaseAction clusteringAction = new ClusteringByValueAction();
+    public static final BaseAction clusteringAction = new ClusteringAction();
 
     public static final BaseAction oncodrive = new OncodriveAnalysisAction();
 

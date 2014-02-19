@@ -37,11 +37,11 @@
 
 package org.gitools.analysis.clustering.hierarchical;
 
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 
 import java.util.*;
 
-public class Cluster implements ClusteringResults {
+public class Cluster implements Clusters {
 
     private String name;
 
@@ -61,7 +61,7 @@ public class Cluster implements ClusteringResults {
 
     public List<Cluster> getChildren() {
         if (children == null) {
-            children = new ArrayList<Cluster>();
+            children = new ArrayList<>();
         }
 
         return children;

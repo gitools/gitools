@@ -25,7 +25,7 @@ import com.google.common.collect.Sets;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringResults;
+import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IAggregator;
@@ -116,7 +116,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
         String annotationLabelPrefix = dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName() + ": ";
         ClusteringMethod clusteringMethod = new AnnPatClusteringMethod(annotationLabelPrefix);
-        ClusteringResults results = clusteringMethod.cluster(data, ProgressMonitor.get());
+        Clusters results = clusteringMethod.cluster(data, ProgressMonitor.get());
         aggregationAnnotationLabels = results.getClusters();
         aggregationIndicesByAnnotation = results.getClustersMap();
     }

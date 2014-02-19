@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class GenericClusteringResults implements ClusteringResults {
+public class GenericClusteringResults implements Clusters {
 
     private Map<String, Set<String>> clusters;
 
