@@ -165,6 +165,7 @@ public class ColoredLabelsConfigPage extends AbstractWizardPage {
         jLabel1.setText("Title");
 
         labelVisibleChk.setText("Show cluster names");
+        labelVisibleChk.setSelected(true);
 
         fontLabel.setText("Font");
         fontLabel.setEnabled(false);
