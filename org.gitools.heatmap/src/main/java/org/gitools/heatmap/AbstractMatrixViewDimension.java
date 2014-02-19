@@ -70,7 +70,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
     public AbstractMatrixViewDimension(IMatrixDimension matrixDimension) {
         super();
 
-        this.selected = new HashSet<>();
+        setSelected(new HashSet<String>());
         this.focus = null;
 
         init(matrixDimension);

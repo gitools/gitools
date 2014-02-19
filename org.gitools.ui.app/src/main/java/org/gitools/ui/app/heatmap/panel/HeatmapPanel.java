@@ -157,40 +157,12 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         int scrollWidth = totalSize.width - visibleSize.width;
         int scrollHeight = totalSize.height - visibleSize.height;
 
-        HeatmapPosition wheelPosition = HeatmapBodyMouseController.wheelPosition;
-        Point wheelPoint = HeatmapBodyMouseController.wheelPoint;
-
-        int colValue = 0, rowValue = 0;
-        int leadPointXEnd = 0, leadPointYEnd = 0;
-        Point leadPoint = null;
-        if (wheelPoint != null) {
-            Point targetPoint = bodyPanel.getDrawer().getPoint(wheelPosition);
-            colValue = (targetPoint.x - wheelPoint.x);
-            rowValue = (targetPoint.y - wheelPoint.y);
-        } else {
-            String row = heatmap.getRows().getFocus();
-            String col = heatmap.getColumns().getFocus();
-
-            leadPoint = bodyPanel.getDrawer().getPoint(new HeatmapPosition(heatmap, heatmap.getRows().indexOf(row), heatmap.getColumns().indexOf(col)));
-            leadPointXEnd = leadPoint.x + heatmap.getColumns().getFullSize();
-            leadPointYEnd = leadPoint.y + heatmap.getRows().getFullSize();
-        }
-
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
         colSB.setMaximum(totalSize.width - 1);
 
         if (colSB.getValue() > scrollWidth) {
             colSB.setValue(scrollWidth);
-        }
-
-        if (wheelPoint != null) {
-            colSB.setValue(colValue);
-        } else {
-            if (leadPoint.x < colSB.getValue())
-                colSB.setValue(leadPoint.x);
-            else if (leadPointXEnd > colSB.getValue() + visibleSize.width)
-                colSB.setValue(leadPointXEnd - visibleSize.width);
         }
 
         colSB.setVisibleAmount(visibleSize.width);
@@ -202,15 +174,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (rowSB.getValue() > scrollHeight) {
             rowSB.setValue(scrollHeight);
-        }
-
-        if (wheelPoint != null) {
-            rowSB.setValue(rowValue);
-        } else {
-            if (leadPoint.y < rowSB.getValue())
-                rowSB.setValue(leadPoint.y);
-            else if (leadPointYEnd > rowSB.getValue() + visibleSize.height)
-                rowSB.setValue(leadPointYEnd - visibleSize.height);
         }
 
         rowSB.setVisibleAmount(visibleSize.height);
@@ -346,13 +309,15 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
         boolean updateAll =
                 isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_CELL_SIZE,
                         HeatmapDimension.PROPERTY_VISIBLE,
                         HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_GRID_SIZE,
-                        HeatmapDimension.PROPERTY_GRID_COLOR
+                        HeatmapDimension.PROPERTY_GRID_COLOR,
+                        HeatmapDimension.PROPERTY_SELECTED
                 ) ||
                         isAny(evt, HeatmapLayer.class,
                                 HeatmapLayer.PROPERTY_DECORATOR,
@@ -368,6 +333,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             revalidate();
             repaint();
         }
+
+
     }
 
 
