@@ -72,8 +72,8 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         margin = 1;
         separationGrid = true;
 
-        labelVisible = false;
-        font = new Font(Font.MONOSPACED, Font.BOLD, 12);
+        labelVisible = true;
+        font = new Font(Font.SANS_SERIF, Font.BOLD, 12);
         labelRotated = false;
         forceLabelColor = true;
         labelColor = Color.black;

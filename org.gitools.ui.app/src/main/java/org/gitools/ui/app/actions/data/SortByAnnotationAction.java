@@ -38,7 +38,7 @@ import java.awt.event.ActionEvent;
 public class SortByAnnotationAction extends HeatmapDimensionAction {
 
     public SortByAnnotationAction(MatrixDimensionKey dim) {
-        super(dim, "Sort by annotations...");
+        super(dim, "<html><i>Sort</i> by annotations</html>");
     }
 
     protected AnnotationSortPage createSortPage(Heatmap hm) {

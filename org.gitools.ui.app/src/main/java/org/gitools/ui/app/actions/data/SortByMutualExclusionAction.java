@@ -38,7 +38,7 @@ import java.awt.event.ActionEvent;
 public class SortByMutualExclusionAction extends HeatmapAction {
 
     public SortByMutualExclusionAction() {
-        super("Sort by mutual exclusion...");
+        super("<html><i>Sort</i> by mutual exclusion</html>");
     }
 
     @Override

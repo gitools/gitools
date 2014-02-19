@@ -44,7 +44,7 @@ public class ExportMatrixAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportMatrixAction() {
-        super("Values as a matrix...");
+        super("Values to a text file (matrix)");
 
         setDesc("Export a matrix");
         setMnemonic(KeyEvent.VK_M);

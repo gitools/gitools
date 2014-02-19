@@ -34,7 +34,7 @@ public class ShowAllAction extends HeatmapDimensionAction {
     private static final long serialVersionUID = 7110623490709997414L;
 
     public ShowAllAction(MatrixDimensionKey key) {
-        super(key, "Show all");
+        super(key, "<html><i>Show</i> all</html>");
 
         setSmallIconFromResource(IconNames.get(key).getShowAll16());
         setLargeIconFromResource(IconNames.get(key).getShowAll24());

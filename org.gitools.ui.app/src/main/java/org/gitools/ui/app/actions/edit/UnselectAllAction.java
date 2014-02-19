@@ -33,7 +33,7 @@ public class UnselectAllAction extends HeatmapAction {
     private static final long serialVersionUID = 1581417292789818975L;
 
     public UnselectAllAction() {
-        super("Unselect all");
+        super("<html><i>Unselect</i> all</html>");
 
         setSmallIconFromResource(IconNames.unselectAll16);
         setLargeIconFromResource(IconNames.unselectAll24);

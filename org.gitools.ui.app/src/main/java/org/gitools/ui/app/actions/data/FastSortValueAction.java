@@ -47,7 +47,7 @@ public class FastSortValueAction extends HeatmapDimensionAction {
     private SortDirection currentSort;
 
     public FastSortValueAction(MatrixDimensionKey dimension) {
-        super(dimension, "Sort " + dimension.getLabel());
+        super(dimension, "<html><i>Sort</i> " + dimension.getLabel() + " by values</html>");
 
         setMnemonic(KeyEvent.VK_S);
         currentSort = SortDirection.ASCENDING;

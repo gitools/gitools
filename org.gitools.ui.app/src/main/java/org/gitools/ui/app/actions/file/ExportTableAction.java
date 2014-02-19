@@ -44,7 +44,7 @@ public class ExportTableAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportTableAction() {
-        super("Values as a table...");
+        super("Values to text file (table)");
         setMnemonic(KeyEvent.VK_T);
     }
 

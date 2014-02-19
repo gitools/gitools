@@ -41,7 +41,7 @@ public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeade
     private HeatmapColoredLabelsHeader coloredHeader;
 
     public SelectLabelHeaderAction() {
-        super("Add label header to selection");
+        super("<html><i>Add</i> label header to selection</html>");
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeade
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
 
-            setName("Select all '" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "' labels");
+            setName("<html><i>Select all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
         }
 
     }

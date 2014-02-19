@@ -51,7 +51,7 @@ public class ExportScaleImageAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportScaleImageAction() {
-        super("Scale as an image...");
+        super("Color scale to image");
 
         setDesc("Export the scale as an image file");
         setMnemonic(KeyEvent.VK_S);

@@ -38,12 +38,12 @@ import org.gitools.ui.platform.wizard.PageDialog;
 
 import java.awt.event.ActionEvent;
 
-public class FilterByAnnotations extends BaseAction {
+public class FilterByAnnotationsAction extends BaseAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
 
-    public FilterByAnnotations() {
-        super("Filter by annotations...");
+    public FilterByAnnotationsAction() {
+        super("<html><i>Filter</i> by annotations</html>");
         setDesc("Filter by annotations");
     }
 

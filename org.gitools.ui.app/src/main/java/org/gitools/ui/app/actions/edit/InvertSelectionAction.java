@@ -36,7 +36,7 @@ import static com.google.common.base.Predicates.not;
 public class InvertSelectionAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
     public InvertSelectionAction(MatrixDimensionKey dimension) {
-        super(dimension, "Invert " + dimension.getLabel() + " selection");
+        super(dimension, "<html><i>Invert</i> " + dimension.getLabel() + " selection</html>");
     }
 
     @Override

@@ -43,7 +43,7 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
     private HeatmapPosition position;
 
     public GroupSelectionAction(MatrixDimensionKey dimensionKey) {
-        super(dimensionKey, "Group selected " + dimensionKey.getLabel() + " here");
+        super(dimensionKey, "<html><i>Group</i> selected <b>" + dimensionKey.getLabel() + "<i> here</html>");
     }
 
     @Override

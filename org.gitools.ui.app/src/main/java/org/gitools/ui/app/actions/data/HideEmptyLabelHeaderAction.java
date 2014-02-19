@@ -37,7 +37,7 @@ public class HideEmptyLabelHeaderAction extends HeatmapAction implements IHeatma
     private HeatmapHeader header;
 
     public HideEmptyLabelHeaderAction() {
-        super("Hide empty values in header");
+        super("<html><i>Hide</i> empty values in header</html>");
     }
 
     @Override
@@ -54,7 +54,7 @@ public class HideEmptyLabelHeaderAction extends HeatmapAction implements IHeatma
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
-        setName("Hide empty values in '" + header.getTitle() + "'");
+        setName("<html><i>Hide</i> empty values in <b>" + header.getTitle() + "</b></html>");
         this.header = header;
     }
 }

@@ -30,18 +30,24 @@ import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.actions.PopupSectionTitleAction;
 
 public class PopupMenuActions {
 
     private static ActionSet getHeatmapMenu(MatrixDimensionKey dimensionKey) {
 
         return new ActionSet(new BaseAction[]{
+
+                new PopupSectionTitleAction("Selection"),
+                BaseAction.separator,
                 Actions.selectAllAction,
                 Actions.selectLabelHeaderAction,
                 new GroupSelectionAction(dimensionKey),
                 Actions.unselectAllAction,
                 new InvertSelectionAction(dimensionKey),
                 Actions.copyToClipboardSelectedLabelHeader,
+
+                new PopupSectionTitleAction("Visibility"),
                 BaseAction.separator,
                 new ShowAllAction(dimensionKey),
                 Actions.showOnlyHeaderAction,
@@ -50,13 +56,20 @@ public class PopupMenuActions {
                 Actions.hideThisLabelHeaderAction,
                 Actions.hideGreaterThanHeaderAction,
                 Actions.hideSmallerThanHeaderAction,
+
+                new PopupSectionTitleAction("Sorting"),
                 BaseAction.separator,
                 new FastSortValueAction(dimensionKey == MatrixDimensionKey.COLUMNS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
                 Actions.sortByHeader,
+
                 BaseAction.separator,
                 new HeatmapSearchAction(dimensionKey),
+
                 BaseAction.separator,
-                new AddHeaderAction(dimensionKey)
+                new AddHeaderAction(dimensionKey),
+                new EditHeaderAction(dimensionKey, "<html><i>Edit</i> header</html>"),
+
+
         });
     }
 

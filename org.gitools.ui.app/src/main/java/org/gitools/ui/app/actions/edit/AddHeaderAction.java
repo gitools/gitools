@@ -46,7 +46,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 public class AddHeaderAction extends HeatmapDimensionAction {
 
     public AddHeaderAction(MatrixDimensionKey dim) {
-        super(dim, "Add header...");
+        super(dim, "<html><i>Add</i> header...</html>");
 
         setSmallIconFromResource(IconNames.add16);
     }

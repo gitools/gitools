@@ -103,7 +103,7 @@ public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeade
             setEnabled(false);
         }
 
-        setName("Hide " + title + " than '" + position.headerDecoration.getFormatedValue() + "'");
+        setName("<html><i>Hide</i> " + title + " than <b>" + position.headerDecoration.getFormatedValue() + "</b></html>");
     }
 
 }
