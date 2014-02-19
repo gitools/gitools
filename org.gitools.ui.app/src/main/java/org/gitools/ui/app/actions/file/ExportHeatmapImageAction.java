@@ -47,9 +47,9 @@ public class ExportHeatmapImageAction extends HeatmapAction {
     private static final long serialVersionUID = -7288045475037410310L;
 
     public ExportHeatmapImageAction() {
-        super("Heatmap as an image...");
+        super("Heatmap to image...");
 
-        setDesc("Export the heatmap as an image file");
+        setDesc("Export the heatmap to image file");
         setMnemonic(KeyEvent.VK_H);
     }
 
