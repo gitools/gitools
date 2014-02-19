@@ -47,7 +47,7 @@ public class ColoredLabel {
     }
 
     public ColoredLabel(String value, Color color) {
-        this(value, value, color);
+        this(value, value.replaceAll("_", " "), color);
     }
 
     private ColoredLabel(String value, String displayedLabel, Color color) {
