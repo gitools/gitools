@@ -138,8 +138,8 @@ public class DetailsPanel extends JXTaskPaneContainer {
         });
 
         hintLabel = new JLabel();
-        hintLabel.setText("<html><body><i>Right click</i> on any layer or header id to " +
-                "<b>adjust visualization and other settings</b>.</body></html>");
+        hintLabel.setText("<html><body><p><i>Right click</i> on any layer or header id to<br>" +
+                "<b>adjust visualization and other settings</b>.</p></body></html>");
         add(hintLabel);
 
         update(heatmap.getRows(), rowsBox);
