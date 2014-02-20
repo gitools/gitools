@@ -60,6 +60,8 @@ public class HtestAnalysis extends Analysis {
 
     private ResourceReference<IMatrix> data;
 
+    private String layer;
+
     private String mtc;
 
     private ResourceReference<GeneSet> population;
@@ -133,6 +135,19 @@ public class HtestAnalysis extends Analysis {
 
     public void setData(ResourceReference<IMatrix> data) {
         this.data = data;
+    }
+
+    public String getLayer() {
+
+        if (layer == null) {
+            return getData().get().getLayers().iterator().next().getId();
+        }
+
+        return layer;
+    }
+
+    public void setLayer(String layer) {
+        this.layer = layer;
     }
 
     public String getMtc() {

@@ -23,6 +23,7 @@ package org.gitools.ui.app.analysis.htest.wizard;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
@@ -37,13 +38,13 @@ import java.io.File;
 
 public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis> {
 
-    private IMatrix sourceData;
+    private IMatrixView sourceData;
     private DataFilterPage dataFilterPage;
     private ModulesPage modulesPage;
     private StatisticalTestPage statisticalTestPage;
     private AnalysisDetailsPage analysisDetailsPage;
 
-    public EnrichmentAnalysisWizard(IMatrix sourceData) {
+    public EnrichmentAnalysisWizard(IMatrixView sourceData) {
         super();
 
         setTitle("Enrichment analysis");
@@ -84,7 +85,8 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
 
         // Source data
-        analysis.setData(new ResourceReference<>("data", sourceData));
+        analysis.setLayer(sourceData.getLayers().getTopLayer().getId());
+        analysis.setData(new ResourceReference<IMatrix>("data", sourceData));
 
         // Module map data
         analysis.setModuleMap(new ResourceReference<>(new UrlResourceLocator(modulesPage.getSelectedFile()), IModuleMap.class));

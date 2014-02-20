@@ -25,13 +25,18 @@ import org.gitools.api.matrix.IMatrixPredicate;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DimensionGroup {
 
     protected String name = "";
     protected DimensionGroupEnum groupType;
+
+    //TODO
+    @XmlTransient
     protected IMatrixPredicate predicate;
+
     protected String property = "";
     protected Integer groupSize;
 

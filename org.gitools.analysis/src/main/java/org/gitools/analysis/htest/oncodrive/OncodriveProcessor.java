@@ -68,7 +68,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
         Date startTime = new Date();
 
         IMatrix data = analysis.getData().get();
-        final IMatrixLayer<Double> layer = data.getLayers().iterator().next();
+        final IMatrixLayer<Double> layer =  data.getLayers().get(analysis.getLayer());
         final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
         final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IModuleMap moduleMap = (analysis.getModuleMap().get() == null ? new HashModuleMap().addMapping("All data columns", data.getColumns()) : analysis.getModuleMap().get());

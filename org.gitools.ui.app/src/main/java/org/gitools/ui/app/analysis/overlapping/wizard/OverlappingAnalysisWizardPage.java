@@ -21,8 +21,7 @@
  */
 package org.gitools.ui.app.analysis.overlapping.wizard;
 
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 import org.gitools.ui.platform.IconUtils;
@@ -36,29 +35,7 @@ import java.awt.event.ActionListener;
 
 public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
 
-    private IMatrixLayers attrs;
-
-    private static class AttrOption {
-        private String name;
-        private IMatrixLayer attr;
-
-        public AttrOption(String name) {
-            this.name = name;
-        }
-
-        public AttrOption(IMatrixLayer attr) {
-            this.attr = attr;
-        }
-
-        public IMatrixLayer getAttr() {
-            return attr;
-        }
-
-        @Override
-        public String toString() {
-            return attr != null ? attr.getName() : name;
-        }
-    }
+    private IMatrixViewLayers layers;
 
     public OverlappingAnalysisWizardPage() {
         super();
@@ -163,30 +140,21 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     }
 
 
-    public void setAttributes(IMatrixLayers attrs) {
-        this.attrs = attrs;
+    public void setAttributes(IMatrixViewLayers layers) {
+        this.layers = layers;
 
-        if (attrs != null) {
-            AttrOption[] pvalueAttrs = new AttrOption[attrs.size()];
-
-            for (int i = 0; i < attrs.size(); i++)
-                pvalueAttrs[i] = new AttrOption(attrs.get(i));
-
-            attributeCb.setModel(new DefaultComboBoxModel(pvalueAttrs));
-            attributeCb.setSelectedIndex(0);
+        if (layers != null) {
+            attributeCb.setModel(new DefaultComboBoxModel(layers.getIds()));
+            attributeCb.setSelectedItem(layers.getTopLayer().getId());
             attributeCb.setEnabled(true);
             attributeCb.setVisible(true);
             attributeLabel.setVisible(true);
         } else {
-            dissableAttrCb();
+            attributeCb.setModel(new DefaultComboBoxModel());
+            attributeCb.setEnabled(false);
+            attributeCb.setVisible(false);
+            attributeLabel.setVisible(false);
         }
-    }
-
-    private void dissableAttrCb() {
-        attributeCb.setModel(new DefaultComboBoxModel());
-        attributeCb.setEnabled(false);
-        attributeCb.setVisible(false);
-        attributeLabel.setVisible(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -201,8 +169,8 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
     public String getAttributeName() {
-        if (attrs != null) {
-            attrs.get(attributeCb.getSelectedIndex()).getId();
+        if (layers != null) {
+            layers.get(attributeCb.getSelectedIndex()).getId();
         }
         return null;
     }
