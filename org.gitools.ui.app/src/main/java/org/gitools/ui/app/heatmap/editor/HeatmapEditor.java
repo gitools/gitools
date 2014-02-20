@@ -220,8 +220,8 @@ public class HeatmapEditor extends AbstractEditor {
                 name,
                 Settings.getDefault().getLastPath(),
                 new FileFormat[]{
-                        new FileFormat("Multiple files heatmap (*.heatmap)", HeatmapFormat.EXTENSION, false, false),
-                        new FileFormat("Single file heatmap (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false)
+                        new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
+                        new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
                 }
         );
 
