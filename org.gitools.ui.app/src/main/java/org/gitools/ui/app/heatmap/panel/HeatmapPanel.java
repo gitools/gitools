@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -151,33 +154,48 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     }
 
     private void updateScrolls() {
+
         Dimension totalSize = bodyPanel.getDrawer().getSize();
         Dimension visibleSize = bodyVP.getSize();
 
         int scrollWidth = totalSize.width - visibleSize.width;
         int scrollHeight = totalSize.height - visibleSize.height;
 
+        // Check if column/row focus is out of visible area
+        checkFocusOutOfVisibleArea(heatmap.getColumns(), colSB, visibleSize.width);
+        checkFocusOutOfVisibleArea(heatmap.getRows(), rowSB, visibleSize.height);
+
+        // Update columns scroll bar
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
         colSB.setMaximum(totalSize.width - 1);
-
         if (colSB.getValue() > scrollWidth) {
             colSB.setValue(scrollWidth);
         }
-
         colSB.setVisibleAmount(visibleSize.width);
         colSB.setValueIsAdjusting(false);
 
+        // Update rows scroll bar
         rowSB.setValueIsAdjusting(true);
         rowSB.setMinimum(0);
         rowSB.setMaximum(totalSize.height - 1);
-
         if (rowSB.getValue() > scrollHeight) {
             rowSB.setValue(scrollHeight);
         }
-
         rowSB.setVisibleAmount(visibleSize.height);
         rowSB.setValueIsAdjusting(false);
+    }
+
+    private void checkFocusOutOfVisibleArea(HeatmapDimension dimension, JScrollBar scrollBar, int visibleLength) {
+
+        int focusPoint = (dimension.indexOf(dimension.getFocus()) * dimension.getFullSize());
+
+        if (
+                (focusPoint < scrollBar.getValue()) ||
+                (scrollBar.getValue() + visibleLength < focusPoint)
+           ) {
+            scrollBar.setValue(focusPoint);
+        }
     }
 
     private void updateViewPorts() {
@@ -238,7 +256,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
     public void setScrollColumnPosition(int index) {
         Point pos = bodyPanel.getDrawer().getPoint(new HeatmapPosition(heatmap, 0, index));
-
         colSB.setValue(pos.x);
     }
 
