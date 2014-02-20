@@ -32,6 +32,7 @@ import java.util.List;
 public class MatrixReaderProfile extends ReaderProfile {
     int rowIdsPosition;
     int columnIdsPosition;
+    String dataName;
 
     public MatrixReaderProfile() {
         super();
@@ -39,6 +40,7 @@ public class MatrixReaderProfile extends ReaderProfile {
         this.rowIdsPosition = 0;
         this.columnIdsPosition = 0;
         this.layout = MATRIX;
+        this.dataName = "value";
     }
 
     public static MatrixReaderProfile fromProfile(ReaderProfile profile) {
@@ -97,5 +99,13 @@ public class MatrixReaderProfile extends ReaderProfile {
      */
     public void setRowIdsPosition(int rowIdsPosition) {
         this.rowIdsPosition = rowIdsPosition;
+    }
+
+    public String getDataName() {
+        return dataName;
+    }
+
+    public void setDataName(String dataName) {
+        this.dataName = dataName;
     }
 }

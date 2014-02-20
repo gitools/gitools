@@ -31,10 +31,7 @@ import org.gitools.utils.readers.MatrixReaderProfile;
 import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,6 +49,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private JSpinner rowIdsSpinner;
     private JButton previewRowIdsButton;
     private JButton previewColumnIdsButton;
+    private JFormattedTextField valueNameBox;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
     private FileHeader lastSelected;
@@ -112,6 +110,26 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
                 updateRowIdPreview();
             }
         });
+        valueNameBox.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateControls();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateControls();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateControls();
+            }
+        });
+    }
+
+    private boolean correctValueName() {
+        return !valueNameBox.getText().equals("");
     }
 
     private void updateRowIdHeader() {
@@ -281,6 +299,12 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
             return;
         }
 
+        if (!correctValueName()) {
+            setMessage(MessageStatus.ERROR, "Please specify a name for the value (e.g. expression value)");
+            setComplete(false);
+            return;
+        }
+
         setComplete(true);
     }
 
@@ -320,6 +344,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         profile.setColumnIdsPosition((int) columnIdsSpinner.getValue() - 1);
         profile.setValueColumns(getPositions(valuesHeaderList));
         profile.setIgnoredColumns(getPositions(ignoredHeaderList));
+        profile.setDataName(valueNameBox.getText());
         reader.getReaderProfile().validate(allheaders);
     }
 

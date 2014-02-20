@@ -65,7 +65,7 @@ public class MatrixReaderAssistant extends ReaderAssistant {
 
     @Override
     public String[] getHeatmapHeaders() {
-        return new String[]{"value"};
+        return new String[]{profile.getDataName()};
     }
 
     @Override
