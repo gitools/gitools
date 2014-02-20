@@ -37,6 +37,8 @@
 
 package org.gitools.analysis.clustering.hierarchical;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Sets;
 import org.gitools.analysis.clustering.Clusters;
 
 import java.util.*;
@@ -45,11 +47,23 @@ public class Cluster implements Clusters {
 
     private String name;
 
+    private Set<String> identifiers;
+
     private Cluster parent;
 
     private List<Cluster> children;
 
     private Double distance;
+
+    public Cluster(String... identifiers) {
+        this.identifiers = Sets.newHashSet(identifiers);
+    }
+
+    public Cluster(Set<String> leftIds, Set<String> rightIds) {
+        this.identifiers = new HashSet<>(leftIds.size() + rightIds.size());
+        this.identifiers.addAll(leftIds);
+        this.identifiers.addAll(rightIds);
+    }
 
     public Double getDistance() {
         return distance;
@@ -79,9 +93,12 @@ public class Cluster implements Clusters {
         this.parent = parent;
     }
 
+    public Set<String> getIdentifiers() {
+        return identifiers;
+    }
 
-    public Cluster(String name) {
-        this.name = name;
+    public void setIdentifiers(Set<String> identifiers) {
+        this.identifiers = identifiers;
     }
 
     public String getName() {
@@ -103,18 +120,7 @@ public class Cluster implements Clusters {
 
     @Override
     public String toString() {
-        return "Cluster " + name;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        String otherName = obj != null ? obj.toString() : "";
-        return toString().equals(otherName);
-    }
-
-    @Override
-    public int hashCode() {
-        return toString().hashCode();
+        return Joiner.on('&').join(identifiers);
     }
 
     public boolean isLeaf() {
@@ -138,7 +144,7 @@ public class Cluster implements Clusters {
             System.out.print("  ");
 
         }
-        String name = getName() + (isLeaf() ? " (leaf)" : "") + (distance != null ? "  distance: " + distance : "");
+        String name = Joiner.on('&').join(getIdentifiers()) + (isLeaf() ? " (leaf)" : "") + (distance != null ? "  distance: " + distance : "");
         System.out.println(name);
         for (Cluster child : getChildren()) {
             child.toConsole(indent + 1);
@@ -155,29 +161,17 @@ public class Cluster implements Clusters {
     }
 
     @Override
-    public int size() {
-        return getChildren().size();
-    }
-
-    @Override
     public Collection<String> getClusters() {
-        return getClustersMap().keySet();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Set<String> getItems(String cluster) {
-        return getClustersMap().get(cluster);
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Map<String, Set<String>> getClustersMap() {
-
-        Map<String, Set<String>> map = new HashMap<>(size());
-
-        for (Cluster cluster : getChildren()) {
-            map.put(cluster.getName(), new HashSet<String>());
-        }
-
-        return map;
+        throw new UnsupportedOperationException();
     }
 }

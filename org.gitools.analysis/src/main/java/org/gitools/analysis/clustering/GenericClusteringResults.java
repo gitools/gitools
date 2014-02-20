@@ -41,11 +41,6 @@ public class GenericClusteringResults implements Clusters {
     }
 
     @Override
-    public int size() {
-        return clusters.size();
-    }
-
-    @Override
     public Collection<String> getClusters() {
         return clusters.keySet();
     }

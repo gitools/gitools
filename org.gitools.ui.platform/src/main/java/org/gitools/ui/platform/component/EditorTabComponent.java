@@ -99,8 +99,11 @@ public class EditorTabComponent extends JPanel {
             label.setFont(label.getFont().deriveFont(Font.PLAIN));
         }
 
-
         String name = editor.getName();
+        if (name == null) {
+            name = "unnamed";
+        }
+
         String extension = "";
         String filename = name;
         String newname;
@@ -111,16 +114,12 @@ public class EditorTabComponent extends JPanel {
             filename = name.substring(0, name.lastIndexOf('.'));
         }
 
-        //TODO allow the default editor tab length to be configurable
         newname = StringUtils.abbreviate(filename, DEFAULT_EDITOR_TAB_LENGTH) + extension;
 
         label.setText(newname);
         label.setIcon(editor.getIcon());
         label.setIconTextGap(3);
         label.setHorizontalTextPosition(SwingConstants.RIGHT);
-
-
-        //TODO: ADD ICON heatmap or analysis
 
         String toolTip = null;
         if (editor.getFile() != null) {

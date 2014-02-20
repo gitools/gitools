@@ -33,6 +33,8 @@ public interface IProgressMonitor {
 
     public boolean isCancelled();
 
+    public void start();
+
     public void end();
 
     public int getLevel();

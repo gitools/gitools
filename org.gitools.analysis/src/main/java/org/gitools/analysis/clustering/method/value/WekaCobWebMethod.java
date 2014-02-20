@@ -44,7 +44,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
     private int seed;
 
     public WekaCobWebMethod() {
-        classIndex = 0; // especial initialization value for weka's cobweb
+        super("CobWeb");
     }
 
 
@@ -56,11 +56,7 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
             List<String> labels = ClusterUtils.getLabels(clusterData);
 
-            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
-
-            if (preprocess) {
-                ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
-            }
+            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, 0);
 
             Cobweb clusterer = new Cobweb();
 

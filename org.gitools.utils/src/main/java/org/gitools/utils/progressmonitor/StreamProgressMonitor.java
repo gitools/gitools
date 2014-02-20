@@ -60,6 +60,10 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         showingbar = false;
         tabs = tabbulate(level);
         print("\n" + tabs + title);
+    }
+
+    @Override
+    public void start() {
         timer = System.currentTimeMillis();
     }
 
@@ -116,12 +120,10 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         long mins = millis / (60 * 1000);
 
         String time = "";
-        if (millis < 1000) {
+        if (millis < 10000) {
             time = Double.toString(millis) + " millisecs";
-        } else if (secs < 60) {
-            time = Double.toString(secs) + " secs";
         } else {
-            time = Double.toString(mins) + " mins";
+            time = Double.toString(mins) + " mins - " + Double.toString(secs) + " secs";
         }
 
         if (flag) {

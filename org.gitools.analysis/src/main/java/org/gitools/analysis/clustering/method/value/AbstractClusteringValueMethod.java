@@ -30,19 +30,30 @@ import org.gitools.api.analysis.IProgressMonitor;
 
 public abstract class AbstractClusteringValueMethod implements ClusteringMethod {
 
-    boolean preprocess;
+    private String name;
 
-    boolean transpose;
+    private boolean transpose;
 
-    int classIndex;
+    protected AbstractClusteringValueMethod(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public abstract Clusters cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 
-    public void setPreprocess(boolean preprocess) {
-        this.preprocess = preprocess;
+    public boolean isTranspose() {
+        return transpose;
     }
 
     public void setTranspose(boolean transposed) {
         this.transpose = transposed;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

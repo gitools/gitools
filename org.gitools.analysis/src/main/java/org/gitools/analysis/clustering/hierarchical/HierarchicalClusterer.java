@@ -21,19 +21,21 @@
  */
 package org.gitools.analysis.clustering.hierarchical;
 
+import com.google.common.base.Joiner;
+import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ConcurrentSkipListSet;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 
 public class HierarchicalClusterer {
 
@@ -45,14 +47,24 @@ public class HierarchicalClusterer {
         this.measure = measure;
     }
 
-    public Cluster cluster(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension clusterDimension, IMatrixDimension aggregationDimension) {
+    public Cluster cluster(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension clusterDimension, IMatrixDimension aggregationDimension, IProgressMonitor monitor) {
 
         Map<String, Cluster> clusters = new HashMap<>(clusterDimension.size());
-        List<ClusterPair> linkages = new ArrayList<>(clusterDimension.size());
+        SortedSet<ClusterPair> linkages = new ConcurrentSkipListSet<>();
 
         IMatrixPosition position1 = matrix.newPosition();
         IMatrixPosition position2 = matrix.newPosition();
+
+
+        monitor.begin("Calculating distances...", clusterDimension.size());
         for (String id1 : position1.iterate(clusterDimension)) {
+
+            // Check user cancel action
+            monitor.worked(1);
+            if (monitor.isCancelled()) {
+                throw new CancellationException();
+            }
+
             for (String id2 : position2.iterate(clusterDimension).from(id1)) {
 
                 // Skip equal ids
@@ -71,12 +83,56 @@ public class HierarchicalClusterer {
         }
 
 		/* Process */
-        HierarchyBuilder builder = new HierarchyBuilder(newArrayList(clusters.values()), linkages);
-        while (!builder.isTreeComplete()) {
-            builder.agglomerate(linkageStrategy);
+        HierarchyBuilder builder = new HierarchyBuilder(newHashSet(clusters.values()), linkages);
+        builder.agglomerate(linkageStrategy, monitor, clusterDimension.size());
+
+        /* Set cluster names */
+        Cluster root = builder.getRootCluster();
+        root.setName("");
+
+        List<Cluster> children = root.getChildren();
+
+        while (!children.isEmpty()) {
+
+            int digits = calculateDigits(children.size());
+
+            List<Cluster> nextChildren = new ArrayList<>();
+            for (int i=0; i < children.size(); i++) {
+                Cluster child = children.get(i);
+                if (child.getChildren().isEmpty()) {
+                    child.setName(Joiner.on("&").join(child.getIdentifiers()));
+                } else {
+                    child.setName(child.getParent().getName() + createLabel(i, digits));
+                }
+                nextChildren.addAll(child.getChildren());
+            }
+
+            children = nextChildren;
+        }
+        root.setName("root");
+
+
+        return root;
+    }
+
+    private static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+
+    private static int calculateDigits(int size) {
+        return ((int) FastMath.log(ALPHABET.length, size)) + 1;
+    }
+
+    private static String createLabel(int number, int digits) {
+
+        char[] label = new char[digits];
+        label[digits - 1] = ALPHABET[number % ALPHABET.length];
+
+        for (int d=1; d<digits; d++) {
+            int quocient = number / (ALPHABET.length * d);
+            label[digits - d - 1] = ALPHABET[quocient % ALPHABET.length];
         }
 
-        return builder.getRootCluster();
+        return String.valueOf(label);
+
     }
 
     private static Cluster newCluster(Map<String, Cluster> clusters, String id) {

@@ -23,9 +23,9 @@ package org.gitools.ui.app.analysis.clustering;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
 import org.gitools.analysis.clustering.method.value.*;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
@@ -35,58 +35,46 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ClusteringWizard extends AbstractWizard {
 
     private final Heatmap heatmap;
+    private final List<? extends ClusteringMethod> methods;
 
-    private AbstractClusteringValueMethod method;
-
-    private ClusteringMethodsPage methodPage;
+    private MethodSelectionPage methodPage;
     private CobwebParamsPage cobwebPage;
     private HCLParamsPage hclPage;
     private KmeansParamsPage kmeansPage;
-    private ClusteringOptionsPage optionsPage;
-    private SaveFilePage newickPage;
+
+    private static HierarchicalMethod HCL_METHOD = new HierarchicalMethod();
+    private static WekaKmeansMethod KMEANS_METHOD = new WekaKmeansMethod();
+    private static WekaCobWebMethod COWEB_METHOD = new WekaCobWebMethod();
 
     public ClusteringWizard(Heatmap heatmap) {
         super();
-
         this.heatmap = heatmap;
+        this.methods = Arrays.asList(HCL_METHOD, KMEANS_METHOD, COWEB_METHOD);
 
         setTitle("Clustering by value");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CLUSTERING, 96));
-        setHelpContext("analysis_overlapping");
     }
 
     @Override
     public void addPages() {
-        methodPage = new ClusteringMethodsPage();
+
+        methodPage = new MethodSelectionPage(methods, heatmap);
         addPage(methodPage);
 
-        IMatrixView mv = heatmap;
-        optionsPage = new ClusteringOptionsPage(mv.getContents().getLayers(), mv.getLayers().getTopLayer());
-        addPage(optionsPage);
-
-        newickPage = new SaveFilePage();
-        newickPage.setTitle("Select Newick's tree destination file");
-        newickPage.setFolder(Settings.getDefault().getLastExportPath());
-        newickPage.setFormatsVisible(false);
-        addPage(newickPage);
-
-        hclPage = new HCLParamsPage();
+        hclPage = new HCLParamsPage(HCL_METHOD);
         addPage(hclPage);
 
-        kmeansPage = new KmeansParamsPage();
+        kmeansPage = new KmeansParamsPage(KMEANS_METHOD);
         addPage(kmeansPage);
 
-        cobwebPage = new CobwebParamsPage();
+        cobwebPage = new CobwebParamsPage(COWEB_METHOD);
         addPage(cobwebPage);
-    }
-
-    @Override
-    public void performFinish() {
-        Settings.getDefault().setLastExportPath(newickPage.getFolder());
-        Settings.getDefault().save();
     }
 
     @Override
@@ -96,95 +84,53 @@ public class ClusteringWizard extends AbstractWizard {
 
     @Override
     public boolean isLastPage(IWizardPage page) {
-        return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
+        return currentPage != methodPage;
     }
-
 
     @Override
     public IWizardPage getNextPage(IWizardPage currentPage) {
 
-        IWizardPage nextPage = null;
-
-        if (currentPage == optionsPage) {
-            if (optionsPage.isNewickExportSelected()) {
-                nextPage = newickPage;
-            } else {
-                nextPage = getMethodConfigPage();
-            }
-        } else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage) {
-            nextPage = null;
-        } else {
-            nextPage = super.getNextPage(currentPage);
-        }
-
-        return nextPage;
-    }
-
-    @Override
-    public void pageLeft(IWizardPage currentPage) {
         if (currentPage == methodPage) {
-            ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
-            Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
-            optionsPage.setNewickExportVisible(HierarchicalMethod.class.equals(methodClass));
-        } else if (currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage) {
-            method = ((ClusteringValueMethodPage) currentPage).getMethod();
-            method.setPreprocess(optionsPage.isPreprocessing());
-            method.setTranspose(optionsPage.isApplyToRows());
+            return getMethodConfigPage();
         }
-    }
 
+        return null;
+    }
 
     private IWizardPage getMethodConfigPage() {
-        ClusteringMethodDescriptor methodDescriptor = methodPage.getMethodDescriptor();
-        Class<? extends ClusteringMethod> methodClass = methodDescriptor.getMethodClass();
 
-        if (WekaCobWebMethod.class.equals(methodClass)) {
+        ClusteringMethod method = methodPage.getSelectedMethod();
+
+        if (method instanceof WekaCobWebMethod) {
             return cobwebPage;
-        } else if (HierarchicalMethod.class.equals(methodClass)) {
+        } else if (method instanceof HierarchicalMethod) {
             return hclPage;
-        } else if (WekaKmeansMethod.class.equals(methodClass)) {
+        } else if (method instanceof WekaKmeansMethod) {
             return kmeansPage;
         }
+
         return null;
     }
 
 
     public ClusteringData getClusterData() {
-        int attr = optionsPage.getDataAttribute();
-        IMatrixView mv = heatmap;
-        IMatrixLayer layer = heatmap.getLayers().get(attr);
-        return optionsPage.isApplyToRows() ? new MatrixClusteringData(mv, mv.getRows(), mv.getColumns(), layer) : new MatrixClusteringData(mv, mv.getColumns(), mv.getRows(), layer);
+        return new MatrixClusteringData(
+                heatmap,
+                methodPage.getClusteringDimension(),
+                methodPage.getAggregationDimension(),
+                methodPage.getClusteringLayer()
+        );
     }
 
-    public int getDataAttribute() {
-        return optionsPage.getDataAttribute();
+    public MatrixDimensionKey getClusteringDimension() {
+        return methodPage.getClusteringDimension();
     }
 
-    public boolean isHeaderSelected() {
-        return optionsPage.isHeaderSelected();
+    public String getClusteringLayer() {
+        return methodPage.getClusteringLayer();
     }
 
-    public boolean isSortDataSelected() {
-        return optionsPage.isSort();
-    }
-
-    public boolean isNewickExportSelected() {
-        return optionsPage.isNewickExportSelected();
-    }
-
-    public boolean isApplyToRows() {
-        return optionsPage.isApplyToRows();
-    }
-
-    public SaveFilePage getSaveFilePage() {
-        return newickPage;
-    }
-
-    public String getMethodName() {
-        return methodPage.getMethodDescriptor().getTitle();
-    }
-
-    public AbstractClusteringValueMethod getMethod() {
-        return method;
+    public ClusteringMethod getMethod() {
+        return methodPage.getSelectedMethod();
     }
 }

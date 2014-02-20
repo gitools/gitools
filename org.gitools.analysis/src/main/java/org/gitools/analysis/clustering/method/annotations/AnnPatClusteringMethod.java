@@ -50,6 +50,11 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
         this.pattern = pattern;
     }
 
+    @Override
+    public String getName() {
+        return "Pattern annotation";
+    }
+
     /**
      * Execute the clustering and return the results
      */

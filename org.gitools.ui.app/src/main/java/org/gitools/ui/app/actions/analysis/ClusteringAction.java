@@ -21,16 +21,25 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
+import com.google.common.base.Function;
+import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.HierarchicalClusteringResults;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
+import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
+import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
+import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.sort.SortByLabelComparator;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.clustering.ClusteringWizard;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
@@ -42,13 +51,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ClusteringAction extends HeatmapAction {
 
@@ -75,35 +78,46 @@ public class ClusteringAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Clustering  ...", 1);
 
                     // Cluster data
+                    monitor.start();
                     Clusters results = method.cluster(wiz.getClusterData(), monitor);
+                    monitor.end();
 
                     // Target dimension
-                    HeatmapDimension clusteringDimension = wiz.isApplyToRows() ? heatmap.getRows() : heatmap.getColumns();
+                    HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
 
                     // Save results as an annotation
-                    String annotationLabel = wiz.getMethodName() + " " + heatmap.getLayers().get(wiz.getDataAttribute()).getId();
+                    String annotationLabel = method.getName() + " " + wiz.getClusteringLayer();
 
                     AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
+                    int maxLevel=0;
+                    Map<Integer, Collection<String>> clustersMapPerLevel = new HashMap<>();
                     if (results instanceof Cluster) {
 
-                        Cluster hresults = (Cluster) results;
+                        Cluster rootCluster = (Cluster) results;
 
-                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(hresults));
+                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
 
-                        int l=0;
-                        List<Cluster> children = hresults.getChildren();
+                        List<Cluster> children = rootCluster.getChildren();
+                        rootCluster.setName("");
+
                         while (!children.isEmpty()) {
-                            l++;
+                            maxLevel++;
 
+                            List<String> clusterNames = new ArrayList<>();
                             List<Cluster> nextLevel = new ArrayList<>();
                             for (Cluster cluster : children) {
-                                annotationMatrix.setAnnotation(cluster.getName(), annotationLabel + " level " + l, cluster.getName());
+                                clusterNames.add(cluster.getName());
+                                if (!cluster.getChildren().isEmpty()) {
+                                    for (String identifier : cluster.getIdentifiers()) {
+                                        annotationMatrix.setAnnotation(identifier, annotationLabel + " level " + maxLevel, cluster.getName());
+                                    }
+                                }
                                 nextLevel.addAll(cluster.getChildren());
                             }
 
+                            clustersMapPerLevel.put(maxLevel, clusterNames);
                             children = nextLevel;
                         }
                     } else {
@@ -116,48 +130,40 @@ public class ClusteringAction extends HeatmapAction {
                     }
 
                     // Add header
-                    if (wiz.isHeaderSelected()) {
-
-                        if (results instanceof Cluster) {
-                            Cluster hresults = (Cluster) results;
-
-                            //int depth = hresults.getTree().getDepth();
-                            //depth = (depth > 10 ? 10 : depth);
-                            int depth = 3;
-                            for (int l = 0; l < depth; l++) {
-                                //hresults.setLevel(l);
-                                HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-                                CommandAddHeaderColoredLabels.updateFromClusterResults(header, hresults);
-                                header.setTitle(annotationLabel + " level " + l);
-                                header.setSize(4);
-                                header.setAnnotationPattern("${" + annotationLabel + " level " + l + "}");
-                                clusteringDimension.addHeader(header);
-                            }
-                        } else {
+                    String sortLabel;
+                    if (results instanceof Cluster) {
+                        int depth = FastMath.min(10, maxLevel);
+                        for (int l = depth; l >= 1; l--) {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, results);
-                            header.setTitle(annotationLabel);
-                            header.setAnnotationPattern("${" + annotationLabel + "}");
+                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, clustersMapPerLevel.get(l));
+                            header.setTitle(annotationLabel + " level " + l);
+                            header.setSize(7);
+                            sortLabel = "${" + annotationLabel + " level " + l + "}";
+                            header.setAnnotationPattern(sortLabel);
                             clusteringDimension.addHeader(header);
+                            clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationLabel + " level ", clusteringDimension.getAnnotations()), false));
                         }
 
+                        // Sort the header
+                        /*for (int l = depth; l >= 1; l--) {
+                            sortLabel = "${" + annotationLabel + " level " + depth + "}";
+                            clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
+                        }*/
+
+                    } else {
+                        sortLabel = "${" + annotationLabel + "}";
+                        HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+                        CommandAddHeaderColoredLabels.updateFromClusterResults(header, results.getClusters());
+                        header.setTitle(annotationLabel);
+                        header.setAnnotationPattern(sortLabel);
+                        clusteringDimension.addHeader(header);
+
+                        // Sort the header
+                        clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
                     }
 
-                    // Sort the matrix
-                    if (wiz.isSortDataSelected()) {
-                        ClusterUtils.updateVisibility(clusteringDimension, results.getClustersMap());
-                    }
 
-                    // Export newick file
-                    if (wiz.isNewickExportSelected()) {
-                        File path = wiz.getSaveFilePage().getPathAsFile();
-                        BufferedWriter out = new BufferedWriter(new FileWriter(path));
-                        out.write(((HierarchicalClusteringResults) results).getTree().toString());
-                        out.flush();
-                        out.close();
-                    }
 
-                    monitor.end();
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
@@ -165,5 +171,30 @@ public class ClusteringAction extends HeatmapAction {
         });
 
         Application.get().setStatusText("Clusters created");
+    }
+
+    private static class HierarchicalSortFunction implements Function<String, String> {
+
+        private int level;
+        private String prefix;
+        private IAnnotations annotations;
+
+        private HierarchicalSortFunction(int level, String prefix, IAnnotations annotations) {
+            this.level = level;
+            this.prefix = prefix;
+            this.annotations = annotations;
+        }
+
+        @Override
+        public String apply(String identifier) {
+
+            String clusterName = annotations.getAnnotation(identifier, prefix + level);
+
+            for (int l = level - 1; l>=1 && clusterName==null; l--) {
+                clusterName = annotations.getAnnotation(identifier, prefix + l);
+            }
+
+            return clusterName;
+        }
     }
 }

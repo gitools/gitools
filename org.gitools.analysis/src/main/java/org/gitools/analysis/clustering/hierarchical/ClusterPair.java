@@ -93,21 +93,8 @@ public class ClusterPair implements Comparable<ClusterPair> {
         return result;
     }
 
-    public Cluster agglomerate(String name) {
-        if (name == null) {
-            StringBuilder sb = new StringBuilder();
-            if (lCluster != null) {
-                sb.append(lCluster.getName());
-            }
-            if (rCluster != null) {
-                if (sb.length() > 0) {
-                    sb.append("&");
-                }
-                sb.append(rCluster.getName());
-            }
-            name = sb.toString();
-        }
-        Cluster cluster = new Cluster(name);
+    public Cluster agglomerate() {
+        Cluster cluster = new Cluster(lCluster.getIdentifiers(), rCluster.getIdentifiers());
         cluster.setDistance(getLinkageDistance());
         cluster.addChild(lCluster);
         cluster.addChild(rCluster);
@@ -120,16 +107,35 @@ public class ClusterPair implements Comparable<ClusterPair> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (lCluster != null) {
-            sb.append(lCluster.getName());
+            sb.append(lCluster);
         }
         if (rCluster != null) {
             if (sb.length() > 0) {
                 sb.append(" + ");
             }
-            sb.append(rCluster.getName());
+            sb.append(rCluster);
         }
         sb.append(" : ").append(linkageDistance);
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClusterPair that = (ClusterPair) o;
+
+        if (!lCluster.equals(that.lCluster)) return false;
+        if (!rCluster.equals(that.rCluster)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = lCluster.hashCode();
+        result = 31 * result + rCluster.hashCode();
+        return result;
+    }
 }

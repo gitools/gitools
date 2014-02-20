@@ -25,6 +25,7 @@ import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.editor.AbstractEditor;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class DendrogramEditor extends AbstractEditor {
@@ -46,7 +47,9 @@ public class DendrogramEditor extends AbstractEditor {
         panel.setModel(model);
         panel.setBackground(Color.WHITE);
 
-        add(panel);
+        panel.setPreferredSize(new Dimension(getWidth(), model.getIdentifiers().size()*12));
+
+        add(new JScrollPane(panel));
     }
 
     @Override

@@ -21,36 +21,37 @@
  */
 package org.gitools.ui.app.analysis.clustering;
 
-import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
-import org.gitools.analysis.clustering.ClusteringMethodFactory;
-import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
-import java.util.List;
+public class CobwebParamsPage extends AbstractWizardPage {
 
-/**
- * @noinspection ALL
- */
-public class CobwebParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
+    private WekaCobWebMethod method;
 
-    public CobwebParamsPage() {
+    public CobwebParamsPage(WekaCobWebMethod method) {
+        super();
 
+        this.method = method;
         initComponents();
 
         setTitle("Clustering method selection");
         setComplete(true);
     }
 
-    private boolean validated() {
-        return (isValidNumber(cutOffField.getText()) && isValidInteger(seedField.getText()) &&
-                isValidNumber(acuityField.getText()));
-    }
-
     @Override
     public void updateModel() {
-        super.updateModel();
 
+        if (isValidNumber(cutOffField.getText())) {
+            method.setCutoff(new Float(cutOffField.getText()));
+        }
+
+        if (isValidInteger(seedField.getText())) {
+            method.setSeed(new Integer(seedField.getText()));
+        }
+
+        if (isValidNumber(acuityField.getText())) {
+            method.setAcuity(new Float(acuityField.getText()));
+        }
     }
 
     /**
@@ -138,33 +139,4 @@ public class CobwebParamsPage extends AbstractWizardPage implements ClusteringVa
     }
 
 
-    @Override
-    public AbstractClusteringValueMethod getMethod() {
-
-        WekaCobWebMethod cobweb = null;
-
-        if (validated()) {
-            cobweb = (WekaCobWebMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
-
-            cobweb.setCutoff(new Float(cutOffField.getText()));
-            cobweb.setSeed(new Integer(seedField.getText()));
-            cobweb.setAcuity(new Float(acuityField.getText()));
-        }
-
-        return cobweb;
-    }
-
-
-    @Override
-    public ClusteringMethodDescriptor getMethodDescriptor() {
-
-        List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
-
-        for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaCobWebMethod.class)) {
-                return desc;
-            }
-
-        return null;
-    }
 }

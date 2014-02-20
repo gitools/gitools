@@ -130,11 +130,10 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         return coloredLabels;
     }
 
-    public static void updateFromClusterResults(HeatmapColoredLabelsHeader header, Clusters results) {
+    public static void updateFromClusterResults(HeatmapColoredLabelsHeader header, Collection<String> clusters) {
         ColorGenerator cg = new ColorGenerator();
 
-        Collection<String> clusters = results.getClusters();
-        List<ColoredLabel> coloredLabels = new ArrayList<>(results.size());
+        List<ColoredLabel> coloredLabels = new ArrayList<>(clusters.size());
         for (String cluster : clusters) {
             coloredLabels.add(new ColoredLabel(cluster, cg.next(cluster)));
         }
@@ -152,7 +151,7 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         } catch (ClusteringException e) {
             e.printStackTrace();
         }
-        updateFromClusterResults(header, results);
+        updateFromClusterResults(header, results.getClusters());
 
     }
 }

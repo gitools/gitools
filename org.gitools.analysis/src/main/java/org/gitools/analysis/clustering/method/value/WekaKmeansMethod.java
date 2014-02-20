@@ -47,7 +47,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
     private NormalizableDistance distanceFunction;
 
     public WekaKmeansMethod() {
-        classIndex = -1;
+        super("K-means");
     }
 
 
@@ -63,11 +63,7 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
             List<String> labels = ClusterUtils.getLabels(clusterData);
 
-            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, classIndex);
-
-            if (preprocess) {
-                ClusterUtils.dataReductionProcess(clusterWekaData, monitor);
-            }
+            MatrixViewWeka clusterWekaData = new MatrixViewWeka(structure, clusterData, -1);
 
             SimpleKMeans clusterer = new SimpleKMeans();
 

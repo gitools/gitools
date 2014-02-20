@@ -72,6 +72,11 @@ public class DefaultProgressMonitor implements IProgressMonitor {
     }
 
     @Override
+    public void start() {
+
+    }
+
+    @Override
     public void cancel() {
         this.cancelled = true;
     }

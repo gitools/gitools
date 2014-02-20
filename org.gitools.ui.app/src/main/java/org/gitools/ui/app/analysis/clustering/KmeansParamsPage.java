@@ -21,23 +21,18 @@
  */
 package org.gitools.ui.app.analysis.clustering;
 
-import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
-import org.gitools.analysis.clustering.ClusteringMethodFactory;
-import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import weka.core.EuclideanDistance;
 import weka.core.ManhattanDistance;
 
-import java.util.List;
+public class KmeansParamsPage extends AbstractWizardPage {
 
-/**
- * @noinspection ALL
- */
-public class KmeansParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
+    private WekaKmeansMethod method;
 
-    public KmeansParamsPage() {
-
+    public KmeansParamsPage(WekaKmeansMethod method) {
+        super();
+        this.method = method;
         initComponents();
 
         setTitle("Clustering method selection");
@@ -51,7 +46,19 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
 
     @Override
     public void updateModel() {
-        super.updateModel();
+
+        if (validated()) {
+
+            method.setIterations(Integer.valueOf(iterField.getText()));
+            method.setNumClusters(Integer.valueOf(kField.getText()));
+            method.setSeed(Integer.valueOf(seedField.getText()));
+
+            if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
+                method.setDistanceFunction(new EuclideanDistance());
+            } else {
+                method.setDistanceFunction(new ManhattanDistance());
+            }
+        }
 
     }
 
@@ -114,18 +121,6 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
     private javax.swing.JTextField seedField;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    private boolean isValidNumber(String text) {
-        try {
-            Double.parseDouble(text);
-        } catch (NumberFormatException ex) {
-            return false;
-        }
-        return true;
-    }
-
     private boolean isValidInteger(String text) {
         try {
             Integer.parseInt(text);
@@ -135,39 +130,4 @@ public class KmeansParamsPage extends AbstractWizardPage implements ClusteringVa
         return true;
     }
 
-
-    @Override
-    public AbstractClusteringValueMethod getMethod() {
-
-        WekaKmeansMethod method = null;
-
-        if (validated()) {
-
-            method = (WekaKmeansMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
-
-            method.setIterations(Integer.valueOf(iterField.getText()));
-            method.setNumClusters(Integer.valueOf(kField.getText()));
-            method.setSeed(Integer.valueOf(seedField.getText()));
-
-            if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
-                method.setDistanceFunction(new EuclideanDistance());
-            } else {
-                method.setDistanceFunction(new ManhattanDistance());
-            }
-        }
-
-        return method;
-    }
-
-
-    public ClusteringMethodDescriptor getMethodDescriptor() {
-        List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
-
-        for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(WekaKmeansMethod.class)) {
-                return desc;
-            }
-
-        return null;
-    }
 }

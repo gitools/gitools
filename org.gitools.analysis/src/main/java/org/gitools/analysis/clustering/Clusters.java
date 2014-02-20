@@ -27,8 +27,6 @@ import java.util.Set;
 
 public interface Clusters {
 
-    int size();
-
     Collection<String> getClusters();
 
     Set<String> getItems(String cluster);

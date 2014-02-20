@@ -54,6 +54,10 @@ public class NullProgressMonitor implements IProgressMonitor {
     }
 
     @Override
+    public void start() {
+    }
+
+    @Override
     public void setLevel(int level) {
     }
 

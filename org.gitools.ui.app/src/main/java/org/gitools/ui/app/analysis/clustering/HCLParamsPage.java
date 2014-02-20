@@ -21,23 +21,27 @@
  */
 package org.gitools.ui.app.analysis.clustering;
 
-import org.gitools.analysis.clustering.ClusteringMethodDescriptor;
-import org.gitools.analysis.clustering.ClusteringMethodFactory;
+import org.gitools.analysis.clustering.distance.DistanceMeasure;
+import org.gitools.analysis.clustering.distance.EuclideanDistance;
+import org.gitools.analysis.clustering.distance.ManhattanDistance;
+import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.CompleteLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.SingleLinkageStrategy;
 import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
-public class HCLParamsPage extends AbstractWizardPage implements ClusteringValueMethodPage {
+public class HCLParamsPage extends AbstractWizardPage {
 
-    public HCLParamsPage() {
+    private HierarchicalMethod method;
 
+    public HCLParamsPage(HierarchicalMethod method) {
+        super();
+        this.method = method;
         initComponents();
-
         setTitle("Clustering method selection");
         setComplete(true);
     }
@@ -45,7 +49,25 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
 
     @Override
     public void updateModel() {
-        super.updateModel();
+
+        DistanceMeasure distanceMeasure;
+        LinkageStrategy linkageStrategy;
+
+        switch (linkTypeCombo.getSelectedItem().toString()) {
+            case "Single (minimum)": linkageStrategy = new SingleLinkageStrategy(); break;
+            case "Complete (maximum)": linkageStrategy = new CompleteLinkageStrategy(); break;
+            case "Average": linkageStrategy = new AverageLinkageStrategy(); break;
+            default: linkageStrategy = new AverageLinkageStrategy();
+        }
+
+        if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
+            distanceMeasure = new EuclideanDistance();
+        } else {
+            distanceMeasure = new ManhattanDistance();
+        }
+
+        method.setDistanceMeasure(distanceMeasure);
+        method.setLinkageStrategy(linkageStrategy);
 
     }
 
@@ -65,7 +87,7 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
         distAlgCombo = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
 
-        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Single", "Complete", "Average", "Mean", "Centroid", "Ward", "Adjcomplete", "Neighbor_joining"}));
+        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Average", "Single (minimum)", "Complete (maximum)" }));
 
         jLabel1.setText("Link type: ");
         jLabel1.setToolTipText("Sets the method used to measure the distance between two clusters.");
@@ -91,39 +113,4 @@ public class HCLParamsPage extends AbstractWizardPage implements ClusteringValue
     // End of variables declaration//GEN-END:variables
 
 
-    @Override
-    public AbstractClusteringValueMethod getMethod() {
-
-        HierarchicalMethod method = null;
-
-        method = (HierarchicalMethod) ClusteringMethodFactory.getDefault().create(getMethodDescriptor());
-
-        /*
-        method.setLinkType(new SelectedTag(linkTypeCombo.getSelectedItem().toString(), HierarchicalClusterer.TAGS_LINK_TYPE));
-
-        method.setDistanceIsBranchLength(false);
-        method.setNumClusters(1);
-        method.setPrintNewick(true);
-
-        if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
-            method.setDistanceFunction(new EuclideanDistance());
-        } else {
-            method.setDistanceFunction(new ManhattanDistance());
-        }       */
-
-        return method;
-    }
-
-
-    @Override
-    public ClusteringMethodDescriptor getMethodDescriptor() {
-        List<ClusteringMethodDescriptor> descriptors = ClusteringMethodFactory.getDefault().getDescriptors();
-
-        for (ClusteringMethodDescriptor desc : descriptors)
-            if (desc.getMethodClass().equals(HierarchicalMethod.class)) {
-                return desc;
-            }
-
-        return null;
-    }
 }

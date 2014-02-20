@@ -37,80 +37,124 @@
 
 package org.gitools.analysis.clustering.hierarchical;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.api.analysis.IProgressMonitor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CancellationException;
 
 public class HierarchyBuilder {
 
-    private List<ClusterPair> distances;
-    private List<Cluster> clusters;
+    private SortedSet<ClusterPair> distances;
+    private Multimap<Integer, ClusterPair> distancesMap;
 
-    public List<ClusterPair> getDistances() {
+    private Set<Cluster> clusters;
+
+    public SortedSet<ClusterPair> getDistances() {
         return distances;
     }
 
-    public List<Cluster> getClusters() {
+    public Set<Cluster> getClusters() {
         return clusters;
     }
 
-    public HierarchyBuilder(List<Cluster> clusters, List<ClusterPair> distances) {
+    public HierarchyBuilder(Set<Cluster> clusters, SortedSet<ClusterPair> distances) {
         this.clusters = clusters;
         this.distances = distances;
+
+        this.distancesMap = LinkedListMultimap.create();
+        for (ClusterPair distance : distances) {
+            this.distancesMap.put(distance.hashCode(), distance);
+        }
     }
 
-    public void agglomerate(LinkageStrategy linkageStrategy) {
-        Collections.sort(distances);
-        if (distances.size() > 0) {
-            ClusterPair minDistLink = distances.remove(0);
-            clusters.remove(minDistLink.getrCluster());
-            clusters.remove(minDistLink.getlCluster());
+    public void agglomerate(LinkageStrategy linkageStrategy, IProgressMonitor monitor, int dimensionSize) {
 
-            Cluster oldClusterL = minDistLink.getlCluster();
-            Cluster oldClusterR = minDistLink.getrCluster();
-            Cluster newCluster = minDistLink.agglomerate(null);
+        int level = 1;
+        int maxLevel = dimensionSize - 1;
 
-            for (Cluster iClust : clusters) {
-                ClusterPair link1 = findByClusters(iClust, oldClusterL);
-                ClusterPair link2 = findByClusters(iClust, oldClusterR);
-                ClusterPair newLinkage = new ClusterPair();
-                newLinkage.setlCluster(iClust);
-                newLinkage.setrCluster(newCluster);
-                Collection<Double> distanceValues = new ArrayList<Double>();
-                if (link1 != null) {
-                    distanceValues.add(link1.getLinkageDistance());
-                    distances.remove(link1);
-                }
-                if (link2 != null) {
-                    distanceValues.add(link2.getLinkageDistance());
-                    distances.remove(link2);
-                }
-                Double newDistance = linkageStrategy
-                        .calculateDistance(distanceValues);
-                newLinkage.setLinkageDistance(newDistance);
-                distances.add(newLinkage);
+        while (true) {
 
+            if (isTreeComplete()) {
+                break;
             }
-            clusters.add(newCluster);
+
+            try {
+                ClusterPair minDistLink = distances.first();
+                distances.remove(minDistLink);
+                clusters.remove(minDistLink.getrCluster());
+                clusters.remove(minDistLink.getlCluster());
+
+                Cluster oldClusterL = minDistLink.getlCluster();
+                Cluster oldClusterR = minDistLink.getrCluster();
+                Cluster newCluster = minDistLink.agglomerate();
+
+                monitor.begin("Agglomerating level "+ level + " of " + maxLevel + "", clusters.size());
+                level++;
+
+                for (Cluster iClust : clusters) {
+
+                    monitor.worked(1);
+                    if (monitor.isCancelled()) {
+                        throw new CancellationException();
+                    }
+
+                    ClusterPair link1 = findByClusters(iClust, oldClusterL);
+                    ClusterPair link2 = findByClusters(iClust, oldClusterR);
+                    ClusterPair newLinkage = new ClusterPair();
+                    newLinkage.setlCluster(iClust);
+                    newLinkage.setrCluster(newCluster);
+                    Collection<Double> distanceValues = new ArrayList<>();
+                    if (link1 != null) {
+                        distanceValues.add(link1.getLinkageDistance());
+                        distances.remove(link1);
+                    }
+                    if (link2 != null) {
+                        distanceValues.add(link2.getLinkageDistance());
+                        distances.remove(link2);
+                    }
+                    Double newDistance = linkageStrategy
+                            .calculateDistance(distanceValues);
+                    newLinkage.setLinkageDistance(newDistance);
+                    distances.add(newLinkage);
+                    distancesMap.put(newLinkage.hashCode(), newLinkage);
+
+                }
+                clusters.add(newCluster);
+
+            } catch (NoSuchElementException e) {
+                break;
+            }
+
         }
+
     }
 
     private ClusterPair findByClusters(Cluster c1, Cluster c2) {
-        ClusterPair result = null;
-        for (ClusterPair link : distances) {
-            boolean cond1 = link.getlCluster().equals(c1)
-                    && link.getrCluster().equals(c2);
-            boolean cond2 = link.getlCluster().equals(c2)
-                    && link.getrCluster().equals(c1);
-            if (cond1 || cond2) {
-                result = link;
-                break;
+
+        int hash1 = c1.hashCode();
+        int hash2 = c2.hashCode();
+
+        int pair1 = 31 * hash1 + hash2;
+        int pair2 = 31 * hash2 + hash1;
+
+        for (ClusterPair link : distancesMap.get(pair1)) {
+            if (link.getlCluster().equals(c1) && link.getrCluster().equals(c2)) {
+                distancesMap.remove(pair1, link);
+                return link;
             }
         }
-        return result;
+
+        for (ClusterPair link : distancesMap.get(pair2)) {
+            if (link.getlCluster().equals(c2) && link.getrCluster().equals(c1)) {
+                distancesMap.remove(pair2, link);
+                return link;
+            }
+        }
+
+        return null;
     }
 
     public boolean isTreeComplete() {
@@ -121,7 +165,7 @@ public class HierarchyBuilder {
         if (!isTreeComplete()) {
             throw new RuntimeException("No root available");
         }
-        return clusters.get(0);
+        return clusters.iterator().next();
     }
 
 }

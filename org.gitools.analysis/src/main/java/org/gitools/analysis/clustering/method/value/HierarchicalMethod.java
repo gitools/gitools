@@ -24,15 +24,44 @@ package org.gitools.analysis.clustering.method.value;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.Clusters;
+import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.distance.ManhattanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IProgressMonitor;
 
 
 public class HierarchicalMethod extends AbstractClusteringValueMethod {
 
+    private LinkageStrategy linkageStrategy;
+    private DistanceMeasure distanceMeasure;
+
     public HierarchicalMethod() {
+        this(null, null);
+    }
+
+    public HierarchicalMethod(LinkageStrategy linkageStrategy, DistanceMeasure distanceMeasure) {
+        super("Hierarchical");
+
+        this.linkageStrategy = linkageStrategy;
+        this.distanceMeasure = distanceMeasure;
+    }
+
+    public LinkageStrategy getLinkageStrategy() {
+        return linkageStrategy;
+    }
+
+    public void setLinkageStrategy(LinkageStrategy linkageStrategy) {
+        this.linkageStrategy = linkageStrategy;
+    }
+
+    public DistanceMeasure getDistanceMeasure() {
+        return distanceMeasure;
+    }
+
+    public void setDistanceMeasure(DistanceMeasure distanceMeasure) {
+        this.distanceMeasure = distanceMeasure;
     }
 
     @Override
@@ -43,8 +72,8 @@ public class HierarchicalMethod extends AbstractClusteringValueMethod {
         }
 
         MatrixClusteringData data = (MatrixClusteringData) clusterData;
-        HierarchicalClusterer clusterer = new HierarchicalClusterer(new AverageLinkageStrategy(), new ManhattanDistance());
-        return clusterer.cluster(data.getMatrix(), data.getLayer(), data.getClusteringDimension(), data.getAggregationDimension());
+        HierarchicalClusterer clusterer = new HierarchicalClusterer(linkageStrategy, distanceMeasure);
+        return clusterer.cluster(data.getMatrix(), data.getLayer(), data.getClusteringDimension(), data.getAggregationDimension(), monitor);
 
     }
 

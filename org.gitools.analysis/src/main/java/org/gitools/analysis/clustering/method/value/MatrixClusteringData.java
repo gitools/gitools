@@ -23,10 +23,7 @@ package org.gitools.analysis.clustering.method.value;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringDataInstance;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
 
 public class MatrixClusteringData implements ClusteringData {
 
@@ -47,11 +44,11 @@ public class MatrixClusteringData implements ClusteringData {
         return layer;
     }
 
-    public MatrixClusteringData(IMatrix matrix, IMatrixDimension clusteringDimension, IMatrixDimension aggregationDimension, IMatrixLayer layer) {
+    public MatrixClusteringData(IMatrix matrix, MatrixDimensionKey clusteringDimensionKey, MatrixDimensionKey aggregationDimensionKey, String layerId) {
         this.matrix = matrix;
-        this.clusteringDimension = clusteringDimension;
-        this.aggregationDimension = aggregationDimension;
-        this.layer = layer;
+        this.clusteringDimension = matrix.getDimension(clusteringDimensionKey);
+        this.aggregationDimension = matrix.getDimension(aggregationDimensionKey);
+        this.layer = matrix.getLayers().get(layerId);
     }
 
     @Override
