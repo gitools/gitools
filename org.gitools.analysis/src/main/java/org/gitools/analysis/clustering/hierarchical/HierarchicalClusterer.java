@@ -22,7 +22,6 @@
 package org.gitools.analysis.clustering.hierarchical;
 
 import com.google.common.base.Joiner;
-import static com.google.common.collect.Sets.newHashSet;
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
@@ -31,16 +30,12 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.SortDirection;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentSkipListSet;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 public class HierarchicalClusterer {
 

@@ -90,6 +90,10 @@ public class ClusterPair implements Comparable<ClusterPair> {
             result = getLinkageDistance().compareTo(o.getLinkageDistance());
         }
 
+        if (result == 0) {
+            result = Integer.compare(hashCode(), o.hashCode());
+        }
+
         return result;
     }
 

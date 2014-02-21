@@ -115,6 +115,17 @@ public class HierarchyBuilder {
                         distanceValues.add(link2.getLinkageDistance());
                         distances.remove(link2);
                     }
+
+                    if (link1 == null && link2 == null) {
+
+                        for (ClusterPair pair : distances) {
+                            if (pair.getlCluster().equals(iClust) || pair.getrCluster().equals(iClust)) {
+                                System.out.println(pair);
+                            }
+                        }
+                    }
+
+
                     Double newDistance = linkageStrategy
                             .calculateDistance(distanceValues);
                     newLinkage.setLinkageDistance(newDistance);
