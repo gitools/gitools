@@ -23,6 +23,7 @@ package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.filter.ValueFilterCriteria;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -89,7 +90,7 @@ public class ValueFilterPage extends AbstractWizardPage {
      */
     public ValueFilterPage(Frame parent,
                            IMatrixLayers layers,
-                           CutoffCmp[] comparators,
+                           MatrixDimensionKey dimension, CutoffCmp[] comparators,
                            List<ValueFilterCriteria> initialCriteriaList,
                            IMatrixLayer visibleLayer) {
 
@@ -100,6 +101,12 @@ public class ValueFilterPage extends AbstractWizardPage {
         this.criteriaModel = new ValueFilterCriteriaTableModel(layers);
 
         initComponents();
+
+        if (dimension.equals(MatrixDimensionKey.COLUMNS)) {
+            applyToColumnsRb.setSelected(true);
+        } else if (dimension.equals(MatrixDimensionKey.ROWS)) {
+            applyToRowsRb.setSelected(true);
+        }
 
         table.setModel(criteriaModel);
 

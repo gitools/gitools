@@ -75,7 +75,9 @@ public class Actions {
 
     public static final BaseAction filterByLabel = new FilterByAnnotationsAction();
 
-    public static final BaseAction filterByValue = new FilterByValueAction();
+    public static final BaseAction filterRowsByValue = new FilterByValueAction(ROWS);
+
+    public static final BaseAction filterColumnsByValue = new FilterByValueAction(COLUMNS);
 
     public static final BaseAction showAllRowsAction = new ShowAllAction(ROWS);
 
