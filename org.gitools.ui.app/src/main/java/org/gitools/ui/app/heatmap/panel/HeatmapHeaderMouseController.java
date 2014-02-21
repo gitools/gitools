@@ -169,7 +169,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int index = convertToIndex(e);
         if (isValidIndex(index)) {
             dimension.setFocus(dimension.getLabel(index));
-            //horizontal ? ip.setLastSelectedCol(index) : ip.setLastSelectedRow(index);
         }
     }
 
@@ -253,6 +252,29 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     private void updateSelectionMove(MouseEvent e, boolean dragging) {
+
+        // Scroll heatmap if needed
+        Point point = e.getPoint();
+        if (horizontal) {
+            int left = (int) point.getX() - viewPort.getWidth();
+            if (left > 0) {
+                panel.setScrollColumnValue(panel.getScrollValue().x + left);
+            } else {
+                if (point.getX() < 0) {
+                    panel.setScrollColumnValue(panel.getScrollValue().x + (int) point.getX());
+                }
+            }
+        } else {
+            int down = (int) point.getY() - viewPort.getHeight();
+            if (down > 0) {
+                panel.setScrollRowValue(panel.getScrollValue().y + down);
+            } else {
+                if (point.getY() < 0) {
+                    panel.setScrollRowValue(panel.getScrollValue().y + (int) point.getY());
+                }
+            }
+        }
+
         int index = convertToIndex(e);
 
         if (!isValidIndex(index)) {
@@ -268,31 +290,17 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
             if (indexDiff > 0) {
                 selectionHasMoved = true;
-                if (horizontal) {
-                    for (int i = 0; i < indexDiff; i++) {
-                        dimension.move(Direction.LEFT, dimension.getSelected());
-                        ip.shiftSelStart(dimension, -1);
-                    }
-                } else {
-                    for (int i = 0; i < indexDiff; i++) {
-                        dimension.move(Direction.UP, dimension.getSelected());
-                        ip.shiftSelStart(dimension, -1);
-                    }
+                for (int i = 0; i < indexDiff; i++) {
+                    dimension.move(Direction.LEFT, dimension.getSelected());
+                    ip.shiftSelStart(dimension, -1);
                 }
             }
 
             if (indexDiff < 0) {
                 selectionHasMoved = true;
-                if (horizontal) {
-                    for (int i = 0; i > indexDiff; i--) {
-                        dimension.move(Direction.RIGHT, dimension.getSelected());
-                        ip.shiftSelStart(dimension, 1);
-                    }
-                } else {
-                    for (int i = 0; i > indexDiff; i--) {
-                        dimension.move(Direction.DOWN, dimension.getSelected());
-                        ip.shiftSelStart(dimension, 1);
-                    }
+                for (int i = 0; i > indexDiff; i--) {
+                    dimension.move(Direction.RIGHT, dimension.getSelected());
+                    ip.shiftSelStart(dimension, 1);
                 }
             }
         }
@@ -302,9 +310,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private void updateSelection(MouseEvent e, boolean dragging) {
         int index = convertToIndex(e);
-        int selStart = 0;
-        int selEnd;
-
 
         if (!isValidIndex(index)) {
             return;
@@ -327,30 +332,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             ip.addToSelected(lastSelected, index, dimension);
             ip.setLastSelected(index, horizontal);
 
-        } else if (dragging) {
-
-            /*TODO
-            Set<String> prevSel = dimension.getSelected();
-            selStart = prevSel[0];
-            selEnd = prevSel[prevSel.size() - 1];
-
-            int start = selStart <= selEnd ? selStart : selEnd;
-            int end = selStart <= selEnd ? selEnd : selStart;
-
-            int size = end - start + 1;
-
-            int[] sel = new int[size];
-            for (int i = start; i <= end; i++)
-                sel[i - start] = i;
-
-            if (horizontal) {
-                dimension.setSelected(sel);
-            } else {
-                dimension.setSelected(sel);
-            }*/
-
         }
-
     }
 
     private int getIndexCount() {

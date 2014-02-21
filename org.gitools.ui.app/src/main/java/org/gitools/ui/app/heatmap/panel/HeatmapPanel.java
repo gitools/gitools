@@ -161,10 +161,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         int scrollWidth = totalSize.width - visibleSize.width;
         int scrollHeight = totalSize.height - visibleSize.height;
 
-        // Check if column/row focus is out of visible area
-        checkFocusOutOfVisibleArea(heatmap.getColumns(), colSB, visibleSize.width);
-        checkFocusOutOfVisibleArea(heatmap.getRows(), rowSB, visibleSize.height);
-
         // Update columns scroll bar
         colSB.setValueIsAdjusting(true);
         colSB.setMinimum(0);
@@ -184,6 +180,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         }
         rowSB.setVisibleAmount(visibleSize.height);
         rowSB.setValueIsAdjusting(false);
+    }
+
+    public void makeColumnFocusVisible() {
+        checkFocusOutOfVisibleArea(heatmap.getColumns(), colSB, bodyVP.getSize().width);
+    }
+
+    public void makeRowFocusVisible() {
+        checkFocusOutOfVisibleArea(heatmap.getRows(), rowSB, bodyVP.getSize().height);
     }
 
     private void checkFocusOutOfVisibleArea(HeatmapDimension dimension, JScrollBar scrollBar, int visibleLength) {

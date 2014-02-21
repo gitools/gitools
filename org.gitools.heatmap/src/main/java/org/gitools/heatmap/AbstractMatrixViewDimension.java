@@ -141,8 +141,20 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
         if (direction.getShift() == 1) {
             Collections.sort(indices, Collections.reverseOrder());
+
+            // We cannot move the last position to the right
+            if (indices.get(0) == size() - 1) {
+                return;
+            }
+
         } else {
+
             Collections.sort(indices);
+
+            // We cannot move the first position to the left
+            if (indices.get(0) == 0) {
+                return;
+            }
         }
 
         for (int idx : indices) {

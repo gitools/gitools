@@ -167,7 +167,7 @@ public class HeatmapEditor extends AbstractEditor {
             }
         });
 
-        searchPanel = new HeatmapSearchPanel(heatmap);
+        searchPanel = new HeatmapSearchPanel(heatmap, heatmapPanel);
         searchPanel.setVisible(false);
 
         JSplitPane splitPane = new WebSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, heatmapPanel);
