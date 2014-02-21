@@ -36,11 +36,11 @@ public class MatrixViewValueFilter {
 
     public static void filter(IMatrixView matrixView, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
 
-        if (applyToRows) {
+        if (applyToColumns) {
             filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria);
         }
 
-        if (applyToColumns) {
+        if (applyToRows) {
             filter(matrixView, matrixView.getRows(), matrixView.getColumns(), criteriaList, allCriteria, allElements, invertCriteria);
         }
     }
