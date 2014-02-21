@@ -152,6 +152,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
+                        editor.setName(analysis.getTitle() + "-data");
                         Application.get().setStatusText("New heatmap created.");
                     }
                 });
@@ -172,6 +173,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from results ...", 1);
                 final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
+                editor.setName(analysis.getTitle() + "-results");
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
