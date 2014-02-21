@@ -299,7 +299,11 @@ public class HeatmapEditor extends AbstractEditor {
         timer.purge();
 
         heatmap.detach();
-        heatmap.getData().unload();
+
+        if (heatmap.getData().getLocator() != null) {
+            heatmap.getData().unload();
+        }
+
         heatmap = null;
 
         System.gc();
