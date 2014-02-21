@@ -19,17 +19,20 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.format;
+package org.gitools.matrix.modulemap.format;
 
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.matrix.format.AbstractMatrixFormat;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.utils.readers.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -39,23 +42,19 @@ import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
-public class GmtMatrixFormat extends AbstractMatrixFormat {
+public class GmtModuleMapFormat extends AbstractModuleMapFormat {
 
     public static final String EXTENSION = "gmt";
 
-    public GmtMatrixFormat() {
+    public GmtModuleMapFormat() {
         super(EXTENSION);
     }
 
     @Override
-    protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
+    protected IModuleMap readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         progressMonitor.begin("Reading names ...", 1);
-
-        MatrixLayer<Double> layer = new MatrixLayer<>("value", Double.class);
-        HashMatrix matrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layer), ROWS, COLUMNS);
-
-
+        HashModuleMap moduleMap = new HashModuleMap();
         try {
 
             InputStream in = resourceLocator.openInputStream(progressMonitor);
@@ -69,49 +68,42 @@ public class GmtMatrixFormat extends AbstractMatrixFormat {
                     throw new PersistenceException("Invalid row, at least 2 columns required (name and description) at line " + parser.getLineNumber());
                 }
 
-                String columnId = fields[0];
+                String module = fields[0];
 
                 //TODO Use fields[1] as layer description
 
                 for (int i = 2; i < fields.length; i++) {
-                    String rowId = fields[i];
-                    matrix.set(layer, 1.0, rowId, columnId);
+                    String item = fields[i];
+                    moduleMap.addMapping(module, item);
                 }
             }
             in.close();
-
-            progressMonitor.info(matrix.getColumns().size() + " columns and " + matrix.getRows().size() + " rows");
-
+            progressMonitor.info(moduleMap.getModules().size() + " modules");
             progressMonitor.end();
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
 
-        return matrix;
+        return moduleMap;
     }
 
     @Override
-    protected void writeResource(IResourceLocator resourceLocator, IMatrix matrix, IProgressMonitor progressMonitor) throws PersistenceException {
-        progressMonitor.begin("Saving matrix...", matrix.getColumns().size());
+    protected void writeResource(IResourceLocator resourceLocator, IModuleMap moduleMap, IProgressMonitor progressMonitor) throws PersistenceException {
+        progressMonitor.begin("Saving module maps...", moduleMap.getModules().size());
 
         try {
 
             OutputStream out = resourceLocator.openOutputStream();
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
-            IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();
-            IMatrixDimension rows = matrix.getRows();
-            IMatrixDimension columns = matrix.getColumns();
-
-            for (String column : columns) {
-                pw.append(column);
+            for (String module : moduleMap.getModules()) {
+                pw.append(module);
                 pw.append('\t'); // description, but currently not used
-                for (String row : rows) {
-                    if (matrix.get(layer, row, column) == 1.0) {
-                        pw.append('\t').append(row);
-                    }
+                for (String item : moduleMap.getMappingItems(module)) {
+                    pw.append('\t').append(item);
                 }
                 pw.println();
+                progressMonitor.worked(1);
             }
 
             out.close();

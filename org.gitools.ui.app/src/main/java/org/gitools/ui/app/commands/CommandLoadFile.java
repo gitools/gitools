@@ -32,18 +32,20 @@ import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.decorator.impl.BinaryDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
-import org.gitools.persistence.PersistenceManager;
+import org.gitools.matrix.modulemap.ModuleMapUtils;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
@@ -191,6 +193,10 @@ public class CommandLoadFile extends AbstractCommand {
             ((Heatmap) resource).init();
             registerAssignedColors(((Heatmap) resource));
             return new HeatmapEditor((Heatmap) resource);
+        } else if (IModuleMap.class.isAssignableFrom(resource.getClass())) {
+            Heatmap heatmap = new Heatmap(ModuleMapUtils.convertToMatrix((IModuleMap) resource));
+            heatmap.getLayers().iterator().next().setDecorator(new BinaryDecorator());
+            return new HeatmapEditor(heatmap);
         }
 
         return createHeatmapEditor((IMatrix) resource, progressMonitor);

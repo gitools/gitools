@@ -23,18 +23,17 @@ package org.gitools.matrix;
 
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.format.*;
-import org.gitools.matrix.modulemap.format.IxmModuleMapFormat;
-import org.gitools.matrix.modulemap.format.TcmModuleMapFormat;
+import org.gitools.matrix.modulemap.format.*;
 
 @Deprecated
 public class FileFormats {
 
     // Data
-    public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", GmxMatrixFormat.EXTENSION);
+    public static final FileFormat GENE_MATRIX = new FileFormat("Gene Matrix", GmxModuleMapFormat.EXTENSION);
 
-    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat("Gene Matrix Transposed", GmtMatrixFormat.EXTENSION);
+    public static final FileFormat GENE_MATRIX_TRANSPOSED = new FileFormat("Gene Matrix Transposed", GmtModuleMapFormat.EXTENSION);
 
-    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat("Binary data matrix", BdmMatrixFormat.EXTENSION);
+    public static final FileFormat DOUBLE_BINARY_MATRIX = new FileFormat("Binary data matrix", BdmModuleMapFormat.EXTENSION);
 
     public static final FileFormat DOUBLE_MATRIX = new FileFormat("Continuous data matrix", CdmMatrixFormat.EXTENSION);
 

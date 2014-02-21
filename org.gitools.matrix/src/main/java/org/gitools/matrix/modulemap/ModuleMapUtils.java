@@ -21,11 +21,21 @@
  */
 package org.gitools.matrix.modulemap;
 
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class ModuleMapUtils {
 
@@ -82,6 +92,25 @@ public class ModuleMapUtils {
         }
 
         return dstModuleMap;
+    }
+
+    public static IMatrix convertToMatrix(IModuleMap moduleMap) {
+
+        MatrixLayer<Double> layer = new MatrixLayer<>("value", Double.class);
+        HashMatrix matrix = new HashMatrix(
+                new MatrixLayers<MatrixLayer>(layer),
+                new HashMatrixDimension(ROWS, moduleMap.getItems()),
+                new HashMatrixDimension(COLUMNS, moduleMap.getModules())
+        );
+
+        for (String module : moduleMap.getModules()) {
+            for (String item : moduleMap.getMappingItems(module)) {
+                matrix.set(layer, 1.0, item, module);
+            }
+        }
+
+        return matrix;
+
     }
 
 

@@ -30,8 +30,8 @@ import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.datasources.kegg.modules.EnsemblKeggModulesImporter;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.matrix.format.GmtMatrixFormat;
-import org.gitools.matrix.format.GmxMatrixFormat;
+import org.gitools.matrix.modulemap.format.GmtModuleMapFormat;
+import org.gitools.matrix.modulemap.format.GmxModuleMapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.Application;
@@ -81,7 +81,7 @@ public abstract class AbstractImportModulesAction extends BaseAction {
                         String extension = wz.getSaveFilePage().getFormat().getExtension();
                         File file = wz.getSaveFilePage().getPathAsFile();
                         IResourceLocator resourceLocator = new UrlResourceLocator(file);
-                        if (GmxMatrixFormat.EXTENSION.equals(extension) || GmtMatrixFormat.EXTENSION.equals(extension)) {
+                        if (GmxModuleMapFormat.EXTENSION.equals(extension) || GmtModuleMapFormat.EXTENSION.equals(extension)) {
 
                             IMatrix mat = MatrixUtils.moduleMapToMatrix(mmap);
                             IResourceFormat format = ApplicationContext.getPersistenceManager().getFormat(extension, mat.getClass());

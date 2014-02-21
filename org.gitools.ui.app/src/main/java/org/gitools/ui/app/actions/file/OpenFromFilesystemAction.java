@@ -73,7 +73,10 @@ public class OpenFromFilesystemAction extends BaseAction {
             FileFormats.DOUBLE_BINARY_MATRIX,
             FileFormats.GENE_CLUSTER_TEXT,
             FileFormats.GENE_MATRIX,
-            FileFormats.GENE_MATRIX_TRANSPOSED
+            FileFormats.GENE_MATRIX_TRANSPOSED,
+            FileFormats.DOUBLE_BINARY_MATRIX,
+            FileFormats.MODULES_INDEXED_MAP,
+            FileFormats.MODULES_2C_MAP
     };
 
     public OpenFromFilesystemAction() {
