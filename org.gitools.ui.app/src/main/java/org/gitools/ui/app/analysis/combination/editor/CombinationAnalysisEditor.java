@@ -31,6 +31,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
+import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -88,7 +89,21 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
             newDataHeatmap();
         } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
+        } else if ("ViewModuleMap".equals(name)) {
+            newGroupsMap();
         }
+    }
+
+    private void newGroupsMap() {
+
+        final CombinationAnalysis analysis = getModel();
+
+        if (analysis.getGroupsMap() == null) {
+            Application.get().setStatusText("Analysis doesn't contain a groups file.");
+            return;
+        }
+
+        JobThread.execute(Application.get(), new CommandLoadFile(analysis.getGroupsMap()));
     }
 
     private void newDataHeatmap() {

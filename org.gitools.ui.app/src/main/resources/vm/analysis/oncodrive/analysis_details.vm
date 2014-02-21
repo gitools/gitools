@@ -74,9 +74,9 @@
 				<tr><td class="name"><div>Maximum size</div></td><td>$moduleMaxSize</td></tr>
 			</table>
 
-			<!-- div class="button_bar">
+			<div class="button_bar">
 				<a rel="action" href="ViewModuleMap"><span class="button">&nbsp;&nbsp;View&nbsp;&nbsp;</span></a>
-			</div -->
+			</div>
 		</div>
 	</div>
 

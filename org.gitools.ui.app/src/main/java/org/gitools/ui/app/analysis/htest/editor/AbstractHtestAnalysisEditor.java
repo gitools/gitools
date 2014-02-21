@@ -26,18 +26,16 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.htest.HtestAnalysis;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.BinaryDecorator;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
+import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -118,7 +116,21 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
             newDataHeatmap();
         } else if ("NewResultsHeatmap".equals(name)) {
             newResultsHeatmap();
+        } else if ("ViewModuleMap".equals(name)) {
+            newModuleMap();
         }
+    }
+
+    private void newModuleMap() {
+
+        final T analysis = getModel();
+
+        if (analysis.getModuleMap() == null) {
+            Application.get().setStatusText("Analysis doesn't contain a groups file.");
+            return;
+        }
+
+        JobThread.execute(Application.get(), new CommandLoadFile(analysis.getModuleMap()));
     }
 
     protected void newDataHeatmap() {

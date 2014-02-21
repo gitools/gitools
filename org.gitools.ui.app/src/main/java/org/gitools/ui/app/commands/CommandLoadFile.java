@@ -74,10 +74,20 @@ import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
 public class CommandLoadFile extends AbstractCommand {
 
-    private final String file;
+    //private final String file;
+    private IResourceLocator locator;
     private IResourceFormat format = null;
     private final String rowsAnnotations;
     private final String columnsAnnotations;
+
+    public CommandLoadFile(ResourceReference reference) {
+        this(reference.getLocator(), reference.getResourceFormat());
+    }
+
+    public CommandLoadFile(IResourceLocator locator, IResourceFormat resourceFormat) {
+        this(locator, null, null);
+        this.format = resourceFormat;
+    }
 
     public CommandLoadFile(String file) {
         this(file, null, null);
@@ -89,7 +99,11 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     public CommandLoadFile(String file, String rowsAnnotations, String columnsAnnotations) {
-        this.file = file;
+        this(new GsResourceLocator(new UrlResourceLocator(file)), rowsAnnotations, columnsAnnotations);
+    }
+
+    public CommandLoadFile(IResourceLocator locator, String rowsAnnotations, String columnsAnnotations) {
+        this.locator = locator;
         this.rowsAnnotations = rowsAnnotations;
         this.columnsAnnotations = columnsAnnotations;
     }
@@ -144,7 +158,7 @@ public class CommandLoadFile extends AbstractCommand {
     }
 
     protected IResourceLocator getResourceLocator() {
-        return new GsResourceLocator(new UrlResourceLocator(file));
+        return locator;
     }
 
     public boolean isConfigurable() {

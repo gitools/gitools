@@ -80,7 +80,7 @@ public class FileFormat {
         return fileName.endsWith(ext) || (allowGzExtension && fileName.endsWith(ext + ".gz")) || (allowZipExtension && fileName.endsWith(ext + ".zip"));
     }
 
-    public <R extends IResource> IResourceFormat<? extends R> getFormat(Class<R> resourceClass) {
+    public <R extends IResource> IResourceFormat<R> getFormat(Class<R> resourceClass) {
         return ApplicationContext.getPersistenceManager().getFormat(getExtension(), resourceClass);
     }
 

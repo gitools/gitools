@@ -23,7 +23,6 @@ package org.gitools.ui.app.analysis.combination.wizard;
 
 
 import org.gitools.analysis.combination.CombinationAnalysis;
-import org.gitools.analysis.combination.ConvertMatrixToModuleMapResourceReference;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.modulemap.IModuleMap;
@@ -93,9 +92,9 @@ public class CombinationAnalysisWizard extends AnalysisWizard<CombinationAnalysi
         analysis.setTransposeData(combinationParamsPage.isTransposeEnabled());
         File columnSetsFile = columnSetsPage.getFile();
         String columnsPath = columnSetsFile != null ? columnSetsFile.getAbsolutePath() : null;
-        IResourceFormat columnsFormat = columnSetsFile != null ? columnSetsPage.getFileFormat().getFormat(IModuleMap.class) : null;
+        IResourceFormat<IModuleMap> columnsFormat = columnSetsFile != null ? columnSetsPage.getFileFormat().getFormat(IModuleMap.class) : null;
         if (columnsPath != null) {
-            ResourceReference<IModuleMap> columnsMap = new ConvertMatrixToModuleMapResourceReference(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
+            ResourceReference<IModuleMap> columnsMap = new ResourceReference<>(new UrlResourceLocator(new File(columnsPath)), columnsFormat);
             analysis.setGroupsMap(columnsMap);
         }
         return analysis;
