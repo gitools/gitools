@@ -69,9 +69,13 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         this.layersIdToIndex = null;
 
         for (IMatrixLayer layer : matrixLayers) {
-            Decorator defaultDecorator = new LinearDecorator();
-            this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
+            initLayer(layer);
         }
+    }
+
+    public void initLayer(IMatrixLayer layer) {
+        Decorator defaultDecorator = new LinearDecorator();
+        this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
     }
 
     public void init(IMatrix matrix) {

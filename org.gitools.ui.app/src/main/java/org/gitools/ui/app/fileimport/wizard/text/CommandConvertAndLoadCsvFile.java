@@ -89,4 +89,5 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
             IOUtils.closeQuietly(reader);
         }
     }
+
 }

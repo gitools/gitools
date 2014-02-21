@@ -19,23 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.actions.file;
+package org.gitools.ui.app.actions.edit;
 
-import com.google.common.collect.ObjectArrays;
-import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
-import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
-import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
-import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
-import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceFormat;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.ui.app.IconNames;
+import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
 import org.gitools.ui.app.settings.Settings;
@@ -43,28 +42,16 @@ import org.gitools.ui.app.utils.FileChoose;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobThread;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
-public class OpenFromFilesystemAction extends BaseAction {
-
-    public static FileFormat[] FORMAT_ANALYSIS = new FileFormat[]{
-            EnrichmentAnalysisFormat.FILE_FORMAT,
-            OncodriveAnalysisFormat.FILE_FORMAT,
-            CorrelationAnalysisFormat.FILE_FORMAT,
-            CombinationAnalysisFormat.FILE_FORMAT,
-            OverlappingAnalysisFormat.FILE_FORMAT,
-            GroupComparisonAnalysisFormat.FILE_FORMAT
-    };
+public class AddNewLayersFromFileAction extends HeatmapAction {
 
     public static FileFormat[] FORMAT_HEATMAPS = new FileFormat[]{
             HeatmapFormat.FILE_FORMAT,
@@ -87,10 +74,8 @@ public class OpenFromFilesystemAction extends BaseAction {
         Collections.addAll(filters,
                 new FileFormatFilter("All known formats", FileFormat.concat(
                         ImportManager.get().getFileFormats(),
-                        ObjectArrays.concat(FORMAT_HEATMAPS, FORMAT_ANALYSIS, FileFormat.class)
+                        FORMAT_HEATMAPS
                 )),
-                new FileFormatFilter("Analysis", FORMAT_ANALYSIS),
-
                 new FileFormatFilter(HeatmapFormat.FILE_FORMAT),
                 new FileFormatFilter("All files"),
                 new FileFormatFilter(FileFormats.MULTIVALUE_DATA_MATRIX),
@@ -98,15 +83,7 @@ public class OpenFromFilesystemAction extends BaseAction {
                 new FileFormatFilter(FileFormats.GENE_CLUSTER_TEXT),
                 new FileFormatFilter(FileFormats.DOUBLE_BINARY_MATRIX),
                 new FileFormatFilter(FileFormats.GENE_MATRIX),
-                new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED),
-
-                // Analysis
-                new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(CombinationAnalysisFormat.FILE_FORMAT)
+                new FileFormatFilter(FileFormats.GENE_MATRIX_TRANSPOSED)
         );
 
         filters.addAll(ImportManager.get().getFileFormatFilters());
@@ -114,19 +91,17 @@ public class OpenFromFilesystemAction extends BaseAction {
         FILE_FORMAT_FILTERS = filters.toArray(new FileFormatFilter[filters.size()]);
     }
 
-    public OpenFromFilesystemAction() {
-        super("Open...");
-        setDesc("Open a heatmap or an analysis from the filesystem");
-        setSmallIconFromResource(IconNames.openMatrix16);
-        setLargeIconFromResource(IconNames.openMatrix24);
-        setMnemonic(KeyEvent.VK_O);
-        setDefaultEnabled(true);
-        setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+    public AddNewLayersFromFileAction() {
+        super("New layer...");
+    }
+
+    @Override
+    public boolean isEnabledByModel(Object model) {
+        return (model instanceof Heatmap) && (((Heatmap)model).getContents() instanceof HashMatrix);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         final FileChoose fileChoose = FileChooserUtils.selectFile("Select file", FileChooserUtils.MODE_OPEN, FILE_FORMAT_FILTERS);
 
         if (fileChoose == null) {
@@ -146,8 +121,40 @@ public class OpenFromFilesystemAction extends BaseAction {
             }
         }
 
-        CommandLoadFile loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
+        CommandLoadFile loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format) {
+            @Override
+            public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+
+                // A IMatrix
+                if (IMatrix.class.isAssignableFrom(resource.getClass())) {
+
+                    HashMatrix mainData = (HashMatrix) getHeatmap().getContents();
+                    IMatrix newData = (IMatrix) resource;
+
+                    for (IMatrixLayer newLayer : newData.getLayers()) {
+
+                        IMatrixLayer mainLayer = mainData.getLayers().get(newLayer.getId());
+                        if (mainLayer != null) {
+                            //TODO Support data fusion ??
+                            throw new UnsupportedOperationException("Overwrite layer data is not allowed. The layer '" + newLayer.getId() + "' already exist.");
+                        }
+
+                        mainData.addLayer(newLayer);
+                        getHeatmap().getLayers().initLayer(newLayer);
+
+                        for (String column : newData.getColumns()) {
+                            for (String row : newData.getRows()) {
+                                mainData.set(newLayer, newData.get(newLayer, row, column), row, column);
+                            }
+                        }
+                    }
+
+                    getHeatmap().getLayers().updateLayers();
+                }
+            }
+        };
         JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
     }
+
 }

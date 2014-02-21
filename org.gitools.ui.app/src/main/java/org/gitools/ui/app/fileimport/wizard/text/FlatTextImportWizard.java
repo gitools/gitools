@@ -23,7 +23,9 @@ package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.app.utils.FileFormatFilter;
@@ -49,6 +51,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     private SelectMatrixColumnsPage selectMatrixColumnsPage;
     private IProgressMonitor monitor;
     private WizardDialog wizDlg;
+    private Callback callback;
 
     public FlatTextImportWizard() {
         setTitle("Import a text file");
@@ -62,6 +65,11 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
     public void setLocator(IResourceLocator locator) {
         this.locator = locator;
+    }
+
+    @Override
+    public void setCallback(Callback callbackFunction) {
+        this.callback = callbackFunction;
     }
 
     @Override
@@ -120,7 +128,12 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
             wizDlg.setVisible(false);
             FlatTextImporter reader = page.getReader();
-            JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader);
+            JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader) {
+                @Override
+                public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+                    callback.afterLoad(resource, monitor);
+                }
+            };
             JobThread.execute(Application.get(), loadFile);
             Application.get().setStatusText("Done.");
         } else {

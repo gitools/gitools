@@ -113,12 +113,12 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
 
     }
 
-    protected void addLayer(IMatrixLayer layer) {
+    public void addLayer(IMatrixLayer layer) {
         getLayers().add(layer);
         values.put(layer.getId(), new ConcurrentHashMap());
     }
 
-    protected void removeLayer(IMatrixLayer layer) {
+    public void removeLayer(IMatrixLayer layer) {
         getLayers().remove(layer);
         values.remove(layer.getId());
     }

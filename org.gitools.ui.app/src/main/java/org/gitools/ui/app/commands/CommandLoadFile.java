@@ -72,7 +72,7 @@ import java.util.concurrent.CancellationException;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
-public class CommandLoadFile extends AbstractCommand {
+public class CommandLoadFile extends AbstractCommand implements ImportWizard.Callback {
 
     //private final String file;
     private IResourceLocator locator;
@@ -120,7 +120,6 @@ public class CommandLoadFile extends AbstractCommand {
             return;
         }
 
-        IResourceLocator resourceLocator = getResourceLocator();
         final IResource resource;
 
         try {
@@ -137,20 +136,22 @@ public class CommandLoadFile extends AbstractCommand {
             return;
         }
 
+        afterLoad(resource, monitor);
+    }
+
+    public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+
         monitor.begin("Initializing editor ...", 1);
         AbstractEditor editor = createEditor(resource, monitor);
-        editor.setName(resourceLocator.getBaseName());
+        editor.setName(getResourceLocator().getBaseName());
 
         Application.get().getEditorsPanel().addEditor(editor);
         Application.get().refresh();
 
         // Force a GC to release free memory
         System.gc();
-
         monitor.end();
-
         setExitStatus(0);
-        return;
     }
 
     protected IResource loadResource(IProgressMonitor monitor) {
@@ -171,7 +172,10 @@ public class CommandLoadFile extends AbstractCommand {
         locator = getPersistenceManager().applyCache( locator );
         locator = getPersistenceManager().applyFilters( locator );
 
-        return ImportManager.get().getWizard(locator);
+        ImportWizard wizard = ImportManager.get().getWizard(locator);
+        wizard.setCallback(this);
+
+        return wizard;
     }
 
     private IResourceFormat getFormat() {

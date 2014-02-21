@@ -22,9 +22,11 @@
 package org.gitools.ui.app.fileimport.wizard.excel;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
@@ -45,6 +47,7 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
     private IResourceLocator locator;
     private SelectColumnsPage selectColumnsPage;
     private ExcelReader reader;
+    private Callback callback;
 
     public ExcelImportWizard() {
         setTitle("Import an Excel matrix");
@@ -62,6 +65,11 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
     }
 
     @Override
+    public void setCallback(Callback callbackFunction) {
+        this.callback = callbackFunction;
+    }
+
+    @Override
     public void addPages() {
         selectColumnsPage = new SelectColumnsPage();
         selectColumnsPage.setTitle("Select rows, columns and values headers");
@@ -76,7 +84,12 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
         int columns = selectColumnsPage.getSelectedColumn();
         int rows = selectColumnsPage.getSelectedRow();
         List<Integer> values = selectColumnsPage.getSelectedValues();
-        JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader);
+        JobRunnable loadFile = new CommandConvertAndLoadExcelFile(columns, rows, values, reader) {
+            @Override
+            public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+                callback.afterLoad(resource, monitor);
+            }
+        };
         JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
     }

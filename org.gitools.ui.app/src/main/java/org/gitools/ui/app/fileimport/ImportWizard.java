@@ -21,14 +21,23 @@
  */
 package org.gitools.ui.app.fileimport;
 
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.app.utils.FileFormatFilter;
 
 public interface ImportWizard extends IWizard, JobRunnable {
 
+    public interface Callback {
+        void afterLoad(IResource resource, IProgressMonitor monitor) throws Command.CommandException;
+    }
+
     FileFormatFilter getFileFormatFilter();
 
     void setLocator(IResourceLocator locator);
+
+    void setCallback(Callback callbackFunction);
 }

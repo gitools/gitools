@@ -23,10 +23,7 @@ package org.gitools.ui.app.actions;
 
 import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;
-import org.gitools.ui.app.actions.edit.AddHeaderAction;
-import org.gitools.ui.app.actions.edit.SelectAllAction;
-import org.gitools.ui.app.actions.edit.SelectLabelHeaderAction;
-import org.gitools.ui.app.actions.edit.UnselectAllAction;
+import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.actions.file.*;
 import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
 import org.gitools.ui.app.imageviewer.HeatmapCreateImageAction;
@@ -124,6 +121,8 @@ public class Actions {
     public static final BaseAction snapshotAction = new HeatmapCreateImageAction();
 
     public static final BaseAction searchRowsAction = new HeatmapSearchAction(ROWS);
+
+    public static final BaseAction addNewLayers = new AddNewLayersFromFileAction();
 
 
     private Actions() {
