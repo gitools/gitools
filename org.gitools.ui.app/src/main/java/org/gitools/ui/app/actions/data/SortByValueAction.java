@@ -25,6 +25,7 @@ import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.MatrixViewSorter;
@@ -42,9 +43,11 @@ import java.util.List;
 public class SortByValueAction extends HeatmapAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
+    private MatrixDimensionKey dimension;
 
-    public SortByValueAction() {
+    public SortByValueAction(MatrixDimensionKey dimension) {
         super("<html><i>Sort</i> by values");
+        this.dimension = dimension;
 
         setDesc("Sort by heatmap values ...");
     }
@@ -68,9 +71,10 @@ public class SortByValueAction extends HeatmapAction {
         final ValueSortDialog dlg = new ValueSortDialog(
                 Application.get(),
                 layers,
+                dimension,
                 aggregators,
                 SortDirection.values(),
-                layers.iterator().next()
+                getHeatmap().getLayers().getTopLayer()
         );
 
         dlg.setVisible(true);

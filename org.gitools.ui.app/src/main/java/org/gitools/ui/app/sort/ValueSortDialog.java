@@ -24,6 +24,7 @@ package org.gitools.ui.app.sort;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 
 import javax.swing.*;
@@ -83,7 +84,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
     /**
      * Creates new form FilterDialog
      */
-    public ValueSortDialog(java.awt.Frame parent, IMatrixLayers<IMatrixLayer> layers, IAggregator[] aggregators, SortDirection[] directions, IMatrixLayer... initialCriteriaList) {
+    public ValueSortDialog(Frame parent, IMatrixLayers<IMatrixLayer> layers, MatrixDimensionKey dimension, IAggregator[] aggregators, SortDirection[] directions, IMatrixLayer... initialCriteriaList) {
 
         super(parent, true);
 
@@ -93,6 +94,12 @@ public class ValueSortDialog extends javax.swing.JDialog {
         this.criteriaModel = new ValueSortCriteriaTableModel(layers, initialCriteriaList);
 
         initComponents();
+
+        if (dimension.equals(MatrixDimensionKey.ROWS)) {
+            applyToRowsRb.setSelected(true);
+        } else if (dimension.equals(MatrixDimensionKey.COLUMNS)) {
+            applyToColumnsRb.setSelected(true);
+        }
 
         table.setModel(criteriaModel);
         criteriaModel.addTableModelListener(new TableModelListener() {
