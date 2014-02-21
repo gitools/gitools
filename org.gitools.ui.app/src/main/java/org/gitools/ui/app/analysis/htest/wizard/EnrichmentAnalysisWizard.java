@@ -72,6 +72,7 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
+        analysisDetailsPage.setAnalysisTitle("Enrichment");
         addPage(analysisDetailsPage);
     }
 
