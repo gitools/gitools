@@ -106,7 +106,7 @@ public class HierarchyBuilder {
                     ClusterPair newLinkage = new ClusterPair();
                     newLinkage.setlCluster(iClust);
                     newLinkage.setrCluster(newCluster);
-                    Collection<Double> distanceValues = new ArrayList<>();
+                    List<Double> distanceValues = new ArrayList<>();
                     if (link1 != null) {
                         distanceValues.add(link1.getLinkageDistance());
                         distances.remove(link1);

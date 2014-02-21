@@ -37,9 +37,9 @@
 
 package org.gitools.analysis.clustering.hierarchical.strategy;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface LinkageStrategy {
 
-    public Double calculateDistance(Collection<Double> distances);
+    public Double calculateDistance(List<Double> distances);
 }

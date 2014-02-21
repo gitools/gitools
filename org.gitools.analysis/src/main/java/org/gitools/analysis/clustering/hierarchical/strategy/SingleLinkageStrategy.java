@@ -37,12 +37,12 @@
 
 package org.gitools.analysis.clustering.hierarchical.strategy;
 
-import java.util.Collection;
+import java.util.List;
 
 public class SingleLinkageStrategy implements LinkageStrategy {
 
     @Override
-    public Double calculateDistance(Collection<Double> distances) {
+    public Double calculateDistance(List<Double> distances) {
         double min = Double.NaN;
 
         for (Double dist : distances) {

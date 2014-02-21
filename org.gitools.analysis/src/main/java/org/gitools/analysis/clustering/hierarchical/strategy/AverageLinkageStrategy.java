@@ -37,12 +37,12 @@
 
 package org.gitools.analysis.clustering.hierarchical.strategy;
 
-import java.util.Collection;
+import java.util.List;
 
 public class AverageLinkageStrategy implements LinkageStrategy {
 
     @Override
-    public Double calculateDistance(Collection<Double> distances) {
+    public Double calculateDistance(List<Double> distances) {
         double sum = 0;
         double result;
 

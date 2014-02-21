@@ -24,10 +24,7 @@ package org.gitools.ui.app.analysis.clustering;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.distance.EuclideanDistance;
 import org.gitools.analysis.clustering.distance.ManhattanDistance;
-import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
-import org.gitools.analysis.clustering.hierarchical.strategy.CompleteLinkageStrategy;
-import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
-import org.gitools.analysis.clustering.hierarchical.strategy.SingleLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.*;
 import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -87,7 +84,7 @@ public class HCLParamsPage extends AbstractWizardPage {
         distAlgCombo = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
 
-        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Average", "Single (minimum)", "Complete (maximum)" }));
+        linkTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Average", "Complete (maximum)", "Single (minimum)" }));
 
         jLabel1.setText("Link type: ");
         jLabel1.setToolTipText("Sets the method used to measure the distance between two clusters.");
