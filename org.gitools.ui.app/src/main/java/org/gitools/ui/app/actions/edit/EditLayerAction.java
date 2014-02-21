@@ -72,10 +72,10 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
                 "Layer '" + layer.getName() + "' settings",
                 layer.getDescription(),
                 IconNames.logoNoText,
+                detailsSection,
                 colorScaleSection,
                 formatSection,
-                sortSection,
-                detailsSection
+                sortSection
         );
 
         SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName()) {

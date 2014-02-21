@@ -43,7 +43,7 @@ import org.gitools.analysis.clustering.Clusters;
 
 import java.util.*;
 
-public class Cluster implements Clusters {
+public class Cluster implements Clusters, Comparable<Cluster> {
 
     private String name;
 
@@ -173,5 +173,20 @@ public class Cluster implements Clusters {
     @Override
     public Map<String, Set<String>> getClustersMap() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int compareTo(Cluster o) {
+
+        int result;
+        if (o == null || o.getDistance() == null) {
+            result = -1;
+        } else if (getDistance() == null) {
+            result = 1;
+        } else {
+            result = getDistance().compareTo(o.getDistance());
+        }
+
+        return result;
     }
 }

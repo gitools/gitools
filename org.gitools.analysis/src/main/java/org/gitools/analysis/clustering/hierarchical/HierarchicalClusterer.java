@@ -22,6 +22,7 @@
 package org.gitools.analysis.clustering.hierarchical;
 
 import com.google.common.base.Joiner;
+import static com.google.common.collect.Sets.newHashSet;
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
@@ -30,12 +31,16 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.SortDirection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentSkipListSet;
-
-import static com.google.common.collect.Sets.newHashSet;
 
 public class HierarchicalClusterer {
 
@@ -82,39 +87,46 @@ public class HierarchicalClusterer {
             }
         }
 
-		/* Process */
+        /* Process */
         HierarchyBuilder builder = new HierarchyBuilder(newHashSet(clusters.values()), linkages);
         builder.agglomerate(linkageStrategy, monitor, clusterDimension.size());
 
         /* Set cluster names */
         Cluster root = builder.getRootCluster();
         root.setName("");
-
-        List<Cluster> children = root.getChildren();
-
-        while (!children.isEmpty()) {
-
-            int digits = calculateDigits(children.size());
-
-            List<Cluster> nextChildren = new ArrayList<>();
-            for (int i=0; i < children.size(); i++) {
-                Cluster child = children.get(i);
-                if (child.getChildren().isEmpty()) {
-                    child.setName(Joiner.on("&").join(child.getIdentifiers()));
-                } else {
-                    child.setName(child.getParent().getName() + createLabel(i, digits));
-                }
-                nextChildren.addAll(child.getChildren());
-            }
-
-            children = nextChildren;
-        }
+        nameClusters(root.getChildren(), true);
         root.setName("root");
-
 
         return root;
     }
 
+    private void nameClusters(List<Cluster> children, boolean sortDirection) {
+
+        if (children.isEmpty()) {
+            return;
+        }
+
+        int digits = calculateDigits(children.size());
+        if (sortDirection) {
+            Collections.sort(children);
+        } else {
+            Collections.sort(children, Collections.reverseOrder());
+        }
+        boolean childSorting = sortDirection;
+        for (int i = 0; i < children.size(); i++) {
+            Cluster child = children.get(i);
+            if (child.getChildren().isEmpty()) {
+                child.setName(JOINER.join(child.getIdentifiers()));
+            } else {
+                child.setName(child.getParent().getName() + createLabel(i, digits));
+            }
+            nameClusters(child.getChildren(), childSorting);
+            childSorting = !childSorting;
+        }
+
+    }
+
+    private static Joiner JOINER = Joiner.on("&");
     private static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     private static int calculateDigits(int size) {
@@ -126,7 +138,7 @@ public class HierarchicalClusterer {
         char[] label = new char[digits];
         label[digits - 1] = ALPHABET[number % ALPHABET.length];
 
-        for (int d=1; d<digits; d++) {
+        for (int d = 1; d < digits; d++) {
             int quocient = number / (ALPHABET.length * d);
             label[digits - d - 1] = ALPHABET[quocient % ALPHABET.length];
         }
