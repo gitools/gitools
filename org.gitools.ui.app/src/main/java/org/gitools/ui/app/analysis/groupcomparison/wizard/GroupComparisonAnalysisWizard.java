@@ -158,14 +158,13 @@ public class GroupComparisonAnalysisWizard extends AnalysisWizard<GroupCompariso
         List<Property> analysisAttributes = new ArrayList<>();
         analysisAttributes.add(new Property("Grouping type", groupingPage.getGroupingType().toString()));
 
-        String title;
-        title = heatmap.getTitle() + " Group Comparison";
-        if (!heatmap.getTitle().equals("")) {
-            analysisDetailsPage.setAnalysisTitle(title);
-        }
-
+        String title = "Group Comparison";
         if (groupingPage.getSelectedGroupingType().equals(DimensionGroupEnum.Annotation)) {
-            analysisAttributes.add(new Property("Grouping pattern", groupingPage.getGroupingPattern()));
+            String nicepattern = groupingPage.getGroupingPattern().replaceAll("[\\$\\{\\}]", "");
+            analysisAttributes.add(new Property("Grouping pattern", nicepattern));
+            analysisDetailsPage.setAnalysisTitle(nicepattern + " " + title);
+        } else {
+            analysisDetailsPage.setAnalysisTitle(title);
         }
 
         int counter = 0;

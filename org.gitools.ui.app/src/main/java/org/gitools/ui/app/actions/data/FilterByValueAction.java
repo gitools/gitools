@@ -24,6 +24,7 @@ package org.gitools.ui.app.actions.data;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.matrix.filter.MatrixViewValueFilter;
 import org.gitools.matrix.filter.ValueFilterCriteria;
@@ -42,9 +43,11 @@ import java.util.List;
 public class FilterByValueAction extends HeatmapAction {
 
     private static final long serialVersionUID = -1582437709508438222L;
+    private MatrixDimensionKey dimension;
 
-    public FilterByValueAction() {
+    public FilterByValueAction(MatrixDimensionKey dimension) {
         super("<html><i>Filter</i> by values</html>");
+        this.dimension = dimension;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class FilterByValueAction extends HeatmapAction {
 
         final ValueFilterPage page = new ValueFilterPage(Application.get(),
                 layers,
+                dimension,
                 CutoffCmp.comparators,
                 initialCriteria,
                 selectedLayer);

@@ -49,12 +49,12 @@ public class ColumnsActionSet extends HeatmapDynamicActionSet {
         // Filter
         menu.addSeparator();
         menu.add(Actions.filterByLabel);
-        menu.add(Actions.filterByValue);
+        menu.add(Actions.filterColumnsByValue);
 
         // Sort
         menu.addSeparator();
         menu.add(Actions.sortByRowsAnnotation);
-        menu.add(Actions.sortByValue);
+        menu.add(Actions.sortColumnsByValue);
         menu.add(Actions.sortByMutualExclusion);
 
         // Visibility

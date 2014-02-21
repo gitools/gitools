@@ -21,11 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.ui.app.actions.analysis.ClusteringAction;
-import org.gitools.ui.app.actions.analysis.CombinationsAction;
-import org.gitools.ui.app.actions.analysis.CorrelationsAction;
-import org.gitools.ui.app.actions.analysis.GroupComparisonAction;
-import org.gitools.ui.app.actions.analysis.OverlappingsAction;
+import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
 import org.gitools.ui.app.actions.edit.SelectAllAction;
@@ -79,7 +75,9 @@ public class Actions {
 
     public static final BaseAction filterByLabel = new FilterByAnnotationsAction();
 
-    public static final BaseAction filterByValue = new FilterByValueAction();
+    public static final BaseAction filterRowsByValue = new FilterByValueAction(ROWS);
+
+    public static final BaseAction filterColumnsByValue = new FilterByValueAction(COLUMNS);
 
     public static final BaseAction showAllRowsAction = new ShowAllAction(ROWS);
 
@@ -97,7 +95,9 @@ public class Actions {
 
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
-    public static final BaseAction sortByValue = new SortByValueAction();
+    public static final BaseAction sortColumnsByValue = new SortByValueAction(COLUMNS);
+
+    public static final BaseAction sortRowsByValue = new SortByValueAction(ROWS);
 
     public static final BaseAction sortByMutualExclusion = new SortByMutualExclusionAction();
 

@@ -36,31 +36,31 @@ public class MatrixViewValueFilter {
 
     public static void filter(IMatrixView matrixView, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
 
-        if (applyToRows) {
+        if (applyToColumns) {
             filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria);
         }
 
-        if (applyToColumns) {
+        if (applyToRows) {
             filter(matrixView, matrixView.getRows(), matrixView.getColumns(), criteriaList, allCriteria, allElements, invertCriteria);
         }
     }
 
-    private static void filter(IMatrixView matrixView, IMatrixViewDimension rows, IMatrixViewDimension columns, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
+    private static void filter(IMatrixView matrixView, IMatrixViewDimension filterDimension, IMatrixViewDimension otherDimension, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
 
-        Set<String> selection = columns.getSelected();
+        Set<String> selection = otherDimension.getSelected();
         if (selection.isEmpty()) {
-            selection = Sets.newHashSet(columns);
+            selection = Sets.newHashSet(otherDimension);
         }
 
         Set<String> filterin = new HashSet<>();
 
         IMatrixPosition position = matrixView.newPosition();
-        for (String row : position.iterate(rows)) {
+        for (String filterItem : position.iterate(filterDimension)) {
 
             boolean cellsAnd = true;
             boolean cellsOr = false;
 
-            for (String column : position.iterate(rows).filter(selection)) {
+            for (String otherDimItem : position.iterate(otherDimension).filter(selection)) {
 
                 boolean critAnd = true;
                 boolean critOr = false;
@@ -82,11 +82,11 @@ public class MatrixViewValueFilter {
             }
 
             if (cellsFilterIn) {
-                filterin.add(row);
+                filterin.add(filterItem);
             }
         }
 
-        rows.show(Predicates.in(filterin));
+        filterDimension.show(Predicates.in(filterin));
     }
 
 }
