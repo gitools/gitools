@@ -171,7 +171,7 @@ public class ValueSortDialog extends javax.swing.JDialog {
 
         table.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{
 
-        }, new String[]{"Attribute", "Condition", "Value"}) {
+        }, new String[]{"Value Layer", "Condition", "Value"}) {
 
             final Class[] types = new Class[]{java.lang.String.class, java.lang.Object.class, java.lang.Double.class};
 
