@@ -99,8 +99,10 @@ public class ActionSetUtils {
         JLabel label = new JLabel(a.getName());
         label.setFont(label.getFont().deriveFont(10f));
         label.setForeground(Color.gray);
-        label.setHorizontalAlignment(SwingConstants.LEFT);
-
+        label.setHorizontalAlignment(SwingConstants.RIGHT);
+        label.setHorizontalTextPosition(SwingConstants.RIGHT);
+        label.setBorder(BorderFactory.createEmptyBorder(5,0,0,10));
+        label.setSize(new Dimension(125, 14));
         return label;
     }
 
