@@ -37,7 +37,10 @@ import org.gitools.ui.platform.os.SystemInfo;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
+import org.jdesktop.swingx.painter.MattePainter;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,6 +66,7 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+        UIManager.put("TaskPaneContainer.backgroundPainter", new MattePainter(Color.WHITE));
 
         // Force silence lobobrowser loggers
         try {
