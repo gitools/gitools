@@ -321,74 +321,7 @@ public class HeatmapEditor extends AbstractEditor {
     }
 
     void mouseMoved(int row, int col, MouseEvent e) {
-        /*TODO
-        if (lastMouseRow == row && lastMouseCol == col) {
-            return;
-        }
 
-        lastMouseRow = row;
-        lastMouseCol = col;
-
-        IMatrixView mv = heatmap;
-
-        StringBuilder sb = new StringBuilder();
-
-        if (row != -1 && col == -1) { // Row
-            String label = mv.getRows().getLabel(row);
-            sb.append(label);
-            HeatmapDimension rowDim = heatmap.getRows();
-            IAnnotations am = rowDim.getAnnotations();
-            if (am != null) {
-                if (am.hasIdentifier(label)) {
-                    boolean first = true;
-                    for (HeatmapHeader header : rowDim.getHeaders()) {
-                        if (header instanceof HeatmapTextLabelsHeader) {
-                            String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
-                            if (annLabel == null || annLabel.isEmpty()) {
-                                continue;
-                            }
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
-                            first = false;
-                        }
-                    }
-                }
-            }
-        } else if (row == -1 && col != -1) { // Column
-            String label = mv.getColumns().getLabel(col);
-            sb.append(label);
-            HeatmapDimension colDim = heatmap.getColumns();
-            IAnnotations am = colDim.getAnnotations();
-            if (am != null) {
-                if (am.hasIdentifier(label)) {
-                    boolean first = true;
-                    for (HeatmapHeader header : colDim.getHeaders()) {
-                        if (header instanceof HeatmapTextLabelsHeader) {
-                            String annLabel = ((HeatmapTextLabelsHeader) header).getLabelAnnotation();
-                            if (annLabel == null || annLabel.isEmpty()) {
-                                continue;
-                            }
-                            sb.append(first ? ": " : ", ").append(annLabel).append(" = ").append(am.getAnnotation(label, annLabel));
-                            first = false;
-                        }
-                    }
-                }
-            }
-        } else if (row != -1 && col != -1) { // Cell
-            String rowLabel = mv.getRows().getLabel(row);
-            String colLabel = mv.getColumns().getLabel(col);
-            sb.append(colLabel).append(", ").append(rowLabel);
-            IMatrixLayers attrs = mv.getLayers();
-            if (attrs.size() > 0) {
-                sb.append(": ").append(attrs.get(0).getName()).append(" = ").append(mv.getValue(row, col, 0));
-                for (int i = 1; i < attrs.size(); i++)
-                    sb.append(", ").append(attrs.get(i).getName()).append(" = ").append(mv.getValue(row, col, i));
-            }
-        }
-
-        if (sb.length() > 0) {
-            AppFrame.get().setStatusText(sb.toString());
-        }
-        */
     }
 
     void mouseClicked(int row, int col, MouseEvent e) {
