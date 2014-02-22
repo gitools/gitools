@@ -130,6 +130,8 @@ public class Actions {
 
     public static final BaseAction addNewLayers = new AddNewLayersFromFileAction();
 
+    public static final BaseAction heatmapSettings = new HeatmapSettingsAction();
+
 
     private Actions() {
     }

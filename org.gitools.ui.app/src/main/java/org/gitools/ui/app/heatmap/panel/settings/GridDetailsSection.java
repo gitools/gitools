@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-ui-app
+ * org.gitools.ui.app
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -27,25 +27,22 @@ import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import com.jgoodies.binding.value.AbstractValueModel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.resource.Resource;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
 
-public class GlobalSettingsPanel implements ISettingsSection {
+public class GridDetailsSection implements ISettingsSection {
+    private JSpinner cellSizeRows;
+    private JSpinner cellSizeColumns;
+    private JCheckBox cellSizeKeepRatio;
     private JTextField gridRowsColor;
     private JTextField gridColumnsColor;
     private JSpinner gridRowsSize;
     private JSpinner gridColumnsSize;
-    private JSpinner cellSizeRows;
-    private JSpinner cellSizeColumns;
-    private JCheckBox cellSizeKeepRatio;
-    private JTextArea documentTitle;
-    private JTextArea documentDescription;
     private JPanel root;
 
-    public GlobalSettingsPanel(Heatmap heatmap) {
+    public GridDetailsSection(Heatmap heatmap) {
 
         PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
         PresentationModel<HeatmapDimension> rows = new PresentationModel<>(model.getModel(Heatmap.PROPERTY_ROWS));
@@ -57,10 +54,6 @@ public class GlobalSettingsPanel implements ISettingsSection {
         gridRowsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(rows.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
         gridColumnsSize.setModel(SpinnerAdapterFactory.createNumberAdapter(columns.getModel(HeatmapDimension.PROPERTY_GRID_SIZE), 1, 0, 10, 1));
 
-        // Bind document controls
-        Bindings.bind(documentTitle, model.getModel(Resource.PROPERTY_TITLE));
-        Bindings.bind(documentDescription, model.getModel(Resource.PROPERTY_DESCRIPTION));
-
         // Bind cell size controls
         AbstractValueModel cellSizeRowsModel = rows.getModel(HeatmapDimension.PROPERTY_CELL_SIZE);
         cellSizeRows.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeRowsModel, 1, 1, 300, 1));
@@ -68,8 +61,8 @@ public class GlobalSettingsPanel implements ISettingsSection {
         cellSizeColumns.setModel(SpinnerAdapterFactory.createNumberAdapter(cellSizeColumnsModel, 1, 1, 300, 1));
         cellSizeKeepRatio.setModel(new KeepRatioModel(cellSizeRowsModel, cellSizeColumnsModel));
 
-
     }
+
 
     private void createUIComponents() {
         this.gridRowsColor = new MyWebColorChooserField();
@@ -78,7 +71,7 @@ public class GlobalSettingsPanel implements ISettingsSection {
 
     @Override
     public String getName() {
-        return "Cell details";
+        return "Grid";
     }
 
     @Override
@@ -86,4 +79,3 @@ public class GlobalSettingsPanel implements ISettingsSection {
         return root;
     }
 }
-

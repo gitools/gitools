@@ -66,6 +66,7 @@ public class MenuActionSet extends ActionSet {
                                 new ColumnsActionSet(),
                                 new RowsActionSet(),
                                 new LayersActionSet(),
+                                Actions.heatmapSettings,
                                 BaseAction.separator,
                                 Actions.searchRowsAction
                         }

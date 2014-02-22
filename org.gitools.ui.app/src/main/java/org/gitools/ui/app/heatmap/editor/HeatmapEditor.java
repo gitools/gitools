@@ -94,6 +94,10 @@ public class HeatmapEditor extends AbstractEditor {
 
         setIcon(IconUtils.getIconResource(IconNames.heatmap16));
 
+        if (heatmap.getTitle() == null) {
+            heatmap.setTitle(getName());
+        }
+
         createComponents(this);
 
         setSaveAllowed(true);
@@ -113,10 +117,6 @@ public class HeatmapEditor extends AbstractEditor {
         heatmap.getColumns().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
-
-        if (heatmap.getTitle() == null) {
-            heatmap.setTitle(getName());
-        }
 
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.
