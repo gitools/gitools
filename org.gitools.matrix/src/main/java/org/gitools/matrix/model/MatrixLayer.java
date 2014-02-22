@@ -26,6 +26,7 @@ import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
+import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.translators.ValueTranslatorFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -65,6 +66,11 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     private SortDirection sortDirection;
 
     public SortDirection getSortDirection() {
+
+        if (sortDirection == null) {
+            return SortDirection.ASCENDING;
+        }
+
         return sortDirection;
     }
 
@@ -73,6 +79,11 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     }
 
     public IAggregator getAggregator() {
+
+        if (aggregator == null) {
+            return SumAggregator.INSTANCE;
+        }
+
         return aggregator;
     }
 

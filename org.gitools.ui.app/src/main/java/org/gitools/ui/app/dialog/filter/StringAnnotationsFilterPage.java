@@ -46,7 +46,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
     private String rowsPatt;
     private String colsPatt;
 
-    public StringAnnotationsFilterPage(Heatmap hm) {
+    public StringAnnotationsFilterPage(Heatmap hm, MatrixDimensionKey dimensionKey) {
         this.hm = hm;
 
         initComponents();
@@ -88,10 +88,19 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
         colsPatt = "${id}";
         colsPattFld.setText("id");
 
-        dimChanged();
-
         setTitle("Filter by annotations");
         setComplete(true);
+
+        if (dimensionKey == MatrixDimensionKey.ROWS) {
+            rowsRb.setSelected(true);
+            colsRb.setSelected(false);
+        } else {
+            rowsRb.setSelected(false);
+            colsRb.setSelected(true);
+        }
+
+        dimChanged();
+
     }
 
     private void dimChanged() {

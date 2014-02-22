@@ -37,8 +37,12 @@ import java.awt.event.ActionEvent;
 
 public class SortByMutualExclusionAction extends HeatmapAction {
 
-    public SortByMutualExclusionAction() {
+    private MatrixDimensionKey dimensionKey;
+
+    public SortByMutualExclusionAction(MatrixDimensionKey dimensionKey) {
         super("<html><i>Sort</i> by mutual exclusion</html>");
+
+        this.dimensionKey = dimensionKey;
     }
 
     @Override
@@ -46,12 +50,12 @@ public class SortByMutualExclusionAction extends HeatmapAction {
 
         final Heatmap hm = getHeatmap();
 
-        final MutualExclusionSortPage page = new MutualExclusionSortPage(hm);
+        final MutualExclusionSortPage page = new MutualExclusionSortPage(hm, dimensionKey);
         PageDialog dlg = new PageDialog(Application.get(), page);
 
-        if (hm.getColumns().getSelected().size() > 0) {
+        /*if (hm.getColumns().getSelected().size() > 0) {
             page.setDimension(MatrixDimensionKey.COLUMNS);
-        }
+        }*/
 
         dlg.setVisible(true);
 

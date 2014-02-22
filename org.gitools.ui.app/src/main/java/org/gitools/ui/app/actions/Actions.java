@@ -70,7 +70,9 @@ public class Actions {
 
     public static final BaseAction copyToClipboardSelectedLabelHeader = new CopyToClipboardSelectedLabelHeaderAction();
 
-    public static final BaseAction filterByLabel = new FilterByAnnotationsAction();
+    public static final BaseAction filterRowsByLabel = new FilterByAnnotationsAction(ROWS);
+
+    public static final BaseAction filterColumnsByLabel = new FilterByAnnotationsAction(COLUMNS);
 
     public static final BaseAction filterRowsByValue = new FilterByValueAction(ROWS);
 
@@ -90,13 +92,17 @@ public class Actions {
 
     public static final BaseAction sortByRowsAnnotation = new SortByAnnotationAction(ROWS);
 
+    public static final BaseAction sortByColumnsAnnotation = new SortByAnnotationAction(COLUMNS);
+
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
     public static final BaseAction sortColumnsByValue = new SortByValueAction(COLUMNS);
 
     public static final BaseAction sortRowsByValue = new SortByValueAction(ROWS);
 
-    public static final BaseAction sortByMutualExclusion = new SortByMutualExclusionAction();
+    public static final BaseAction sortColumnsByMutualExclusion = new SortByMutualExclusionAction(COLUMNS);
+
+    public static final BaseAction sortRowsByMutualExclusion = new SortByMutualExclusionAction(ROWS);
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
 

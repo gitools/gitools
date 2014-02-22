@@ -23,6 +23,7 @@ package org.gitools.ui.app.actions.data;
 
 import com.google.common.collect.Sets;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
@@ -40,11 +41,13 @@ import java.awt.event.ActionEvent;
 
 public class FilterByAnnotationsAction extends BaseAction {
 
-    private static final long serialVersionUID = -1582437709508438222L;
+    private MatrixDimensionKey dimension;
 
-    public FilterByAnnotationsAction() {
+    public FilterByAnnotationsAction(MatrixDimensionKey dimension) {
         super("<html><i>Filter</i> by annotations</html>");
         setDesc("Filter by annotations");
+
+        this.dimension = dimension;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class FilterByAnnotationsAction extends BaseAction {
 
         final Heatmap hm = (Heatmap) model;
 
-        final StringAnnotationsFilterPage page = new StringAnnotationsFilterPage(hm);
+        final StringAnnotationsFilterPage page = new StringAnnotationsFilterPage(hm, dimension);
         PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
 

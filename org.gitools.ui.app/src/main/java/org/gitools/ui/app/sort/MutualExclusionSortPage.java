@@ -75,7 +75,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private javax.swing.JButton saveBtn;
     private javax.swing.JCheckBox useRegexCheck;
 
-    public MutualExclusionSortPage(Heatmap hm) {
+    public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey dimensionKey) {
         this.hm = hm;
 
         initComponents();
@@ -116,6 +116,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
         colsPatt = "${id}";
         colsPattFld.setText("id");
+
+        if (dimensionKey == COLUMNS) {
+            rowsRb.setSelected(false);
+            colsRb.setSelected(true);
+        } else {
+            rowsRb.setSelected(true);
+            colsRb.setSelected(false);
+        }
 
         dimChanged();
 
