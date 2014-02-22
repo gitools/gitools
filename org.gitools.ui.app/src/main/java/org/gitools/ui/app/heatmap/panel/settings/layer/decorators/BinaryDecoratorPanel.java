@@ -46,8 +46,12 @@ public class BinaryDecoratorPanel extends DecoratorPanel {
 
     @Override
     public void bind() {
+
+        JFormattedTextField.AbstractFormatterFactory formatter = DecoratorPanelFormatters.getTenDecimalsFormatter();
+
         Bindings.bind(comparator, new SelectionInList<>(CutoffCmp.comparators, model(BinaryDecorator.PROPERTY_COMPARATOR)));
         Bindings.bind(value, model(BinaryDecorator.PROPERTY_CUTOFF));
+        value.setFormatterFactory(formatter);
         Bindings.bind(trueColor, "color", model(BinaryDecorator.PROPERTY_COLOR));
         Bindings.bind(falseColor, "color", model(BinaryDecorator.PROPERTY_NON_SIGNIFICANT_COLOR));
         Bindings.bind(emptyColor, "color", model(BinaryDecorator.PROPERTY_EMPTY_COLOR));

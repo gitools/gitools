@@ -45,9 +45,15 @@ public class LinearDecoratorPanel extends DecoratorPanel {
 
     @Override
     public void bind() {
+
+        JFormattedTextField.AbstractFormatterFactory formatter = DecoratorPanelFormatters.getTenDecimalsFormatter();
+
         Bindings.bind(minValue, model(LinearDecorator.PROPERTY_MIN_VALUE));
+        minValue.setFormatterFactory(formatter);
         Bindings.bind(midValue, model(LinearDecorator.PROPERTY_MID_VALUE));
+        midValue.setFormatterFactory(formatter);
         Bindings.bind(maxValue, model(LinearDecorator.PROPERTY_MAX_VALUE));
+        maxValue.setFormatterFactory(formatter);
 
         Bindings.bind(minColor, "color", model(LinearDecorator.PROPERTY_MIN_COLOR));
         Bindings.bind(midColor, "color", model(LinearDecorator.PROPERTY_MID_COLOR));
