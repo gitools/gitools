@@ -76,6 +76,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
     private JRadioButton nullConversionRadioButton;
     private JRadioButton nullDiscardRadioButton;
     private JTextField nullConversionTextArea;
+    private JCheckBox copyHeadersCheckBox;
 
 
     private DimensionGroupTableModel tableModel = new DimensionGroupTableModel();
@@ -388,6 +389,10 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
         removedItems.clear();
         tableModel.setGroups(newGroups);
         updateControls();
+    }
+
+    public boolean isCopyHeatmapHeaders() {
+        return copyHeadersCheckBox.isSelected();
     }
 
     private DimensionGroup[] initAnnotationGroups() {
