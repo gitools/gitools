@@ -29,6 +29,7 @@ import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.ZScoreResult;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import static com.google.common.base.Predicates.notNull;
@@ -53,7 +54,13 @@ public class ZscoreTest extends AbstractTest {
     @Override
     public void processPopulation(Iterable<Double> population) {
 
-        Double seed = find(population, notNull());
+        Double seed;
+        try {
+            seed = find(population, notNull());
+        } catch (NoSuchElementException e) {
+            seed = 1.0;
+        }
+
         this.random = new Random(seed.longValue());
         this.population = Lists.newArrayList(population);
     }
