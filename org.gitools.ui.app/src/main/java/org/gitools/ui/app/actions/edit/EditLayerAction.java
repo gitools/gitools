@@ -78,7 +78,7 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
                 sortSection
         );
 
-        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, colorScaleSection.getName()) {
+        SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, detailsSection.getName()) {
 
             @Override
             protected void apply() {

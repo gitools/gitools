@@ -36,6 +36,7 @@ public class DetailsSection implements ISettingsSection {
     private JTextField layerDescriptionLink;
     private JTextField layerValueLink;
     private JComboBox valueTypeComboBox;
+    private JTextField title;
 
     public DetailsSection(HeatmapLayer heatmapLayer) {
         PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
@@ -44,6 +45,7 @@ public class DetailsSection implements ISettingsSection {
         layerDescription.setBorder(BorderFactory.createEtchedBorder());
 
         // Bind value controls
+        bind(title, layer.getModel(HeatmapLayer.PROPERTY_NAME));
         bind(layerDescription, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION));
         bind(layerDescriptionLink, layer.getModel(HeatmapLayer.PROPERTY_DESCRIPTION_URL));
         bind(layerValueLink, layer.getModel(HeatmapLayer.PROPERTY_VALUE_URL));
