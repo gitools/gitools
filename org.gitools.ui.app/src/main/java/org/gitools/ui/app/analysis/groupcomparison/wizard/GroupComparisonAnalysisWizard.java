@@ -121,7 +121,7 @@ public class GroupComparisonAnalysisWizard extends AnalysisWizard<GroupCompariso
         a.setNullConversion(groupingPage.getNullConversion());
         a.setToolConfig(toolConfig);
         a.setMtc(statisticsPage.getMtc());
-        a.setRowAnnotations(heatmap.getRows().getAnnotations());
+        a.setCopyAnnotation(groupingPage.isCopyHeatmapHeaders());
 
         List<HeatmapHeader> rowHeaders = new ArrayList<>();
         for (HeatmapHeader header : heatmap.getRows().getHeaders()) {
@@ -132,19 +132,6 @@ public class GroupComparisonAnalysisWizard extends AnalysisWizard<GroupCompariso
                 e.printStackTrace();
             }
         }
-        a.setRowHeaders(rowHeaders);
-        a.setColumnAnnotations(heatmap.getColumns().getAnnotations());
-
-        List<HeatmapHeader> columnHeaders = new ArrayList<>();
-        for (HeatmapHeader header : heatmap.getColumns().getHeaders()) {
-            try {
-                HeatmapHeader headerClone = CloneUtils.clone(header);
-                columnHeaders.add(headerClone);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        a.setColumnHeaders(columnHeaders);
 
         a.addGroups(groupingPage.getGroups());
         a.setProperties(analysisDetailsPage.getAnalysisProperties());

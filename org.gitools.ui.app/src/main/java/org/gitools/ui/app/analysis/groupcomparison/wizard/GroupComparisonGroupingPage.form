@@ -6,7 +6,7 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="left:p:grow"/>
     <constraints>
-      <xy x="20" y="20" width="615" height="400"/>
+      <xy x="20" y="20" width="615" height="450"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -17,6 +17,10 @@
         <rowspec value="center:32px:noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:32px:noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
@@ -52,7 +56,7 @@
           </component>
           <component id="3b2c3" class="javax.swing.JLabel">
             <constraints>
-              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
@@ -85,7 +89,7 @@
           <grid id="e6fd5" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties/>
@@ -176,6 +180,35 @@
               </component>
             </children>
           </grid>
+          <component id="127db" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <font style="1"/>
+              <text value="Groups:"/>
+            </properties>
+          </component>
+          <component id="76d68" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="Copy heatmap headers:"/>
+            </properties>
+          </component>
+          <component id="a43cb" class="javax.swing.JCheckBox" binding="copyHeadersCheckBox">
+            <constraints>
+              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value=""/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="eb504" default-binding="true" layout-manager="FormLayout">

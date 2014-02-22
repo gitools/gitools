@@ -27,10 +27,8 @@ import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.heatmap.header.HeatmapHeader;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -56,19 +54,10 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     protected String dataFile = "";
 
     @XmlTransient
-    private IAnnotations rowAnnotations;
-
-    @XmlTransient
-    private List<HeatmapHeader> rowHeaders;
-
-    @XmlTransient
-    private List<HeatmapHeader> columnHeaders;
-
-    @XmlTransient
-    private IAnnotations columnAnnotations;
-
-    @XmlTransient
     private DimensionGroupEnum columnGroupType;
+
+    @XmlTransient
+    private boolean copyAnnotation = false;
 
     private List<DimensionGroup> groups;
 
@@ -182,38 +171,6 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.results = results;
     }
 
-    public void setRowAnnotations(IAnnotations annotations) {
-        this.rowAnnotations = annotations;
-    }
-
-    public IAnnotations getRowAnnotations() {
-        return this.rowAnnotations;
-    }
-
-    public IAnnotations getColumnAnnotations() {
-        return columnAnnotations;
-    }
-
-    public void setColumnAnnotations(IAnnotations columnAnnotations) {
-        this.columnAnnotations = columnAnnotations;
-    }
-
-    public List<HeatmapHeader> getRowHeaders() {
-        return rowHeaders;
-    }
-
-    public void setRowHeaders(List<HeatmapHeader> rowHeaders) {
-        this.rowHeaders = rowHeaders;
-    }
-
-    public List<HeatmapHeader> getColumnHeaders() {
-        return columnHeaders;
-    }
-
-    public void setColumnHeaders(List<HeatmapHeader> columnHeaders) {
-        this.columnHeaders = columnHeaders;
-    }
-
     public Double getNullConversion() {
         return nullConversion;
     }
@@ -228,5 +185,13 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     public void setColumnGroupType(DimensionGroupEnum columnGroupType) {
         this.columnGroupType = columnGroupType;
+    }
+
+    public boolean isCopyAnnotation() {
+        return copyAnnotation;
+    }
+
+    public void setCopyAnnotation(boolean copyAnnotation) {
+        this.copyAnnotation = copyAnnotation;
     }
 }

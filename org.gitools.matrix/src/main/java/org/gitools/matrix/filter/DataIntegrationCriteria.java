@@ -45,6 +45,7 @@ public class DataIntegrationCriteria extends ValueFilterCriteria {
 
     @Override
     public String toString() {
-        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + value;
+        String empty = nullConversion == null ? "" : " (empty: " + nullConversion + ")";
+        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + value + empty;
     }
 }

@@ -43,6 +43,7 @@ import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
+import org.gitools.utils.CloneUtils;
 import org.gitools.utils.color.ColorGenerator;
 
 import java.util.ArrayList;
@@ -158,15 +159,24 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         resultHeatmap.getLayers().setTopLayerById("p-value-log-sum");
         resultHeatmap.setTitle(analysis.getTitle() + " (results)");
 
-        //resultHeatmap.getColumns().addHeader();
-        if (analysis.getRowHeaders() != null) {
-            if (analysis.getRowAnnotations() != null) {
-                resultHeatmap.getRows().addAnnotations(analysis.getRowAnnotations());
-            }
+        if (analysis.isCopyAnnotation() && dataMatrix instanceof Heatmap &&
+                ((Heatmap) dataMatrix).getRows().getAnnotations() != null) {
 
-            for (HeatmapHeader hh : analysis.getRowHeaders()) {
-                resultHeatmap.getRows().addHeader(hh);
-                hh.init(resultHeatmap.getRows());
+            resultHeatmap.getRows().addAnnotations(
+                    ((Heatmap) dataMatrix).getRows().getAnnotations()
+            );
+
+            for (HeatmapHeader header : ((Heatmap) dataMatrix).getRows().getHeaders()) {
+
+                HeatmapHeader headerClone = null;
+                try {
+                    headerClone = CloneUtils.clone(header);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                resultHeatmap.getRows().addHeader(headerClone);
+                headerClone.init(resultHeatmap.getRows());
             }
         }
 
