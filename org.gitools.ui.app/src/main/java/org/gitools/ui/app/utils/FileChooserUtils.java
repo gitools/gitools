@@ -30,30 +30,19 @@ import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
+import java.io.FilenameFilter;
 
 public class FileChooserUtils {
 
     public static final int MODE_SAVE = 1;
     public static final int MODE_OPEN = 2;
 
-    private final static String jpeg = "jpeg";
-    private final static String jpg = "jpg";
-    private final static String gif = "gif";
-    private final static String tif = "tif";
-    private final static String png = "png";
-
-
-    public static FileChoose selectFile(String title, int mode) {
-        return selectFile(title, Settings.getDefault().getLastPath(), mode);
-    }
-
-
     public static FileChoose selectFile(String title, String currentPath, int mode) {
         return selectFile(title, currentPath, mode, null);
     }
-
 
     public static FileChoose selectFile(String title, int mode, FileFormatFilter[] filters) {
         return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
@@ -69,17 +58,28 @@ public class FileChooserUtils {
      * @return {file, filter}
      */
     public static FileChoose selectFile(String title, String currentPath, int mode, FileFormatFilter[] filters) {
-        return selectFileVFS(title, currentPath, mode, filters);
+        return selectFileAWT(title, currentPath, mode, filters);
     }
 
-    private static FileChoose selectFileDefault(String title, String currentPath, int mode, FileFormatFilter[] filters) {
+    private static FileChoose selectFileAWT(String title, String currentPath, int mode, FileFormatFilter[] filters) {
+
+        FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, (mode == MODE_OPEN ? FileDialog.LOAD : FileDialog.SAVE));
+        dialog.setDirectory(currentPath);
+        dialog.setMultipleMode(false);
+        dialog.setVisible(true);
+
+        String file = dialog.getFile();
+        return (file == null ? null : new FileChoose(new File(dialog.getDirectory(), dialog.getFile()), null));
+
+    }
+
+    private static FileChoose selectFileSwing(String title, String currentPath, int mode, FileFormatFilter[] filters) {
 
         JFileChooser fileChooser = new JFileChooser(currentPath);
-        fileChooser.setFileHidingEnabled(false);
+        fileChooser.setFileHidingEnabled(true);
 
         fileChooser.setDialogTitle(title);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setPreferredSize(new Dimension(640, 480));
 
         if (filters != null) {
             fileChooser.setAcceptAllFileFilterUsed(false);
@@ -107,9 +107,83 @@ public class FileChooserUtils {
         return null;
     }
 
+    public static File selectPath(String title, String currentPath) {
+        return selectPathVFS(title, currentPath);
+    }
 
-    private static FileChoose selectFileVFS(String title, String currentPath, int mode, FileFormatFilter[] filters) {
-        /*TODO
+    private static File selectPathSwing(String title, String currentPath) {
+
+        JFileChooser fileChooser = new JFileChooser(currentPath)
+        {
+            public void approveSelection()
+            {
+                if (getSelectedFile().isFile())
+                {
+                    // beep
+                    return;
+                }
+                else
+                    super.approveSelection();
+            }
+        };
+        fileChooser.setFileHidingEnabled(true);
+
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Folders";
+            }
+        });
+
+        int retval = fileChooser.showOpenDialog(Application.get());
+        if (retval == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile();
+        }
+        return null;
+    }
+
+    private static File selectPathVFS(String title, String currentPath) {
+        VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
+        fileChooser.setFileHidingEnabled(false);
+
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.DIRECTORIES_ONLY);
+        fileChooser.setPreferredSize(new Dimension(640, 480));
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new AbstractVFSFileFilter() {
+            @Override
+            public boolean accept(FileObject f) {
+                try {
+                    return f.getType() == FileType.FOLDER;
+                } catch (FileSystemException e) {
+                    return true;
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return "Folders";
+            }
+        });
+
+        VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(Application.get());
+        if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
+            return fileChooser.getSelectedFile();
+        }
+
+        return null;
+    }
+
+    /*private static FileChoose selectFileVFS(String title, String currentPath, int mode, FileFormatFilter[] filters) {
+        *//*TODO
         try
         {
             FileSystemOptions opts = new FileSystemOptions();
@@ -119,7 +193,7 @@ public class FileChooserUtils {
         } catch (FileSystemException e)
         {
             throw new RuntimeException(e);
-        } */
+        } *//*
 
         VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
         fileChooser.setFileHidingEnabled(false);
@@ -160,44 +234,7 @@ public class FileChooserUtils {
         }
 
         return null;
-    }
-
-
-    public static File selectPath(String title, String currentPath) {
-        return selectPathVFS(title, currentPath);
-    }
-
-    private static File selectPathVFS(String title, String currentPath) {
-        VFSJFileChooser fileChooser = new VFSJFileChooser(currentPath);
-        fileChooser.setFileHidingEnabled(false);
-
-        fileChooser.setDialogTitle(title);
-        fileChooser.setFileSelectionMode(VFSJFileChooser.SELECTION_MODE.DIRECTORIES_ONLY);
-        fileChooser.setPreferredSize(new Dimension(640, 480));
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new AbstractVFSFileFilter() {
-            @Override
-            public boolean accept(FileObject f) {
-                try {
-                    return f.getType() == FileType.FOLDER;
-                } catch (FileSystemException e) {
-                    return true;
-                }
-            }
-
-            @Override
-            public String getDescription() {
-                return "Folders";
-            }
-        });
-
-        VFSJFileChooser.RETURN_TYPE retval = fileChooser.showOpenDialog(Application.get());
-        if (retval == VFSJFileChooser.RETURN_TYPE.APPROVE) {
-            return fileChooser.getSelectedFile();
-        }
-
-        return null;
-    }
+    }*/
 
 
     public static String getExtension(File file) {
