@@ -23,8 +23,12 @@ package org.gitools.analysis.clustering.method.value;
 
 import com.google.common.collect.Sets;
 import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
+import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.utils.color.ColorGenerator;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.attributeSelection.GreedyStepwise;
@@ -32,7 +36,9 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 
 public class ClusterUtils {
@@ -57,29 +63,14 @@ public class ClusterUtils {
         return attr;
     }
 
-    /**
-     * Update visibility of the matrixView
-     *
-     * @param dimension
-     * @param clusterResults
-     */
-    public static void updateVisibility(IMatrixViewDimension dimension, Map<String, Set<String>> clusterResults) {
+    public static void updateHierarchicalColors(HeatmapColoredLabelsHeader header, List<Cluster> clusters) {
 
-        List<String> clustersSorted = new ArrayList<>(clusterResults.keySet());
-        Collections.sort(clustersSorted);
-
-        Set<String> visible = Sets.newHashSet(dimension);
-        List<String> identifiers = new ArrayList<>();
-        for (String cluster : clustersSorted) {
-            for (String identifier : clusterResults.get(cluster)) {
-                if (visible.contains(identifier)) {
-                    identifiers.add(identifier);
-                }
-            }
+        List<ColoredLabel> coloredLabels = new ArrayList<>(clusters.size());
+        for (Cluster cluster : clusters) {
+            coloredLabels.add(new ColoredLabel(cluster.getName(), new Color(cluster.getColor())));
         }
 
-        dimension.show(identifiers);
-
+        header.setClusters(coloredLabels);
     }
 
     @Deprecated

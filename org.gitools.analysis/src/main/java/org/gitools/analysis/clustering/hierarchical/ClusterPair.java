@@ -100,6 +100,7 @@ public class ClusterPair implements Comparable<ClusterPair> {
     public Cluster agglomerate() {
         Cluster cluster = new Cluster(lCluster.getIdentifiers(), rCluster.getIdentifiers());
         cluster.setDistance(getLinkageDistance());
+        cluster.setWeight(lCluster.getWeight() + rCluster.getWeight());
         cluster.addChild(lCluster);
         cluster.addChild(rCluster);
         lCluster.setParent(cluster);

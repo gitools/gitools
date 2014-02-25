@@ -50,7 +50,6 @@ public class ColorGenerator {
 
     private Color next() {
         index++;
-
         return palette[index % palette.length];
     }
 

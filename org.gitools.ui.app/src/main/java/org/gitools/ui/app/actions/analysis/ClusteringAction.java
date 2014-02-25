@@ -92,7 +92,7 @@ public class ClusteringAction extends HeatmapAction {
 
                     AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
                     int maxLevel=0;
-                    Map<Integer, Collection<String>> clustersMapPerLevel = new HashMap<>();
+                    Map<Integer, List<Cluster>> clustersMapPerLevel = new HashMap<>();
                     if (results instanceof Cluster) {
 
                         Cluster rootCluster = (Cluster) results;
@@ -105,10 +105,8 @@ public class ClusteringAction extends HeatmapAction {
                         while (!children.isEmpty() && maxLevel < 15) {
                             maxLevel++;
 
-                            List<String> clusterNames = new ArrayList<>();
                             List<Cluster> nextLevel = new ArrayList<>();
                             for (Cluster cluster : children) {
-                                clusterNames.add(cluster.getName());
                                 if (!cluster.getChildren().isEmpty()) {
                                     for (String identifier : cluster.getIdentifiers()) {
                                         annotationMatrix.setAnnotation(identifier, annotationLabel + " " + maxLevel, cluster.getName());
@@ -117,7 +115,7 @@ public class ClusteringAction extends HeatmapAction {
                                 nextLevel.addAll(cluster.getChildren());
                             }
 
-                            clustersMapPerLevel.put(maxLevel, clusterNames);
+                            clustersMapPerLevel.put(maxLevel, children);
                             children = nextLevel;
                         }
                     } else {
@@ -135,7 +133,7 @@ public class ClusteringAction extends HeatmapAction {
                         int depth = FastMath.min(10, maxLevel);
                         for (int l = depth; l >= 1; l--) {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-                            CommandAddHeaderColoredLabels.updateFromClusterResults(header, clustersMapPerLevel.get(l));
+                            ClusterUtils.updateHierarchicalColors(header, clustersMapPerLevel.get(l));
                             header.setTitle(annotationLabel + " " + l);
                             header.setSize(7);
                             sortLabel = "${" + annotationLabel + " " + l + "}";

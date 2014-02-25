@@ -29,6 +29,7 @@ import org.gitools.analysis.clustering.distance.ManhattanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 
 
@@ -36,16 +37,18 @@ public class HierarchicalMethod extends AbstractClusteringValueMethod {
 
     private LinkageStrategy linkageStrategy;
     private DistanceMeasure distanceMeasure;
+    private IAggregator aggregator;
 
     public HierarchicalMethod() {
-        this(null, null);
+        this(null, null, null);
     }
 
-    public HierarchicalMethod(LinkageStrategy linkageStrategy, DistanceMeasure distanceMeasure) {
+    public HierarchicalMethod(LinkageStrategy linkageStrategy, DistanceMeasure distanceMeasure, IAggregator aggregator) {
         super("Hierarchical");
 
         this.linkageStrategy = linkageStrategy;
         this.distanceMeasure = distanceMeasure;
+        this.aggregator = aggregator;
     }
 
     public LinkageStrategy getLinkageStrategy() {
@@ -64,6 +67,14 @@ public class HierarchicalMethod extends AbstractClusteringValueMethod {
         this.distanceMeasure = distanceMeasure;
     }
 
+    public IAggregator getAggregator() {
+        return aggregator;
+    }
+
+    public void setAggregator(IAggregator aggregator) {
+        this.aggregator = aggregator;
+    }
+
     @Override
     public Clusters cluster(ClusteringData clusterData, IProgressMonitor monitor) throws ClusteringException {
 
@@ -72,7 +83,7 @@ public class HierarchicalMethod extends AbstractClusteringValueMethod {
         }
 
         MatrixClusteringData data = (MatrixClusteringData) clusterData;
-        HierarchicalClusterer clusterer = new HierarchicalClusterer(linkageStrategy, distanceMeasure);
+        HierarchicalClusterer clusterer = new HierarchicalClusterer(linkageStrategy, distanceMeasure, aggregator);
         return clusterer.cluster(data.getMatrix(), data.getLayer(), data.getClusteringDimension(), data.getAggregationDimension(), monitor);
 
     }

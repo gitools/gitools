@@ -55,6 +55,10 @@ public class Cluster implements Clusters, Comparable<Cluster> {
 
     private Double distance;
 
+    private Double weight = 0.0;
+
+    private int color;
+
     public Cluster(String... identifiers) {
         this.identifiers = Sets.newHashSet(identifiers);
     }
@@ -111,7 +115,14 @@ public class Cluster implements Clusters, Comparable<Cluster> {
 
     public void addChild(Cluster cluster) {
         getChildren().add(cluster);
+    }
 
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 
     public boolean contains(Cluster cluster) {
@@ -160,6 +171,14 @@ public class Cluster implements Clusters, Comparable<Cluster> {
 
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
     @Override
     public Collection<String> getClusters() {
         throw new UnsupportedOperationException();
@@ -179,12 +198,14 @@ public class Cluster implements Clusters, Comparable<Cluster> {
     public int compareTo(Cluster o) {
 
         int result;
-        if (o == null || o.getDistance() == null) {
+        if (o == null || o.getWeight() == null) {
             result = -1;
-        } else if (getDistance() == null) {
+        } else if (getWeight() == null) {
             result = 1;
         } else {
-            result = getDistance().compareTo(o.getDistance());
+            Double w1 = getWeight() / identifiers.size();
+            Double w2 = o.getWeight() / o.getIdentifiers().size();
+            result = w1.compareTo(w2);
         }
 
         return result;

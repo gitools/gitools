@@ -28,6 +28,8 @@ import org.gitools.analysis.clustering.hierarchical.strategy.*;
 import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
 import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.aggregation.SumAbsAggregator;
+import org.gitools.utils.aggregation.SumAggregator;
 
 import java.util.List;
 
@@ -65,6 +67,9 @@ public class HCLParamsPage extends AbstractWizardPage {
 
         method.setDistanceMeasure(distanceMeasure);
         method.setLinkageStrategy(linkageStrategy);
+
+        //TODO Add aggregator selector
+        method.setAggregator(SumAggregator.INSTANCE);
 
     }
 
