@@ -93,7 +93,7 @@
           <component id="a458c" class="javax.swing.JTextPane" binding="preview">
             <constraints/>
             <properties>
-              <background system-color="controlHighlight"/>
+              <background color="-1644826"/>
               <contentType value="text/html"/>
             </properties>
           </component>
