@@ -36,8 +36,6 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -61,7 +59,7 @@ public class Heatmap extends Resource implements IMatrixView {
 
     private transient HeatmapDimension diagonalRows;
 
-    private List<Bookmark> bookmarks;
+    private Bookmarks bookmarks;
 
     private boolean diagonal;
 
@@ -74,7 +72,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.columns = new HeatmapDimension();
         this.layers = new HeatmapLayers();
         this.diagonal = false;
-        this.bookmarks = new ArrayList<>();
+        this.bookmarks = new Bookmarks();
     }
 
     public Heatmap(IMatrix data) {
@@ -88,7 +86,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.data = new ResourceReference<>("data", data);
         this.layers = new HeatmapLayers(data);
         this.diagonal = diagonal;
-        this.bookmarks = new ArrayList<>();
+        this.bookmarks = new Bookmarks();
     }
 
     public HeatmapDimension getRows() {
@@ -162,21 +160,6 @@ public class Heatmap extends Resource implements IMatrixView {
 
     public void setDiagonal(boolean diagonal) {
         this.diagonal = diagonal;
-    }
-
-    public void addBookmark(Bookmark b) {
-        for (Bookmark existing : bookmarks) {
-            if (existing.getName().equals(b.getName())) {
-                throw new RuntimeException("Bookmark with this name already exists");
-            }
-        }
-        bookmarks.add(b);
-        //TODO fire property chagne?
-    }
-
-    public void removeBookmark(Bookmark b) {
-        bookmarks.remove(b);
-        //TODO fire property chagne?
     }
 
     public void applyBookmark(Bookmark b) {
