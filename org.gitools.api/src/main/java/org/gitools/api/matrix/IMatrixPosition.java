@@ -21,6 +21,8 @@
  */
 package org.gitools.api.matrix;
 
+import java.util.Set;
+
 public interface IMatrixPosition {
 
     IMatrix getMatrix();
@@ -37,11 +39,19 @@ public interface IMatrixPosition {
 
     IMatrixIterable<String> iterate(IMatrixDimension dimension);
 
+    IMatrixIterable<String> iterate(IMatrixDimension dimension, Set<String> identifiers);
+
     IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey);
+
+    IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey, Set<String> identifiers);
 
     <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension);
 
+    <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension, Set<String> identifiers);
+
     <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension);
+
+    <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension, Set<String> identifiers);
 
     String[] toVector();
 

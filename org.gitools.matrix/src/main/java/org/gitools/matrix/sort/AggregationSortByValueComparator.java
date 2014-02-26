@@ -61,9 +61,8 @@ public class AggregationSortByValueComparator implements Comparator<String> {
         for (IMatrixLayer<Double> layer : layers) {
 
             matrix.newPosition()
-                    .iterate(sortDimension)
+                    .iterate(sortDimension, sortIdentifiers)
                     .monitor(progressMonitor, "Aggregating values of layer '" + layer.getId() + "'")
-                    .filter(sortIdentifiers)
                     .transform(new AggregationFunction(layer, aggregationDimension, aggregationIdentifiers))
                     .store(
                             aggregationMatrix,

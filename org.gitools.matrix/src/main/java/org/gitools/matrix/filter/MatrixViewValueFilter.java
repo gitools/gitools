@@ -60,7 +60,7 @@ public class MatrixViewValueFilter {
             boolean cellsAnd = true;
             boolean cellsOr = false;
 
-            for (String otherDimItem : position.iterate(otherDimension).filter(selection)) {
+            for (String otherDimItem : position.iterate(otherDimension, selection)) {
 
                 boolean critAnd = true;
                 boolean critOr = false;

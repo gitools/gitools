@@ -153,7 +153,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
             IMatrixPosition position = heatmap.newPosition();
             for (String identifier : position.iterate(headerDimension)) {
 
-                Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension).filter(aggregationIdentifiers));
+                Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension, aggregationIdentifiers));
 
                 if (aggregatedValue != null) {
                     annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));

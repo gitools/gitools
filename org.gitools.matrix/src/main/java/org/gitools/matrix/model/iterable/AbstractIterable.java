@@ -41,11 +41,6 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     public abstract IMatrixPosition getPosition();
 
     @Override
-    public IMatrixIterable<T> filter(Set<String> identifiers) {
-        return filter(new IdentifiersPredicate<T>(getIterateDimension(), identifiers));
-    }
-
-    @Override
     public IMatrixIterable<T> filter(IMatrixPredicate<T> filter) {
         return new FilterIterable<>(this, filter);
     }

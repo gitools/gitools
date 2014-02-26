@@ -28,6 +28,7 @@ import org.gitools.matrix.model.iterable.ValueSourceIterable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class MatrixPosition implements IMatrixPosition {
 
@@ -102,8 +103,18 @@ public class MatrixPosition implements IMatrixPosition {
     }
 
     @Override
+    public IMatrixIterable<String> iterate(IMatrixDimension dimension, Set<String> identifiers) {
+        return iterate(dimension.getId(), identifiers);
+    }
+
+    @Override
     public IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey) {
         return new IdentifierSourceIterable(this, dimensionKey);
+    }
+
+    @Override
+    public IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey, Set<String> identifiers) {
+        return new IdentifierSourceIterable(this, dimensionKey, identifiers);
     }
 
     @Override
@@ -112,8 +123,17 @@ public class MatrixPosition implements IMatrixPosition {
     }
 
     @Override
+    public <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension, Set<String> identifiers) {
+        return new AdapterSourceIterable<>(this, dimension.getId(), layerAdapter, identifiers);
+    }
+
+    @Override
     public <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension) {
         return new ValueSourceIterable<>(this, dimension.getId(), layer);
+    }
+
+    public <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension, Set<String> identifiers) {
+        return new ValueSourceIterable<>(this, dimension.getId(), layer, identifiers);
     }
 
     @Override

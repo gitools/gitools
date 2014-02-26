@@ -40,8 +40,6 @@ public interface IMatrixIterable<T> extends Iterable<T> {
 
     IMatrixIterable<T> between(String fromIdentifier, String toIdentifier);
 
-    IMatrixIterable<T> filter(Set<String> identifiers);
-
     IMatrixIterable<T> filter(IMatrixPredicate<T> filter);
 
     <F> IMatrixIterable<F> transform(IMatrixFunction<F, T> function);

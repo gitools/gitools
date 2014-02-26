@@ -48,6 +48,7 @@ import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
@@ -123,11 +124,13 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                     @Override
                     public Map<String, CommonResult> apply(Double value, IMatrixPosition position) {
 
-                        IMatrixIterable<Double> population = position.iterate(layer, items);
+                        IMatrixIterable<Double> population;
 
                         // Discard not mapped items
                         if (analysis.isDiscardNonMappedRows()) {
-                            population = population.filter(moduleMap.getItems());
+                            population = position.iterate(layer, items, moduleMap.getItems());
+                        } else {
+                            population = position.iterate(layer, items);
                         }
 
                         // Apply cutoff
@@ -150,8 +153,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                             Set<String> moduleItems = moduleMap.getMappingItems(module);
 
                             Iterable<Double> moduleValues = position
-                                    .iterate(layer, items)
-                                    .filter(moduleItems)
+                                    .iterate(layer, items, moduleItems)
                                     .transform(cutoffFunction);
 
                             if (!missingBackgroundItems.isEmpty()) {
