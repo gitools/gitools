@@ -59,7 +59,7 @@ public class AggregationFunction extends AbstractMatrixFunction<Double, String> 
     public Double apply(String value, IMatrixPosition position) {
 
         return aggregator.aggregate(
-                position.iterate(layer, aggregationDimension).filter(aggregationIdentifiers)
+                position.iterate(layer, aggregationDimension, aggregationIdentifiers)
         );
     }
 }

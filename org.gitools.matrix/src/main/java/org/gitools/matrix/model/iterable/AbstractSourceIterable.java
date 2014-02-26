@@ -24,23 +24,33 @@ package org.gitools.matrix.model.iterable;
 import org.gitools.api.matrix.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
     private IMatrixPosition position;
     private IMatrixDimension iterateDimension;
 
-    private List<String> identifiers;
+    private Collection<String> identifiers;
 
     protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
+        this(position, iterateDimension, null);
+    }
+
+    protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, Set<String> identifiers) {
         this.position = position;
         this.iterateDimension = position.getMatrix().getDimension(iterateDimension);
 
-        this.identifiers = new ArrayList<>(this.iterateDimension.size());
-        for (String id : this.iterateDimension) {
-            this.identifiers.add(id);
+        if (identifiers == null) {
+            this.identifiers = new ArrayList<>(this.iterateDimension.size());
+            for (String id : this.iterateDimension) {
+                this.identifiers.add(id);
+            }
+        } else {
+            this.identifiers = identifiers;
         }
     }
 

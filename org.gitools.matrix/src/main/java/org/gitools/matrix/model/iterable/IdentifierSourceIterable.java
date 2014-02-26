@@ -24,10 +24,16 @@ package org.gitools.matrix.model.iterable;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.MatrixDimensionKey;
 
+import java.util.Set;
+
 public class IdentifierSourceIterable extends AbstractSourceIterable<String> {
 
     public IdentifierSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
-        super(position, iterateDimension);
+        this(position, iterateDimension, null);
+    }
+
+    public IdentifierSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, Set<String> identifiers) {
+        super(position, iterateDimension, identifiers);
     }
 
     @Override

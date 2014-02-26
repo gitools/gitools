@@ -26,13 +26,19 @@ import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.iterable.AbstractSourceIterable;
 
+import java.util.Set;
+
 
 public class AdapterSourceIterable<T> extends AbstractSourceIterable<T> {
 
     private ILayerAdapter<T> adapter;
 
     public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, ILayerAdapter<T> adapter) {
-        super(matrixPosition, dimensionKey);
+        this(matrixPosition, dimensionKey, adapter, null);
+    }
+
+    public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, ILayerAdapter<T> adapter, Set<String> identifiers) {
+        super(matrixPosition, dimensionKey, identifiers);
 
         this.adapter = adapter;
     }
