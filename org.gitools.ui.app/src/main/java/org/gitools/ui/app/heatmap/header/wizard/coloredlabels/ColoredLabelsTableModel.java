@@ -129,6 +129,7 @@ class ColoredLabelsTableModel implements TableModel {
                         Double.parseDouble(value);
                     }
                     labelList.get(rowIndex).setValue(value);
+                    fireContentChanged();
                 } catch (NumberFormatException e) {
                     // do nothing
                 }
@@ -137,10 +138,12 @@ class ColoredLabelsTableModel implements TableModel {
             case 1:
                 String displayedLabel = (String) aValue;
                 labelList.get(rowIndex).setDisplayedLabel(displayedLabel);
+                fireContentChanged();
                 break;
 
             case 2:
                 labelList.get(rowIndex).setColor((Color) aValue);
+                fireContentChanged();
                 break;
         }
     }

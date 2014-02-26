@@ -22,20 +22,14 @@
 package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
-import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.ui.app.dialog.EditCategoricalScaleDialog;
+import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
-import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -43,21 +37,19 @@ import java.util.List;
 
 public class CategoricalDecoratorPanel extends DecoratorPanel {
     private JPanel rootPanel;
-    private JButton editButton;
     private JLabel totalCategories;
     private JTextField emptyColor;
     private JCheckBox showValueCheckBox;
+    private JPanel pagePanel;
+    private ColoredLabelsGroupsPage categoriesPage;
 
     public CategoricalDecoratorPanel() {
         super("Categorical scale", new CategoricalDecorator());
 
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editCategoricalColorScale();
-            }
-        });
-
+        categoriesPage = new ColoredLabelsGroupsPage(generateColoredLabels());
+        pagePanel.setLayout(new BoxLayout(pagePanel, BoxLayout.PAGE_AXIS));
+        pagePanel.add(categoriesPage);
+        //categoriesPage.setMaximumSize(new Dimension(700, 300));
     }
 
     private CategoricalDecorator getDecorator() {
@@ -65,51 +57,45 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
     }
 
 
-    private void editCategoricalColorScale() {
+    private void updateCategories() {
 
+        categoriesPage.setColoredLabels(generateColoredLabels());
 
-        CategoricalDecorator elementDecorator = getDecorator();
-        CategoricalColorScale scale = elementDecorator.getScale();
-        ColorScalePoint[] scalePoints = scale.getPointObjects();
-
-        List<ColoredLabel> coloredLabels = new ArrayList<>(scalePoints.length);
-        for (ColorScalePoint sp : scalePoints) {
-            coloredLabels.add(new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor()));
-        }
-
-        EditCategoricalScaleDialog dialog = new EditCategoricalScaleDialog(Application.get(), coloredLabels);
-        dialog.getPage().setValueMustBeNumeric(true);
-        dialog.setVisible(true);
-        if (dialog.getReturnStatus() == AbstractDialog.RET_OK) {
-            coloredLabels = dialog.getPage().getColoredLabels();
-
-            ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.size()];
-            int index = 0;
-            ColorRegistry cr = ColorRegistry.get();
-            for (ColoredLabel cl : coloredLabels) {
-                newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());
-                cr.registerId(cl.getValue(), cl.getColor());
-                index++;
-            }
-
-            totalCategories.setText(String.valueOf(newScalePoints.length));
-            elementDecorator.setCategories(newScalePoints);
-        }
     }
 
 
     @Override
     public void bind() {
-        ValueModel categories = model(CategoricalDecorator.PROPERTY_CATEGORIES);
-        categories.addValueChangeListener(new PropertyChangeListener() {
+        PropertyChangeListener listener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
+                updateDecorator();
                 totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
             }
-        });
+        };
+        categoriesPage.addPropertyChangeListener(listener);
+
         totalCategories.setText(String.valueOf(getDecorator().getCategories().length));
         Bindings.bind(emptyColor, "color", model(CategoricalDecorator.PROPERTY_EMPTY_COLOR));
         Bindings.bind(showValueCheckBox, model(CategoricalDecorator.PROPERTY_SHOW_VALUE));
+        updateCategories();
+    }
+
+    private void updateDecorator() {
+        List<ColoredLabel> coloredLabels = categoriesPage.getColoredLabels();
+
+        ColorScalePoint[] newScalePoints = new ColorScalePoint[coloredLabels.size()];
+        int index = 0;
+        ColorRegistry cr = ColorRegistry.get();
+        for (ColoredLabel cl : coloredLabels) {
+            newScalePoints[index] = new ColorScalePoint(Double.parseDouble(cl.getValue()), cl.getColor(), cl.getDisplayedLabel());
+            cr.registerId(cl.getValue(), cl.getColor());
+            index++;
+        }
+
+        totalCategories.setText(String.valueOf(newScalePoints.length));
+        getDecorator().setCategories(newScalePoints);
+
     }
 
 
@@ -120,5 +106,13 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
 
     private void createUIComponents() {
         this.emptyColor = new MyWebColorChooserField();
+    }
+
+    public List<ColoredLabel> generateColoredLabels() {
+        List<ColoredLabel> coloredLabels = new ArrayList<>(getDecorator().getCategories().length);
+        for (ColorScalePoint sp : getDecorator().getCategories()) {
+            coloredLabels.add(new ColoredLabel(sp.getValue(), sp.getName(), sp.getColor()));
+        }
+        return coloredLabels;
     }
 }

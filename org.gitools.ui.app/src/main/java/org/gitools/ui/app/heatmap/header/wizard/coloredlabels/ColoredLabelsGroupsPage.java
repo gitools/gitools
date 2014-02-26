@@ -176,7 +176,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         tm.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                firePropertyChange("categories", null, null);
             }
         });
 
@@ -193,6 +193,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     public void setColoredLabels(java.util.List<ColoredLabel> coloredLabels) {
         this.coloredLabels = coloredLabels;
         ColoredLabelsTableModel model = (ColoredLabelsTableModel) table.getModel();
+        model.getList().clear();
         model.addAllLabels(coloredLabels);
     }
 
@@ -251,7 +252,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         removeBtn = new javax.swing.JButton();
         syncBtn = new javax.swing.JButton();
 
-        jLabel5.setText("Labels");
+        jLabel5.setText("");
 
         table.setModel(new org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsTableModel());
         table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

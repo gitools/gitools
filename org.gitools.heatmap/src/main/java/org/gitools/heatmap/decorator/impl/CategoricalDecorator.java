@@ -94,6 +94,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
 
         decoration.setBgColor(color);
         if (isShowValue()) {
+            if (scale.getColorScalePoint(v) == null) return;
             String category = scale.getColorScalePoint(v).getName();
             decoration.setValue(
                     category.equals("") ? textFormatter.format(value) : category
