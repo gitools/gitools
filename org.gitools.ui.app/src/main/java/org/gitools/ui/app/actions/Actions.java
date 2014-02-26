@@ -47,6 +47,9 @@ public class Actions {
     // Exit
     public static final BaseAction exitAction = new ExitAction();
 
+    //Edit
+    public static final BaseAction createBookmarkAction = new CreateBookmarkAction();
+
     // Import
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
     public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();

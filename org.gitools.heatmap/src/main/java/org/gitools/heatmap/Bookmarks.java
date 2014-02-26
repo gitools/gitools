@@ -24,15 +24,18 @@ package org.gitools.heatmap;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Bookmarks implements Serializable {
 
+    @XmlElement(name = "bookmark")
     private List<Bookmark> bookmarks;
 
     @XmlTransient
@@ -43,10 +46,11 @@ public class Bookmarks implements Serializable {
     }
 
 
-    public void addBookmark(Bookmark b) {
+    public void add(Bookmark b) {
         for (Bookmark existing : bookmarks) {
             if (existing.getName().equals(b.getName())) {
-                throw new RuntimeException("Bookmark with this name already exists");
+                bookmarks.remove(existing);
+                break;
             }
         }
         bookmarks.add(b);
@@ -55,6 +59,9 @@ public class Bookmarks implements Serializable {
     }
 
     private void updateMap() {
+        if (nameMap == null) {
+            nameMap = new HashMap<>();
+        }
         nameMap.clear();
         Integer counter = 0;
         for (Bookmark b : bookmarks) {
@@ -76,7 +83,7 @@ public class Bookmarks implements Serializable {
         return bookmarks.get(nameMap.get(name));
     }
 
-    public List<Bookmark> getBookmarks() {
+    public List<Bookmark> getAll() {
         return bookmarks;
     }
 

@@ -42,7 +42,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
+@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks"})
 public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
@@ -232,4 +232,7 @@ public class Heatmap extends Resource implements IMatrixView {
         return dimensions;
     }
 
+    public Bookmarks getBookmarks() {
+        return bookmarks;
+    }
 }

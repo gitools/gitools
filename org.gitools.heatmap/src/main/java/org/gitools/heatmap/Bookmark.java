@@ -22,8 +22,11 @@
 package org.gitools.heatmap;
 
 
+import org.gitools.utils.xml.adapter.StringArrayXmlAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,7 +34,10 @@ import java.util.List;
 public class Bookmark implements Serializable {
 
     String name;
+
+    @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     List<String> rows;
+    @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     List<String> columns;
 
     public Bookmark(String name, List<String> rows, List<String> columns) {
@@ -40,6 +46,9 @@ public class Bookmark implements Serializable {
         this.columns = columns;
     }
 
+
+    public Bookmark() {
+    }
 
     public String getName() {
         return name;
@@ -53,4 +62,7 @@ public class Bookmark implements Serializable {
         return columns;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }
