@@ -25,6 +25,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.data.FastSortValueAction;
 import org.gitools.ui.app.actions.data.GroupSelectionAction;
+import org.gitools.ui.app.actions.data.HideSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
@@ -51,7 +52,7 @@ public class PopupMenuActions {
                 BaseAction.separator,
                 new ShowAllAction(dimensionKey),
                 Actions.showOnlyHeaderAction,
-                Actions.hideSelectedRowsAction,
+                new HideSelectionAction(dimensionKey),
                 Actions.hideEmptyLabelHeaderAction,
                 Actions.hideThisLabelHeaderAction,
                 Actions.hideGreaterThanHeaderAction,
