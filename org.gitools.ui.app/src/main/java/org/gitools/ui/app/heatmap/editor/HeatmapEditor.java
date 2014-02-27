@@ -330,6 +330,5 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
-        System.gc();
     }
 }
