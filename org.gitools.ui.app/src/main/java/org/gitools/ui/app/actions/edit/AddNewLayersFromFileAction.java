@@ -142,11 +142,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
                         mainData.addLayer(newLayer);
                         getHeatmap().getLayers().initLayer(newLayer);
 
-                        for (String column : newData.getColumns()) {
-                            for (String row : newData.getRows()) {
-                                mainData.set(newLayer, newData.get(newLayer, row, column), row, column);
-                            }
-                        }
+                        copyLayerValues(newData, newLayer, mainData, mainLayer);
+
                     }
 
                     getHeatmap().getLayers().updateLayers();
@@ -155,6 +152,22 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
         };
         JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
+    }
+
+    private static void copyLayerValues(IMatrix fromMatrix, IMatrixLayer fromLayer, IMatrix toMatrix, IMatrixLayer toLayer) {
+
+        if ((fromMatrix instanceof HashMatrix) && (toMatrix instanceof HashMatrix)) {
+            HashMatrix fromHM = (HashMatrix) fromMatrix;
+            HashMatrix toHM = (HashMatrix) toMatrix;
+            toHM.copyLayerValues(fromLayer.getId(), fromHM);
+        } else {
+            for (String column : fromMatrix.getColumns()) {
+                for (String row : fromMatrix.getRows()) {
+                    toMatrix.set(toLayer, fromMatrix.get(fromLayer, row, column), row, column);
+                }
+            }
+        }
+
     }
 
 }

@@ -123,6 +123,33 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         values.remove(layer.getId());
     }
 
+    public void copyLayerValues(String layerId, HashMatrix fromMatrix) {
+
+        if (getLayers().get(layerId) == null) {
+            throw new UnsupportedOperationException("Unknown '" + layerId + "' layer in this matrix");
+        }
+
+        // Copy values map
+        Map values = fromMatrix.values.get(layerId);
+        this.values.put(layerId, values);
+
+        // Update dimension identifiers
+        for (MatrixDimensionKey dimensionKey : getDimensionKeys()) {
+            HashMatrixDimension thisDimension = getDimension(dimensionKey);
+            HashMatrixDimension fromDimension = fromMatrix.getDimension(dimensionKey);
+
+            if (fromDimension == null) {
+                throw new UnsupportedOperationException("Impossible to copy a matrix with different dimensions.");
+            }
+
+            for (String identifier : fromDimension) {
+                thisDimension.add(identifier);
+            }
+        }
+
+
+    }
+
     private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimensionKey[] identifiers) {
         HashMatrixDimension[] dimensions = new HashMatrixDimension[identifiers.length];
 
