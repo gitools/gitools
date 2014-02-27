@@ -22,6 +22,8 @@
 package org.gitools.ui.app.dialog;
 
 import org.gitools.heatmap.Bookmark;
+import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
@@ -34,7 +36,8 @@ public class CreateBookmarkPage extends AbstractWizardPage {
     private final List<Bookmark> existingBookmarks;
     private JPanel panel;
     private JTextField nameField;
-    private JTextPane descriptionPane;
+    private JLabel rowNbLabel;
+    private JLabel colNbLabel;
 
     public Bookmark getBookmark() {
         return bookmark;
@@ -47,11 +50,11 @@ public class CreateBookmarkPage extends AbstractWizardPage {
         this.existingBookmarks = bookmarks;
         nameField.setText(bookmark.getName());
         setTitle("Create Bookmark");
-        setMessage(MessageStatus.INFO, "Choose a name for the new Bookmark");
-        descriptionPane.setText("<html><body>Creating bookmark consisting of " +
-                "<b>" + bookmark.getRows().size() + "</b> rows and " +
-                "<b>" + bookmark.getColumns().size() + "</b> columns.</body></html>");
+        setLogo(IconUtils.getImageIconResource(IconNames.bookmarkAdd48));
 
+        setMessage(MessageStatus.INFO, "Choose a name for the new Bookmark");
+        rowNbLabel.setText("<html><b>" + bookmark.getRows().size() + "</b></html>");
+        colNbLabel.setText("<html><b>" + bookmark.getColumns().size() + "</b></html>");
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {

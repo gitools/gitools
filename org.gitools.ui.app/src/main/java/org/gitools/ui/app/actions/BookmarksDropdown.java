@@ -37,13 +37,14 @@ import java.beans.PropertyChangeListener;
 
 
 //FIXME: always two listeners.
+//TODO: remove bookmark!
 
 public class BookmarksDropdown extends HeatmapAction implements IPanelAction, PropertyChangeListener {
 
     private JComboBox<Bookmark> bookmarkComboBox;
     private JPanel bookmarksSelectPanel;
     private Bookmarks bookmarks;
-    private static Bookmark noOption = new Bookmark();
+    private static Bookmark NO_OPTION = new Bookmark();
 
     public BookmarksDropdown() {
         super("Bookmarks dropdown");
@@ -54,9 +55,10 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
             @Override
             public void actionPerformed(ActionEvent e) {
                 Bookmark b = (Bookmark) bookmarkComboBox.getSelectedItem();
-                if (b != null && !b.equals(noOption)) {
+                if (b != null && !b.equals(NO_OPTION)) {
                     getHeatmap().applyBookmark(b);
                     Application.get().setStatusText("Bookmark " + b.getName() + " applied.");
+                    bookmarkComboBox.getModel().setSelectedItem(NO_OPTION);
                 }
             }
         });
@@ -84,10 +86,10 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
         bookmarksSelectPanel.setVisible(bookmarks.getAll().size() > 0);
         if (bookmarks.getAll().size() == 0) return;
 
-        noOption.setName(String.valueOf(bookmarkArray.length) + (bookmarkArray.length > 1 ? " Bookmarks:" : " Bookmark:"));
-        bookmarkArray = (Bookmark[]) ArrayUtils.add(bookmarkArray, 0, noOption);
+        NO_OPTION.setName(String.valueOf(bookmarkArray.length) + (bookmarkArray.length > 1 ? " Bookmarks:" : " Bookmark:"));
+        bookmarkArray = (Bookmark[]) ArrayUtils.add(bookmarkArray, 0, NO_OPTION);
         bookmarkComboBox.setModel(new DefaultComboBoxModel<>(bookmarkArray));
-        bookmarkComboBox.getModel().setSelectedItem(noOption);
+        bookmarkComboBox.getModel().setSelectedItem(NO_OPTION);
 
     }
 
