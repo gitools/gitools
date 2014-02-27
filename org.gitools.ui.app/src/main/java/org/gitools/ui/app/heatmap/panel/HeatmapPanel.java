@@ -316,7 +316,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
             Point point = e.getPoint();
             HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(point);
-            Point viewPosition = rowVP.getViewPosition();
+            Point viewPosition = colVP.getViewPosition();
             point.translate(viewPosition.x, viewPosition.y);
             HeatmapPosition headerPostion = columnHeaderPanel.getHeaderDrawer().getPosition(point);
 
