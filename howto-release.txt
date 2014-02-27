@@ -23,7 +23,9 @@ find . -name pom.xml | awk '{ system("sed -i 0,/2.0.0-SNAPSHOT/s//2.0.0/ "$0)}'
 # Generate the documentation (which hopefully is up to date).
 # verify the documentation has the same version as Gitools
 cd doc
-gedit src/conf.py
+## set correct version in conf.py
+gedit source/conf.py
+## generate html doc 
 make html
 firefox html/index.html
 

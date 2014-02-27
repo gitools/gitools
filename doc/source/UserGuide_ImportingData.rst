@@ -11,25 +11,25 @@ Data import: file formats
 
 Various formats are accepted in Gitools to represent each of these data types. The following table list the file formats accepted for each data type and in the following sections each file format is described.
 
-=============================== ================================================ 
-In Gitools                      Accepted format
-=============================== ================================================ 
-Matrix Heatmap (single-value)
-                                - ``.bdm, .bdm.gz`` (Binary matrix)
-                                - ``.cdm, .cdm.gz`` (Continuous data matrix)
-                                - ``.gmx, .gmz.gz`` (Gene matrix)
-                                - ``.gmt, .gmt.gz`` (Gene matrix transposed)
-                                - ``.tcm, .tcm.gz`` (Two columns mapping)
-Matrix Heatmap (multipe values)
-                                - ``.cmatrix, .cmatrix.gz`` (Compressed Heatmap)
-                                - ``.tdm, .tdm.gz`` (Multi-value data matrix)
-                                - ``.xls, .xlsx`` (Excel, table format)
-Annotation                      - ``.tsv, .txt`` (tab separated values)
-Module (Gene Sets)              - ``.gmx, .gmz.gz`` (Gene matrix)
-                                - ``.gmt, .gmt.gz`` (Gene matrix transposed)
-                                - ``.tcm, .tcm.gz`` (Two columns mapping)
+=============================== ================================================ ====================================== ================ ====================
+In Gitools                      Accepted format                                  Gitools Expects                        Multiple values  Layout
+=============================== ================================================ ====================================== ================ ====================
+Matrix heatmap
+                                - ``.*``                                          - Flat text                            - No/Yes         - Matrix/Table
+                                - ``.bdm, .bdm.gz``                               - Binary matrix                        - No             - Matrix
+                                - ``.cdm, .cdm.gz``                               - Continuous data matrix               - No             - Matrix
+                                - ``.gmx, .gmz.gz``                               - Gene matrix                          - No             - Matrix
+                                - ``.gmt, .gmt.gz``                               - Gene matrix transposed               - No             - Matrix
+                                - ``.tcm, .tcm.gz``                               - Two columns mapping                  - No             - Table
+                                - ``.tdm, .tdm.gz``                               - Multi-value data matrix (see below)  - Yes            - Table
+                                - ``.xls, .xlsx``                                 - Excel, table format                  - Yes            - Table
+                                - ``.cmatrix, .cmatrix.gz``                       - Compressed Heatmap                   - Yes
+Annotation                      - ``.tsv, .txt``                                  - tab separated values
+Module (Gene Sets)              - ``.gmx, .gmz.gz``                               - Gene matrix
+                                - ``.gmt, .gmt.gz``                               - Gene matrix transposed
+                                - ``.tcm, .tcm.gz``                               - Two columns mapping
                                 - ``.ixm, .ixm.gz`` 
-=============================== ================================================ 
+=============================== ================================================ ====================================== ================ ====================
 
 Any of the presented formats can be compressed using gzip and recognized if the suffix .gz is appended at the end of the file name, so for example the file matrix.cdm could be compressed using gzip and renamed to matrix.cdm.gz and Gitools would be able to read it without problems.
 
