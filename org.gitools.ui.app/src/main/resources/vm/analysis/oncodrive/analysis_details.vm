@@ -17,6 +17,9 @@
 					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
 				#end
 				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
+				#if( $analysis.layer )
+                    <tr><td class="name"><div>Layer</div></td><td>$analysis.layer</td></tr>
+                #end
 				<tr><td class="name"><div>Test</div></td><td>$test</td></tr>
 				#if( $testAttributes && $testAttributes.size() > 0 )
 					#foreach($mapEntry in $testAttributes.entrySet())
