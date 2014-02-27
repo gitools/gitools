@@ -21,92 +21,71 @@
  */
 package org.gitools.ui.app.actions;
 
-import com.jgoodies.binding.adapter.Bindings;
-import com.jgoodies.binding.adapter.ComboBoxAdapter;
-import com.jgoodies.binding.beans.PropertyAdapter;
-import com.jgoodies.binding.list.SelectionInList;
-import com.jgoodies.binding.value.AbstractValueModel;
-import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.IPanelAction;
-import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
+import javax.swing.event.ListDataEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+
+//TODO: set displayed text in combobox to: 4 Bookmarks
+//TODO: hide this panel whene there is no bookmarks
+//FIXME: always two listeners.
 
 public class BookmarksDropdown extends HeatmapAction implements IPanelAction, PropertyChangeListener {
 
     private JComboBox<Bookmark> bookmarkComboBox;
     private JPanel bookmarksSelectPanel;
+    private Bookmarks bookmarks;
 
     public BookmarksDropdown() {
         super("Bookmarks dropdown");
 
-        bookmarkComboBox.setVisible(false);
+        bookmarksSelectPanel.setVisible(false);
+
+        bookmarkComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Bookmark b = (Bookmark) bookmarkComboBox.getSelectedItem();
+                if (b != null) {
+                    getHeatmap().applyBookmark(b);
+                    Application.get().setStatusText("Bookmark " + b.getName() + " applied.");
+                    bookmarkComboBox.getModel().setSelectedItem(null);
+                }
+            }
+        });
     }
 
     @Override
     public boolean isEnabledByModel(Object model) {
 
         if (model instanceof Heatmap) {
-            setBookmarks(((Heatmap) model).getBookmarks());
-            bookmarkComboBox.setVisible(true);
+            Bookmarks b = ((Heatmap) model).getBookmarks();
+            b.addPropertyChangeListener(Bookmarks.PROPERTY_CONTENTS, this);
+            setBookmarks(b);
+            bookmarksSelectPanel.setVisible(true);
             bookmarksSelectPanel.repaint();
             return true;
 
         }
-        bookmarkComboBox.setVisible(false);
+        bookmarksSelectPanel.setVisible(false);
         bookmarksSelectPanel.repaint();
         return false;
     }
 
-    private static String NO_SELECTION = "-- none --";
-
     private void setBookmarks(final Bookmarks bookmarks) {
-
-        ListModel allBookmarksModel = new AbstractListModel() {
-            @Override
-            public int getSize() {
-                return bookmarks.getAll().size() + 1;
-            }
-
-            @Override
-            public Object getElementAt(int index) {
-
-                if (index == 0) {
-                    return NO_SELECTION;
-                }
-
-                return bookmarks.getAll().get(index - 1).getName();
-            }
-        };
-
-        ValueModel selectedBookmark = new AbstractValueModel() {
-            @Override
-            public Object getValue() {
-                return bookmarks.getSelected();
-            }
-
-            @Override
-            public void setValue(Object newValue) {
-                if (newValue == NO_SELECTION) {
-                    bookmarks.setSelected(null);
-                } else {
-                    bookmarks.setSelected((String) newValue);
-                }
-            }
-        };
-
-        bookmarks.addPropertyChangeListener(Bookmarks.PROPERTY_SELECTED, this);
-
-        Bindings.bind(bookmarkComboBox, new SelectionInList<>(allBookmarksModel, selectedBookmark));
+        this.bookmarks = bookmarks;
+        bookmarkComboBox.setModel(new DefaultComboBoxModel<>(
+                bookmarks.getAll().toArray(new Bookmark[bookmarks.getAll().size()])
+        ));
+        bookmarkComboBox.getModel().setSelectedItem(null);
     }
 
     @Override
@@ -122,6 +101,11 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (!bookmarks.equals(evt.getNewValue())) {
+            bookmarks.removePropertyChangeListener(this);
+        }
+        setBookmarks(getHeatmap().getBookmarks());
+        bookmarkComboBox.contentsChanged(new ListDataEvent(evt, 0, 0, 0));
         bookmarksSelectPanel.revalidate();
         bookmarksSelectPanel.repaint();
     }

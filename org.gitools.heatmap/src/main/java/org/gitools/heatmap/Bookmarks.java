@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,9 +36,7 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Bookmarks extends Model {
 
-    public static String PROPERTY_SELECTED = "selected";
-
-    private String selected;
+    public static String PROPERTY_CONTENTS = "contents";
 
     @XmlElement(name = "bookmark")
     private List<Bookmark> bookmarks;
@@ -51,14 +48,6 @@ public class Bookmarks extends Model {
         this.bookmarks = new ArrayList<>();
     }
 
-    public String getSelected() {
-        return selected;
-    }
-
-    public void setSelected(String selected) {
-        this.selected = selected;
-        firePropertyChange(PROPERTY_SELECTED, null, selected);
-    }
 
     public void add(Bookmark b) {
         for (Bookmark existing : bookmarks) {
@@ -68,6 +57,7 @@ public class Bookmarks extends Model {
             }
         }
         bookmarks.add(b);
+        firePropertyChange(PROPERTY_CONTENTS, null, this);
         updateMap();
 
     }
@@ -86,7 +76,7 @@ public class Bookmarks extends Model {
     public void removeBookmark(Bookmark b) {
         bookmarks.remove(b);
         nameMap.remove(b.getName());
-        //TODO fire property chagne?
+        firePropertyChange(PROPERTY_CONTENTS, null, this);
     }
 
 

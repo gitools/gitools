@@ -68,7 +68,7 @@ public class CreateBookmarkAction extends HeatmapAction {
         }
 
         heatmap.getBookmarks().add(page.getBookmark());
-        heatmap.getBookmarks().setSelected(page.getBookmark().getName());
+        //heatmap.getBookmarks().setSelected(page.getBookmark().getName());
 
 
         Application.get().setStatusText("Bookmark created.");

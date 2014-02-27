@@ -165,7 +165,6 @@ public class Heatmap extends Resource implements IMatrixView {
     public void applyBookmark(Bookmark b) {
         getRows().show(b.getRows());
         getColumns().show(b.getColumns());
-        //TODO set selected bookmark in bookmark selector
     }
 
     @Override
