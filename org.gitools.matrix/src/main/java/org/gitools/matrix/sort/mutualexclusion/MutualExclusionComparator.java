@@ -24,7 +24,7 @@ package org.gitools.matrix.sort.mutualexclusion;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
-import org.gitools.utils.aggregation.SumAbsAggregator;
+import org.gitools.utils.aggregation.NonZeroCountAggregator;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class MutualExclusionComparator implements Comparator<String> {
                 .iterate(sortDimension)
                 .monitor(monitor, "Aggregating values")
                 .filter(validIdentifiers)
-                .transform(new AggregationFunction(layer, SumAbsAggregator.INSTANCE, aggregationDimension));
+                .transform(new AggregationFunction(layer, NonZeroCountAggregator.INSTANCE, aggregationDimension));
 
         for (Double value : aggregatedValues) {
             aggregationCache.put(position.get(sortDimension), value);
