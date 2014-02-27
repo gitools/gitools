@@ -72,6 +72,7 @@ public class CreateBookmarkPage extends AbstractWizardPage {
             }
         });
         updateControls();
+        nameField.selectAll();
     }
 
     private void updateName() {
