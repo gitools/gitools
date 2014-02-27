@@ -76,8 +76,8 @@ public class SaveFilePage extends AbstractWizardPage {
         String fn = file.getAbsolutePath();
         path.setText(fn);
         if (file.exists()) {
-            setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists");
-            setComplete(false);
+            setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists and will be overwritten");
+            setComplete(true);
         } else {
             setMessage(MessageStatus.INFO, "");
         }

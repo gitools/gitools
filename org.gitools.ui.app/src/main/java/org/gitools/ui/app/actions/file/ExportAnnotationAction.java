@@ -43,9 +43,9 @@ import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Sets.newHashSet;
 
-public class ExportHeatmapLabelsAction extends HeatmapAction {
+public class ExportAnnotationAction extends HeatmapAction {
 
-    public ExportHeatmapLabelsAction() {
+    public ExportAnnotationAction() {
         super("Annotations...");
 
         setDesc("Export row or column annotations");
@@ -102,6 +102,8 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
                             break;
                     }
 
+                    pw.println(wiz.getPattern().replaceAll("[\\$\\{\\}]", ""));
+
                     for (String identifier : transform(identifiers, new PatternFunction(wiz.getPattern(), annMatrix))) {
                         pw.println(identifier);
                     }
@@ -115,7 +117,7 @@ public class ExportHeatmapLabelsAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Labels exported.");
+        Application.get().setStatusText("Annotation exported.");
     }
 
 }

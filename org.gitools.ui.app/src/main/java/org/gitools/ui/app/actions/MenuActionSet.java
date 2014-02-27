@@ -50,7 +50,7 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 new ActionSet("Export", KeyEvent.VK_E,
                                         new BaseAction[]{
-                                                Actions.exportLabelNamesAction,
+                                                Actions.exportAnnotationAction,
                                                 Actions.exportMatrixAction,
                                                 Actions.exportTableAction,
                                                 Actions.exportHeatmapImageAction,

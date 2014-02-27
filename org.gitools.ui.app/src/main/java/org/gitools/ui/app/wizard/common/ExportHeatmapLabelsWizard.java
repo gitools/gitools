@@ -51,6 +51,7 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard {
         addPage(sourcePage);
 
         patPage = new PatternSourcePage(true);
+        patPage.setAnnSeparationModel(new String[]{"\t", ",", ";"});
         addPage(patPage);
 
         savePage = new SaveFilePage();

@@ -58,7 +58,7 @@ public class Actions {
     public static final BaseAction importGoModulesAction = new ImportGoModulesAction();
 
     // Export
-    public static final BaseAction exportLabelNamesAction = new ExportHeatmapLabelsAction();
+    public static final BaseAction exportAnnotationAction = new ExportAnnotationAction();
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
