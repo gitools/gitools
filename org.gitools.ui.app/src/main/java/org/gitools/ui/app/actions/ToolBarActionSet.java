@@ -24,12 +24,14 @@ package org.gitools.ui.app.actions;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
 
 import javax.swing.*;
 
 public final class ToolBarActionSet extends ActionSet {
 
     public static ToolBarActionSet INSTANCE = new ToolBarActionSet();
+    public static BookmarksDropdown bookmarksDropdown = new BookmarksDropdown();
 
     public ToolBarActionSet() {
         super(new BaseAction[]{
@@ -39,12 +41,21 @@ public final class ToolBarActionSet extends ActionSet {
                 Actions.openGenomeSpace,
                 Actions.openIntegrativeGenomicViewerAction,
                 Actions.snapshotAction,
-                Actions.searchRowsAction
+                Actions.searchRowsAction,
+                Actions.createBookmarkAction //must be last
         }
         );
     }
 
     public JToolBar createToolBar() {
-        return ActionSetUtils.createToolBar(this);
+        JToolBar toolbar = ActionSetUtils.createToolBar(this);
+        // Add bookmarks dropdown
+        toolbar.add(bookmarksDropdown.getPanel());
+        return toolbar;
+    }
+
+    @Override
+    public boolean updateEnabledByEditor(IEditor editor) {
+        return super.updateEnabledByEditor(editor);
     }
 }

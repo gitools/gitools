@@ -24,6 +24,7 @@ package org.gitools.ui.app.actions.data;
 import com.google.common.collect.Iterables;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.dialog.CreateBookmarkPage;
 import org.gitools.ui.platform.Application;
@@ -40,6 +41,8 @@ public class CreateBookmarkAction extends HeatmapAction {
 
     public CreateBookmarkAction() {
         super("<html><i>Create</i> new bookmark</html>");
+        setLargeIconFromResource(IconNames.bookmarkAdd24);
+        setSmallIconFromResource(IconNames.bookmarkAdd16);
     }
 
     @Override

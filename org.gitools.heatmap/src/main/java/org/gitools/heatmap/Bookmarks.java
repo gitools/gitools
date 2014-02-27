@@ -55,7 +55,7 @@ public class Bookmarks implements Serializable {
         }
         bookmarks.add(b);
         updateMap();
-        //TODO fire property chagne?
+
     }
 
     private void updateMap() {
