@@ -22,6 +22,8 @@
 package org.gitools.heatmap;
 
 
+import com.jgoodies.binding.beans.Model;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +35,11 @@ import java.util.List;
 import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Bookmarks implements Serializable {
+public class Bookmarks extends Model {
+
+    public static String PROPERTY_SELECTED = "selected";
+
+    private String selected;
 
     @XmlElement(name = "bookmark")
     private List<Bookmark> bookmarks;
@@ -45,6 +51,14 @@ public class Bookmarks implements Serializable {
         this.bookmarks = new ArrayList<>();
     }
 
+    public String getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = selected;
+        firePropertyChange(PROPERTY_SELECTED, null, selected);
+    }
 
     public void add(Bookmark b) {
         for (Bookmark existing : bookmarks) {
@@ -90,7 +104,6 @@ public class Bookmarks implements Serializable {
     public void setBookmarks(List<Bookmark> bookmarks) {
         this.bookmarks = bookmarks;
         updateMap();
-        //TODO fire property change?
     }
 
 

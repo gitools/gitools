@@ -66,7 +66,13 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+
+        // Workaround to force windows to paint the TaskPaneContainer background
         UIManager.put("TaskPaneContainer.backgroundPainter", new MattePainter(Color.WHITE));
+
+        // Workaround to put a dropdown into a JToolBar
+        UIManager.put("PopupMenu.consumeEventOnClose", Boolean.TRUE);
+
 
         // Force silence lobobrowser loggers
         try {

@@ -31,7 +31,6 @@ import javax.swing.*;
 public final class ToolBarActionSet extends ActionSet {
 
     public static ToolBarActionSet INSTANCE = new ToolBarActionSet();
-    public static BookmarksDropdown bookmarksDropdown = new BookmarksDropdown();
 
     public ToolBarActionSet() {
         super(new BaseAction[]{
@@ -42,15 +41,14 @@ public final class ToolBarActionSet extends ActionSet {
                 Actions.openIntegrativeGenomicViewerAction,
                 Actions.snapshotAction,
                 Actions.searchRowsAction,
-                Actions.createBookmarkAction //must be last
+                Actions.createBookmarkAction,
+                Actions.bookmarksDropdown
         }
         );
     }
 
     public JToolBar createToolBar() {
         JToolBar toolbar = ActionSetUtils.createToolBar(this);
-        // Add bookmarks dropdown
-        toolbar.add(bookmarksDropdown.getPanel());
         return toolbar;
     }
 
