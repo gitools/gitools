@@ -80,7 +80,7 @@ public class ExportTableAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Exporting table ...", 1);
+                    monitor.begin("Exporting to text file (table layout) ...", 1);
                     monitor.info("File: " + file.getName());
 
                     int[] attributeIndices = new int[selectedIndices.size()];

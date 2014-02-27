@@ -81,7 +81,7 @@ public class ExportMatrixAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Exporting to image ...", 1);
+                    monitor.begin("Exporting to text file (matrix layout) ...", 1);
                     monitor.info("File: " + file.getName());
 
                     TextMatrixViewExporter.exportMatrix(matrixView, selected, file);
