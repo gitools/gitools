@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
@@ -35,8 +36,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 
-//TODO: set displayed text in combobox to: 4 Bookmarks
-//TODO: hide this panel whene there is no bookmarks
 //FIXME: always two listeners.
 
 public class BookmarksDropdown extends HeatmapAction implements IPanelAction, PropertyChangeListener {
@@ -44,6 +43,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
     private JComboBox<Bookmark> bookmarkComboBox;
     private JPanel bookmarksSelectPanel;
     private Bookmarks bookmarks;
+    private static Bookmark noOption = new Bookmark();
 
     public BookmarksDropdown() {
         super("Bookmarks dropdown");
@@ -54,10 +54,9 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
             @Override
             public void actionPerformed(ActionEvent e) {
                 Bookmark b = (Bookmark) bookmarkComboBox.getSelectedItem();
-                if (b != null) {
+                if (b != null && !b.equals(noOption)) {
                     getHeatmap().applyBookmark(b);
                     Application.get().setStatusText("Bookmark " + b.getName() + " applied.");
-                    bookmarkComboBox.getModel().setSelectedItem(null);
                 }
             }
         });
@@ -70,7 +69,6 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
             Bookmarks b = ((Heatmap) model).getBookmarks();
             b.addPropertyChangeListener(Bookmarks.PROPERTY_CONTENTS, this);
             setBookmarks(b);
-            bookmarksSelectPanel.setVisible(true);
             bookmarksSelectPanel.repaint();
             return true;
 
@@ -82,10 +80,15 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
 
     private void setBookmarks(final Bookmarks bookmarks) {
         this.bookmarks = bookmarks;
-        bookmarkComboBox.setModel(new DefaultComboBoxModel<>(
-                bookmarks.getAll().toArray(new Bookmark[bookmarks.getAll().size()])
-        ));
-        bookmarkComboBox.getModel().setSelectedItem(null);
+        Bookmark[] bookmarkArray = bookmarks.getAll().toArray(new Bookmark[bookmarks.getAll().size()]);
+        bookmarksSelectPanel.setVisible(bookmarks.getAll().size() > 0);
+        if (bookmarks.getAll().size() == 0) return;
+
+        noOption.setName(String.valueOf(bookmarkArray.length) + (bookmarkArray.length > 1 ? " Bookmarks:" : " Bookmark:"));
+        bookmarkArray = (Bookmark[]) ArrayUtils.add(bookmarkArray, 0, noOption);
+        bookmarkComboBox.setModel(new DefaultComboBoxModel<>(bookmarkArray));
+        bookmarkComboBox.getModel().setSelectedItem(noOption);
+
     }
 
     @Override
