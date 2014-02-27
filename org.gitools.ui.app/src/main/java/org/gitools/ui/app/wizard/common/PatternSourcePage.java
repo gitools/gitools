@@ -81,7 +81,7 @@ public class PatternSourcePage extends AbstractWizardPage {
             }
         });
 
-        annSepCb.setModel(new DefaultComboBoxModel(new String[]{", ", "-", " | ", " / ", " > ", "::"}));
+        annSepCb.setModel(new DefaultComboBoxModel(new String[]{",", "-", " | ", " / ", " > ", "::"}));
         annSepCb.setSelectedIndex(0);
 
         patText.getDocument().addDocumentListener(new DocumentChangeListener() {
@@ -178,6 +178,11 @@ public class PatternSourcePage extends AbstractWizardPage {
         }
         updateControls();
         annList.setSelectedIndices(new int[0]);
+    }
+
+    public void setAnnSeparationModel(String[] strings) {
+        annSepCb.setModel(new DefaultComboBoxModel(strings));
+        annSepCb.setSelectedIndex(0);
     }
 
     private void updateComplete() {
