@@ -6,7 +6,9 @@
     <constraints>
       <xy x="20" y="20" width="172" height="30"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="15263976"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="8fe54" class="javax.swing.JComboBox" binding="bookmarkComboBox">

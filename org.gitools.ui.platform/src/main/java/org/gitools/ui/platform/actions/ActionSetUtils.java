@@ -46,6 +46,8 @@ public class ActionSetUtils {
         for (BaseAction a : actionSet.getActions()) {
             if (a instanceof SeparatorAction) {
                 toolBar.addSeparator();
+            } else if (a instanceof IPanelAction) {
+                toolBar.add(((IPanelAction) a).getPanel());
             } else {
                 toolBar.add(createTool(a));
             }

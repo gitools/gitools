@@ -49,6 +49,7 @@ public class Actions {
 
     //Edit
     public static final BaseAction createBookmarkAction = new CreateBookmarkAction();
+    public static final BaseAction bookmarksDropdown = new BookmarksDropdown();
 
     // Import
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
