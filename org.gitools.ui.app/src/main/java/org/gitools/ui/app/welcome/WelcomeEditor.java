@@ -67,6 +67,9 @@ public class WelcomeEditor extends HtmlEditor {
                 }
                 break;
             }
+            case "reload":
+                navigate(getWelcomeURL());
+                break;
         }
     }
 
