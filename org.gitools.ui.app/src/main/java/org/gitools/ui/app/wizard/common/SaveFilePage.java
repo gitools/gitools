@@ -35,10 +35,23 @@ import javax.swing.event.DocumentEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.regex.Pattern;
 
 public class SaveFilePage extends AbstractWizardPage {
 
+    private static Pattern VALID_FILENAME_CHARACTER = Pattern.compile("[^A-Za-z0-9_\\-]");
     private FileFormat[] formats;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton browseFileBtn;
+    private javax.swing.JButton browseFolderBtn;
+    private javax.swing.JTextField fileName;
+    private javax.swing.JTextField folder;
+    private javax.swing.JComboBox format;
+    private javax.swing.JLabel formatLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField path;
 
     /**
      * Creates new form SaveFilePage
@@ -88,7 +101,6 @@ public class SaveFilePage extends AbstractWizardPage {
         }
     }
 
-
     @Override
     public JComponent createControls() {
         return this;
@@ -122,7 +134,6 @@ public class SaveFilePage extends AbstractWizardPage {
         updateGeneratedFile();
     }
 
-
     public FileFormat getFormat() {
         return (FileFormat) format.getSelectedItem();
     }
@@ -133,10 +144,13 @@ public class SaveFilePage extends AbstractWizardPage {
     }
 
     /* Returns the file name with extension appended */
-
     public String getFileName() {
         StringBuilder sb = new StringBuilder();
         String name = getFileNameWithoutExtension();
+
+        // Filter invalid characters
+        name = VALID_FILENAME_CHARACTER.matcher(name).replaceAll("_");
+
         sb.append(name);
 
         if (!name.isEmpty() && format.getSelectedIndex() >= 0) {
@@ -269,18 +283,6 @@ public class SaveFilePage extends AbstractWizardPage {
                 }
         }
     }//GEN-LAST:event_browseFileBtnActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton browseFileBtn;
-    private javax.swing.JButton browseFolderBtn;
-    private javax.swing.JTextField fileName;
-    private javax.swing.JTextField folder;
-    private javax.swing.JComboBox format;
-    private javax.swing.JLabel formatLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField path;
     // End of variables declaration//GEN-END:variables
 
 }
