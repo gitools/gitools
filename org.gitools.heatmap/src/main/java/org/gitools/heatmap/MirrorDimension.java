@@ -24,10 +24,14 @@ package org.gitools.heatmap;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Set;
 
@@ -41,11 +45,25 @@ public class MirrorDimension extends HeatmapDimension {
         super(mirror);
         this.main = main;
         this.mirror = mirror;
+
+        this.main.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                MirrorDimension.this.firePropertyChange(evt);
+            }
+        });
+
+        this.mirror.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                MirrorDimension.this.firePropertyChange(evt);
+            }
+        });
     }
 
     @Override
     public void addAnnotations(IAnnotations annotations) {
-        main.addAnnotations(annotations);
+        mirror.addAnnotations(annotations);
     }
 
     @Override
@@ -60,7 +78,7 @@ public class MirrorDimension extends HeatmapDimension {
 
     @Override
     public AnnotationMatrix getAnnotations() {
-        return main.getAnnotations();
+        return mirror.getAnnotations();
     }
 
     @Override
@@ -178,4 +196,18 @@ public class MirrorDimension extends HeatmapDimension {
         mirror.updateHeaders();
     }
 
+    @Override
+    public void populateDetails(List<DetailsDecoration> details) {
+        mirror.populateDetails(details);
+    }
+
+    @Override
+    public ResourceReference<AnnotationMatrix> getAnnotationsReference() {
+        return mirror.getAnnotationsReference();
+    }
+
+    @Override
+    public void setAnnotationsReference(ResourceReference<AnnotationMatrix> annotationsReference) {
+        mirror.setAnnotationsReference(annotationsReference);
+    }
 }
