@@ -163,6 +163,8 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
                         if (page.isDelete()) {
                             bookmarks.removeBookmark(page.getBookmark());
                             Application.get().setStatusText("Bookmark " + bookmark.getName() + " removed.");
+                        } else {
+                            bookmarks.add(page.getBookmark());
                         }
 
                     } else {
@@ -183,7 +185,9 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-            bookmark = (Bookmark) value;
+            if (isSelected) {
+                bookmark = (Bookmark) value;
+            }
 
             Component comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (value != null && value.equals(NO_OPTION) && bookmarkComboBox.isPopupVisible()) {
@@ -192,7 +196,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
 
             }
 
-            if (value != null) {
+            if (value != null && !value.equals(NO_OPTION)) {
                 panel.add(comp);
 
                 if (isFirst) {

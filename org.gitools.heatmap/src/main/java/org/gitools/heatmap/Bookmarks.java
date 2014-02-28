@@ -28,10 +28,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Bookmarks extends Model {
@@ -57,6 +54,12 @@ public class Bookmarks extends Model {
             }
         }
         bookmarks.add(b);
+        Collections.sort(bookmarks, new Comparator<Bookmark>() {
+            @Override
+            public int compare(Bookmark o1, Bookmark o2) {
+                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+            }
+        });
         firePropertyChange(PROPERTY_CONTENTS, null, this);
         updateMap();
 

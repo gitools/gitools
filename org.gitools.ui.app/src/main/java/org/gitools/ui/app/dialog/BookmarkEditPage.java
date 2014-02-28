@@ -28,12 +28,15 @@ import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.CloneUtils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookmarkEditPage extends AbstractWizardPage {
     private final Bookmarks existingBookmarks;
@@ -46,17 +49,24 @@ public class BookmarkEditPage extends AbstractWizardPage {
     private JButton deleteThisBookmarkButton;
     private boolean delete = false;
     private boolean creating;
+    private List<String> forbiddenNames;
+    private Bookmark bookmark;
+    private Bookmark backup;
 
     public Bookmark getBookmark() {
         return bookmark;
     }
 
-    private Bookmark bookmark;
 
     public BookmarkEditPage(Heatmap heatmap, final Bookmark bookmark, boolean creating) {
-        this.bookmark = bookmark;
+        this.bookmark = CloneUtils.clone(bookmark);
+        this.backup = bookmark;
         this.existingBookmarks = heatmap.getBookmarks();
         this.creating = creating;
+        this.forbiddenNames = new ArrayList<>();
+        for (Bookmark b : existingBookmarks.getAll()) {
+            forbiddenNames.add(b.getName());
+        }
 
         // DATA LAYER
 
@@ -91,6 +101,7 @@ public class BookmarkEditPage extends AbstractWizardPage {
         } else {
             setLogo(IconUtils.getImageIconResource(IconNames.bookmark48));
             setTitle("Edit Bookmark");
+            forbiddenNames.remove(bookmark.getName());
 
             deleteThisBookmarkButton.addActionListener(new ActionListener() {
                 @Override
@@ -99,6 +110,7 @@ public class BookmarkEditPage extends AbstractWizardPage {
                     nameField.setEnabled(false);
                     noneCheckBox.setEnabled(false);
                     dataLayerComboBox.setEnabled(false);
+                    restoreBackup();
                     setMessage(MessageStatus.PROGRESS, "Click OK to remove the Bookmark");
                     setComplete(true);
                 }
@@ -131,6 +143,10 @@ public class BookmarkEditPage extends AbstractWizardPage {
 
         updateControls();
         nameField.selectAll();
+    }
+
+    private void restoreBackup() {
+        this.bookmark = backup;
     }
 
 
@@ -173,12 +189,12 @@ public class BookmarkEditPage extends AbstractWizardPage {
     }
 
     private boolean uniqueName() {
-        for (Bookmark b : existingBookmarks.getAll()) {
-            if (!b.equals(bookmark) && b.getName().equals(bookmark.getName())) {
+/*        for (Bookmark b : existingBookmarks.getAll()) {
+            if (oldName != null && !oldName.equals(bookmark.getName()) && b.getName().equals(bookmark.getName())) {
                 return false;
             }
-        }
-        return true;
+        }*/
+        return (!forbiddenNames.contains(bookmark.getName()));
     }
 
     @Override
