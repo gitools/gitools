@@ -165,6 +165,9 @@ public class Heatmap extends Resource implements IMatrixView {
     public void applyBookmark(Bookmark b) {
         getRows().show(b.getRows());
         getColumns().show(b.getColumns());
+        if (b.getLayerId() != null) {
+            getLayers().setTopLayer(getLayers().get(b.getLayerId()));
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.gitools.utils.xml.adapter.StringArrayXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.List;
@@ -35,15 +36,19 @@ public class Bookmark implements Serializable {
 
     String name;
 
+
+    @XmlElement(name = "layer")
+    String layerId;
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     List<String> rows;
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     List<String> columns;
 
-    public Bookmark(String name, List<String> rows, List<String> columns) {
+    public Bookmark(String name, List<String> rows, List<String> columns, String layerId) {
         this.name = name;
         this.rows = rows;
         this.columns = columns;
+        this.layerId = layerId;
     }
 
 
@@ -64,6 +69,14 @@ public class Bookmark implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLayerId() {
+        return layerId;
+    }
+
+    public void setLayerId(String layerId) {
+        this.layerId = layerId;
     }
 
     @Override

@@ -74,6 +74,9 @@ public class Bookmarks extends Model {
     }
 
     public void removeBookmark(Bookmark b) {
+        if (nameMap == null) {
+            updateMap();
+        }
         bookmarks.remove(b);
         nameMap.remove(b.getName());
         firePropertyChange(PROPERTY_CONTENTS, null, this);
@@ -81,6 +84,9 @@ public class Bookmarks extends Model {
 
 
     public Bookmark get(String name) {
+        if (nameMap == null) {
+            updateMap();
+        }
         if (!nameMap.containsKey(name)) {
             return null;
         }
