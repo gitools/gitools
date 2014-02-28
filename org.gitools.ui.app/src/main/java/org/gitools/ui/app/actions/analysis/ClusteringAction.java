@@ -130,6 +130,9 @@ public class ClusteringAction extends HeatmapAction {
                     // Add header
                     String sortLabel;
                     if (results instanceof Cluster) {
+
+                        // Hierarchical clustering
+
                         int depth = FastMath.min(10, maxLevel);
                         for (int l = depth; l >= 1; l--) {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);

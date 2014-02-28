@@ -21,10 +21,14 @@
  */
 package org.gitools.ui.app.batch.tools;
 
+import com.google.common.base.Strings;
+import org.apache.commons.io.FilenameUtils;
 import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
+
+import java.io.File;
 
 public class LoadTool extends AbstractTool {
 
@@ -55,6 +59,33 @@ public class LoadTool extends AbstractTool {
 
     @Override
     protected Command newJob() {
+
+        // Convert partial or relative path to absolute path
+        file = convertToFullPath(file);
+        rows = convertToFullPath(rows);
+        cols = convertToFullPath(cols);
+
         return new CommandLoadFile(file, rows, cols);
+    }
+
+    private String convertToFullPath(String file) {
+
+        if (Strings.isNullOrEmpty(file)) {
+            return file;
+        }
+
+        file = file.trim();
+
+        if (file.charAt(0) == File.pathSeparatorChar) {
+            return file;
+        }
+
+        if (file.contains("://")) {
+            return file;
+        }
+
+        String basePath = System.getProperty("user.dir");
+        
+        return FilenameUtils.concat(basePath, file);
     }
 }
