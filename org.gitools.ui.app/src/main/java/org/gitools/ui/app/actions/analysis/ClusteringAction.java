@@ -97,8 +97,6 @@ public class ClusteringAction extends HeatmapAction {
 
                         Cluster rootCluster = (Cluster) results;
 
-                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
-
                         List<Cluster> children = rootCluster.getChildren();
                         rootCluster.setName("");
 
@@ -132,7 +130,6 @@ public class ClusteringAction extends HeatmapAction {
                     if (results instanceof Cluster) {
 
                         // Hierarchical clustering
-
                         int depth = FastMath.min(10, maxLevel);
                         for (int l = depth; l >= 1; l--) {
                             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
@@ -144,6 +141,14 @@ public class ClusteringAction extends HeatmapAction {
                             clusteringDimension.addHeader(header);
                             clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationLabel + " ", clusteringDimension.getAnnotations()), false));
                         }
+
+                        // Create a bookmark
+                        heatmap.newBookmark(method.getName() + " (" + clusteringDimension.getId() + " - " + wiz.getClusteringLayer() + ")");
+
+                        // Open a tree editor
+                        Cluster rootCluster = (Cluster) results;
+                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
+
 
                     } else {
                         sortLabel = "${" + annotationLabel + "}";

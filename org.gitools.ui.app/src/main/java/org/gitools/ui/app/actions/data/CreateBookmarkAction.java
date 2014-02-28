@@ -53,23 +53,14 @@ public class CreateBookmarkAction extends HeatmapAction {
     public void run() {
         Heatmap heatmap = getHeatmap();
 
-        List<String> rows = new ArrayList<String>();
-        List<String> columns = new ArrayList<String>();
-
-        Iterables.addAll(rows, heatmap.newPosition().iterate(heatmap.getRows()));
-        Iterables.addAll(columns, heatmap.newPosition().iterate(heatmap.getColumns()));
-
-        CreateBookmarkPage page = new CreateBookmarkPage(heatmap.getBookmarks().getAll(), new Bookmark("new Bookmark", rows, columns));
+        CreateBookmarkPage page = new CreateBookmarkPage(heatmap.getBookmarks().getAll(), heatmap.newBookmark("new Bookmark"));
         PageDialog dialog = new PageDialog(Application.get(), page);
         dialog.setVisible(true);
 
         if (dialog.isCancelled()) {
+            heatmap.getBookmarks().removeBookmark(page.getBookmark());
             return;
         }
-
-        heatmap.getBookmarks().add(page.getBookmark());
-        //heatmap.getBookmarks().setSelected(page.getBookmark().getName());
-
 
         Application.get().setStatusText("Bookmark created.");
     }
