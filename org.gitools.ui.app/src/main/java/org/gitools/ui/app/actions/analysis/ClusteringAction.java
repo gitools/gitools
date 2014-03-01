@@ -27,15 +27,11 @@ import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
-import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
-import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
-import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
@@ -162,6 +158,7 @@ public class ClusteringAction extends HeatmapAction {
             }
         });
 
+        getHeatmap().getBookmarks().createNew(heatmap, method.getName() + "-Clustering");
         Application.get().setStatusText("Clusters created");
     }
 

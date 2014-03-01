@@ -106,4 +106,24 @@ public class Bookmarks extends Model {
     }
 
 
+    public void createNew(Heatmap heatmap, String bookmarkName) {
+        String name = bookmarkName;
+        int counter = 1;
+        while (nameOccupied(name)) {
+            name = bookmarkName + "-" + counter++;
+        }
+        add(new Bookmark(name,
+                heatmap.getRows().toList(),
+                heatmap.getColumns().toList(),
+                heatmap.getLayers().getTopLayer().getId()));
+    }
+
+    private boolean nameOccupied(String name) {
+        for (Bookmark b : bookmarks) {
+            if (b.getName().toLowerCase().equals(name.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

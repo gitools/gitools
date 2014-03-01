@@ -27,9 +27,11 @@ import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.dialog.BookmarkEditPage;
+import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.IPanelAction;
+import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.*;
@@ -65,6 +67,18 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
                 bookmarkComboBox.getModel().setSelectedItem(NO_OPTION);
             }
         });
+    }
+
+
+    @Override
+    protected boolean isEnabledByEditor(IEditor editor) {
+        if (!(editor instanceof HeatmapEditor)) {
+            bookmarksSelectPanel.setVisible(false);
+            bookmarksSelectPanel.repaint();
+            return false;
+        } else {
+            return isEnabledByModel(editor.getModel());
+        }
     }
 
     @Override
