@@ -36,7 +36,7 @@ import java.util.List;
 
 class ValueSortCriteriaTableModel implements TableModel {
 
-    private static final String[] columnName = new String[]{"Attribute", "Agregation", "Direction"};
+    private static final String[] columnName = new String[]{"Data Layer", "Aggregation", "Direction"};
 
     private static final Class<?>[] columnClass = new Class<?>[]{String.class, CutoffCmp.class, SortDirection.class};
 
