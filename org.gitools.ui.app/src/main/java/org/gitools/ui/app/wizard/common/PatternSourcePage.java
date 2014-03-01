@@ -25,6 +25,7 @@ import org.gitools.api.ApplicationContext;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -57,9 +58,9 @@ public class PatternSourcePage extends AbstractWizardPage {
         this(null, idOptVisible);
     }
 
-    public PatternSourcePage(HeatmapDimension hdim, boolean idOptVisible) {
+    public PatternSourcePage(HeatmapDimension hdim, boolean idAsOption) {
         this.hdim = hdim;
-        this.idOptVisible = idOptVisible;
+        this.idOptVisible = idAsOption;
 
         initComponents();
 
@@ -127,6 +128,7 @@ public class PatternSourcePage extends AbstractWizardPage {
 
         if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty()) {
             annOpt.setSelected(true);
+            annOpt.setEnabled(true);
             DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
             FilterCellRenderer cellRenderer = new FilterCellRenderer();
             if (idOptVisible) {
@@ -280,6 +282,25 @@ public class PatternSourcePage extends AbstractWizardPage {
 
     private void filterAnnotationsBox(KeyEvent evt) {
         annList.repaint();
+    }
+
+    public HeatmapTextLabelsHeader.LabelSource getLabelSource() {
+        if (idOpt.isSelected()) {
+            return HeatmapTextLabelsHeader.LabelSource.ID;
+        } else if (annOpt.isSelected()) {
+            return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+        } else if (patOpt.isSelected()) {
+            return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+        }
+        return HeatmapTextLabelsHeader.LabelSource.ID;
+    }
+
+    public String getAnnotationName() {
+        if (annList.getSelectedIndex() != -1) {
+            return annotationOptions.get(annList.getSelectedIndex()).getKey();
+        } else {
+            return "";
+        }
     }
 
     /**
