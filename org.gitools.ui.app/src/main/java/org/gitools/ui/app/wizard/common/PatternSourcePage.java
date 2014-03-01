@@ -288,7 +288,11 @@ public class PatternSourcePage extends AbstractWizardPage {
         if (idOpt.isSelected()) {
             return HeatmapTextLabelsHeader.LabelSource.ID;
         } else if (annOpt.isSelected()) {
-            return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+            if (annList.getSelectedIndex() == 0) {
+                return HeatmapTextLabelsHeader.LabelSource.ID;
+            } else {
+                return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+            }
         } else if (patOpt.isSelected()) {
             return HeatmapTextLabelsHeader.LabelSource.PATTERN;
         }
@@ -296,8 +300,8 @@ public class PatternSourcePage extends AbstractWizardPage {
     }
 
     public String getAnnotationName() {
-        if (annList.getSelectedIndex() != -1) {
-            return annotationOptions.get(annList.getSelectedIndex()).getKey();
+        if (annList.getSelectedIndex() > 0) {
+            return annotationOptions.get(annList.getSelectedIndex() - 1).getKey();
         } else {
             return "";
         }
