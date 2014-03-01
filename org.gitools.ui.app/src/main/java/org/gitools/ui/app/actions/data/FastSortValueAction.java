@@ -28,9 +28,12 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -42,13 +45,14 @@ import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
-public class FastSortValueAction extends HeatmapDimensionAction {
+public class FastSortValueAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
     private SortDirection currentSort;
+    private MatrixDimensionKey dimension;
 
     public FastSortValueAction(MatrixDimensionKey dimension) {
         super(dimension, "<html><i>Sort</i> " + dimension.getLabel() + " by values</html>");
-
+        this.dimension = dimension;
         setMnemonic(KeyEvent.VK_S);
         currentSort = SortDirection.ASCENDING;
         updateIcon();
@@ -103,6 +107,15 @@ public class FastSortValueAction extends HeatmapDimensionAction {
             }
         });
 
-        Application.get().setStatusText("Rows sorted.");
+        Application.get().setStatusText("Sorted.");
+    }
+
+    @Override
+    public void onConfigure(HeatmapDimension object, HeatmapPosition position) {
+        String selected1 = getHeatmap().getDimension(dimension).getSelected().size() > 0 ? "sel. " : "";
+        String selected2 = object.getSelected().size() > 0 ? "selected " : "";
+
+        setName("<html><i>Sort</i> " + selected1 + dimension.getLabel() + "s by " + selected2 + " values</html>");
+
     }
 }
