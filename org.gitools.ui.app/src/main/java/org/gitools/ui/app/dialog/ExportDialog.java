@@ -49,6 +49,11 @@ public class ExportDialog extends AbstractDialog {
 
 
     @Override
+    protected void escapePressed() {
+        setVisible(false);
+    }
+
+    @Override
     protected JComponent createContainer() {
         DefaultMutableTreeNode model = new DefaultMutableTreeNode();
 

@@ -23,6 +23,9 @@ package org.gitools.ui.platform.dialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public abstract class AbstractDialog extends JDialog {
@@ -53,7 +56,24 @@ public abstract class AbstractDialog extends JDialog {
 
         setLocationRelativeTo(owner);
         setMinimumSize(new Dimension(300, 260));
+
     }
+
+    protected JRootPane createRootPane() {
+
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                escapePressed();
+            }
+        };
+
+        KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        JRootPane rootPane = new JRootPane();
+        rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+        return rootPane;
+    }
+
+    protected abstract void escapePressed();
 
     protected AbstractDialog(Window owner, String title, Icon icon) {
         this(owner, title, "", "", MessageStatus.INFO, icon);
