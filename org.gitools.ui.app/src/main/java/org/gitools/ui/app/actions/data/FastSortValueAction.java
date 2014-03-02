@@ -112,10 +112,11 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
 
     @Override
     public void onConfigure(HeatmapDimension object, HeatmapPosition position) {
-        String selected1 = getHeatmap().getDimension(dimension).getSelected().size() > 0 ? "sel. " : "";
-        String selected2 = object.getSelected().size() > 0 ? "selected " : "";
+        String selected = object.getSelected().size() > 0 ? "selected " : "";
 
-        setName("<html><i>Sort</i> " + selected1 + dimension.getLabel() + "s by " + selected2 + " values</html>");
+        String layer = getHeatmap().getLayers().getTopLayer().getName();
+
+        setName("<html><i>Sort</i> " + dimension.getLabel() + "s by " + selected + " '" + layer + "'</html>");
 
     }
 }
