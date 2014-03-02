@@ -68,8 +68,8 @@ public class MenuActionSet extends ActionSet {
                                 new LayersActionSet(),
                                 Actions.heatmapSettings,
                                 BaseAction.separator,
-                                Actions.createBookmarkAction,
-                                Actions.searchRowsAction
+                                Actions.searchRowsAction,
+                                Actions.createBookmarkAction
                         }
                 ),
                 new ActionSet("Analysis", KeyEvent.VK_A,

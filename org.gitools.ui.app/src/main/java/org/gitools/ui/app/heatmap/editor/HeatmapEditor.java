@@ -135,7 +135,7 @@ public class HeatmapEditor extends AbstractEditor {
 
     @Override
     public void setName(String name) {
-        if (this.heatmap != null) {
+        if (this.heatmap != null && (this.heatmap.getTitle() == null || this.heatmap.getTitle().equals(""))) {
             heatmap.setTitle(name);
         }
         super.setName(name);

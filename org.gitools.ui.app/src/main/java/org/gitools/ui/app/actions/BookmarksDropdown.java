@@ -25,19 +25,27 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.dialog.BookmarkEditPage;
+import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.actions.IPanelAction;
+import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 
 //FIXME: always two listeners.
-//TODO: remove bookmark!
 
 public class BookmarksDropdown extends HeatmapAction implements IPanelAction, PropertyChangeListener {
 
@@ -51,17 +59,26 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
 
         bookmarksSelectPanel.setVisible(false);
 
+        bookmarkComboBox.setRenderer(new BookmarkCellRenderer());
+
         bookmarkComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Bookmark b = (Bookmark) bookmarkComboBox.getSelectedItem();
-                if (b != null && !b.equals(NO_OPTION)) {
-                    getHeatmap().applyBookmark(b);
-                    Application.get().setStatusText("Bookmark " + b.getName() + " applied.");
-                    bookmarkComboBox.getModel().setSelectedItem(NO_OPTION);
-                }
+                bookmarkComboBox.getModel().setSelectedItem(NO_OPTION);
             }
         });
+    }
+
+
+    @Override
+    protected boolean isEnabledByEditor(IEditor editor) {
+        if (!(editor instanceof HeatmapEditor)) {
+            bookmarksSelectPanel.setVisible(false);
+            bookmarksSelectPanel.repaint();
+            return false;
+        } else {
+            return isEnabledByModel(editor.getModel());
+        }
     }
 
     @Override
@@ -114,4 +131,106 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
         bookmarksSelectPanel.revalidate();
         bookmarksSelectPanel.repaint();
     }
+
+
+    class BookmarkCellRenderer extends DefaultListCellRenderer {
+
+
+        Icon icon;
+        JPanel panel;
+        JButton btn;
+        Bookmark bookmark;
+        //so we will install the mouse listener once
+        boolean isFirst = true;
+
+
+        BookmarkCellRenderer() {
+            super();
+            panel = new JPanel(new BorderLayout());
+            icon = IconUtils.getIconResource(IconNames.edit16);
+            btn = new JButton(icon);
+            btn.setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+            panel.add(btn, BorderLayout.WEST);
+
+
+            panel.addMouseListener(new MouseAdapter() {
+
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                    e.consume();
+
+                    if (!bookmark.equals(NO_OPTION) && clickOnButon(e.getX())) {
+
+
+                        BookmarkEditPage page = new BookmarkEditPage(getHeatmap(),
+                                bookmark,
+                                false);
+                        PageDialog dialog = new PageDialog(Application.get(), page);
+                        dialog.setVisible(true);
+
+                        if (dialog.isCancelled()) {
+                            return;
+                        }
+
+                        if (page.isDelete()) {
+                            bookmarks.removeBookmark(page.getBookmark());
+                            Application.get().setStatusText("Bookmark " + bookmark.getName() + " removed.");
+                        } else {
+                            bookmarks.add(page.getBookmark());
+                        }
+
+                    } else {
+                        if (!bookmark.equals(NO_OPTION)) {
+                            getHeatmap().applyBookmark(bookmark);
+                            Application.get().setStatusText("Bookmark " + bookmark.getName() + " applied.");
+                        }
+                    }
+
+                }
+            });
+        }
+
+        private boolean clickOnButon(int x) {
+            return btn.getX() + btn.getWidth() > x;
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+            if (isSelected) {
+                bookmark = (Bookmark) value;
+            }
+
+            Component comp = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value != null && value.equals(NO_OPTION) && bookmarkComboBox.isPopupVisible()) {
+
+                setForeground(Color.LIGHT_GRAY);
+
+            }
+
+            if (value != null && !value.equals(NO_OPTION)) {
+                panel.add(comp);
+
+                if (isFirst) {
+                    isFirst = false;
+                    list.addMouseListener(new MouseAdapter() {
+
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            panel.dispatchEvent(e);
+                            e.consume();
+                        }
+                    });
+                }
+
+                return panel;
+            }
+
+            return comp;
+        }
+    }
+
 }
+

@@ -168,6 +168,9 @@ public class Heatmap extends Resource implements IMatrixView {
     public void applyBookmark(Bookmark b) {
         getRows().show(b.getRows());
         getColumns().show(b.getColumns());
+        if (b.getLayerId() != null) {
+            getLayers().setTopLayer(getLayers().get(b.getLayerId()));
+        }
     }
 
     @Override
@@ -238,17 +241,4 @@ public class Heatmap extends Resource implements IMatrixView {
         return bookmarks;
     }
 
-    public Bookmark newBookmark(String name) {
-
-        List<String> rows = new ArrayList<>();
-        List<String> columns = new ArrayList<>();
-
-        Iterables.addAll(rows, getRows());
-        Iterables.addAll(columns, getColumns());
-
-        Bookmark bookmark = new Bookmark(name, rows, columns);
-        getBookmarks().add(bookmark);
-
-        return bookmark;
-    }
 }

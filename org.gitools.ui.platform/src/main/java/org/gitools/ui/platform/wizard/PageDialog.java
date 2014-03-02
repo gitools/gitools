@@ -125,6 +125,11 @@ public class PageDialog extends AbstractDialog {
         }
     }
 
+    @Override
+    protected void escapePressed() {
+        cancelActionPerformed();
+    }
+
     private void cancelActionPerformed() {
         cancelled = true;
 

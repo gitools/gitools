@@ -38,6 +38,12 @@ public final class ColorRegistry {
 
     private static final Map<String, Color> registry = new HashMap<>();
 
+    static {
+        get().registerId("", Color.WHITE);
+        get().registerId(",", Color.WHITE);
+        get().registerId(",,", Color.WHITE);
+    }
+
     public Color getColor(String id) {
         if (registry.containsKey(id)) {
             return registry.get(id);

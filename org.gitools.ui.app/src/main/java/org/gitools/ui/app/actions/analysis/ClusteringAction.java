@@ -27,15 +27,11 @@ import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
-import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
-import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
-import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
@@ -142,9 +138,6 @@ public class ClusteringAction extends HeatmapAction {
                             clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationLabel + " ", clusteringDimension.getAnnotations()), false));
                         }
 
-                        // Create a bookmark
-                        heatmap.newBookmark(method.getName() + " (" + clusteringDimension.getId() + " - " + wiz.getClusteringLayer() + ")");
-
                         // Open a tree editor
                         Cluster rootCluster = (Cluster) results;
                         Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
@@ -162,14 +155,14 @@ public class ClusteringAction extends HeatmapAction {
                         clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
                     }
 
-
-
                 } catch (Throwable ex) {
                     monitor.exception(ex);
                 }
             }
         });
 
+        HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
+        heatmap.getBookmarks().createNew(heatmap, method.getName() + " (" + clusteringDimension.getId().toString().substring(0,3) + " - " + wiz.getClusteringLayer() + ")");
         Application.get().setStatusText("Clusters created");
     }
 

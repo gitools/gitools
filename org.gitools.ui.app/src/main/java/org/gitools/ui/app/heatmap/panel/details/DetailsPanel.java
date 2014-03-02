@@ -23,7 +23,6 @@ package org.gitools.ui.app.heatmap.panel.details;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
-import com.jgoodies.binding.beans.PropertyAdapter;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
@@ -102,14 +101,15 @@ public class DetailsPanel extends JXTaskPaneContainer {
         heatmap.getLayers().addPropertyChangeListener(updateLayers);
         heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
 
-        /*TODO Add title and description?
+
         titleLabel = new JLabel();
         PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
         Bindings.bind(titleLabel, model.getModel(Resource.PROPERTY_TITLE));
         Font f = titleLabel.getFont();
         titleLabel.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
         add(titleLabel);
-        */
+        add(new JSeparator());
+
 
         add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS) {
             @Override

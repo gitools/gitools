@@ -104,6 +104,11 @@ public abstract class SettingsDialog extends AbstractDialog {
         setVisible(false);
     }
 
+    @Override
+    protected void escapePressed() {
+        close();
+    }
+
     protected abstract void apply();
 
     @Override

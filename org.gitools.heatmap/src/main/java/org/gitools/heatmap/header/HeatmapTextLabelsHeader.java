@@ -90,7 +90,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
                 sb.append(labelAnnotation);
                 break;
             case PATTERN:
-                sb.append(labelPattern);
+                sb.append(labelPattern.replaceAll("[\\$\\{\\}]", ""));
                 break;
         }
         return sb.toString();

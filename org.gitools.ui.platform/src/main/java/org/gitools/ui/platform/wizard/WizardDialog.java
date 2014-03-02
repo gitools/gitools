@@ -154,6 +154,11 @@ public class WizardDialog extends AbstractDialog {
     }
 
     @Override
+    protected void escapePressed() {
+        cancelActionPerformed();
+    }
+
+    @Override
     protected JComponent createContainer() {
         pagePanel = new JPanel(new BorderLayout());
         return pagePanel;

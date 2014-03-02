@@ -26,7 +26,7 @@ import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.dialog.CreateBookmarkPage;
+import org.gitools.ui.app.dialog.BookmarkEditPage;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.wizard.PageDialog;
 
@@ -53,14 +53,24 @@ public class CreateBookmarkAction extends HeatmapAction {
     public void run() {
         Heatmap heatmap = getHeatmap();
 
-        CreateBookmarkPage page = new CreateBookmarkPage(heatmap.getBookmarks().getAll(), heatmap.newBookmark("new Bookmark"));
+        List<String> rows = new ArrayList<String>();
+        List<String> columns = new ArrayList<String>();
+
+        Iterables.addAll(rows, heatmap.newPosition().iterate(heatmap.getRows()));
+        Iterables.addAll(columns, heatmap.newPosition().iterate(heatmap.getColumns()));
+
+        BookmarkEditPage page = new BookmarkEditPage(heatmap,
+                new Bookmark("new Bookmark", rows, columns, getHeatmap().getLayers().getTopLayer().getId()),
+                true);
         PageDialog dialog = new PageDialog(Application.get(), page);
         dialog.setVisible(true);
 
         if (dialog.isCancelled()) {
-            heatmap.getBookmarks().removeBookmark(page.getBookmark());
             return;
         }
+
+        heatmap.getBookmarks().add(page.getBookmark());
+
 
         Application.get().setStatusText("Bookmark created.");
     }
