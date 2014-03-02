@@ -22,6 +22,7 @@
 package org.gitools.utils.color;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ColorGenerator {
 
@@ -32,6 +33,8 @@ public class ColorGenerator {
     private final Color[] palette;
     private int index = -1;
     private final ColorRegistry colorRegistry;
+
+    private ArrayList<Color> used = new ArrayList<>();
 
     public ColorGenerator() {
         this(DEFAULT_PALETTE);
@@ -49,17 +52,42 @@ public class ColorGenerator {
     }
 
     private Color next() {
-        index++;
-        return palette[index % palette.length];
+        Color c = null;
+        while (isUsed(c)) {
+            index++;
+            c = palette[index % palette.length];
+        }
+        return c;
     }
 
     public Color next(String id) {
         Color c = colorRegistry.getColor(id);
-        if (c == null) {
+        if (c == null || isUsed(c)) {
             c = next();
             colorRegistry.registerId(id, c);
         }
+        if (!used.contains(c)) {
+            used.add(c);
+        }
         return c;
+    }
+
+    private boolean isUsed(Color c) {
+
+        if (c == null) {
+            return true;
+        }
+
+        if (used.contains(c)) {
+            if (used.size() == palette.length) {
+                //all colors have been used, start at the beginning;
+                used.clear();
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getCount() {

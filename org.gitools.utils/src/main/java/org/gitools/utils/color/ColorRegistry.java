@@ -42,6 +42,7 @@ public final class ColorRegistry {
         get().registerId("", Color.WHITE);
         get().registerId(",", Color.WHITE);
         get().registerId(",,", Color.WHITE);
+        get().registerId("-", Color.WHITE);
     }
 
     public Color getColor(String id) {
