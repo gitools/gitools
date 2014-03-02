@@ -98,7 +98,7 @@ public class ClusteringAction extends HeatmapAction {
                         List<Cluster> children = rootCluster.getChildren();
                         rootCluster.setName("");
 
-                        while (!children.isEmpty() && maxLevel < 15) {
+                        while (maxLevel < 15) {
                             maxLevel++;
 
                             List<Cluster> nextLevel = new ArrayList<>();
@@ -113,6 +113,12 @@ public class ClusteringAction extends HeatmapAction {
 
                             clustersMapPerLevel.put(maxLevel, children);
                             children = nextLevel;
+
+                            if (children.isEmpty()) {
+                                maxLevel--;
+                                break;
+                            }
+
                         }
                     } else {
                         Collection<String> clusters = results.getClusters();
