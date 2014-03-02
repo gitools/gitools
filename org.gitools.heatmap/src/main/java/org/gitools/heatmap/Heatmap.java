@@ -21,7 +21,6 @@
  */
 package org.gitools.heatmap;
 
-import com.google.common.collect.Iterables;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
@@ -37,8 +36,6 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -166,8 +163,15 @@ public class Heatmap extends Resource implements IMatrixView {
     }
 
     public void applyBookmark(Bookmark b) {
-        getRows().show(b.getRows());
-        getColumns().show(b.getColumns());
+
+        if (b.getRows() != null) {
+            getRows().show(b.getRows());
+        }
+
+        if (b.getColumns() != null) {
+            getColumns().show(b.getColumns());
+        }
+
         if (b.getLayerId() != null) {
             getLayers().setTopLayer(getLayers().get(b.getLayerId()));
         }

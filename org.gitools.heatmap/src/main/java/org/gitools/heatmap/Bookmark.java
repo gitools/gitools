@@ -69,6 +69,14 @@ public class Bookmark implements Serializable {
         return columns;
     }
 
+    public void setRows(List<String> rows) {
+        this.rows = rows;
+    }
+
+    public void setColumns(List<String> columns) {
+        this.columns = columns;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

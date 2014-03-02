@@ -22,6 +22,7 @@
 package org.gitools.heatmap;
 
 
+import com.google.common.primitives.Ints;
 import com.jgoodies.binding.beans.Model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -40,6 +41,15 @@ public class Bookmarks extends Model {
 
     @XmlTransient
     private Map<String, Integer> nameMap;
+
+    @XmlTransient
+    public static int ROWS = 1;
+
+    @XmlTransient
+    public static int COLUMNS = 2;
+
+    @XmlTransient
+    public static int LAYER = 3;
 
     public Bookmarks() {
         this.bookmarks = new ArrayList<>();
@@ -107,15 +117,25 @@ public class Bookmarks extends Model {
 
 
     public void createNew(Heatmap heatmap, String bookmarkName) {
+        createNew(heatmap, bookmarkName, null);
+    }
+
+    public void createNew(Heatmap heatmap, String bookmarkName, int[] include) {
         String name = bookmarkName;
         int counter = 1;
         while (nameOccupied(name)) {
             name = bookmarkName + "-" + counter++;
         }
-        add(new Bookmark(name,
-                heatmap.getRows().toList(),
-                heatmap.getColumns().toList(),
-                heatmap.getLayers().getTopLayer().getId()));
+
+        if (include == null || include.length == 0) {
+            include = new int[]{ROWS, COLUMNS, LAYER};
+        }
+
+        List<String> rows = Ints.contains(include, ROWS) ? heatmap.getRows().toList() : null;
+        List<String> cols = Ints.contains(include, COLUMNS) ? heatmap.getColumns().toList() : null;
+        String layerId = Ints.contains(include, LAYER) ? heatmap.getLayers().getTopLayer().getId() : null;
+
+        add(new Bookmark(name, rows, cols, layerId));
     }
 
     private boolean nameOccupied(String name) {

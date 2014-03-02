@@ -29,7 +29,9 @@ import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
+import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -162,7 +164,10 @@ public class ClusteringAction extends HeatmapAction {
         });
 
         HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
-        heatmap.getBookmarks().createNew(heatmap, method.getName() + " (" + clusteringDimension.getId().toString().substring(0,3) + " - " + wiz.getClusteringLayer() + ")");
+        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + wiz.getClusteringLayer();
+        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
+                Bookmarks.LAYER};
+        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
         Application.get().setStatusText("Clusters created");
     }
 

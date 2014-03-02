@@ -45,8 +45,10 @@ public class BookmarkEditPage extends AbstractWizardPage {
     private JLabel rowNbLabel;
     private JLabel colNbLabel;
     private JComboBox dataLayerComboBox;
-    private JCheckBox noneCheckBox;
+    private JCheckBox noLayerCheckBox;
     private JButton deleteThisBookmarkButton;
+    private JCheckBox noColumnsCheckBox;
+    private JCheckBox noRowsCheckBox;
     private boolean delete = false;
     private boolean creating;
     private List<String> forbiddenNames;
@@ -70,16 +72,11 @@ public class BookmarkEditPage extends AbstractWizardPage {
 
         // DATA LAYER
 
-        noneCheckBox.setSelected(bookmark.getLayerId() == null);
-        noneCheckBox.addActionListener(new ActionListener() {
+        noLayerCheckBox.setSelected(bookmark.getLayerId() == null);
+        noLayerCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!noneCheckBox.isSelected()) {
-                    bookmark.setLayerId((String) dataLayerComboBox.getSelectedItem());
-                } else {
-                    bookmark.setLayerId(null);
-                }
-                updateControls();
+                updateModel();
             }
         });
 
@@ -87,7 +84,25 @@ public class BookmarkEditPage extends AbstractWizardPage {
         dataLayerComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                bookmark.setLayerId((String) dataLayerComboBox.getSelectedItem());
+                updateModel();
+            }
+        });
+
+        // ROWS AND COLUMNS
+
+        noColumnsCheckBox.setSelected(bookmark.getColumns() == null);
+        noColumnsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateModel();
+            }
+        });
+
+        noRowsCheckBox.setSelected(bookmark.getRows() == null);
+        noRowsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateModel();
             }
         });
 
@@ -108,7 +123,7 @@ public class BookmarkEditPage extends AbstractWizardPage {
                 public void actionPerformed(ActionEvent e) {
                     delete = true;
                     nameField.setEnabled(false);
-                    noneCheckBox.setEnabled(false);
+                    noLayerCheckBox.setEnabled(false);
                     dataLayerComboBox.setEnabled(false);
                     restoreBackup();
                     setMessage(MessageStatus.PROGRESS, "Click OK to remove the Bookmark");
@@ -119,25 +134,23 @@ public class BookmarkEditPage extends AbstractWizardPage {
         }
 
         setMessage(MessageStatus.INFO, "Choose a name for the Bookmark");
-        rowNbLabel.setText("<html><b>" + bookmark.getRows().size() + "</b></html>");
-        colNbLabel.setText("<html><b>" + bookmark.getColumns().size() + "</b></html>");
 
         //BOOKMARK NAME
         nameField.setText(bookmark.getName());
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                updateName();
+                updateModel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                updateName();
+                updateModel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                updateName();
+                updateModel();
             }
         });
 
@@ -155,15 +168,41 @@ public class BookmarkEditPage extends AbstractWizardPage {
     }
 
 
-    private void updateName() {
+    @Override
+    public void updateModel() {
         bookmark.setName(nameField.getText());
+
+        if (noColumnsCheckBox.isSelected()) {
+            bookmark.setColumns(null);
+        } else {
+            bookmark.setColumns(backup.getColumns());
+        }
+
+        if (noRowsCheckBox.isSelected()) {
+            bookmark.setRows(null);
+        } else {
+            bookmark.setRows(backup.getRows());
+        }
+
+        if (noLayerCheckBox.isSelected()) {
+            bookmark.setLayerId(null);
+        } else {
+            bookmark.setLayerId(backup.getLayerId());
+        }
+
         updateControls();
     }
 
     @Override
     public void updateControls() {
 
-        if (noneCheckBox.isSelected()) {
+        String rows = bookmark.getRows() == null ? "-" : String.valueOf(bookmark.getRows().size());
+        String cols = bookmark.getColumns() == null ? "-" : String.valueOf(bookmark.getColumns().size());
+        rowNbLabel.setText("<html><b>" + rows + "</b></html>");
+        colNbLabel.setText("<html><b>" + cols + "</b></html>");
+
+        dataLayerComboBox.setSelectedItem(bookmark.getLayerId());
+        if (noLayerCheckBox.isSelected()) {
             dataLayerComboBox.setEnabled(false);
         } else {
             dataLayerComboBox.setEnabled(true);
