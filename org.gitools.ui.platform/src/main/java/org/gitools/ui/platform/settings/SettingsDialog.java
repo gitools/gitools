@@ -66,6 +66,7 @@ public abstract class SettingsDialog extends AbstractDialog {
         });
 
         sectionPanel.add(list);
+        sectionPanel.repaint();
 
         // Selected panel
         for (String section : panel.getSectionNames()) {
@@ -73,18 +74,23 @@ public abstract class SettingsDialog extends AbstractDialog {
             components.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             JScrollPane scrollPane = new JScrollPane(components);
             selectedPanel.add(scrollPane, section);
+            scrollPane.repaint();
         }
+        selectedPanel.repaint();
 
         // Show current section
         showSection(selectedSection);
 
         updateState();
+        repaint();
 
     }
 
     private void showSection(String sectionName) {
         CardLayout layout = (CardLayout) selectedPanel.getLayout();
         layout.show(selectedPanel, sectionName);
+        revalidate();
+        repaint();
     }
 
     @Override
