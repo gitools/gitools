@@ -76,6 +76,7 @@ public class OncodriveAnalysisWizard extends AnalysisWizard<OncodriveAnalysis> {
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
+        analysisDetailsPage.setAnalysisTitle("Oncodrive");
         addPage(analysisDetailsPage);
     }
 

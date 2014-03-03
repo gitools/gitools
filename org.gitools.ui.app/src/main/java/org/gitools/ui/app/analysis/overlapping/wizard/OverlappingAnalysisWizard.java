@@ -68,6 +68,7 @@ public class OverlappingAnalysisWizard extends AnalysisWizard<OverlappingAnalysi
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
+        analysisDetailsPage.setAnalysisTitle("Overlapping");
         addPage(analysisDetailsPage);
     }
 
