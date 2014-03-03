@@ -56,6 +56,7 @@ public class AddHeaderPage extends AbstractWizardPage {
 
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
+
             // Get icon to use for the list item value
 
             Icon icon = icons.get(value.toString());
@@ -97,13 +98,13 @@ public class AddHeaderPage extends AbstractWizardPage {
     }
 
 
-    private static final String ANNOTATION_TEXT_LABEL_HEADER = "Load values from file and show as a text header";
+    private static final String ANNOTATION_TEXT_LABEL_HEADER = "<html><b>Values as text</b><br> Load values from file and show as a text header</html>";
 
-    private static final String ANNOTATION_COLORED_LABEL = "Load text values from file and show using a categorical color scale";
+    private static final String ANNOTATION_COLORED_LABEL = "<html><b>Values as color</b><br> Load text values from file and show using a categorical color scale</html>";
 
-    public static final String ANNOTATION_HEATMAP = "Load numeric values from file and show using a numeric color scale";
+    public static final String ANNOTATION_HEATMAP = "<html><b>Numeric values</b><br>Load numeric values from file and show using a numeric color scale";
 
-    private static final String AGGREGATED_DATA_HEATMAP = "Calculate aggregated values from the heatmap and show using a numeric color scale";
+    private static final String AGGREGATED_DATA_HEATMAP = "<html><b>Aggregate heatmap values</b><br>Calculate aggregated values from the heatmap and show using a numeric color scale";
 
 
     /**

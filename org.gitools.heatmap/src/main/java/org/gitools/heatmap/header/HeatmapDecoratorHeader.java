@@ -27,6 +27,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.matrix.filter.AnnotationFunction;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 
@@ -72,6 +73,9 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         this.labelPosition = LabelPositionEnum.inside;
         labelColor = Color.BLACK;
         forceLabelColor = false;
+        this.decorator = new LinearDecorator();
+        decorator.setShowValue(true);
+        this.setSize(30);
     }
 
     public LabelPositionEnum getLabelPosition() {
