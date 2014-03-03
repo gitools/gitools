@@ -68,12 +68,9 @@ public class TcmModuleMapFormat extends AbstractModuleMapFormat {
                 moduleMap.addMapping(fields[1], fields[0]);
             }
             in.close();
-            progressMonitor.end();
         } catch (Exception ex) {
             throw new PersistenceException(ex);
         }
-
-        progressMonitor.end();
 
         return moduleMap;
     }
@@ -101,7 +98,6 @@ public class TcmModuleMapFormat extends AbstractModuleMapFormat {
             pw.close();
             out.close();
 
-            progressMonitor.end();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

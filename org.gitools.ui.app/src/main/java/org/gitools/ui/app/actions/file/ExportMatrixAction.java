@@ -86,7 +86,6 @@ public class ExportMatrixAction extends HeatmapAction {
 
                     TextMatrixViewExporter.exportMatrix(matrixView, selected, file);
 
-                    monitor.end();
                 } catch (IOException ex) {
                     monitor.exception(ex);
                 }

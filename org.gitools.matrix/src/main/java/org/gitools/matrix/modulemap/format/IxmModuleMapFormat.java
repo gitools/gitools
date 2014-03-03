@@ -53,7 +53,6 @@ public class IxmModuleMapFormat extends AbstractModuleMapFormat {
             progressMonitor.begin("Reading item names ...", 1);
             List<String> items = Arrays.asList(parser.readNext());
             progressMonitor.info(items.size() + " items");
-            progressMonitor.end();
 
             progressMonitor.begin("Reading modules ...", 1);
             String[] fields;
@@ -69,14 +68,11 @@ public class IxmModuleMapFormat extends AbstractModuleMapFormat {
             }
 
             progressMonitor.info(moduleMap.getModules().size() + " modules and " + moduleMap.getItems().size() + " items annotated");
-            progressMonitor.end();
             in.close();
 
             return moduleMap;
         } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally {
-            progressMonitor.end();
         }
     }
 
@@ -128,8 +124,6 @@ public class IxmModuleMapFormat extends AbstractModuleMapFormat {
             out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally {
-            progressMonitor.end();
         }
     }
 

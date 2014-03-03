@@ -227,14 +227,11 @@ public class MappingEngine {
             data.setDstNode(lastNode);
             data.removeEmptyKeys();
 
-            m.end();
         }
         monitor.worked(1);
 
         for (Mapper m : initializedMappers)
             m.finalize(context, monitor);
-
-        monitor.end();
 
         return data;
     }

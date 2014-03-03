@@ -110,7 +110,6 @@ public class ExportAnnotationAction extends HeatmapAction {
 
                     pw.close();
 
-                    monitor.end();
                 } catch (IOException ex) {
                     monitor.exception(ex);
                 }

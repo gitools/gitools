@@ -104,7 +104,6 @@ public abstract class AbstractImportModulesAction extends BaseAction {
                             monitor.worked(1);
                         }
                         pw.close();
-                        monitor.end();
 
                         setStatus("Ok");
                     } else {

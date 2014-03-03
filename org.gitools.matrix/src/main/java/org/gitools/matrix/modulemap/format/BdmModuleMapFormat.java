@@ -72,8 +72,6 @@ public class BdmModuleMapFormat extends AbstractModuleMapFormat {
             throw new PersistenceException(e);
         }
 
-        progressMonitor.end();
-
         return moduleMap;
 
     }
@@ -112,8 +110,6 @@ public class BdmModuleMapFormat extends AbstractModuleMapFormat {
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
-
-        monitor.end();
 
     }
 

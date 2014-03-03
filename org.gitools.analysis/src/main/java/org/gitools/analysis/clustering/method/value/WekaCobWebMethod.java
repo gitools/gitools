@@ -82,7 +82,6 @@ public class WekaCobWebMethod extends AbstractClusteringValueMethod {
 
                 clusterer.updateFinished();
 
-                monitor.end();
                 monitor.begin("Clustering instances ...", clusterWekaData.getMatrixView().getSize());
 
                 Integer maxLength = Integer.toString(clusterer.numberOfClusters()).length();

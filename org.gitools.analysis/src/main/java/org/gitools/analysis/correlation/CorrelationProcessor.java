@@ -106,6 +106,5 @@ public class CorrelationProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        monitor.end();
     }
 }

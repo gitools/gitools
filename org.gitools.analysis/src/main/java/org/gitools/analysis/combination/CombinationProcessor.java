@@ -104,7 +104,6 @@ public class CombinationProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        monitor.end();
     }
 
     private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimensionKey combineDimension, MatrixDimensionKey iterateDimension, IModuleMap moduleMap, String sizeLayerId, String valueLayerId) {

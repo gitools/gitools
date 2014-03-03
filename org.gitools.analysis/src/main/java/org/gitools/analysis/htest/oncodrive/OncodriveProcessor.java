@@ -171,6 +171,5 @@ public class OncodriveProcessor implements AnalysisProcessor {
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
         analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
-        monitor.end();
     }
 }

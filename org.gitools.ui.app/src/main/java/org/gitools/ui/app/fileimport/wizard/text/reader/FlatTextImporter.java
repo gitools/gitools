@@ -150,7 +150,6 @@ public class FlatTextImporter implements Closeable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        monitor.end();
     }
 
     private CSVReader newCSVReader(IProgressMonitor monitor) throws IOException {

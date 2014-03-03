@@ -150,7 +150,6 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
         // Force a GC to release free memory
         System.gc();
-        monitor.end();
         setExitStatus(0);
     }
 

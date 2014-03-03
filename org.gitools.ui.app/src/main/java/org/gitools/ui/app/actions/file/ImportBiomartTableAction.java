@@ -72,7 +72,6 @@ public class ImportBiomartTableAction extends BaseAction {
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }
-                monitor.end();
             }
         });
 

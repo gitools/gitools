@@ -84,8 +84,6 @@ public class HeatmapCreateImageAction extends HeatmapAction {
                             Application.get().refresh();
                         }
                     });
-
-                    monitor.end();
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }

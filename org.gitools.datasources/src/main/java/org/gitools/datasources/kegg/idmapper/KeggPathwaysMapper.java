@@ -53,7 +53,6 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
             } catch (Exception ex) {
                 throw new MappingException(ex);
             }
-            monitor.end();
         }
 
         if (monitor.isCancelled()) {
@@ -81,14 +80,10 @@ public class KeggPathwaysMapper extends AbstractKeggMapper implements AllIds {
         } catch (Exception ex) {
             throw new MappingException(ex);
         }
-        monitor.end();
-
 
         monitor.begin("Mapping KEGG pathways to KEGG genes ...", dstIds.size());
 
         data.map(map);
-
-        monitor.end();
 
         return data;
     }

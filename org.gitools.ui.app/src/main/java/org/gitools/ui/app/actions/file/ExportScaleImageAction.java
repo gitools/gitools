@@ -115,7 +115,6 @@ public class ExportScaleImageAction extends HeatmapAction {
 
                     ImageIO.write(bi, formatExtension, file);
 
-                    monitor.end();
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }

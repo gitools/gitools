@@ -70,7 +70,6 @@ public class ImportBiomartModulesAction extends BaseAction {
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }
-                monitor.end();
             }
         });
     }

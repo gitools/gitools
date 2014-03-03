@@ -107,12 +107,6 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
         Application.get().refresh();
 
-        // Force a GC to release free memory
-        System.gc();
-
-        monitor.end();
-
-
         setExitStatus(0);
     }
 

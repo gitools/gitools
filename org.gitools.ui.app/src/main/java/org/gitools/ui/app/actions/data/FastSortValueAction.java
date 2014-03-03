@@ -89,10 +89,8 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
                 List<IMatrixLayer> criteriaArray = Lists.newArrayList(layer);
 
                 monitor.begin("Sorting ...", 1);
-
                 MatrixViewSorter.sortByValue(heatmap, criteriaArray, getDimension().getId() == ROWS, getDimension().getId() != ROWS, monitor);
 
-                monitor.end();
             }
         });
 

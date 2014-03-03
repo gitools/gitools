@@ -89,7 +89,6 @@ public class FilterByAnnotationsAction extends BaseAction {
                         )
                 );
 
-                monitor.end();
             }
         });
 

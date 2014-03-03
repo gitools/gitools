@@ -77,8 +77,6 @@ public class WekaKmeansMethod extends AbstractClusteringValueMethod {
 
             if (!monitor.isCancelled()) {
 
-                monitor.end();
-
                 monitor.begin("Clustering instances ...", clusterWekaData.numInstances());
 
                 int cluster;

@@ -93,10 +93,7 @@ public class SortByValueAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
-
                 MatrixViewSorter.sortByValue(matrixView, criteriaList, dlg.isApplyToRowsChecked(), dlg.isApplyToColumnsChecked(), monitor);
-
-                monitor.end();
             }
         });
 

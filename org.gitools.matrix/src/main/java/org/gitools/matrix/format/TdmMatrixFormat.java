@@ -117,8 +117,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally {
-            monitor.end();
         }
     }
 

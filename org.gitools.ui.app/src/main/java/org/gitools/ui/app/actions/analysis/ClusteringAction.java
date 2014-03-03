@@ -78,9 +78,7 @@ public class ClusteringAction extends HeatmapAction {
                 try {
 
                     // Cluster data
-                    monitor.start();
                     Clusters results = method.cluster(wiz.getClusterData(), monitor);
-                    monitor.end();
 
                     // Target dimension
                     HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
@@ -146,6 +144,12 @@ public class ClusteringAction extends HeatmapAction {
                             clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationLabel + " ", clusteringDimension.getAnnotations()), false));
                         }
 
+                        // Bookmark current sort
+                        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + wiz.getClusteringLayer();
+                        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
+                                Bookmarks.LAYER};
+                        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
+
                         // Open a tree editor
                         Cluster rootCluster = (Cluster) results;
                         Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
@@ -169,11 +173,6 @@ public class ClusteringAction extends HeatmapAction {
             }
         });
 
-        HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
-        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + wiz.getClusteringLayer();
-        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
-                Bookmarks.LAYER};
-        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
         Application.get().setStatusText("Clusters created");
     }
 

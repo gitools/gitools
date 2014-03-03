@@ -75,8 +75,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                         }
                     });
 
-                    monitor.end();
-
                     Application.get().setStatusText("Ok.");
                 } catch (Throwable ex) {
                     monitor.exception(ex);

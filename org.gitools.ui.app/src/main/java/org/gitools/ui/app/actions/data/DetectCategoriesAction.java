@@ -72,7 +72,6 @@ public class DetectCategoriesAction extends HeatmapAction {
                         }
                     }
 
-                    monitor.end();
                 } catch (CancellationException e) {
                     categories.clear();
                 }

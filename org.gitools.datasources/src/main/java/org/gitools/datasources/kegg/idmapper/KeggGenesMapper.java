@@ -88,8 +88,6 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
             throw new MappingException(ex);
         }
 
-        monitor.end();
-
         monitor.begin("Mapping KEGG genes ...", 1);
 
         if (data.isEmpty()) {
@@ -97,8 +95,6 @@ public class KeggGenesMapper extends AbstractKeggMapper implements AllIds {
         }
 
         data.map(map);
-
-        monitor.end();
 
         return data;
     }

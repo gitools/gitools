@@ -205,7 +205,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
         analysis.setResults(new ResourceReference<>("results", resultHeatmap));
-        monitor.end();
+
     }
 
 

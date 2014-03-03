@@ -69,7 +69,6 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
             }
             in.close();
             progressMonitor.info(moduleMap.getModules().size() + " modules");
-            progressMonitor.end();
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
@@ -101,6 +100,5 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
             throw new PersistenceException(e);
         }
 
-        progressMonitor.end();
     }
 }

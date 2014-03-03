@@ -68,7 +68,6 @@ public class ExcelReader implements JobRunnable {
         } finally {
             IOUtils.closeQuietly(fis);
         }
-        monitor.end();
 
         // Read the header
         Row header = sheet.getRow(0);

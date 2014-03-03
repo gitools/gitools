@@ -73,7 +73,6 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
 
             progressMonitor.info(labels.size() + " rows");
 
-            progressMonitor.end();
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
@@ -98,7 +97,6 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
             throw new PersistenceException(e);
         }
 
-        progressMonitor.end();
     }
 
 }

@@ -93,8 +93,6 @@ public class AnnPatClusteringMethod implements ClusteringMethod {
             return null;
         }
 
-        monitor.end();
-
         return new GenericClusteringResults(clusters);
     }
 }

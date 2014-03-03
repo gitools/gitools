@@ -70,7 +70,6 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
 
                 header.setSortAscending(!header.isSortAscending());
 
-                monitor.end();
             }
         });
 

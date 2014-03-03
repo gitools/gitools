@@ -78,7 +78,6 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                         Settings.getDefault().isShowMutualExclusionProgress()
                 );
 
-                monitor.end();
             }
         });
 
