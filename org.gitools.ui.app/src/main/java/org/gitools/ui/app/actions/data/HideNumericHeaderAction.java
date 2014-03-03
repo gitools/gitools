@@ -69,6 +69,9 @@ public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeade
                 String value = dimension.getAnnotations().getAnnotation(identifier, header.getSortLabel());
 
                 try {
+                    if (value == null) {
+                        return false;
+                    }
                     double numericValue = Double.parseDouble(value);
 
                     if ((greater && numericValue > thresholdValue) || (!greater && numericValue < thresholdValue)) {
