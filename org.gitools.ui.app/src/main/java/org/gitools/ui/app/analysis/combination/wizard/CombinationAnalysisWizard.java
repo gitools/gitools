@@ -76,6 +76,7 @@ public class CombinationAnalysisWizard extends AnalysisWizard<CombinationAnalysi
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
+        analysisDetailsPage.setAnalysisTitle("Combinations");
         addPage(analysisDetailsPage);
     }
 

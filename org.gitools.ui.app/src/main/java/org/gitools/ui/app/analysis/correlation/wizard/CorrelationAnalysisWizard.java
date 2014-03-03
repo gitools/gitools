@@ -54,6 +54,7 @@ public class CorrelationAnalysisWizard extends AnalysisWizard<CorrelationAnalysi
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
+        analysisDetailsPage.setAnalysisTitle("Correlation");
         addPage(analysisDetailsPage);
     }
 

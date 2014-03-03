@@ -53,11 +53,11 @@ public class SingleSortByValueComparator implements Comparator<String> {
         }
 
         if (v1 == null) {
-            return -1 * sortDirection.getFactor();
+            return 1;
         }
 
         if (v2 == null) {
-            return sortDirection.getFactor();
+            return -1;
         }
 
         return v1.compareTo(v2) * sortDirection.getFactor();

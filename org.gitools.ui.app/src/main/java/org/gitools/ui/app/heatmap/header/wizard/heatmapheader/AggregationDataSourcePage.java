@@ -60,6 +60,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         });
 
         aggregatorCb.setModel(new DefaultComboBoxModel(aggregatorNames));
+        aggregatorCb.setSelectedItem("Mean");
         aggregatorCb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

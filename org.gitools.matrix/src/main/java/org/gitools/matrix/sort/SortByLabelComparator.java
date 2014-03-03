@@ -45,6 +45,18 @@ public class SortByLabelComparator implements Comparator<String> {
         String v1 = transformFunction.apply(o1);
         String v2 = transformFunction.apply(o2);
 
+        if (v1 == null && v2 == null) {
+            return 0;
+        }
+
+        if (v1 == null) {
+            return 1;
+        }
+
+        if (v2 == null) {
+            return -1;
+        }
+
         if (asNumeric) {
             return direction.compare(Double.valueOf(v1), Double.valueOf(v2));
         }
