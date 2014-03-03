@@ -31,8 +31,8 @@ import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
+import org.gitools.matrix.model.hashmatrix.TriangularHashMatrix;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 
 import java.util.Date;
@@ -65,7 +65,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
         monitor.begin("Running correlation analysis ...", correlatedDimension.size() * (correlatedDimension.size() - 1) / 2);
 
         LayerAdapter<CorrelationResult> adapter = new LayerAdapter<>(CorrelationResult.class);
-        final IMatrix results = new HashMatrix(
+        final IMatrix results = new TriangularHashMatrix(
                 adapter.getMatrixLayers(),
                 new HashMatrixDimension(ROWS, correlatedDimension),
                 new HashMatrixDimension(COLUMNS, correlatedDimension)
