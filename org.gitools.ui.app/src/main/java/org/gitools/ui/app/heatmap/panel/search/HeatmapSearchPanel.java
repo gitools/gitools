@@ -24,11 +24,9 @@ package org.gitools.ui.app.heatmap.panel.search;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.app.utils.DocumentChangeListener;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;

@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.api.analysis.IAggregator;
-import org.gitools.utils.aggregation.MeanAggregator;
 import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.colorscale.ColorScaleRange;

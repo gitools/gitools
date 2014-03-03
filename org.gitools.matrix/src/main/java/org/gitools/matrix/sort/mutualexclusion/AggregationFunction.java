@@ -22,8 +22,8 @@
 package org.gitools.matrix.sort.mutualexclusion;
 
 import com.google.common.collect.Sets;
-import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;

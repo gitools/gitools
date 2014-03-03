@@ -22,7 +22,10 @@
 package org.gitools.matrix;
 
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.matrix.format.*;
+import org.gitools.matrix.format.CdmMatrixFormat;
+import org.gitools.matrix.format.CmatrixMatrixFormat;
+import org.gitools.matrix.format.GctMatrixFormat;
+import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.matrix.modulemap.format.*;
 
 @Deprecated

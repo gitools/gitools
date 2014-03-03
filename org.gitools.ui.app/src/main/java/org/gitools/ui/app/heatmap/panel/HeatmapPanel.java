@@ -21,9 +21,6 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;

@@ -23,23 +23,13 @@ package org.gitools.matrix.modulemap.format;
 
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.matrix.format.AbstractMatrixFormat;
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.model.MatrixLayers;
-import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.utils.readers.text.CSVReader;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
-
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
 public class GmtModuleMapFormat extends AbstractModuleMapFormat {

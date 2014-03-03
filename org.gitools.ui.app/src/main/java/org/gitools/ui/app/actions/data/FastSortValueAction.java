@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.data;
 
 import com.google.common.collect.Lists;
-import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -37,7 +36,6 @@ import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAct
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.aggregation.MultAggregator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

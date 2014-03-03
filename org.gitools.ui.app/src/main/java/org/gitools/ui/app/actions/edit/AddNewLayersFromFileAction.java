@@ -32,7 +32,6 @@ import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.commands.CommandLoadFile;

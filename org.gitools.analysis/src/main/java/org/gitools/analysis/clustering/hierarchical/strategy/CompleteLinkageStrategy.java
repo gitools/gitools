@@ -37,7 +37,6 @@
 
 package org.gitools.analysis.clustering.hierarchical.strategy;
 
-import java.util.Collection;
 import java.util.List;
 
 public class CompleteLinkageStrategy implements LinkageStrategy {

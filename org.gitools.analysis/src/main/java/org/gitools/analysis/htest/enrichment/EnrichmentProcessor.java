@@ -22,12 +22,6 @@
 package org.gitools.analysis.htest.enrichment;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import static com.google.common.base.Functions.constant;
-import com.google.common.collect.Iterables;
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Sets.intersection;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
@@ -36,30 +30,24 @@ import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.AbstractMatrixFunction;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixIterable;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 import org.gitools.utils.cutoffcmp.CutoffMatrixFunction;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CancellationException;
+
+import static com.google.common.base.Functions.constant;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.transform;
+import static com.google.common.collect.Sets.intersection;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class EnrichmentProcessor implements AnalysisProcessor {
 

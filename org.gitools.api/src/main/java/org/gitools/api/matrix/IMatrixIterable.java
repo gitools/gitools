@@ -24,7 +24,6 @@ package org.gitools.api.matrix;
 import org.gitools.api.analysis.IProgressMonitor;
 
 import java.util.Comparator;
-import java.util.Set;
 
 public interface IMatrixIterable<T> extends Iterable<T> {
 

@@ -26,7 +26,6 @@ import org.gitools.api.matrix.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {

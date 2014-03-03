@@ -24,8 +24,6 @@ package org.gitools.ui.app.batch;
 import org.gitools.ui.app.batch.tools.ITool;
 
 import java.io.PrintWriter;
-import java.util.Map;
-import java.util.Properties;
 
 public class CommandExecutor {
 

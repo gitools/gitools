@@ -24,14 +24,13 @@ package org.gitools.ui.app.analysis.clustering;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.distance.EuclideanDistance;
 import org.gitools.analysis.clustering.distance.ManhattanDistance;
-import org.gitools.analysis.clustering.hierarchical.strategy.*;
-import org.gitools.analysis.clustering.method.value.AbstractClusteringValueMethod;
+import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.CompleteLinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.analysis.clustering.hierarchical.strategy.SingleLinkageStrategy;
 import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
-
-import java.util.List;
 
 public class HCLParamsPage extends AbstractWizardPage {
 

@@ -21,23 +21,16 @@
  */
 package org.gitools.analysis.clustering.method.value;
 
-import com.google.common.collect.Sets;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.utils.color.ColorGenerator;
-import weka.attributeSelection.AttributeSelection;
-import weka.attributeSelection.CfsSubsetEval;
-import weka.attributeSelection.GreedyStepwise;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 

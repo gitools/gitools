@@ -27,7 +27,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 
 import java.util.Comparator;
-import java.util.Set;
 
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 

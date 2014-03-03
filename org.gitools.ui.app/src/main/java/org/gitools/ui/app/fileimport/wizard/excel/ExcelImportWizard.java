@@ -22,19 +22,18 @@
 package org.gitools.ui.app.fileimport.wizard.excel;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.fileimport.ImportWizard;
+import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.WizardDialog;
-import org.gitools.ui.app.utils.FileFormatFilter;
 
 import java.io.IOException;
 import java.util.List;

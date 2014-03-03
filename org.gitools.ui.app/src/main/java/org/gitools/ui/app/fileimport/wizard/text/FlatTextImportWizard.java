@@ -25,7 +25,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.app.utils.FileFormatFilter;

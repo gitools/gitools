@@ -42,13 +42,7 @@ import com.google.common.collect.Multimap;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IProgressMonitor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 
 public class HierarchyBuilderWithMargin {

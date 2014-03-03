@@ -21,16 +21,11 @@
  */
 package org.gitools.ui.app.analysis.htest.editor;
 
-import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
-import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
-import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 
 public class OncodriveAnalysisEditor extends AbstractHtestAnalysisEditor<OncodriveAnalysis> {
 

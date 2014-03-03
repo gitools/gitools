@@ -23,14 +23,13 @@ package org.gitools.ui.app.analysis.clustering;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.method.value.*;
-import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
+import org.gitools.analysis.clustering.method.value.MatrixClusteringData;
+import org.gitools.analysis.clustering.method.value.WekaCobWebMethod;
+import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
