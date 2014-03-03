@@ -23,6 +23,7 @@ package org.gitools.ui.app.actions.analysis;
 
 import com.google.common.base.Function;
 import org.apache.commons.math3.util.FastMath;
+import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
@@ -75,7 +76,6 @@ public class ClusteringAction extends HeatmapAction {
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
-                try {
 
                     // Cluster data
                     Clusters results = method.cluster(wiz.getClusterData(), monitor);
@@ -166,10 +166,6 @@ public class ClusteringAction extends HeatmapAction {
                         // Sort the header
                         clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
                     }
-
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
             }
         });
 

@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis.clustering;
 
-public class ClusteringException extends Exception {
+public class ClusteringException extends RuntimeException {
 
     public ClusteringException(Throwable cause) {
         super(cause);

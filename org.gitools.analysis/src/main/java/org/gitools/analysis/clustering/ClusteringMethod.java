@@ -27,6 +27,6 @@ public interface ClusteringMethod {
 
     public String getName();
 
-    public Clusters cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
+    public Clusters cluster(ClusteringData data, IProgressMonitor monitor);
 
 }
