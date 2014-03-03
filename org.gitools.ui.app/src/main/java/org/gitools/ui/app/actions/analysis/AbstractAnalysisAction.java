@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
+import com.google.common.base.Strings;
 import org.gitools.analysis.Analysis;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -68,7 +69,14 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                         @Override
                         public void run() {
                             AbstractEditor editor = newEditor(analysis);
-                            editor.setName(analysis.getTitle());
+
+                            String title = analysis.getTitle();
+
+                            if (Strings.isNullOrEmpty(title)) {
+                                title = editor.getClass().getSimpleName().replace("Editor", "").toLowerCase();
+                            }
+
+                            editor.setName(title);
 
                             Application.get().getEditorsPanel().addEditor(editor);
                             Application.get().refresh();
