@@ -65,7 +65,7 @@ public abstract class AbstractImportModulesAction extends BaseAction {
         final ModulesImportWizard wz = getWizard(importer);
 
         WizardDialog dlg = new WizardDialog(Application.get(), wz);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

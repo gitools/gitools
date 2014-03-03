@@ -71,7 +71,7 @@ public class FilterByValueAction extends HeatmapAction {
                 initialCriteria,
                 selectedLayer);
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

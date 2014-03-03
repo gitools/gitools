@@ -68,7 +68,7 @@ public class FilterByAnnotationsAction extends BaseAction {
 
         final StringAnnotationsFilterPage page = new StringAnnotationsFilterPage(hm, dimension);
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

@@ -64,7 +64,7 @@ public class ExportHeatmapImageAction extends HeatmapAction {
         );
 
         WizardDialog dlg = new WizardDialog(Application.get(), saveWiz);
-        dlg.setVisible(true);
+        dlg.open();
         if (dlg.isCancelled()) {
             return;
         }

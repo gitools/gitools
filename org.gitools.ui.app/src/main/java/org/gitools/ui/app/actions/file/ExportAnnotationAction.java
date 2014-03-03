@@ -60,7 +60,7 @@ public class ExportAnnotationAction extends HeatmapAction {
 
         final ExportHeatmapLabelsWizard wiz = new ExportHeatmapLabelsWizard(hm);
         WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

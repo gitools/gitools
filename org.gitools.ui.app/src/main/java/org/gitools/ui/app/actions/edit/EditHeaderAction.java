@@ -94,7 +94,7 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
             }
         };
 
-        dialog.setVisible(true);
+        dialog.open();
     }
 
     @Override

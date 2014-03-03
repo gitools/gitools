@@ -80,7 +80,20 @@ public abstract class AbstractDialog extends JDialog {
     }
 
     public void open() {
-        setVisible(true);
+        validate();
+        repaint();
+        super.setVisible(true);
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+
+        if (b) {
+            validate();
+            repaint();
+        }
+
+        super.setVisible(b);
     }
 
     protected JComponent getContainer() {

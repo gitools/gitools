@@ -407,7 +407,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         PatternSourcePage page = new PatternSourcePage(hdim, true);
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
         if (dlg.isCancelled()) {
             return null;
         }
@@ -460,7 +460,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 heatmap.getColumns() : heatmap.getRows();
         DimensionGroupSelectPage page = new DimensionGroupSelectPage(hdim, "Group " + String.valueOf(groupsTable.getRowCount() + 1));
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

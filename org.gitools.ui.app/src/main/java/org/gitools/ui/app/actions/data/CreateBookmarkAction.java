@@ -63,7 +63,7 @@ public class CreateBookmarkAction extends HeatmapAction {
                 new Bookmark("new Bookmark", rows, columns, getHeatmap().getLayers().getTopLayer().getId()),
                 true);
         PageDialog dialog = new PageDialog(Application.get(), page);
-        dialog.setVisible(true);
+        dialog.open();
 
         if (dialog.isCancelled()) {
             return;

@@ -65,7 +65,7 @@ public class ClusteringAction extends HeatmapAction {
 
         final ClusteringWizard wiz = new ClusteringWizard(heatmap);
         WizardDialog wdlg = new WizardDialog(Application.get(), wiz);
-        wdlg.setVisible(true);
+        wdlg.open();
         if (wdlg.isCancelled()) {
             return;
         }

@@ -79,7 +79,7 @@ public class ExportScaleImageAction extends HeatmapAction {
         wz.setScale(scale);
 
         WizardDialog dlg = new WizardDialog(Application.get(), wz);
-        dlg.setVisible(true);
+        dlg.open();
         if (dlg.isCancelled()) {
             return;
         }

@@ -57,7 +57,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
             page.setDimension(MatrixDimensionKey.COLUMNS);
         }*/
 
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

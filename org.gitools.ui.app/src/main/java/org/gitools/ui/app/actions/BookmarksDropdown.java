@@ -168,7 +168,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
                                 bookmark,
                                 false);
                         PageDialog dialog = new PageDialog(Application.get(), page);
-                        dialog.setVisible(true);
+                        dialog.open();
 
                         if (dialog.isCancelled()) {
                             return;
