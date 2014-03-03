@@ -178,6 +178,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
                             bookmarks.removeBookmark(page.getBookmark());
                             Application.get().setStatusText("Bookmark " + bookmark.getName() + " removed.");
                         } else {
+                            bookmarks.removeBookmark(bookmark);
                             bookmarks.add(page.getBookmark());
                         }
 
