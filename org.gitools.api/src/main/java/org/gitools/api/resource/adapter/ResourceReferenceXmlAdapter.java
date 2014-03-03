@@ -69,6 +69,10 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             return null;
         }
 
+        // First force all the dependencies to load data into memory
+        // this is important when we are overwriting a ZIP file
+        resourceReference.get();
+
         IPersistenceManager pm = ApplicationContext.getPersistenceManager();
 
         if (resourceReference.getLocator() == null) {

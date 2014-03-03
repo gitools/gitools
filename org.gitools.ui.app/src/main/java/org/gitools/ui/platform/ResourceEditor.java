@@ -120,8 +120,17 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
         file = wiz.getPathAsFile();
         setFile(file);
 
-        resource.setLocator(new UrlResourceLocator(file));
-        doSave(monitor);
+        try {
+
+            IResourceLocator newLocator = new UrlResourceLocator(file);
+            ApplicationContext.getPersistenceManager().store(newLocator, resource, monitor);
+            resource.setLocator(newLocator);
+
+        } catch (PersistenceException ex) {
+            monitor.exception(ex);
+        }
+
+        setDirty(false);
 
     }
 
