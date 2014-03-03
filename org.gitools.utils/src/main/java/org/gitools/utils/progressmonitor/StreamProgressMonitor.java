@@ -121,9 +121,9 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 
         String time = "";
         if (millis < 10000) {
-            time = Double.toString(millis) + " millisecs";
+            time = Long.toString(millis) + " millisecs";
         } else {
-            time = Double.toString(mins) + " mins - " + Double.toString(secs) + " secs";
+            time = Long.toString(mins) + " mins - " + Long.toString(secs) + " secs";
         }
 
         if (flag) {

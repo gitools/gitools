@@ -189,8 +189,4 @@ public class ZScoreColorScale extends NumericColorScale {
         this.nonSignificantColor = nonSignificantColor;
     }
 
-    @Override
-    public IAggregator defaultAggregator() {
-        return SumAggregator.INSTANCE;
-    }
 }

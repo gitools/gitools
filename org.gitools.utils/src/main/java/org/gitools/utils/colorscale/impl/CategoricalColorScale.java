@@ -183,8 +183,4 @@ public class CategoricalColorScale extends NumericColorScale {
         }
     }
 
-    @Override
-    public IAggregator defaultAggregator() {
-        return SumAggregator.INSTANCE;
-    }
 }

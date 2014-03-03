@@ -76,14 +76,6 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
 
         final Heatmap heatmap = getHeatmap();
 
-        // Deduce default Aggregator from the associated ColorScale
-        IAggregator defaultAggregator;
-        try {
-            defaultAggregator = heatmap.getLayers().getTopLayer().getDecorator().getScale().defaultAggregator();
-        } catch (Exception ex) {
-            defaultAggregator = MultAggregator.INSTANCE;
-        }
-        final IAggregator aggregator = defaultAggregator;
         final IMatrixLayer layer = heatmap.getLayers().getTopLayer();
 
         final SortDirection sort = currentSort;
@@ -94,7 +86,6 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
             @Override
             public void run(IProgressMonitor monitor) {
 
-                layer.setAggregator(aggregator);
                 layer.setSortDirection(sort);
 
                 List<IMatrixLayer> criteriaArray = Lists.newArrayList(layer);
@@ -111,12 +102,22 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
     }
 
     @Override
-    public void onConfigure(HeatmapDimension object, HeatmapPosition position) {
-        String selected = object.getSelected().size() > 0 ? "selected " : "";
+    public void onConfigure(HeatmapDimension sortDimension, HeatmapPosition position) {
+
+        Heatmap heatmap = getHeatmap();
+        HeatmapDimension otherDimension = heatmap.getRows() == sortDimension ? heatmap.getColumns() : heatmap.getRows();
 
         String layer = getHeatmap().getLayers().getTopLayer().getName();
 
-        setName("<html><i>Sort</i> " + dimension.getLabel() + "s by " + selected + " '" + layer + "'</html>");
+        String selected = (sortDimension.getSelected().size() > 0 ? "selected " : "aggregated ");
+
+        int otherSize = otherDimension.getSelected().size();
+        String dimCount = (otherSize > 0 ?
+                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : ""):
+                "all " + dimension.getLabel() + "s"
+        );
+
+        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0,3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
 
     }
 }

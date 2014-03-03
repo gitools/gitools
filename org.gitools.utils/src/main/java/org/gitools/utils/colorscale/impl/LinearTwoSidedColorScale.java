@@ -127,9 +127,4 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
 
     }
 
-
-    @Override
-    public IAggregator defaultAggregator() {
-        return MeanAggregator.INSTANCE;
-    }
 }

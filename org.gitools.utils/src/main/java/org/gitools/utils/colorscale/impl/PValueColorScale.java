@@ -141,9 +141,4 @@ public class PValueColorScale extends NumericColorScale {
 
     }
 
-
-    @Override
-    public IAggregator defaultAggregator() {
-        return MultAggregator.INSTANCE;
-    }
 }

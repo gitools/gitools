@@ -21,14 +21,10 @@
  */
 package org.gitools.utils.colorscale;
 
-import org.gitools.api.analysis.IAggregator;
-
 import java.awt.*;
 
 public interface IColorScale {
 
     Color valueColor(double value);
-
-    IAggregator defaultAggregator();
 
 }

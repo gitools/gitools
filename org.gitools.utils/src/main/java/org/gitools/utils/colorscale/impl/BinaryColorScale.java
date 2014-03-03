@@ -221,9 +221,4 @@ public class BinaryColorScale extends NumericColorScale {
         updateRangesList();
     }
 
-
-    @Override
-    public IAggregator defaultAggregator() {
-        return SumAggregator.INSTANCE;
-    }
 }
