@@ -162,10 +162,12 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         }
 
         int maxSize = 160;
+        int preferredSize;
         if (aggregationAnnotationLabels.size() < 2) {
-            headerDimension.setCellSize(30);
+            preferredSize = aggregationAnnotationLabels.size() * 30;
+        } else {
+            preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
         }
-        int preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
 
         getHeader().setAnnotationLabels(aggregationAnnotationLabels);
         getHeader().setSize(preferredSize > maxSize ? maxSize : preferredSize);
