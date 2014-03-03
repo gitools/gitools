@@ -63,6 +63,7 @@ import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -142,14 +143,17 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Initializing editor ...", 1);
-        AbstractEditor editor = createEditor(resource, monitor);
+        final AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(getResourceLocator().getBaseName());
 
-        Application.get().getEditorsPanel().addEditor(editor);
-        Application.get().refresh();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Application.get().getEditorsPanel().addEditor(editor);
+                Application.get().refresh();
+            }
+        });
 
-        // Force a GC to release free memory
-        System.gc();
         setExitStatus(0);
     }
 

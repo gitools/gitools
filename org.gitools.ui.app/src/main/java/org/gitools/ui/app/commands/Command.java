@@ -23,9 +23,6 @@ package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
 
-/**
- * @noinspection ALL
- */
 public interface Command {
 
     public class CommandException extends Exception {
