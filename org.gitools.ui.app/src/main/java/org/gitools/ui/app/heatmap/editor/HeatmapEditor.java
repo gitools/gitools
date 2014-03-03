@@ -58,9 +58,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
 
@@ -225,8 +227,22 @@ public class HeatmapEditor extends AbstractEditor {
                 }
         );
 
-        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-        dlg.setVisible(true);
+
+        final WizardDialog dlg = new WizardDialog(Application.get(), wiz);
+
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    dlg.setVisible(true);
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new CancellationException();
+        } catch (InvocationTargetException e) {
+            throw new CancellationException();
+        }
+
         if (dlg.isCancelled()) {
             return;
         }

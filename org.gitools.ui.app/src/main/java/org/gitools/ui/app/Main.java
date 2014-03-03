@@ -48,7 +48,7 @@ import java.util.logging.LogManager;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
@@ -56,7 +56,7 @@ public class Main {
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         // Check arguments syntax
-        CommandExecutor cmdExecutor = new CommandExecutor();
+        final CommandExecutor cmdExecutor = new CommandExecutor();
         if (args.length > 0) {
             if (!cmdExecutor.checkArguments(args, new PrintWriter(System.err))) {
                 return;
@@ -110,17 +110,25 @@ public class Main {
         // Initialize actions
         Actions.init();
 
-        // Launch frame
-        Application.get().start();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-        // Execute arguments
-        if (args.length > 0) {
-            cmdExecutor.execute(args, new PrintWriter(System.err));
-        }
+                // Launch frame
+                Application.get().start();
 
-        // Show tips dialog
-        TipsDialog tipsDialog = new TipsDialog();
-        tipsDialog.show();
+                // Execute arguments
+                if (args.length > 0) {
+                    cmdExecutor.execute(args, new PrintWriter(System.err));
+                }
+
+                // Show tips dialog
+                TipsDialog tipsDialog = new TipsDialog();
+                tipsDialog.show();
+
+            }
+        });
+
     }
 
 

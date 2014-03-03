@@ -31,9 +31,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class ExportDialog extends AbstractDialog {
 
     private static final long serialVersionUID = -829366063374164258L;
@@ -41,10 +38,8 @@ public class ExportDialog extends AbstractDialog {
     private JTree tree;
 
     public ExportDialog(Window owner) {
-        super(owner, "Export", "Select", "Choose export destination", MessageStatus.INFO, null);
-
+        super(owner, "Export", "Select", "Choose export destination", MessageStatus.INFO, null, new Dimension(500, 300), new Dimension(500, 300));
         setModalityType(ModalityType.APPLICATION_MODAL);
-        setMinimumSize(new Dimension(500, 300));
     }
 
 

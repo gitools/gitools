@@ -47,15 +47,16 @@ public abstract class AbstractDialog extends JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-    protected AbstractDialog(Window owner, String title, String header, String message, MessageStatus status, Icon logo) {
-
+    protected AbstractDialog(Window owner, String title, String header, String message, MessageStatus status, Icon logo, Dimension minimum, Dimension prefered) {
         super(owner, title);
         setModal(true);
 
         createComponents(header, message, status, logo);
 
+        setMinimumSize(minimum);
+        setPreferredSize(prefered);
         setLocationRelativeTo(owner);
-        setMinimumSize(new Dimension(300, 260));
+
 
     }
 
@@ -75,13 +76,16 @@ public abstract class AbstractDialog extends JDialog {
 
     protected abstract void escapePressed();
 
-    protected AbstractDialog(Window owner, String title, Icon icon) {
-        this(owner, title, "", "", MessageStatus.INFO, icon);
+    protected AbstractDialog(Window owner, String title, Icon icon, Dimension minimum, Dimension prefered) {
+        this(owner, title, "", "", MessageStatus.INFO, icon, minimum, prefered);
     }
 
     public void open() {
-        validate();
-        repaint();
+
+        if (!SwingUtilities.isEventDispatchThread()) {
+            System.out.println("WARNING: Opening a dialog NOT in the event dispatch thread" );
+        }
+
         super.setVisible(true);
     }
 
@@ -89,8 +93,9 @@ public abstract class AbstractDialog extends JDialog {
     public void setVisible(boolean b) {
 
         if (b) {
-            validate();
-            repaint();
+            if (!SwingUtilities.isEventDispatchThread()) {
+                System.out.println("WARNING: Opening a dialog NOT in the event dispatch thread" );
+            }
         }
 
         super.setVisible(b);

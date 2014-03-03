@@ -37,7 +37,9 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.readers.profile.ReaderProfile;
 import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 
+import javax.swing.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class FlatTextImportWizard extends AbstractWizard implements ImportWizard {
 
@@ -143,10 +145,17 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
 
 
     @Override
-    public void run(IProgressMonitor monitor) throws IOException {
+    public void run(IProgressMonitor monitor) throws IOException, InvocationTargetException, InterruptedException {
         init();
         this.monitor = monitor;
         this.wizDlg = new WizardDialog(Application.get(), this);
-        wizDlg.open();
+
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                wizDlg.open();
+            }
+        });
+
     }
 }

@@ -47,10 +47,7 @@ public abstract class SettingsDialog extends AbstractDialog {
     private JPanel sectionPanel;
 
     public SettingsDialog(Window owner, SettingsPanel panel, String selectedSection) {
-        super(owner, panel.getTitle(), panel.getLogo());
-
-        setMinimumSize(new Dimension(700, 500));
-        setLocationRelativeTo(owner);
+        super(owner, panel.getTitle(), panel.getLogo(), new Dimension(700, 500), new Dimension(700, 500));
 
         this.panel = panel;
 
@@ -66,7 +63,6 @@ public abstract class SettingsDialog extends AbstractDialog {
         });
 
         sectionPanel.add(list);
-        sectionPanel.repaint();
 
         // Selected panel
         for (String section : panel.getSectionNames()) {
@@ -74,14 +70,14 @@ public abstract class SettingsDialog extends AbstractDialog {
             components.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             JScrollPane scrollPane = new JScrollPane(components);
             selectedPanel.add(scrollPane, section);
-            scrollPane.repaint();
         }
-        selectedPanel.repaint();
 
         // Show current section
         showSection(selectedSection);
 
         updateState();
+
+        revalidate();
         repaint();
 
     }

@@ -148,9 +148,7 @@ public class Application extends JFrame {
             }
         };
 
-        Thread t = new Thread(runnable);
-        t.start();
-
+        SwingUtilities.invokeLater(runnable);
     }
 
     boolean isNewerGitoolsAvailable() throws Exception {

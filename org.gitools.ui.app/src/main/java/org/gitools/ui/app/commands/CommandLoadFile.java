@@ -114,7 +114,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         if (isConfigurable()) {
             try {
                 getConfigWizard().run(monitor);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 new CommandException(e);
             }
             return;
