@@ -117,14 +117,19 @@ public class Main {
                 // Launch frame
                 Application.get().start();
 
-                // Execute arguments
-                if (args.length > 0) {
-                    cmdExecutor.execute(args, new PrintWriter(System.err));
-                }
 
-                // Show tips dialog
-                TipsDialog tipsDialog = new TipsDialog();
-                tipsDialog.show();
+                if (args.length > 0) {
+
+                    // Execute arguments
+                    cmdExecutor.execute(args, new PrintWriter(System.err));
+
+                } else {
+
+                    // Show tips dialog
+                    TipsDialog tipsDialog = new TipsDialog();
+                    tipsDialog.show();
+
+                }
 
             }
         });
