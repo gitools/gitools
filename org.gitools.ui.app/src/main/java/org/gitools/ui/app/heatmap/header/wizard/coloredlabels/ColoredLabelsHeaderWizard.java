@@ -95,7 +95,9 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
         header.setAnnotationPattern(pattern);
 
         header.setTitle(sourcePage.getPatternTitle());
-        header.setAnnotationMetadata(sourcePage.getSelectedValues()[0]);
+        if (sourcePage.getSelectedValues().length > 0) {
+            header.setAnnotationMetadata(sourcePage.getSelectedValues()[0]);
+        }
 
         CommandAddHeaderColoredLabels.autoGenerateColoredLabels(header, clusteringMethod);
 
