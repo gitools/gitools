@@ -21,6 +21,7 @@
  */
 package org.gitools.persistence.locators.filters.zip;
 
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
@@ -55,10 +56,12 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
 
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
-        int firstDot = referenceName.indexOf('.');
-        String extension = referenceName.substring(firstDot + 1);
 
-        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extension, getResourceLocator()) {
+        String extension = ApplicationContext.getPersistenceManager().getFormatExtension(referenceName);
+        int extensionIndex = referenceName.indexOf(extension);
+        String extensionWithFilters = referenceName.substring(extensionIndex);
+
+        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extensionWithFilters, getResourceLocator()) {
             @Override
             protected ZipOutputStream getZipOutputStream() throws IOException {
                 return ZipResourceLocatorAdaptor.this.getZipOutputStream();
