@@ -22,8 +22,11 @@
 package org.gitools.ui.app.actions.file;
 
 import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -42,7 +45,17 @@ public class ExitAction extends BaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        //TODO: Ask confirmation !
+        boolean dirty = false;
+        for (AbstractEditor editor : Application.get().getEditorsPanel().getEditors()) {
+            dirty = dirty || editor.isDirty();
+        }
+
+        if (dirty) {
+            int dialogResult = JOptionPane.showConfirmDialog(Application.get(), "Do you want to save changes?","Warning", JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION) {
+                return;
+            }
+        }
 
         Settings.getDefault().save();
         System.exit(0);

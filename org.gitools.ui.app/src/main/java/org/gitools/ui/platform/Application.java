@@ -22,6 +22,7 @@
 package org.gitools.ui.platform;
 
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.MenuActionSet;
 import org.gitools.ui.app.actions.ToolBarActionSet;
 import org.gitools.ui.app.settings.Settings;
@@ -72,17 +73,16 @@ public class Application extends JFrame {
 
         createComponents();
 
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Settings.getDefault().save();
-                System.exit(0);
+                Actions.exitAction.actionPerformed(null);
             }
         });
 
         setTitle(appName + " " + appVersion);
         setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1200, 750));
         pack();
     }
