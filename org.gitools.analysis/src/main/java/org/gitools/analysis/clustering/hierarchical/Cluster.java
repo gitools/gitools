@@ -122,7 +122,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
     }
 
     public void setWeight(Double weight) {
-        this.weight = weight;
+        this.weight = (weight == null ? 0.0 : weight);
     }
 
     public boolean contains(Cluster cluster) {
