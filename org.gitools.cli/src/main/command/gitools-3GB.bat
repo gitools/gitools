@@ -1,0 +1,1 @@
+java -Xmx3200m -Xms256m -XX:MaxPermSize=250m -XX:+UseSerialGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -jar ..\lib\org.gitools.ui.app-${project.version}.jar %*
