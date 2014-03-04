@@ -22,6 +22,7 @@
 package org.gitools.heatmap;
 
 
+import com.google.common.collect.Iterables;
 import com.google.common.primitives.Ints;
 import com.jgoodies.binding.beans.Model;
 
@@ -131,8 +132,19 @@ public class Bookmarks extends Model {
             include = new int[]{ROWS, COLUMNS, LAYER};
         }
 
-        List<String> rows = Ints.contains(include, ROWS) ? heatmap.getRows().toList() : null;
-        List<String> cols = Ints.contains(include, COLUMNS) ? heatmap.getColumns().toList() : null;
+        List<String> rows = null;
+        List<String> cols = null;
+
+        if (Ints.contains(include, ROWS)) {
+            rows = new ArrayList<>();
+            Iterables.addAll(rows, heatmap.getRows());
+        }
+
+        if (Ints.contains(include, COLUMNS)) {
+            cols = new ArrayList<>();
+            Iterables.addAll(cols, heatmap.getColumns());
+        }
+
         String layerId = Ints.contains(include, LAYER) ? heatmap.getLayers().getTopLayer().getId() : null;
 
         add(new Bookmark(name, rows, cols, layerId));

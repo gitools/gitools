@@ -56,8 +56,8 @@ public class CreateBookmarkAction extends HeatmapAction {
         List<String> rows = new ArrayList<String>();
         List<String> columns = new ArrayList<String>();
 
-        Iterables.addAll(rows, heatmap.newPosition().iterate(heatmap.getRows()));
-        Iterables.addAll(columns, heatmap.newPosition().iterate(heatmap.getColumns()));
+        Iterables.addAll(rows, heatmap.getRows());
+        Iterables.addAll(columns, heatmap.getColumns());
 
         BookmarkEditPage page = new BookmarkEditPage(heatmap,
                 new Bookmark("new Bookmark", rows, columns, getHeatmap().getLayers().getTopLayer().getId()),
