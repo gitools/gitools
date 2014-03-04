@@ -23,7 +23,6 @@ package org.gitools.matrix.model;
 
 import com.google.common.base.Joiner;
 import org.gitools.api.matrix.*;
-import org.gitools.matrix.model.hashmatrix.TriangularHashMatrix;
 import org.gitools.matrix.model.iterable.IdentifierSourceIterable;
 import org.gitools.matrix.model.iterable.ValueSourceIterable;
 
@@ -38,17 +37,12 @@ public class MatrixPosition implements IMatrixPosition {
     private MatrixDimensionKey[] dimensions;
     private String[] identifiers;
     private Map<MatrixDimensionKey, Integer> positions;
-    private boolean diagonal = false;
 
     public MatrixPosition(IMatrix matrix) {
         super();
 
         this.matrix = matrix;
         this.dimensions = matrix.getDimensionKeys();
-
-        if (matrix instanceof TriangularHashMatrix) {
-            this.diagonal = true;
-        }
 
         this.identifiers = new String[dimensions.length];
         for (int i = 0; i < dimensions.length; i++) {
@@ -94,20 +88,7 @@ public class MatrixPosition implements IMatrixPosition {
 
     @Override
     public String[] toVector() {
-        if (diagonal) {
-            return doInvert(identifiers);
-        } else {
-            return identifiers;
-        }
-    }
-
-    private String[] doInvert(String[] identifiers) {
-        if (matrix.getDimension(MatrixDimensionKey.COLUMNS).indexOf(identifiers[0]) >=
-                matrix.getDimension(MatrixDimensionKey.ROWS).indexOf(identifiers[1])) {
-            return new String[]{identifiers[1], identifiers[0]};
-        } else {
-            return identifiers;
-        }
+        return identifiers;
     }
 
     public MatrixPosition set(String... identifiers) {
