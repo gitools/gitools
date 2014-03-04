@@ -49,7 +49,12 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
                 this.identifiers.add(id);
             }
         } else {
-            this.identifiers = identifiers;
+            this.identifiers = new ArrayList<>(Math.min(this.iterateDimension.size(), identifiers.size()));
+            for (String id : identifiers) {
+                if (this.iterateDimension.contains(id)) {
+                    this.identifiers.add(id);
+                }
+            }
         }
     }
 

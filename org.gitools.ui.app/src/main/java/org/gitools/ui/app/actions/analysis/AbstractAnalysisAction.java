@@ -59,7 +59,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
-                try {
                     cmd.run(monitor);
                     if (monitor.isCancelled()) {
                         return;
@@ -84,9 +83,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                     });
 
                     Application.get().setStatusText("Ok.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
             }
         });
     }

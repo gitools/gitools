@@ -58,7 +58,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(final IProgressMonitor monitor) throws AnalysisException {
+    public void run(final IProgressMonitor monitor) {
         Date startTime = new Date();
 
         IMatrix data = analysis.getData().get();
@@ -157,7 +157,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                             }
 
                             CommonResult result = test.processTest(moduleValues);
-                            if (result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
+                            if (result != null && result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
                                 results.put(module, result);
                             }
                         }

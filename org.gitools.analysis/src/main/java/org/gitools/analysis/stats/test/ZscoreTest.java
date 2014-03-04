@@ -62,14 +62,18 @@ public class ZscoreTest extends AbstractTest {
         }
 
         this.random = new Random(seed.longValue());
-        this.population = Lists.newArrayList(population);
+        this.population = Lists.newArrayList(filter(population, notNull()));
     }
 
 
     @Override
     public CommonResult processTest(Iterable<Double> values) {
 
-        double observed = statCalc.calc(values);
+        Double observed = statCalc.calc(values);
+
+        if (observed == null) {
+            return null;
+        }
 
         int n = size(filter(values, notNull()));
         double sx = 0, sx2 = 0;

@@ -50,7 +50,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
         Date startTime = new Date();
 
         IMatrix data = analysis.getSourceData().get();

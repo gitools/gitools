@@ -32,9 +32,15 @@ public class OnesCountStatistic implements Statistic {
     public Double calc(Iterable<Double> values) {
 
         Double count = 0.0;
+        int size = 0;
 
         for (Double value : values) {
+            size++;
             count += (value == 1.0 ? 1.0 : 0.0);
+        }
+
+        if (size == 0) {
+            return null;
         }
 
         return count;

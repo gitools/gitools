@@ -41,6 +41,10 @@ public class MeanStatistic implements Statistic {
             }
         }
 
+        if (size == 0) {
+            return null;
+        }
+
         return sum / size;
     }
 }
