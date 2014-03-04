@@ -107,7 +107,6 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             in.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PersistenceException(e);
         }
 
