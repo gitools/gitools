@@ -116,7 +116,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 tableModel.fireTableDataChanged();
             }
         });
-        groupsTable.setRowHeight(20);
+        groupsTable.setRowHeight(25);
 
         groupsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

@@ -113,6 +113,8 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
         table.setModel(criteriaModel);
 
+        table.setRowHeight(30);
+
         criteriaModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -371,8 +373,22 @@ public class DataIntegrationCriteriaDialog extends javax.swing.JDialog {
 
     private void doClose(int retStatus) {
         returnStatus = retStatus;
-        setVisible(false);
-        dispose();
+        try {
+            if (retStatus == RET_OK) {
+                TableColumnModel columnModel = table.getColumnModel();
+                boolean b;
+                b = columnModel.getColumn(0).getCellEditor().stopCellEditing();
+                b = columnModel.getColumn(1).getCellEditor().stopCellEditing();
+                b = columnModel.getColumn(2).getCellEditor().stopCellEditing();
+                b = columnModel.getColumn(3).getCellEditor().stopCellEditing();
+                b = columnModel.getColumn(4).getCellEditor().stopCellEditing();
+            }
+
+            setVisible(false);
+            dispose();
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
