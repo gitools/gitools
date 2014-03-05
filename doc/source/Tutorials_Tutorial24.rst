@@ -1,16 +1,11 @@
-
-=============================================================
+=============================================
 Tutorial 2.4: Compare and combine experiments
-=============================================================
-
-
+=============================================
 
 Compare and combine the significantly up-regulated genes in our experiment and in other lung experiments imported from IntOGen
 
-
-
 Files needed
--------------------------------------------------
+------------
 
 - `intogen\_lung\_upreg\_plus\_gse19188.cdm.gz <http://www.gitools.org/tutorials/data/intogen_lung_upreg_plus_gse19188.cdm.gz>`__ : matrix file containing p-values for upregulation per gene for 11 experiments imported from IntOGen and the experiment from Hou et al. that we analyzed in the previous tutorial.
 
@@ -21,7 +16,7 @@ Files needed
 
 
 Import p-value matrix from IntOGen for up-regulation in various independent lung cancer experiments.
-------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 
 - For this tutorial, we provide the matrix file containing p-values for these lung experiments plus the result of the oncodrive analysis in tutorial 2.3, after mapping probes to genes, see files above.
 
@@ -30,15 +25,15 @@ Import p-value matrix from IntOGen for up-regulation in various independent lung
 
 
 Open heatmap and change scale and labels
--------------------------------------------------
+----------------------------------------
 
-- File>Open>Heatmap… and select the file intogen\_lung\_upreg\_plus\_gse19188.cdm.gz. 
+- ``File>Open>Heatmap…`` and select the file :file:`intogen\_lung\_upreg\_plus\_gse19188.cdm.gz`.
 
-- Change the color scale to p-value scale (in Properties/Cells/Scale). 
+- Change the color scale to p-value scale (in Settings).
 
-- Change the labels of columns: In properties/columns, select the file “intogen\_lung\_upreg-columns.tsv.gz” and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
+- Change the labels of columns: In Settings, select the file file:`intogen_lung_upreg-columns.tsv.gz` and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
 
-- Change the labels of rows: In properties/rows, select the file “intogen\_lung\_upreg-rows.tsv.gz” and choose “symbol” as label to show in the rows instead of the ensembl id of the gene.
+- Change the labels of rows: In properties/rows, select the file file:`intogen\_lung\_upreg-rows.tsv.gz` and choose “symbol” as label to show in the rows instead of the ensembl id of the gene.
 
 - Select all the rows and sort to have the most significantly up-regulated genes in the various lung cancer experiments on top.
 
@@ -47,7 +42,7 @@ Open heatmap and change scale and labels
 
 
 Combine
--------------------------------------------------
+-------
 
 - To combine the p-values of all the lung cancer experiments, select Analysis>Combinations. 
 
@@ -61,6 +56,6 @@ Combine
 
 
 Explore the results
-----------------------
+-------------------
 
 .. image:: img/tutorial-gitoolscasestudy2.4.2.png

@@ -14,27 +14,14 @@ VERSION=$1
 echo "Compiling ..."
 echo
 
-cd gitools-ui-app
+cd org.gitools.ui.app
+
 mvn clean package
 mvn webstart:jnlp
-mkdir -p target/jnlp/examples
-
-echo "Creating examples zip's ..."
-echo
-
-cd ../examples
-EXAMPLES=$(find . -maxdepth 1 -type d -printf "%f\n" | grep -v "\.svn" | grep -v "\.")
-for example in $EXAMPLES; do
-	dest_prefix="../gitools-ui-app/target/jnlp/examples/$example"
-	echo "Example $example into $dest_prefix.zip ..."
-	echo $(date +%Y%m%d%H%M%S) > $dest_prefix.timestamp
-	zip -r $dest_prefix.zip $example -x "*/*.svn/*"
-done
 
 echo "Deploying files ..."
 echo
 
-cd ../gitools-ui-app
 cat > target/jnlp/index.html <<EOF
 <html>
 <head>
@@ -45,7 +32,7 @@ cat > target/jnlp/index.html <<EOF
                 // using JavaScript to get location of JNLP file relative to HTML page
                 var dir = location.href.substring(0, location.href.lastIndexOf('/')+1);
                 var url = dir + "gitools.jnlp";
-                deployJava.createWebStartLaunchButton(url, '1.6.0');
+                deployJava.createWebStartLaunchButton(url, '1.7.0');
         </script>
 </body>
 </html>

@@ -12,10 +12,11 @@
 
 # Maven files
 target/
-
+site/
 
 # Operating System annoyances
 *.DS_Store
 
 # Doc files
 doc/build
+doc/html

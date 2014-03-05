@@ -9,7 +9,7 @@ Web site
 Documentation
 --------------
 
-+ See [Gitools documentation files](doc/README.rst) in the repository or at <http://help.gitools.org>
++ See [Gitools documentation files](doc/source/index.rst) in the repository or at <http://help.gitools.org>
 
 Source code
 -----------

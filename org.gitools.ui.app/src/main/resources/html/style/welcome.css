@@ -1,0 +1,60 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Biomedical Genomics Lab
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+ul {
+	/* margin-left: 8px; */
+}
+
+li {
+	padding-bottom: 10px;
+	list-style-image: url(img/bullet.png);
+}
+
+a {
+	/* font-weight: bold; */
+	/* color: red; */
+	font-family:arial,sans-serif;
+	text-decoration: none;
+}
+
+a > img {
+    margin-bottom: 3px;
+}
+
+.download {
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+.details {
+	font-size: 8pt;
+	padding: 0 0 0 0;
+	text-align: right;
+}
+
+.alert {
+    font-size: 14pt;
+	padding: 12px 50px 12px 50px;
+	margin-bottom: 50px 20px 50px 20px;
+	background-color: #FCF8E3;
+	color: #C09853;
+	border: 1px solid #FBEED5;
+}

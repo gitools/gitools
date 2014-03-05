@@ -1,0 +1,87 @@
+<html>
+<head>
+	<style type="text/css">
+		#include("/vm/style/default.css")
+		#include("/vm/analysis/analysis_details.css")
+    </style>
+</head>
+<body>
+	<div class="section">
+		<div class="section_title">Details</div>
+		<div class="section_body">
+			<table class="attr_table">
+				#if ($analysis.title)
+					<tr><td class="name"><div>Title</div></td><td>$analysis.title</td></tr>
+				#end
+				#if( $analysis.description )
+					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
+				#end
+				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
+				#if( $analysis.layer )
+                    <tr><td class="name"><div>Layer</div></td><td>$analysis.layer</td></tr>
+                #end
+				<tr><td class="name"><div>Test</div></td><td>$test</td></tr>
+				#if( $testAttributes && $testAttributes.size() > 0 )
+					#foreach($mapEntry in $testAttributes.entrySet())
+						<tr><td class="name"><div>$mapEntry.key</div></td><td>$mapEntry.value</td></tr>
+					#end
+				#end
+				#if( $analysis.properties && $analysis.properties.size() > 0 )
+					#foreach($attr in $analysis.properties)
+						#if ($attr.name)
+							<tr><td class="name"><div>$attr.name</div></td><td>$attr.value</td></tr>
+						#end
+					#end
+				#end
+				#if($analysisLocation)
+				    <tr><td class="name"><div>Location</div></td><td>$analysisLocation</td></tr>
+				#end
+			</table>
+		</div>
+	</div>
+
+	<div class="section">
+    		<div class="section_title">Results</div>
+    		<div class="section_body">
+    			<table class="attr_table">
+    			    <tr><td class="name"><div>File</div></td><td>$resultsFile</td></tr>
+    				<tr><td class="name"><div>Multiple test correction</div></td><td>$mtc</td></tr>
+    			</table>
+
+    			<div class="button_bar">
+    				<a rel="action" href="NewResultsHeatmap"><span class="button">&nbsp;&nbsp;Heatmap&nbsp;&nbsp;</span></a>
+    			</div>
+    		</div>
+    </div>
+
+	<div class="section">
+		<div class="section_title">Data</div>
+		<div class="section_body">
+			<table class="attr_table">
+				<tr><td class="name"><div>File</div></td><td>$dataFile</td></tr>
+				<tr><td class="name"><div>Filter</div></td><td>$filterDesc</td></tr>
+			</table>
+
+			<div class="button_bar">
+				<a rel="action" href="NewDataHeatmap"><span class="button">&nbsp;&nbsp;Heatmap&nbsp;&nbsp;</span></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="section">
+		<div class="section_title">Groups</div>
+		<div class="section_body">
+			<table class="attr_table">
+				<tr><td class="name"><div>File</div></td><td>$modulesFile</td></tr>
+				<tr><td class="name"><div>Minimum size</div></td><td>$moduleMinSize</td></tr>
+				<tr><td class="name"><div>Maximum size</div></td><td>$moduleMaxSize</td></tr>
+			</table>
+
+			<div class="button_bar">
+				<a rel="action" href="ViewModuleMap"><span class="button">&nbsp;&nbsp;View&nbsp;&nbsp;</span></a>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

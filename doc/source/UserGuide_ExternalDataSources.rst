@@ -1,8 +1,6 @@
-
-
+=====================
 External data sources
--------------------------------------------------
-
+=====================
 
 It is possible to import data from different sources. There are wizards that guides the retrieval of data step by step.
 
@@ -15,7 +13,7 @@ It is possible to import data from different sources. There are wizards that gui
      - Data types
      - Web
    
-   * - `IntOGen <UserGuide_IntOGen.rst>`__
+   * - :doc:`UserGuide_IntOGen_Arrays`
      - - Experiment transcriptomic alterations
        - Experiment copy number alterations
        - Combination transcriptomic alterations
@@ -24,17 +22,17 @@ It is possible to import data from different sources. There are wizards that gui
        - Oncomodules for combinations
      - Matrix, Modules, Annotations
      - `http://www.intogen.org <http://www.intogen.org>`__
-   * - `KEGG <UserGuide_KEGG.rst>`__
+   * - :doc:`UserGuide_KEGG`
      - Pathways
      - Modules, Annotations
      - `http://www.genome.jp/kegg/ <http://www.genome.jp/kegg/>`__
-   * - `Gene Ontology <UserGuide_GeneOntology.rst>`__
+   * - :doc:`UserGuide_GeneOntology`
      - - Biological processes
        - Molecular function
        - Cellular location
      - Modules, Annotations
      - `http://www.geneontology.org/ <http://www.geneontology.org/>`__
-   * - `Biomart Central Portal <UserGuide_Biomart.rst>`__
+   * - :doc:`UserGuide_Biomart`
      - There are many databases available, some examples are:
        - Ensembl
        - UniProt

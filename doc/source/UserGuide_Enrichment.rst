@@ -1,27 +1,11 @@
-
+==========
 Enrichment
--------------------------------------------------
-
-
-
-
-Table of Contents
--------------------------------------------------
-
-`Wizard steps to perform an enrichment analysis <#N1003A>`__  `#  <#N1003A>`__
-
-`Exploring the results of the analysis <#N10127>`__  `#  <#N10127>`__
-
-
-
-
+==========
 
 Enrichment analysis consists in a quantitative measure to infer if the values of a biological condition (e.g. fold changes) shows statistically significant, concordant values or increased proportion for a particular set of biological annotations (module or gene set).
 
-
-
 Wizard steps to perform an enrichment analysis
--------------------------------------------------
+----------------------------------------------
 
 Before running an enrichment analysis you should have this data prepared in files:
 
@@ -34,20 +18,19 @@ Modules (i.e. gene sets related by Gene Ontology biological process) to analyze 
 To start the enrichment wizard go to the menu *File > New > Analysis > Enrichment analysis ...*
 
 Presentation and example
--------------------------------------------------
-
+------------------------
 
 .. image:: img/analysisenrichmentexample.png
    :scale: 50%
    :align: center
-   :alt: Enrichment analysis 
+   :alt: Enrichment analysis
 
 If you select the option **Fill this wizard with an example** all the following wizard pages will be filled with example files and parameters. In some situations the example files will be downloaded automatically before you can go to the next page. By default, when Gitools is installed from the zip file, the examples are already included. But when Gitools is executed directly from the web page the example files have to be downloaded the first time they are used. In that case the files are cached at *$HOME/.gitools/examples*.
 
 You can avoid this first presentation page by selecting the option **Don’t show this page next time**.
 
 Selection of the data to analyze
--------------------------------------------------
+--------------------------------
 
 .. image:: img/analysisenrichmentdata.png
    :scale: 50%
@@ -57,7 +40,7 @@ Selection of the data to analyze
 If you follow the conventions on file formats explained  `here <UserGuide_LoadingData.rst>`__  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Selection of the data transformation options
--------------------------------------------------
+--------------------------------------------
 
 .. image:: img/analysisenrichmentdatafiltering.png
    :scale: 50%
@@ -71,7 +54,7 @@ Selection of the data transformation options
 **Filter out rows for which no information appears in the modules:** Sometimes is conveniento to restrict the background population to only those elements belonging to any module, for example, the data file could have information for all the genes of a microarray but only the genes in your data with GO biological process annotations should be considered for the background.
 
 Selection of the modules
--------------------------------------------------
+------------------------
 
 .. image:: img/analysisenrichmentmodules.png
    :scale: 50%
@@ -83,7 +66,7 @@ Selection of the modules
 **Filtering options:** If the number of elements annotated for one module is too low some tests could not generate reliable results (i.e. zscore or bionamial tests), on the other hand there are tests best suited for small modules like fisher’s exact test. It is possible to discard the modules with less or more than a certain quantity using this filters.
 
 Selection of the statistical test
--------------------------------------------------
+---------------------------------
 
 .. image:: img/analysisenrichmenttest.png
    :scale: 50%
@@ -103,14 +86,12 @@ Currently there are three different statistical tests implemented for enrichment
 As multiple tests are performed it is important to adjust the p-values. The method for adjusting the p-values can be chosen in the **Multiple test correction** option.
 
 Selection of the destination file
--------------------------------------------------
-
-
+---------------------------------
 
 This wizard page allows to specify the prefix name for the files generated during the analysis and the folder where they will be created. The text in name and folder can be freely edited but it is also possible to navigate through the system folders in order to select an existing file by pressing the button [Browse].
 
 Analysis details
--------------------------------------------------
+----------------
 
 .. image:: img/analysisenrichmentdetails.png
    :scale: 50%
@@ -124,15 +105,11 @@ It is possible to specify free attributes for the analysis as Organization, Oper
 
 
 Exploring the results of the analysis
--------------------------------------------------
+-------------------------------------
 
 After performing the analysis a new editor with the details of the analysis will be opened:
 
-
-
 To explore the data matrix resulting from the transformations with a heatmap click on the **Heatmap** button in the **Data** section.
-
-
 
 To explore the results of the analysis with a heatmap click on the **Heatmap** button in the **Results** section.
 

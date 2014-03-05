@@ -1,7 +1,6 @@
-
+================================================================
 Oncodrive
--------------------------------------------------
-
+================================================================
 
 Oncodrive analysis can be used to identify genes that are significantly altered in a set of tumours. You will find more details on  `IntOGen paper <http://www.nature.com/nmeth/journal/v7/n2/full/nmeth0210-92.html>`__ .
 
@@ -72,7 +71,6 @@ Selection of the statistical test
    :align: center
    :alt: Oncodrive statistical test
 
-
 There are different types of statistical tests that can be used, in this page the user can select the one that he/she wants to use in the selector on the top.
 
 Currently there are two different statistical tests implemented for oncodrive analysis in Gitools:
@@ -86,31 +84,21 @@ As multiple tests are performed it is important to adjust the p-values. The meth
 Selection of the destination file
 -------------------------------------------------
 
-
-
 This wizard page allows to specify the prefix name for the files generated during the analysis and the folder where they will be created. The text in name and folder can be freely edited but it is also possible to navigate through the system folders in order to select an existing file by pressing the button [Browse].
 
 Analysis details
 -------------------------------------------------
 
-
-
 This step is optional but recommended as it allows to give some details about the analysis for better organization and annotation of the results for future reviews.
 
 It is possible to specify free attributes for the analysis as Organization, Operator, Platform and so on.
-
-
 
 Exploring the results of the analysis
 -------------------------------------------------
 
 After performing the analysis a new editor with the details of the analysis will be opened:
 
-
-
 To explore the data matrix resulting from the transformations with a heatmap click on the **Heatmap** button in the **Data** section.
-
-
 
 To explore the results of the analysis with a heatmap click on the **Heatmap** button in the **Results** section.
 
