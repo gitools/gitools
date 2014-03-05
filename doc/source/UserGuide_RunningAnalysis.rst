@@ -1,5 +1,5 @@
 Running analysis
-==================================
+================
 
 
 There are several analysis implemented in Gitools:

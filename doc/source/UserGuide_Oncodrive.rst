@@ -2,7 +2,6 @@
 Oncodrive
 ================================================================
 
-
 Oncodrive analysis can be used to identify genes that are significantly altered in a set of tumours. You will find more details on  `IntOGen paper <http://www.nature.com/nmeth/journal/v7/n2/full/nmeth0210-92.html>`__ .
 
 
@@ -31,19 +30,19 @@ Selection of the data to analyze
 -------------------------------------------------
 
 .. image:: img/analysisoncodrivedata.png
-:scale: 50%
+   :scale: 50%
    :align: center
-       :alt: Oncodrive analysis data tab
+   :alt: Oncodrive analysis data tab
 
-    If you follow the conventions on file formats explained  `here <UserGuide_LoadingData.rst>`__  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
+If you follow the conventions on file formats explained  `here <UserGuide_LoadingData.rst>`__  then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Selection of the data transformation options
 -------------------------------------------------
 
 .. image:: img/analysisoncodrivedatafiltering.png
-:scale: 50%
+   :scale: 50%
    :align: center
-       :alt: Oncodrive analysis data filtering
+   :alt: Oncodrive analysis data filtering
 
 **Population / Background elements:** This field can be left blank if the data file contains data for all background elements, otherwise a file with the elements of the background population should be selected. The format of this file is a simple text file with one element per line. For example the list of all the protein coding genes, each one in a different row. All the rows in the data that don’t appear in the population will be removed and all the elements specified in the population that don’t appear in the data will be added to the data with the default value specified by the user.
 
@@ -53,11 +52,11 @@ Selection of set of columns
 -------------------------------------------------
 
 .. image:: img/analysisoncodrivecolumnsets.png
-:scale: 50%
+   :scale: 50%
    :align: center
-       :alt: Oncodrive analysis columns
+   :alt: Oncodrive analysis columns
 
-    You can analyse different independent oncodrive analysis on different sets of columns from the same data. Each column set analysis will generate results in different columns that can be compared easily in a heatmap.
+You can analyse different independent oncodrive analysis on different sets of columns from the same data. Each column set analysis will generate results in different columns that can be compared easily in a heatmap.
 
 **File format & File:** A file containing the column sets can be selected pressing the button [Browse...] and selecting a file. The format of the file will be automatically detected if the file extension matches any of the known file formats, otherwise a warning will appear and it should be the user who selects the appropiate format.
 
@@ -68,14 +67,13 @@ Selection of the statistical test
 
 
 .. image:: img/analysisoncodrivetest.png
-:scale: 50%
+   :scale: 50%
    :align: center
-       :alt: Oncodrive statistical test
+   :alt: Oncodrive statistical test
 
+There are different types of statistical tests that can be used, in this page the user can select the one that he/she wants to use in the selector on the top.
 
-    There are different types of statistical tests that can be used, in this page the user can select the one that he/she wants to use in the selector on the top.
-
-    Currently there are two different statistical tests implemented for oncodrive analysis in Gitools:
+Currently there are two different statistical tests implemented for oncodrive analysis in Gitools:
 
 `Binomial test <http://en.wikipedia.org/wiki/Binomial_test>`__
 
@@ -86,31 +84,21 @@ As multiple tests are performed it is important to adjust the p-values. The meth
 Selection of the destination file
 -------------------------------------------------
 
-
-
 This wizard page allows to specify the prefix name for the files generated during the analysis and the folder where they will be created. The text in name and folder can be freely edited but it is also possible to navigate through the system folders in order to select an existing file by pressing the button [Browse].
 
 Analysis details
 -------------------------------------------------
 
-
-
 This step is optional but recommended as it allows to give some details about the analysis for better organization and annotation of the results for future reviews.
 
 It is possible to specify free attributes for the analysis as Organization, Operator, Platform and so on.
-
-
 
 Exploring the results of the analysis
 -------------------------------------------------
 
 After performing the analysis a new editor with the details of the analysis will be opened:
 
-
-
 To explore the data matrix resulting from the transformations with a heatmap click on the **Heatmap** button in the **Data** section.
-
-
 
 To explore the results of the analysis with a heatmap click on the **Heatmap** button in the **Results** section.
 

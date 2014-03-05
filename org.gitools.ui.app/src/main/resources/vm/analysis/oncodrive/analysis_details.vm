@@ -21,7 +21,7 @@
                     <tr><td class="name"><div>Layer</div></td><td>$analysis.layer</td></tr>
                 #end
 				<tr><td class="name"><div>Test</div></td><td>$test</td></tr>
-				#if( $testAttributes && $testAttributes.size()s > 0 )
+				#if( $testAttributes && $testAttributes.size() > 0 )
 					#foreach($mapEntry in $testAttributes.entrySet())
 						<tr><td class="name"><div>$mapEntry.key</div></td><td>$mapEntry.value</td></tr>
 					#end

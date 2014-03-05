@@ -22,6 +22,7 @@
 package org.gitools.ui.app.imageviewer;
 
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.imageviewer.ImageViewer;
 import org.gitools.ui.platform.imageviewer.ResizeStrategy;
@@ -48,6 +49,7 @@ public class BitmapImageViewer extends AbstractEditor {
         setSaveAsAllowed(false);
         setBackground(Color.WHITE);
 
+        Application.track("image", "open");
     }
 
     @Override

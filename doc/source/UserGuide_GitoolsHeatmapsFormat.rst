@@ -1,6 +1,6 @@
-================================================================
+===============================
 Gitools Heatmaps (.heatmap.zip)
-================================================================
+===============================
 
 Gitools saves and loads a format with the extension ``.heatmap`` or ``.heatmap.zip``. These files contain all the
 necessary information to recreate the exact state of when the heatmap was saved.

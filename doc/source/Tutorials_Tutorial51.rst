@@ -1,10 +1,9 @@
-================================================================
+====================================================
 Tutorial 5.1. Regulatory Modules enrichment analysis
-================================================================
-
+====================================================
 
 Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing
----------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 
 **Files needed:  **
 
@@ -18,9 +17,8 @@ We will use the set from  `Boyer et al 2005 <http://www.sciencedirect.com/scien
 `download: <http://www.gitools.org/tutorials/data/boyer.tcm>`_.
 
 
-
 Perform enrichment analysis
--------------------------------------------------
+---------------------------
 
 See Tutorial 1.3 ( :download:`download pdf<files/tutorial13runenrichmentIntOGenKEGG.pdf>` )
 for details on how to perform enrichment analysis.
@@ -38,7 +36,7 @@ memory allocated to run Gitools.
 
 
 Use annotations for cancer types
--------------------------------------------------
+--------------------------------
 
 In the analysis details tab, click on “heatmap” under “Results” to view the heatmap of the results.
 
@@ -51,8 +49,8 @@ Change the width of the cells in properties/cells to be able to see all the samp
 
 
 Explore the results
--------------------------------------------------
+-------------------
 
 .. image:: img/tutorial5.1.png
-:width: 70%
+  :width: 70%
 

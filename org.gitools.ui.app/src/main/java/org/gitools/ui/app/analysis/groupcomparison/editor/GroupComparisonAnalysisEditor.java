@@ -48,6 +48,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
 
     public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
         super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", GroupComparisonAnalysisFormat.EXTENSION);
+        Application.track("groupcomparison", "open");
     }
 
     @Override

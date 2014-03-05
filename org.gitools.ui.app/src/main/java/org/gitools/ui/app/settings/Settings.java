@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.app.settings;
 
+import com.google.common.base.Strings;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -28,6 +30,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
+import java.util.UUID;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -83,6 +86,7 @@ public class Settings {
     }
 
     private String version;
+    private String uuid;
 
     private String lastPath = userPath;
     private String lastImportPath = userPath;
@@ -336,5 +340,18 @@ public class Settings {
 
     public void setShowMutualExclusionProgress(boolean showMutualExclusionProgress) {
         this.showMutualExclusionProgress = showMutualExclusionProgress;
+    }
+
+    public String getUuid() {
+
+        if (Strings.isNullOrEmpty(uuid)) {
+            uuid = UUID.randomUUID().toString();
+        }
+
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

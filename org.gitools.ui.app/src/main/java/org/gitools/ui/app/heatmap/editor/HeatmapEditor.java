@@ -133,6 +133,8 @@ public class HeatmapEditor extends AbstractEditor {
             }
         }, 5000, 5000);
 
+        Application.track("heatmap", "open");
+
     }
 
     @Override

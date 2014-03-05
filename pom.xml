@@ -6,7 +6,7 @@
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.1.0</version>
 
     <name>gitools</name>
     <description>Gitools</description>
@@ -96,7 +96,7 @@
             <dependency>
                 <groupId>org.jboss.weld.se</groupId>
                 <artifactId>weld-se-core</artifactId>
-                <version>2.1.0.Final</version>
+                <version>2.2.0.Alpha1</version>
             </dependency>
 
             <dependency>
@@ -218,7 +218,7 @@
             <dependency>
                 <groupId>weblookandfeel</groupId>
                 <artifactId>weblookandfeel</artifactId>
-                <version>1.26</version>
+                <version>1.28</version>
             </dependency>
 
             <dependency>
@@ -273,6 +273,12 @@
                 <groupId>org.swinglabs</groupId>
                 <artifactId>swingx</artifactId>
                 <version>1.6.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.brsanthu</groupId>
+                <artifactId>google-analytics-java</artifactId>
+                <version>1.0.4</version>
             </dependency>
 
         </dependencies>

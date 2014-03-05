@@ -46,6 +46,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
 
     public CombinationAnalysisEditor(CombinationAnalysis analysis) {
         super(analysis, "/vm/analysis/combination/analysis_details.vm", CombinationAnalysisFormat.EXTENSION);
+        Application.track("combination", "open");
     }
 
     @Override

@@ -29,11 +29,13 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.ui.platform.Application;
 
 public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<EnrichmentAnalysis> {
 
     public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {
         super(analysis, "/vm/analysis/enrichment/analysis_details.vm", EnrichmentAnalysisFormat.EXTENSION);
+        Application.track("enrichment", "open");
     }
 
     protected Heatmap createResultsHeatmap(EnrichmentAnalysis analysis) {

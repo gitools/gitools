@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform;
 
+import com.brsanthu.googleanalytics.*;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.MenuActionSet;
@@ -42,16 +44,18 @@ import java.net.URLConnection;
 public class Application extends JFrame {
 
     private static final long serialVersionUID = -6899584212813749990L;
+
     private static final String appName;
-    private static String appVersion;
+    private static final String appVersion;
+    private static final String appTracking;
+    private static final GoogleAnalytics analytics;
 
     static {
         appName = "Gitools";
-
-        appVersion = Application.class.getPackage().getImplementationVersion();
-        if (appVersion == null) {
-            appVersion = "SNAPSHOT";
-        }
+        appTracking = "UA-7111176-2";
+        appVersion = StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), "SNAPSHOT");
+        analytics = new GoogleAnalytics(appTracking, appName, appVersion);
+        analytics.getDefaultRequest().clientId(Settings.getDefault().getUuid());
     }
 
     private JToolBar toolBar;
@@ -95,6 +99,17 @@ public class Application extends JFrame {
         return appVersion;
     }
 
+    public static String getAppTracking() {
+        return appTracking;
+    }
+
+    public static void track(String editor, String action) {
+        EventHit hit = new EventHit(editor, action);
+        hit.contentDescription(editor);
+        hit.clientId(Settings.getDefault().getUuid());
+        analytics.postAsync(hit);
+    }
+
     private void createComponents() {
         setJMenuBar(MenuActionSet.INSTANCE.createMenuBar());
 
@@ -122,6 +137,7 @@ public class Application extends JFrame {
     }
 
     public void start() {
+
         createWelcomeView();
         editorsPanel.setSelectedIndex(0);
 

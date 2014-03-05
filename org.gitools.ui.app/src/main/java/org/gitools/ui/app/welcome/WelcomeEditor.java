@@ -21,10 +21,13 @@
  */
 package org.gitools.ui.app.welcome;
 
+import com.brsanthu.googleanalytics.AppViewHit;
+import com.google.common.base.Strings;
 import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
+import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.editor.HtmlEditor;
@@ -36,6 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+import java.util.UUID;
 
 public class WelcomeEditor extends HtmlEditor {
 
@@ -43,6 +47,8 @@ public class WelcomeEditor extends HtmlEditor {
 
     public WelcomeEditor() {
         super("Welcome", getWelcomeURL());
+
+        Application.track("welcome", "open");
     }
 
     @Override
@@ -85,7 +91,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     private static URL getWelcomeURL() {
         try {
-            URL url = new URL("http://www.gitools.org/welcome");
+            URL url = new URL("http://www.gitools.org/welcome?uuid="+Settings.getDefault().getUuid());
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(10000);
 

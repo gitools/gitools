@@ -50,6 +50,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
 
     public OverlappingAnalysisEditor(OverlappingAnalysis analysis) {
         super(analysis, "/vm/analysis/overlapping/analysis_details.vm", OverlappingAnalysisFormat.EXTENSION);
+        Application.track("overlapping", "open");
     }
 
     @Override

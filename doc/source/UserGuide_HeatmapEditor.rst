@@ -1,8 +1,6 @@
-================================================================
+==============
 Heatmap editor
-================================================================
-
-
+==============
 
 A heatmap is a graphical representation of data where the values taken by a variable in a two-dimensional map are represented as colors. In the case of Gitools we can represent both numerical matrices and tables in heatmaps.
 
