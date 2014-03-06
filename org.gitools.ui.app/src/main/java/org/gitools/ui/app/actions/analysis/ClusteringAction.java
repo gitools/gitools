@@ -28,6 +28,8 @@ import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.hierarchical.Cluster;
 import org.gitools.analysis.clustering.method.value.ClusterUtils;
+import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
+import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -83,93 +85,101 @@ public class ClusteringAction extends HeatmapAction {
                     // Target dimension
                     HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
 
-                    // Save results as an annotation
-                    String annotationLabel = "Clusters " + wiz.getClusteringLayer();
-
+                    // Annotations
                     AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
-                    int maxLevel=0;
-                    Map<Integer, List<Cluster>> clustersMapPerLevel = new HashMap<>();
-                    if (results instanceof Cluster) {
 
-                        Cluster rootCluster = (Cluster) results;
-
-                        List<Cluster> children = rootCluster.getChildren();
-                        rootCluster.setName("");
-
-                        while (maxLevel < 15) {
-                            maxLevel++;
-
-                            List<Cluster> nextLevel = new ArrayList<>();
-                            for (Cluster cluster : children) {
-                                if (!cluster.getChildren().isEmpty()) {
-                                    for (String identifier : cluster.getIdentifiers()) {
-                                        annotationMatrix.setAnnotation(identifier, annotationLabel + " " + maxLevel, cluster.getName());
-                                    }
-                                }
-                                nextLevel.addAll(cluster.getChildren());
-                            }
-
-                            clustersMapPerLevel.put(maxLevel, children);
-                            children = nextLevel;
-
-                            if (children.isEmpty()) {
-                                maxLevel--;
-                                break;
-                            }
-
-                        }
-                    } else {
-                        Collection<String> clusters = results.getClusters();
-                        for (String cluster : clusters) {
-                            for (String item : results.getItems(cluster)) {
-                                annotationMatrix.setAnnotation(item, annotationLabel, cluster);
-                            }
-                        }
-                    }
-
-                    // Add header
-                    String sortLabel;
-                    if (results instanceof Cluster) {
-
-                        // Hierarchical clustering
-                        int depth = FastMath.min(10, maxLevel);
-                        for (int l = depth; l >= 1; l--) {
-                            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-                            ClusterUtils.updateHierarchicalColors(header, clustersMapPerLevel.get(l));
-                            header.setTitle(annotationLabel + " " + l);
-                            header.setSize(7);
-                            sortLabel = "${" + annotationLabel + " " + l + "}";
-                            header.setAnnotationPattern(sortLabel);
-                            clusteringDimension.addHeader(header);
-                            clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationLabel + " ", clusteringDimension.getAnnotations()), false));
-                        }
-
-                        // Bookmark current sort
-                        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + wiz.getClusteringLayer();
-                        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
-                                Bookmarks.LAYER};
-                        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
-
-                        // Open a tree editor
-                        Cluster rootCluster = (Cluster) results;
-                        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
-
+                    if (method instanceof HierarchicalMethod) {
+                        processHierarchical(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
 
                     } else {
-                        sortLabel = "${" + annotationLabel + "}";
-                        HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-                        CommandAddHeaderColoredLabels.updateFromClusterResults(header, results.getClusters());
-                        header.setTitle(annotationLabel);
-                        header.setAnnotationPattern(sortLabel);
-                        clusteringDimension.addHeader(header);
-
-                        // Sort the header
-                        clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
+                        processKMeans(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method);
                     }
             }
         });
 
         Application.get().setStatusText("Clusters created");
+    }
+
+    private static void processKMeans(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method) {
+
+        String annotationLabel = "Cluster " + layerId;
+
+        if (method instanceof WekaKmeansMethod) {
+            annotationLabel = annotationLabel + " #" + ((WekaKmeansMethod) method).getNumClusters();
+        }
+
+        // Save annotations
+        Collection<String> clusters = results.getClusters();
+        for (String cluster : clusters) {
+            for (String item : results.getItems(cluster)) {
+                annotationMatrix.setAnnotation(item, annotationLabel, cluster);
+            }
+        }
+
+        String sortLabel = "${" + annotationLabel + "}";
+        HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+        CommandAddHeaderColoredLabels.updateFromClusterResults(header, results.getClusters());
+        header.setTitle(annotationLabel);
+        header.setAnnotationPattern(sortLabel);
+        clusteringDimension.addHeader(header);
+
+        // Sort the header
+        clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
+    }
+
+    private static void processHierarchical(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method, Heatmap heatmap) {
+        String annotationPrefix = "Cluster " + layerId + " L";
+
+        Cluster rootCluster = (Cluster) results;
+
+        List<Cluster> children = rootCluster.getChildren();
+        rootCluster.setName("");
+
+        Map<Integer, List<Cluster>> clustersMapPerLevel = new HashMap<>();
+        int maxLevel=0;
+        while (maxLevel < 15) {
+            maxLevel++;
+
+            List<Cluster> nextLevel = new ArrayList<>();
+            for (Cluster cluster : children) {
+                if (!cluster.getChildren().isEmpty()) {
+                    for (String identifier : cluster.getIdentifiers()) {
+                        annotationMatrix.setAnnotation(identifier, annotationPrefix + maxLevel, cluster.getName());
+                    }
+                }
+                nextLevel.addAll(cluster.getChildren());
+            }
+
+            clustersMapPerLevel.put(maxLevel, children);
+            children = nextLevel;
+
+            if (children.isEmpty()) {
+                maxLevel--;
+                break;
+            }
+
+        }
+
+        // Hierarchical clustering
+        int depth = FastMath.min(10, maxLevel);
+        for (int l = depth; l >= 1; l--) {
+            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+            ClusterUtils.updateHierarchicalColors(header, clustersMapPerLevel.get(l));
+            header.setTitle(annotationPrefix + l);
+            header.setSize(7);
+            header.setAnnotationPattern("${" + annotationPrefix + l + "}");
+            clusteringDimension.addHeader(header);
+            clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationPrefix, clusteringDimension.getAnnotations()), false));
+        }
+
+        // Bookmark current sort
+        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + layerId;
+        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
+                Bookmarks.LAYER};
+        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
+
+        // Open a tree editor
+        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
     }
 
     private static class HierarchicalSortFunction implements Function<String, String> {
