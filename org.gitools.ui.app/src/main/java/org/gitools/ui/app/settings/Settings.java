@@ -368,6 +368,7 @@ public class Settings extends Model {
 
     public void setAllowUsageStatistics(boolean allowUsageStatistics) {
         this.allowUsageStatistics = allowUsageStatistics;
+        this.uuid = "";
     }
 
     public String getUuid() {

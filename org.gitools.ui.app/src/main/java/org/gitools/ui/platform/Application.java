@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.platform;
 
-import com.brsanthu.googleanalytics.*;
+import com.brsanthu.googleanalytics.EventHit;
+import com.brsanthu.googleanalytics.GoogleAnalytics;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.Actions;
@@ -104,10 +105,12 @@ public class Application extends JFrame {
     }
 
     public static void track(String editor, String action) {
-        EventHit hit = new EventHit(editor, action);
-        hit.contentDescription(editor);
-        hit.clientId(Settings.getDefault().getUuid());
-        analytics.postAsync(hit);
+        if (Settings.getDefault().isAllowUsageStatistics()) {
+            EventHit hit = new EventHit(editor, action);
+            hit.contentDescription(editor);
+            hit.clientId(Settings.getDefault().getUuid());
+            analytics.postAsync(hit);
+        }
     }
 
     private void createComponents() {
