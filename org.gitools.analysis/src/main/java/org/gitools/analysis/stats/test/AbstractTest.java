@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.colt.function.DoubleProcedure;
 import org.gitools.analysis.stats.test.results.CommonResult;
 
 public abstract class AbstractTest implements Test {
@@ -33,13 +32,6 @@ public abstract class AbstractTest implements Test {
         this.name = name;
         this.resultClass = resultClass;
     }
-
-    static final DoubleProcedure notNaNProc = new DoubleProcedure() {
-        @Override
-        public boolean apply(double element) {
-            return !Double.isNaN(element);
-        }
-    };
 
     @Override
     public String getName() {

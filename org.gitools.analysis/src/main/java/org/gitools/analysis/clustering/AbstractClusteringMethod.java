@@ -19,39 +19,26 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.newick;
+package org.gitools.analysis.clustering;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import org.gitools.api.analysis.IProgressMonitor;
 
+public abstract class AbstractClusteringMethod implements ClusteringMethod {
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class NewickTree<VT> {
+    private String name;
 
-    private NewickNode<VT> root;
-
-    public NewickTree() {
+    protected AbstractClusteringMethod(String name) {
+        this.name = name;
     }
 
-    public NewickNode<VT> getRoot() {
-        return root;
+    public String getName() {
+        return name;
     }
 
-    public boolean isEmpty() {
-        return root == null;
-    }
-
-    public void setRoot(NewickNode<VT> root) {
-        this.root = root;
-    }
-
-    public int getDepth() {
-        return root.getMaxDepth(0);
-    }
-
+    public abstract Clusters cluster(ClusteringData data, IProgressMonitor monitor) throws ClusteringException;
 
     @Override
     public String toString() {
-        return root.toString() + ";";
+        return name;
     }
 }

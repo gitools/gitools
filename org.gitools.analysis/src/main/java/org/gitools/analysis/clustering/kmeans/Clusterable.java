@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-core
+ * org.gitools.analysis
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,16 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.newick;
+package org.gitools.analysis.clustering.kmeans;
 
-class NewickParserException extends Exception {
+public interface Clusterable {
 
-    public NewickParserException(String msg) {
-        super(msg);
-    }
+    /**
+     * Gets the n-dimensional point.
+     *
+     * @return the point iterable
+     */
+    Iterable<Double> getPoint();
 
-    public NewickParserException(Throwable cause) {
-        super(cause);
-    }
-
+    int size();
 }

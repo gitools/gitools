@@ -22,7 +22,7 @@ package org.gitools.ui.app.fileimport.wizard.excel;
  * #L%
  */
 
-import org.apache.poi.ss.usermodel.Cell;
+import jxl.CellType;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
@@ -64,13 +64,9 @@ public class SelectColumnsPage extends AbstractWizardPage {
 
             for (ExcelHeader header : reader.getHeaders()) {
 
-                int type = header.getType();
-                switch (type) {
-                    case Cell.CELL_TYPE_FORMULA:
-                    case Cell.CELL_TYPE_BOOLEAN:
-                    case Cell.CELL_TYPE_NUMERIC:
+                CellType type = header.getType();
+                if (type == CellType.BOOLEAN || type == CellType.NUMBER) {
                         numericHeaders.add(header);
-                        break;
                 }
 
                 allHeaders.add(header);

@@ -122,7 +122,7 @@ public class FlatTextImporter implements Closeable {
             String[] line = reader.readNext();
             headers = new ArrayList<>(line.length);
             for (int i = 0; i < line.length; i++) {
-                headers.add(new FileHeader(line[i], i, 0));
+                headers.add(new FileHeader(line[i], i));
             }
 
             //Load preview
@@ -133,7 +133,7 @@ public class FlatTextImporter implements Closeable {
                     if (line != null) {
                         ArrayList<FileField> fields = new ArrayList<FileField>(line.length);
                         for (int j = 0; j < line.length; j++) {
-                            fields.add(new FileField(line[j], j, 0, i));
+                            fields.add(new FileField(line[j], j, i));
                         }
                         preview.add(fields);
                     } else {

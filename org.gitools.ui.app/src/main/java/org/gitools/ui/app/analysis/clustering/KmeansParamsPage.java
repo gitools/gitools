@@ -21,16 +21,16 @@
  */
 package org.gitools.ui.app.analysis.clustering;
 
-import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
+import org.gitools.analysis.clustering.distance.EuclideanDistance;
+import org.gitools.analysis.clustering.distance.ManhattanDistance;
+import org.gitools.analysis.clustering.kmeans.KmeansPlusPlusMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
-import weka.core.EuclideanDistance;
-import weka.core.ManhattanDistance;
 
 public class KmeansParamsPage extends AbstractWizardPage {
 
-    private WekaKmeansMethod method;
+    private KmeansPlusPlusMethod method;
 
-    public KmeansParamsPage(WekaKmeansMethod method) {
+    public KmeansParamsPage(KmeansPlusPlusMethod method) {
         super();
         this.method = method;
         initComponents();

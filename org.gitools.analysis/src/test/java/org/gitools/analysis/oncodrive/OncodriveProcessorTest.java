@@ -67,7 +67,19 @@ public class OncodriveProcessorTest extends AbstractProcessorTest<OncodriveAnaly
         IMatrix results = storeAndLoadMatrix(analysis.getResults().get());
 
         // Compare the matrix
-        AssertMatrix.assertEquals(resultsOk, results);
+        AssertMatrix.assertEquals("N", resultsOk, results);
+        AssertMatrix.assertEquals("observed", resultsOk, results);
+
+        AssertMatrix.assertEquals("expected-mean", resultsOk, results);
+        AssertMatrix.assertEquals("expected-stdev", resultsOk, results);
+
+        AssertMatrix.assertEquals("left-p-value", resultsOk, results);
+        AssertMatrix.assertEquals("right-p-value", resultsOk, results);
+        AssertMatrix.assertEquals("two-tail-p-value", resultsOk, results);
+        AssertMatrix.assertEquals("corrected-left-p-value", resultsOk, results);
+        AssertMatrix.assertEquals("corrected-right-p-value", resultsOk, results, 0.54);
+        AssertMatrix.assertEquals("corrected-two-tail-p-value", resultsOk, results);
+
 
     }
 

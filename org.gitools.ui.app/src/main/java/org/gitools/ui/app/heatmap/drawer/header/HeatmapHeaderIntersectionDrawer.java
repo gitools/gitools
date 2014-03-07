@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.app.heatmap.drawer.header;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -42,7 +43,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
     private final HeatmapHeaderDrawer colDrawer;
     private final HeatmapHeaderDrawer rowDrawer;
 
-    private MultiValueMap headerLegendDrawers;
+    private Multimap headerLegendDrawers;
 
     private Map<Object, Integer> XCoordinates;
     private Map<Object, Integer> YCoordinates;
@@ -99,7 +100,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
         List<AbstractHeatmapHeaderDrawer> rowHeaderDrawers = rowDrawer.getDrawers();
         List<HeatmapHeader> rowHeaders = getHeatmap().getRows().getHeaders();
         List<HeatmapHeader> colHeaders = getHeatmap().getColumns().getHeaders();
-        headerLegendDrawers = new MultiValueMap();
+        headerLegendDrawers = HashMultimap.create();
 
         int XPosition = 0;
         for (AbstractHeatmapHeaderDrawer d : rowHeaderDrawers) {
@@ -182,7 +183,7 @@ public class HeatmapHeaderIntersectionDrawer extends AbstractHeatmapDrawer {
         Set legendDrawers = headerLegendDrawers.keySet();
         for (Object d : legendDrawers) {
             AbstractHeatmapHeaderDrawer drawer = (AbstractHeatmapHeaderDrawer) d;
-            Collection headers = headerLegendDrawers.getCollection(d);
+            Collection headers = headerLegendDrawers.get(d);
             for (Object h : headers) {
                 HeatmapHeader header = (HeatmapHeader) h;
 

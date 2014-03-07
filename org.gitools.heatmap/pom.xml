@@ -39,11 +39,6 @@
             <artifactId>weld-se-core</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>colt</groupId>
-            <artifactId>colt</artifactId>
-        </dependency>
-
     </dependencies>
 
     <distributionManagement>

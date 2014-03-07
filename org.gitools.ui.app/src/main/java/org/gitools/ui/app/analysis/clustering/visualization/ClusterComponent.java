@@ -37,7 +37,7 @@
 
 package org.gitools.ui.app.analysis.clustering.visualization;
 
-import org.gitools.analysis.clustering.hierarchical.Cluster;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -47,7 +47,7 @@ import java.util.List;
 
 public class ClusterComponent implements Paintable {
 
-    private Cluster cluster;
+    private HierarchicalCluster cluster;
     private VCoord linkPoint;
     private VCoord initPoint;
     private boolean printName;
@@ -99,11 +99,11 @@ public class ClusterComponent implements Paintable {
         this.initPoint = initPoint;
     }
 
-    public Cluster getCluster() {
+    public HierarchicalCluster getCluster() {
         return cluster;
     }
 
-    public void setCluster(Cluster cluster) {
+    public void setCluster(HierarchicalCluster cluster) {
         this.cluster = cluster;
     }
 
@@ -115,7 +115,7 @@ public class ClusterComponent implements Paintable {
         this.printName = printName;
     }
 
-    public ClusterComponent(Cluster cluster, boolean printName, VCoord initPoint) {
+    public ClusterComponent(HierarchicalCluster cluster, boolean printName, VCoord initPoint) {
         this.printName = printName;
         this.cluster = cluster;
         this.initPoint = initPoint;

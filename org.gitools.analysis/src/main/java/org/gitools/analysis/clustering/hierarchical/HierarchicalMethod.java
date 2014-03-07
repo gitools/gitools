@@ -19,19 +19,20 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.method.value;
+package org.gitools.analysis.clustering.hierarchical;
 
+import org.gitools.analysis.clustering.AbstractClusteringMethod;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
+import org.gitools.analysis.clustering.MatrixClusteringData;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 
 
-public class HierarchicalMethod extends AbstractClusteringValueMethod {
+public class HierarchicalMethod extends AbstractClusteringMethod {
 
     private LinkageStrategy linkageStrategy;
     private DistanceMeasure distanceMeasure;

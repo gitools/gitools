@@ -21,8 +21,8 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.jet.stat.Probability;
 import com.google.common.collect.Lists;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.calc.Statistic;
 import org.gitools.analysis.stats.test.results.CommonResult;
@@ -66,6 +66,8 @@ public class ZscoreTest extends AbstractTest {
     }
 
 
+    private static NormalDistribution NORMAL = new NormalDistribution();
+
     @Override
     public CommonResult processTest(Iterable<Double> values) {
 
@@ -88,7 +90,7 @@ public class ZscoreTest extends AbstractTest {
         double stdev = FastMath.sqrt((N * sx2) - (sx * sx)) / N;
 
         double zscore = (observed - mean) / stdev;
-        double leftPvalue = Probability.normal(zscore);
+        double leftPvalue = NORMAL.cumulativeProbability(zscore);
         double rightPvalue = 1.0 - leftPvalue;
         double twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
         twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;

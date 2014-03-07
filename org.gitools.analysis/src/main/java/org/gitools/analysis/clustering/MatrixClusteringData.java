@@ -19,10 +19,8 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.method.value;
+package org.gitools.analysis.clustering;
 
-import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis.clustering.ClusteringDataInstance;
 import org.gitools.api.matrix.*;
 
 public class MatrixClusteringData implements ClusteringData {
@@ -67,11 +65,6 @@ public class MatrixClusteringData implements ClusteringData {
     }
 
     @Override
-    public ClusteringDataInstance getInstance(int index) {
-        return getInstance(clusteringDimension.getLabel(index));
-    }
-
-    @Override
     public ClusteringDataInstance getInstance(String label) {
         return new Instance(label);
     }
@@ -82,10 +75,6 @@ public class MatrixClusteringData implements ClusteringData {
 
     public void setMatrix(IMatrix matrix) {
         this.matrix = matrix;
-    }
-
-    public int getNumAttributes() {
-        return aggregationDimension.size();
     }
 
     private class Instance implements ClusteringDataInstance {

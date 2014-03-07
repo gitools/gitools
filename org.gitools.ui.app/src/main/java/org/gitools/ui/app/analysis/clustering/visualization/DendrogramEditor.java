@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.analysis.clustering.visualization;
 
-import org.gitools.analysis.clustering.hierarchical.Cluster;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.editor.AbstractEditor;
@@ -31,9 +31,9 @@ import java.awt.*;
 
 public class DendrogramEditor extends AbstractEditor {
 
-    private Cluster model;
+    private HierarchicalCluster model;
 
-    public DendrogramEditor(Cluster model) {
+    public DendrogramEditor(HierarchicalCluster model) {
         super();
 
         this.model = model;

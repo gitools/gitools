@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.method.annotations;
+package org.gitools.analysis.clustering.annotations;
 
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.utils.textpattern.TextPattern.VariableValueResolver;

@@ -43,15 +43,15 @@ import org.gitools.analysis.clustering.Clusters;
 
 import java.util.*;
 
-public class Cluster implements Clusters, Comparable<Cluster> {
+public class HierarchicalCluster implements Clusters, Comparable<HierarchicalCluster> {
 
     private String name;
 
     private Set<String> identifiers;
 
-    private Cluster parent;
+    private HierarchicalCluster parent;
 
-    private List<Cluster> children;
+    private List<HierarchicalCluster> children;
 
     private Double distance;
 
@@ -59,11 +59,11 @@ public class Cluster implements Clusters, Comparable<Cluster> {
 
     private int color;
 
-    public Cluster(String... identifiers) {
+    public HierarchicalCluster(String... identifiers) {
         this.identifiers = Sets.newHashSet(identifiers);
     }
 
-    public Cluster(Set<String> leftIds, Set<String> rightIds) {
+    public HierarchicalCluster(Set<String> leftIds, Set<String> rightIds) {
         this.identifiers = new HashSet<>(leftIds.size() + rightIds.size());
         this.identifiers.addAll(leftIds);
         this.identifiers.addAll(rightIds);
@@ -77,7 +77,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         this.distance = distance;
     }
 
-    public List<Cluster> getChildren() {
+    public List<HierarchicalCluster> getChildren() {
         if (children == null) {
             children = new ArrayList<>();
         }
@@ -85,15 +85,15 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         return children;
     }
 
-    public void setChildren(List<Cluster> children) {
+    public void setChildren(List<HierarchicalCluster> children) {
         this.children = children;
     }
 
-    public Cluster getParent() {
+    public HierarchicalCluster getParent() {
         return parent;
     }
 
-    public void setParent(Cluster parent) {
+    public void setParent(HierarchicalCluster parent) {
         this.parent = parent;
     }
 
@@ -113,7 +113,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         this.name = name;
     }
 
-    public void addChild(Cluster cluster) {
+    public void addChild(HierarchicalCluster cluster) {
         getChildren().add(cluster);
     }
 
@@ -125,7 +125,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         this.weight = (weight == null ? 0.0 : weight);
     }
 
-    public boolean contains(Cluster cluster) {
+    public boolean contains(HierarchicalCluster cluster) {
         return getChildren().contains(cluster);
     }
 
@@ -142,9 +142,9 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         return countLeafs(this, 0);
     }
 
-    public int countLeafs(Cluster node, int count) {
+    public int countLeafs(HierarchicalCluster node, int count) {
         if (node.isLeaf()) count++;
-        for (Cluster child : node.getChildren()) {
+        for (HierarchicalCluster child : node.getChildren()) {
             count += child.countLeafs();
         }
         return count;
@@ -157,7 +157,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
         }
         String name = Joiner.on('&').join(getIdentifiers()) + (isLeaf() ? " (leaf)" : "") + (distance != null ? "  distance: " + distance : "");
         System.out.println(name);
-        for (Cluster child : getChildren()) {
+        for (HierarchicalCluster child : getChildren()) {
             child.toConsole(indent + 1);
         }
     }
@@ -195,7 +195,7 @@ public class Cluster implements Clusters, Comparable<Cluster> {
     }
 
     @Override
-    public int compareTo(Cluster o) {
+    public int compareTo(HierarchicalCluster o) {
 
         int result;
         if (o == null || o.getWeight() == null) {

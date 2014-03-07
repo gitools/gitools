@@ -271,7 +271,7 @@ public class SaveFilePage extends AbstractWizardPage {
             }
         };
 
-        File selFile = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_OPEN, new FileFormatFilter[]{ff}).getFile();
+        File selFile = FileChooserUtils.selectFile("Select file", folder.getText(), FileChooserUtils.MODE_SAVE, new FileFormatFilter[]{ff}).getFile();
 
         if (selFile != null) {
             String fn = selFile.getName();

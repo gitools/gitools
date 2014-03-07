@@ -37,7 +37,7 @@
 
 package org.gitools.ui.app.analysis.clustering.visualization;
 
-import org.gitools.analysis.clustering.hierarchical.Cluster;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +49,7 @@ public class DendrogramPanel extends JPanel {
 
     final static BasicStroke solidStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
 
-    private Cluster model;
+    private HierarchicalCluster model;
     private ClusterComponent component;
     private Color lineColor = Color.BLACK;
     private boolean showDistanceValues = false;
@@ -157,11 +157,11 @@ public class DendrogramPanel extends JPanel {
         this.lineColor = lineColor;
     }
 
-    public Cluster getModel() {
+    public HierarchicalCluster getModel() {
         return model;
     }
 
-    public void setModel(Cluster model) {
+    public void setModel(HierarchicalCluster model) {
         this.model = model;
         component = createComponent(model);
         updateModelMetrics();
@@ -179,7 +179,7 @@ public class DendrogramPanel extends JPanel {
         hModel = maxY - minY;
     }
 
-    private ClusterComponent createComponent(Cluster cluster, VCoord initCoord, double clusterHeight) {
+    private ClusterComponent createComponent(HierarchicalCluster cluster, VCoord initCoord, double clusterHeight) {
 
         ClusterComponent comp = null;
         if (cluster != null) {
@@ -187,7 +187,7 @@ public class DendrogramPanel extends JPanel {
             double leafHeight = clusterHeight / cluster.countLeafs();
             double yChild = initCoord.getY() - (clusterHeight / 2);
             double distance = cluster.getDistance() == null ? 0 : cluster.getDistance();
-            for (Cluster child : cluster.getChildren()) {
+            for (HierarchicalCluster child : cluster.getChildren()) {
                 int childLeafCount = child.countLeafs();
                 double childHeight = childLeafCount * leafHeight;
                 double childDistance = child.getDistance() == null ? 0 : child.getDistance();
@@ -206,7 +206,7 @@ public class DendrogramPanel extends JPanel {
 
     }
 
-    private ClusterComponent createComponent(Cluster model) {
+    private ClusterComponent createComponent(HierarchicalCluster model) {
 
         double virtualModelHeight = 1;
         VCoord initCoord = new VCoord(0, virtualModelHeight / 2);

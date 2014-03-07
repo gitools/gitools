@@ -23,13 +23,11 @@ package org.gitools.ui.app.actions.analysis;
 
 import com.google.common.base.Function;
 import org.apache.commons.math3.util.FastMath;
-import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.hierarchical.Cluster;
-import org.gitools.analysis.clustering.method.value.ClusterUtils;
-import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
-import org.gitools.analysis.clustering.method.value.WekaKmeansMethod;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
+import org.gitools.analysis.clustering.kmeans.KmeansPlusPlusMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -37,6 +35,7 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
@@ -50,9 +49,11 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
 public class ClusteringAction extends HeatmapAction {
 
@@ -104,8 +105,8 @@ public class ClusteringAction extends HeatmapAction {
 
         String annotationLabel = "Cluster " + layerId;
 
-        if (method instanceof WekaKmeansMethod) {
-            annotationLabel = annotationLabel + " #" + ((WekaKmeansMethod) method).getNumClusters();
+        if (method instanceof KmeansPlusPlusMethod) {
+            annotationLabel = annotationLabel + " #" + ((KmeansPlusPlusMethod) method).getNumClusters();
         }
 
         // Save annotations
@@ -130,18 +131,18 @@ public class ClusteringAction extends HeatmapAction {
     private static void processHierarchical(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method, Heatmap heatmap) {
         String annotationPrefix = "Cluster " + layerId + " L";
 
-        Cluster rootCluster = (Cluster) results;
+        HierarchicalCluster rootCluster = (HierarchicalCluster) results;
 
-        List<Cluster> children = rootCluster.getChildren();
+        List<HierarchicalCluster> children = rootCluster.getChildren();
         rootCluster.setName("");
 
-        Map<Integer, List<Cluster>> clustersMapPerLevel = new HashMap<>();
+        Map<Integer, List<HierarchicalCluster>> clustersMapPerLevel = new HashMap<>();
         int maxLevel=0;
         while (maxLevel < 15) {
             maxLevel++;
 
-            List<Cluster> nextLevel = new ArrayList<>();
-            for (Cluster cluster : children) {
+            List<HierarchicalCluster> nextLevel = new ArrayList<>();
+            for (HierarchicalCluster cluster : children) {
                 if (!cluster.getChildren().isEmpty()) {
                     for (String identifier : cluster.getIdentifiers()) {
                         annotationMatrix.setAnnotation(identifier, annotationPrefix + maxLevel, cluster.getName());
@@ -164,7 +165,16 @@ public class ClusteringAction extends HeatmapAction {
         int depth = FastMath.min(10, maxLevel);
         for (int l = depth; l >= 1; l--) {
             HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-            ClusterUtils.updateHierarchicalColors(header, clustersMapPerLevel.get(l));
+
+            List<HierarchicalCluster> clusters = clustersMapPerLevel.get(l);
+            List<ColoredLabel> coloredLabels = new ArrayList<>(clusters.size());
+            for (HierarchicalCluster cluster : clusters) {
+                coloredLabels.add(new ColoredLabel(cluster.getName(), new Color(cluster.getColor())));
+            }
+
+            header.setClusters(coloredLabels);
+
+
             header.setTitle(annotationPrefix + l);
             header.setSize(7);
             header.setAnnotationPattern("${" + annotationPrefix + l + "}");

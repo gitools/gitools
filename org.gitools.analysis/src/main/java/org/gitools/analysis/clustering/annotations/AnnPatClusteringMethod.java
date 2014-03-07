@@ -19,12 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.method.annotations;
+package org.gitools.analysis.clustering.annotations;
 
-import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.GenericClusteringResults;
+import org.gitools.analysis.clustering.*;
 import org.gitools.api.analysis.IProgressMonitor;
 
 import java.util.HashMap;
@@ -32,33 +29,27 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AnnPatClusteringMethod implements ClusteringMethod {
+public class AnnPatClusteringMethod extends AbstractClusteringMethod {
 
     private String labelPrefix;
 
     public AnnPatClusteringMethod(String labelPrefix) {
+        super("Pattern annotation");
+
         this.labelPrefix = labelPrefix;
     }
 
-    private String pattern;
-
     public AnnPatClusteringMethod() {
-        this.labelPrefix = "";
+        this("");
     }
 
     public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
-
-    @Override
-    public String getName() {
-        return "Pattern annotation";
+        String pattern1 = pattern;
     }
 
     /**
      * Execute the clustering and return the results
      */
-
     @Override
     public Clusters cluster(ClusteringData data, IProgressMonitor monitor) {
         monitor.begin("Clustering by annotations", data.getSize() + 1);
