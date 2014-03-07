@@ -22,6 +22,7 @@
 package org.gitools.ui.app.settings;
 
 import com.google.common.base.Strings;
+import com.jgoodies.binding.beans.Model;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -34,7 +35,7 @@ import java.util.UUID;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Settings {
+public class Settings extends Model {
 
     private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
     private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
@@ -102,22 +103,34 @@ public class Settings {
 
     private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
 
+    private boolean allowUsageStatistics = true;
+    public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
+
+
     private boolean showEnrichmentExamplePage = true;
     private boolean showOncodriveExamplePage = true;
     private boolean showCorrelationExamplePage = true;
     private boolean showOverlapExamplePage = true;
     private boolean showCombinationExamplePage = true;
+
     private boolean showTipsAtStartup = true;
+    public static final String PROPERTY_TIPS = "showTipsAtStartup";
+
     private boolean showMutualExclusionProgress = false;
 
 
     // Port parameters
     private boolean portEnabled = true;
+    public static final String PROPERTY_PORT_ENABLED = "portEnabled";
     private int defaultPort = 50151;
+    public static final String PROPERTY_PORT = "defaultPort";
+
 
     // IGV parameters
     private boolean showIGVLink = true;
+    public static final String PROPERTY_IGV_ENABLED = "showIGVLink";
     private String igvUrl = DEFAULT_IGV_URL;
+    public static final String PROPERTY_IGV_URL = "igvUrl";
 
     // Preview features
     private boolean previewFeatures = false;
@@ -275,7 +288,9 @@ public class Settings {
     }
 
     public void setShowTipsAtStartup(boolean showTipsAtStartup) {
+        boolean old = this.showTipsAtStartup;
         this.showTipsAtStartup = showTipsAtStartup;
+        firePropertyChange(PROPERTY_TIPS, old, showTipsAtStartup);
     }
 
     public boolean isShowOverlapExamplePage() {
@@ -294,12 +309,17 @@ public class Settings {
         this.portEnabled = portEnabled;
     }
 
-    public int getDefaultPort() {
+    public Integer getDefaultPort() {
         return defaultPort;
     }
 
-    public void setDefaultPort(int defaultPort) {
+    public void setDefaultPort(Integer defaultPort) {
         this.defaultPort = defaultPort;
+    }
+
+    @Deprecated
+    public void setDefaultPort(Long defaultPort) {
+        this.defaultPort = (int) (long) defaultPort;
     }
 
     public String getIgvUrl() {
@@ -342,9 +362,17 @@ public class Settings {
         this.showMutualExclusionProgress = showMutualExclusionProgress;
     }
 
+    public boolean isAllowUsageStatistics() {
+        return allowUsageStatistics;
+    }
+
+    public void setAllowUsageStatistics(boolean allowUsageStatistics) {
+        this.allowUsageStatistics = allowUsageStatistics;
+    }
+
     public String getUuid() {
 
-        if (Strings.isNullOrEmpty(uuid)) {
+        if (Strings.isNullOrEmpty(uuid) && isAllowUsageStatistics()) {
             uuid = UUID.randomUUID().toString();
         }
 

@@ -34,7 +34,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Help {
+public class
+        Help {
 
     private static Help instance;
     private final PropertiesExpansion properties;
