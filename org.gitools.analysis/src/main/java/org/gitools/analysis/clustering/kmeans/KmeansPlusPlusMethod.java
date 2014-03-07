@@ -28,6 +28,7 @@ import org.gitools.analysis.clustering.*;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
@@ -80,7 +81,25 @@ public class KmeansPlusPlusMethod extends AbstractClusteringMethod {
             points.add(new Slide(identifier, point, aggregationSize));
         }
 
-        return new KMeansClusters(clusterer.cluster(points, monitor), noData);
+        // Cluster data
+        List<CentroidCluster<Slide>> clusters = clusterer.cluster(points, monitor);
+
+        // Calculate cluster weight
+        IAggregator aggregator = data.getLayer().getAggregator();
+        for (Cluster<Slide> cluster : clusters) {
+            List<Double> values = new ArrayList<>();
+            for (Slide slide : cluster.getPoints()) {
+                values.add(aggregator.aggregate(slide.getPoint()));
+            }
+
+            cluster.setWeight(aggregator.aggregate(values) / cluster.getPoints().size());
+        }
+
+        // Sort clusters
+        Collections.sort(clusters);
+
+        // Name and return clusters
+        return new KMeansClusters(clusters, noData);
     }
 
     public int getIterations() {

@@ -31,13 +31,15 @@ import java.util.List;
  * @version $Id: Cluster.java 1461862 2013-03-27 21:48:10Z tn $
  * @since 3.2
  */
-public class Cluster<T extends Clusterable> implements Serializable {
+public class Cluster<T extends Clusterable> implements Serializable, Comparable<Cluster> {
 
     /** Serializable version identifier. */
     private static final long serialVersionUID = -3442297081515880464L;
 
     /** The points contained in this cluster. */
     private final List<T> points;
+
+    private double weight;
 
     /**
      * Build a cluster centered at a specified point.
@@ -62,4 +64,21 @@ public class Cluster<T extends Clusterable> implements Serializable {
         return points;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    @Override
+    public int compareTo(Cluster o) {
+
+        if (o == null) {
+            return 1;
+        }
+
+        return -1 * Double.compare(weight, o.getWeight());
+    }
 }
