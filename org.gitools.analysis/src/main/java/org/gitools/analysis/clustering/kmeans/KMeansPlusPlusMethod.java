@@ -21,19 +21,12 @@
  */
 package org.gitools.analysis.clustering.kmeans;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-import org.apache.commons.math3.ml.clustering.*;
 import org.gitools.analysis.clustering.*;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
+import org.gitools.analysis.clustering.distance.EuclideanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
 
 import java.util.*;
 
@@ -41,14 +34,17 @@ import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.size;
 
-public class KmeansPlusPlusMethod extends AbstractClusteringMethod {
+public class KMeansPlusPlusMethod extends AbstractClusteringMethod {
 
-    private int iterations;
-    private int seed;
-    private int numClusters;
-    private DistanceMeasure distanceFunction;
+    public static String PROPERTY_ITERATIONS = "iterations";
+    public static String PROPERTY_NUMCLUSTERS = "numClusters";
+    public static String PROPERTY_DISTANCE = "distance";
 
-    public KmeansPlusPlusMethod() {
+    private Long iterations = Long.valueOf(300);
+    private Long numClusters = Long.valueOf(6);
+    private DistanceMeasure distance = EuclideanDistance.get();
+
+    public KMeansPlusPlusMethod() {
         super("K-means++");
     }
 
@@ -62,7 +58,7 @@ public class KmeansPlusPlusMethod extends AbstractClusteringMethod {
 
         MatrixClusteringData data = (MatrixClusteringData) clusterData;
 
-        KMeansPlusPlusClusterer clusterer = new KMeansPlusPlusClusterer(getNumClusters(), getIterations(), getDistanceFunction());
+        KMeansPlusPlusClusterer clusterer = new KMeansPlusPlusClusterer(getNumClusters().intValue(), getIterations().intValue(), getDistance());
 
         Set<String> noData = new HashSet<>();
 
@@ -102,36 +98,31 @@ public class KmeansPlusPlusMethod extends AbstractClusteringMethod {
         return new KMeansClusters(clusters, noData);
     }
 
-    public int getIterations() {
+    public Long getIterations() {
         return iterations;
     }
 
-    public void setIterations(int iterations) {
+    public void setIterations(Long iterations) {
         this.iterations = iterations;
+        firePropertyChange(PROPERTY_ITERATIONS, null, iterations);
     }
 
-    public int getSeed() {
-        return seed;
+    public DistanceMeasure getDistance() {
+        return distance;
     }
 
-    public void setSeed(int seedKmeans) {
-        this.seed = seedKmeans;
+    public void setDistance(DistanceMeasure distance) {
+        this.distance = distance;
+        firePropertyChange(PROPERTY_DISTANCE, null, distance);
     }
 
-    public DistanceMeasure getDistanceFunction() {
-        return distanceFunction;
-    }
-
-    public void setDistanceFunction(DistanceMeasure distance) {
-        this.distanceFunction = distance;
-    }
-
-    public int getNumClusters() {
+    public Long getNumClusters() {
         return numClusters;
     }
 
-    public void setNumClusters(int numClusters) {
+    public void setNumClusters(Long numClusters) {
         this.numClusters = numClusters;
+        firePropertyChange(PROPERTY_NUMCLUSTERS, null, numClusters);
     }
 
     public static class Slide implements Clusterable {

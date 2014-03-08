@@ -27,7 +27,7 @@ import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
-import org.gitools.analysis.clustering.kmeans.KmeansPlusPlusMethod;
+import org.gitools.analysis.clustering.kmeans.KMeansPlusPlusMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -105,8 +105,8 @@ public class ClusteringAction extends HeatmapAction {
 
         String annotationLabel = "Cluster " + layerId;
 
-        if (method instanceof KmeansPlusPlusMethod) {
-            annotationLabel = annotationLabel + " #" + ((KmeansPlusPlusMethod) method).getNumClusters();
+        if (method instanceof KMeansPlusPlusMethod) {
+            annotationLabel = annotationLabel + " #" + ((KMeansPlusPlusMethod) method).getNumClusters();
         }
 
         // Save annotations

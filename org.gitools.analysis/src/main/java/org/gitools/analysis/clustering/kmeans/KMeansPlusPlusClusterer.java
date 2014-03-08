@@ -119,7 +119,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> {
      *   If negative, no maximum will be used.
      */
     public KMeansPlusPlusClusterer(final int k, final int maxIterations) {
-        this(k, maxIterations, new EuclideanDistance());
+        this(k, maxIterations, EuclideanDistance.get());
     }
 
     /** Build a clusterer.

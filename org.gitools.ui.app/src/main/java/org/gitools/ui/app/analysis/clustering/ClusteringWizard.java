@@ -24,7 +24,7 @@ package org.gitools.ui.app.analysis.clustering;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
-import org.gitools.analysis.clustering.kmeans.KmeansPlusPlusMethod;
+import org.gitools.analysis.clustering.kmeans.KMeansPlusPlusMethod;
 import org.gitools.analysis.clustering.MatrixClusteringData;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
@@ -43,10 +43,10 @@ public class ClusteringWizard extends AbstractWizard {
 
     private MethodSelectionPage methodPage;
     private HCLParamsPage hclPage;
-    private KmeansParamsPage kmeansPage;
+    private KMeansPlusPlusPage kmeansPage;
 
     private static HierarchicalMethod HCL_METHOD = new HierarchicalMethod();
-    private static KmeansPlusPlusMethod KMEANS_METHOD = new KmeansPlusPlusMethod();
+    private static KMeansPlusPlusMethod KMEANS_METHOD = new KMeansPlusPlusMethod();
 
     public ClusteringWizard(Heatmap heatmap) {
         super();
@@ -66,7 +66,7 @@ public class ClusteringWizard extends AbstractWizard {
         hclPage = new HCLParamsPage(HCL_METHOD);
         addPage(hclPage);
 
-        kmeansPage = new KmeansParamsPage(KMEANS_METHOD);
+        kmeansPage = new KMeansPlusPlusPage(KMEANS_METHOD);
         addPage(kmeansPage);
     }
 
@@ -96,7 +96,7 @@ public class ClusteringWizard extends AbstractWizard {
 
         if (method instanceof HierarchicalMethod) {
             return hclPage;
-        } else if (method instanceof KmeansPlusPlusMethod) {
+        } else if (method instanceof KMeansPlusPlusMethod) {
             return kmeansPage;
         }
 

@@ -59,9 +59,9 @@ public class HCLParamsPage extends AbstractWizardPage {
         }
 
         if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
-            distanceMeasure = new EuclideanDistance();
+            distanceMeasure = EuclideanDistance.get();
         } else {
-            distanceMeasure = new ManhattanDistance();
+            distanceMeasure = ManhattanDistance.get();
         }
 
         method.setDistanceMeasure(distanceMeasure);
