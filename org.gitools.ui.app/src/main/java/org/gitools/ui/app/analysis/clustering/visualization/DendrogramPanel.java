@@ -219,6 +219,10 @@ public class DendrogramPanel extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        paintTree(g);
+    }
+
+    public void paintTree(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(lineColor);

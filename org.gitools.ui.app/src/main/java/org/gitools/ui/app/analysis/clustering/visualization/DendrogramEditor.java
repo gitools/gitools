@@ -53,7 +53,6 @@ public class DendrogramEditor extends AbstractEditor {
         add(new JScrollPane(panel));
 
         Application.track("dendrogram", "open");
-
     }
 
     @Override
