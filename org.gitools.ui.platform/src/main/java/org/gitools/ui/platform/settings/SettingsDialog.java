@@ -77,16 +77,16 @@ public abstract class SettingsDialog extends AbstractDialog {
 
         updateState();
 
-        revalidate();
-        repaint();
+        //revalidate();
+        //repaint();
 
     }
 
     private void showSection(String sectionName) {
         CardLayout layout = (CardLayout) selectedPanel.getLayout();
         layout.show(selectedPanel, sectionName);
-        revalidate();
-        repaint();
+        //revalidate();
+        //repaint();
     }
 
     @Override

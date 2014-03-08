@@ -22,14 +22,15 @@
 package org.gitools.ui.app.actions.help;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.value.ConverterFactory;
+import com.jgoodies.binding.beans.PropertyAdapter;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.settings.ISettingsSection;
+import org.gitools.utils.formatter.IntegerFormat;
 
 import javax.swing.*;
-import java.text.DecimalFormat;
 
 import static com.jgoodies.binding.adapter.Bindings.bind;
+import static com.jgoodies.binding.value.ConverterFactory.createStringConverter;
 
 public class GitoolsSettingsSection implements ISettingsSection {
     private JPanel panel;
@@ -40,15 +41,15 @@ public class GitoolsSettingsSection implements ISettingsSection {
     private JTextField IGVUrl;
 
     public GitoolsSettingsSection(Settings settings) {
-        PresentationModel<Settings> settingsModel = new PresentationModel<>(settings);
 
+        PresentationModel<Settings> model = new PresentationModel<>(settings);
 
-        bind(tips, settingsModel.getModel(Settings.PROPERTY_TIPS));
-        bind(portBox, settingsModel.getModel(Settings.PROPERTY_PORT_ENABLED));
-        bind(port, ConverterFactory.createStringConverter(settingsModel.getModel(Settings.PROPERTY_PORT),
-                new DecimalFormat("#")));
-        bind(IGVBox, settingsModel.getModel(Settings.PROPERTY_IGV_ENABLED));
-        bind(IGVUrl, settingsModel.getModel(Settings.PROPERTY_IGV_URL));
+        bind(tips, new PropertyAdapter<>(settings, Settings.PROPERTY_TIPS));
+        bind(portBox, model.getModel(Settings.PROPERTY_PORT_ENABLED));
+        bind(port, createStringConverter(model.getModel(Settings.PROPERTY_PORT), IntegerFormat.get()));
+        bind(IGVBox, model.getModel(Settings.PROPERTY_IGV_ENABLED));
+        bind(IGVUrl, model.getModel(Settings.PROPERTY_IGV_URL));
+
     }
 
     @Override
@@ -60,4 +61,5 @@ public class GitoolsSettingsSection implements ISettingsSection {
     public JPanel getPanel() {
         return panel;
     }
+
 }

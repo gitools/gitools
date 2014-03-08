@@ -187,7 +187,7 @@
             <dependency>
                 <groupId>weblookandfeel</groupId>
                 <artifactId>weblookandfeel</artifactId>
-                <version>1.28</version>
+                <version>1.28-20140308</version>
             </dependency>
 
             <dependency>

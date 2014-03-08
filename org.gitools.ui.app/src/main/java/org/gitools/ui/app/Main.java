@@ -22,6 +22,7 @@
 package org.gitools.ui.app;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.checkbox.WebCheckBoxStyle;
 import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
@@ -66,6 +67,7 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+        WebCheckBoxStyle.animated = false;
 
         // Workaround to force windows to paint the TaskPaneContainer background
         UIManager.put("TaskPaneContainer.backgroundPainter", new MattePainter(Color.WHITE));

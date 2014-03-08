@@ -37,10 +37,6 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings extends Model {
 
-    private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
-    private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
-    private static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
-
     private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
 
     private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
@@ -53,9 +49,7 @@ public class Settings extends Model {
 
     private static final String configFile = CONFIG_PATH + File.separator + configFileName;
 
-
     private static Settings instance;
-
 
     public static Settings getDefault() {
         if (instance == null) {
@@ -63,7 +57,6 @@ public class Settings extends Model {
         }
         return instance;
     }
-
 
     private static Settings load() {
         Settings settings = null;
@@ -97,21 +90,12 @@ public class Settings extends Model {
     private String lastMapPath = userPath;
     private String lastAnnotationPath = userPath;
     private String lastFilterPath = userPath;
-    private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
-    private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
 
 
     private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
 
     private boolean allowUsageStatistics = true;
     public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
-
-
-    private boolean showEnrichmentExamplePage = true;
-    private boolean showOncodriveExamplePage = true;
-    private boolean showCorrelationExamplePage = true;
-    private boolean showOverlapExamplePage = true;
-    private boolean showCombinationExamplePage = true;
 
     private boolean showTipsAtStartup = true;
     public static final String PROPERTY_TIPS = "showTipsAtStartup";
@@ -231,58 +215,6 @@ public class Settings extends Model {
         this.lastFilterPath = lastFilterPath;
     }
 
-    public String getIntogenOncomodulesUrl() {
-        return intogenOncomodulesUrl;
-    }
-
-    public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
-        this.intogenOncomodulesUrl = intogenOncomodulesUrl;
-    }
-
-    public String getIntogenDataUrl() {
-        return intogenDataUrl;
-    }
-
-    public void setIntogenDataUrl(String intogenDataUrl) {
-        this.intogenDataUrl = intogenDataUrl;
-    }
-
-    public boolean isShowEnrichmentExamplePage() {
-        return showEnrichmentExamplePage;
-    }
-
-    public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
-        this.showEnrichmentExamplePage = showEnrichmentExamplePage;
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public boolean isShowOncodriveExamplePage() {
-        return showOncodriveExamplePage;
-    }
-
-    public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
-        this.showOncodriveExamplePage = showOncodriveExamplePage;
-    }
-
-    public boolean isShowCorrelationExamplePage() {
-        return showCorrelationExamplePage;
-    }
-
-    public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
-        this.showCorrelationExamplePage = showCorrelationExamplePage;
-    }
-
-    public boolean isShowCombinationExamplePage() {
-        return showCombinationExamplePage;
-    }
-
-    public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
-        this.showCombinationExamplePage = showCombinationExamplePage;
-    }
-
-
     public boolean isShowTipsAtStartup() {
         return showTipsAtStartup;
     }
@@ -291,14 +223,6 @@ public class Settings extends Model {
         boolean old = this.showTipsAtStartup;
         this.showTipsAtStartup = showTipsAtStartup;
         firePropertyChange(PROPERTY_TIPS, old, showTipsAtStartup);
-    }
-
-    public boolean isShowOverlapExamplePage() {
-        return showOverlapExamplePage;
-    }
-
-    public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
-        this.showOverlapExamplePage = showOverlapExamplePage;
     }
 
     public boolean isPortEnabled() {
@@ -315,11 +239,6 @@ public class Settings extends Model {
 
     public void setDefaultPort(Integer defaultPort) {
         this.defaultPort = defaultPort;
-    }
-
-    @Deprecated
-    public void setDefaultPort(Long defaultPort) {
-        this.defaultPort = (int) (long) defaultPort;
     }
 
     public String getIgvUrl() {
