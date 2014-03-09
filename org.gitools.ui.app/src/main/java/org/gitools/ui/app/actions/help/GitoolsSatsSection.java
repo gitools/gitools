@@ -44,7 +44,7 @@ public class GitoolsSatsSection implements ISettingsSection {
 
     @Override
     public String getName() {
-        return "Gitools Settings";
+        return "Usage Stats";
     }
 
     @Override
