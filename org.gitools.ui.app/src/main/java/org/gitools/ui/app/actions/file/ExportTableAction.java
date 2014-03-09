@@ -66,13 +66,13 @@ public class ExportTableAction extends HeatmapAction {
             return;
         }
 
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.get().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+        Settings.get().setLastExportPath(file.getParentFile().getAbsolutePath());
 
         final List<Integer> selectedIndices = dlg.getSelectedIndices();
 

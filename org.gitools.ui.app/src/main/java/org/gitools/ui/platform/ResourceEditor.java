@@ -100,13 +100,13 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
 
         File file = getFile();
         if (file != null) {
-            Settings.getDefault().setLastPath(file.getParent());
+            Settings.get().setLastPath(file.getParent());
         }
 
         SaveFileWizard wiz = SaveFileWizard.createSimple(
                 "Save",
                 getFileName(),
-                Settings.getDefault().getLastPath(),
+                Settings.get().getLastPath(),
                 getFileFormats()
         );
 
@@ -116,7 +116,7 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
             return;
         }
 
-        Settings.getDefault().setLastPath(wiz.getFolder());
+        Settings.get().setLastPath(wiz.getFolder());
         file = wiz.getPathAsFile();
         setFile(file);
 
@@ -143,7 +143,7 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
             if (res == -1 || res == 0) {
                 return false;
             } else if (res == 2) {
-                SaveFileWizard wiz = SaveFileWizard.createSimple("Save", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+                SaveFileWizard wiz = SaveFileWizard.createSimple("Save", getName(), Settings.get().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(Application.get(), wiz);
                 dlg.setVisible(true);
@@ -151,7 +151,7 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
                     return false;
                 }
 
-                Settings.getDefault().setLastPath(wiz.getFolder());
+                Settings.get().setLastPath(wiz.getFolder());
 
                 setFile(wiz.getPathAsFile());
 

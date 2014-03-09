@@ -38,7 +38,7 @@ public class FileChooserUtils {
     }
 
     public static FileChoose selectFile(String title, int mode, FileFormatFilter[] filters) {
-        return selectFile(title, Settings.getDefault().getLastPath(), mode, filters);
+        return selectFile(title, Settings.get().getLastPath(), mode, filters);
     }
 
     /**
@@ -51,15 +51,27 @@ public class FileChooserUtils {
      * @return {file, filter}
      */
     public static FileChoose selectFile(String title, String currentPath, int mode, FileFormatFilter[] filters) {
-        return selectFileAWT(title, currentPath, mode, filters);
+        return selectFile(title, currentPath, null, mode, filters);
     }
 
-    private static FileChoose selectFileAWT(String title, String currentPath, int mode, FileFormatFilter[] filters) {
+    public static FileChoose selectFile(String title, String currentPath, String fileName, int mode) {
+        return selectFileAWT(title, currentPath, fileName, mode);
+    }
+
+    public static FileChoose selectFile(String title, String currentPath, String fileName, int mode, FileFormatFilter[] filters) {
+        return selectFileAWT(title, currentPath, fileName, mode);
+    }
+
+    private static FileChoose selectFileAWT(String title, String currentPath, String fileName, int mode) {
 
         FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, (mode == MODE_OPEN ? FileDialog.LOAD : FileDialog.SAVE));
         dialog.setDirectory(currentPath);
         dialog.setMultipleMode(false);
         dialog.setVisible(true);
+
+        if (fileName != null) {
+            dialog.setFile(fileName);
+        }
 
         String file = dialog.getFile();
         return (file == null ? null : new FileChoose(new File(dialog.getDirectory(), dialog.getFile()), null));

@@ -42,7 +42,7 @@ public class SettingsAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        execute(Settings.getDefault());
+        execute(Settings.get());
     }
 
     public static void execute(Settings settings) {
@@ -64,7 +64,7 @@ public class SettingsAction extends BaseAction {
 
             @Override
             protected void apply() {
-                Settings.getDefault().save();
+                Settings.get().save();
             }
         };
 

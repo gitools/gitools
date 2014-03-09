@@ -133,8 +133,8 @@ public class OpenFromFilesystemAction extends BaseAction {
             return;
         }
 
-        Settings.getDefault().setLastPath(fileChoose.getFile().getParent());
-        Settings.getDefault().save();
+        Settings.get().setLastPath(fileChoose.getFile().getParent());
+        Settings.get().save();
 
         IResourceFormat format = null;
         if (fileChoose.getFilter() != null) {

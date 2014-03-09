@@ -31,6 +31,7 @@ import org.w3c.dom.html2.HTMLElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
@@ -83,6 +84,8 @@ public class Html4Panel extends JPanel {
             throw new LinkVetoException();
         } else if ("load".equalsIgnoreCase(rel)) {
             performLoad(href);
+        } else if ("save".equalsIgnoreCase(rel)) {
+            performSave(href);
         } else if ("_external".equalsIgnoreCase(target)) {
             try {
                 URI uri = new URI(href);
@@ -110,6 +113,9 @@ public class Html4Panel extends JPanel {
     }
 
     protected void performLoad(String href) {
+    }
+
+    protected void performSave(String href) {
     }
 
     public void navigate(URL url) throws Exception {

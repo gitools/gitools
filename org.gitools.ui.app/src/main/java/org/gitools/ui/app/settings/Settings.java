@@ -37,21 +37,57 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Settings extends Model {
 
-    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
-
-    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
-
     private static final String userPath = System.getProperty("user.home", ".");
-
     public static final String CONFIG_PATH = userPath + File.separator + ".gitools";
-
     private static final String configFileName = "ui.xml";
-
     private static final String configFile = CONFIG_PATH + File.separator + configFileName;
-
     private static Settings instance;
 
-    public static Settings getDefault() {
+    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+    private static final String DEFAULT_WELCOME_URL = "http://www.gitools.org/welcome";
+
+    public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
+    public static final String PROPERTY_TIPS = "showTipsAtStartup";
+    public static final String PROPERTY_PORT_ENABLED = "portEnabled";
+    public static final String PROPERTY_PORT = "defaultPort";
+    public static final String PROPERTY_IGV_ENABLED = "showIGVLink";
+    public static final String PROPERTY_IGV_URL = "igvUrl";
+
+    private String lastFilterPath = userPath;
+    private String lastAnnotationPath = userPath;
+    private String lastMapPath = userPath;
+    private String lastDataPath = userPath;
+    private String lastWorkPath = userPath;
+    private String lastExportPath = userPath;
+    private String lastImportPath = userPath;
+    private String lastPath = userPath;
+
+    private String version;
+    private String uuid;
+    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
+
+    // Editable parameters
+    private boolean allowUsageStatistics = true;
+    private boolean showTipsAtStartup = true;
+    private boolean showMutualExclusionProgress = false;
+    private String welcomeUrl = DEFAULT_WELCOME_URL;
+
+    // Port parameters
+    private boolean portEnabled = true;
+    private int defaultPort = 50151;
+
+    // IGV parameters
+    private boolean showIGVLink = true;
+    private String igvUrl = DEFAULT_IGV_URL;
+
+    // Preview features
+    private boolean previewFeatures = false;
+
+    private Settings() {
+    }
+
+    public static Settings get() {
         if (instance == null) {
             instance = load();
         }
@@ -73,54 +109,10 @@ public class Settings extends Model {
             settings = new Settings();
             settings.save();
         } catch (Exception e) {
-            e.printStackTrace(); //TODO Deberia lanzar una excepción?
+            e.printStackTrace();
             settings = new Settings();
         }
         return settings;
-    }
-
-    private String version;
-    private String uuid;
-
-    private String lastPath = userPath;
-    private String lastImportPath = userPath;
-    private String lastExportPath = userPath;
-    private String lastWorkPath = userPath;
-    private String lastDataPath = userPath;
-    private String lastMapPath = userPath;
-    private String lastAnnotationPath = userPath;
-    private String lastFilterPath = userPath;
-
-
-    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
-
-    private boolean allowUsageStatistics = true;
-    public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
-
-    private boolean showTipsAtStartup = true;
-    public static final String PROPERTY_TIPS = "showTipsAtStartup";
-
-    private boolean showMutualExclusionProgress = false;
-
-
-    // Port parameters
-    private boolean portEnabled = true;
-    public static final String PROPERTY_PORT_ENABLED = "portEnabled";
-    private int defaultPort = 50151;
-    public static final String PROPERTY_PORT = "defaultPort";
-
-
-    // IGV parameters
-    private boolean showIGVLink = true;
-    public static final String PROPERTY_IGV_ENABLED = "showIGVLink";
-    private String igvUrl = DEFAULT_IGV_URL;
-    public static final String PROPERTY_IGV_URL = "igvUrl";
-
-    // Preview features
-    private boolean previewFeatures = false;
-
-
-    private Settings() {
     }
 
     public void save() {
@@ -288,6 +280,14 @@ public class Settings extends Model {
     public void setAllowUsageStatistics(boolean allowUsageStatistics) {
         this.allowUsageStatistics = allowUsageStatistics;
         this.uuid = "";
+    }
+
+    public String getWelcomeUrl() {
+        return welcomeUrl;
+    }
+
+    public void setWelcomeUrl(String welcomeUrl) {
+        this.welcomeUrl = welcomeUrl;
     }
 
     public String getUuid() {

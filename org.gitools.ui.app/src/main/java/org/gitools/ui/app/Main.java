@@ -99,10 +99,10 @@ public class Main {
         }
 
         // Start CommandListener
-        boolean portEnabled = Settings.getDefault().isPortEnabled();
+        boolean portEnabled = Settings.get().isPortEnabled();
         String portString = null;
         if (portEnabled || portString != null) {
-            int port = Settings.getDefault().getDefaultPort();
+            int port = Settings.get().getDefaultPort();
             if (portString != null) {
                 port = Integer.parseInt(portString);
             }

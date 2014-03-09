@@ -25,11 +25,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
-import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.Application;
@@ -47,8 +44,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 public class ExportHierarchicalTreeImageAction extends BaseAction {
 
@@ -67,7 +62,7 @@ public class ExportHierarchicalTreeImageAction extends BaseAction {
         SaveFileWizard saveWiz = SaveFileWizard.createSimple(
                 "Export hierarchical tree to image ...",
                 FilenameUtils.getName(getSelectedEditor().getName()),
-                Settings.getDefault().getLastExportPath(),
+                Settings.get().getLastExportPath(),
                 new FileFormat[]{FileFormats.PNG}
         );
 
@@ -77,7 +72,7 @@ public class ExportHierarchicalTreeImageAction extends BaseAction {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+        Settings.get().setLastExportPath(saveWiz.getFolder());
 
         final File file = saveWiz.getPathAsFile();
 

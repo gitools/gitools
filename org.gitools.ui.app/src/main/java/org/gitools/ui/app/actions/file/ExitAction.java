@@ -57,7 +57,7 @@ public class ExitAction extends BaseAction {
             }
         }
 
-        Settings.getDefault().save();
+        Settings.get().save();
         System.exit(0);
     }
 

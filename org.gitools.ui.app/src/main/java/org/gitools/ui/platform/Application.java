@@ -56,7 +56,7 @@ public class Application extends JFrame {
         appTracking = "UA-7111176-2";
         appVersion = StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), "SNAPSHOT");
         analytics = new GoogleAnalytics(appTracking, appName, appVersion);
-        analytics.getDefaultRequest().clientId(Settings.getDefault().getUuid());
+        analytics.getDefaultRequest().clientId(Settings.get().getUuid());
     }
 
     private JToolBar toolBar;
@@ -105,10 +105,10 @@ public class Application extends JFrame {
     }
 
     public static void track(String editor, String action) {
-        if (Settings.getDefault().isAllowUsageStatistics()) {
+        if (Settings.get().isAllowUsageStatistics()) {
             EventHit hit = new EventHit(editor, action);
             hit.contentDescription(editor);
-            hit.clientId(Settings.getDefault().getUuid());
+            hit.clientId(Settings.get().getUuid());
             analytics.postAsync(hit);
         }
     }

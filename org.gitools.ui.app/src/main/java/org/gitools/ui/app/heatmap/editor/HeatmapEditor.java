@@ -209,7 +209,7 @@ public class HeatmapEditor extends AbstractEditor {
 
         File file = getFile();
         if (file != null) {
-            Settings.getDefault().setLastPath(file.getParent());
+            Settings.get().setLastPath(file.getParent());
         }
 
         String name = getName();
@@ -222,7 +222,7 @@ public class HeatmapEditor extends AbstractEditor {
         SaveFileWizard wiz = SaveFileWizard.createSimple(
                 "Save heatmap",
                 name,
-                Settings.getDefault().getLastPath(),
+                Settings.get().getLastPath(),
                 new FileFormat[]{
                         new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
                         new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
@@ -249,7 +249,7 @@ public class HeatmapEditor extends AbstractEditor {
             return;
         }
 
-        Settings.getDefault().setLastPath(wiz.getFolder());
+        Settings.get().setLastPath(wiz.getFolder());
         file = wiz.getPathAsFile();
         setFile(file);
 
@@ -291,7 +291,7 @@ public class HeatmapEditor extends AbstractEditor {
             if (res == -1 || res == 0) {
                 return false;
             } else if (res == 2) {
-                SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+                SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.get().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(Application.get(), wiz);
                 dlg.setVisible(true);
@@ -299,7 +299,7 @@ public class HeatmapEditor extends AbstractEditor {
                     return false;
                 }
 
-                Settings.getDefault().setLastPath(wiz.getFolder());
+                Settings.get().setLastPath(wiz.getFolder());
 
                 setFile(wiz.getPathAsFile());
 

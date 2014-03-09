@@ -106,7 +106,7 @@ public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
 
                 monitor.title("Connecting with Integrative Genomics Viewer");
 
-                String igvUrl[] = Settings.getDefault().getIgvUrl().replace("http://", "").split(":");
+                String igvUrl[] = Settings.get().getIgvUrl().replace("http://", "").split(":");
                 socket = new Socket(igvUrl[0], Integer.valueOf(igvUrl[1]));
                 System.out.println();
                 socket.setSoTimeout(30000);
@@ -122,11 +122,11 @@ public class OpenIntegrativeGenomicViewerAction extends HeatmapAction {
 
             } catch (ConnectException e) {
                 showMessage("Unable to connect with Integrative Genomics Viewer (IGV). " +
-                        "\n It must be running on '" + Settings.getDefault().getIgvUrl() + "'. " +
+                        "\n It must be running on '" + Settings.get().getIgvUrl() + "'. " +
                         "\n Install or launch it from 'http://www.broadinstitute.org/igv'.");
                 setExitStatus(1);
             } catch (SocketTimeoutException e) {
-                showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.getDefault().getIgvUrl() + "'. ");
+                showMessage("Timeout connecting with Integrative Genomics Viewer (IGV) on '" + Settings.get().getIgvUrl() + "'. ");
                 setExitStatus(1);
             } catch (IOException e) {
                 showMessage("Unknwn problem 'e.getMessage()' connecting with Integrative Genomics Viewer (IGV). Check Gitools help.");

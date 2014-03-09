@@ -66,11 +66,11 @@ public class ModulesImportWizard extends AbstractWizard {
         saveFilePage = new SaveFilePage() {
             @Override
             public void updateModel() {
-                Settings.getDefault().setLastMapPath(getFolder());
+                Settings.get().setLastMapPath(getFolder());
             }
         };
         saveFilePage.setTitle("Select destination file");
-        saveFilePage.setFolder(Settings.getDefault().getLastMapPath());
+        saveFilePage.setFolder(Settings.get().getLastMapPath());
         saveFilePage.setFormats(supportedFormats);
         addPage(saveFilePage);
     }
