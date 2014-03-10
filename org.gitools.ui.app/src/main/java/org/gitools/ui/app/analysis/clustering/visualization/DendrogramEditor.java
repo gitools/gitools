@@ -49,10 +49,7 @@ public class DendrogramEditor extends AbstractEditor {
         panel.setBackground(Color.WHITE);
 
         panel.setPreferredSize(new Dimension(getWidth(), model.getIdentifiers().size()*12));
-
         add(new JScrollPane(panel));
-
-        Application.track("dendrogram", "open");
     }
 
     @Override

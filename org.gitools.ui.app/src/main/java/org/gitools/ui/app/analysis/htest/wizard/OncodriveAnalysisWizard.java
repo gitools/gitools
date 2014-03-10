@@ -98,7 +98,7 @@ public class OncodriveAnalysisWizard extends AnalysisWizard<OncodriveAnalysis> {
         File file = modulesPage.getSelectedFile();
         IResourceFormat<IModuleMap> format = modulesPage.getFileResourceFormat();
         analysis.setModuleMap(new ResourceReference<>(new UrlResourceLocator(file), format));
-        
+
         // Test parameters
         analysis.setTestConfig(statisticalTestPage.getTestConfig());
         analysis.setBinaryCutoffEnabled(dataFilterPage.isBinaryCutoffEnabled());

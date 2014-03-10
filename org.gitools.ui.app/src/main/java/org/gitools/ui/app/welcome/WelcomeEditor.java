@@ -61,8 +61,6 @@ public class WelcomeEditor extends HtmlEditor {
 
     public WelcomeEditor() {
         super("Welcome", getWelcomeURL());
-
-        Application.track("welcome", "open");
     }
 
     @Override

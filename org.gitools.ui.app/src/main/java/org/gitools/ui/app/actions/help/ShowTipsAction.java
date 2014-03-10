@@ -21,15 +21,17 @@
  */
 package org.gitools.ui.app.actions.help;
 
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.dialog.TipsDialog;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.AbstractEditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-public class ShowTipsAction extends BaseAction {
+public class ShowTipsAction extends AbstractAction {
 
     private final TipsDialog tipsDialog = new TipsDialog();
 

@@ -28,6 +28,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -35,7 +36,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import java.awt.event.ActionEvent;
 
 
-public class SelectLabelHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class SelectLabelHeaderAction extends AbstractAction implements IHeatmapHeaderAction {
 
     private String annotationValue;
     private HeatmapColoredLabelsHeader coloredHeader;

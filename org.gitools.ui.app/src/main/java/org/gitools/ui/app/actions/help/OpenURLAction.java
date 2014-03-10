@@ -21,15 +21,15 @@
  */
 package org.gitools.ui.app.actions.help;
 
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 
-public class OpenURLAction extends BaseAction {
+public class OpenURLAction extends AbstractAction {
 
     private String url;
 

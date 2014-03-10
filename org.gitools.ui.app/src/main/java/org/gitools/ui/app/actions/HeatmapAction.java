@@ -27,7 +27,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
 
-public abstract class HeatmapAction extends BaseAction {
+public abstract class HeatmapAction extends AbstractAction {
 
     public HeatmapAction(String name) {
         super(name);

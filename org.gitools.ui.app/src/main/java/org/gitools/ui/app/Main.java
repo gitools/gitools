@@ -127,6 +127,8 @@ public class Main {
                     // Execute arguments
                     cmdExecutor.execute(args, new PrintWriter(System.err));
 
+                    Application.get().trackEvent("main", "start", "with arguments");
+
                 } else {
 
                     if (Strings.isNullOrEmpty(Settings.get().getStatisticsConsentmentVersion()) ||
@@ -145,7 +147,9 @@ public class Main {
 
                     }
 
+                    Application.get().trackEvent("main", "start", "no arguments");
                 }
+
 
             }
         });

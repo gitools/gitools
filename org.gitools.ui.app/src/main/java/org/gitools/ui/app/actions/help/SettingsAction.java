@@ -22,6 +22,7 @@
 package org.gitools.ui.app.actions.help;
 
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -33,7 +34,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsAction extends BaseAction {
+public class SettingsAction extends AbstractAction {
     public SettingsAction() {
         super("Settings");
         setDefaultEnabled(true);

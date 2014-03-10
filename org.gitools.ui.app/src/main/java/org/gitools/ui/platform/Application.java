@@ -22,7 +22,9 @@
 package org.gitools.ui.platform;
 
 import com.brsanthu.googleanalytics.EventHit;
+import com.brsanthu.googleanalytics.ExceptionHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
+import com.brsanthu.googleanalytics.GoogleAnalyticsRequest;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.Actions;
@@ -30,6 +32,7 @@ import org.gitools.ui.app.actions.MenuActionSet;
 import org.gitools.ui.app.actions.ToolBarActionSet;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.welcome.WelcomeEditor;
+import org.gitools.ui.platform.application.IApplicationTracking;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
@@ -42,7 +45,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Application extends JFrame {
+public class Application extends JFrame implements IApplicationTracking {
 
     private static final long serialVersionUID = -6899584212813749990L;
 
@@ -104,10 +107,19 @@ public class Application extends JFrame {
         return appTracking;
     }
 
-    public static void track(String editor, String action) {
+    @Override
+    public void trackEvent(String category, String action, String label) {
         if (Settings.get().isAllowUsageStatistics()) {
-            EventHit hit = new EventHit(editor, action);
-            hit.contentDescription(editor);
+            EventHit hit = new EventHit(category, action, label, null);
+            hit.clientId(Settings.get().getUuid());
+            analytics.postAsync(hit);
+        }
+    }
+
+    @Override
+    public void trackException(String description) {
+        if (Settings.get().isAllowUsageStatistics()) {
+            ExceptionHit hit = new ExceptionHit(description);
             hit.clientId(Settings.get().getUuid());
             analytics.postAsync(hit);
         }

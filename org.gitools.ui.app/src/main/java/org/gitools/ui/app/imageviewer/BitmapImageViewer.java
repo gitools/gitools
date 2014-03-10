@@ -48,8 +48,6 @@ public class BitmapImageViewer extends AbstractEditor {
         setSaveAllowed(false);
         setSaveAsAllowed(false);
         setBackground(Color.WHITE);
-
-        Application.track("image", "open");
     }
 
     @Override

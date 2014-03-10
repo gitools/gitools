@@ -46,7 +46,6 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
 
     public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {
         super(analysis, "/vm/analysis/correlation/analysis_details.vm", CorrelationAnalysisFormat.EXTENSION);
-        Application.track("correlation", "open");
     }
 
     @Override

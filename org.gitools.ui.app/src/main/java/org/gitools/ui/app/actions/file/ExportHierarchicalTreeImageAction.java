@@ -26,6 +26,7 @@ import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.wizard.common.SaveFileWizard;
@@ -45,7 +46,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class ExportHierarchicalTreeImageAction extends BaseAction {
+public class ExportHierarchicalTreeImageAction extends AbstractAction {
 
     private static final long serialVersionUID = -7288045475037410310L;
 
