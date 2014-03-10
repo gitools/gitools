@@ -188,6 +188,7 @@
             <constraints/>
             <properties>
               <lineWrap value="true"/>
+              <wrapStyleWord value="true"/>
             </properties>
           </component>
         </children>
