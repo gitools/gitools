@@ -93,7 +93,7 @@ public class ClusteringAction extends HeatmapAction {
                         processHierarchical(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
 
                     } else {
-                        processKMeans(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method);
+                        processKMeans(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
                     }
             }
         });
@@ -101,7 +101,7 @@ public class ClusteringAction extends HeatmapAction {
         Application.get().setStatusText("Clusters created");
     }
 
-    private static void processKMeans(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method) {
+    private static void processKMeans(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method, Heatmap heatmap) {
 
         String annotationLabel = "Cluster " + layerId;
 
@@ -126,6 +126,9 @@ public class ClusteringAction extends HeatmapAction {
 
         // Sort the header
         clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
+
+        // Bookmark current sort
+        addBookmarkKMeans(clusteringDimension, layerId, heatmap, (KMeansPlusPlusMethod) method);
     }
 
     private static void processHierarchical(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method, Heatmap heatmap) {
@@ -183,19 +186,34 @@ public class ClusteringAction extends HeatmapAction {
         }
 
         // Bookmark current sort
-        HierarchicalMethod hmethod = (HierarchicalMethod) method;
+        addBookmarkHierarchical(clusteringDimension, layerId, heatmap, (HierarchicalMethod) method);
+
+        // Open a tree editor
+        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
+    }
+
+    private static void addBookmarkHierarchical(HeatmapDimension clusteringDimension, String layerId, Heatmap heatmap, HierarchicalMethod method) {
         boolean rowsUsed = clusteringDimension.getId().equals(MatrixDimensionKey.ROWS);
         String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + layerId;
         int[] include = new int[]{rowsUsed ? Bookmarks.ROWS : Bookmarks.COLUMNS,
                 Bookmarks.LAYER};
         String description = "Automatically generated bookmark for hierarchical clustering of " +
                 clusteringDimension.getId().toString() + " using the data values \"" + layerId + "\"." +
-                " Distance used: " + hmethod.getDistanceMeasure().toString() + ", Link type used: " + hmethod.getLinkageStrategy().toString() + ".";
+                " Distance used: " + method.getDistanceMeasure().toString() + ", Link type used: " + method.getLinkageStrategy().toString() + ".";
         heatmap.getBookmarks().createNew(heatmap, bookmarkName, description, include);
-
-        // Open a tree editor
-        Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
     }
+
+    private static void addBookmarkKMeans(HeatmapDimension clusteringDimension, String layerId, Heatmap heatmap, KMeansPlusPlusMethod method) {
+        boolean rowsUsed = clusteringDimension.getId().equals(MatrixDimensionKey.ROWS);
+        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + layerId;
+        int[] include = new int[]{rowsUsed ? Bookmarks.ROWS : Bookmarks.COLUMNS,
+                Bookmarks.LAYER};
+        String description = "Automatically generated bookmark for K-Means clustering of " +
+                clusteringDimension.getId().toString() + " using the data values \"" + layerId + "\"." +
+                " Clusters: " + method.getNumClusters().toString() + ", Distance used: " + method.getDistance().toString() + ", Iterations made: " + method.getIterations().toString() + ".";
+        heatmap.getBookmarks().createNew(heatmap, bookmarkName, description, include);
+    }
+
 
     private static class HierarchicalSortFunction implements Function<String, String> {
 
