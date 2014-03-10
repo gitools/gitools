@@ -46,6 +46,8 @@ public class Bookmark implements Serializable {
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
     List<String> columns;
 
+    String description;
+
     public Bookmark(String name, List<String> rows, List<String> columns, String layerId) {
         this.name = name;
         this.rows = rows;
@@ -87,6 +89,17 @@ public class Bookmark implements Serializable {
 
     public void setLayerId(String layerId) {
         this.layerId = layerId;
+    }
+
+    public String getDescription() {
+        if (description == null) {
+            return "";
+        }
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

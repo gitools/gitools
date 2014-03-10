@@ -57,7 +57,7 @@
         </constraints>
         <properties>
           <horizontalAlignment value="2"/>
-          <text value="&lt;html&gt;Gitools is set up that it can send usage statistics in a anonymous form for two reasons:&#10;&lt;ul&gt;&#10;&#9;&lt;li&gt;&lt;b&gt;Funding agencies&lt;/b&gt; ask for usage statistics as a means of decision for (further) funding&#9;&#10;&#9;&lt;li&gt;&lt;b&gt;Understanding&lt;/b&gt; better what parts of the application may be problematic for users.&#10;&lt;/ul&gt;&#10;The whole code basis is &lt;b&gt;open source&lt;/b&gt; and can be see read/downloaded without restrictions.&lt;/br&gt;&#10;If for any reason you are not comfortable with sending usage statistics, please uncheck the box below.&lt;br/&gt;&#10;&lt;html&gt;"/>
+          <text value="&lt;html&gt;Gitools is set up that it can send usage statistics in a anonymous form for two reasons: &lt;ul&gt; &#9;&lt;li&gt;&lt;b&gt;Funding agencies&lt;/b&gt; ask for usage statistics as a means of decision for (further) funding&#9; &#9;&lt;li&gt;&lt;b&gt;Understanding&lt;/b&gt; better what parts of the application may be problematic for users. &lt;/ul&gt; The whole code basis is &lt;b&gt;open source&lt;/b&gt; and can be seen/read/downloaded without restrictions.&lt;/br&gt; If for any reason you are not comfortable with sending usage statistics, please uncheck the box below.&lt;br/&gt; &lt;html&gt;"/>
         </properties>
       </component>
     </children>

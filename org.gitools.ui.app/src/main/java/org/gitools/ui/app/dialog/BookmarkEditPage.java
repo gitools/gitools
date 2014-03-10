@@ -49,6 +49,7 @@ public class BookmarkEditPage extends AbstractWizardPage {
     private JButton deleteThisBookmarkButton;
     private JCheckBox noColumnsCheckBox;
     private JCheckBox noRowsCheckBox;
+    private JTextArea descriptionTextArea;
     private boolean delete = false;
     private boolean creating;
     private List<String> forbiddenNames;
@@ -154,6 +155,26 @@ public class BookmarkEditPage extends AbstractWizardPage {
             }
         });
 
+        //Description
+        descriptionTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateModel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateModel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateModel();
+            }
+        });
+
+        descriptionTextArea.setText(bookmark.getDescription());
+
         updateControls();
         nameField.selectAll();
     }
@@ -189,6 +210,8 @@ public class BookmarkEditPage extends AbstractWizardPage {
         } else {
             bookmark.setLayerId(backup.getLayerId());
         }
+
+        bookmark.setDescription(descriptionTextArea.getText());
 
         updateControls();
     }
