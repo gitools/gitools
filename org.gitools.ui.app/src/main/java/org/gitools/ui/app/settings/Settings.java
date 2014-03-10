@@ -69,6 +69,7 @@ public class Settings extends Model {
 
     // Editable parameters
     private boolean allowUsageStatistics = true;
+    private String statisticsConsentmentVersion = "";
     private boolean showTipsAtStartup = true;
     private boolean showMutualExclusionProgress = false;
     private String welcomeUrl = DEFAULT_WELCOME_URL;
@@ -279,7 +280,14 @@ public class Settings extends Model {
 
     public void setAllowUsageStatistics(boolean allowUsageStatistics) {
         this.allowUsageStatistics = allowUsageStatistics;
-        this.uuid = "";
+    }
+
+    public String getStatisticsConsentmentVersion() {
+        return statisticsConsentmentVersion;
+    }
+
+    public void setStatisticsConsentmentVersion(String statisticsConsentmentVersion) {
+        this.statisticsConsentmentVersion = statisticsConsentmentVersion;
     }
 
     public String getWelcomeUrl() {
