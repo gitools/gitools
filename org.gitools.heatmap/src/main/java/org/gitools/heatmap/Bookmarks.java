@@ -118,10 +118,10 @@ public class Bookmarks extends Model {
 
 
     public void createNew(Heatmap heatmap, String bookmarkName) {
-        createNew(heatmap, bookmarkName, null);
+        createNew(heatmap, bookmarkName, "", null);
     }
 
-    public void createNew(Heatmap heatmap, String bookmarkName, int[] include) {
+    public void createNew(Heatmap heatmap, String bookmarkName, String description, int[] include) {
         String name = bookmarkName;
         int counter = 1;
         while (nameOccupied(name)) {
@@ -147,7 +147,9 @@ public class Bookmarks extends Model {
 
         String layerId = Ints.contains(include, LAYER) ? heatmap.getLayers().getTopLayer().getId() : null;
 
-        add(new Bookmark(name, rows, cols, layerId));
+        Bookmark b = new Bookmark(name, rows, cols, layerId);
+        b.setDescription(description);
+        add(b);
     }
 
     private boolean nameOccupied(String name) {

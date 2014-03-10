@@ -183,10 +183,15 @@ public class ClusteringAction extends HeatmapAction {
         }
 
         // Bookmark current sort
+        HierarchicalMethod hmethod = (HierarchicalMethod) method;
+        boolean rowsUsed = clusteringDimension.getId().equals(MatrixDimensionKey.ROWS);
         String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + layerId;
-        int[] include = new int[]{clusteringDimension.getId().equals(MatrixDimensionKey.ROWS) ? Bookmarks.ROWS : Bookmarks.COLUMNS,
+        int[] include = new int[]{rowsUsed ? Bookmarks.ROWS : Bookmarks.COLUMNS,
                 Bookmarks.LAYER};
-        heatmap.getBookmarks().createNew(heatmap, bookmarkName, include);
+        String description = "Automatically generated bookmark for hierarchical clustering of " +
+                clusteringDimension.getId().toString() + " using the data values \"" + layerId + "\"." +
+                " Distance used: " + hmethod.getDistanceMeasure().toString() + ", Link type used: " + hmethod.getLinkageStrategy().toString() + ".";
+        heatmap.getBookmarks().createNew(heatmap, bookmarkName, description, include);
 
         // Open a tree editor
         Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
