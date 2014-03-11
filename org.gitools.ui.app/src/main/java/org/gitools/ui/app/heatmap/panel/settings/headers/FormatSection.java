@@ -41,13 +41,15 @@ public class FormatSection implements ISettingsSection {
     private JTextField backgroundColorTextField;
     private JTextField fontTextField;
     private JButton changeButton;
+    private JCheckBox showValueCheckBox;
 
-    public FormatSection(boolean showColors, final HeatmapHeader heatmapHeader) {
+    public FormatSection(boolean showColors, boolean showValue, final HeatmapHeader heatmapHeader) {
 
         PresentationModel<HeatmapHeader> header = new PresentationModel<>(heatmapHeader);
 
         bind(textColorTextField, "color", header.getModel(HeatmapHeader.PROPERTY_LABEL_COLOR));
         bind(backgroundColorTextField, "color", header.getModel(HeatmapHeader.PROPERTY_BACKGROUND_COLOR));
+        bind(showValueCheckBox, header.getModel(HeatmapHeader.PROPERTY_LABEL_VISIBLE));
 
         changeButton.addActionListener(new ActionListener() {
             @Override
@@ -71,6 +73,7 @@ public class FormatSection implements ISettingsSection {
 
         textColorTextField.setEnabled(showColors);
         backgroundColorTextField.setEnabled(showColors);
+        showValueCheckBox.setVisible(showValue);
 
     }
 

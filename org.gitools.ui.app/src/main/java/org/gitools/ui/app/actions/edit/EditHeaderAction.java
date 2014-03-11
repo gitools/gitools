@@ -77,19 +77,13 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
         sections.add(new DetailsSection(header));
 
         if (header instanceof HeatmapDecoratorHeader) {
-
             sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
-            sections.add(new FormatSection(false, header));
-
+            sections.add(new FormatSection(false, false, header));
         } else if (header instanceof HeatmapColoredLabelsHeader) {
-
             sections.add(new ColoredLabelsGroupsPage(((HeatmapColoredLabelsHeader)header).getClusters()));
-            sections.add(new FormatSection(false, header));
-
+            sections.add(new FormatSection(false, true, header));
         } else {
-
-            sections.add(new FormatSection(true, header));
-
+            sections.add(new FormatSection(true, false, header));
         }
 
         SettingsPanel settingsPanel = new SettingsPanel(
