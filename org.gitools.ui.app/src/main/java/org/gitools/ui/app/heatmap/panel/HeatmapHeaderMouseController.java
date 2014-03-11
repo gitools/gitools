@@ -241,18 +241,24 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
                 if (ip.isKeyPressed(KeyEvent.VK_M)) {
                     int margin = header.getMargin() + unitsToScroll * -2;
+
                     if (margin < 1) {
                         margin = 1;
+                    } else {
+                        int size = header.getSize() + unitsToScroll * -2;
+                        if (size < 10) {
+                            size = 10;
+                        }
+                        header.setSize(size);
                     }
                     header.setMargin(margin);
+                } else {
+                    int size = header.getSize() + unitsToScroll * -2;
+                    if (size < 10) {
+                        size = 10;
+                    }
+                    header.setSize(size);
                 }
-
-                int size = header.getSize() + unitsToScroll * -2;
-                if (size < 10) {
-                    size = 10;
-                }
-
-                header.setSize(size);
 
                 header.getHeatmapDimension().updateHeaders();
 
