@@ -21,9 +21,12 @@
  */
 package org.gitools.ui.app.fileimport.wizard.excel;
 
+import jxl.Cell;
+import jxl.CellType;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import org.apache.commons.io.IOUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -40,11 +43,7 @@ public class ExcelReader implements JobRunnable {
 
     private Sheet sheet = null;
 
-    private DataFormatter formatter = null;
-
-    private FormulaEvaluator evaluator = null;
     private List<ExcelHeader> headers;
-
 
     public ExcelReader(IResourceLocator locator) {
         super();
@@ -58,49 +57,36 @@ public class ExcelReader implements JobRunnable {
         InputStream fis = null;
         try {
             fis = locator.openInputStream(monitor);
-            Workbook workbook = WorkbookFactory.create(fis);
-            this.sheet = workbook.getSheetAt(0);
-            this.evaluator = workbook.getCreationHelper().createFormulaEvaluator();
-            this.formatter = new DataFormatter(Locale.ENGLISH, true);
+            Workbook workbook = Workbook.getWorkbook(fis);
+            this.sheet = workbook.getSheet(0);
 
-        } catch (InvalidFormatException | IOException e ) {
+        } catch (BiffException | IOException e ) {
             throw new RuntimeException(e);
         } finally {
             IOUtils.closeQuietly(fis);
         }
 
         // Read the header
-        Row header = sheet.getRow(0);
-        Row firstRow = sheet.getRow(1);
+        Cell[] header = sheet.getRow(0);
+        Cell[] firstRow = sheet.getRow(1);
         headers = rowToHeader(header, firstRow);
 
     }
 
-    private String cellToString(Cell cell) {
-        if (cell.getCellType() != Cell.CELL_TYPE_FORMULA) {
-            return this.formatter.formatCellValue(cell);
-        } else {
-            return this.formatter.formatCellValue(cell, this.evaluator);
-        }
-    }
+    private List<ExcelHeader> rowToHeader(Cell[] header, Cell[] firstRow) {
 
-
-    private List<ExcelHeader> rowToHeader(Row header, Row firstRow) {
-
-        Cell cell = null;
-        Cell firstCell = null;
-        int lastCellNum = 0;
+        Cell cell;
+        Cell firstCell;
         List<ExcelHeader> headers = new ArrayList<>();
 
         if (header != null) {
 
-            lastCellNum = header.getLastCellNum();
-            for (int i = 0; i <= lastCellNum; i++) {
-                cell = header.getCell(i);
-                firstCell = firstRow.getCell(i);
+            for (int i = 0; i < header.length; i++) {
+                cell = header[i];
+                firstCell = firstRow[i];
                 if (cell != null) {
-                    int cellType = (firstCell == null ? Cell.CELL_TYPE_BLANK : firstCell.getCellType());
-                    headers.add(new ExcelHeader(cellToString(cell), i, cellType));
+                    CellType cellType = (firstCell == null ? CellType.EMPTY : firstCell.getType());
+                    headers.add(new ExcelHeader(cell.getContents(), i, cellType));
                 }
             }
         }
@@ -115,17 +101,17 @@ public class ExcelReader implements JobRunnable {
 
     public String getValue(int rowPos, int colPos) {
 
-        Row row = sheet.getRow(rowPos);
+        Cell[] row = sheet.getRow(rowPos);
         if (row == null) {
             return null;
         }
 
-        Cell cell = row.getCell(colPos);
+        Cell cell = row[colPos];
         if (cell == null) {
             return null;
         }
 
-        return cellToString(cell);
+        return cell.getContents();
     }
 
     public IResourceLocator getLocator() {
@@ -133,7 +119,7 @@ public class ExcelReader implements JobRunnable {
     }
 
     public int getLastRowNum() {
-        return sheet.getLastRowNum();
+        return sheet.getRows();
     }
 
 

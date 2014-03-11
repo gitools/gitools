@@ -21,10 +21,21 @@
  */
 package org.gitools.ui.app.fileimport.wizard.excel;
 
+import jxl.CellType;
 import org.gitools.utils.readers.FileHeader;
 
 public class ExcelHeader extends FileHeader {
-    public ExcelHeader(String label, int pos, int type) {
-        super(label, pos, type);
+
+    private CellType type;
+
+    public ExcelHeader(String label, int pos, CellType type) {
+        super(label, pos);
+
+        this.type = type;
     }
+
+    public CellType getType() {
+        return type;
+    }
+
 }

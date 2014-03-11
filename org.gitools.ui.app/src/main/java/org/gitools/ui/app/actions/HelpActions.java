@@ -21,10 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.ui.app.actions.help.AboutAction;
-import org.gitools.ui.app.actions.help.ShortcutsAction;
-import org.gitools.ui.app.actions.help.ShowTipsAction;
-import org.gitools.ui.app.actions.help.WelcomeAction;
+import org.gitools.ui.app.actions.help.*;
 import org.gitools.ui.platform.actions.BaseAction;
 
 final class HelpActions {
@@ -36,5 +33,7 @@ final class HelpActions {
     public static final BaseAction welcomeAction = new WelcomeAction();
 
     public static final BaseAction shortcutsAction = new ShortcutsAction();
+
+    public static final BaseAction settingsAction = new SettingsAction();
 
 }

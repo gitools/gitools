@@ -161,4 +161,7 @@ public abstract class BaseAction extends AbstractAction {
         putValue(ACCELERATOR_KEY, keyStroke);
     }
 
+    protected void track(String category, String label) {
+    }
+
 }

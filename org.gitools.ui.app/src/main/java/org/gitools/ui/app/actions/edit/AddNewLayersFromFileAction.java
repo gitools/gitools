@@ -107,8 +107,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
             return;
         }
 
-        Settings.getDefault().setLastPath(fileChoose.getFile().getParent());
-        Settings.getDefault().save();
+        Settings.get().setLastPath(fileChoose.getFile().getParent());
+        Settings.get().save();
 
         IResourceFormat format = null;
         if (fileChoose.getFilter() != null) {

@@ -198,11 +198,11 @@ public class ModulesPage extends AbstractWizardPage {
     }//GEN-LAST:event_minSizeEnableChkItemStateChanged
 
     private void fileBrowseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileBrowseBtnActionPerformed
-        File selPath = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastMapPath(), FileChooserUtils.MODE_OPEN).getFile();
+        File selPath = FileChooserUtils.selectFile("Select file", Settings.get().getLastMapPath(), FileChooserUtils.MODE_OPEN).getFile();
 
         if (selPath != null) {
             setSelectedFile(selPath);
-            Settings.getDefault().setLastMapPath(selPath.getParentFile().getAbsolutePath());
+            Settings.get().setLastMapPath(selPath.getParentFile().getAbsolutePath());
         }
     }//GEN-LAST:event_fileBrowseBtnActionPerformed
 

@@ -75,7 +75,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                         page.isUseRegexChecked(),
                         page.getDimension().equals(MatrixDimensionKey.COLUMNS),
                         monitor,
-                        Settings.getDefault().isShowMutualExclusionProgress()
+                        Settings.get().isShowMutualExclusionProgress()
                 );
 
             }

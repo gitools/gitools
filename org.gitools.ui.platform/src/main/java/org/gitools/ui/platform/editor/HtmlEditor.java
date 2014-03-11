@@ -71,6 +71,11 @@ public class HtmlEditor extends AbstractEditor {
             protected void performLoad(String href) {
                 HtmlEditor.this.performLoad(href);
             }
+
+            @Override
+            protected void performSave(String href) {
+                HtmlEditor.this.performSave(href);
+            }
         };
 
         setLayout(new BorderLayout());
@@ -81,6 +86,9 @@ public class HtmlEditor extends AbstractEditor {
     }
 
     protected void performLoad(String href) {
+    }
+
+    protected void performSave(String href) {
     }
 
     protected void navigate(URL url) {

@@ -74,7 +74,7 @@ public class ExportScaleImageAction extends HeatmapAction {
         final ScaleExportWizard wz = new ScaleExportWizard();
         wz.setTitle("Export scale to image ...");
         wz.getSavePage().setFileNameWithoutExtension(FilenameUtils.getName(getSelectedEditor().getName()) + "-scale");
-        wz.getSavePage().setFolder(Settings.getDefault().getLastExportPath());
+        wz.getSavePage().setFolder(Settings.get().getLastExportPath());
         wz.getSavePage().setFormats(new FileFormat[]{FileFormats.PNG, FileFormats.JPG});
         wz.setScale(scale);
 
@@ -84,7 +84,7 @@ public class ExportScaleImageAction extends HeatmapAction {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(wz.getSavePage().getFolder());
+        Settings.get().setLastExportPath(wz.getSavePage().getFolder());
 
         final File file = wz.getSavePage().getPathAsFile();
         if (!file.getParentFile().exists()) {

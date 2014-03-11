@@ -69,13 +69,13 @@ public class ExportMatrixAction extends HeatmapAction {
         }
 
         final IMatrixLayer selected = layers.get(selectedId);
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.get().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+        Settings.get().setLastExportPath(file.getParentFile().getAbsolutePath());
 
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override

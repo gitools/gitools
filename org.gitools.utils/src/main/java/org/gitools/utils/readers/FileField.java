@@ -26,8 +26,8 @@ public class FileField extends FileHeader {
     protected final int line;
 
 
-    public FileField(String label, int pos, int type, int line) {
-        super(label, pos, type);
+    public FileField(String label, int pos, int line) {
+        super(label, pos);
         this.line = line;
     }
 

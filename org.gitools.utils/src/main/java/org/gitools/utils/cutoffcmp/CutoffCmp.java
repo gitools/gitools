@@ -21,7 +21,8 @@
  */
 package org.gitools.utils.cutoffcmp;
 
-import org.apache.commons.collections.bidimap.DualHashBidiMap;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -117,7 +118,7 @@ public abstract class CutoffCmp implements Serializable {
 
     public static final CutoffCmp[] comparators = new CutoffCmp[]{LT, LE, GT, GE, EQ, NE, ABS_LT, ABS_LE, ABS_GT, ABS_GE, ABS_EQ, ABS_NE};
 
-    private static final DualHashBidiMap opposite = new DualHashBidiMap();
+    private static final BiMap opposite = HashBiMap.create();
 
     static {
         opposite.put(CutoffCmp.LT, CutoffCmp.GE);
@@ -173,7 +174,7 @@ public abstract class CutoffCmp implements Serializable {
 
     public static CutoffCmp getOpposite(CutoffCmp key) {
         if (opposite.get(key) == null) {
-            return (CutoffCmp) (opposite.getKey(key));
+            return (CutoffCmp) (opposite.inverse().get(key));
         } else {
             return (CutoffCmp) (opposite.get(key));
         }

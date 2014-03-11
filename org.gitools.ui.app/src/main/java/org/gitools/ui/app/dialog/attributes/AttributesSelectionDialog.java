@@ -268,13 +268,13 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
         List<Integer> indices = new ArrayList<>();
 
         try {
-            File file = FileChooserUtils.selectFile("Select file ...", Settings.getDefault().getLastPath(), FileChooserUtils.MODE_OPEN).getFile();
+            File file = FileChooserUtils.selectFile("Select file ...", Settings.get().getLastPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastPath(file.getParent());
+            Settings.get().setLastPath(file.getParent());
 
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
@@ -301,13 +301,13 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
         Object[] attributes = listModel.getAttributes();
 
         try {
-            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.get().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastPath(file.getParent());
+            Settings.get().setLastPath(file.getParent());
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             List<Integer> selIndices = listModel.getSelectedIndices();

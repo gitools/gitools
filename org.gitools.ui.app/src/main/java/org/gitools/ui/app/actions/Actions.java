@@ -62,6 +62,7 @@ public class Actions {
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+    public static final BaseAction exportHierarchicalTreeImageAction = new ExportHierarchicalTreeImageAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
 
     // Other

@@ -444,11 +444,11 @@ public class PatternSourcePage extends AbstractWizardPage {
 
     private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
         try {
-            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.get().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file != null) {
                 hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), ApplicationContext.getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
-                Settings.getDefault().setLastAnnotationPath(file.getParent());
+                Settings.get().setLastAnnotationPath(file.getParent());
                 updateControls();
                 //annFile.setText(file.getName());
             }

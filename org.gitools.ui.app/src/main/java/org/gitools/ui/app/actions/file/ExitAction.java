@@ -21,16 +21,16 @@
  */
 package org.gitools.ui.app.actions.file;
 
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class ExitAction extends BaseAction {
+public class ExitAction extends AbstractAction {
 
     private static final long serialVersionUID = -2861462318817904958L;
 
@@ -51,13 +51,13 @@ public class ExitAction extends BaseAction {
         }
 
         if (dirty) {
-            int dialogResult = JOptionPane.showConfirmDialog(Application.get(), "Do you want to save changes?","Warning", JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog(Application.get(), "Do you want to save changes?", "Warning", JOptionPane.YES_NO_OPTION);
             if(dialogResult == JOptionPane.YES_OPTION) {
                 return;
             }
         }
 
-        Settings.getDefault().save();
+        Settings.get().save();
         System.exit(0);
     }
 

@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.actions.file;
 
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -33,7 +33,7 @@ import java.awt.event.KeyEvent;
 
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
-public class OpenFromURLAction extends BaseAction {
+public class OpenFromURLAction extends AbstractAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 

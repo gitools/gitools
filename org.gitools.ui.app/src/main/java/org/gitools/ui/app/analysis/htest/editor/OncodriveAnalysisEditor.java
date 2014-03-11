@@ -32,7 +32,6 @@ public class OncodriveAnalysisEditor extends AbstractHtestAnalysisEditor<Oncodri
 
     public OncodriveAnalysisEditor(OncodriveAnalysis analysis) {
         super(analysis, "/vm/analysis/oncodrive/analysis_details.vm", OncodriveAnalysisFormat.EXTENSION);
-        Application.track("oncodrive", "open");
     }
 
     @Override

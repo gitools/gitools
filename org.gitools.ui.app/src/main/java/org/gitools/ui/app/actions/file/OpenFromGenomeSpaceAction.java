@@ -23,6 +23,7 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.genomespace.GSFileBrowser;
 import org.gitools.ui.platform.Application;
@@ -35,7 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-public class OpenFromGenomeSpaceAction extends BaseAction {
+public class OpenFromGenomeSpaceAction extends AbstractAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 

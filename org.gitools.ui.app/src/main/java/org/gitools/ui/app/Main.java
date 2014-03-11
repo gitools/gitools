@@ -22,9 +22,12 @@
 package org.gitools.ui.app;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.checkbox.WebCheckBoxStyle;
+import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
+import org.gitools.ui.app.actions.help.GitoolsSatsSection;
 import org.gitools.ui.app.batch.CommandExecutor;
 import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
@@ -66,6 +69,7 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+        WebCheckBoxStyle.animated = false;
 
         // Workaround to force windows to paint the TaskPaneContainer background
         UIManager.put("TaskPaneContainer.backgroundPainter", new MattePainter(Color.WHITE));
@@ -97,10 +101,10 @@ public class Main {
         }
 
         // Start CommandListener
-        boolean portEnabled = Settings.getDefault().isPortEnabled();
+        boolean portEnabled = Settings.get().isPortEnabled();
         String portString = null;
         if (portEnabled || portString != null) {
-            int port = Settings.getDefault().getDefaultPort();
+            int port = Settings.get().getDefaultPort();
             if (portString != null) {
                 port = Integer.parseInt(portString);
             }
@@ -123,13 +127,29 @@ public class Main {
                     // Execute arguments
                     cmdExecutor.execute(args, new PrintWriter(System.err));
 
+                    Application.get().trackEvent("main", "start", "with arguments");
+
                 } else {
 
-                    // Show tips dialog
-                    TipsDialog tipsDialog = new TipsDialog();
-                    tipsDialog.show();
+                    if (Strings.isNullOrEmpty(Settings.get().getStatisticsConsentmentVersion()) ||
+                        (!Settings.get().isAllowUsageStatistics() && !Application.getAppVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
 
+                        Settings.get().setAllowUsageStatistics(true);
+                        JPanel panel = new GitoolsSatsSection(Settings.get()).getPanel();
+                        JOptionPane.showMessageDialog(Application.get(), panel, "Statistics", JOptionPane.QUESTION_MESSAGE);
+                        Settings.get().setStatisticsConsentmentVersion(Application.getAppVersion());
+
+                    } else {
+
+                        // Show tips dialog
+                        TipsDialog tipsDialog = new TipsDialog();
+                        tipsDialog.show();
+
+                    }
+
+                    Application.get().trackEvent("main", "start", "no arguments");
                 }
+
 
             }
         });

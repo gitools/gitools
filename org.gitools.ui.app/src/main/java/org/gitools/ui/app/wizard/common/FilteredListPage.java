@@ -25,9 +25,6 @@ import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 
-/**
- * @noinspection ALL
- */
 public class FilteredListPage extends AbstractWizardPage {
 
     private FilteredListPanel panel;

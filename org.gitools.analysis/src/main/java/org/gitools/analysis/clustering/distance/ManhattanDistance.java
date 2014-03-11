@@ -28,6 +28,16 @@ import java.util.Iterator;
 
 public class ManhattanDistance implements DistanceMeasure {
 
+    private static ManhattanDistance INSTANCE = new ManhattanDistance();
+
+    public static ManhattanDistance get() {
+        return INSTANCE;
+    }
+
+    private ManhattanDistance() {
+        super();
+    }
+
     @Override
     public Double compute(Iterable<Double> a, Iterable<Double> b) {
 
@@ -48,5 +58,9 @@ public class ManhattanDistance implements DistanceMeasure {
         }
         return sum;
 
+    }
+
+    public String toString() {
+        return "Manhattan distance";
     }
 }

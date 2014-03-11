@@ -28,7 +28,7 @@ import org.gitools.analysis.clustering.hierarchical.strategy.AverageLinkageStrat
 import org.gitools.analysis.clustering.hierarchical.strategy.CompleteLinkageStrategy;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.analysis.clustering.hierarchical.strategy.SingleLinkageStrategy;
-import org.gitools.analysis.clustering.method.value.HierarchicalMethod;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.SumAggregator;
 
@@ -59,9 +59,9 @@ public class HCLParamsPage extends AbstractWizardPage {
         }
 
         if (distAlgCombo.getSelectedItem().toString().equalsIgnoreCase("euclidean")) {
-            distanceMeasure = new EuclideanDistance();
+            distanceMeasure = EuclideanDistance.get();
         } else {
-            distanceMeasure = new ManhattanDistance();
+            distanceMeasure = ManhattanDistance.get();
         }
 
         method.setDistanceMeasure(distanceMeasure);

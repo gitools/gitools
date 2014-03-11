@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.platform.dialog;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.gitools.ui.platform.application.IApplicationTracking;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -54,6 +57,20 @@ public class ExceptionDialog extends javax.swing.JDialog {
         cause.printStackTrace(pw);
         pw.close();
         traceArea.setText(sw.toString());
+
+        if (parent instanceof IApplicationTracking) {
+            IApplicationTracking track = (IApplicationTracking) parent;
+
+            Throwable rootCause = ExceptionUtils.getRootCause(cause);
+            String description = ExceptionUtils.getStackTrace(rootCause);
+
+            if (description.length() > 150) {
+                description = description.substring(0, 145);
+            }
+
+            track.trackException(description);
+        }
+
     }
 
     /**

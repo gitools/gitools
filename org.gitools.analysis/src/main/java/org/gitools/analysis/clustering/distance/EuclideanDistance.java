@@ -27,6 +27,15 @@ import java.util.Iterator;
 
 public class EuclideanDistance implements DistanceMeasure {
 
+    private static EuclideanDistance INSTANCE = new EuclideanDistance();
+    public static EuclideanDistance get() {
+        return INSTANCE;
+    }
+
+    private EuclideanDistance() {
+        super();
+    }
+
     @Override
     public Double compute(Iterable<Double> a, Iterable<Double> b) {
 
@@ -49,4 +58,9 @@ public class EuclideanDistance implements DistanceMeasure {
 
         return FastMath.sqrt(sum);
     }
+
+    public String toString() {
+        return "Euclidean distance";
+    }
+
 }

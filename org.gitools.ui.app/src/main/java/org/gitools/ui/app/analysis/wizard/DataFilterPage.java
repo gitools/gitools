@@ -188,11 +188,11 @@ public class DataFilterPage extends AbstractWizardPage {
     }// </editor-fold>//GEN-END:initComponents
 
     private void populationFileBrowserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populationFileBrowserBtnActionPerformed
-        File selPath = FileChooserUtils.selectFile("Select file", Settings.getDefault().getLastDataPath(), FileChooserUtils.MODE_OPEN).getFile();
+        File selPath = FileChooserUtils.selectFile("Select file", Settings.get().getLastDataPath(), FileChooserUtils.MODE_OPEN).getFile();
 
         if (selPath != null) {
             populationFilePath.setText(selPath.getAbsolutePath());
-            Settings.getDefault().setLastDataPath(selPath.getAbsolutePath());
+            Settings.get().setLastDataPath(selPath.getAbsolutePath());
         }
     }//GEN-LAST:event_populationFileBrowserBtnActionPerformed
 

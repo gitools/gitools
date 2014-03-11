@@ -72,7 +72,7 @@ public class SaveFileWizard extends AbstractWizard {
 
 
     public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat) {
-        return createSimple(title, fileName, folder, new FileFormat[]{fileFormat});
+        return createSimple(title, fileName, folder, new FileFormat[]{ fileFormat });
     }
 
 

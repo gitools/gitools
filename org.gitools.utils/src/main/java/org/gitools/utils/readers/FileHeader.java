@@ -26,13 +26,11 @@ import java.io.Serializable;
 public class FileHeader implements Serializable {
 
     protected final int pos;
-    protected final int type;
     protected final String label;
 
-    public FileHeader(String label, int pos, int type) {
+    public FileHeader(String label, int pos) {
         this.label = label;
         this.pos = pos;
-        this.type = type;
     }
 
     public String getLabel() {
@@ -43,9 +41,6 @@ public class FileHeader implements Serializable {
         return pos;
     }
 
-    public int getType() {
-        return type;
-    }
 
     public String toString() {
         return label;

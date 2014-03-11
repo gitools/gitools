@@ -82,7 +82,7 @@ public class CommandConvertAndLoadExcelFile extends CommandLoadFile {
         out.writeNewLine();
 
         // Write rows
-        for (int r = 1; r <= reader.getLastRowNum(); r++) {
+        for (int r = 1; r < reader.getLastRowNum(); r++) {
             out.writeQuotedValue(reader.getValue(r, columns));
             out.writeSeparator();
             out.writeQuotedValue(reader.getValue(r, rows));

@@ -54,7 +54,8 @@ public class MenuActionSet extends ActionSet {
                                                 Actions.exportMatrixAction,
                                                 Actions.exportTableAction,
                                                 Actions.exportHeatmapImageAction,
-                                                Actions.exportScaleImageAction
+                                                Actions.exportScaleImageAction,
+                                                Actions.exportHierarchicalTreeImageAction
                                         }
                                 ),
                                 BaseAction.separator,
@@ -105,6 +106,7 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 HelpActions.shortcutsAction,
                                 HelpActions.showTipsAction,
+                                HelpActions.settingsAction,
                                 BaseAction.separator,
                                 new OpenURLAction("Users mail list", "https://groups.google.com/forum/#!forum/gitools-users", KeyEvent.VK_M),
                                 new OpenURLAction("Submit an issue", "https://github.com/gitools/gitools/issues", KeyEvent.VK_S),

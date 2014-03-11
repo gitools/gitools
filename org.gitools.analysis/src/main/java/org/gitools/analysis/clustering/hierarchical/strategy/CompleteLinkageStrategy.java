@@ -51,4 +51,9 @@ public class CompleteLinkageStrategy implements LinkageStrategy {
         }
         return max;
     }
+
+    @Override
+    public String toString() {
+        return "Complete (maximum)";
+    }
 }

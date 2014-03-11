@@ -22,13 +22,16 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsConfigPage;
+import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.heatmap.panel.settings.headers.ColorScaleSection;
-import org.gitools.ui.app.heatmap.panel.settings.headers.ColorsSection;
+import org.gitools.ui.app.heatmap.panel.settings.headers.FormatSection;
 import org.gitools.ui.app.heatmap.panel.settings.headers.DetailsSection;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.Application;
@@ -75,8 +78,12 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
         if (header instanceof HeatmapDecoratorHeader) {
             sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
+            sections.add(new FormatSection(false, false, header));
+        } else if (header instanceof HeatmapColoredLabelsHeader) {
+            sections.add(new ColoredLabelsGroupsPage(((HeatmapColoredLabelsHeader)header).getClusters()));
+            sections.add(new FormatSection(false, true, header));
         } else {
-            sections.add(new ColorsSection(header));
+            sections.add(new FormatSection(true, false, header));
         }
 
         SettingsPanel settingsPanel = new SettingsPanel(

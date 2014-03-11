@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions.help;
 
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.welcome.WelcomeEditor;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -30,7 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 
-public class WelcomeAction extends BaseAction {
+public class WelcomeAction extends AbstractAction {
 
     private static final long serialVersionUID = 6622410876631791866L;
 

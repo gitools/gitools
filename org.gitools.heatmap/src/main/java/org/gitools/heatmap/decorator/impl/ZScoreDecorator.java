@@ -21,7 +21,7 @@
  */
 package org.gitools.heatmap.decorator.impl;
 
-import cern.jet.stat.Probability;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.decorator.Decoration;
@@ -119,8 +119,10 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         firePropertyChange(PROPERTY_SIGNIFICANCE, old, sigLevel);
     }
 
+    private static NormalDistribution NORMAL = new NormalDistribution();
+
     private double calculateSigHalfAmplitudeFromSigLevel(double sigLevel) {
-        double v = Probability.normalInverse(sigLevel / 2);
+        double v = NORMAL.inverseCumulativeProbability(sigLevel / 2);
         return Math.abs(v);
     }
 

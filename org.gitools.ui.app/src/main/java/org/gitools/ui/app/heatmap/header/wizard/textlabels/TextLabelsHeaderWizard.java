@@ -58,6 +58,7 @@ public class TextLabelsHeaderWizard extends AbstractWizard {
     public void performFinish() {
 
         String annotation = sourcePage.getAnnotationName();
+        header.setMargin(5);
         header.setLabelSource(sourcePage.getLabelSource());
         header.setLabelAnnotation(annotation);
         header.setLabelPattern(sourcePage.getPattern());

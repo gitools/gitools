@@ -43,7 +43,7 @@ public class TipsDialog {
 
         TipOfTheDayModel loadedTips = TipLoader.load(tipProperties);
 
-        final boolean settingsShowDialog = Settings.getDefault().isShowTipsAtStartup();
+        final boolean settingsShowDialog = Settings.get().isShowTipsAtStartup();
 
         JXTipOfTheDay tipOfTheDay = new JXTipOfTheDay(loadedTips);
 
@@ -54,7 +54,7 @@ public class TipsDialog {
         tipOfTheDay.showDialog(Application.get(), new JXTipOfTheDay.ShowOnStartupChoice() {
             @Override
             public void setShowingOnStartup(boolean showOnStartup) {
-                Settings.getDefault().setShowTipsAtStartup(showOnStartup);
+                Settings.get().setShowTipsAtStartup(showOnStartup);
             }
 
             @Override

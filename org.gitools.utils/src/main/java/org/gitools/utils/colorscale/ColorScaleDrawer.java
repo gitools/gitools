@@ -24,6 +24,7 @@ package org.gitools.utils.colorscale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,7 +95,9 @@ public class ColorScaleDrawer {
 
         ArrayList<ColorScaleRange> ranges = scale.getScaleRanges();
 
-        adjustRangeWidths(scaleWidth, ranges);
+        double minRange = adjustRangeWidths(scaleWidth, ranges);
+
+        calculateFontSize(g, Double.valueOf(minRange).intValue(), 8);
 
         int rangeXLeft = scaleXLeft;
 
@@ -143,7 +146,7 @@ public class ColorScaleDrawer {
                     String legend = textFormatter.format(range.getCenterLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeEnd - (rangeWidth / 2 + fontWidth / 2);
-                    if (legendStart > lastX + legendPadding * 2) {
+                    if (legendStart > lastX) {
                         g.drawString(legend, legendStart, ye);
                         lastX = legendStart + fontWidth + legendPadding;
                     }
@@ -152,7 +155,7 @@ public class ColorScaleDrawer {
                     String legend = textFormatter.format(range.getRightLabel());
                     int fontWidth = g.getFontMetrics().stringWidth(legend);
                     int legendStart = rangeXLeft + rangeWidth - legendPadding - fontWidth;
-                    if (legendStart > lastX + legendPadding) {
+                    if (legendStart > lastX) {
                         g.drawString(legend, legendStart, ye);
                     }
                 }
@@ -183,8 +186,9 @@ public class ColorScaleDrawer {
         return 0;
     }
 
-    private void adjustRangeWidths(int scaleWidth, ArrayList<ColorScaleRange> ranges) {
+    private double adjustRangeWidths(int scaleWidth, ArrayList<ColorScaleRange> ranges) {
         double rangesWidth = 0;
+        double minRange = Double.MAX_VALUE;
         for (ColorScaleRange r : ranges) {
             rangesWidth += r.getWidth();
         }
@@ -196,8 +200,15 @@ public class ColorScaleDrawer {
         Iterator iter = rangesSet.iterator();
         while (iter.hasNext()) {
             ColorScaleRange r = (ColorScaleRange) iter.next();
-            r.setWidth(r.getWidth() * resizeFactor);
+            double newWidth = r.getWidth() * resizeFactor;
+            r.setWidth(newWidth);
+
+            if (newWidth < minRange) {
+                minRange = newWidth;
+            }
         }
+
+        return minRange;
     }
 
 
@@ -212,5 +223,27 @@ public class ColorScaleDrawer {
         int width = widthPadding + 20;
 
         return new Dimension(width, height);
+    }
+
+    /**
+     * Automatically change the font size to fit in the range width
+     *
+     * @param g           the Graphics2D object
+     * @param rangeWidth  the cell height
+     * @param minFontSize the min font size
+     * @return Returns true if the new font size fits in the cell height, false if it doesn't fit.
+     */
+    protected static boolean calculateFontSize(Graphics2D g, int rangeWidth, int minFontSize) {
+
+        float fontHeight = g.getFontMetrics().getHeight();
+
+        float fontSize = g.getFont().getSize();
+        while (fontHeight > (rangeWidth - 2) && fontSize > minFontSize) {
+            fontSize--;
+            g.setFont(g.getFont().deriveFont(fontSize));
+            fontHeight = g.getFontMetrics().getHeight();
+        }
+
+        return fontHeight <= (rangeWidth - 2);
     }
 }

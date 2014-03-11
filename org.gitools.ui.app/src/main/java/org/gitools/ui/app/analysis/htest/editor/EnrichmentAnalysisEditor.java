@@ -35,7 +35,6 @@ public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<Enrich
 
     public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {
         super(analysis, "/vm/analysis/enrichment/analysis_details.vm", EnrichmentAnalysisFormat.EXTENSION);
-        Application.track("enrichment", "open");
     }
 
     protected Heatmap createResultsHeatmap(EnrichmentAnalysis analysis) {

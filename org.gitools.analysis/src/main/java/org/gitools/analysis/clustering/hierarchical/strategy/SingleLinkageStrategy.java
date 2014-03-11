@@ -51,4 +51,9 @@ public class SingleLinkageStrategy implements LinkageStrategy {
         }
         return min;
     }
+
+    @Override
+    public String toString() {
+        return "Single (minimum)";
+    }
 }
