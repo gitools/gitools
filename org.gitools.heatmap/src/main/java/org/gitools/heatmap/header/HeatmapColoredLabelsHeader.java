@@ -163,6 +163,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         decoration.setReference(this);
 
         if (identifier != null) {
+            reset();
             decorate(decoration, getColoredLabel(identifier), true);
         }
 
