@@ -36,17 +36,16 @@ import java.util.List;
 @XmlRootElement
 public class Bookmark implements Serializable {
 
-    String name;
-
+    private String name;
 
     @XmlElement(name = "layer")
-    String layerId;
+    private String layerId;
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
-    List<String> rows;
+    private List<String> rows;
     @XmlJavaTypeAdapter(StringArrayXmlAdapter.class)
-    List<String> columns;
+    private List<String> columns;
 
-    String description;
+    private String description;
 
     public Bookmark(String name, List<String> rows, List<String> columns, String layerId) {
         this.name = name;

@@ -51,6 +51,8 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
 
         Decoration decoration = new Decoration();
 
+        g.setFont(header.getFont());
+
         for (int index = firstIndex; index <= lastIndex; index++) {
 
             String identifier = getHeatmapDimension().getLabel(index);

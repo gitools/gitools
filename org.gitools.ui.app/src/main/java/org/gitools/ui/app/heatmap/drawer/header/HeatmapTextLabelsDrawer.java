@@ -82,7 +82,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         int x = box.x;
         int y = box.y + start * height;
-        int padding = 5;
+        int padding = getHeader().getMargin();
         for (int index = start; index < end; index++) {
 
 

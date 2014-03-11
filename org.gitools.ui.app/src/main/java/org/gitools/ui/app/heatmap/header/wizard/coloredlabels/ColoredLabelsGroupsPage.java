@@ -204,7 +204,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         columnModel.getColumn(2).setCellEditor(new ColorChooserEditor());
         columnModel.getColumn(2).setCellRenderer(new ColorCellRenderer());
 
-        setTitle("Labels configuration");
+        setTitle("Colors");
         updateButtons();
     }
 

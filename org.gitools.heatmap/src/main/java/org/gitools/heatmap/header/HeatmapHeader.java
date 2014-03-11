@@ -105,7 +105,7 @@ public abstract class HeatmapHeader extends Model {
         this.visible = true;
         this.backgroundColor = Color.WHITE;
         font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
-        margin = 1;
+        margin = 5;
         labelRotated = false;
         labelVisible = false;
         labelColor = Color.GRAY;

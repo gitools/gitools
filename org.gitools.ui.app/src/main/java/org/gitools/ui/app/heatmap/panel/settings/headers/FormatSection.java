@@ -23,30 +23,60 @@ package org.gitools.ui.app.heatmap.panel.settings.headers;
 
 import com.jgoodies.binding.PresentationModel;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.app.utils.FontUtils;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import static com.jgoodies.binding.adapter.Bindings.bind;
 
-public class ColorsSection implements ISettingsSection {
+public class FormatSection implements ISettingsSection {
     private JPanel root;
     private JTextField textColorTextField;
     private JTextField backgroundColorTextField;
+    private JTextField fontTextField;
+    private JButton changeButton;
 
-    public ColorsSection(HeatmapHeader heatmapHeader) {
+    public FormatSection(boolean showColors, final HeatmapHeader heatmapHeader) {
 
         PresentationModel<HeatmapHeader> header = new PresentationModel<>(heatmapHeader);
 
         bind(textColorTextField, "color", header.getModel(HeatmapHeader.PROPERTY_LABEL_COLOR));
         bind(backgroundColorTextField, "color", header.getModel(HeatmapHeader.PROPERTY_BACKGROUND_COLOR));
 
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FontChooserDialog dlg = new FontChooserDialog(null, heatmapHeader.getFont(), false);
+                dlg.setVisible(true);
+
+                if (dlg.isCancelled()) {
+                    return;
+                }
+
+                heatmapHeader.setFont(dlg.getFont());
+
+                fontTextField.setFont(heatmapHeader.getFont());
+                fontTextField.setText(FontUtils.fontText(heatmapHeader.getFont()));
+            }
+        });
+
+        fontTextField.setFont(heatmapHeader.getFont());
+        fontTextField.setText(FontUtils.fontText(heatmapHeader.getFont()));
+
+        textColorTextField.setEnabled(showColors);
+        backgroundColorTextField.setEnabled(showColors);
+
     }
 
     @Override
     public String getName() {
-        return "Colors";
+        return "Format";
     }
 
     @Override

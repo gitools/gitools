@@ -137,6 +137,10 @@ class HeatmapKeyboardController extends KeyAdapter {
                     ip.savePressedState(e);
                     break;
 
+                case KeyEvent.VK_M:
+                    ip.savePressedState(e);
+                    break;
+
                 case KeyEvent.VK_A:
                     ip.savePressedState(e);
                     if (ip.isKeyPressed(KeyEvent.VK_U)) {

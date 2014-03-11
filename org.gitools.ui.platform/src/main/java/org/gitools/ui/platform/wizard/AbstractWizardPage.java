@@ -23,12 +23,13 @@ package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
+import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
+public abstract class AbstractWizardPage extends JPanel implements IWizardPage, ISettingsSection {
 
     private static final long serialVersionUID = -4330234851091328953L;
 
@@ -174,5 +175,13 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage {
     protected void fireUpdated() {
         for (IWizardPageUpdateListener l : listeners)
             l.pageUpdated(this);
+    }
+
+    public String getName() {
+        return getTitle();
+    }
+
+    public JPanel getPanel() {
+        return this;
     }
 }

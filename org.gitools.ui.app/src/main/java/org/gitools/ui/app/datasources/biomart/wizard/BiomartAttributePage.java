@@ -40,9 +40,6 @@ import javax.swing.tree.TreeSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @noinspection ALL
- */
 public class BiomartAttributePage extends FilteredTreePage {
 
 
@@ -112,7 +109,7 @@ public class BiomartAttributePage extends FilteredTreePage {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         @Override
                         public void run() {
-                            FilteredTreePanel p = getPanel();
+                            FilteredTreePanel p = getTreePanel();
                             p.setModel(model);
                             p.expandAll();
                             setMessage(MessageStatus.INFO, "");

@@ -67,6 +67,7 @@ public abstract class SettingsDialog extends AbstractDialog {
         // Selected panel
         for (String section : panel.getSectionNames()) {
             JComponent components = panel.createComponents(section);
+            components.setPreferredSize(new Dimension(450, -1));
             components.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             JScrollPane scrollPane = new JScrollPane(components);
             selectedPanel.add(scrollPane, section);
@@ -76,9 +77,6 @@ public abstract class SettingsDialog extends AbstractDialog {
         showSection(selectedSection);
 
         updateState();
-
-        //revalidate();
-        //repaint();
 
     }
 
