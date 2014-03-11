@@ -50,6 +50,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         Font previousFont = rotateFont(g);
 
         HeatmapColoredLabelsHeader header = getHeader();
+        header.reset();
 
         int firstIndex = firstVisibleIndex(box, clip);
 
