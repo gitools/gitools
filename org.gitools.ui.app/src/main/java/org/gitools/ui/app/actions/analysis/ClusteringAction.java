@@ -189,6 +189,7 @@ public class ClusteringAction extends HeatmapAction {
         addBookmarkHierarchical(clusteringDimension, layerId, heatmap, (HierarchicalMethod) method);
 
         // Open a tree editor
+        rootCluster.setName(clusteringDimension.getId() + "-" + layerId);
         Application.get().getEditorsPanel().addEditor(new DendrogramEditor(rootCluster));
     }
 
