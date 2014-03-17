@@ -21,7 +21,8 @@
  */
 package org.gitools.ui.app.utils;
 
-import com.jidesoft.swing.FolderChooser;
+import com.alee.extended.filechooser.WebDirectoryChooser;
+import com.alee.utils.swing.DialogOptions;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.platform.Application;
 
@@ -79,18 +80,22 @@ public class FileChooserUtils {
     }
 
     public static File selectPath(String title, String currentPath) {
-        return selectPathJIDE(title, currentPath);
+        return selectPathWeb(title, currentPath);
     }
 
-    private static File selectPathJIDE(String title, String currentPath) {
 
-        FolderChooser chooser = new FolderChooser(currentPath);
-        chooser.setDialogTitle(title);
-        chooser.setRecentListVisible(false);
+    private static File selectPathWeb(String title, String currentPath) {
 
-        int returnVal = chooser.showOpenDialog(Application.get());
-        if(returnVal == FolderChooser.APPROVE_OPTION) {
-            return chooser.getSelectedFile();
+        WebDirectoryChooser chooser = new WebDirectoryChooser(Application.get(), title);
+
+        File selectedDirectory = new File(currentPath);
+        if (selectedDirectory.exists() && selectedDirectory.isDirectory()) {
+            chooser.setSelectedDirectory(selectedDirectory);
+        }
+
+        int returnVal = chooser.showDialog();
+        if(returnVal == DialogOptions.OK_OPTION) {
+            return chooser.getSelectedDirectory();
         }
 
         return null;
