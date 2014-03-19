@@ -145,8 +145,13 @@ public class HeatmapEditor extends AbstractEditor {
 
     private void createComponents(JComponent container) {
 
+        Dimension minimumSize = new Dimension(DEFAULT_ACCORDION_WIDTH, 100);
+
         detailsPanel = new DetailsPanel(heatmap);
+        detailsPanel.setMinimumSize(minimumSize);
+
         colorScalePanel = new ColorScalePanel(heatmap);
+        colorScalePanel.setMinimumSize(minimumSize);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
@@ -154,6 +159,7 @@ public class HeatmapEditor extends AbstractEditor {
         leftPanel.setUndecorated(true);
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+        leftPanel.setMinimumSize(minimumSize);
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
@@ -177,6 +183,7 @@ public class HeatmapEditor extends AbstractEditor {
         heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
+        splitPane.setLastDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);
         splitPane.setDividerSize(4);
         splitPane.setBackground(Color.WHITE);
