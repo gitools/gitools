@@ -6,7 +6,7 @@
     <groupId>org.gitools</groupId>
     <artifactId>gitools</artifactId>
     <packaging>pom</packaging>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
 
     <name>gitools</name>
     <description>Gitools</description>
@@ -96,26 +96,13 @@
             <dependency>
                 <groupId>org.jboss.weld.se</groupId>
                 <artifactId>weld-se-core</artifactId>
-                <version>2.1.0.Final</version>
+                <version>2.2.0.Alpha1</version>
             </dependency>
 
             <dependency>
                 <groupId>javax.enterprise</groupId>
                 <artifactId>cdi-api</artifactId>
                 <version>1.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>colt</groupId>
-                <artifactId>colt</artifactId>
-                <version>1.2.0</version>
-                <scope>compile</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>concurrent</groupId>
-                        <artifactId>concurrent</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -128,18 +115,6 @@
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
                 <version>3.0.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.9</version>
             </dependency>
 
             <dependency>
@@ -192,12 +167,6 @@
             </dependency>
 
             <dependency>
-                <groupId>nz.ac.waikato.cms.weka</groupId>
-                <artifactId>weka-stable</artifactId>
-                <version>3.6.10</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.thoughtworks.xstream</groupId>
                 <artifactId>xstream</artifactId>
                 <version>1.4.4</version>
@@ -210,21 +179,15 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>3.8</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>3.8</version>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>2.6.12</version>
             </dependency>
 
             <dependency>
                 <groupId>weblookandfeel</groupId>
                 <artifactId>weblookandfeel</artifactId>
-                <version>1.26</version>
+                <version>1.28-20140308</version>
             </dependency>
 
             <dependency>
@@ -264,21 +227,15 @@
             </dependency>
 
             <dependency>
-                <groupId>com.googlecode.vfsjfilechooser2</groupId>
-                <artifactId>vfsjfilechooser2</artifactId>
-                <version>0.2.5</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jcraft</groupId>
-                <artifactId>jsch</artifactId>
-                <version>0.1.49</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.swinglabs</groupId>
                 <artifactId>swingx</artifactId>
                 <version>1.6.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.brsanthu</groupId>
+                <artifactId>google-analytics-java</artifactId>
+                <version>1.0.4</version>
             </dependency>
 
             <dependency>
@@ -286,7 +243,6 @@
                 <artifactId>mtabix</artifactId>
                 <version>1.0-20140416</version>
             </dependency>
-
 
         </dependencies>
     </dependencyManagement>
