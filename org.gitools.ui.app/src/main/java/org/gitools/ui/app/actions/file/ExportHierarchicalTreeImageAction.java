@@ -31,7 +31,6 @@ import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.wizard.common.SaveFileWizard;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
@@ -88,7 +87,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
 
                     HierarchicalCluster model = getHierarchicalCluster();
                     final int width = getSelectedEditor().getWidth();
-                    final int height = model.getIdentifiers().size()*12;
+                    final int height = model.getIdentifiers().size() * 12;
 
                     DendrogramPanel panel = new DendrogramPanel() {
                         @Override

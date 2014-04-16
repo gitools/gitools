@@ -23,10 +23,8 @@ package org.gitools.ui.app.welcome;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.api.resource.IResource;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.persistence.locators.ProgressMonitorInputStream;
 import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
@@ -45,7 +43,6 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.HttpUtils;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -163,7 +160,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     private static URL getWelcomeURL() {
         try {
-            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid="+Settings.get().getUuid());
+            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid=" + Settings.get().getUuid());
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(10000);
 

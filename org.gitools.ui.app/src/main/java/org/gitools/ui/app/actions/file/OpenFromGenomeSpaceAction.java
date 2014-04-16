@@ -27,7 +27,6 @@ import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.genomespace.GSFileBrowser;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.json.JSONException;

@@ -32,7 +32,7 @@ import java.util.concurrent.CancellationException;
 
 public class JobThread implements JobRunnable {
 
-    private final Window parent;
+    private final JFrame parent;
 
     private final JobRunnable runnable;
 
@@ -42,16 +42,16 @@ public class JobThread implements JobRunnable {
 
     private JobProgressMonitor monitor;
 
-    public static void execute(Window parent, JobRunnable runnable) {
+    public static void execute(JFrame parent, JobRunnable runnable) {
         new JobThread(parent, runnable).execute();
     }
 
-    private JobThread(Window parent, JobRunnable runnable) {
+    private JobThread(JFrame parent, JobRunnable runnable) {
         this.parent = parent;
         this.runnable = runnable;
     }
 
-    public JobThread(Window parent) {
+    public JobThread(JFrame parent) {
         this.parent = parent;
         this.runnable = this;
     }

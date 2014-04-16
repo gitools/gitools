@@ -32,7 +32,6 @@ import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
