@@ -32,10 +32,6 @@ import java.util.TimerTask;
 
 class JobProgressDialog extends javax.swing.JDialog {
 
-    public interface CancelListener {
-        void cancelled();
-    }
-
 
     private final List<CancelListener> listeners = new ArrayList<>();
 

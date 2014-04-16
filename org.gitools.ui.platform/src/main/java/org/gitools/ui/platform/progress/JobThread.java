@@ -38,7 +38,7 @@ public class JobThread implements JobRunnable {
 
     private Thread thread;
 
-    private JobProgressDialog dlg;
+    private JobProgressGlassPane dlg;
 
     private JobProgressMonitor monitor;
 
@@ -68,10 +68,10 @@ public class JobThread implements JobRunnable {
         this.thread = jobThread;
     }
 
-    private synchronized JobProgressDialog getDlg() {
+    private synchronized JobProgressGlassPane getDlg() {
         if (dlg == null) {
-            dlg = new JobProgressDialog(parent, false, true);
-            dlg.addCancelListener(new JobProgressDialog.CancelListener() {
+            dlg = new JobProgressGlassPane(parent, true);
+            dlg.addCancelListener(new CancelListener() {
                 @Override
                 public void cancelled() {
                     cancelJob();
@@ -81,7 +81,7 @@ public class JobThread implements JobRunnable {
         return dlg;
     }
 
-    private synchronized void setDlg(JobProgressDialog dlg) {
+    private synchronized void setDlg(JobProgressGlassPane dlg) {
         this.dlg = dlg;
     }
 
@@ -109,9 +109,9 @@ public class JobThread implements JobRunnable {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JobProgressDialog dlg = getDlg();
+                JobProgressGlassPane dlg = getDlg();
                 dlg.setVisible(false);
-                dlg.dispose();
+                //TODO dlg.dispose();
                 setDlg(null);
             }
         });
@@ -174,7 +174,7 @@ public class JobThread implements JobRunnable {
     void execute() {
         startThread();
 
-        getDlg().setModal(true);
+        //getDlg().setModal(true);
         getDlg().setVisible(true);
     }
 
