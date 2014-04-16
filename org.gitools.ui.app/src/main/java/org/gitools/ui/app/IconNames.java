@@ -122,6 +122,14 @@ public class IconNames {
     public static final String igv16 = "/img/igv16.png";
     public static final String igv24 = "/img/igv24.png";
 
+    public static final String bookmark48 = "/img/bookmark48.png";
+    public static final String bookmark24 = "/img/bookmark24.png";
+    public static final String bookmark16 = "/img/bookmark16.png";
+    public static final String bookmarkAdd48 = "/img/bookmark_add48.png";
+    public static final String bookmarkAdd24 = "/img/bookmark_add24.png";
+    public static final String bookmarkAdd16 = "/img/bookmark_add16.png";
+
+
     public static final String zoomIn16 = "/img/Zoom-In16.png";
     public static final String zoomOut16 = "/img/Zoom-Out16.png";
 

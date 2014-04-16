@@ -59,17 +59,17 @@ public class ExportHeatmapImageAction extends HeatmapAction {
         SaveFileWizard saveWiz = SaveFileWizard.createSimple(
                 "Export heatmap to image ...",
                 FilenameUtils.getName(getSelectedEditor().getName()),
-                Settings.getDefault().getLastExportPath(),
+                Settings.get().getLastExportPath(),
                 new FileFormat[]{FileFormats.PNG}
         );
 
         WizardDialog dlg = new WizardDialog(Application.get(), saveWiz);
-        dlg.setVisible(true);
+        dlg.open();
         if (dlg.isCancelled()) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(saveWiz.getFolder());
+        Settings.get().setLastExportPath(saveWiz.getFolder());
 
         final File file = saveWiz.getPathAsFile();
 
@@ -97,7 +97,6 @@ public class ExportHeatmapImageAction extends HeatmapAction {
 
                     ImageIO.write(bi, formatExtension, file);
 
-                    monitor.end();
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }

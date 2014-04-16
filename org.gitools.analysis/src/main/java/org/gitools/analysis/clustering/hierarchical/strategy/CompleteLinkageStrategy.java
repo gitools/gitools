@@ -37,7 +37,6 @@
 
 package org.gitools.analysis.clustering.hierarchical.strategy;
 
-import java.util.Collection;
 import java.util.List;
 
 public class CompleteLinkageStrategy implements LinkageStrategy {
@@ -51,5 +50,10 @@ public class CompleteLinkageStrategy implements LinkageStrategy {
                 max = dist;
         }
         return max;
+    }
+
+    @Override
+    public String toString() {
+        return "Complete (maximum)";
     }
 }

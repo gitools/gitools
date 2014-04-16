@@ -1,12 +1,12 @@
-==========================
+=====================
 Gitools Documentation
-==========================
+=====================
 
 Read through the different sections of the documentation in order to learn Gitools.
 Gitools Documentation is divided into three sections:
 
 .. list-table::
-:widths: 40 60
+   :widths: 40 60
 
    * - :doc:`UserGuide`
      - The user guide presents the main features of Gitools with explanations and screenshots.
@@ -17,12 +17,12 @@ Gitools Documentation is divided into three sections:
 
 
 Index of all documents
--------------------------------------------------
+----------------------
 
 .. toctree::
-:glob:
-       :titlesonly:
+   :glob:
+   :titlesonly:
 
-       UserGuide*
-       Tutorial*
-       Examples
+   UserGuide*
+   Tutorial*
+   Examples

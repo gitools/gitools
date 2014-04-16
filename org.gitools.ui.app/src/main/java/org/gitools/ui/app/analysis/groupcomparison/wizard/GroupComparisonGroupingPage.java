@@ -24,8 +24,8 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.analysis.groupcomparison.dimensiongroups.*;
 import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
 import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
@@ -116,7 +116,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 tableModel.fireTableDataChanged();
             }
         });
-        groupsTable.setRowHeight(20);
+        groupsTable.setRowHeight(25);
 
         groupsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -407,7 +407,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
 
         PatternSourcePage page = new PatternSourcePage(hdim, true);
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
         if (dlg.isCancelled()) {
             return null;
         }
@@ -460,7 +460,7 @@ public class GroupComparisonGroupingPage extends AbstractWizardPage {
                 heatmap.getColumns() : heatmap.getRows();
         DimensionGroupSelectPage page = new DimensionGroupSelectPage(hdim, "Group " + String.valueOf(groupsTable.getRowCount() + 1));
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;

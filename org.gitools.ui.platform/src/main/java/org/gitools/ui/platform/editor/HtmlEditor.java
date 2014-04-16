@@ -34,14 +34,8 @@ public class HtmlEditor extends AbstractEditor {
 
     protected HtmlEditor(String title, URL url) {
         this.title = title;
-
         createComponents();
-
-        try {
-            panel.navigate(url);
-        } catch (Exception e) {
-            exception(e);
-        }
+        navigate(url);
     }
 
     protected void exception(Exception e) {
@@ -75,7 +69,12 @@ public class HtmlEditor extends AbstractEditor {
 
             @Override
             protected void performLoad(String href) {
-                HtmlEditor.this.performLoad(href);    //To change body of overridden methods use File | Settings | File Templates.
+                HtmlEditor.this.performLoad(href);
+            }
+
+            @Override
+            protected void performSave(String href) {
+                HtmlEditor.this.performSave(href);
             }
         };
 
@@ -89,4 +88,16 @@ public class HtmlEditor extends AbstractEditor {
     protected void performLoad(String href) {
     }
 
+    protected void performSave(String href) {
+    }
+
+    protected void navigate(URL url) {
+
+        try {
+            panel.navigate(url);
+        } catch (Exception e) {
+            exception(e);
+        }
+
+    }
 }

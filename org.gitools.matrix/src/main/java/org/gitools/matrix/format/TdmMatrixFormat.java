@@ -174,7 +174,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
-        monitor.begin("Saving results...", results.getRows().size() * results.getColumns().size());
+        monitor.begin("Saving results...", results.getRows().size());
 
         try {
             OutputStream out = resourceLocator.openOutputStream();
@@ -186,8 +186,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         } catch (Exception e) {
             throw new PersistenceException(e);
-        } finally {
-            monitor.end();
         }
 
 
@@ -241,6 +239,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             for (String column : columns) {
                 writeLine(out, resultsMatrix, column, row, progressMonitor);
             }
+            progressMonitor.worked(1);
         }
 
     }
@@ -268,7 +267,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         }
 
         out.writeNewLine();
-        progressMonitor.worked(1);
     }
 
     @Deprecated

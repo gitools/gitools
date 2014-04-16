@@ -41,7 +41,5 @@ public interface ClusteringData {
     /**
      * Returns an instance of the data
      */
-    ClusteringDataInstance getInstance(int index);
-
     ClusteringDataInstance getInstance(String label);
 }

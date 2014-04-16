@@ -112,6 +112,10 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         return coloredLabels;
     }
 
+    public void reset() {
+        this.dataColoredLabelIndices = null;
+    }
+
     /**
      * The list of clusters in this set
      */
@@ -159,6 +163,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
         decoration.setReference(this);
 
         if (identifier != null) {
+            reset();
             decorate(decoration, getColoredLabel(identifier), true);
         }
 

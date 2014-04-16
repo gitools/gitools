@@ -86,6 +86,10 @@ public class ColorScalePage extends AbstractWizardPage {
                 SaveDecoratorDialog.actionLoadDecorator(decoratorModel);
             }
         });
+
+        if (getTitle().equals("")) {
+            setTitle("Color scale");
+        }
     }
 
 

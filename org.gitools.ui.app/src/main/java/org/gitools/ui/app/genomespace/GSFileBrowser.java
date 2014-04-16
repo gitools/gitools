@@ -209,7 +209,7 @@ public class GSFileBrowser extends JDialog {
         dispose();
         GSUtils.logout();
         if (MessageUtils.confirm(Application.get(), "You must shutdown Gitools to complete the GenomeSpace logout. Shutdown now?")) {
-            Settings.getDefault().save();
+            Settings.get().save();
             System.exit(0);
         }
     }

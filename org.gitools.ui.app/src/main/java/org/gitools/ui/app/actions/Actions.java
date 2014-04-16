@@ -47,6 +47,10 @@ public class Actions {
     // Exit
     public static final BaseAction exitAction = new ExitAction();
 
+    //Edit
+    public static final BaseAction createBookmarkAction = new CreateBookmarkAction();
+    public static final BaseAction bookmarksDropdown = new BookmarksDropdown();
+
     // Import
     public static final BaseAction importBioMartModulesAction = new ImportBiomartModulesAction();
     public static final BaseAction importBioMartTableAction = new ImportBiomartTableAction();
@@ -54,10 +58,11 @@ public class Actions {
     public static final BaseAction importGoModulesAction = new ImportGoModulesAction();
 
     // Export
-    public static final BaseAction exportLabelNamesAction = new ExportHeatmapLabelsAction();
+    public static final BaseAction exportAnnotationAction = new ExportAnnotationAction();
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+    public static final BaseAction exportHierarchicalTreeImageAction = new ExportHierarchicalTreeImageAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
 
     // Other

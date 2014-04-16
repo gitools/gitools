@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.api.analysis.IAggregator;
-import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
@@ -189,8 +187,4 @@ public class ZScoreColorScale extends NumericColorScale {
         this.nonSignificantColor = nonSignificantColor;
     }
 
-    @Override
-    public IAggregator defaultAggregator() {
-        return SumAggregator.INSTANCE;
-    }
 }

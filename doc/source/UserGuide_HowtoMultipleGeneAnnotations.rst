@@ -1,7 +1,6 @@
-================================================================
+=================================================
 How to add multiple gene annotations to heat maps
-================================================================
-
+=================================================
 
 
 This how-to explains how to retrieve and apply alternative gene annotations for a heat map that is labeled with Ensembl Gene IDs. Here, we are considering heat maps of either Intogen data or external user-specific data, both of human and non-human origin.

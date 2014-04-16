@@ -26,7 +26,6 @@ import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.utils.readers.text.CSVReader;
 
@@ -79,7 +78,7 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
             in.close();
 
             progressMonitor.info(moduleMap.getModules().size() + " modules");
-            progressMonitor.end();
+
         } catch (IOException e) {
             throw new PersistenceException(e);
         }
@@ -141,7 +140,6 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
             throw new PersistenceException(e);
         }
 
-        progressMonitor.end();
     }
 
 

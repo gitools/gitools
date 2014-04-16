@@ -51,7 +51,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
 
         final AnnotationSortPage page = createSortPage(hm);
         PageDialog dlg = new PageDialog(Application.get(), page);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;
@@ -62,10 +62,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
-
                 MatrixViewSorter.sortByLabel(hm, page.isApplyToRowsSelected(), page.getRowsPattern(), page.getRowsDirection(), page.getRowsNumeric(), page.isApplyToColumnsSelected(), page.getColumnsPattern(), page.getColumnsDirection(), page.getColumnsNumeric());
-
-                monitor.end();
             }
         });
 

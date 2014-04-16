@@ -37,7 +37,6 @@ public class MatrixConversion extends AbstractCompressor {
             return (CompressMatrix) inputMatrix;
         }
 
-        progressMonitor.end();
         initialize(new MatrixReader(inputMatrix, progressMonitor));
 
         CompressDimension rows = getRows();

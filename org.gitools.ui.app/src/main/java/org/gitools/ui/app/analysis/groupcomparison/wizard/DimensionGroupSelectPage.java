@@ -128,13 +128,13 @@ public class DimensionGroupSelectPage extends AbstractWizardPage {
 
     private void saveToFile() {
         try {
-            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.get().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.get().setLastFilterPath(file.getParent());
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.append(textArea.getText()).append('\n');
@@ -147,13 +147,13 @@ public class DimensionGroupSelectPage extends AbstractWizardPage {
 
     private void loadFromFile() {
         try {
-            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.get().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.get().setLastFilterPath(file.getParent());
 
             textArea.setText(readNamesFromFile(file));
         } catch (IOException ex) {

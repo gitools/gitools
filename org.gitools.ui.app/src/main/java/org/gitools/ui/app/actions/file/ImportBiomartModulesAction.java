@@ -25,6 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.Query;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.datasources.biomart.wizard.BiomartModulesWizard;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -35,7 +36,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class ImportBiomartModulesAction extends BaseAction {
+public class ImportBiomartModulesAction extends AbstractAction {
 
     private static final long serialVersionUID = 668140963768246841L;
 
@@ -70,7 +71,6 @@ public class ImportBiomartModulesAction extends BaseAction {
                 } catch (Exception ex) {
                     monitor.exception(ex);
                 }
-                monitor.end();
             }
         });
     }

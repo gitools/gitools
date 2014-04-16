@@ -49,7 +49,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
 
         Date startTime = new Date();
 
@@ -94,6 +94,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
                     );
 
                     adapter.set(results, result, X, Y);
+                    adapter.set(results, result, Y, X);
 
                 } catch (MethodException ex) {
                     throw new AnalysisException(ex);
@@ -106,6 +107,5 @@ public class CorrelationProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        monitor.end();
     }
 }

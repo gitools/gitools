@@ -92,8 +92,6 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
             throw new PersistenceException(e);
         }
 
-        progressMonitor.end();
-
         return matrix;
     }
 
@@ -158,7 +156,6 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
             throw new PersistenceException(e);
         }
 
-        monitor.end();
     }
 
 }

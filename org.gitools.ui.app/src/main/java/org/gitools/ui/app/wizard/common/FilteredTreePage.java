@@ -54,7 +54,7 @@ public abstract class FilteredTreePage extends AbstractWizardPage {
     }
 
 
-    protected FilteredTreePanel getPanel() {
+    protected FilteredTreePanel getTreePanel() {
         return panel;
     }
 }

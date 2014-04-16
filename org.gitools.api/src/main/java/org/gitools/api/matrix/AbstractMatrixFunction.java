@@ -21,10 +21,6 @@
  */
 package org.gitools.api.matrix;
 
-import org.gitools.api.matrix.IMatrixFunction;
-import org.gitools.api.matrix.IMatrixIterable;
-import org.gitools.api.matrix.IMatrixPosition;
-
 public abstract class AbstractMatrixFunction<F, T> implements IMatrixFunction<F, T> {
 
     @Override

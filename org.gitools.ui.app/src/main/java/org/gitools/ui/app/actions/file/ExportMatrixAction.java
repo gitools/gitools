@@ -69,24 +69,23 @@ public class ExportMatrixAction extends HeatmapAction {
         }
 
         final IMatrixLayer selected = layers.get(selectedId);
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.get().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+        Settings.get().setLastExportPath(file.getParentFile().getAbsolutePath());
 
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Exporting to image ...", 1);
+                    monitor.begin("Exporting to text file (matrix layout) ...", 1);
                     monitor.info("File: " + file.getName());
 
                     TextMatrixViewExporter.exportMatrix(matrixView, selected, file);
 
-                    monitor.end();
                 } catch (IOException ex) {
                     monitor.exception(ex);
                 }

@@ -19,7 +19,11 @@
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
+        <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:103px:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <constraints>
@@ -29,6 +33,19 @@
         <properties/>
         <border type="none"/>
         <children>
+          <grid id="dcd1b" binding="pagePanel" layout-manager="FormLayout">
+            <rowspec value="center:d:grow"/>
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="7" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+            <properties>
+              <maximumSize width="700" height="300"/>
+              <preferredSize width="700" height="300"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </grid>
           <component id="8485d" class="javax.swing.JLabel" binding="totalCategories">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
@@ -50,9 +67,18 @@
               <text value="categories"/>
             </properties>
           </component>
+          <component id="accc4" class="javax.swing.JButton" binding="detectCategoriesButton" default-binding="true">
+            <constraints>
+              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties>
+              <text value="detect Categories"/>
+            </properties>
+          </component>
           <component id="af9d5" class="javax.swing.JLabel">
             <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
@@ -62,26 +88,13 @@
           </component>
           <component id="d7d6c" class="javax.swing.JTextField" binding="emptyColor" custom-create="true">
             <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
           </component>
-          <grid id="dcd1b" binding="pagePanel" layout-manager="FormLayout">
-            <rowspec value="center:d:grow"/>
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
-              <forms defaultalign-vert="false"/>
-            </constraints>
-            <properties>
-              <maximumSize width="700" height="300"/>
-              <preferredSize width="700" height="300"/>
-            </properties>
-            <border type="none"/>
-            <children/>
-          </grid>
         </children>
       </grid>
       <grid id="78713" layout-manager="FormLayout">

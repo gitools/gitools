@@ -54,7 +54,6 @@ public class CombinationProcessorTest extends AbstractProcessorTest<CombinationA
         IMatrix resultsOk = analysis.getResults().get();
         analysis.setResults(null);
 
-        //TODO Execute the analysis
         try {
             AnalysisProcessor processor = new CombinationProcessor(analysis);
             processor.run(getProgressMonitor());

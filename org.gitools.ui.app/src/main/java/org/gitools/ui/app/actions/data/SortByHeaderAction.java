@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions.data;
 
+import com.google.common.base.Function;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
@@ -63,11 +64,12 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
 
                 dimension.sort(new SortByLabelComparator(
                         header.isSortAscending() ? ASCENDING : DESCENDING,
-                        header.getIdentifierTransform(),
+                        new ToLowerCaseFunction(header.getIdentifierTransform()),
                         header.isNumeric()
                 ));
 
-                monitor.end();
+                header.setSortAscending(!header.isSortAscending());
+
             }
         });
 
@@ -83,6 +85,25 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
         }
 
-        setName("<html><i>Sort</i> " + (header.isSortAscending() ? "ascending" : "descending") + " by <b>" + header.getTitle() + "</b></html>");
+        String dimension = header.getHeatmapDimension().getId().getLabel();
+
+        setName("<html><i>Sort</i> all " + dimension + "s " + (header.isSortAscending() ? "asc." : "des.") + " by <b>" + header.getTitle() + "</b></html>");
+    }
+
+    private class ToLowerCaseFunction implements Function<String, String> {
+
+        private Function<String, String> innerFunction;
+
+        public ToLowerCaseFunction(Function<String, String> innerFunction) {
+            this.innerFunction = innerFunction;
+        }
+
+        @Override
+        public String apply(String input) {
+
+            String out = innerFunction.apply(input);
+
+            return (out == null ? null : out.toLowerCase());
+        }
     }
 }

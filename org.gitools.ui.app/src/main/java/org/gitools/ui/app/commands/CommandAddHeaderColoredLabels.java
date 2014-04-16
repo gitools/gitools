@@ -25,8 +25,8 @@ import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -106,12 +106,6 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
         hdim.addHeader(header);
 
         Application.get().refresh();
-
-        // Force a GC to release free memory
-        System.gc();
-
-        monitor.end();
-
 
         setExitStatus(0);
     }

@@ -50,7 +50,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
         Date startTime = new Date();
 
         IMatrix data = analysis.getSourceData().get();
@@ -126,7 +126,6 @@ public class OverlappingProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        monitor.end();
     }
 
     private Double transformValue(Double v, OverlappingAnalysis analysis) throws AnalysisException {

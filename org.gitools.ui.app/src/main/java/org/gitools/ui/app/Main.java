@@ -21,10 +21,18 @@
  */
 package org.gitools.ui.app;
 
+import com.alee.extended.image.WebImage;
+import com.alee.extended.window.WebProgressDialog;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.checkbox.WebCheckBoxStyle;
+import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
+import com.alee.laf.progressbar.WebProgressBar;
+import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
+import org.gitools.ui.app.actions.help.GitoolsSatsSection;
 import org.gitools.ui.app.batch.CommandExecutor;
 import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
@@ -41,6 +49,8 @@ import org.jdesktop.swingx.painter.MattePainter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,25 +58,48 @@ import java.util.logging.LogManager;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 
+
+        // Initialize look and feel
+        WebLookAndFeel.install();
+        WebLookAndFeel.initializeManagers();
+        WebCheckBoxStyle.animated = false;
+
+        // Splash screen , loading dialog
+
+        // Exampler loading dialog
+        final WebProgressDialog progress = createProgressDialog();
+        progress.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(final WindowEvent e) {
+                // Stop loading demo on dialog close
+                System.exit(0);
+            }
+        });
+        progress.setVisible(true);
+
+
+        setProgressText(progress, "Loading persistance manager");
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
+        setProgressText(progress, "Loading command executor");
         // Check arguments syntax
-        CommandExecutor cmdExecutor = new CommandExecutor();
+        final CommandExecutor cmdExecutor = new CommandExecutor();
         if (args.length > 0) {
             if (!cmdExecutor.checkArguments(args, new PrintWriter(System.err))) {
                 return;
             }
         }
 
-        // Initialize look and feel
-        WebLookAndFeel.install();
-        WebLookAndFeel.initializeManagers();
+        // Workaround to force windows to paint the TaskPaneContainer background
         UIManager.put("TaskPaneContainer.backgroundPainter", new MattePainter(Color.WHITE));
+
+        // Workaround to put a dropdown into a JToolBar
+        UIManager.put("PopupMenu.consumeEventOnClose", Boolean.TRUE);
 
         // Force silence lobobrowser loggers
         try {
@@ -81,6 +114,7 @@ public class Main {
         }
 
         // Initialize help system
+        setProgressText(progress, "Loading help system");
         try {
             Tips.get().load(Main.class.getResourceAsStream("/help/tips.properties"));
             Help.get().loadProperties(Main.class.getResourceAsStream("/help/help.properties"));
@@ -91,10 +125,11 @@ public class Main {
         }
 
         // Start CommandListener
-        boolean portEnabled = Settings.getDefault().isPortEnabled();
+        setProgressText(progress, "Starting command listener");
+        boolean portEnabled = Settings.get().isPortEnabled();
         String portString = null;
         if (portEnabled || portString != null) {
-            int port = Settings.getDefault().getDefaultPort();
+            int port = Settings.get().getDefaultPort();
             if (portString != null) {
                 port = Integer.parseInt(portString);
             }
@@ -102,20 +137,101 @@ public class Main {
         }
 
         // Initialize actions
+        setProgressText(progress, "Loading Gitools actions");
         Actions.init();
 
-        // Launch frame
-        Application.get().start();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-        // Execute arguments
-        if (args.length > 0) {
-            cmdExecutor.execute(args, new PrintWriter(System.err));
-        }
+                // Launch frame
+                Application.get().start();
 
-        // Show tips dialog
-        TipsDialog tipsDialog = new TipsDialog();
-        tipsDialog.show();
+
+                if (args.length > 0) {
+
+                    // Execute arguments
+                    cmdExecutor.execute(args, new PrintWriter(System.err));
+
+                    Application.get().trackEvent("main", "start", "with arguments");
+
+                } else {
+
+                    if (Strings.isNullOrEmpty(Settings.get().getStatisticsConsentmentVersion()) ||
+                        (!Settings.get().isAllowUsageStatistics() && !Application.getAppVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
+
+                        Settings.get().setAllowUsageStatistics(true);
+                        JPanel panel = new GitoolsSatsSection(Settings.get()).getPanel();
+                        JOptionPane.showMessageDialog(Application.get(), panel, "Statistics", JOptionPane.QUESTION_MESSAGE);
+                        Settings.get().setStatisticsConsentmentVersion(Application.getAppVersion());
+
+                    } else {
+
+                        // Show tips dialog
+                        TipsDialog tipsDialog = new TipsDialog();
+                        tipsDialog.show();
+
+                    }
+
+                    Application.get().trackEvent("main", "start", "no arguments");
+                }
+
+
+            }
+        });
+
+        // Displaying Gitools and hiding loading dialog
+        progress.setVisible(false);
+
     }
 
+    private static void setProgressText(WebProgressDialog progress, String s) {
+        ProgressWebPanel bar = (ProgressWebPanel) progress.getMiddleComponent();
+        bar.setString(s);
+    }
+
+    private static WebProgressDialog createProgressDialog() {
+        final WebProgressDialog progress = new WebProgressDialog(null, "Loading Gitools " + Application.getAppVersion());
+
+        progress.setIconImage(new ImageIcon(IconNames.class.getResource(IconNames.logoNoText)).getImage());
+        progress.setShowProgressBar(false);
+        progress.setMiddleComponent(new ProgressWebPanel());
+        return progress;
+    }
+
+    static class ProgressWebPanel extends WebPanel {
+        WebProgressBar progressBar;
+
+        ProgressWebPanel() {
+            super();
+
+            this.setLayout(new BorderLayout());
+
+            progressBar = new WebProgressBar();
+            progressBar.setIndeterminate(true);
+            progressBar.setStringPainted(true);
+            progressBar.setString("Loading Gitools ...");
+            progressBar.setPreferredSize(new Dimension(300, 80));
+            progressBar.setVisible(true);
+            this.add(progressBar, BorderLayout.SOUTH);
+
+            WebLabel label = new WebLabel("<html><body>" +
+                    "<br/><center>" +
+                    "<b>Gitools v. " + Application.getAppVersion() + "</b>" +
+                    "</center><br/></body</html>");
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            add(label, BorderLayout.CENTER);
+
+            ImageIcon im = new ImageIcon(IconNames.class.getResource(IconNames.logoNoText));
+            add(new WebImage(im), BorderLayout.NORTH);
+
+
+        }
+
+        public void setString(String s) {
+            progressBar.setString(s);
+        }
+
+    }
 
 }

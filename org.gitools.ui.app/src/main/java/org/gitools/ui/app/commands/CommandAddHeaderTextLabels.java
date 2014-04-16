@@ -48,11 +48,6 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
         Application.get().refresh();
 
-        // Force a GC to release free memory
-        System.gc();
-
-        monitor.end();
-
         setExitStatus(0);
         return;
     }

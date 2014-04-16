@@ -21,7 +21,7 @@
  */
 package org.gitools.analysis;
 
-public class AnalysisException extends Exception {
+public class AnalysisException extends RuntimeException {
 
     public AnalysisException(String msg) {
         super(msg);

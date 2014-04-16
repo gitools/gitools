@@ -32,6 +32,8 @@ import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -105,7 +107,6 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             in.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new PersistenceException(e);
         }
 
@@ -113,9 +114,10 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     }
 
     public void afterWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException {
+
         // Force write the dependencies
         for (ResourceReference dependency : dependencies) {
-            IResourceLocator dependencyLocator = dependency.getLocator();
+            IResourceLocator dependencyLocator = resourceLocator.getReferenceLocator(dependency.getLocator().getName());
             ApplicationContext.getPersistenceManager().store(dependencyLocator, dependency.get(), dependency.getResourceFormat(), progressMonitor);
         }
     }
@@ -129,17 +131,30 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
+            // Prepare to write
+            beforeWrite(null, resourceLocator, resource, marshaller, monitor);
+
+            // Marshal to a temporal file to create dependencies
+            File tmpFile = File.createTempFile("gitools - " + resourceLocator.getName(), ".tmp" );
+            marshaller.marshal(resource, tmpFile);
+
+            // Write the XML
             OutputStream out = resourceLocator.openOutputStream();
-            beforeWrite(out, resourceLocator, resource, marshaller, monitor);
-            marshaller.marshal(resource, out);
+            InputStream in = new FileInputStream(tmpFile);
+            org.apache.commons.io.IOUtils.copy(in, out);
+
+            // Write the dependencies
             afterWrite(out, resourceLocator, resource, marshaller, monitor);
+
+            // Close everything
+            in.close();
+            tmpFile.delete();
             out.close();
 
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
-        monitor.end();
     }
 
 }

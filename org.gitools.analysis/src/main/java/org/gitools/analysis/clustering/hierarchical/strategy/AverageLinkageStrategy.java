@@ -56,4 +56,9 @@ public class AverageLinkageStrategy implements LinkageStrategy {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Average";
+    }
 }

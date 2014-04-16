@@ -44,6 +44,7 @@ import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.model.matrix.element.MapLayerAdapter;
 import org.gitools.utils.CloneUtils;
+import org.gitools.utils.aggregation.SumAbsAggregator;
 import org.gitools.utils.color.ColorGenerator;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
         Date startTime = new Date();
 
         // Prepare input data matrix
@@ -190,6 +191,10 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
             group2List.add(new ColoredLabel(g.getName(), cg.next(g.getName())));
         }
 
+        resultHeatmap.getColumns().setCellSize(40);
+        resultHeatmap.getLayers().get("p-value-log-sum").setSortDirection(SortDirection.DESCENDING);
+        resultHeatmap.getLayers().get("p-value-log-sum").setAggregator(SumAbsAggregator.INSTANCE);
+
         HeatmapColoredLabelsHeader group1Header = new HeatmapColoredLabelsHeader(resultHeatmap.getColumns());
         group1Header.setClusters(group1List);
         group1Header.setAnnotationPattern("${Group 1}");
@@ -205,7 +210,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
         analysis.setResults(new ResourceReference<>("results", resultHeatmap));
-        monitor.end();
+
     }
 
 

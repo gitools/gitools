@@ -83,8 +83,6 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
             throw new MappingException(ex);
         }
 
-        monitor.end();
-
         monitor.begin("Mapping Ensembl IDs...", 1);
 
         if (data.isEmpty()) {
@@ -92,8 +90,6 @@ public class EnsemblMapper extends AbstractMapper implements AllIds {
         }
 
         data.map(map);
-
-        monitor.end();
 
         return data;
     }

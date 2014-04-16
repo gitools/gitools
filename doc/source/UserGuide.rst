@@ -1,6 +1,6 @@
-==========================
+==================
 Gitools User Guide
-==========================
+==================
 
 
 - :doc:`UserGuide_Installation`
@@ -16,6 +16,7 @@ Gitools User Guide
         - :doc:`UserGuide_ExportHeatmapData`
         - :doc:`UserGuide_ExportHeatmapImages`
 - :doc:`UserGuide_Visualization`
+- :doc:`UserGuide_Interaction`
 - :doc:`UserGuide_RunningAnalysis`
     - :doc:`UserGuide_Enrichment`
     - :doc:`UserGuide_Correlations`
@@ -25,6 +26,7 @@ Gitools User Guide
     - :doc:`UserGuide_Oncodrive`
 
 - :doc:`UserGuide_ExternalControl`
+    - :doc:`UserGuide_ToolCommunication`
 - :doc:`UserGuide_Howto`
     - :doc:`UserGuide_HowtoMsigDB`
     - :doc:`UserGuide_HowtoMatrixFilesSpreadsheet`

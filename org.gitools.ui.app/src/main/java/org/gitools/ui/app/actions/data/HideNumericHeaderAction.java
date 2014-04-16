@@ -27,6 +27,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.actions.BaseAction;
@@ -34,7 +35,7 @@ import org.gitools.ui.platform.actions.BaseAction;
 import java.awt.event.ActionEvent;
 
 
-public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeaderAction {
+public class HideNumericHeaderAction extends AbstractAction implements IHeatmapHeaderAction {
 
     private boolean greater;
     private String title;
@@ -69,6 +70,9 @@ public class HideNumericHeaderAction extends BaseAction implements IHeatmapHeade
                 String value = dimension.getAnnotations().getAnnotation(identifier, header.getSortLabel());
 
                 try {
+                    if (value == null) {
+                        return false;
+                    }
                     double numericValue = Double.parseDouble(value);
 
                     if ((greater && numericValue > thresholdValue) || (!greater && numericValue < thresholdValue)) {

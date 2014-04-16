@@ -24,6 +24,7 @@ package org.gitools.ui.app.actions;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.ui.platform.actions.ActionSetUtils;
 import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.editor.IEditor;
 
 import javax.swing.*;
 
@@ -39,12 +40,20 @@ public final class ToolBarActionSet extends ActionSet {
                 Actions.openGenomeSpace,
                 Actions.openIntegrativeGenomicViewerAction,
                 Actions.snapshotAction,
-                Actions.searchRowsAction
+                Actions.searchRowsAction,
+                Actions.createBookmarkAction,
+                Actions.bookmarksDropdown
         }
         );
     }
 
     public JToolBar createToolBar() {
-        return ActionSetUtils.createToolBar(this);
+        JToolBar toolbar = ActionSetUtils.createToolBar(this);
+        return toolbar;
+    }
+
+    @Override
+    public boolean updateEnabledByEditor(IEditor editor) {
+        return super.updateEnabledByEditor(editor);
     }
 }

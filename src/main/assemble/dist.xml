@@ -41,22 +41,6 @@
         </fileSet>
 
         <fileSet>
-            <directory>examples</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>examples</outputDirectory>
-        </fileSet>
-
-        <fileSet>
-            <directory>doc/html</directory>
-            <includes>
-                <include>**/*</include>
-            </includes>
-            <outputDirectory>documentation</outputDirectory>
-        </fileSet>
-
-        <fileSet>
             <directory>org.gitools.ui.app/src/main/resources/img</directory>
             <includes>
                 <include>LogoMini.png</include>

@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
+import com.google.common.base.Strings;
 import org.gitools.analysis.Analysis;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -58,7 +59,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
-                try {
                     cmd.run(monitor);
                     if (monitor.isCancelled()) {
                         return;
@@ -68,19 +68,21 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                         @Override
                         public void run() {
                             AbstractEditor editor = newEditor(analysis);
-                            editor.setName(analysis.getTitle());
+
+                            String title = analysis.getTitle();
+
+                            if (Strings.isNullOrEmpty(title)) {
+                                title = editor.getClass().getSimpleName().replace("Editor", "").toLowerCase();
+                            }
+
+                            editor.setName(title);
 
                             Application.get().getEditorsPanel().addEditor(editor);
                             Application.get().refresh();
                         }
                     });
 
-                    monitor.end();
-
                     Application.get().setStatusText("Ok.");
-                } catch (Throwable ex) {
-                    monitor.exception(ex);
-                }
             }
         });
     }

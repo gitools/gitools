@@ -23,14 +23,12 @@ package org.gitools.ui.app.analysis.clustering;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringMethod;
-import org.gitools.analysis.clustering.method.value.*;
-import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
+import org.gitools.analysis.clustering.kmeans.KMeansPlusPlusMethod;
+import org.gitools.analysis.clustering.MatrixClusteringData;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
@@ -44,18 +42,16 @@ public class ClusteringWizard extends AbstractWizard {
     private final List<? extends ClusteringMethod> methods;
 
     private MethodSelectionPage methodPage;
-    private CobwebParamsPage cobwebPage;
     private HCLParamsPage hclPage;
-    private KmeansParamsPage kmeansPage;
+    private KMeansPlusPlusPage kmeansPage;
 
     private static HierarchicalMethod HCL_METHOD = new HierarchicalMethod();
-    private static WekaKmeansMethod KMEANS_METHOD = new WekaKmeansMethod();
-    private static WekaCobWebMethod COWEB_METHOD = new WekaCobWebMethod();
+    private static KMeansPlusPlusMethod KMEANS_METHOD = new KMeansPlusPlusMethod();
 
     public ClusteringWizard(Heatmap heatmap) {
         super();
         this.heatmap = heatmap;
-        this.methods = Arrays.asList(HCL_METHOD, KMEANS_METHOD, COWEB_METHOD);
+        this.methods = Arrays.asList(HCL_METHOD, KMEANS_METHOD);
 
         setTitle("Clustering by value");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CLUSTERING, 96));
@@ -70,16 +66,13 @@ public class ClusteringWizard extends AbstractWizard {
         hclPage = new HCLParamsPage(HCL_METHOD);
         addPage(hclPage);
 
-        kmeansPage = new KmeansParamsPage(KMEANS_METHOD);
+        kmeansPage = new KMeansPlusPlusPage(KMEANS_METHOD);
         addPage(kmeansPage);
-
-        cobwebPage = new CobwebParamsPage(COWEB_METHOD);
-        addPage(cobwebPage);
     }
 
     @Override
     public boolean canFinish() {
-        return currentPage == cobwebPage || currentPage == hclPage || currentPage == kmeansPage;
+        return currentPage == hclPage || currentPage == kmeansPage;
     }
 
     @Override
@@ -101,11 +94,9 @@ public class ClusteringWizard extends AbstractWizard {
 
         ClusteringMethod method = methodPage.getSelectedMethod();
 
-        if (method instanceof WekaCobWebMethod) {
-            return cobwebPage;
-        } else if (method instanceof HierarchicalMethod) {
+        if (method instanceof HierarchicalMethod) {
             return hclPage;
-        } else if (method instanceof WekaKmeansMethod) {
+        } else if (method instanceof KMeansPlusPlusMethod) {
             return kmeansPage;
         }
 

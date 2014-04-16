@@ -50,7 +50,7 @@ public class ColoredLabel {
         this(value, value.replaceAll("_", " "), color);
     }
 
-    private ColoredLabel(String value, String displayedLabel, Color color) {
+    public ColoredLabel(String value, String displayedLabel, Color color) {
         this.displayedLabel = displayedLabel;
         this.value = value;
         this.color = color;

@@ -32,7 +32,6 @@ import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
@@ -108,8 +107,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
             return;
         }
 
-        Settings.getDefault().setLastPath(fileChoose.getFile().getParent());
-        Settings.getDefault().save();
+        Settings.get().setLastPath(fileChoose.getFile().getParent());
+        Settings.get().save();
 
         IResourceFormat format = null;
         if (fileChoose.getFilter() != null) {
@@ -142,11 +141,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
                         mainData.addLayer(newLayer);
                         getHeatmap().getLayers().initLayer(newLayer);
 
-                        for (String column : newData.getColumns()) {
-                            for (String row : newData.getRows()) {
-                                mainData.set(newLayer, newData.get(newLayer, row, column), row, column);
-                            }
-                        }
+                        copyLayerValues(newData, newLayer, mainData, mainLayer);
+
                     }
 
                     getHeatmap().getLayers().updateLayers();
@@ -155,6 +151,22 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
         };
         JobThread.execute(Application.get(), loadFile);
         Application.get().setStatusText("Done.");
+    }
+
+    private static void copyLayerValues(IMatrix fromMatrix, IMatrixLayer fromLayer, IMatrix toMatrix, IMatrixLayer toLayer) {
+
+        if ((fromMatrix instanceof HashMatrix) && (toMatrix instanceof HashMatrix)) {
+            HashMatrix fromHM = (HashMatrix) fromMatrix;
+            HashMatrix toHM = (HashMatrix) toMatrix;
+            toHM.copyLayerValues(fromLayer.getId(), fromHM);
+        } else {
+            for (String column : fromMatrix.getColumns()) {
+                for (String row : fromMatrix.getRows()) {
+                    toMatrix.set(toLayer, fromMatrix.get(fromLayer, row, column), row, column);
+                }
+            }
+        }
+
     }
 
 }

@@ -23,14 +23,13 @@ package org.gitools.ui.app.analysis.htest.editor;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
-import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
-import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.ui.platform.Application;
 
 public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<EnrichmentAnalysis> {
 
@@ -56,6 +55,12 @@ public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<Enrich
         } else {
             heatmap.getLayers().setTopLayerById("right-p-value");
             heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
+        }
+
+        for (HeatmapLayer resultLayer : heatmap.getLayers()) {
+            if (resultLayer.getId().contains("p-value")) {
+                resultLayer.setDecorator(new PValueDecorator());
+            }
         }
 
         return heatmap;

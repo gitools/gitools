@@ -56,6 +56,7 @@ public class AddHeaderPage extends AbstractWizardPage {
 
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
+
             // Get icon to use for the list item value
 
             Icon icon = icons.get(value.toString());
@@ -97,13 +98,13 @@ public class AddHeaderPage extends AbstractWizardPage {
     }
 
 
-    private static final String ANNOTATION_TEXT_LABEL_HEADER = "Text labels";
+    private static final String ANNOTATION_TEXT_LABEL_HEADER = "<html><b>Values as text</b><br> Load values from file and show as a text header</html>";
 
-    private static final String ANNOTATION_COLORED_LABEL = "Colored labels from annotations";
+    private static final String ANNOTATION_COLORED_LABEL = "<html><b>Values as color</b><br> Load text values from file and show using a categorical color scale</html>";
 
-    private static final String AGGREGATED_DATA_HEATMAP = "Aggregated heatmap from matrix data";
+    public static final String ANNOTATION_HEATMAP = "<html><b>Numeric values</b><br>Load numeric values from file and show using a numeric color scale";
 
-    public static final String ANNOTATION_HEATMAP = "Heatmap from annotation";
+    private static final String AGGREGATED_DATA_HEATMAP = "<html><b>Aggregate heatmap values</b><br>Calculate aggregated values from the heatmap and show using a numeric color scale";
 
 
     /**
@@ -115,18 +116,15 @@ public class AddHeaderPage extends AbstractWizardPage {
         Map<Object, ImageIcon> icons = new HashMap<>();
         icons.put(ANNOTATION_TEXT_LABEL_HEADER, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_TEXT_LABEL_HEADER, 60));
         icons.put(ANNOTATION_COLORED_LABEL, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_COLORED_LABEL, 60));
-        icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));
         icons.put(ANNOTATION_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_ANNOTATION_HEATMAP, 60));
+        icons.put(AGGREGATED_DATA_HEATMAP, IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_AGGREGATED_DATA_HEATMAP, 60));
 
 
         DefaultListModel model = new DefaultListModel();
         model.addElement(new HeaderType(ANNOTATION_TEXT_LABEL_HEADER, HeatmapTextLabelsHeader.class));
         model.addElement(new HeaderType(ANNOTATION_COLORED_LABEL, HeatmapColoredLabelsHeader.class));
-        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDecoratorHeader.class));
         model.addElement(new HeaderType(ANNOTATION_HEATMAP, HeatmapDecoratorHeader.class));
-        // TODO Colored clusters from a hierarchical clustering
-        // TODO Values plot
-        // TODO Calculated value
+        model.addElement(new HeaderType(AGGREGATED_DATA_HEATMAP, HeatmapDecoratorHeader.class));
 
         headerTypeList.setModel(model);
         headerTypeList.setCellRenderer(new IconListRenderer(icons));

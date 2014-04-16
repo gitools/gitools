@@ -42,7 +42,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers"})
+@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks"})
 public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
@@ -59,6 +59,8 @@ public class Heatmap extends Resource implements IMatrixView {
 
     private transient HeatmapDimension diagonalRows;
 
+    private Bookmarks bookmarks;
+
     private boolean diagonal;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
@@ -70,6 +72,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.columns = new HeatmapDimension();
         this.layers = new HeatmapLayers();
         this.diagonal = false;
+        this.bookmarks = new Bookmarks();
     }
 
     public Heatmap(IMatrix data) {
@@ -83,6 +86,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.data = new ResourceReference<>("data", data);
         this.layers = new HeatmapLayers(data);
         this.diagonal = diagonal;
+        this.bookmarks = new Bookmarks();
     }
 
     public HeatmapDimension getRows() {
@@ -158,6 +162,21 @@ public class Heatmap extends Resource implements IMatrixView {
         this.diagonal = diagonal;
     }
 
+    public void applyBookmark(Bookmark b) {
+
+        if (b.getRows() != null) {
+            getRows().show(b.getRows());
+        }
+
+        if (b.getColumns() != null) {
+            getColumns().show(b.getColumns());
+        }
+
+        if (b.getLayerId() != null) {
+            getLayers().setTopLayer(getLayers().get(b.getLayerId()));
+        }
+    }
+
     @Override
     public IMatrix getContents() {
         return getData().get();
@@ -220,6 +239,10 @@ public class Heatmap extends Resource implements IMatrixView {
     @Override
     public MatrixDimensionKey[] getDimensionKeys() {
         return dimensions;
+    }
+
+    public Bookmarks getBookmarks() {
+        return bookmarks;
     }
 
 }

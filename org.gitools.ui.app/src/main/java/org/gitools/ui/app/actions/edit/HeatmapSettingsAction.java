@@ -59,6 +59,6 @@ public class HeatmapSettingsAction extends HeatmapAction {
             }
         };
 
-        dialog.setVisible(true);
+        dialog.open();
     }
 }

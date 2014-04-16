@@ -58,9 +58,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
 
@@ -135,7 +137,7 @@ public class HeatmapEditor extends AbstractEditor {
 
     @Override
     public void setName(String name) {
-        if (this.heatmap != null) {
+        if (this.heatmap != null && (this.heatmap.getTitle() == null || this.heatmap.getTitle().equals(""))) {
             heatmap.setTitle(name);
         }
         super.setName(name);
@@ -143,8 +145,13 @@ public class HeatmapEditor extends AbstractEditor {
 
     private void createComponents(JComponent container) {
 
+        Dimension minimumSize = new Dimension(DEFAULT_ACCORDION_WIDTH, 100);
+
         detailsPanel = new DetailsPanel(heatmap);
+        detailsPanel.setMinimumSize(minimumSize);
+
         colorScalePanel = new ColorScalePanel(heatmap);
+        colorScalePanel.setMinimumSize(minimumSize);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
@@ -152,6 +159,7 @@ public class HeatmapEditor extends AbstractEditor {
         leftPanel.setUndecorated(true);
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+        leftPanel.setMinimumSize(minimumSize);
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
@@ -175,6 +183,7 @@ public class HeatmapEditor extends AbstractEditor {
         heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
+        splitPane.setLastDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);
         splitPane.setDividerSize(4);
         splitPane.setBackground(Color.WHITE);
@@ -205,7 +214,7 @@ public class HeatmapEditor extends AbstractEditor {
 
         File file = getFile();
         if (file != null) {
-            Settings.getDefault().setLastPath(file.getParent());
+            Settings.get().setLastPath(file.getParent());
         }
 
         String name = getName();
@@ -218,20 +227,34 @@ public class HeatmapEditor extends AbstractEditor {
         SaveFileWizard wiz = SaveFileWizard.createSimple(
                 "Save heatmap",
                 name,
-                Settings.getDefault().getLastPath(),
+                Settings.get().getLastPath(),
                 new FileFormat[]{
                         new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
                         new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
                 }
         );
 
-        WizardDialog dlg = new WizardDialog(Application.get(), wiz);
-        dlg.setVisible(true);
+
+        final WizardDialog dlg = new WizardDialog(Application.get(), wiz);
+
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                @Override
+                public void run() {
+                    dlg.setVisible(true);
+                }
+            });
+        } catch (InterruptedException e) {
+            throw new CancellationException();
+        } catch (InvocationTargetException e) {
+            throw new CancellationException();
+        }
+
         if (dlg.isCancelled()) {
             return;
         }
 
-        Settings.getDefault().setLastPath(wiz.getFolder());
+        Settings.get().setLastPath(wiz.getFolder());
         file = wiz.getPathAsFile();
         setFile(file);
 
@@ -273,7 +296,7 @@ public class HeatmapEditor extends AbstractEditor {
             if (res == -1 || res == 0) {
                 return false;
             } else if (res == 2) {
-                SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.getDefault().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
+                SaveFileWizard wiz = SaveFileWizard.createSimple("Save heatmap", getName(), Settings.get().getLastPath(), new FileFormat[]{new FileFormat("Heatmap", HeatmapFormat.EXTENSION)});
 
                 WizardDialog dlg = new WizardDialog(Application.get(), wiz);
                 dlg.setVisible(true);
@@ -281,7 +304,7 @@ public class HeatmapEditor extends AbstractEditor {
                     return false;
                 }
 
-                Settings.getDefault().setLastPath(wiz.getFolder());
+                Settings.get().setLastPath(wiz.getFolder());
 
                 setFile(wiz.getPathAsFile());
 
@@ -330,6 +353,5 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
-        System.gc();
     }
 }

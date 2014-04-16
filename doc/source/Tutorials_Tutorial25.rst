@@ -1,15 +1,11 @@
-=============================================================
+==================================
 Tutorial 2.5: Overlapping analysis
-=============================================================
-
-
+==================================
 
 Compare the overlapping of significantly up-regulated genes in our experiment and in other lung experiments imported from IntOGen.
 
-
-
 Files needed
--------------------------------------------------
+------------
 
 The files needed for this tutorial are the same as the ones for tutorial 2.4.
 
@@ -20,9 +16,8 @@ The files needed for this tutorial are the same as the ones for tutorial 2.4.
 - `intogen\_lung\_upreg-rows.tsv.gz <http://www.gitools.org/tutorials/data/intogen_lung_upreg-rows.tsv.gz>`__ : file with annotations of rows (genes) for the matrix above
 
 
-
 Run overlapping analysis
--------------------------------------------------
+------------------------
 
 See `this chapter <UserGuide_Overlaps.rst>`__  for details on how to perform overlapping analysis
 
@@ -37,18 +32,16 @@ See `this chapter <UserGuide_Overlaps.rst>`__  for details on how to perform ove
 - Select a destination folder and file name and click Finish.
 
 
-
 Change labels of rows and columns
--------------------------------------------------
+---------------------------------
 
 - In properties/columns, select the file file:`intogen-lung-upreg-columns.tsv.gz` and choose “authors” and “year” as label to show in the columns instead of the id of the experiment.
 
 - Do the same for rows.
 
 
-
 Change the value to be displayed in the heatmap
--------------------------------------------------
+-----------------------------------------------
 
 - Select the value “Row only proportions” to show in colors the proportion of genes in the experiment of the column that are up-regulated in the experiment of the row.
 

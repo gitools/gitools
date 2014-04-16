@@ -42,13 +42,7 @@ import com.google.common.collect.Multimap;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IProgressMonitor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 
 public class HierarchyBuilderWithMargin {
@@ -56,17 +50,17 @@ public class HierarchyBuilderWithMargin {
     private SortedSet<ClusterPair> distances;
     private Multimap<Integer, ClusterPair> distancesMap;
 
-    private Set<Cluster> clusters;
+    private Set<HierarchicalCluster> clusters;
 
     public SortedSet<ClusterPair> getDistances() {
         return distances;
     }
 
-    public Set<Cluster> getClusters() {
+    public Set<HierarchicalCluster> getClusters() {
         return clusters;
     }
 
-    public HierarchyBuilderWithMargin(Set<Cluster> clusters, SortedSet<ClusterPair> distances) {
+    public HierarchyBuilderWithMargin(Set<HierarchicalCluster> clusters, SortedSet<ClusterPair> distances) {
         this.clusters = clusters;
         this.distances = distances;
 
@@ -111,12 +105,12 @@ public class HierarchyBuilderWithMargin {
 
                 // Agglomerate
                 // Create a new cluster with all the nearby ClusterPairs
-                Cluster newCluster = new Cluster();
+                HierarchicalCluster newCluster = new HierarchicalCluster();
 
-                Set<Cluster> childrenSet = new HashSet<>();
+                Set<HierarchicalCluster> childrenSet = new HashSet<>();
                 for (ClusterPair pair : pairs) {
-                    Cluster left = pair.getlCluster();
-                    Cluster right = pair.getrCluster();
+                    HierarchicalCluster left = pair.getlCluster();
+                    HierarchicalCluster right = pair.getrCluster();
 
                     // Set parent
                     left.setParent(newCluster);
@@ -132,7 +126,7 @@ public class HierarchyBuilderWithMargin {
                 }
                 newCluster.getChildren().addAll(childrenSet);
                 double weight = 0.0;
-                for (Cluster child : childrenSet) {
+                for (HierarchicalCluster child : childrenSet) {
                     weight += child.getWeight();
                     clusters.remove(child);
                 }
@@ -143,7 +137,7 @@ public class HierarchyBuilderWithMargin {
                 monitor.begin("Agglomerating level "+ level + " of " + maxLevel + "", clusters.size());
                 level++;
 
-                for (Cluster iClust : clusters) {
+                for (HierarchicalCluster iClust : clusters) {
 
                     monitor.worked(1);
                     if (monitor.isCancelled()) {
@@ -155,7 +149,7 @@ public class HierarchyBuilderWithMargin {
                     newLinkage.setrCluster(newCluster);
 
                     distanceValues.clear();
-                    for (Cluster children : childrenSet) {
+                    for (HierarchicalCluster children : childrenSet) {
                         ClusterPair link = findByClusters(iClust, children);
                         if (link != null) {
                             distanceValues.add(link.getLinkageDistance());
@@ -189,7 +183,7 @@ public class HierarchyBuilderWithMargin {
 
     }
 
-    private ClusterPair findByClusters(Cluster c1, Cluster c2) {
+    private ClusterPair findByClusters(HierarchicalCluster c1, HierarchicalCluster c2) {
 
         int hash1 = c1.hashCode();
         int hash2 = c2.hashCode();
@@ -218,7 +212,7 @@ public class HierarchyBuilderWithMargin {
         return clusters.size() == 1;
     }
 
-    public Cluster getRootCluster() {
+    public HierarchicalCluster getRootCluster() {
         if (!isTreeComplete()) {
             throw new RuntimeException("No root available");
         }

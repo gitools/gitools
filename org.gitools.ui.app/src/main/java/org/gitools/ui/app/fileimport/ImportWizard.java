@@ -25,9 +25,9 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.commands.Command;
+import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.wizard.IWizard;
-import org.gitools.ui.app.utils.FileFormatFilter;
 
 public interface ImportWizard extends IWizard, JobRunnable {
 

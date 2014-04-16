@@ -21,11 +21,18 @@
  */
 package org.gitools.ui.platform;
 
+import com.brsanthu.googleanalytics.EventHit;
+import com.brsanthu.googleanalytics.ExceptionHit;
+import com.brsanthu.googleanalytics.GoogleAnalytics;
+import com.brsanthu.googleanalytics.GoogleAnalyticsRequest;
+import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.MenuActionSet;
 import org.gitools.ui.app.actions.ToolBarActionSet;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.welcome.WelcomeEditor;
+import org.gitools.ui.platform.application.IApplicationTracking;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 
@@ -38,19 +45,21 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class Application extends JFrame {
+public class Application extends JFrame implements IApplicationTracking {
 
     private static final long serialVersionUID = -6899584212813749990L;
+
     private static final String appName;
-    private static String appVersion;
+    private static final String appVersion;
+    private static final String appTracking;
+    private static final GoogleAnalytics analytics;
 
     static {
         appName = "Gitools";
-
-        appVersion = Application.class.getPackage().getImplementationVersion();
-        if (appVersion == null) {
-            appVersion = "SNAPSHOT";
-        }
+        appTracking = "UA-7111176-2";
+        appVersion = StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), "SNAPSHOT");
+        analytics = new GoogleAnalytics(appTracking, appName, appVersion);
+        analytics.getDefaultRequest().clientId(Settings.get().getUuid());
     }
 
     private JToolBar toolBar;
@@ -72,17 +81,16 @@ public class Application extends JFrame {
 
         createComponents();
 
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Settings.getDefault().save();
-                System.exit(0);
+                Actions.exitAction.actionPerformed(null);
             }
         });
 
         setTitle(appName + " " + appVersion);
         setIconImage(IconUtils.getImageIconResource(IconNames.logoMini).getImage());
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(1200, 750));
         pack();
     }
@@ -93,6 +101,28 @@ public class Application extends JFrame {
 
     public static String getAppVersion() {
         return appVersion;
+    }
+
+    public static String getAppTracking() {
+        return appTracking;
+    }
+
+    @Override
+    public void trackEvent(String category, String action, String label) {
+        if (Settings.get().isAllowUsageStatistics()) {
+            EventHit hit = new EventHit(category, action, label, null);
+            hit.clientId(Settings.get().getUuid());
+            analytics.postAsync(hit);
+        }
+    }
+
+    @Override
+    public void trackException(String description) {
+        if (Settings.get().isAllowUsageStatistics()) {
+            ExceptionHit hit = new ExceptionHit(description);
+            hit.clientId(Settings.get().getUuid());
+            analytics.postAsync(hit);
+        }
     }
 
     private void createComponents() {
@@ -122,6 +152,7 @@ public class Application extends JFrame {
     }
 
     public void start() {
+
         createWelcomeView();
         editorsPanel.setSelectedIndex(0);
 
@@ -148,9 +179,7 @@ public class Application extends JFrame {
             }
         };
 
-        Thread t = new Thread(runnable);
-        t.start();
-
+        SwingUtilities.invokeLater(runnable);
     }
 
     boolean isNewerGitoolsAvailable() throws Exception {

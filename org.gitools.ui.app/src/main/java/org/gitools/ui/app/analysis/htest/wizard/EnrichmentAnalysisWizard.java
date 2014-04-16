@@ -25,6 +25,7 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.modulemap.IModuleMap;
+import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -90,7 +91,9 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         analysis.setData(new ResourceReference<IMatrix>("data", sourceData));
 
         // Module map data
-        analysis.setModuleMap(new ResourceReference<>(new UrlResourceLocator(modulesPage.getSelectedFile()), IModuleMap.class));
+        File file = modulesPage.getSelectedFile();
+        IResourceFormat<IModuleMap> format = modulesPage.getFileResourceFormat();
+        analysis.setModuleMap(new ResourceReference<>(new UrlResourceLocator(file), format));
 
         // Test parameters
         analysis.setTestConfig(statisticalTestPage.getTestConfig());

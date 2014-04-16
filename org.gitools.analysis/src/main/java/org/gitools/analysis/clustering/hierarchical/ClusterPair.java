@@ -39,15 +39,15 @@ package org.gitools.analysis.clustering.hierarchical;
 
 public class ClusterPair implements Comparable<ClusterPair> {
 
-    private Cluster lCluster;
-    private Cluster rCluster;
+    private HierarchicalCluster lCluster;
+    private HierarchicalCluster rCluster;
     private Double linkageDistance;
 
     public ClusterPair() {
         super();
     }
 
-    public ClusterPair(Double linkageDistance, Cluster lCluster, Cluster rCluster) {
+    public ClusterPair(Double linkageDistance, HierarchicalCluster lCluster, HierarchicalCluster rCluster) {
         super();
 
         this.linkageDistance = linkageDistance;
@@ -55,19 +55,19 @@ public class ClusterPair implements Comparable<ClusterPair> {
         this.rCluster = rCluster;
     }
 
-    public Cluster getlCluster() {
+    public HierarchicalCluster getlCluster() {
         return lCluster;
     }
 
-    public void setlCluster(Cluster lCluster) {
+    public void setlCluster(HierarchicalCluster lCluster) {
         this.lCluster = lCluster;
     }
 
-    public Cluster getrCluster() {
+    public HierarchicalCluster getrCluster() {
         return rCluster;
     }
 
-    public void setrCluster(Cluster rCluster) {
+    public void setrCluster(HierarchicalCluster rCluster) {
         this.rCluster = rCluster;
     }
 
@@ -97,8 +97,8 @@ public class ClusterPair implements Comparable<ClusterPair> {
         return result;
     }
 
-    public Cluster agglomerate() {
-        Cluster cluster = new Cluster(lCluster.getIdentifiers(), rCluster.getIdentifiers());
+    public HierarchicalCluster agglomerate() {
+        HierarchicalCluster cluster = new HierarchicalCluster(lCluster.getIdentifiers(), rCluster.getIdentifiers());
         cluster.setDistance(getLinkageDistance());
         cluster.setWeight(lCluster.getWeight() + rCluster.getWeight());
         cluster.addChild(lCluster);

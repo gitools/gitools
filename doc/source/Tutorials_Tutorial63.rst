@@ -2,9 +2,8 @@
 Tutorial 6.3. Exploring the effect of genomic alterations on expression
 =======================================================================
 
-
 Concept
--------------------------------------------------
+-------
 
 Cancer cells often exhibit an altered number of copies of certain genomic regions when compared to normal cells (Copy Number Alterations: CNAs). A few of these CNAs may have a direct influence on the expression of genes in the affected region. The change in the number of copies of a gene may be both positive, when additional copies are gained (and the genes thus amplified) or negative, when one or more alleles of the gene are lost. The influence of CNAs on the expression of these amplified or lost genes depends on whether it occurs hetero- or homozygously and also on other regulatory factors which may override the effect of the alteration. Therefore, an essential step to verify the importance of the amplification or deletion of a given gene in the tumorigenic process is to verify if its expression tends to respond to its genomic alterations.
 
@@ -13,7 +12,7 @@ In the matrix we have loaded in step one of the case study we have homozygous lo
 Watch the  `video tutorial <http://www.youtube.com/watch?v=HPPHy5LNSBY>`__  and/or read the instructions below
 
 .. image:: img/youtube-ciseffect.png
-:target: http://www.youtube.com/watch?v=HPPHy5LNSBY
+   :target: http://www.youtube.com/watch?v=HPPHy5LNSBY
 
 How to use Gitools for this task
 -------------------------------------------------
@@ -21,9 +20,8 @@ How to use Gitools for this task
 Load the data as described in :doc:`step 1 <Tutorials_Tutorial62>`  or filter the matrix for your genes in interest and you are ready.
 
 
-
 The Group Comparison Wizard - data and test
--------------------------------------------------
+-------------------------------------------
 
 To analyse which genes are affected by alterations in their locus we have to make a Group Comparison Analysis. We select it by *Analysis* -> *Group Comparison.*
 
@@ -40,9 +38,8 @@ The answers are:
 Thus we will select for the first box: “ *expr* *median-centered*\ ” and “ *Group by value*\ ”. For the other boxes regarding the statistics, we can just leave the default selection and click “ *Next >*\ ”.
 
 
-
 The Group Comparison Wizard - data and test
--------------------------------------------------
+-------------------------------------------
 
 In the second step we choose how the groups to compare with each other are made.
 
@@ -55,9 +52,8 @@ For the group two, we want all the samples that have no alteration, thus we sele
 Now we select the “ *Next >*\ ” button.
 
 
-
 The Group Comparison Wizard - Running the analysis
----------------------------------------------------
+--------------------------------------------------
 
 As a last step we can choose to set a title and hit the *Finish *\ Button. The analysis will be run and a new tab opens in Gitools showing the report of the analysis. 
 

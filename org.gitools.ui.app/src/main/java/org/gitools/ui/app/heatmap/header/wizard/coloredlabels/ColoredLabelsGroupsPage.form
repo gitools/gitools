@@ -19,25 +19,21 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane2" pref="442" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                              <Component id="tableAddBtn" min="-2" pref="69" max="-2" attributes="1"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="syncBtn" alignment="1" min="-2" pref="69" max="-2" attributes="1"/>
-                                  <Component id="removeBtn" alignment="1" min="-2" max="-2" attributes="1"/>
-                              </Group>
-                          </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jScrollPane2" pref="428" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="removeBtn" max="32767" attributes="1"/>
+                          <Component id="syncBtn" max="32767" attributes="1"/>
+                          <Component id="tableAddBtn" max="32767" attributes="1"/>
+                          <Component id="syncBtn1" alignment="0" pref="92" max="32767" attributes="1"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -54,6 +50,8 @@
                       <Component id="removeBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="syncBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="syncBtn1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -116,11 +114,20 @@
     </Component>
     <Component class="javax.swing.JButton" name="syncBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Sync"/>
-        <Property name="toolTipText" type="java.lang.String" value="Sync colors with other heatmaps whithin the current Gitools instance"/>
+        <Property name="text" type="java.lang.String" value="Get colors"/>
+        <Property name="toolTipText" type="java.lang.String" value="Get value-color relations with other heatmaps whithin the current Gitools instance"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="syncBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="syncBtn1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Set colors"/>
+        <Property name="toolTipText" type="java.lang.String" value="Set value-color relations so other heatmaps can sync"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="syncBtn1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -22,19 +22,20 @@
 package org.gitools.ui.app.actions.data;
 
 import com.google.common.collect.Lists;
-import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
-import org.gitools.utils.aggregation.MultAggregator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -42,13 +43,14 @@ import java.util.List;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
-public class FastSortValueAction extends HeatmapDimensionAction {
+public class FastSortValueAction extends HeatmapDimensionAction implements IHeatmapDimensionAction {
 
     private SortDirection currentSort;
+    private MatrixDimensionKey dimension;
 
     public FastSortValueAction(MatrixDimensionKey dimension) {
         super(dimension, "<html><i>Sort</i> " + dimension.getLabel() + " by values</html>");
-
+        this.dimension = dimension;
         setMnemonic(KeyEvent.VK_S);
         currentSort = SortDirection.ASCENDING;
         updateIcon();
@@ -72,14 +74,6 @@ public class FastSortValueAction extends HeatmapDimensionAction {
 
         final Heatmap heatmap = getHeatmap();
 
-        // Deduce default Aggregator from the associated ColorScale
-        IAggregator defaultAggregator;
-        try {
-            defaultAggregator = heatmap.getLayers().getTopLayer().getDecorator().getScale().defaultAggregator();
-        } catch (Exception ex) {
-            defaultAggregator = MultAggregator.INSTANCE;
-        }
-        final IAggregator aggregator = defaultAggregator;
         final IMatrixLayer layer = heatmap.getLayers().getTopLayer();
 
         final SortDirection sort = currentSort;
@@ -90,19 +84,36 @@ public class FastSortValueAction extends HeatmapDimensionAction {
             @Override
             public void run(IProgressMonitor monitor) {
 
-                layer.setAggregator(aggregator);
                 layer.setSortDirection(sort);
 
                 List<IMatrixLayer> criteriaArray = Lists.newArrayList(layer);
 
                 monitor.begin("Sorting ...", 1);
-
                 MatrixViewSorter.sortByValue(heatmap, criteriaArray, getDimension().getId() == ROWS, getDimension().getId() != ROWS, monitor);
 
-                monitor.end();
             }
         });
 
-        Application.get().setStatusText("Rows sorted.");
+        Application.get().setStatusText("Sorted.");
+    }
+
+    @Override
+    public void onConfigure(HeatmapDimension sortDimension, HeatmapPosition position) {
+
+        Heatmap heatmap = getHeatmap();
+        HeatmapDimension otherDimension = heatmap.getRows() == sortDimension ? heatmap.getColumns() : heatmap.getRows();
+
+        String layer = getHeatmap().getLayers().getTopLayer().getName();
+
+        String selected = (sortDimension.getSelected().size() > 0 ? "selected " : "aggregated ");
+
+        int otherSize = otherDimension.getSelected().size();
+        String dimCount = (otherSize > 0 ?
+                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : ""):
+                "all " + dimension.getLabel() + "s"
+        );
+
+        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0,3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
+
     }
 }

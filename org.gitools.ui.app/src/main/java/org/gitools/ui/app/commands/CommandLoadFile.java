@@ -63,6 +63,7 @@ import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -114,7 +115,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         if (isConfigurable()) {
             try {
                 getConfigWizard().run(monitor);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 new CommandException(e);
             }
             return;
@@ -131,6 +132,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
                 MessageUtils.showErrorMessage(Application.get(), "<html>This file format either not supported or is malformed.<br>" +
                         (!StringUtils.isEmpty(e.getCause().getMessage()) ? "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>" : "") +
                         "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
+
+                Application.get().trackException("Bad file format: " + e.getCause().getMessage());
             }
             setExitStatus(1);
             return;
@@ -142,15 +145,17 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Initializing editor ...", 1);
-        AbstractEditor editor = createEditor(resource, monitor);
+        final AbstractEditor editor = createEditor(resource, monitor);
         editor.setName(getResourceLocator().getBaseName());
 
-        Application.get().getEditorsPanel().addEditor(editor);
-        Application.get().refresh();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Application.get().getEditorsPanel().addEditor(editor);
+                Application.get().refresh();
+            }
+        });
 
-        // Force a GC to release free memory
-        System.gc();
-        monitor.end();
         setExitStatus(0);
     }
 

@@ -117,13 +117,13 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
 
         long millis = System.currentTimeMillis() - timer;
         long secs = (millis / 1000) % 60;
-        long mins = millis / (60 * 1000);
+        long mins = (long) ((double) millis / (60.0 * 1000.0));
 
         String time = "";
         if (millis < 10000) {
-            time = Double.toString(millis) + " millisecs";
+            time = Long.toString(millis) + " millisecs";
         } else {
-            time = Double.toString(mins) + " mins - " + Double.toString(secs) + " secs";
+            time = Long.toString(mins) + " mins - " + Long.toString(secs) + " secs";
         }
 
         if (flag) {

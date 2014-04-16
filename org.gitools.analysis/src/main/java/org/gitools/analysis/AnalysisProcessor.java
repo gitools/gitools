@@ -25,5 +25,5 @@ import org.gitools.api.analysis.IProgressMonitor;
 
 public interface AnalysisProcessor {
 
-    void run(IProgressMonitor monitor) throws AnalysisException;
+    void run(IProgressMonitor monitor);
 }

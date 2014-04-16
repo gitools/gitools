@@ -26,8 +26,8 @@ import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.Clusters;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringData;
-import org.gitools.analysis.clustering.method.annotations.AnnPatClusteringMethod;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
@@ -162,7 +162,12 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         }
 
         int maxSize = 160;
-        int preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
+        int preferredSize;
+        if (aggregationAnnotationLabels.size() < 2) {
+            preferredSize = aggregationAnnotationLabels.size() * 30;
+        } else {
+            preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
+        }
 
         getHeader().setAnnotationLabels(aggregationAnnotationLabels);
         getHeader().setSize(preferredSize > maxSize ? maxSize : preferredSize);

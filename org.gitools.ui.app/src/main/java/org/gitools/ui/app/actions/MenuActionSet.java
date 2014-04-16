@@ -50,11 +50,12 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 new ActionSet("Export", KeyEvent.VK_E,
                                         new BaseAction[]{
-                                                Actions.exportLabelNamesAction,
+                                                Actions.exportAnnotationAction,
                                                 Actions.exportMatrixAction,
                                                 Actions.exportTableAction,
                                                 Actions.exportHeatmapImageAction,
-                                                Actions.exportScaleImageAction
+                                                Actions.exportScaleImageAction,
+                                                Actions.exportHierarchicalTreeImageAction
                                         }
                                 ),
                                 BaseAction.separator,
@@ -68,7 +69,8 @@ public class MenuActionSet extends ActionSet {
                                 new LayersActionSet(),
                                 Actions.heatmapSettings,
                                 BaseAction.separator,
-                                Actions.searchRowsAction
+                                Actions.searchRowsAction,
+                                Actions.createBookmarkAction
                         }
                 ),
                 new ActionSet("Analysis", KeyEvent.VK_A,
@@ -104,6 +106,7 @@ public class MenuActionSet extends ActionSet {
                                 BaseAction.separator,
                                 HelpActions.shortcutsAction,
                                 HelpActions.showTipsAction,
+                                HelpActions.settingsAction,
                                 BaseAction.separator,
                                 new OpenURLAction("Users mail list", "https://groups.google.com/forum/#!forum/gitools-users", KeyEvent.VK_M),
                                 new OpenURLAction("Submit an issue", "https://github.com/gitools/gitools/issues", KeyEvent.VK_S),

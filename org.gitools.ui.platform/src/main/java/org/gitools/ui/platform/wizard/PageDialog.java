@@ -49,11 +49,7 @@ public class PageDialog extends AbstractDialog {
     private JPanel pagePanel;
 
     public PageDialog(Window owner, IWizardPage page) {
-        super(owner, page.getTitle(), page.getLogo());
-
-        setMinimumSize(new Dimension(800, 600));
-        setPreferredSize(new Dimension(800, 600));
-        setLocationRelativeTo(owner);
+        super(owner, page.getTitle(), page.getLogo(), new Dimension(800, 600), new Dimension(800, 600));
 
         this.page = page;
 
@@ -123,6 +119,11 @@ public class PageDialog extends AbstractDialog {
                 dlg.setVisible(true);
             }
         }
+    }
+
+    @Override
+    protected void escapePressed() {
+        cancelActionPerformed();
     }
 
     private void cancelActionPerformed() {

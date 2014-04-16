@@ -22,8 +22,6 @@
 package org.gitools.matrix.modulemap;
 
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;

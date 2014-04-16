@@ -59,7 +59,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
         AddHeaderPage headerPage = new AddHeaderPage();
         PageDialog tdlg = new PageDialog(Application.get(), headerPage);
         tdlg.setTitle("Header type selection");
-        tdlg.setVisible(true);
+        tdlg.open();
         if (tdlg.isCancelled())
             return;
 
@@ -91,7 +91,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
 
         WizardDialog wdlg = new WizardDialog(Application.get(), wizard);
         wdlg.setTitle("Add header");
-        wdlg.setVisible(true);
+        wdlg.open();
         if (wdlg.isCancelled())
             return;
 

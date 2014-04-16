@@ -25,7 +25,6 @@ package org.gitools.matrix.geneset;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class GeneSet extends LinkedHashSet<String> implements IResource {

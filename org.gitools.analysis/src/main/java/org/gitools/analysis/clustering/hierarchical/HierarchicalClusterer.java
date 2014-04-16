@@ -52,9 +52,9 @@ public class HierarchicalClusterer {
         this.aggregator = aggregator;
     }
 
-    public Cluster cluster(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension clusterDimension, IMatrixDimension aggregationDimension, IProgressMonitor monitor) {
+    public HierarchicalCluster cluster(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension clusterDimension, IMatrixDimension aggregationDimension, IProgressMonitor monitor) {
 
-        Map<String, Cluster> clusters = new HashMap<>(clusterDimension.size());
+        Map<String, HierarchicalCluster> clusters = new HashMap<>(clusterDimension.size());
         SortedSet<ClusterPair> linkages = new ConcurrentSkipListSet<>();
 
         IMatrixPosition position1 = matrix.newPosition();
@@ -69,7 +69,7 @@ public class HierarchicalClusterer {
                 throw new CancellationException();
             }
 
-            Cluster cluster1 = newCluster(clusters, id1);
+            HierarchicalCluster cluster1 = newCluster(clusters, id1);
             cluster1.setWeight( aggregator.aggregate(position1.iterate(layer, aggregationDimension)) );
 
             for (String id2 : position2.iterate(clusterDimension).from(id1)) {
@@ -82,7 +82,7 @@ public class HierarchicalClusterer {
                         position2.iterate(layer, aggregationDimension)
                 );
 
-                Cluster cluster2 = newCluster(clusters, id2);
+                HierarchicalCluster cluster2 = newCluster(clusters, id2);
 
                 linkages.add(new ClusterPair(distance, cluster1, cluster2));
             }
@@ -93,7 +93,7 @@ public class HierarchicalClusterer {
         builder.agglomerate(linkageStrategy, monitor, clusterDimension.size());
 
         /* Set cluster names */
-        Cluster root = builder.getRootCluster();
+        HierarchicalCluster root = builder.getRootCluster();
         root.setName("");
         Color color = nameClusters(root.getChildren(), 1);
         root.setColor(color.getRGB());
@@ -111,7 +111,7 @@ public class HierarchicalClusterer {
         return new Color(DEFAULT_PALETTE[index % DEFAULT_PALETTE.length]);
     }
 
-    private Color nameClusters(List<Cluster> children, int level) {
+    private Color nameClusters(List<HierarchicalCluster> children, int level) {
 
         if (children.isEmpty()) {
             return next();
@@ -124,7 +124,7 @@ public class HierarchicalClusterer {
         Color colorParent = null;
         Double weightParent = 0.0;
         for (int i = 0; i < children.size(); i++) {
-            Cluster child = children.get(i);
+            HierarchicalCluster child = children.get(i);
             if (child.getChildren().isEmpty()) {
                 child.setName(JOINER.join(child.getIdentifiers()));
             } else {
@@ -187,11 +187,11 @@ public class HierarchicalClusterer {
     private static Joiner JOINER = Joiner.on("&");
     private static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
-    private static int calculateDigits(int size) {
+    public static int calculateDigits(int size) {
         return ((int) FastMath.log(ALPHABET.length, size)) + 1;
     }
 
-    private static String createLabel(int number, int digits) {
+    public static String createLabel(int number, int digits) {
 
         char[] label = new char[digits];
         label[digits - 1] = ALPHABET[number % ALPHABET.length];
@@ -205,10 +205,10 @@ public class HierarchicalClusterer {
 
     }
 
-    private static Cluster newCluster(Map<String, Cluster> clusters, String id) {
+    private static HierarchicalCluster newCluster(Map<String, HierarchicalCluster> clusters, String id) {
 
         if (!clusters.containsKey(id)) {
-            Cluster newCluster = new Cluster(id);
+            HierarchicalCluster newCluster = new HierarchicalCluster(id);
             clusters.put(id, newCluster);
             return newCluster;
         }

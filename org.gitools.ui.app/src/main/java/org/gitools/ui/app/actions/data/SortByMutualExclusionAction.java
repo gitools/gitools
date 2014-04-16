@@ -57,7 +57,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
             page.setDimension(MatrixDimensionKey.COLUMNS);
         }*/
 
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;
@@ -75,10 +75,9 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                         page.isUseRegexChecked(),
                         page.getDimension().equals(MatrixDimensionKey.COLUMNS),
                         monitor,
-                        Settings.getDefault().isShowMutualExclusionProgress()
+                        Settings.get().isShowMutualExclusionProgress()
                 );
 
-                monitor.end();
             }
         });
 

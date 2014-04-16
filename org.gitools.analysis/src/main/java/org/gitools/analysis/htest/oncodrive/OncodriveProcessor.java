@@ -22,11 +22,7 @@
 package org.gitools.analysis.htest.oncodrive;
 
 import com.google.common.base.Function;
-import static com.google.common.base.Functions.constant;
 import com.google.common.collect.Iterables;
-import static com.google.common.collect.Iterables.concat;
-import static com.google.common.collect.Iterables.transform;
-import static com.google.common.collect.Sets.intersection;
 import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
@@ -38,22 +34,20 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
 import org.gitools.matrix.model.iterable.PositionMapping;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.modulemap.HashModuleMap;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import org.gitools.utils.cutoffcmp.CutoffMatrixFunction;
+
+import java.util.*;
+
+import static com.google.common.base.Functions.constant;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.transform;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 
 public class OncodriveProcessor implements AnalysisProcessor {
 
@@ -64,7 +58,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
         Date startTime = new Date();
 
         IMatrix data = analysis.getData().get();
@@ -177,6 +171,5 @@ public class OncodriveProcessor implements AnalysisProcessor {
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
         analysis.setResults(new ResourceReference<>("results", resultsMatrix));
 
-        monitor.end();
     }
 }

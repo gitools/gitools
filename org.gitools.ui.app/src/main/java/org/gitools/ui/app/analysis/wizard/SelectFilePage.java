@@ -116,11 +116,11 @@ public class SelectFilePage extends AbstractWizardPage {
     }
 
     protected String getLastPath() {
-        return Settings.getDefault().getLastDataPath();
+        return Settings.get().getLastDataPath();
     }
 
     protected void setLastPath(String path) {
-        Settings.getDefault().setLastDataPath(path);
+        Settings.get().setLastDataPath(path);
     }
 
     /**

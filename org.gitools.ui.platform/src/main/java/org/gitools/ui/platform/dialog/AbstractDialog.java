@@ -23,6 +23,9 @@ package org.gitools.ui.platform.dialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public abstract class AbstractDialog extends JDialog {
@@ -44,23 +47,58 @@ public abstract class AbstractDialog extends JDialog {
 
     private int returnStatus = RET_CANCEL;
 
-    protected AbstractDialog(Window owner, String title, String header, String message, MessageStatus status, Icon logo) {
-
+    protected AbstractDialog(Window owner, String title, String header, String message, MessageStatus status, Icon logo, Dimension minimum, Dimension prefered) {
         super(owner, title);
         setModal(true);
 
         createComponents(header, message, status, logo);
 
+        setMinimumSize(minimum);
+        setPreferredSize(prefered);
         setLocationRelativeTo(owner);
-        setMinimumSize(new Dimension(300, 260));
+
+
     }
 
-    protected AbstractDialog(Window owner, String title, Icon icon) {
-        this(owner, title, "", "", MessageStatus.INFO, icon);
+    protected JRootPane createRootPane() {
+
+        ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                escapePressed();
+            }
+        };
+
+        KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        JRootPane rootPane = new JRootPane();
+        rootPane.registerKeyboardAction(actionListener, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+        return rootPane;
+    }
+
+    protected abstract void escapePressed();
+
+    protected AbstractDialog(Window owner, String title, Icon icon, Dimension minimum, Dimension prefered) {
+        this(owner, title, "", "", MessageStatus.INFO, icon, minimum, prefered);
     }
 
     public void open() {
-        setVisible(true);
+
+        if (!SwingUtilities.isEventDispatchThread()) {
+            System.out.println("WARNING: Opening a dialog NOT in the event dispatch thread" );
+        }
+
+        super.setVisible(true);
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+
+        if (b) {
+            if (!SwingUtilities.isEventDispatchThread()) {
+                System.out.println("WARNING: Opening a dialog NOT in the event dispatch thread" );
+            }
+        }
+
+        super.setVisible(b);
     }
 
     protected JComponent getContainer() {

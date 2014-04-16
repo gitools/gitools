@@ -74,8 +74,6 @@ public class ModulesOrganismPage extends FilteredListPage {
                                 loaded = true;
                             }
                         });
-
-                        monitor.end();
                     } catch (Exception ex) {
                         monitor.exception(ex);
                     }

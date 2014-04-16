@@ -21,7 +21,9 @@
  */
 package org.gitools.analysis.stats.test;
 
-import cern.jet.stat.Probability;
+import org.apache.commons.math3.distribution.BinomialDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.gitools.analysis.stats.test.results.BinomialResult;
 import org.gitools.analysis.stats.test.results.CommonResult;
 
@@ -173,9 +175,11 @@ public class BinomialTest extends AbstractTest {
         if (n == 0) {
             leftPvalue = rightPvalue = twoTailPvalue = 1.0;
         } else {
-            leftPvalue = Probability.binomial(observed, n, p);
-            rightPvalue = observed > 0 ? Probability.binomialComplemented(observed - 1, n, p) : 1.0;
 
+            BinomialDistribution distribution = new BinomialDistribution(n, p);
+
+            leftPvalue = distribution.cumulativeProbability(observed);
+            rightPvalue = observed > 0 ? distribution.cumulativeProbability(observed-1, n) : 1.0;
             twoTailPvalue = leftPvalue + rightPvalue;
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
         }
@@ -183,6 +187,7 @@ public class BinomialTest extends AbstractTest {
         return new BinomialResult(BinomialResult.Distribution.BINOMIAL, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
+    private static NormalDistribution NORMAL = new NormalDistribution();
 
     private static CommonResult resultWithNormal(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
@@ -194,7 +199,7 @@ public class BinomialTest extends AbstractTest {
         // Calculate zscore and pvalues
         zscore = (observed - expectedMean) / expectedStdev;
 
-        leftPvalue = Probability.normal(zscore);
+        leftPvalue = NORMAL.cumulativeProbability(zscore);
         rightPvalue = 1.0 - leftPvalue;
         twoTailPvalue = (zscore <= 0 ? leftPvalue : rightPvalue) * 2;
         twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
@@ -202,18 +207,17 @@ public class BinomialTest extends AbstractTest {
         return new BinomialResult(BinomialResult.Distribution.NORMAL, n, leftPvalue, rightPvalue, twoTailPvalue, observed, expectedMean, expectedStdev, p);
     }
 
-
     private static CommonResult resultWithPoisson(int observed, int n, double p, double expectedMean, double expectedStdev) {
 
         double leftPvalue;
         double rightPvalue;
         double twoTailPvalue;
 
-        // Calculate pvalues
-
         try {
-            leftPvalue = Probability.poisson(observed, expectedMean);
-            rightPvalue = observed > 0 ? Probability.poissonComplemented(observed - 1, expectedMean) : 1.0;
+            PoissonDistribution poisson = new PoissonDistribution(expectedMean);
+
+            leftPvalue = poisson.cumulativeProbability(observed);
+            rightPvalue = observed > 0 ? poisson.cumulativeProbability(observed - 1, n) : 1.0;
 
             twoTailPvalue = (observed <= expectedMean ? leftPvalue : rightPvalue) * 2; //FIXME: Review
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;

@@ -132,7 +132,6 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
                         }
                     });
 
-                    monitor.end();
                 } catch (Exception e) {
                     monitor.exception(e);
                 }

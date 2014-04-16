@@ -86,7 +86,7 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
             }
         };
 
-        dialog.setVisible(true);
+        dialog.open();
     }
 
     @Override

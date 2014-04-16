@@ -30,6 +30,8 @@ import com.alee.managers.tooltip.TooltipWay;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ActionSetUtils {
@@ -46,6 +48,8 @@ public class ActionSetUtils {
         for (BaseAction a : actionSet.getActions()) {
             if (a instanceof SeparatorAction) {
                 toolBar.addSeparator();
+            } else if (a instanceof IPanelAction) {
+                toolBar.add(((IPanelAction) a).getPanel());
             } else {
                 toolBar.add(createTool(a));
             }
@@ -57,6 +61,7 @@ public class ActionSetUtils {
     private static JComponent createTool(BaseAction a) {
         WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
         tool.setAction(a);
+        tool.addActionListener(new TrackingListener("ToolBar", a));
         tool.setHideActionText(true);
         TooltipManager.setTooltip(tool, a.getDesc(), TooltipWay.down, 0);
         tool.setFocusable(false);
@@ -84,13 +89,14 @@ public class ActionSetUtils {
     }
 
 
-    private static JMenuItem createPopupMenuItem(Action a) {
+    private static JMenuItem createPopupMenuItem(BaseAction a) {
         JMenuItem item = new JMenuItem(a) {
             public void setToolTipText(String text) {
                 // Ignore!  Actions (e.g. undo/redo) set this when changing
                 // their text due to changing enabled state.
             }
         };
+        item.addActionListener(new TrackingListener("PopupMenu", a));
         item.setAccelerator(null);
         return item;
     }
@@ -131,10 +137,30 @@ public class ActionSetUtils {
             } else if (a instanceof ActionSet) {
                 menu.add(createMenu(a));
             } else {
-                menu.add(new JMenuItem(a));
+                JMenuItem item = new JMenuItem(a);
+                item.addActionListener(new TrackingListener("MainMenu", a));
+                menu.add(item);
             }
         }
 
         return menu;
+    }
+
+    private static class TrackingListener implements ActionListener {
+
+        private String source;
+        private BaseAction action;
+
+        public TrackingListener(String source, BaseAction action) {
+            super();
+
+            this.source = source;
+            this.action = action;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            action.track("action", source);
+        }
     }
 }

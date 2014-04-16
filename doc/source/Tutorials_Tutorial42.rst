@@ -1,14 +1,12 @@
-=============================================================================
+=====================================================================
 Tutorial 4.2. Correlation of expression patterns in different tissues
-=============================================================================
+=====================================================================
 
 Compare the expression profile of samples using correlations
----------------------------------------------------------------
-
-
+------------------------------------------------------------
 
 Files needed:
--------------------------------------------------
+-------------
 
 We will need the same files as in the tutorial 4.1:
 
@@ -17,9 +15,8 @@ We will need the same files as in the tutorial 4.1:
 `Gene Atlas sample annotations <http://www.gitools.org/tutorials/data/gse1133-annotation-full.tsv>`__  which contains the annotation of samples.
 
 
-
 Perform correlation analysis
--------------------------------------------------
+----------------------------
 
 See  :doc:`UserGuide_Correlations`  for details on how to perform correlation analysis
 
@@ -32,9 +29,8 @@ Apply correlation to columns (as we want to correlate samples)
 Give a name to the analysis. Select a directory where to safe it and click Finish.
 
 
-
 Colour the columns and rows according to the class label of the tissue samples and order them
---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 In the analysis details tab, click on “heatmap” under “Results” to view the heatmap of the results.
 
@@ -51,11 +47,10 @@ Sort the samples by class by selecting Data>Sort>Sort by label and select column
 Change the width of the cells in properties/cells to be able to see all the samples in the window and uncheck the option to show the columns grid.
 
 
-
 Explore the results
--------------------------------------------------
+-------------------
 
 
 .. image:: img/T4.2.png
-:width: 70%
+   :width: 70%
 

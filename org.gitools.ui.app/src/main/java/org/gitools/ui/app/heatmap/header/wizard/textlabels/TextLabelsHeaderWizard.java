@@ -24,6 +24,7 @@ package org.gitools.ui.app.heatmap.header.wizard.textlabels;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.heatmap.header.wizard.TextLabelsConfigPage;
+import org.gitools.ui.app.wizard.common.PatternSourcePage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 public class TextLabelsHeaderWizard extends AbstractWizard {
@@ -31,7 +32,7 @@ public class TextLabelsHeaderWizard extends AbstractWizard {
     private final HeatmapDimension hdim;
     private final HeatmapTextLabelsHeader header;
 
-    private TextLabelsSourcePage sourcePage;
+    private PatternSourcePage sourcePage;
     private TextLabelsConfigPage configPage;
 
     public TextLabelsHeaderWizard(HeatmapDimension hdim, HeatmapTextLabelsHeader header) {
@@ -41,11 +42,31 @@ public class TextLabelsHeaderWizard extends AbstractWizard {
 
     @Override
     public void addPages() {
-        sourcePage = new TextLabelsSourcePage(hdim, header);
+        sourcePage = new PatternSourcePage(hdim, true);
         addPage(sourcePage);
 
         configPage = new TextLabelsConfigPage(header);
         addPage(configPage);
     }
 
+
+    public String getAnnotationMetadata(String key, String annotation) {
+        return hdim.getAnnotations().getAnnotationMetadata(key, annotation);
+    }
+
+    @Override
+    public void performFinish() {
+
+        String annotation = sourcePage.getAnnotationName();
+        header.setMargin(5);
+        header.setLabelSource(sourcePage.getLabelSource());
+        header.setLabelAnnotation(annotation);
+        header.setLabelPattern(sourcePage.getPattern());
+
+        header.setDescription(getAnnotationMetadata("description", annotation));
+        header.setDescriptionUrl(getAnnotationMetadata("description-url", annotation));
+        header.setValueUrl(getAnnotationMetadata("value-url", annotation));
+
+
+    }
 }

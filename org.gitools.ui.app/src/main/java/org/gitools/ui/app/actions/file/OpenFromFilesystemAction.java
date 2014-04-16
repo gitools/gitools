@@ -36,6 +36,7 @@ import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
 import org.gitools.ui.app.settings.Settings;
@@ -43,7 +44,6 @@ import org.gitools.ui.app.utils.FileChoose;
 import org.gitools.ui.app.utils.FileChooserUtils;
 import org.gitools.ui.app.utils.FileFormatFilter;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobThread;
 
 import javax.swing.*;
@@ -55,7 +55,7 @@ import java.util.List;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
-public class OpenFromFilesystemAction extends BaseAction {
+public class OpenFromFilesystemAction extends AbstractAction {
 
     public static FileFormat[] FORMAT_ANALYSIS = new FileFormat[]{
             EnrichmentAnalysisFormat.FILE_FORMAT,
@@ -133,8 +133,8 @@ public class OpenFromFilesystemAction extends BaseAction {
             return;
         }
 
-        Settings.getDefault().setLastPath(fileChoose.getFile().getParent());
-        Settings.getDefault().save();
+        Settings.get().setLastPath(fileChoose.getFile().getParent());
+        Settings.get().save();
 
         IResourceFormat format = null;
         if (fileChoose.getFilter() != null) {

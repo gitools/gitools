@@ -57,7 +57,7 @@ public class CombinationProcessor implements AnalysisProcessor {
     }
 
     @Override
-    public void run(IProgressMonitor monitor) throws AnalysisException {
+    public void run(IProgressMonitor monitor) {
 
         Date startTime = new Date();
 
@@ -104,7 +104,6 @@ public class CombinationProcessor implements AnalysisProcessor {
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 
-        monitor.end();
     }
 
     private IMatrix combine(IProgressMonitor monitor, IMatrix data, MatrixDimensionKey combineDimension, MatrixDimensionKey iterateDimension, IModuleMap moduleMap, String sizeLayerId, String valueLayerId) {

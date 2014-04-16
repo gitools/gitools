@@ -17,14 +17,17 @@
 					<tr><td class="name"><div>Notes</div></td><td>$analysis.description</td></tr>
 				#end
 				<tr><td class="name"><div>Created</div></td><td>$fmt.format($analysis.startTime)</td></tr>
+				#if( $analysis.layer )
+                	<tr><td class="name"><div>Layer</div></td><td>$analysis.layer</td></tr>
+                #end
 				<tr><td class="name"><div>Test</div></td><td>$test</td></tr>
 				#if( $testAttributes && $testAttributes.size() > 0 )
 					#foreach($mapEntry in $testAttributes.entrySet())
 						<tr><td class="name"><div>$mapEntry.key</div></td><td>$mapEntry.value</td></tr>
 					#end
 				#end
-				#if( $analysis.attributes && $analysis.attributes.size() > 0 )
-					#foreach($attr in $analysis.attributes)
+				#if( $analysis.properties && $analysis.properties.size() > 0 )
+					#foreach($attr in $analysis.properties)
 						#if ($attr.name)
 							<tr><td class="name"><div>$attr.name</div></td><td>$attr.value</td></tr>
 						#end

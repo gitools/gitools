@@ -24,12 +24,16 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 import com.jgoodies.binding.adapter.Bindings;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.ui.app.actions.data.DetectCategoriesAction;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
     private JTextField emptyColor;
     private JCheckBox showValueCheckBox;
     private JPanel pagePanel;
+    private JButton detectCategoriesButton;
     private ColoredLabelsGroupsPage categoriesPage;
 
     public CategoricalDecoratorPanel() {
@@ -50,6 +55,28 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
         pagePanel.setLayout(new BoxLayout(pagePanel, BoxLayout.PAGE_AXIS));
         pagePanel.add(categoriesPage);
         //categoriesPage.setMaximumSize(new Dimension(700, 300));
+        detectCategoriesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                detectCategories();
+            }
+        });
+    }
+
+    private void detectCategories() {
+        DetectCategoriesAction detection = new DetectCategoriesAction();
+        detection.run();
+
+        List<ColoredLabel> coloredLabels = new ArrayList<>();
+        ColorGenerator cg = new ColorGenerator();
+
+        for (double c : detection.getCategories()) {
+            String value = Double.toString(c);
+            coloredLabels.add(new ColoredLabel(value, cg.next(value)));
+        }
+        if (coloredLabels.size() > 0) {
+            categoriesPage.setColoredLabels(coloredLabels);
+        }
     }
 
     private CategoricalDecorator getDecorator() {

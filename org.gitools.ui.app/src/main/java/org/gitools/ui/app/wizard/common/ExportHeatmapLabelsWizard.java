@@ -51,19 +51,20 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard {
         addPage(sourcePage);
 
         patPage = new PatternSourcePage(true);
+        patPage.setAnnSeparationModel(new String[]{"\t", ",", ";"});
         addPage(patPage);
 
         savePage = new SaveFilePage();
         savePage.setTitle("Select destination file");
-        savePage.setFolder(Settings.getDefault().getLastExportPath());
+        savePage.setFolder(Settings.get().getLastExportPath());
         savePage.setFormats(supportedFormats);
         addPage(savePage);
     }
 
     @Override
     public void performFinish() {
-        Settings.getDefault().setLastExportPath(savePage.getFolder());
-        Settings.getDefault().save();
+        Settings.get().setLastExportPath(savePage.getFolder());
+        Settings.get().save();
     }
 
     @Override

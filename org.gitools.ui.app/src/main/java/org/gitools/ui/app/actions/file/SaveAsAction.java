@@ -22,8 +22,8 @@
 package org.gitools.ui.app.actions.file;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.editor.AbstractEditor;
 import org.gitools.ui.platform.editor.EditorsPanel;
 import org.gitools.ui.platform.editor.IEditor;
@@ -34,7 +34,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class SaveAsAction extends BaseAction {
+public class SaveAsAction extends AbstractAction {
 
     private static final long serialVersionUID = -6528634034161710370L;
 

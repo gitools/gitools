@@ -154,6 +154,9 @@ public class AnalysisDetailsPage extends AbstractWizardPage {
                 attrRemoveBtn.setEnabled(row != -1);
             }
         });
+
+        setAnalysisTitle("Analysis");
+
     }
 
 

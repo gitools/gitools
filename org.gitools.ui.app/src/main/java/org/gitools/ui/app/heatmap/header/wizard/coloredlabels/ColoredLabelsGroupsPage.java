@@ -34,8 +34,26 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class ColoredLabelsGroupsPage extends AbstractWizardPage {
+
+    private void setSync() {
+        ColorRegistry cr = ColorRegistry.get();
+        for (ColoredLabel cl : getColoredLabels()) {
+            cr.registerId(cl.getValue(), cl.getColor());
+        }
+    }
+
+    private void sync() {
+        java.util.List<ColoredLabel> oldList = getColoredLabels();
+        java.util.List<ColoredLabel> newList = new ArrayList<>();
+        ColorRegistry cr = ColorRegistry.get();
+        for (ColoredLabel cl : oldList) {
+            newList.add(new ColoredLabel(cl.getValue(), cl.getDisplayedLabel(), cr.getColor(cl.getValue(), cl.getColor())));
+        }
+        setColoredLabels(newList);
+    }
 
     class ColorChooserEditor extends AbstractCellEditor implements TableCellEditor {
 
@@ -186,7 +204,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         columnModel.getColumn(2).setCellEditor(new ColorChooserEditor());
         columnModel.getColumn(2).setCellRenderer(new ColorCellRenderer());
 
-        setTitle("Labels configuration");
+        setTitle("Colors");
         updateButtons();
     }
 
@@ -251,8 +269,9 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         tableAddBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
         syncBtn = new javax.swing.JButton();
+        syncBtn1 = new javax.swing.JButton();
 
-        jLabel5.setText("");
+        jLabel5.setText("Labels");
 
         table.setModel(new org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsTableModel());
         table.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -275,11 +294,19 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
             }
         });
 
-        syncBtn.setText("Sync");
-        syncBtn.setToolTipText("Sync colors with other heatmaps whithin the current Gitools instance");
+        syncBtn.setText("Get colors");
+        syncBtn.setToolTipText("Get value-color relations with other heatmaps whithin the current Gitools instance");
         syncBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 syncBtnActionPerformed(evt);
+            }
+        });
+
+        syncBtn1.setText("Set colors");
+        syncBtn1.setToolTipText("Set value-color relations so other heatmaps can sync");
+        syncBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                syncBtn1ActionPerformed(evt);
             }
         });
 
@@ -290,19 +317,17 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addGap(3, 3, 3)
-                                                                .addComponent(tableAddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(syncBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(removeBtn, javax.swing.GroupLayout.Alignment.TRAILING))))))
-                                .addContainerGap())
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addContainerGap())
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                                                .addGap(6, 6, 6)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(syncBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(syncBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,6 +342,8 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                                                 .addComponent(removeBtn)
                                                 .addGap(12, 12, 12)
                                                 .addComponent(syncBtn)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(syncBtn1)
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
@@ -338,13 +365,12 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void syncBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncBtnActionPerformed
-        java.util.List<ColoredLabel> cls = getColoredLabels();
-        ColorRegistry cr = ColorRegistry.get();
-        for (ColoredLabel cl : cls) {
-            cl.setColor(cr.getColor(cl.getValue(), cl.getColor()));
-        }
-        setColoredLabels(cls);
+        sync();
     }//GEN-LAST:event_syncBtnActionPerformed
+
+    private void syncBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncBtn1ActionPerformed
+        setSync();
+    }//GEN-LAST:event_syncBtn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,6 +378,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton syncBtn;
+    private javax.swing.JButton syncBtn1;
     private javax.swing.JTable table;
     private javax.swing.JButton tableAddBtn;
     // End of variables declaration//GEN-END:variables

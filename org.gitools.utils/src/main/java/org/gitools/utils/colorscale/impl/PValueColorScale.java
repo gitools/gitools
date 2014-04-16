@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.api.analysis.IAggregator;
-import org.gitools.utils.aggregation.MultAggregator;
 import org.gitools.utils.color.Colors;
 import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
@@ -141,9 +139,4 @@ public class PValueColorScale extends NumericColorScale {
 
     }
 
-
-    @Override
-    public IAggregator defaultAggregator() {
-        return MultAggregator.INSTANCE;
-    }
 }

@@ -322,7 +322,7 @@ public class FilterSelectComponent extends FilterComponent {
                     if (list.length > 0) {
                         sb.append(((OptionListWrapper) list[0]).getOption().getValue());
                         for (int i = 1; i < list.length; i++)
-                            sb.append(", ").append(((OptionListWrapper) list[i]).getOption().getValue());
+                            sb.append(",").append(((OptionListWrapper) list[i]).getOption().getValue());
                     }
 
                     f.setValue(sb.toString());

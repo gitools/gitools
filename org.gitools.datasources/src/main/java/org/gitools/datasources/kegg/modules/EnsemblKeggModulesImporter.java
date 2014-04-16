@@ -598,7 +598,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         } catch (Exception ex) {
             throw new ModulesImporterException(ex);
         }
-        monitor.end();
 
     }
 
@@ -637,7 +636,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         } catch (BiomartServiceException ex) {
             throw new ModulesImporterException(ex);
         }
-        monitor.end();
 
     }
 
@@ -671,7 +669,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
         } catch (BiomartServiceException ex) {
             throw new ModulesImporterException(ex);
         }
-        monitor.end();
     }
 
     private boolean isCategory(String src, EnsemblKeggModuleCategory[] categories) {
@@ -740,8 +737,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
             }
         }
 
-        monitor.end();
-
         return tree;
     }
 
@@ -758,8 +753,6 @@ public class EnsemblKeggModulesImporter implements ModulesImporter, AllIds, OBOE
 
             plainData.set(id, dstIds);
         }
-
-        monitor.end();
 
         return plainData;
     }

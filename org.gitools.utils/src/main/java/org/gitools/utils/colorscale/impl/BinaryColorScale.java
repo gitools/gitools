@@ -21,8 +21,6 @@
  */
 package org.gitools.utils.colorscale.impl;
 
-import org.gitools.api.analysis.IAggregator;
-import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.colorscale.ColorConstants;
 import org.gitools.utils.colorscale.ColorScaleRange;
 import org.gitools.utils.colorscale.NumericColorScale;
@@ -221,9 +219,4 @@ public class BinaryColorScale extends NumericColorScale {
         updateRangesList();
     }
 
-
-    @Override
-    public IAggregator defaultAggregator() {
-        return SumAggregator.INSTANCE;
-    }
 }

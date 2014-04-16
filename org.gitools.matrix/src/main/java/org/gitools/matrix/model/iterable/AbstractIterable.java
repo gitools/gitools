@@ -22,12 +22,11 @@
 package org.gitools.matrix.model.iterable;
 
 import com.google.common.collect.Iterators;
-import org.apache.commons.collections.comparators.ComparableComparator;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
+import org.gitools.utils.ComparableComparator;
 
 import java.util.Comparator;
-import java.util.Set;
 
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 
@@ -52,7 +51,7 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 
     @Override
     public IMatrixIterable<T> sort() {
-        return sort(new ComparableComparator());
+        return sort(ComparableComparator.getInstance());
     }
 
     @Override

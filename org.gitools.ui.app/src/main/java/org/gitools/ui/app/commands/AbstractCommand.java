@@ -37,7 +37,6 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
     public void run(IProgressMonitor monitor) {
         try {
             execute(monitor);
-            monitor.end();
         } catch (CommandException e) {
             monitor.exception(e);
         }

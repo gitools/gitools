@@ -21,6 +21,9 @@
  */
 package org.gitools.ui.app.settings;
 
+import com.google.common.base.Strings;
+import com.jgoodies.binding.beans.Model;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -28,38 +31,69 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
+import java.util.UUID;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Settings {
-
-    private static final String DEFAULT_INTOGEN_URL = "http://www.intogen.org";
-    private static final String DEFAULT_INTOGEN_ONCOMODULES_URL = DEFAULT_INTOGEN_URL + "/oncomodules";
-    private static final String DEFAULT_INTOGEN_DATA_URL = DEFAULT_INTOGEN_URL + "/oncodata";
-
-    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
-
-    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+public class Settings extends Model {
 
     private static final String userPath = System.getProperty("user.home", ".");
-
     public static final String CONFIG_PATH = userPath + File.separator + ".gitools";
-
     private static final String configFileName = "ui.xml";
-
     private static final String configFile = CONFIG_PATH + File.separator + configFileName;
-
-
     private static Settings instance;
 
+    private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
+    private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
+    private static final String DEFAULT_WELCOME_URL = "http://www.gitools.org/welcome";
 
-    public static Settings getDefault() {
+    public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
+    public static final String PROPERTY_TIPS = "showTipsAtStartup";
+    public static final String PROPERTY_PORT_ENABLED = "portEnabled";
+    public static final String PROPERTY_PORT = "defaultPort";
+    public static final String PROPERTY_IGV_ENABLED = "showIGVLink";
+    public static final String PROPERTY_IGV_URL = "igvUrl";
+
+    private String lastFilterPath = userPath;
+    private String lastAnnotationPath = userPath;
+    private String lastMapPath = userPath;
+    private String lastDataPath = userPath;
+    private String lastWorkPath = userPath;
+    private String lastExportPath = userPath;
+    private String lastImportPath = userPath;
+    private String lastPath = userPath;
+
+    private String version;
+    private String uuid;
+    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
+
+    // Editable parameters
+    private boolean allowUsageStatistics = true;
+    private String statisticsConsentmentVersion = "";
+    private boolean showTipsAtStartup = true;
+    private boolean showMutualExclusionProgress = false;
+    private String welcomeUrl = DEFAULT_WELCOME_URL;
+
+    // Port parameters
+    private boolean portEnabled = true;
+    private int defaultPort = 50151;
+
+    // IGV parameters
+    private boolean showIGVLink = true;
+    private String igvUrl = DEFAULT_IGV_URL;
+
+    // Preview features
+    private boolean previewFeatures = false;
+
+    private Settings() {
+    }
+
+    public static Settings get() {
         if (instance == null) {
             instance = load();
         }
         return instance;
     }
-
 
     private static Settings load() {
         Settings settings = null;
@@ -76,50 +110,10 @@ public class Settings {
             settings = new Settings();
             settings.save();
         } catch (Exception e) {
-            e.printStackTrace(); //TODO Deberia lanzar una excepción?
+            e.printStackTrace();
             settings = new Settings();
         }
         return settings;
-    }
-
-    private String version;
-
-    private String lastPath = userPath;
-    private String lastImportPath = userPath;
-    private String lastExportPath = userPath;
-    private String lastWorkPath = userPath;
-    private String lastDataPath = userPath;
-    private String lastMapPath = userPath;
-    private String lastAnnotationPath = userPath;
-    private String lastFilterPath = userPath;
-    private String intogenOncomodulesUrl = DEFAULT_INTOGEN_ONCOMODULES_URL;
-    private String intogenDataUrl = DEFAULT_INTOGEN_DATA_URL;
-
-
-    private int editorTabLength = DEFAULT_EDITOR_TAB_LENGTH;
-
-    private boolean showEnrichmentExamplePage = true;
-    private boolean showOncodriveExamplePage = true;
-    private boolean showCorrelationExamplePage = true;
-    private boolean showOverlapExamplePage = true;
-    private boolean showCombinationExamplePage = true;
-    private boolean showTipsAtStartup = true;
-    private boolean showMutualExclusionProgress = false;
-
-
-    // Port parameters
-    private boolean portEnabled = true;
-    private int defaultPort = 50151;
-
-    // IGV parameters
-    private boolean showIGVLink = true;
-    private String igvUrl = DEFAULT_IGV_URL;
-
-    // Preview features
-    private boolean previewFeatures = false;
-
-
-    private Settings() {
     }
 
     public void save() {
@@ -214,72 +208,14 @@ public class Settings {
         this.lastFilterPath = lastFilterPath;
     }
 
-    public String getIntogenOncomodulesUrl() {
-        return intogenOncomodulesUrl;
-    }
-
-    public void setIntogenOncomodulesUrl(String intogenOncomodulesUrl) {
-        this.intogenOncomodulesUrl = intogenOncomodulesUrl;
-    }
-
-    public String getIntogenDataUrl() {
-        return intogenDataUrl;
-    }
-
-    public void setIntogenDataUrl(String intogenDataUrl) {
-        this.intogenDataUrl = intogenDataUrl;
-    }
-
-    public boolean isShowEnrichmentExamplePage() {
-        return showEnrichmentExamplePage;
-    }
-
-    public void setShowEnrichmentExamplePage(boolean showEnrichmentExamplePage) {
-        this.showEnrichmentExamplePage = showEnrichmentExamplePage;
-    }
-
-    /**
-     * @noinspection UnusedDeclaration
-     */
-    public boolean isShowOncodriveExamplePage() {
-        return showOncodriveExamplePage;
-    }
-
-    public void setShowOncodriveExamplePage(boolean showOncodriveExamplePage) {
-        this.showOncodriveExamplePage = showOncodriveExamplePage;
-    }
-
-    public boolean isShowCorrelationExamplePage() {
-        return showCorrelationExamplePage;
-    }
-
-    public void setShowCorrelationExamplePage(boolean showCorrelationExamplePage) {
-        this.showCorrelationExamplePage = showCorrelationExamplePage;
-    }
-
-    public boolean isShowCombinationExamplePage() {
-        return showCombinationExamplePage;
-    }
-
-    public void setShowCombinationExamplePage(boolean showCombinationExamplePage) {
-        this.showCombinationExamplePage = showCombinationExamplePage;
-    }
-
-
     public boolean isShowTipsAtStartup() {
         return showTipsAtStartup;
     }
 
     public void setShowTipsAtStartup(boolean showTipsAtStartup) {
+        boolean old = this.showTipsAtStartup;
         this.showTipsAtStartup = showTipsAtStartup;
-    }
-
-    public boolean isShowOverlapExamplePage() {
-        return showOverlapExamplePage;
-    }
-
-    public void setShowOverlapExamplePage(boolean showOverlapExamplePage) {
-        this.showOverlapExamplePage = showOverlapExamplePage;
+        firePropertyChange(PROPERTY_TIPS, old, showTipsAtStartup);
     }
 
     public boolean isPortEnabled() {
@@ -290,11 +226,11 @@ public class Settings {
         this.portEnabled = portEnabled;
     }
 
-    public int getDefaultPort() {
+    public Integer getDefaultPort() {
         return defaultPort;
     }
 
-    public void setDefaultPort(int defaultPort) {
+    public void setDefaultPort(Integer defaultPort) {
         this.defaultPort = defaultPort;
     }
 
@@ -336,5 +272,42 @@ public class Settings {
 
     public void setShowMutualExclusionProgress(boolean showMutualExclusionProgress) {
         this.showMutualExclusionProgress = showMutualExclusionProgress;
+    }
+
+    public boolean isAllowUsageStatistics() {
+        return allowUsageStatistics;
+    }
+
+    public void setAllowUsageStatistics(boolean allowUsageStatistics) {
+        this.allowUsageStatistics = allowUsageStatistics;
+    }
+
+    public String getStatisticsConsentmentVersion() {
+        return statisticsConsentmentVersion;
+    }
+
+    public void setStatisticsConsentmentVersion(String statisticsConsentmentVersion) {
+        this.statisticsConsentmentVersion = statisticsConsentmentVersion;
+    }
+
+    public String getWelcomeUrl() {
+        return welcomeUrl;
+    }
+
+    public void setWelcomeUrl(String welcomeUrl) {
+        this.welcomeUrl = welcomeUrl;
+    }
+
+    public String getUuid() {
+
+        if (Strings.isNullOrEmpty(uuid) && isAllowUsageStatistics()) {
+            uuid = UUID.randomUUID().toString();
+        }
+
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

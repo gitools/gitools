@@ -49,3 +49,12 @@ a > img {
 	padding: 0 0 0 0;
 	text-align: right;
 }
+
+.alert {
+    font-size: 14pt;
+	padding: 12px 50px 12px 50px;
+	margin-bottom: 50px 20px 50px 20px;
+	background-color: #FCF8E3;
+	color: #C09853;
+	border: 1px solid #FBEED5;
+}

@@ -25,6 +25,7 @@ import org.gitools.api.ApplicationContext;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.locators.UrlResourceLocator;
@@ -57,9 +58,9 @@ public class PatternSourcePage extends AbstractWizardPage {
         this(null, idOptVisible);
     }
 
-    public PatternSourcePage(HeatmapDimension hdim, boolean idOptVisible) {
+    public PatternSourcePage(HeatmapDimension hdim, boolean idAsOption) {
         this.hdim = hdim;
-        this.idOptVisible = idOptVisible;
+        this.idOptVisible = idAsOption;
 
         initComponents();
 
@@ -81,7 +82,7 @@ public class PatternSourcePage extends AbstractWizardPage {
             }
         });
 
-        annSepCb.setModel(new DefaultComboBoxModel(new String[]{", ", "-", " | ", " / ", " > ", "::"}));
+        annSepCb.setModel(new DefaultComboBoxModel(new String[]{",", "-", " | ", " / ", " > ", "::"}));
         annSepCb.setSelectedIndex(0);
 
         patText.getDocument().addDocumentListener(new DocumentChangeListener() {
@@ -127,6 +128,7 @@ public class PatternSourcePage extends AbstractWizardPage {
 
         if (hdim != null && hdim.getAnnotations() != null && !hdim.getAnnotations().getLabels().isEmpty()) {
             annOpt.setSelected(true);
+            annOpt.setEnabled(true);
             DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
             FilterCellRenderer cellRenderer = new FilterCellRenderer();
             if (idOptVisible) {
@@ -178,6 +180,11 @@ public class PatternSourcePage extends AbstractWizardPage {
         }
         updateControls();
         annList.setSelectedIndices(new int[0]);
+    }
+
+    public void setAnnSeparationModel(String[] strings) {
+        annSepCb.setModel(new DefaultComboBoxModel(strings));
+        annSepCb.setSelectedIndex(0);
     }
 
     private void updateComplete() {
@@ -275,6 +282,29 @@ public class PatternSourcePage extends AbstractWizardPage {
 
     private void filterAnnotationsBox(KeyEvent evt) {
         annList.repaint();
+    }
+
+    public HeatmapTextLabelsHeader.LabelSource getLabelSource() {
+        if (idOpt.isSelected()) {
+            return HeatmapTextLabelsHeader.LabelSource.ID;
+        } else if (annOpt.isSelected()) {
+            if (annList.getSelectedIndex() == 0) {
+                return HeatmapTextLabelsHeader.LabelSource.ID;
+            } else {
+                return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+            }
+        } else if (patOpt.isSelected()) {
+            return HeatmapTextLabelsHeader.LabelSource.PATTERN;
+        }
+        return HeatmapTextLabelsHeader.LabelSource.ID;
+    }
+
+    public String getAnnotationName() {
+        if (annList.getSelectedIndex() > 0) {
+            return annotationOptions.get(annList.getSelectedIndex() - 1).getKey();
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -414,11 +444,11 @@ public class PatternSourcePage extends AbstractWizardPage {
 
     private void loadAnnotationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadAnnotationsActionPerformed
         try {
-            File file = FileChooserUtils.selectFile("Open annotations file", Settings.getDefault().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
+            File file = FileChooserUtils.selectFile("Open annotations file", Settings.get().getLastAnnotationPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file != null) {
                 hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), ApplicationContext.getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
-                Settings.getDefault().setLastAnnotationPath(file.getParent());
+                Settings.get().setLastAnnotationPath(file.getParent());
                 updateControls();
                 //annFile.setText(file.getName());
             }

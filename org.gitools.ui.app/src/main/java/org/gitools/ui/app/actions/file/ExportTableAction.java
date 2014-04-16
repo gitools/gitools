@@ -66,13 +66,13 @@ public class ExportTableAction extends HeatmapAction {
             return;
         }
 
-        final File file = FileChooserUtils.selectFile("Select destination file", Settings.getDefault().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
+        final File file = FileChooserUtils.selectFile("Select destination file", Settings.get().getLastExportPath(), FileChooserUtils.MODE_SAVE).getFile();
 
         if (file == null) {
             return;
         }
 
-        Settings.getDefault().setLastExportPath(file.getParentFile().getAbsolutePath());
+        Settings.get().setLastExportPath(file.getParentFile().getAbsolutePath());
 
         final List<Integer> selectedIndices = dlg.getSelectedIndices();
 
@@ -80,7 +80,7 @@ public class ExportTableAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
                 try {
-                    monitor.begin("Exporting table ...", 1);
+                    monitor.begin("Exporting to text file (table layout) ...", 1);
                     monitor.info("File: " + file.getName());
 
                     int[] attributeIndices = new int[selectedIndices.size()];
@@ -89,7 +89,6 @@ public class ExportTableAction extends HeatmapAction {
 
                     TextMatrixViewExporter.exportTable(matrixView, attributeIndices, file);
 
-                    monitor.end();
                 } catch (IOException ex) {
                     monitor.exception(ex);
                 }

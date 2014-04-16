@@ -146,7 +146,11 @@ public class JobThread implements JobRunnable {
                 org.gitools.utils.progressmonitor.ProgressMonitor.set(m);
 
                 try {
+
+                    monitor.start();
                     runnable.run(monitor);
+                    monitor.end();
+
                 } catch (CancellationException e) {
                     if (!monitor.isCancelled()) {
                         monitor.exception(e);

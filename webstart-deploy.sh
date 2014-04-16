@@ -14,27 +14,14 @@ VERSION=$1
 echo "Compiling ..."
 echo
 
-cd gitools-ui-app
+cd org.gitools.ui.app
+
 mvn clean package
 mvn webstart:jnlp
-mkdir -p target/jnlp/examples
-
-echo "Creating examples zip's ..."
-echo
-
-cd ../examples
-EXAMPLES=$(find . -maxdepth 1 -type d -printf "%f\n" | grep -v "\.svn" | grep -v "\.")
-for example in $EXAMPLES; do
-	dest_prefix="../org.gitools.ui.app/target/jnlp/examples/$example"
-	echo "Example $example into $dest_prefix.zip ..."
-	echo $(date +%Y%m%d%H%M%S) > $dest_prefix.timestamp
-	zip -r $dest_prefix.zip $example -x "*/*.svn/*"
-done
 
 echo "Deploying files ..."
 echo
 
-cd ../gitools-ui-app
 cat > target/jnlp/index.html <<EOF
 <html>
 <head>

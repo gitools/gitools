@@ -57,12 +57,7 @@ public class WizardDialog extends AbstractDialog {
     private boolean cancelled;
 
     public WizardDialog(Window owner, IWizard wizard) {
-
-        super(owner, wizard.getTitle(), wizard.getLogo());
-
-        setMinimumSize(new Dimension(800, 600));
-        setPreferredSize(new Dimension(800, 600));
-        setLocationRelativeTo(owner);
+        super(owner, wizard.getTitle(), wizard.getLogo(), new Dimension(800, 600), new Dimension(800, 600));
 
         pageControlsMap = new HashMap<>();
         pageHistory = new Stack<>();
@@ -151,6 +146,11 @@ public class WizardDialog extends AbstractDialog {
 
     public boolean isCancelled() {
         return cancelled;
+    }
+
+    @Override
+    protected void escapePressed() {
+        cancelActionPerformed();
     }
 
     @Override

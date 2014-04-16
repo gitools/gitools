@@ -349,13 +349,13 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private void loadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBtnActionPerformed
 
         try {
-            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
+            File file = FileChooserUtils.selectFile("Select the file containing values", Settings.get().getLastFilterPath(), FileChooserUtils.MODE_OPEN).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.get().setLastFilterPath(file.getParent());
 
             patterns.setText(readNamesFromFile(file));
         } catch (IOException ex) {
@@ -366,13 +366,13 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         try {
-            File file = FileChooserUtils.selectFile("Select file name ...", Settings.getDefault().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
+            File file = FileChooserUtils.selectFile("Select file name ...", Settings.get().getLastFilterPath(), FileChooserUtils.MODE_SAVE).getFile();
 
             if (file == null) {
                 return;
             }
 
-            Settings.getDefault().setLastFilterPath(file.getParent());
+            Settings.get().setLastFilterPath(file.getParent());
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             bw.append(patterns.getText()).append('\n');

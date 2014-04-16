@@ -33,9 +33,9 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.modulemap.format.GmtModuleMapFormat;
 import org.gitools.matrix.modulemap.format.GmxModuleMapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -47,7 +47,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractImportModulesAction extends BaseAction {
+public abstract class AbstractImportModulesAction extends AbstractAction {
 
     public AbstractImportModulesAction(String name) {
         super(name);
@@ -65,7 +65,7 @@ public abstract class AbstractImportModulesAction extends BaseAction {
         final ModulesImportWizard wz = getWizard(importer);
 
         WizardDialog dlg = new WizardDialog(Application.get(), wz);
-        dlg.setVisible(true);
+        dlg.open();
 
         if (dlg.isCancelled()) {
             return;
@@ -104,7 +104,6 @@ public abstract class AbstractImportModulesAction extends BaseAction {
                             monitor.worked(1);
                         }
                         pw.close();
-                        monitor.end();
 
                         setStatus("Ok");
                     } else {

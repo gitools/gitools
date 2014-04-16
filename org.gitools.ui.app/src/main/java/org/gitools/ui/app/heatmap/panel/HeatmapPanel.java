@@ -21,9 +21,6 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -316,7 +313,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
             Point point = e.getPoint();
             HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(point);
-            Point viewPosition = rowVP.getViewPosition();
+            Point viewPosition = colVP.getViewPosition();
             point.translate(viewPosition.x, viewPosition.y);
             HeatmapPosition headerPostion = columnHeaderPanel.getHeaderDrawer().getPosition(point);
 

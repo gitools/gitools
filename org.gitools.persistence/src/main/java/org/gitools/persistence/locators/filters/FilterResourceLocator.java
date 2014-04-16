@@ -46,12 +46,9 @@ public abstract class FilterResourceLocator implements IResourceLocator {
         this.name = name;
         this.extension = extension;
         this.resourceLocator = resourceLocator;
-        this.baseName = name;
 
-        int firstDot = name.indexOf('.');
-        if (firstDot != -1) {
-            this.baseName = name.substring(0, firstDot);
-        }
+        int startExtension = name.lastIndexOf(extension);
+        this.baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
     }
 
     @Override

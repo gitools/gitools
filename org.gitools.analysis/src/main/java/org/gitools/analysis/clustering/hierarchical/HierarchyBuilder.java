@@ -50,17 +50,17 @@ public class HierarchyBuilder {
     private SortedSet<ClusterPair> distances;
     private Multimap<Integer, ClusterPair> distancesMap;
 
-    private Set<Cluster> clusters;
+    private Set<HierarchicalCluster> clusters;
 
     public SortedSet<ClusterPair> getDistances() {
         return distances;
     }
 
-    public Set<Cluster> getClusters() {
+    public Set<HierarchicalCluster> getClusters() {
         return clusters;
     }
 
-    public HierarchyBuilder(Set<Cluster> clusters, SortedSet<ClusterPair> distances) {
+    public HierarchyBuilder(Set<HierarchicalCluster> clusters, SortedSet<ClusterPair> distances) {
         this.clusters = clusters;
         this.distances = distances;
 
@@ -87,14 +87,14 @@ public class HierarchyBuilder {
                 clusters.remove(minDistLink.getrCluster());
                 clusters.remove(minDistLink.getlCluster());
 
-                Cluster oldClusterL = minDistLink.getlCluster();
-                Cluster oldClusterR = minDistLink.getrCluster();
-                Cluster newCluster = minDistLink.agglomerate();
+                HierarchicalCluster oldClusterL = minDistLink.getlCluster();
+                HierarchicalCluster oldClusterR = minDistLink.getrCluster();
+                HierarchicalCluster newCluster = minDistLink.agglomerate();
 
                 monitor.begin("Agglomerating level "+ level + " of " + maxLevel + "", clusters.size());
                 level++;
 
-                for (Cluster iClust : clusters) {
+                for (HierarchicalCluster iClust : clusters) {
 
                     monitor.worked(1);
                     if (monitor.isCancelled()) {
@@ -143,7 +143,7 @@ public class HierarchyBuilder {
 
     }
 
-    private ClusterPair findByClusters(Cluster c1, Cluster c2) {
+    private ClusterPair findByClusters(HierarchicalCluster c1, HierarchicalCluster c2) {
 
         int hash1 = c1.hashCode();
         int hash2 = c2.hashCode();
@@ -172,7 +172,7 @@ public class HierarchyBuilder {
         return clusters.size() == 1;
     }
 
-    public Cluster getRootCluster() {
+    public HierarchicalCluster getRootCluster() {
         if (!isTreeComplete()) {
             throw new RuntimeException("No root available");
         }
