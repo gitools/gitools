@@ -21,6 +21,10 @@
  */
 package org.gitools.matrix.format;
 
+import com.google.common.collect.Iterables;
+import edu.upf.bg.mtabix.MTabixConfig;
+import edu.upf.bg.mtabix.MTabixIndex;
+import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
@@ -36,8 +40,17 @@ import org.gitools.utils.translators.DoubleTranslator;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -60,6 +73,14 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         try {
+
+            MTabixIndex index = readMtabixIndex(resourceLocator, progressMonitor);
+
+            if (index != null) {
+                index.checkMD5();
+                //TODO Use mtabix index
+            }
+
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
@@ -104,6 +125,52 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
     }
 
+    private MTabixIndex readMtabixIndex(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws IOException, URISyntaxException {
+
+        // Check if we are using mtabix
+        URL dataURL = resourceLocator.getURL();
+        if ("file".equals(dataURL.getProtocol())) {
+
+            URL indexURL = null;
+
+            if (!dataURL.getPath().endsWith("zip")) {
+                IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+                indexURL = mtabix.getURL();
+            } else {
+                ZipFile zipFile = new ZipFile(new File(dataURL.toURI()));
+                ZipEntry entry = zipFile.getEntry(resourceLocator.getName() + ".gz.mtabix");
+
+                if (entry == null) {
+                    return null;
+                }
+
+                // Copy index to a temporal file
+                File indexFile = File.createTempFile("gitools-cache-", "zip_mtabix");
+                indexFile.deleteOnExit();
+                IOUtils.copy(zipFile.getInputStream(entry), new FileOutputStream(indexFile));
+                indexURL = indexFile.toURL();
+
+                // Copy data to a temporal file
+                File dataFile = File.createTempFile("gitools-cache-", "zip_bgz");
+                dataFile.deleteOnExit();
+                InputStream dataStream = resourceLocator.openInputStream(progressMonitor);
+                IOUtils.copy(dataStream, new FileOutputStream(dataFile));
+                dataURL = dataFile.toURL();
+
+            }
+
+            MTabixConfig mtabixConfig = new MTabixConfig(new File(dataURL.toURI()), new File(indexURL.toURI()));
+            MTabixIndex index = new MTabixIndex(mtabixConfig);
+            index.loadIndex();
+
+            return index;
+        }
+
+        return null;
+    }
+
+
+
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
@@ -114,12 +181,35 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             Writer writer = new OutputStreamWriter(out);
             writeCells(writer, results, monitor);
             writer.close();
-            out.close();
+
+            writeMtabixIndex(resourceLocator);
+
         } catch (Exception e) {
             throw new PersistenceException(e);
         } finally {
             monitor.end();
         }
+
+
+    }
+
+    private void writeMtabixIndex(IResourceLocator resourceLocator) throws URISyntaxException, IOException, NoSuchAlgorithmException {
+
+        URL dataURL = resourceLocator.getURL();
+        if ("file".equals(dataURL.getProtocol())) {
+
+            if (dataURL.getPath().endsWith("zip")) {
+                //TODO
+            } else {
+                IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+                URL indexURL = mtabix.getURL();
+
+                MTabixConfig mtabixConfig = new MTabixConfig(new File(dataURL.toURI()), new File(indexURL.toURI()));
+                MTabixIndex index = new MTabixIndex(mtabixConfig);
+                index.buildIndex();
+            }
+        }
+
     }
 
     private void writeCells(Writer writer, IMatrix resultsMatrix, IProgressMonitor progressMonitor) {
@@ -137,11 +227,18 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         out.writeNewLine();
 
-        IMatrixDimension columns = resultsMatrix.getColumns();
-        IMatrixDimension rows = resultsMatrix.getRows();
+        // Sort columns (MTabix requires the labels sorted)
+        List<String> columns = new ArrayList<>(resultsMatrix.getColumns().size());
+        Iterables.addAll(columns, resultsMatrix.getColumns());
+        Collections.sort(columns);
 
-        for (String column : columns) {
-            for (String row : rows) {
+        // Sort rows (MTabix requires the labels sorted)
+        List<String> rows = new ArrayList<>(resultsMatrix.getRows().size());
+        Iterables.addAll(rows, resultsMatrix.getRows());
+        Collections.sort(rows);
+
+        for (String row : rows) {
+            for (String column : columns) {
                 writeLine(out, resultsMatrix, column, row, progressMonitor);
             }
         }

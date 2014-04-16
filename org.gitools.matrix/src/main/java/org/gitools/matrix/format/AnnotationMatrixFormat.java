@@ -146,7 +146,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
             }
 
             writer.close();
-            out.close();
+
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

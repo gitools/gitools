@@ -43,6 +43,11 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>edu.upf.bg</groupId>
+            <artifactId>mtabix</artifactId>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>
