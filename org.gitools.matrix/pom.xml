@@ -44,6 +44,11 @@
             <artifactId>weld-se-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>edu.upf.bg</groupId>
+            <artifactId>mtabix</artifactId>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>

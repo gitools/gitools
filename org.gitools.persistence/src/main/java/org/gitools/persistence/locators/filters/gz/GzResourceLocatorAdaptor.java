@@ -21,11 +21,15 @@
  */
 package org.gitools.persistence.locators.filters.gz;
 
+import edu.upf.bg.mtabix.bgz.BlockCompressedInputStream;
+import edu.upf.bg.mtabix.bgz.BlockCompressedOutputStream;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.filters.FilterResourceLocator;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,13 +49,25 @@ public class GzResourceLocatorAdaptor extends FilterResourceLocator {
 
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
-        return new GZIPInputStream(getResourceLocator().openInputStream(progressMonitor));
+
+        InputStream in = getResourceLocator().openInputStream(progressMonitor);
+
+        if (!in.markSupported()) {
+            in = new BufferedInputStream(in);
+        }
+
+        if (BlockCompressedInputStream.isValidFile(in)) {
+            return new BlockCompressedInputStream(in);
+        } else {
+            return new GZIPInputStream(in);
+        }
+
     }
 
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return new GZIPOutputStream(getResourceLocator().openOutputStream());
+        return new BlockCompressedOutputStream(getResourceLocator().openOutputStream(), null);
     }
 
 }

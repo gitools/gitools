@@ -238,6 +238,12 @@
                 <version>1.0.4</version>
             </dependency>
 
+            <dependency>
+                <groupId>edu.upf.bg</groupId>
+                <artifactId>mtabix</artifactId>
+                <version>1.0-20140416</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

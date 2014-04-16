@@ -21,6 +21,9 @@
  */
 package org.gitools.persistence.locators;
 
+import edu.upf.bg.mtabix.bgz.SeekableBufferedStream;
+import edu.upf.bg.mtabix.bgz.SeekableFileStream;
+import edu.upf.bg.mtabix.bgz.SeekableHTTPStream;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -171,10 +174,10 @@ public class UrlResourceLocator implements IResourceLocator {
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
         if (file == null) {
-            return new ProgressMonitorInputStream(progressMonitor, getURL().openStream());
+            return new ProgressMonitorInputStream(progressMonitor, new SeekableBufferedStream(new SeekableHTTPStream(getURL())));
         }
 
-        return new ProgressMonitorInputStream(progressMonitor, new FileInputStream(file));
+        return new ProgressMonitorInputStream(progressMonitor, new SeekableFileStream(file));
     }
 
 
