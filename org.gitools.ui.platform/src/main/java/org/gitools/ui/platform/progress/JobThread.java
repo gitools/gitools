@@ -46,6 +46,10 @@ public class JobThread implements JobRunnable {
         new JobThread(parent, runnable).execute();
     }
 
+    public static void executeAndWait(Window parent, JobRunnable runnable) {
+        new JobThread(parent, runnable).executeAndWait();
+    }
+
     private JobThread(Window parent, JobRunnable runnable) {
         this.parent = parent;
         this.runnable = runnable;
@@ -175,6 +179,11 @@ public class JobThread implements JobRunnable {
         startThread();
 
         //getDlg().setModal(true);
+        getDlg().setVisible(true);
+    }
+
+    void executeAndWait() {
+        newRunnable().run();
         getDlg().setVisible(true);
     }
 

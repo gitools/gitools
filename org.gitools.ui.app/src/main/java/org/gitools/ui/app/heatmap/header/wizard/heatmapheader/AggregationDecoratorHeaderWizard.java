@@ -29,6 +29,7 @@ import org.gitools.analysis.clustering.Clusters;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.Heatmap;
@@ -37,9 +38,13 @@ import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.progress.ProgressUtils;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.progressmonitor.ProgressMonitor;
 
+import java.awt.*;
 import java.util.*;
 
 public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
@@ -82,26 +87,28 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
             } else {
                 try {
                     prepareAggregationByColumns();
-                    createAggregationAnnotations();
                 } catch (Exception e) {
-                    dataSourceAggregationPage.setMessage(MessageStatus.ERROR, "Error aggregating this values");
+                    dataSourceAggregationPage.setMessage(MessageStatus.ERROR, "Error aggregating the values");
                     e.printStackTrace();
                     return dataSourceAggregationPage;
                 }
 
-                return super.getNextPage(super.getNextPage(page));
+                IWizardPage successPage = super.getNextPage(super.getNextPage(page));
+                createAggregationAnnotations(successPage);
+                return page;
             }
         }
 
         if (page == this.dataSourceAnnotationPage) {
             try {
                 prepareAggregationByAnnotations();
-                createAggregationAnnotations();
             } catch (Exception e) {
                 dataSourceAnnotationPage.setMessage(MessageStatus.ERROR, "Error clustering the selected annotation.");
                 e.printStackTrace();
                 return dataSourceAnnotationPage;
             }
+            createAggregationAnnotations(super.getNextPage(page));
+            return page;
         }
 
         return super.getNextPage(page);
@@ -139,40 +146,50 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
     }
 
-    private void createAggregationAnnotations() {
+    private void createAggregationAnnotations(final IWizardPage successPage) {
 
-        // Compute the annotations and store the results.
-        AnnotationMatrix annotations = headerDimension.getAnnotations();
-        IAggregator aggregator = dataSourceAggregationPage.getAggregator();
-        IMatrixLayer<Double> aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
+        JobThread.execute(ProgressUtils.getParentGlassPaneWindow((Component) getCurrentPage()), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
 
-        for (String annotationLabel : aggregationAnnotationLabels) {
 
-            Set<String> aggregationIdentifiers = aggregationIndicesByAnnotation.get(annotationLabel);
+                // Compute the annotations and store the results.
+                AnnotationMatrix annotations = headerDimension.getAnnotations();
+                IAggregator aggregator = dataSourceAggregationPage.getAggregator();
+                IMatrixLayer<Double> aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
 
-            IMatrixPosition position = heatmap.newPosition();
-            for (String identifier : position.iterate(headerDimension)) {
+                for (String annotationLabel : aggregationAnnotationLabels) {
+                    Set<String> aggregationIdentifiers = aggregationIndicesByAnnotation.get(annotationLabel);
 
-                Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension, aggregationIdentifiers));
+                    IMatrixPosition position = heatmap.newPosition();
 
-                if (aggregatedValue != null) {
-                    annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));
+                    for (String identifier : position.iterate(headerDimension).monitor(monitor, "Aggregating")) {
+
+                        Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension, aggregationIdentifiers));
+
+                        if (aggregatedValue != null) {
+                            annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));
+                        }
+                    }
                 }
+
+                int maxSize = 160;
+                int preferredSize;
+                if (aggregationAnnotationLabels.size() < 2) {
+                    preferredSize = aggregationAnnotationLabels.size() * 30;
+                } else {
+                    preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
+                }
+
+                getHeader().setAnnotationLabels(aggregationAnnotationLabels);
+                getHeader().setSize(preferredSize > maxSize ? maxSize : preferredSize);
+                getHeader().setTitle(dataSourceAggregationPage.getAggregator() +
+                        " of " + dataSourceAggregationPage.getSelectedDataValueName());
+
+                setCurrentPage(successPage);
+                fireWizardUpdate();
+
             }
-        }
-
-        int maxSize = 160;
-        int preferredSize;
-        if (aggregationAnnotationLabels.size() < 2) {
-            preferredSize = aggregationAnnotationLabels.size() * 30;
-        } else {
-            preferredSize = headerDimension.getCellSize() * aggregationAnnotationLabels.size();
-        }
-
-        getHeader().setAnnotationLabels(aggregationAnnotationLabels);
-        getHeader().setSize(preferredSize > maxSize ? maxSize : preferredSize);
-        getHeader().setTitle(dataSourceAggregationPage.getAggregator() + " of " + dataSourceAggregationPage.getSelectedDataValueName());
+        });
     }
-
-
 }

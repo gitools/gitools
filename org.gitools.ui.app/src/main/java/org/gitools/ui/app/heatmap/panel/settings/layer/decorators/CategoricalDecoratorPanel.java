@@ -27,6 +27,7 @@ import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.app.actions.data.DetectCategoriesAction;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.platform.progress.ProgressUtils;
 import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
@@ -65,7 +66,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
 
     private void detectCategories() {
         DetectCategoriesAction detection = new DetectCategoriesAction();
-        detection.setParentWindow(detection.getParentGlassPaneWindow(this.getRootPanel()));
+        detection.setParentWindow(ProgressUtils.getParentGlassPaneWindow(this.getRootPanel()));
         detection.run();
 
         List<ColoredLabel> coloredLabels = new ArrayList<>();
