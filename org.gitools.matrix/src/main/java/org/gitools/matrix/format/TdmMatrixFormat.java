@@ -159,7 +159,14 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
             }
 
-            MTabixConfig mtabixConfig = new MTabixConfig(new File(dataURL.toURI()), new File(indexURL.toURI()));
+            File dataFile = new File(dataURL.toURI());
+            File indexFile = new File(indexURL.toURI());
+
+            if (!indexFile.exists()) {
+                return null;
+            }
+
+            MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile);
             MTabixIndex index = new MTabixIndex(mtabixConfig);
             index.loadIndex();
 
