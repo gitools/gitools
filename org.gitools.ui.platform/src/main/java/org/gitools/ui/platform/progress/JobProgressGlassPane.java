@@ -49,12 +49,13 @@ class JobProgressGlassPane extends JComponent implements MouseListener {
 
     protected RenderingHints hints = null;
 
-    public JobProgressGlassPane(JFrame parent, boolean showGitoolsTips) {
+    public JobProgressGlassPane(Window parent, boolean showGitoolsTips) {
 
         //progress
 
-        parent.setGlassPane(this);
-
+        if (parent instanceof RootPaneContainer) {
+            ((RootPaneContainer) parent).setGlassPane(this);
+        }
         initComponents();
 
         msgLabel.setText("");

@@ -25,10 +25,12 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.actions.BaseAction;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class AbstractAction extends BaseAction {
 
     private String actionName;
+    private Window parentWindow;
 
     public AbstractAction(String name, ImageIcon icon, String desc, Integer mnemonic, boolean checkMode, boolean selected, String actionGroup) {
         super(name, icon, desc, mnemonic, checkMode, selected, actionGroup);
@@ -69,4 +71,14 @@ public abstract class AbstractAction extends BaseAction {
     }
 
 
+    public void setParentWindow(Window parentWindow) {
+        this.parentWindow = parentWindow;
+    }
+
+    public Window getParentWindow() {
+        if (parentWindow == null) {
+            return Application.get();
+        }
+        return parentWindow;
+    }
 }

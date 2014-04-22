@@ -29,6 +29,8 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.concurrent.CancellationException;
@@ -51,7 +53,7 @@ public class DetectCategoriesAction extends HeatmapAction {
         final Heatmap heatmap = getHeatmap();
         final ArrayList<Double> categories = new ArrayList<>();
 
-        JobThread.execute(Application.get(), new JobRunnable() {
+        JobThread.execute(getParentWindow(), new JobRunnable() {
 
             @Override
             public void run(IProgressMonitor monitor) {
@@ -84,5 +86,16 @@ public class DetectCategoriesAction extends HeatmapAction {
 
     public ArrayList<Double> getCategories() {
         return categories;
+    }
+
+    public Window getParentGlassPaneWindow(Component component) {
+        if (component.getParent() == null) {
+            return null;
+        } else if (component.getParent() instanceof Window &&
+                component.getParent() instanceof RootPaneContainer) {
+            return (Window) component.getParent();
+        } else {
+            return getParentGlassPaneWindow(component.getParent());
+        }
     }
 }

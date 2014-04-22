@@ -65,6 +65,7 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
 
     private void detectCategories() {
         DetectCategoriesAction detection = new DetectCategoriesAction();
+        detection.setParentWindow(detection.getParentGlassPaneWindow(this.getRootPanel()));
         detection.run();
 
         List<ColoredLabel> coloredLabels = new ArrayList<>();
