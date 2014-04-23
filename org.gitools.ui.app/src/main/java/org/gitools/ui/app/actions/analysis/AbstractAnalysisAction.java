@@ -59,30 +59,30 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
-                    cmd.run(monitor);
-                    if (monitor.isCancelled()) {
-                        return;
-                    }
+                cmd.run(monitor);
+                if (monitor.isCancelled()) {
+                    return;
+                }
 
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            AbstractEditor editor = newEditor(analysis);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        AbstractEditor editor = newEditor(analysis);
 
-                            String title = analysis.getTitle();
+                        String title = analysis.getTitle();
 
-                            if (Strings.isNullOrEmpty(title)) {
-                                title = editor.getClass().getSimpleName().replace("Editor", "").toLowerCase();
-                            }
-
-                            editor.setName(title);
-
-                            Application.get().getEditorsPanel().addEditor(editor);
-                            Application.get().refresh();
+                        if (Strings.isNullOrEmpty(title)) {
+                            title = editor.getClass().getSimpleName().replace("Editor", "").toLowerCase();
                         }
-                    });
 
-                    Application.get().setStatusText("Ok.");
+                        editor.setName(title);
+
+                        Application.get().getEditorsPanel().addEditor(editor);
+                        Application.get().refresh();
+                    }
+                });
+
+                Application.get().setStatusText("Ok.");
             }
         });
     }

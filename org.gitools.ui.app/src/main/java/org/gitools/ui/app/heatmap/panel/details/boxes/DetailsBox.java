@@ -27,12 +27,12 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.SwingUtils;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -41,8 +41,6 @@ import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.DynamicActionsManage
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.jdesktop.swingx.JXTaskPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,34 +51,22 @@ import java.util.List;
 /**
  * Create a property table panel
  */
-public class DetailsBox extends JXTaskPane {
+public abstract class DetailsBox extends Box {
     private static final int DEFAULT_MARGIN = 20;
     private static final int MINIMUM_VALUE_LENGTH = 12;
-
     private WebPanel container;
-    private JPopupMenu popupMenu;
+
 
     /**
      * @param title Optional title of the details table
      */
-    public DetailsBox(String title, ActionSet actions) {
-        super();
-        setTitle(title);
-        setSpecial(true);
-
-        this.getContentPane().setBackground(Color.WHITE);
-
-        this.container = new WebPanel();
-        getContentPane().setBackground(Color.white);
-        getContentPane().add(new WebScrollPane(container, false, false));
-        container.setBackground(Color.WHITE);
-        container.setBorder(null);
-
-        popupMenu = ActionSetUtils.createPopupMenu(actions);
+    public DetailsBox(String title, ActionSet actions, Heatmap heatmap) {
+        super(title, actions, heatmap);
     }
 
     public void draw(List<DetailsDecoration> details) {
 
+        WebPanel container = getContainer();
         container.removeAll();
 
         int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details);
@@ -273,6 +259,21 @@ public class DetailsBox extends JXTaskPane {
         // Override
     }
 
+
+    @Override
+    public void initContainer() {
+        container = new WebPanel();
+        container.setBackground(Color.WHITE);
+        container.setBorder(null);
+    }
+
+    @Override
+    public WebPanel getContainer() {
+        if (container == null) {
+            initContainer();
+        }
+        return container;
+    }
 }
 
 

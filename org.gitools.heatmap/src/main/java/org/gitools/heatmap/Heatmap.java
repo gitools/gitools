@@ -61,6 +61,8 @@ public class Heatmap extends Resource implements IMatrixView {
 
     private Bookmarks bookmarks;
 
+    //private Boxes plugins;
+
     private boolean diagonal;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)

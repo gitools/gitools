@@ -23,18 +23,12 @@ package org.gitools.ui.app.heatmap.panel.details;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
-import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.decorator.Decoration;
-import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.resource.Resource;
-import org.gitools.ui.app.actions.edit.EditHeaderAction;
-import org.gitools.ui.app.actions.edit.EditLayerAction;
+import org.gitools.ui.app.heatmap.panel.details.boxes.Box;
 import org.gitools.ui.app.heatmap.panel.details.boxes.DetailsBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.LayersBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
@@ -42,8 +36,6 @@ import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +49,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
     private DetailsBox layersBox;
     private JLabel hintLabel;
     private JLabel titleLabel;
+    private List<Box> boxes;
 
 
     /**
@@ -75,33 +68,6 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         setBackground(Color.WHITE);
 
-        // Changes to track
-        heatmap.getRows().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update(heatmap.getRows(), rowsBox);
-                updateLayers(heatmap, layersBox);
-            }
-        });
-
-        heatmap.getColumns().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update(heatmap.getColumns(), columnsBox);
-                updateLayers(heatmap, layersBox);
-            }
-        });
-
-        PropertyChangeListener updateLayers = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateLayers(heatmap, layersBox);
-            }
-        };
-        heatmap.getLayers().addPropertyChangeListener(updateLayers);
-        heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
-
-
         titleLabel = new JLabel();
         PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
         Bindings.bind(titleLabel, model.getModel(Resource.PROPERTY_TITLE));
@@ -110,96 +76,32 @@ public class DetailsPanel extends JXTaskPaneContainer {
         add(titleLabel);
         add(new JSeparator());
 
+        boxes = new ArrayList<>();
 
-        add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS) {
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
 
-                if (reference instanceof HeatmapHeader) {
-                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
-                }
-            }
-        });
+        add(columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns()));
         columnsBox.setCollapsed(true);
+        columnsBox.registerListeners();
+        boxes.add(columnsBox);
 
-        add(rowsBox = new DetailsBox("Row", PopupMenuActions.DETAILS_ROWS) {
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
-
-                if (reference instanceof HeatmapHeader) {
-                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
-                }
-            }
-        });
+        add(rowsBox = new DimensionBox("Row", PopupMenuActions.DETAILS_ROWS, heatmap, heatmap.getRows()));
         rowsBox.setCollapsed(true);
+        rowsBox.registerListeners();
+        boxes.add(rowsBox);
 
-        add(layersBox = new DetailsBox("Values", PopupMenuActions.DETAILS_LAYERS) {
-            @Override
-            protected void onMouseClick(DetailsDecoration detail) {
-                heatmap.getLayers().setTopLayerIndex(detail.getIndex());
-            }
-
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
-
-                if (reference instanceof HeatmapLayer) {
-                    new EditLayerAction((HeatmapLayer) reference).actionPerformed(null);
-                }
-            }
-        });
+        add(layersBox = new LayersBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap));
+        layersBox.registerListeners();
+        boxes.add(layersBox);
 
         hintLabel = new JLabel();
         hintLabel.setText("<html><body><p><i>Right click</i> on any layer or header id to<br>" +
                 "<b>adjust visualization and other settings</b>.</p></body></html>");
         add(hintLabel);
 
-        update(heatmap.getRows(), rowsBox);
-        update(heatmap.getColumns(), columnsBox);
-        updateLayers(heatmap, layersBox);
-    }
-
-    private static void update(HeatmapDimension rows, DetailsBox rowsBox) {
-
-        String lead = rows.getFocus();
-        String label = StringUtils.capitalize(rows.getId().getLabel());
-
-        if (lead != null) {
-            rowsBox.setTitle(label + ": " + lead + " [" + (rows.indexOf(lead) + 1) + "]");
-        } else {
-            rowsBox.setTitle(label);
-        }
-        List<DetailsDecoration> details = new ArrayList<>();
-        rows.populateDetails(details);
-        rowsBox.draw(details);
-    }
-
-    private static void updateLayers(Heatmap heatmap, DetailsBox layersBox) {
-        String col = heatmap.getColumns().getFocus();
-        String row = heatmap.getRows().getFocus();
-
-        if (col != null && row != null) {
-
-            Decorator decorator = heatmap.getLayers().getTopLayer().getDecorator();
-            Decoration decoration = new Decoration();
-            boolean showValue = decorator.isShowValue();
-            decorator.setShowValue(true);
-            decoration.reset();
-            HeatmapLayer layer = heatmap.getLayers().getTopLayer();
-            decorator.decorate(decoration, layer.getLongFormatter(), heatmap, layer, row, col);
-            decorator.setShowValue(showValue);
-
-            layersBox.setTitle("Values: " + decoration.getFormatedValue());
-        } else {
-            layersBox.setTitle("Values");
+        for (Box b : boxes) {
+            b.update();
         }
 
-        List<DetailsDecoration> layersDetails = new ArrayList<>();
-        heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getFocus(), heatmap.getColumns().getFocus());
-        layersBox.draw(layersDetails);
     }
-
 
 }
