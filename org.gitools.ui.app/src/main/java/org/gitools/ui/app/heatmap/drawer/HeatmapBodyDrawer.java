@@ -37,7 +37,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
     @Override
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
-        calculateFontSize(g, rows.getCellSize(), 8);
+        g.setFont(heatmap.getLayers().getTopLayer().getFont());
+        calculateFontSize(g, rows.getCellSize(), 7);
 
         int rowsGridSize = (rows.showGrid() ? rows.getGridSize() : 0);
         int columnsGridSize = (columns.showGrid() ? columns.getGridSize() : 0);

@@ -30,10 +30,13 @@ import org.gitools.utils.events.EventUtils;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
+import org.gitools.utils.xml.adapter.FontXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.awt.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -42,9 +45,13 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
     public static final String PROPERTY_SHORT_FORMATTER = "shortFormatter";
     public static final String PROPERTY_LONG_FORMATTER = "longFormatter";
+    public static final String PROPERTY_FONT = "cellFont";
 
     private transient ITextFormatter shortFormatter;
     private transient ITextFormatter longFormatter;
+
+    @XmlJavaTypeAdapter(FontXmlAdapter.class)
+    protected Font font;
 
     private Decorator decorator;
 
@@ -71,6 +78,19 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         firePropertyChange(PROPERTY_DECORATOR, oldValue, decorator);
         EventUtils.moveListeners(oldValue, decorator);
 
+    }
+
+    public Font getFont() {
+        if (font == null) {
+            font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+        }
+        return font;
+    }
+
+    public void setFont(Font font) {
+        Font old = this.font;
+        this.font = font;
+        firePropertyChange(PROPERTY_FONT, old, font);
     }
 
     @XmlTransient
