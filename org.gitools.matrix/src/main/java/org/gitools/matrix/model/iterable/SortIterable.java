@@ -21,6 +21,8 @@
  */
 package org.gitools.matrix.model.iterable;
 
+import org.gitools.api.matrix.IMatrixIterable;
+
 import java.util.*;
 
 public class SortIterable<T> extends AbstractChainIterable<T, T> {
@@ -39,9 +41,9 @@ public class SortIterable<T> extends AbstractChainIterable<T, T> {
 
         values = new ArrayList<>();
 
-        for (T value : getParentIterable()) {
-            String identifier = getPosition().get(getIterateDimension());
-            values.add(new Value(identifier, value));
+        IMatrixIterable<T> parentIterable = getParentIterable();
+        for (T value : parentIterable) {
+            values.add(new Value(parentIterable.getPosition().toVector(), value));
         }
 
         Collections.sort(values, new ValueComparator());
@@ -57,17 +59,17 @@ public class SortIterable<T> extends AbstractChainIterable<T, T> {
         @Override
         public T next() {
             Value value = parentNext();
-            getPosition().set(getIterateDimension(), value.identifier);
+            getPosition().set(value.identifiers);
             return value.value;
         }
     }
 
     private class Value {
-        private String identifier;
+        private String[] identifiers;
         private T value;
 
-        private Value(String identifier, T value) {
-            this.identifier = identifier;
+        private Value(String[] identifiers, T value) {
+            this.identifiers = Arrays.copyOf(identifiers, identifiers.length);
             this.value = value;
         }
     }

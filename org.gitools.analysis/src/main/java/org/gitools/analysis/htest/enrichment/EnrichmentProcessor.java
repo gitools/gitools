@@ -116,7 +116,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
                         // Discard not mapped items
                         if (analysis.isDiscardNonMappedRows()) {
-                            population = position.iterate(layer, items, moduleMap.getItems());
+                            population = position.iterate(layer, items.subset(moduleMap.getItems()));
                         } else {
                             population = position.iterate(layer, items);
                         }
@@ -141,7 +141,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                             Set<String> moduleItems = moduleMap.getMappingItems(module);
 
                             Iterable<Double> moduleValues = position
-                                    .iterate(layer, items, moduleItems)
+                                    .iterate(layer, items.subset(moduleItems))
                                     .transform(cutoffFunction);
 
                             if (!missingBackgroundItems.isEmpty()) {

@@ -74,12 +74,12 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         try {
 
+            /*TODO
             MTabixIndex index = readMtabixIndex(resourceLocator, progressMonitor);
 
             if (index != null) {
                 index.checkMD5();
-                //TODO Use mtabix index
-            }
+            }*/
 
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -128,7 +128,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     private MTabixIndex readMtabixIndex(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws IOException, URISyntaxException {
 
         // Check if we are using mtabix
-        URL dataURL = resourceLocator.getURL();
+       URL dataURL = resourceLocator.getURL();
         if ("file".equals(dataURL.getProtocol())) {
 
             URL indexURL = null;
@@ -189,7 +189,8 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             writeCells(writer, results, monitor);
             writer.close();
 
-            writeMtabixIndex(resourceLocator);
+            //TODO if instanceof MtabixMatrix
+            //writeMtabixIndex(resourceLocator);
 
         } catch (Exception e) {
             throw new PersistenceException(e);
@@ -232,6 +233,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         out.writeNewLine();
 
+        /*TODO
         // Sort columns (MTabix requires the labels sorted)
         List<String> columns = new ArrayList<>(resultsMatrix.getColumns().size());
         Iterables.addAll(columns, resultsMatrix.getColumns());
@@ -241,6 +243,10 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         List<String> rows = new ArrayList<>(resultsMatrix.getRows().size());
         Iterables.addAll(rows, resultsMatrix.getRows());
         Collections.sort(rows);
+        */
+
+        IMatrixDimension columns = resultsMatrix.getColumns();
+        IMatrixDimension rows = resultsMatrix.getRows();
 
         for (String row : rows) {
             for (String column : columns) {

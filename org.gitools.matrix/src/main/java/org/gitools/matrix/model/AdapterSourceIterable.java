@@ -22,6 +22,7 @@
 package org.gitools.matrix.model;
 
 import org.gitools.api.matrix.ILayerAdapter;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.iterable.AbstractSourceIterable;
@@ -33,12 +34,8 @@ public class AdapterSourceIterable<T> extends AbstractSourceIterable<T> {
 
     private ILayerAdapter<T> adapter;
 
-    public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, ILayerAdapter<T> adapter) {
-        this(matrixPosition, dimensionKey, adapter, null);
-    }
-
-    public AdapterSourceIterable(IMatrixPosition matrixPosition, MatrixDimensionKey dimensionKey, ILayerAdapter<T> adapter, Set<String> identifiers) {
-        super(matrixPosition, dimensionKey, identifiers);
+    public AdapterSourceIterable(IMatrixPosition matrixPosition, ILayerAdapter<T> adapter, IMatrixDimension... dimensions) {
+        super(matrixPosition, dimensions);
 
         this.adapter = adapter;
     }

@@ -135,7 +135,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
                         public CommonResult apply(Double value, IMatrixPosition position) {
 
                             // Values of the current module
-                            Iterable<Double> moduleValues = position.iterate(layer, samples, moduleSamples).transform(cutoffFunction);
+                            Iterable<Double> moduleValues = position.iterate(layer, samples.subset(moduleSamples)).transform(cutoffFunction);
 
                             // Execute the test
                             return test.processTest(moduleValues);

@@ -49,6 +49,13 @@
             <artifactId>mtabix</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
     <distributionManagement>

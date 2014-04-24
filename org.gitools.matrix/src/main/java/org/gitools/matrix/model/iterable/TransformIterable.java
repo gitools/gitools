@@ -37,8 +37,11 @@ public class TransformIterable<F, T> extends AbstractChainIterable<F, T> {
 
     @Override
     public Iterator<F> iterator() {
+
+        Iterator<F> iterator = new TransformIterator(newParentIterator());
         function.onBeforeIterate(getParentIterable());
-        return new TransformIterator(newParentIterator());
+
+        return iterator;
     }
 
     private class TransformIterator extends AbstractChainIterator<F, T> {

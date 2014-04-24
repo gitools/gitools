@@ -31,10 +31,7 @@ import java.util.Comparator;
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
 
     @Override
-    public abstract int size();
-
-    @Override
-    public abstract IMatrixDimension getIterateDimension();
+    public abstract long size();
 
     @Override
     public abstract IMatrixPosition getPosition();

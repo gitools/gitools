@@ -21,11 +21,16 @@
  */
 package org.gitools.matrix.model.hashmatrix;
 
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.AbstractMatrixDimension;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class HashMatrixDimension extends AbstractMatrixDimension {
 
@@ -76,6 +81,11 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
         Integer nextIndex = this.labelToIndex.size();
         this.labelToIndex.put(label, nextIndex);
         this.indexToLabel.put(nextIndex, label);
+    }
+
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        return new HashMatrixDimension(getId(), identifiers);
     }
 
 }

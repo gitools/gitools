@@ -97,7 +97,7 @@ public class OverlappingProcessor implements AnalysisProcessor {
                 xna.put(row, Double.isNaN(value));
             }
 
-            for (String Y : positionY.iterate(columns).from(X)) {
+            for (String Y : positionY.iterate(columns.from(X))) {
 
                 monitor.info("Overlapping " + X + " with " + Y);
 

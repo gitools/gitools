@@ -72,7 +72,7 @@ public class HierarchicalClusterer {
             HierarchicalCluster cluster1 = newCluster(clusters, id1);
             cluster1.setWeight( aggregator.aggregate(position1.iterate(layer, aggregationDimension)) );
 
-            for (String id2 : position2.iterate(clusterDimension).from(id1)) {
+            for (String id2 : position2.iterate(clusterDimension.from(id1))) {
 
                 // Skip equal ids
                 if (id1.equals(id2)) continue;

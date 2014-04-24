@@ -21,6 +21,7 @@
  */
 package org.gitools.matrix.model.iterable;
 
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -31,12 +32,8 @@ public class ValueSourceIterable<T> extends AbstractSourceIterable<T> {
 
     private IMatrixLayer<T> layer;
 
-    public ValueSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, IMatrixLayer<T> layer) {
-        this(position, iterateDimension, layer, null);
-    }
-
-    public ValueSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, IMatrixLayer<T> layer, Set<String> identifiers) {
-        super(position, iterateDimension, identifiers);
+    public ValueSourceIterable(IMatrixPosition position, IMatrixLayer<T> layer, IMatrixDimension... dimensions) {
+        super(position, dimensions);
 
         this.layer = layer;
     }

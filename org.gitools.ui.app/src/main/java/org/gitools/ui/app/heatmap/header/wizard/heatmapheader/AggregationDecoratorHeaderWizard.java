@@ -165,7 +165,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
                     for (String identifier : position.iterate(headerDimension).monitor(monitor, "Aggregating")) {
 
-                        Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension, aggregationIdentifiers));
+                        Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension.subset(aggregationIdentifiers)));
 
                         if (aggregatedValue != null) {
                             annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));

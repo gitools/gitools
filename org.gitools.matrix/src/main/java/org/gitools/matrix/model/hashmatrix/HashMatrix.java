@@ -21,12 +21,15 @@
  */
 package org.gitools.matrix.model.hashmatrix;
 
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.AbstractMatrix;
 import org.gitools.matrix.model.MatrixLayers;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -176,5 +179,43 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         return hashDimensions;
     }
 
+    @Override
+    public IMatrix subset(IMatrixDimension... dimensionSubsets) {
 
+        Map<MatrixDimensionKey, HashMatrixDimension> allDimensions = new HashMap<>(getDimensionKeys().length);
+
+        // Load all dimensions
+        for (MatrixDimensionKey key : getDimensionKeys()) {
+            allDimensions.put(key, getDimension(key));
+        }
+
+        // Override subset dimensions
+        for (IMatrixDimension dimension : dimensionSubsets) {
+
+            if (dimension instanceof HashMatrixDimension) {
+                allDimensions.put(dimension.getId(), (HashMatrixDimension) dimension);
+            } else {
+                allDimensions.put(dimension.getId(), new HashMatrixDimension(dimension.getId(), dimension));
+            }
+        }
+
+        return new SubMatrix(getLayers(), allDimensions.values());
+    }
+
+    private class SubMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension> {
+
+        public SubMatrix(MatrixLayers layers, Collection<HashMatrixDimension> identifiers) {
+            super(layers, (HashMatrixDimension[]) identifiers.toArray());
+        }
+
+        @Override
+        public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+            return HashMatrix.this.get(layer, identifiers);
+        }
+
+        @Override
+        public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
+            throw new UnsupportedOperationException("The subset matrix are read only matrix");
+        }
+    }
 }
