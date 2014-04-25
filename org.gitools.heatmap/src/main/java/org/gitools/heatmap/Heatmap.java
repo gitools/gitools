@@ -21,15 +21,12 @@
  */
 package org.gitools.heatmap;
 
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.*;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.plugin.Plugins;
 import org.gitools.matrix.model.MatrixPosition;
 import org.gitools.resource.Resource;
 
@@ -43,7 +40,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks"})
+@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks", "pluggedBoxes"})
 public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
@@ -62,7 +59,8 @@ public class Heatmap extends Resource implements IMatrixView {
 
     private Bookmarks bookmarks;
 
-    //private Boxes plugins;
+    @XmlElement(name = "plugged-boxes")
+    private Plugins pluggedBoxes;
 
     private boolean diagonal;
 
@@ -76,6 +74,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.layers = new HeatmapLayers();
         this.diagonal = false;
         this.bookmarks = new Bookmarks();
+        this.pluggedBoxes = new Plugins();
     }
 
     public Heatmap(IMatrix data) {
@@ -90,6 +89,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.layers = new HeatmapLayers(data);
         this.diagonal = diagonal;
         this.bookmarks = new Bookmarks();
+        this.pluggedBoxes = new Plugins();
     }
 
     public HeatmapDimension getRows() {
@@ -251,6 +251,10 @@ public class Heatmap extends Resource implements IMatrixView {
 
     public Bookmarks getBookmarks() {
         return bookmarks;
+    }
+
+    public Plugins getPluggedBoxes() {
+        return pluggedBoxes;
     }
 
 }

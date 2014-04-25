@@ -91,6 +91,11 @@ public class LayersBox extends DetailsBox {
     }
 
     @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
     protected void onMouseClick(DetailsDecoration detail) {
         getHeatmap().getLayers().setTopLayerIndex(detail.getIndex());
     }

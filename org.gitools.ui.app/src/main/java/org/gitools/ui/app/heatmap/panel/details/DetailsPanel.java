@@ -23,12 +23,12 @@ package org.gitools.ui.app.heatmap.panel.details;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.resource.Resource;
 import org.gitools.ui.app.heatmap.panel.details.boxes.Box;
-import org.gitools.ui.app.heatmap.panel.details.boxes.DetailsBox;
-import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
-import org.gitools.ui.app.heatmap.panel.details.boxes.LayersBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.*;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
@@ -36,8 +36,8 @@ import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A details panel with three collapsible panels
@@ -49,7 +49,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
     private DetailsBox layersBox;
     private JLabel hintLabel;
     private JLabel titleLabel;
-    private List<Box> boxes;
+    private Map<String, Box> boxes;
 
 
     /**
@@ -76,32 +76,52 @@ public class DetailsPanel extends JXTaskPaneContainer {
         add(titleLabel);
         add(new JSeparator());
 
-        boxes = new ArrayList<>();
+        boxes = new ListOrderedMap();
 
 
-        add(columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns()));
+        columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns());
         columnsBox.setCollapsed(true);
-        columnsBox.registerListeners();
-        boxes.add(columnsBox);
+        registerBox(columnsBox);
 
-        add(rowsBox = new DimensionBox("Row", PopupMenuActions.DETAILS_ROWS, heatmap, heatmap.getRows()));
+        rowsBox = new DimensionBox("Row", PopupMenuActions.DETAILS_ROWS, heatmap, heatmap.getRows());
         rowsBox.setCollapsed(true);
-        rowsBox.registerListeners();
-        boxes.add(rowsBox);
+        registerBox(rowsBox);
 
-        add(layersBox = new LayersBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap));
-        layersBox.registerListeners();
-        boxes.add(layersBox);
+        layersBox = new LayersBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
+        registerBox(layersBox);
+
+        initPluginBoxes(heatmap);
+
+        for (Box b : boxes.values()) {
+            add(b);
+            b.update();
+        }
 
         hintLabel = new JLabel();
         hintLabel.setText("<html><body><p><i>Right click</i> on any layer or header id to<br>" +
                 "<b>adjust visualization and other settings</b>.</p></body></html>");
         add(hintLabel);
 
-        for (Box b : boxes) {
-            b.update();
+    }
+
+    private void initPluginBoxes(Heatmap heatmap) {
+        BoxCreator boxCreator = new BoxCreator(heatmap);
+
+        List<IBoxPlugin> boxPlugins = heatmap.getPluggedBoxes().filter(IBoxPlugin.class);
+        for (IBoxPlugin p : boxPlugins) {
+            if (p.isActive()) {
+                Box[] b = boxCreator.create(p);
+                registerBox(b);
+            }
         }
 
+    }
+
+    public void registerBox(Box... newBoxes) {
+        for (Box box : newBoxes) {
+            box.registerListeners();
+            boxes.put(box.getTitle(), box);
+        }
     }
 
 }

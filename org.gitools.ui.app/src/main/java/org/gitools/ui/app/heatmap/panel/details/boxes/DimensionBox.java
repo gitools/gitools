@@ -73,6 +73,11 @@ public class DimensionBox extends DetailsBox {
     }
 
     @Override
+    public boolean isVisible() {
+        return true;
+    }
+
+    @Override
     protected void onMouseDblClick(DetailsDecoration detail) {
         Object reference = detail.getReference();
 

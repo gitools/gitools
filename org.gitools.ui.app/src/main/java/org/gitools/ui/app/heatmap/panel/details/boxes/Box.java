@@ -44,7 +44,9 @@ public abstract class Box extends JXTaskPane {
         getContentPane().setBackground(Color.WHITE);
         getContentPane().add(new WebScrollPane(getContainer(), false, false));
 
-        popupMenu = ActionSetUtils.createPopupMenu(actions);
+        if (popupMenu != null) {
+            popupMenu = ActionSetUtils.createPopupMenu(actions);
+        }
     }
 
     abstract Container getContainer();
@@ -54,6 +56,8 @@ public abstract class Box extends JXTaskPane {
     public abstract void registerListeners();
 
     public abstract void update();
+
+    public abstract boolean isVisible();
 
     public Heatmap getHeatmap() {
         return heatmap;
