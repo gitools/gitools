@@ -21,11 +21,14 @@
  */
 package org.gitools.matrix.model.compressmatrix;
 
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.AbstractMatrixDimension;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents one dimension (rows or columns) of a {@link CompressMatrix}.
@@ -98,4 +101,8 @@ public class CompressDimension extends AbstractMatrixDimension {
         return labels;
     }
 
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        return new HashMatrixDimension(getId(), identifiers);
+    }
 }

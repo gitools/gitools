@@ -23,6 +23,8 @@ package org.gitools.heatmap;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -31,6 +33,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.model.AbstractMatrixDimension;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.utils.xml.adapter.StringArrayXmlAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -293,4 +296,8 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     }
 
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        return new HashMatrixDimension(getId(), Iterables.filter(visible, Predicates.in(identifiers)));
+    }
 }
