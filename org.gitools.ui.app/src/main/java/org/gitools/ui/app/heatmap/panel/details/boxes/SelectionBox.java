@@ -24,13 +24,13 @@ package org.gitools.ui.app.heatmap.panel.details.boxes;
 import com.google.common.collect.Sets;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixIterable;
-import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.platform.actions.ActionSet;
 import org.gitools.utils.aggregation.StdDevAggregator;
-import org.gitools.utils.aggregation.VarianceAggregator;
+import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import javax.swing.*;
@@ -116,7 +116,7 @@ public class SelectionBox extends DetailsBox {
                     columns = Sets.newHashSet(heatmap.getColumns());
                 }
 
-                IMatrixLayer<Double> layer = getHeatmap().getLayers().getTopLayer();
+                HeatmapLayer layer = getHeatmap().getLayers().getTopLayer();
                 IMatrix data = getHeatmap().getContents();
 
                 IMatrixIterable<Double> cellValues = getHeatmap().newPosition()
@@ -124,8 +124,6 @@ public class SelectionBox extends DetailsBox {
                         .monitor(new NullProgressMonitor(), "Aggregating values of layer '" + layer.getId() + "'");
 
                 Double agg = layer.getAggregator().aggregate(cellValues);
-                Double var = VarianceAggregator.INSTANCE.aggregate(cellValues);
-                Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValues);
 
                 int selectedRows = rows.size();
                 int selectedColumns = columns.size();
@@ -139,9 +137,11 @@ public class SelectionBox extends DetailsBox {
                 }
 
 
-                details.add(new DetailsDecoration(layer.getAggregator().toString(), agg.toString()));
-                details.add(new DetailsDecoration("Variance", var.toString()));
-                details.add(new DetailsDecoration("St. Dev", stDev.toString()));
+                details.add(new DetailsDecoration(layer.getAggregator().toString(), valueString(agg, layer.getLongFormatter())));
+                //Double var = VarianceAggregator.INSTANCE.aggregate(cellValues);
+                Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValues);
+                //details.add(new DetailsDecoration("Variance", var.toString()));
+                details.add(new DetailsDecoration("St. Dev", valueString(stDev, layer.getLongFormatter())));
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
@@ -153,6 +153,14 @@ public class SelectionBox extends DetailsBox {
         };
         updating = EXECUTOR.schedule(runnable, 50, TimeUnit.MILLISECONDS);
 
+    }
+
+    private String valueString(Double value, ITextFormatter longFormatter) {
+        if (value == null) {
+            return "None";
+        }
+
+        return longFormatter.format(value);
     }
 
     @Override

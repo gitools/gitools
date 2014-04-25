@@ -21,11 +21,16 @@
  */
 package org.gitools.heatmap;
 
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.utils.aggregation.MeanAggregator;
+import org.gitools.utils.aggregation.NonZeroCountAggregator;
+import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.events.EventUtils;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
@@ -125,6 +130,27 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     @Override
     public String toString() {
         return getName();
+    }
+
+    @Override
+    public IAggregator getAggregator() {
+        if (this.aggregator == null) {
+            return defaultAggregator(decorator);
+        }
+
+        return aggregator;
+    }
+
+    private IAggregator defaultAggregator(Decorator decorator) {
+        if (decorator instanceof LinearDecorator ||
+                decorator instanceof ZScoreDecorator) {
+            return MeanAggregator.INSTANCE;
+        } else if (decorator instanceof PValueDecorator ||
+                decorator instanceof CategoricalDecorator ||
+                decorator instanceof BinaryDecorator) {
+            return NonZeroCountAggregator.INSTANCE;
+        }
+        return SumAggregator.INSTANCE;
     }
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {
