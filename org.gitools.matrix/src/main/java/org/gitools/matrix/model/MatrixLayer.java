@@ -61,7 +61,7 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
     //TODO
     @XmlTransient
-    private IAggregator aggregator;
+    protected IAggregator aggregator;
 
     private SortDirection sortDirection;
 
