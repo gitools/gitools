@@ -38,6 +38,11 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
         return new MatrixPosition(this);
     }
 
+    @Override
+    public IMatrix subset(IMatrixDimension... dimensionSubsets) {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " don't support subsetting");
+    }
+
     public AbstractMatrix(ML layers, MD... identifiers) {
 
         this.layers = layers;

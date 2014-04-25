@@ -21,6 +21,8 @@
  */
 package org.gitools.api.matrix;
 
+import java.util.Set;
+
 public interface IMatrixDimension extends Iterable<String> {
 
     /**
@@ -56,5 +58,9 @@ public interface IMatrixDimension extends Iterable<String> {
     boolean isEmpty();
 
     boolean contains(String identifier);
+
+    IMatrixDimension subset(Set<String> identifiers);
+
+    public IMatrixDimension from(String fromIdentifier);
 
 }

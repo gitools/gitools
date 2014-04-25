@@ -22,6 +22,7 @@
 package org.gitools.heatmap;
 
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -234,6 +235,11 @@ public class Heatmap extends Resource implements IMatrixView {
     @Override
     public IMatrixPosition newPosition() {
         return new MatrixPosition(this);
+    }
+
+    @Override
+    public IMatrix subset(IMatrixDimension... dimensionSubsets) {
+        return getContents().subset(dimensionSubsets);
     }
 
     private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[]{ROWS, COLUMNS};

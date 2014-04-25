@@ -23,6 +23,12 @@
 
         <dependency>
             <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.utils</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gitools</groupId>
             <artifactId>org.gitools.resource</artifactId>
             <version>${project.version}</version>
         </dependency>

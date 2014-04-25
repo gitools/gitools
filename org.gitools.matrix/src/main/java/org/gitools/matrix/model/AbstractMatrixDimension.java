@@ -25,7 +25,11 @@ import com.jgoodies.binding.beans.Model;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public abstract class AbstractMatrixDimension extends Model implements IMatrixDimension {
 
@@ -53,6 +57,27 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
     @Override
     public boolean contains(String identifier) {
         return indexOf(identifier) != -1;
+    }
+
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " dimension don't support subsetting");
+    }
+
+    @Override
+    @Deprecated
+    public IMatrixDimension from(String fromIdentifier) {
+
+            int from = fromIdentifier == null ? 0 : indexOf(fromIdentifier);
+            int to = size() - 1;
+
+            Set<String> identifiers = new LinkedHashSet<>(to - from + 1);
+
+            for (int i = from; i <= to; i++) {
+                identifiers.add(getLabel(i));
+            }
+
+            return subset(identifiers);
     }
 
     @Override

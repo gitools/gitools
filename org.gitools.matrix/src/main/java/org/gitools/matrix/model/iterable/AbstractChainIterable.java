@@ -30,8 +30,6 @@ import java.util.Iterator;
 
 public abstract class AbstractChainIterable<F, T> extends AbstractIterable<F> {
 
-    private static String ERROR_MESSAGE = "You must limit the iterable before operate on it.";
-
     private IMatrixIterable<T> parentIterable;
 
     protected AbstractChainIterable(IMatrixIterable<T> parentIterable) {
@@ -47,13 +45,8 @@ public abstract class AbstractChainIterable<F, T> extends AbstractIterable<F> {
     }
 
     @Override
-    public int size() {
+    public long size() {
         return parentIterable.size();
-    }
-
-    @Override
-    public IMatrixDimension getIterateDimension() {
-        return parentIterable.getIterateDimension();
     }
 
     @Override
@@ -65,18 +58,4 @@ public abstract class AbstractChainIterable<F, T> extends AbstractIterable<F> {
         return getPosition().getMatrix();
     }
 
-    @Override
-    public IMatrixIterable<F> from(String fromIdentifier) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
-    }
-
-    @Override
-    public IMatrixIterable<F> to(String toIdentifier) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
-    }
-
-    @Override
-    public IMatrixIterable<F> between(String fromIdentifier, String toIdentifier) {
-        throw new UnsupportedOperationException(ERROR_MESSAGE);
-    }
 }

@@ -21,23 +21,20 @@
  */
 package org.gitools.matrix.model.iterable;
 
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
-
-import java.util.Set;
 
 public class IdentifierSourceIterable extends AbstractSourceIterable<String> {
+    private IMatrixDimension iterateDimension;
 
-    public IdentifierSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
-        this(position, iterateDimension, null);
-    }
+    public IdentifierSourceIterable(IMatrixPosition position, IMatrixDimension iterateDimension) {
+        super(position, iterateDimension);
 
-    public IdentifierSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, Set<String> identifiers) {
-        super(position, iterateDimension, identifiers);
+        this.iterateDimension = iterateDimension;
     }
 
     @Override
     protected String getValue(IMatrixPosition position) {
-        return position.get(getIterateDimension());
+        return position.get(iterateDimension);
     }
 }

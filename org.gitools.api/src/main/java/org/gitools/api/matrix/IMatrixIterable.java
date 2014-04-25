@@ -27,17 +27,9 @@ import java.util.Comparator;
 
 public interface IMatrixIterable<T> extends Iterable<T> {
 
-    int size();
+    long size();
 
     IMatrixPosition getPosition();
-
-    IMatrixDimension getIterateDimension();
-
-    IMatrixIterable<T> from(String fromIdentifier);
-
-    IMatrixIterable<T> to(String toIdentifier);
-
-    IMatrixIterable<T> between(String fromIdentifier, String toIdentifier);
 
     IMatrixIterable<T> filter(IMatrixPredicate<T> filter);
 
