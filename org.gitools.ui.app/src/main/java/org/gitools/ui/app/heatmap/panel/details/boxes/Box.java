@@ -44,7 +44,7 @@ public abstract class Box extends JXTaskPane {
         getContentPane().setBackground(Color.WHITE);
         getContentPane().add(new WebScrollPane(getContainer(), false, false));
 
-        if (popupMenu != null) {
+        if (actions != null) {
             popupMenu = ActionSetUtils.createPopupMenu(actions);
         }
     }
