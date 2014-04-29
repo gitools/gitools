@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-core
+ * org.gitools.analysis
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,18 +19,15 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.stats.test;
+package org.gitools.analysis.mutualexclusive;
 
-import org.gitools.analysis.stats.test.results.CommonResult;
-import org.gitools.analysis.stats.test.results.SimpleResult;
+import org.gitools.api.matrix.AbstractMatrixFunction;
+import org.gitools.api.matrix.IMatrixPosition;
 
-public interface Test {
 
-    String getName();
-
-    Class<? extends SimpleResult> getResultClass();
-
-    void processPopulation(Iterable<Double> population);
-
-    CommonResult processTest(Iterable<Double> values);
+public class DoubleToIntegerFunction extends AbstractMatrixFunction<Integer, Double> {
+    @Override
+    public Integer apply(Double value, IMatrixPosition position) {
+        return (value == null) ? null : value.intValue();
+    }
 }

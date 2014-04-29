@@ -22,7 +22,7 @@
 package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.matrix.filter.ValueFilterCriteria;
+import org.gitools.matrix.filter.ValueFilterFunction;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import javax.swing.event.TableModelEvent;
@@ -42,19 +42,19 @@ class ValueFilterCriteriaTableModel implements TableModel {
 
     private final Map<String, Integer> attrIndexMap = new HashMap<>();
 
-    private final List<ValueFilterCriteria> criteriaList;
+    private final List<ValueFilterFunction> criteriaList;
     private final IMatrixLayers layers;
 
 
     private final List<TableModelListener> listeners = new ArrayList<>();
 
-    private ValueFilterCriteriaTableModel(List<ValueFilterCriteria> criteriaList, IMatrixLayers layers) {
+    private ValueFilterCriteriaTableModel(List<ValueFilterFunction> criteriaList, IMatrixLayers layers) {
         this.criteriaList = criteriaList;
         this.layers = layers;
     }
 
     public ValueFilterCriteriaTableModel(IMatrixLayers layers) {
-        this(new ArrayList<ValueFilterCriteria>(), layers);
+        this(new ArrayList<ValueFilterFunction>(), layers);
     }
 
     @Override
@@ -91,7 +91,7 @@ class ValueFilterCriteriaTableModel implements TableModel {
             case 1:
                 return criteriaList.get(rowIndex).getComparator();
             case 2:
-                return String.valueOf(criteriaList.get(rowIndex).getValue());
+                return String.valueOf(criteriaList.get(rowIndex).getCutoffValue());
         }
         return null;
     }
@@ -109,21 +109,21 @@ class ValueFilterCriteriaTableModel implements TableModel {
                 break;
 
             case 2:
-                criteriaList.get(rowIndex).setValue(Double.parseDouble((String) aValue));
+                criteriaList.get(rowIndex).setCutoffValue(Double.parseDouble((String) aValue));
                 break;
         }
     }
 
-    public List<ValueFilterCriteria> getList() {
+    public List<ValueFilterFunction> getList() {
         return criteriaList;
     }
 
-    public void addCriteria(final ValueFilterCriteria criteria) {
+    public void addCriteria(final ValueFilterFunction criteria) {
         criteriaList.add(criteria);
         fireCriteriaChanged();
     }
 
-    void addAllCriteria(List<ValueFilterCriteria> list) {
+    void addAllCriteria(List<ValueFilterFunction> list) {
         int initialRow = criteriaList.size();
         criteriaList.addAll(list);
         fireCriteriaChanged();

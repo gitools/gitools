@@ -24,7 +24,7 @@ package org.gitools.ui.app.dialog.filter;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.matrix.filter.ValueFilterCriteria;
+import org.gitools.matrix.filter.ValueFilterFunction;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -91,7 +91,7 @@ public class ValueFilterPage extends AbstractWizardPage {
     public ValueFilterPage(Frame parent,
                            IMatrixLayers layers,
                            MatrixDimensionKey dimension, CutoffCmp[] comparators,
-                           List<ValueFilterCriteria> initialCriteriaList,
+                           List<ValueFilterFunction> initialCriteriaList,
                            IMatrixLayer visibleLayer) {
 
         this.layers = layers;
@@ -201,13 +201,13 @@ public class ValueFilterPage extends AbstractWizardPage {
 
         //list all criterias
         sb.append("<ul>");
-        for (ValueFilterCriteria c : getCriteriaList()) {
+        for (ValueFilterFunction c : getCriteriaList()) {
             sb.append("<li>");
             sb.append(c.getLayer().getId());
             sb.append(" ");
             sb.append(c.getComparator().getLongName());
             sb.append(" ");
-            sb.append(c.getValue());
+            sb.append(c.getCutoffValue());
             sb.append(" ");
             if (getCriteriaList().size() - 1 > getCriteriaList().indexOf(c)) {
                 sb.append(isAllCriteriaMatch() ? "and " : "or ");
@@ -371,7 +371,7 @@ public class ValueFilterPage extends AbstractWizardPage {
 
 
     private void tableAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableAddBtnActionPerformed
-        criteriaModel.addCriteria(new ValueFilterCriteria(visibleLayer, comparators[0], 0.0, null));
+        criteriaModel.addCriteria(new ValueFilterFunction(visibleLayer, comparators[0], 0.0, null));
         updateFilterDescription();
     }//GEN-LAST:event_tableAddBtnActionPerformed
 
@@ -420,7 +420,7 @@ public class ValueFilterPage extends AbstractWizardPage {
         return hideMatchingCheck.isSelected();
     }
 
-    public List<ValueFilterCriteria> getCriteriaList() {
+    public List<ValueFilterFunction> getCriteriaList() {
         return criteriaModel.getList();
     }
 }

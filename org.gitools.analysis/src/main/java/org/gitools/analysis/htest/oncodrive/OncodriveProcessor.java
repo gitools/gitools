@@ -29,7 +29,7 @@ import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.analysis.stats.test.results.CommonResult;
+import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
@@ -64,7 +64,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
         IMatrix data = analysis.getData().get();
         final IMatrixLayer<Double> layer =  data.getLayers().get(analysis.getLayer());
         final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
-        final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
+        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IModuleMap moduleMap = (analysis.getModuleMap().get() == null ? new HashModuleMap().addMapping("All data columns", data.getColumns()) : analysis.getModuleMap().get());
         final IMatrixDimension genes = data.getRows();
         final IMatrixDimension samples = data.getColumns();
@@ -129,10 +129,10 @@ public class OncodriveProcessor implements AnalysisProcessor {
             // Iterate all the genes
             data.newPosition().iterate(layer, genes)
                     .monitor(monitor, "Running oncodrive analysis module '" + module + "'")
-                    .transform(new AbstractMatrixFunction<CommonResult, Double>() {
+                    .transform(new AbstractMatrixFunction<SimpleResult, Double>() {
 
                         @Override
-                        public CommonResult apply(Double value, IMatrixPosition position) {
+                        public SimpleResult apply(Double value, IMatrixPosition position) {
 
                             // Values of the current module
                             Iterable<Double> moduleValues = position.iterate(layer, samples.subset(moduleSamples)).transform(cutoffFunction);

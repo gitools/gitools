@@ -25,7 +25,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 
-public class DataIntegrationCriteria extends ValueFilterCriteria {
+public class DataIntegrationCriteria extends ValueFilterFunction {
 
     private Operator operator;
 
@@ -46,6 +46,6 @@ public class DataIntegrationCriteria extends ValueFilterCriteria {
     @Override
     public String toString() {
         String empty = nullConversion == null ? "" : " (empty: " + nullConversion + ")";
-        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + value + empty;
+        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + cutoffValue + empty;
     }
 }

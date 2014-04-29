@@ -64,7 +64,7 @@ public class GroupByValuePredicate implements IMatrixPredicate<Double> {
             }
 
             double matrixValue = (v == null) ? dic.getNullConversion() : (double) v;
-            boolean evaluatedCondition = dic.getComparator().compare(matrixValue, dic.getValue());
+            boolean evaluatedCondition = dic.getComparator().compare(matrixValue, dic.getCutoffValue());
 
             if (dic.getOperator().equals(Operator.EMPTY)) {
                 ORs.add(evaluatedCondition);

@@ -21,10 +21,16 @@
  */
 package org.gitools.ui.app.actions.data;
 
+import org.gitools.analysis.mutualexclusive.MutualExclusiveAnalysis;
+import org.gitools.analysis.mutualexclusive.MutualExclusiveProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.MatrixViewSorter;
+import org.gitools.matrix.model.iterable.IdentifiersPredicate;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.settings.Settings;
 import org.gitools.ui.app.sort.MutualExclusionSortPage;
@@ -32,6 +38,7 @@ import org.gitools.ui.platform.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.awt.event.ActionEvent;
 
@@ -52,10 +59,6 @@ public class SortByMutualExclusionAction extends HeatmapAction {
 
         final MutualExclusionSortPage page = new MutualExclusionSortPage(hm, dimensionKey);
         PageDialog dlg = new PageDialog(Application.get(), page);
-
-        /*if (hm.getColumns().getSelected().size() > 0) {
-            page.setDimension(MatrixDimensionKey.COLUMNS);
-        }*/
 
         dlg.open();
 
@@ -78,9 +81,44 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                         Settings.get().isShowMutualExclusionProgress()
                 );
 
+                if (page.performTest()) {
+                    monitor.begin("Analyse ...", 1);
+
+                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
+
+                    HashModuleMap weightMap = new HashModuleMap();
+                    HashModuleMap testMap = new HashModuleMap();
+                    IMatrixDimension weightDimension = dimensionKey.equals(MatrixDimensionKey.ROWS) ?
+                            hm.getDimension(MatrixDimensionKey.COLUMNS) :
+                            hm.getDimension(MatrixDimensionKey.ROWS);
+                    IMatrixDimension testDimension = hm.getContents().getDimension(dimensionKey);
+                    AnnotationMatrix testDimensionAnnotations = hm.getDimension(dimensionKey).getAnnotations();
+
+                    weightMap.addMapping(weightDimension.getId().getLabel(), hm.newPosition().iterate(weightDimension));
+
+                    testMap.addMapping(testDimension.getId().getLabel(), hm.newPosition().
+                            iterate(testDimension)
+                            .filter(new IdentifiersPredicate<String>(testDimension, page.getValues(), page.getPattern(), testDimensionAnnotations)));
+
+                    analysis.setTestDimension(testDimension);
+                    analysis.setTestGroupsModuleMap(testMap);
+                    analysis.setWeightDimension(weightDimension);
+                    analysis.setWeightGroupsModuleMap(weightMap);
+                    analysis.setData(hm);
+                    analysis.setLayer(hm.getLayers().getTopLayer().getId());
+                    analysis.setCutoffCmp(CutoffCmp.NE);
+                    analysis.setCutoff(0);
+
+                    MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
+
+
+                    processor.run(monitor);
+                    analysis.getResults();
+
+                    System.out.println(analysis.toString());
+                }
             }
         });
-
         Application.get().setStatusText("Sorted.");
     }
 }

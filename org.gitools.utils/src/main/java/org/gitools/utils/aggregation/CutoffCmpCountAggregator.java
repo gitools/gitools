@@ -1,6 +1,6 @@
 /*
  * #%L
- * gitools-core
+ * gitools-utils
  * %%
  * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,18 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.stats.test;
+package org.gitools.utils.aggregation;
 
-import org.gitools.analysis.stats.test.results.CommonResult;
-import org.gitools.analysis.stats.test.results.SimpleResult;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
 
-public interface Test {
+public class CutoffCmpCountAggregator extends AbstractAggregator {
 
-    String getName();
+    private final double cutoff;
+    private final CutoffCmp cmp;
 
-    Class<? extends SimpleResult> getResultClass();
+    public CutoffCmpCountAggregator(CutoffCmp cmp, double cutoff) {
+        super("Count (" + cmp.getAbbreviation() + " " + cutoff + ")");
+        this.cmp = cmp;
+        this.cutoff = cutoff;
+    }
 
-    void processPopulation(Iterable<Double> population);
+    @Override
+    public Double aggregateNoNulls(double[] data) {
+        double events = 0.0;
+        for (double d : data) {
+            if (cmp.compare(d, cutoff)) events++;
+        }
+        return events;
+    }
 
-    CommonResult processTest(Iterable<Double> values);
 }

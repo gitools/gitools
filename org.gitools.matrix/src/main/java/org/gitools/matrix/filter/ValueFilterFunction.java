@@ -22,19 +22,21 @@
 package org.gitools.matrix.filter;
 
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
-public class ValueFilterCriteria {
+public class ValueFilterFunction implements IMatrixPredicate<Double> {
 
     protected IMatrixLayer layer;
     protected CutoffCmp comparator;
-    protected Double value;
+    protected Double cutoffValue;
     protected Double nullConversion;
 
-    public ValueFilterCriteria(IMatrixLayer layer, CutoffCmp comparator, Double value, Double nullConversion) {
+    public ValueFilterFunction(IMatrixLayer layer, CutoffCmp comparator, Double cutoffValue, Double nullConversion) {
         this.layer = layer;
         this.comparator = comparator;
-        this.value = value;
+        this.cutoffValue = cutoffValue;
         this.nullConversion = nullConversion;
     }
 
@@ -54,17 +56,17 @@ public class ValueFilterCriteria {
         this.comparator = comparator;
     }
 
-    public double getValue() {
-        return this.value;
+    public double getCutoffValue() {
+        return this.cutoffValue;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setCutoffValue(Double cutoffValue) {
+        this.cutoffValue = cutoffValue;
     }
 
     @Override
     public String toString() {
-        return layer.getId() + " " + comparator.toString() + " " + value;
+        return layer.getId() + " " + comparator.toString() + " " + cutoffValue;
     }
 
     public Double getNullConversion() {
@@ -73,5 +75,20 @@ public class ValueFilterCriteria {
 
     public void setNullConversion(Double nullConversion) {
         this.nullConversion = nullConversion;
+    }
+
+    @Override
+    public boolean apply(Double value, IMatrixPosition position) {
+
+        if (value == null) {
+            if (nullConversion == null) {
+                return false;
+            } else {
+                value = nullConversion;
+            }
+        }
+
+        return  comparator.compare(value, cutoffValue);
+
     }
 }

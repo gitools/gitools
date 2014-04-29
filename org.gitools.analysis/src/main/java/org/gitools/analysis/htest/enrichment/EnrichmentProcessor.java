@@ -28,7 +28,7 @@ import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.analysis.stats.test.results.CommonResult;
+import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
@@ -64,7 +64,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
         IMatrix data = analysis.getData().get();
         final IMatrixLayer<Double> layer = data.getLayers().get(analysis.getLayer());
         final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
-        final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
+        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IModuleMap moduleMap = analysis.getModuleMap().get();
         final IMatrixDimension conditions = data.getColumns();
         final IMatrixDimension items = data.getRows();
@@ -107,10 +107,10 @@ public class EnrichmentProcessor implements AnalysisProcessor {
         // Run enrichment
         data.newPosition().iterate(layer, conditions)
                 .monitor(monitor, "Running enrichment analysis")
-                .transform(new AbstractMatrixFunction<Map<String, CommonResult>, Double>() {
+                .transform(new AbstractMatrixFunction<Map<String, SimpleResult>, Double>() {
 
                     @Override
-                    public Map<String, CommonResult> apply(Double value, IMatrixPosition position) {
+                    public Map<String, SimpleResult> apply(Double value, IMatrixPosition position) {
 
                         IMatrixIterable<Double> population;
 
@@ -131,7 +131,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                                 )
                         );
 
-                        Map<String, CommonResult> results = new HashMap<>();
+                        Map<String, SimpleResult> results = new HashMap<>();
                         for (String module : moduleMap.getModules()) {
 
                             if (monitor.isCancelled()) {
@@ -156,7 +156,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
                             }
 
-                            CommonResult result = test.processTest(moduleValues);
+                            SimpleResult result = test.processTest(moduleValues);
                             if (result != null && result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
                                 results.put(module, result);
                             }

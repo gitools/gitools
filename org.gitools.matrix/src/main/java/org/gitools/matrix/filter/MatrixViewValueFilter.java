@@ -34,7 +34,7 @@ import java.util.Set;
 
 public class MatrixViewValueFilter {
 
-    public static void filter(IMatrixView matrixView, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
+    public static void filter(IMatrixView matrixView, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
 
         if (applyToColumns) {
             filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria);
@@ -45,7 +45,7 @@ public class MatrixViewValueFilter {
         }
     }
 
-    private static void filter(IMatrixView matrixView, IMatrixViewDimension filterDimension, IMatrixViewDimension otherDimension, List<ValueFilterCriteria> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
+    private static void filter(IMatrixView matrixView, IMatrixViewDimension filterDimension, IMatrixViewDimension otherDimension, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
 
         Set<String> selection = otherDimension.getSelected();
         if (selection.isEmpty()) {
@@ -65,10 +65,10 @@ public class MatrixViewValueFilter {
                 boolean critAnd = true;
                 boolean critOr = false;
 
-                for (ValueFilterCriteria criteria : criteriaList) {
+                for (ValueFilterFunction criteria : criteriaList) {
 
                     double value = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), position));
-                    boolean critRes = criteria.getComparator().compare(value, criteria.getValue());
+                    boolean critRes = criteria.getComparator().compare(value, criteria.getCutoffValue());
                     critAnd &= critRes;
                     critOr |= critRes;
                 }

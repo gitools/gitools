@@ -34,6 +34,8 @@ class JobProgressDialog extends javax.swing.JDialog {
 
 
     private final List<CancelListener> listeners = new ArrayList<>();
+    private Timer timer;
+
 
     /**
      * Creates new form ProgressDialog
@@ -140,7 +142,6 @@ class JobProgressDialog extends javax.swing.JDialog {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JLabel tipsLabel;
-    private Timer timer;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 

@@ -22,13 +22,14 @@
 package org.gitools.analysis.stats.test;
 
 import org.gitools.analysis.stats.test.results.CommonResult;
+import org.gitools.analysis.stats.test.results.SimpleResult;
 
 public abstract class AbstractTest implements Test {
 
     private String name;
-    private Class<? extends CommonResult> resultClass;
+    private Class<? extends SimpleResult> resultClass;
 
-    protected AbstractTest(String name, Class<? extends CommonResult> resultClass) {
+    protected AbstractTest(String name, Class<? extends SimpleResult> resultClass) {
         this.name = name;
         this.resultClass = resultClass;
     }
@@ -39,7 +40,7 @@ public abstract class AbstractTest implements Test {
     }
 
     @Override
-    public Class<? extends CommonResult> getResultClass() {
+    public Class<? extends SimpleResult> getResultClass() {
         return resultClass;
     }
 
