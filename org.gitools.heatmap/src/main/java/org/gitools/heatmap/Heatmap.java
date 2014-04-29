@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -66,6 +68,8 @@ public class Heatmap extends Resource implements IMatrixView {
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
+
+    private transient Map<CacheKey, Object> cache = new HashMap<>();
 
     public Heatmap() {
         super();
@@ -125,6 +129,7 @@ public class Heatmap extends Resource implements IMatrixView {
         if (data != null && data.isLoaded()) {
             data.get().detach();
         }
+        this.cache = new HashMap<>();
     }
 
     public void init() {
@@ -256,5 +261,16 @@ public class Heatmap extends Resource implements IMatrixView {
     public Plugins getPluggedBoxes() {
         return pluggedBoxes;
     }
+
+    public <T> void setCache(CacheKey<T> key, T value) {
+        this.cache.put(key, value);
+    }
+
+    public <T> T getCache(CacheKey<T> key) {
+        return (T) this.cache.get(key);
+    }
+
+
+
 
 }
