@@ -70,6 +70,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         super(id, valueClass);
 
         this.decorator = decorator;
+        this.font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
     }
 
     public Decorator getDecorator() {
