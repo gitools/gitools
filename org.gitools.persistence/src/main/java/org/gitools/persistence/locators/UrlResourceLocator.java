@@ -29,6 +29,7 @@ import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.utils.HttpUtils;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
 import java.io.*;
 import java.net.MalformedURLException;

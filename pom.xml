@@ -241,7 +241,7 @@
             <dependency>
                 <groupId>edu.upf.bg</groupId>
                 <artifactId>mtabix</artifactId>
-                <version>1.0-20140416</version>
+                <version>1.0-20140429</version>
             </dependency>
 
             <dependency>

@@ -43,4 +43,15 @@ public interface IMatrixLayer<T> {
 
     void setAggregator(IAggregator aggregator);
 
+    /**
+     * This method is called when the layer is not in use.
+     * <p/>
+     * It's a good practice to free all the caching memory usage.
+     */
+    void detach();
+
+    <T> void setCache(ICacheKey<T> key, T value);
+
+    <T> T getCache(ICacheKey<T> key);
+
 }

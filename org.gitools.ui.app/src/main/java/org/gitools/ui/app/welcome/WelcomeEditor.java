@@ -26,7 +26,7 @@ import org.apache.commons.io.IOUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.persistence.locators.ProgressMonitorInputStream;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;

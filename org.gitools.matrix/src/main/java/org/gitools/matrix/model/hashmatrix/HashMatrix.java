@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension> {
+public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashMatrixDimension> {
 
     private Map<String, Map> values;
 
@@ -46,7 +46,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
     }
 
     public HashMatrix(MatrixLayers<? extends IMatrixLayer> layers, HashMatrixDimension... dimensions) {
-        super(layers, dimensions);
+        super((MatrixLayers<IMatrixLayer>) layers, dimensions);
 
         this.values = new ConcurrentHashMap<>();
         for (IMatrixLayer layer : layers) {
@@ -202,7 +202,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension
         return new SubMatrix(getLayers(), allDimensions.values());
     }
 
-    private class SubMatrix extends AbstractMatrix<MatrixLayers, HashMatrixDimension> {
+    private class SubMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashMatrixDimension> {
 
         public SubMatrix(MatrixLayers layers, Collection<HashMatrixDimension> identifiers) {
             super(layers, (HashMatrixDimension[]) identifiers.toArray());

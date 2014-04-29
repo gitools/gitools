@@ -169,4 +169,5 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         }
         details.add(decoration);
     }
+
 }

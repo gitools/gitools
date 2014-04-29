@@ -69,8 +69,6 @@ public class Heatmap extends Resource implements IMatrixView {
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
-    private transient Map<CacheKey, Object> cache;
-
     public Heatmap() {
         super();
         this.rows = new HeatmapDimension();
@@ -129,7 +127,14 @@ public class Heatmap extends Resource implements IMatrixView {
         if (data != null && data.isLoaded()) {
             data.get().detach();
         }
-        this.cache = new HashMap<>();
+
+        // Detach heatmap cache
+        this.cache = null;
+
+        // Detach layers cache
+        for (HeatmapLayer layer : layers) {
+
+        }
     }
 
     public void init() {
@@ -262,22 +267,22 @@ public class Heatmap extends Resource implements IMatrixView {
         return pluggedBoxes;
     }
 
-    public <T> void setCache(CacheKey<T> key, T value) {
+
+    transient Map<ICacheKey, Object> cache;
+
+    public <T> void setCache(ICacheKey<T> key, T value) {
         this.getCacheMap().put(key, value);
     }
 
-    public <T> T getCache(CacheKey<T> key) {
+    public <T> T getCache(ICacheKey<T> key) {
         return (T) this.getCacheMap().get(key);
     }
 
-    private Map<CacheKey, Object> getCacheMap() {
+    private Map<ICacheKey, Object> getCacheMap() {
         if (cache == null) {
             cache = new HashMap<>();
         }
         return cache;
     }
-
-
-
 
 }

@@ -44,7 +44,7 @@ import java.util.zip.Inflater;
  * This format keep the rows compressed at memory, and has a dynamic cache that can expand or
  * contract depending on the user free memory.
  */
-public class CompressMatrix extends AbstractMatrix<MatrixLayers, CompressDimension> {
+public class CompressMatrix extends AbstractMatrix<MatrixLayers<? extends IMatrixLayer>, CompressDimension> {
 
     private final byte[] dictionary;
     private final Inflater decompresser = new Inflater();

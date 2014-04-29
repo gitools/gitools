@@ -23,6 +23,7 @@ package org.gitools.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.ICacheKey;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
@@ -34,6 +35,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.HashMap;
+import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
@@ -201,5 +204,27 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
     public String toString() {
         return (name != null ? name : id);
+    }
+
+    @Override
+    public void detach() {
+        this.cache = null;
+    }
+
+    transient Map<ICacheKey, Object> cache;
+
+    public <T> void setCache(ICacheKey<T> key, T value) {
+        this.getCacheMap().put(key, value);
+    }
+
+    public <T> T getCache(ICacheKey<T> key) {
+        return (T) this.getCacheMap().get(key);
+    }
+
+    private Map<ICacheKey, Object> getCacheMap() {
+        if (cache == null) {
+            cache = new HashMap<>();
+        }
+        return cache;
     }
 }

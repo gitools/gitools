@@ -24,7 +24,7 @@ package org.gitools.ui.app.genomespace;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.persistence.locators.ProgressMonitorInputStream;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 
 import java.io.IOException;

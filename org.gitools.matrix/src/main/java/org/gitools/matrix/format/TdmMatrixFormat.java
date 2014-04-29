@@ -21,39 +21,39 @@
  */
 package org.gitools.matrix.format;
 
-import com.google.common.collect.Iterables;
+import static com.google.common.collect.Lists.newArrayList;
 import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
+import edu.upf.bg.mtabix.parsers.DefaultKeyParser;
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.mtabixmatrix.MTabixMatrix;
 import org.gitools.utils.readers.text.CSVReader;
 import org.gitools.utils.readers.text.RawFlatTextWriter;
 import org.gitools.utils.translators.DoubleTranslator;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
 public class TdmMatrixFormat extends AbstractMatrixFormat {
@@ -74,12 +74,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         try {
 
-            /*TODO
             MTabixIndex index = readMtabixIndex(resourceLocator, progressMonitor);
-
-            if (index != null) {
-                index.checkMD5();
-            }*/
 
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
@@ -94,6 +89,14 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 layers[i - 2] = new MatrixLayer<>(header[i], Double.class);
             }
 
+            if (index != null) {
+
+                in.close();
+
+                return new MTabixMatrix(index, new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
+            }
+
+            // Load all the matrix into memory
             HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
 
             // read body
@@ -166,7 +169,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 return null;
             }
 
-            MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile);
+            MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile, new DefaultKeyParser(1, 0));
             MTabixIndex index = new MTabixIndex(mtabixConfig);
             index.loadIndex();
 
@@ -189,17 +192,17 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             writeCells(writer, results, monitor);
             writer.close();
 
-            //TODO if instanceof MtabixMatrix
-            //writeMtabixIndex(resourceLocator);
+            writeMtabixIndex(resourceLocator, results);
 
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
 
-
     }
 
-    private void writeMtabixIndex(IResourceLocator resourceLocator) throws URISyntaxException, IOException, NoSuchAlgorithmException {
+    private void writeMtabixIndex(IResourceLocator resourceLocator, IMatrix results) throws URISyntaxException, IOException, NoSuchAlgorithmException {
+
+        //TODO if results instanceof MtabixMatrix
 
         URL dataURL = resourceLocator.getURL();
         if ("file".equals(dataURL.getProtocol())) {
@@ -207,12 +210,25 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             if (dataURL.getPath().endsWith("zip")) {
                 //TODO
             } else {
-                IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
-                URL indexURL = mtabix.getURL();
 
-                MTabixConfig mtabixConfig = new MTabixConfig(new File(dataURL.toURI()), new File(indexURL.toURI()));
-                MTabixIndex index = new MTabixIndex(mtabixConfig);
-                index.buildIndex();
+                if (dataURL.getPath().endsWith("gz")) {
+                    IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+                    URL indexURL = mtabix.getURL();
+
+                    Map<Integer, List<String>> identifiers = new HashMap<>(2);
+                    identifiers.put(0, newArrayList(results.getColumns()));
+                    identifiers.put(1, newArrayList(results.getRows()));
+
+                    MTabixConfig mtabixConfig = new MTabixConfig(
+                            new File(dataURL.toURI()),
+                            new File(indexURL.toURI()),
+                            new DefaultKeyParser(1, 0),
+                            identifiers);
+
+                    MTabixIndex index = new MTabixIndex(mtabixConfig);
+                    index.buildIndex();
+                }
+
             }
         }
 
@@ -233,23 +249,11 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
         out.writeNewLine();
 
-        /*TODO
-        // Sort columns (MTabix requires the labels sorted)
-        List<String> columns = new ArrayList<>(resultsMatrix.getColumns().size());
-        Iterables.addAll(columns, resultsMatrix.getColumns());
-        Collections.sort(columns);
-
-        // Sort rows (MTabix requires the labels sorted)
-        List<String> rows = new ArrayList<>(resultsMatrix.getRows().size());
-        Iterables.addAll(rows, resultsMatrix.getRows());
-        Collections.sort(rows);
-        */
-
         IMatrixDimension columns = resultsMatrix.getColumns();
         IMatrixDimension rows = resultsMatrix.getRows();
 
-        for (String row : rows) {
-            for (String column : columns) {
+        for (String column : columns) {
+            for (String row : rows) {
                 writeLine(out, resultsMatrix, column, row, progressMonitor);
             }
             progressMonitor.worked(1);

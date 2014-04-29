@@ -27,7 +27,7 @@ import org.gitools.resource.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
+public abstract class AbstractMatrix<ML extends IMatrixLayers<? extends IMatrixLayer>, MD extends IMatrixDimension> extends Resource implements IMatrix {
 
     private MatrixDimensionKey[] dimensions;
     private Map<MatrixDimensionKey, MD> identifiers;
@@ -97,6 +97,29 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
 
     @Override
     public void detach() {
+        this.cache = null;
+
+        for (IMatrixLayer layer : layers) {
+            layer.detach();
+        }
     }
+
+    transient Map<ICacheKey, Object> cache;
+
+    public <T> void setCache(ICacheKey<T> key, T value) {
+        this.getCacheMap().put(key, value);
+    }
+
+    public <T> T getCache(ICacheKey<T> key) {
+        return (T) this.getCacheMap().get(key);
+    }
+
+    private Map<ICacheKey, Object> getCacheMap() {
+        if (cache == null) {
+            cache = new HashMap<>();
+        }
+        return cache;
+    }
+
 
 }
