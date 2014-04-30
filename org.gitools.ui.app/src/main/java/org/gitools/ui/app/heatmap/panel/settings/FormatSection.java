@@ -25,7 +25,7 @@ import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.ui.app.utils.FontUtils;
+import org.gitools.ui.core.utils.FontUtils;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.formatter.HeatmapTextFormatter;

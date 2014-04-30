@@ -1,0 +1,169 @@
+/*
+ * #%L
+ * gitools-ui-app
+ * %%
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the 
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public 
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * #L%
+ */
+package org.gitools.plugins.mutex.actions;
+
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveTest;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.analysis.stats.test.results.SimpleResult;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.heatmap.Bookmark;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.MatrixViewSorter;
+import org.gitools.matrix.model.iterable.IdentifiersPredicate;
+import org.gitools.matrix.model.matrix.element.LayerAdapter;
+import org.gitools.matrix.modulemap.HashModuleMap;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.PageDialog;
+import org.gitools.utils.cutoffcmp.CutoffCmp;
+
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
+import static com.google.common.collect.Lists.newArrayList;
+
+public class SortByMutualExclusionAction extends HeatmapAction {
+
+    private MatrixDimensionKey dimensionKey;
+
+    public SortByMutualExclusionAction(MatrixDimensionKey dimensionKey) {
+        super("<html><i>Sort</i> by mutual exclusion</html>");
+
+        this.dimensionKey = dimensionKey;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        final Heatmap hm = getHeatmap();
+
+        final MutualExclusionSortPage page = new MutualExclusionSortPage(hm, dimensionKey);
+        PageDialog dlg = new PageDialog(Application.get(), page);
+
+        dlg.open();
+
+        if (dlg.isCancelled()) {
+            return;
+        }
+
+        JobThread.execute(Application.get(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
+                monitor.begin("Sorting ...", 1);
+
+                MatrixViewSorter.sortByMutualExclusion(
+                        hm,
+                        page.getPattern(),
+                        page.getValues(),
+                        page.isUseRegexChecked(),
+                        page.getDimension().equals(MatrixDimensionKey.COLUMNS),
+                        monitor,
+                        Settings.get().isShowMutualExclusionProgress()
+                );
+
+                if (page.performTest()) {
+
+                    //TEST
+                    monitor.begin("Analyse ...", 1);
+
+                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
+
+                    IMatrixDimension testDimension = hm.getContents().getDimension(dimensionKey);
+                    ArrayList<String> selected = newArrayList(
+                            hm.newPosition()
+                                    .iterate(testDimension)
+                                    .filter(new IdentifiersPredicate<String>(testDimension, page.getValues(),
+                                            page.getPattern(), hm.getDimension(dimensionKey).getAnnotations()))
+                    );
+                    prepareAnalysis(analysis, testDimension, selected, hm);
+
+                    MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
+                    processor.run(monitor);
+                    IMatrix resultsMatrix = analysis.getResults().get();
+
+
+                    //DIALOG
+                    LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(new MutualExclusiveTest().getResultClass());
+                    MutualExclusiveResult result = (MutualExclusiveResult) adapter.get(resultsMatrix, resultsMatrix.newPosition());
+
+
+                    Bookmark bookmark = (dimensionKey == MatrixDimensionKey.ROWS) ?
+                            new Bookmark("Mutex result", selected, hm.getColumns().toList(), hm.getLayers().getTopLayer().getId()) :
+                            new Bookmark("Mutex result", hm.getRows().toList(), selected, hm.getLayers().getTopLayer().getId());
+
+                    MutualExclusiveResultPage resultPage = new MutualExclusiveResultPage(hm, result, bookmark);
+                    PageDialog dlg = new PageDialog(Application.get(), resultPage);
+
+                    dlg.open();
+
+                    if (dlg.isCancelled()) {
+                        return;
+                    }
+
+                    bookmark = resultPage.getBookmark();
+                    MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+                    if (plugin == null) {
+                        return;
+                    }
+                    plugin.addResult(result, bookmark);
+
+
+
+                }
+            }
+        });
+        Application.get().setStatusText("Sorted.");
+    }
+
+    private void prepareAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> selected, Heatmap hm) {
+        HashModuleMap weightMap = new HashModuleMap();
+        HashModuleMap testMap = new HashModuleMap();
+        IMatrixDimension weightDimension = dimensionKey.equals(MatrixDimensionKey.ROWS) ?
+                hm.getDimension(MatrixDimensionKey.COLUMNS) :
+                hm.getDimension(MatrixDimensionKey.ROWS);
+
+        weightMap.addMapping(weightDimension.getId().getLabel(), hm.newPosition().iterate(weightDimension));
+
+        testMap.addMapping(testDimension.getId().getLabel(), selected);
+
+        analysis.setTestDimension(testDimension);
+        analysis.setTestGroupsModuleMap(testMap);
+        analysis.setWeightDimension(weightDimension);
+        analysis.setWeightGroupsModuleMap(weightMap);
+        analysis.setData(hm);
+        analysis.setLayer(hm.getLayers().getTopLayer().getId());
+        analysis.setCutoffCmp(CutoffCmp.NE);
+        analysis.setCutoff(0);
+    }
+
+}

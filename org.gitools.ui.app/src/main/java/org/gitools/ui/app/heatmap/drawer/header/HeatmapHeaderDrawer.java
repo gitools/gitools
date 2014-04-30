@@ -30,7 +30,7 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 import java.util.ArrayList;

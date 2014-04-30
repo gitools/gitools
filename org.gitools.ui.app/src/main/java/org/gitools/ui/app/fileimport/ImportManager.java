@@ -25,7 +25,7 @@ import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.wizard.excel.ExcelImportWizard;
 import org.gitools.ui.app.fileimport.wizard.text.FlatTextImportWizard;
-import org.gitools.ui.app.utils.FileFormatFilter;
+import org.gitools.ui.core.utils.FileFormatFilter;
 
 import java.util.*;
 

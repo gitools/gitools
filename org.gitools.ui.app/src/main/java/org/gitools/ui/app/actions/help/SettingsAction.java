@@ -21,11 +21,10 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.AbstractAction;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;

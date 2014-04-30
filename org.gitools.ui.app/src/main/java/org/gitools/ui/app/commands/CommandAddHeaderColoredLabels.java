@@ -30,7 +30,7 @@ import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 

@@ -56,6 +56,19 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.ui.core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.gitools</groupId>
+            <artifactId>org.gitools.plugins.mutex</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- External dependencies -->
         <dependency>
             <groupId>org.jboss.weld.se</groupId>

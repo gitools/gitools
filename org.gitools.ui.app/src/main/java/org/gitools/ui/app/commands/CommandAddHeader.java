@@ -25,9 +25,9 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.util.concurrent.CancellationException;
 

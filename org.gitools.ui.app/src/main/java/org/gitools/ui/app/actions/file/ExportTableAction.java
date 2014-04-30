@@ -24,12 +24,12 @@ package org.gitools.ui.app.actions.file;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.dialog.attributes.AttributesSelectionDialog;
 import org.gitools.ui.app.export.TextMatrixViewExporter;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 

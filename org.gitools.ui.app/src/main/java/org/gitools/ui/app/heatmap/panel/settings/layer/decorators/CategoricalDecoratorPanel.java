@@ -26,7 +26,7 @@ import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.app.actions.data.DetectCategoriesAction;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
-import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.progress.ProgressUtils;
 import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.color.ColorRegistry;

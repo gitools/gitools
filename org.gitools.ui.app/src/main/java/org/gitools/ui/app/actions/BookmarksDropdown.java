@@ -25,13 +25,14 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.dialog.BookmarkEditPage;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.actions.IPanelAction;
-import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.core.actions.IPanelAction;
+import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.*;

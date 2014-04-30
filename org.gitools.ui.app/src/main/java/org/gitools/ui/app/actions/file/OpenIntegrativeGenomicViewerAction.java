@@ -25,11 +25,11 @@ import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.commands.AbstractCommand;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 

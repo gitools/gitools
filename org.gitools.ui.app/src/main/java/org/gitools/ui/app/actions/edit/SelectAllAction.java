@@ -22,9 +22,9 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

@@ -24,7 +24,7 @@ package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

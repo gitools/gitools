@@ -22,7 +22,7 @@
 package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.platform.os.OSProperties;
 

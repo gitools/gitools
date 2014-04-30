@@ -24,10 +24,10 @@ package org.gitools.ui.app.actions.data;
 import com.google.common.collect.Iterables;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.dialog.BookmarkEditPage;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.wizard.PageDialog;
 
 import java.awt.event.ActionEvent;

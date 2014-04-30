@@ -25,12 +25,12 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
 import javax.swing.*;

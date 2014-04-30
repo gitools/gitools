@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.scale;
 
-import org.gitools.ui.app.wizard.common.SaveFilePage;
+import org.gitools.ui.core.pages.common.SaveFilePage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.NumericColorScale;

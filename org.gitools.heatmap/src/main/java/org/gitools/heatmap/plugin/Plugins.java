@@ -44,19 +44,19 @@ public class Plugins extends Model {
 
     public Plugins() {
         this.plugins = new ArrayList<>();
-        //TODO: OSGI LOAD
-        plugins.add(new SelectionPropertiesPlugin("SelectionProperties"));
+        //TODO: INJECT
+        plugins.add(new SelectionPropertiesPlugin());
     }
 
 
-    public void add(AbstractPlugin b) {
+    public void add(AbstractPlugin plugin) {
         for (AbstractPlugin existing : plugins) {
-            if (existing.getName().equals(b.getName())) {
+            if (existing.getName().equals(plugin.getName())) {
                 plugins.remove(existing);
                 break;
             }
         }
-        plugins.add(b);
+        plugins.add(plugin);
         Collections.sort(plugins, new Comparator<AbstractPlugin>() {
             @Override
             public int compare(AbstractPlugin o1, AbstractPlugin o2) {
@@ -103,10 +103,10 @@ public class Plugins extends Model {
     }
 
 
-    public <T> List<T> filter(Class<T> pluginClass) {
+    public <T extends IPlugin> List<T> filter(Class<T> pluginClass) {
         List<T> filtered = new ArrayList<>();
         for (AbstractPlugin p : this.plugins) {
-            if (pluginClass.isInstance(p)) {
+            if (pluginClass.isAssignableFrom(p.getClass())) {
                 filtered.add((T) p);
             }
         }

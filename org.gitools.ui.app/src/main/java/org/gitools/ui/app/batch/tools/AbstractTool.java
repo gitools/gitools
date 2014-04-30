@@ -22,7 +22,7 @@
 package org.gitools.ui.app.batch.tools;
 
 import org.gitools.ui.app.commands.Command;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.kohsuke.args4j.CmdLineException;

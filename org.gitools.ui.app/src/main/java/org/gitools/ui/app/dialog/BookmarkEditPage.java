@@ -24,7 +24,7 @@ package org.gitools.ui.app.dialog;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

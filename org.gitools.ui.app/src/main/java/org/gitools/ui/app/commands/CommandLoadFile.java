@@ -58,9 +58,9 @@ import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.genomespace.GsResourceLocator;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 
 import javax.swing.*;

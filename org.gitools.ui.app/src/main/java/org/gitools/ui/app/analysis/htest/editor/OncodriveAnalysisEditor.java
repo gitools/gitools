@@ -26,7 +26,6 @@ import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.platform.Application;
 
 public class OncodriveAnalysisEditor extends AbstractHtestAnalysisEditor<OncodriveAnalysis> {
 

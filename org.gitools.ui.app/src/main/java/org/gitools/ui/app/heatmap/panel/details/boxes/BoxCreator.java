@@ -24,6 +24,7 @@ package org.gitools.ui.app.heatmap.panel.details.boxes;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.heatmap.plugin.SelectionPropertiesPlugin;
+import org.gitools.ui.core.components.boxes.Box;
 
 import java.util.ArrayList;
 

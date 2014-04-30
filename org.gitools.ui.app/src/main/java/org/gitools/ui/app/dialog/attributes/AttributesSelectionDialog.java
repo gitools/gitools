@@ -22,8 +22,8 @@
 package org.gitools.ui.app.dialog.attributes;
 
 import org.gitools.ui.app.dialog.ListDialog;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChooserUtils;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 
 import javax.swing.event.ListDataEvent;

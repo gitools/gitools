@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.actions.file;
 
-import org.gitools.ui.app.actions.AbstractAction;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 

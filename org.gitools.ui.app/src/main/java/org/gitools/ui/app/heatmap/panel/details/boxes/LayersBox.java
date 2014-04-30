@@ -27,7 +27,8 @@ import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
-import org.gitools.ui.platform.actions.ActionSet;
+import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.ui.core.actions.ActionSet;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

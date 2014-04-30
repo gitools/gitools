@@ -29,7 +29,7 @@ import org.gitools.ui.app.actions.analysis.AbstractAnalysisAction;
 import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.OncodriveAnalysisWizard;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.awt.event.KeyEvent;
 

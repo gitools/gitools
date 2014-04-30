@@ -24,8 +24,8 @@ package org.gitools.ui.app.actions.data;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 

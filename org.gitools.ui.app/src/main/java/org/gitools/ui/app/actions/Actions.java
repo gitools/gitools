@@ -21,14 +21,15 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.plugins.mutex.actions.SortByMutualExclusionAction;
 import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.actions.file.*;
-import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
-import org.gitools.ui.app.imageviewer.HeatmapCreateImageAction;
-import org.gitools.ui.platform.actions.ActionManager;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapCreateImageAction;
+import org.gitools.ui.core.actions.ActionManager;
+import org.gitools.ui.core.actions.BaseAction;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;

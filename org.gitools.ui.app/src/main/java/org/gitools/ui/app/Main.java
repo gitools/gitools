@@ -32,12 +32,16 @@ import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
+import org.gitools.ui.app.actions.MenuActionSet;
+import org.gitools.ui.app.actions.ToolBarActionSet;
 import org.gitools.ui.app.actions.help.GitoolsSatsSection;
 import org.gitools.ui.app.batch.CommandExecutor;
 import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.app.welcome.WelcomeEditor;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.Tips;
@@ -145,8 +149,19 @@ public class Main {
             public void run() {
 
                 // Launch frame
-                Application.get().start();
+                Application app = Application.get();
+                app.setJMenuBar(MenuActionSet.INSTANCE.createMenuBar());
+                app.setToolBar(ToolBarActionSet.INSTANCE.createToolBar());
+                Application.get().addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Actions.exitAction.actionPerformed(null);
+                    }
+                });
+                app.initApplication();
 
+                app.addEditor(new WelcomeEditor());
+                app.start();
 
                 if (args.length > 0) {
 

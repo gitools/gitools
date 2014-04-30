@@ -22,7 +22,7 @@
 package org.gitools.ui.app.analysis.wizard;
 
 import org.gitools.resource.Property;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 

@@ -22,9 +22,8 @@
 package org.gitools.ui.app.analysis.clustering.visualization;
 
 import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import javax.swing.*;
 import java.awt.*;

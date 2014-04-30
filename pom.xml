@@ -48,6 +48,8 @@
         <module>org.gitools.matrix</module>
         <module>org.gitools.resource</module>
         <module>org.gitools.heatmap</module>
+        <module>org.gitools.plugins.mutex</module>
+        <module>org.gitools.ui.core</module>
     </modules>
 
     <properties>

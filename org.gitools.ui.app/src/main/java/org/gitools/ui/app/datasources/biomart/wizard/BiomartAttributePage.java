@@ -25,9 +25,9 @@ import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.panel.AttributesTreeModel;
 import org.gitools.ui.app.datasources.biomart.panel.AttributesTreeModel.AttributeWrapper;
-import org.gitools.ui.app.wizard.common.FilteredTreePage;
-import org.gitools.ui.app.wizard.common.FilteredTreePanel;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.pages.common.FilteredTreePage;
+import org.gitools.ui.core.pages.common.FilteredTreePanel;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.dialog.MessageStatus;
 

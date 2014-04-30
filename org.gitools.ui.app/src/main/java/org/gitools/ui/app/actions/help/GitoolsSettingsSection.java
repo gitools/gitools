@@ -23,7 +23,7 @@ package org.gitools.ui.app.actions.help;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.PropertyAdapter;
-import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.formatter.IntegerFormat;
 

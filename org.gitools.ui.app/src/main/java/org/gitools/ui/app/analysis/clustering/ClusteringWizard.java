@@ -28,7 +28,7 @@ import org.gitools.analysis.clustering.kmeans.KMeansPlusPlusMethod;
 import org.gitools.analysis.clustering.MatrixClusteringData;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;

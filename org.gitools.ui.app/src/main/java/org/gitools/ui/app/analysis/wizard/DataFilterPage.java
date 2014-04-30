@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.analysis.wizard;
 
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.utils.FileChooserUtils;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

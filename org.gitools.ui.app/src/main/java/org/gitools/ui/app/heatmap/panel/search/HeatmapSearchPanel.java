@@ -25,7 +25,7 @@ import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
-import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.DocumentChangeListener;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;

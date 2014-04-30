@@ -25,6 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 

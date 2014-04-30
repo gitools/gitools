@@ -22,7 +22,7 @@
 package org.gitools.ui.app.datasources.kegg.wizard;
 
 import org.gitools.datasources.modules.importer.ModulesImporter;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.IconUtils;
 

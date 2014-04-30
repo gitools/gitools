@@ -27,12 +27,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlugin {
 
-
-    public SelectionPropertiesPlugin(String name) {
-        super(name);
-    }
+    public static String NAME = "SelectionProperties";
 
     public SelectionPropertiesPlugin() {
+        super(NAME);
     }
 
     @Override

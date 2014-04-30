@@ -22,7 +22,7 @@
 package org.gitools.ui.app.actions.help;
 
 import com.jgoodies.binding.PresentationModel;
-import org.gitools.ui.app.settings.Settings;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;

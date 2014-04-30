@@ -21,11 +21,9 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.app.actions.AbstractAction;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.dialog.TipsDialog;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.Application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

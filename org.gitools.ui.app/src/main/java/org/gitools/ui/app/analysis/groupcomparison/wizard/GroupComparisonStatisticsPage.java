@@ -25,7 +25,7 @@ import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUt
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
 import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;

@@ -25,7 +25,7 @@ import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;

@@ -22,8 +22,8 @@
 package org.gitools.ui.app.dialog;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.os.OSProperties;
 import org.gitools.ui.platform.panel.TemplatePanel;

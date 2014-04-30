@@ -23,11 +23,11 @@ package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.app.wizard.common.PatternSourcePage;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.core.pages.common.PatternSourcePage;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;

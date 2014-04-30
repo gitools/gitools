@@ -28,11 +28,11 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.EditorsPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

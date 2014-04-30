@@ -28,10 +28,10 @@ import org.gitools.ui.app.actions.data.GroupSelectionAction;
 import org.gitools.ui.app.actions.data.HideSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
 import org.gitools.ui.app.actions.edit.*;
-import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
-import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.actions.PopupSectionTitleAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
+import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.core.actions.PopupSectionTitleAction;
 
 public class PopupMenuActions {
 

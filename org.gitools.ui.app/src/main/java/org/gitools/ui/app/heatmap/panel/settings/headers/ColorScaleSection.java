@@ -29,7 +29,7 @@ import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanels;
-import org.gitools.ui.app.settings.decorators.SaveDecoratorDialog;
+import org.gitools.ui.app.decorators.SaveDecoratorDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;

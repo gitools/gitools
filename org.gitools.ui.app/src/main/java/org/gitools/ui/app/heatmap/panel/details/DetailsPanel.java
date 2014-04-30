@@ -27,7 +27,8 @@ import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.resource.Resource;
-import org.gitools.ui.app.heatmap.panel.details.boxes.Box;
+import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.app.heatmap.panel.details.boxes.*;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.jdesktop.swingx.JXTaskPaneContainer;
@@ -114,7 +115,6 @@ public class DetailsPanel extends JXTaskPaneContainer {
                 registerBox(b);
             }
         }
-
     }
 
     public void registerBox(Box... newBoxes) {

@@ -24,7 +24,7 @@ package org.gitools.ui.app.wizard.add.data;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.DataIntegrationCriteria;
-import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
 

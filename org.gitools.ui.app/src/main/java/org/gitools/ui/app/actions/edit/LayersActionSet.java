@@ -34,8 +34,8 @@ import java.awt.event.KeyEvent;
 
 public class LayersActionSet extends HeatmapDynamicActionSet {
 
-    public LayersActionSet() {
-        super("Layers", KeyEvent.VK_L);
+    public LayersActionSet(String name) {
+        super(name, KeyEvent.VK_L);
     }
 
     @Override

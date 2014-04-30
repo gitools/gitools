@@ -31,8 +31,8 @@ import java.awt.event.KeyEvent;
 
 public class RowsActionSet extends HeatmapDynamicActionSet {
 
-    public RowsActionSet() {
-        super("Rows", KeyEvent.VK_R);
+    public RowsActionSet(String name) {
+        super(name, KeyEvent.VK_R);
     }
 
     @Override

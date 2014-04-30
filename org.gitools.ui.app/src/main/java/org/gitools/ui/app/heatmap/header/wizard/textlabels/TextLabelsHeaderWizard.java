@@ -24,7 +24,7 @@ package org.gitools.ui.app.heatmap.header.wizard.textlabels;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.app.heatmap.header.wizard.TextLabelsConfigPage;
-import org.gitools.ui.app.wizard.common.PatternSourcePage;
+import org.gitools.ui.core.pages.common.PatternSourcePage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 public class TextLabelsHeaderWizard extends AbstractWizard {

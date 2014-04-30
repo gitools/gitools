@@ -22,7 +22,7 @@
 package org.gitools.ui.app.actions;
 
 import org.gitools.ui.app.actions.help.*;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.core.actions.BaseAction;
 
 final class HelpActions {
 

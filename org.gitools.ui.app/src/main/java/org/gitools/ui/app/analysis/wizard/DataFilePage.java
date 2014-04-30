@@ -26,7 +26,7 @@ import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CmatrixMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 

@@ -29,7 +29,7 @@ import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
 import org.gitools.ui.app.analysis.wizard.ModulesPage;
