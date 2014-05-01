@@ -21,20 +21,23 @@
  */
 package org.gitools.plugins.mutex.ui;
 
-import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.ActionSet;
-import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.ui.platform.wizard.PageDialog;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.concurrent.ScheduledFuture;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MutualExclusiveBox extends DetailsBox {
 
-    private ScheduledFuture<?> updating = null;
+
+    private final MutualExclusivePlugin plugin;
 
     /**
      * @param title   Optional title of the details table
@@ -42,23 +45,12 @@ public class MutualExclusiveBox extends DetailsBox {
      */
     public MutualExclusiveBox(String title, ActionSet actions, Heatmap heatmap) {
         super(title, actions, heatmap);
+        this.plugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.NAME);
     }
 
     @Override
     public void registerListeners() {
-        getHeatmap().getRows().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update();
-            }
-        });
-        getHeatmap().getColumns().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update();
-            }
-        });
-        getHeatmap().getLayers().addPropertyChangeListener(new PropertyChangeListener() {
+        plugin.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 update();
@@ -81,29 +73,30 @@ public class MutualExclusiveBox extends DetailsBox {
             return;
         }
 
-        if (updating != null && !updating.isDone()) {
-            updating.cancel(true);
-            //return;
+        final List<DetailsDecoration> details = new ArrayList<>();
+
+        for (String s : plugin.getKeys()) {
+            DetailsDecoration d = new DetailsDecoration(s, Double.toString(plugin.getResult(s).getTwoTailPvalue()));
+            d.setReference(s);
+            details.add(d);
         }
 
-    }
-
-    private String valueString(Double value, ITextFormatter longFormatter) {
-        if (value == null) {
-            return "None";
-        }
-
-        return longFormatter.format(value);
     }
 
     @Override
     public boolean isVisible() {
-        return (getHeatmap().getRows().getSelected().size() > 0 ||
-                getHeatmap().getColumns().getSelected().size() > 0);
+        return (plugin.isActive() && plugin.isNotEmpty());
     }
 
     @Override
     protected void onMouseDblClick(DetailsDecoration detail) {
-
+        String key = (String) detail.getReference();
+        MutualExclusiveResultPage page =
+                new MutualExclusiveResultPage(getHeatmap(),
+                        plugin.getResult(key),
+                        plugin.getBookmark(key));
+        PageDialog dlg = new PageDialog(Application.get(), page);
+        dlg.setVisible(true);
     }
 }
+

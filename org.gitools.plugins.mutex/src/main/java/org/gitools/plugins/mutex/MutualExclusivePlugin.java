@@ -27,6 +27,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugins.AbstractPlugin;
 import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.plugins.mutex.ui.MutualExclusiveBox;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.plugins.IActionPlugin;
 import org.gitools.ui.core.plugins.IBoxPlugin;
