@@ -1,6 +1,6 @@
 /*
  * #%L
- * org.gitools.ui.app
+ * org.gitools.heatmap
  * %%
  * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,29 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.heatmap.panel.details.boxes;
+package org.gitools.ui.core.plugins;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.plugin.IBoxPlugin;
-import org.gitools.heatmap.plugin.SelectionPropertiesPlugin;
+import org.gitools.heatmap.plugins.IPlugin;
+import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.ui.core.components.boxes.Box;
 
-import java.util.ArrayList;
+public interface IBoxPlugin extends IPlugin {
 
+    public static PluginAccess ACCESSES =
+            new PluginAccess(PluginAccess.DETAILS_PANEL);
 
-public class BoxCreator {
+    public Box[] getBoxes(Heatmap heatmap);
 
-    Heatmap heatmap;
-
-    public BoxCreator(Heatmap heatmap) {
-        this.heatmap = heatmap;
-    }
-
-    public Box[] create(IBoxPlugin p) {
-        ArrayList<Box> boxlist = new ArrayList<>();
-        if (p instanceof SelectionPropertiesPlugin) {
-            boxlist.add(new SelectionBox("Selection", null, heatmap));
-        }
-        return boxlist.toArray(new Box[boxlist.size()]);
-    }
 }

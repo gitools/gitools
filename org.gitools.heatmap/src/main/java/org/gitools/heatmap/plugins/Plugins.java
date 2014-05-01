@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.heatmap.plugin;
+package org.gitools.heatmap.plugins;
 
 
 import com.jgoodies.binding.beans.Model;

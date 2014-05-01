@@ -23,11 +23,13 @@ package org.gitools.plugins.mutex;
 
 
 import org.gitools.heatmap.Bookmark;
-import org.gitools.heatmap.plugin.AbstractPlugin;
-import org.gitools.heatmap.plugin.IActionPlugin;
-import org.gitools.heatmap.plugin.IBoxPlugin;
-import org.gitools.heatmap.plugin.PluginAccess;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.plugins.AbstractPlugin;
+import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.ui.core.components.boxes.Box;
+import org.gitools.ui.core.plugins.IActionPlugin;
+import org.gitools.ui.core.plugins.IBoxPlugin;
 
 import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
@@ -95,5 +97,10 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
 
     public boolean isNotEmpty() {
         return results.size() > 0;
+    }
+
+    @Override
+    public Box[] getBoxes(Heatmap heatmap) {
+        return new Box[]{new MutualExclusiveBox("Mutual exclusion results", null, heatmap)};
     }
 }

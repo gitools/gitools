@@ -25,12 +25,13 @@ import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.Bindings;
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.resource.Resource;
-import org.gitools.ui.core.components.boxes.DetailsBox;
-import org.gitools.ui.core.components.boxes.Box;
-import org.gitools.ui.app.heatmap.panel.details.boxes.*;
+import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.LayersBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
+import org.gitools.ui.core.components.boxes.Box;
+import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.ui.core.plugins.IBoxPlugin;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
@@ -106,13 +107,13 @@ public class DetailsPanel extends JXTaskPaneContainer {
     }
 
     private void initPluginBoxes(Heatmap heatmap) {
-        BoxCreator boxCreator = new BoxCreator(heatmap);
 
         List<IBoxPlugin> boxPlugins = heatmap.getPluggedBoxes().filter(IBoxPlugin.class);
         for (IBoxPlugin p : boxPlugins) {
             if (p.isActive()) {
-                Box[] b = boxCreator.create(p);
-                registerBox(b);
+                for (Box b : p.getBoxes(heatmap)) {
+                    registerBox(b);
+                }
             }
         }
     }

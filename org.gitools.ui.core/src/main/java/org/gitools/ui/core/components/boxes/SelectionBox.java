@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.heatmap.panel.details.boxes;
+package org.gitools.ui.core.components.boxes;
 
 import com.google.common.collect.Sets;
 import org.gitools.api.matrix.IMatrix;
@@ -28,7 +28,6 @@ import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.ui.core.components.boxes.DetailsBox;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.utils.aggregation.StdDevAggregator;
 import org.gitools.utils.formatter.ITextFormatter;

@@ -19,7 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.heatmap.plugin;
+package org.gitools.ui.core.plugins;
+
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.plugins.AbstractPlugin;
+import org.gitools.heatmap.plugins.PluginAccess;
+import org.gitools.ui.core.components.boxes.Box;
+import org.gitools.ui.core.components.boxes.SelectionBox;
 
 import javax.enterprise.context.Dependent;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,6 +35,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @Dependent
 public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlugin {
 
+    //TODO module for plugin
     public static String NAME = "SelectionProperties";
 
     public SelectionPropertiesPlugin() {
@@ -47,8 +54,12 @@ public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlu
 
     @Override
     public PluginAccess getPluginAccess() {
-        return IBoxPlugin.ACCESSES;
+        return ACCESSES;
     }
 
 
+    @Override
+    public Box[] getBoxes(Heatmap heatmap) {
+        return new Box[]{new SelectionBox("Selection details", null, heatmap)};
+    }
 }

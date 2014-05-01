@@ -19,15 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.heatmap.plugin;
+package org.gitools.heatmap.plugins;
 
 
-public interface IActionPlugin extends IPlugin {
+public interface IPlugin {
 
-    public static PluginAccess ACCESSES =
-            new PluginAccess(PluginAccess.GITOOLS_MENU);
+    public String getName();
 
-    //public void getMenuScopePlugin(String ActionScope, String ActionGroup);
+    public String getVersion();
 
-    //public void addMenuActions(ActionSet)
+    public String getOldestCompatibleVersion();
+
+    public boolean isCompatibleVersion(String version);
+
+    public boolean isActive();
+
+    public void setActive(boolean active);
+
+    public PluginAccess getPluginAccess();
 }

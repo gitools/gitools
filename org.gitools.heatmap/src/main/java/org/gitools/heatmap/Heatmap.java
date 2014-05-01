@@ -26,7 +26,7 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.heatmap.plugin.Plugins;
+import org.gitools.heatmap.plugins.Plugins;
 import org.gitools.matrix.model.MatrixPosition;
 import org.gitools.resource.Resource;
 
