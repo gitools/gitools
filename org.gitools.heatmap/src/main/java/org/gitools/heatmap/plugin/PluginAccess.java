@@ -40,6 +40,7 @@ public class PluginAccess {
     static {
         availableAccesses.add(DETAILS_PANEL);
         availableAccesses.add(GITOOLS_MENU);
+        availableAccesses.add(HEATMAP);
     }
 
     public PluginAccess(String... access) {

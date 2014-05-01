@@ -27,11 +27,9 @@ import com.jgoodies.binding.beans.Model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({SelectionPropertiesPlugin.class})
 public abstract class AbstractPlugin extends Model implements Serializable, IPlugin {
 
     private static final String PLUGIN_ACTIVE = "plugin_active";

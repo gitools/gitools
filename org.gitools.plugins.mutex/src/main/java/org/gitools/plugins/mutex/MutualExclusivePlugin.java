@@ -29,17 +29,25 @@ import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.heatmap.plugin.PluginAccess;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin, IActionPlugin {
 
+    public static final String PROPERTY_NAME = "mutex";
     public static String NAME = "mutual-exclusive-plugin";
 
     private Map<String, MutualExclusiveResult> results;
     private Map<String, Bookmark> bookmarks;
+    private List<String> keys;
 
     public MutualExclusivePlugin() {
         super(NAME);
+        results = new HashMap<>();
+        bookmarks = new HashMap<>();
+        keys = new ArrayList<>();
     }
 
     @Override
@@ -52,6 +60,11 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public void addResult(MutualExclusiveResult result, Bookmark bookmark) {
         results.put(bookmark.getName(), result);
         bookmarks.put(bookmark.getName(), bookmark);
+        firePropertyChange(PROPERTY_NAME, "", "");
+    }
+
+    public List<String> getKeys() {
+        return keys;
     }
 
     public Bookmark getBookmark(String name) {
@@ -65,8 +78,10 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public void removeResult(String name) {
         bookmarks.remove(name);
         results.remove(name);
+        firePropertyChange(PROPERTY_NAME, "", "");
     }
 
-
-
+    public boolean isNotEmpty() {
+        return results.size() > 0;
+    }
 }

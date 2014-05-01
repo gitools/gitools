@@ -24,6 +24,10 @@ package org.gitools.heatmap.plugin;
 
 import com.jgoodies.binding.beans.Model;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -32,6 +36,11 @@ import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Plugins extends Model {
+
+    @XmlTransient
+    @Inject
+    @Any
+    private Instance<IPlugin> pluginIterator;
 
     @XmlTransient
     private static final String PROPERTY_CONTENTS = "pluginscontent";
@@ -44,12 +53,18 @@ public class Plugins extends Model {
 
     public Plugins() {
         this.plugins = new ArrayList<>();
-        //TODO: INJECT
-        plugins.add(new SelectionPropertiesPlugin());
     }
 
+    @PostConstruct
+    public void init() {
 
-    public void add(AbstractPlugin plugin) {
+        for (IPlugin plugin : pluginIterator) {
+            if (plugin instanceof AbstractPlugin)
+                register((AbstractPlugin) plugin);
+        }
+    }
+
+    public void register(AbstractPlugin plugin) {
         for (AbstractPlugin existing : plugins) {
             if (existing.getName().equals(plugin.getName())) {
                 plugins.remove(existing);
