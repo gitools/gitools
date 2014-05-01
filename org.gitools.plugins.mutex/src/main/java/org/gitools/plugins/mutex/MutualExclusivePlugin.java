@@ -29,11 +29,13 @@ import org.gitools.heatmap.plugin.IBoxPlugin;
 import org.gitools.heatmap.plugin.PluginAccess;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 
+import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Dependent
 public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin, IActionPlugin {
 
     public static final String PROPERTY_NAME = "mutex";
@@ -48,6 +50,16 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
         results = new HashMap<>();
         bookmarks = new HashMap<>();
         keys = new ArrayList<>();
+    }
+
+    @Override
+    public String getVersion() {
+        return "1.0.0";
+    }
+
+    @Override
+    public String getOldestCompatibleVersion() {
+        return "0.0.99";
     }
 
     @Override

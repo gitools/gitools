@@ -26,6 +26,12 @@ public interface IPlugin {
 
     public String getName();
 
+    public String getVersion();
+
+    public String getOldestCompatibleVersion();
+
+    public boolean isCompatibleVersion(String version);
+
     public boolean isActive();
 
     public void setActive(boolean active);

@@ -25,6 +25,7 @@ package org.gitools.heatmap.plugin;
 import com.jgoodies.binding.beans.Model;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@Dependent
 public class Plugins extends Model {
 
     @XmlTransient

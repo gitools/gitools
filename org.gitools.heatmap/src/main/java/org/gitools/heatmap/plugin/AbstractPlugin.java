@@ -38,10 +38,14 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     private String name;
 
     @XmlElement
+    private String version;
+
+    @XmlElement
     private boolean active = true;
 
     public AbstractPlugin(String name) {
         this.name = name;
+        this.name = getVersion();
     }
 
 
@@ -67,7 +71,56 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     }
 
     @Override
+    public boolean isCompatibleVersion(String version) {
+
+        SemanticVersion v = new SemanticVersion(version);
+        SemanticVersion old = new SemanticVersion(getOldestCompatibleVersion());
+
+        return !old.isNewerThan(v);
+
+    }
+
+    @Override
     public String toString() {
         return name;
+    }
+
+    private class SemanticVersion {
+
+        int major;
+        int minor;
+        int bug;
+
+        public SemanticVersion(String version) {
+            String[] parts = version.split("\\.");
+            major = Integer.valueOf(parts[0]);
+            minor = Integer.valueOf(parts[1]);
+            bug = Integer.valueOf(parts[2]);
+        }
+
+        public int getMajor() {
+            return major;
+        }
+
+        public int getMinor() {
+            return minor;
+        }
+
+        public int getBug() {
+            return bug;
+        }
+
+        public boolean isNewerThan(SemanticVersion otherVersion) {
+
+            if (this.major > otherVersion.getMajor()) {
+                return true;
+            } else if (this.minor > otherVersion.getMinor()) {
+                return true;
+            } else if (this.bug > otherVersion.getBug()) {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

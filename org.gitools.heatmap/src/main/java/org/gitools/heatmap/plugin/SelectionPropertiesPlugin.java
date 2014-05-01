@@ -21,16 +21,28 @@
  */
 package org.gitools.heatmap.plugin;
 
+import javax.enterprise.context.Dependent;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@Dependent
 public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlugin {
 
     public static String NAME = "SelectionProperties";
 
     public SelectionPropertiesPlugin() {
         super(NAME);
+    }
+
+    @Override
+    public String getVersion() {
+        return "1.0.0";
+    }
+
+    @Override
+    public String getOldestCompatibleVersion() {
+        return "1.0.0";
     }
 
     @Override
