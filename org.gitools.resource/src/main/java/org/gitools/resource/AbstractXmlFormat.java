@@ -135,7 +135,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             beforeWrite(null, resourceLocator, resource, marshaller, monitor);
 
             // Marshal to a temporal file to create dependencies
-            File tmpFile = File.createTempFile("gitools - " + resourceLocator.getName(), ".tmp" );
+            File tmpFile = File.createTempFile("gitools-" + resourceLocator.getName(), ".tmp");
             marshaller.marshal(resource, tmpFile);
 
             // Write the XML
