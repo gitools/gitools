@@ -38,11 +38,8 @@ public class Plugins extends Model {
     @XmlTransient
     private static final String PROPERTY_CONTENTS = "pluginscontent";
 
-    //@XmlElement(name = "plugin")
-    //@XmlAnyElement
-    //@XmlElementWrapper not neccesary
-    @XmlElementRef()
-    private List<AbstractPlugin> plugins;
+    @XmlAnyElement(lax = true)
+    private List<IPlugin> plugins;
 
     @XmlTransient
     private Map<String, Integer> nameMap;
@@ -56,7 +53,7 @@ public class Plugins extends Model {
         }
     }
 
-    public List<AbstractPlugin> getPlugins() {
+    public List<IPlugin> getPlugins() {
         return plugins;
     }
 
@@ -77,7 +74,7 @@ public class Plugins extends Model {
                 break;
             }
         }
-        plugins.add((AbstractPlugin) plugin);
+        plugins.add(plugin);
         Collections.sort(plugins, new Comparator<IPlugin>() {
             @Override
             public int compare(IPlugin o1, IPlugin o2) {
