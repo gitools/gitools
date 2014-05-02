@@ -23,6 +23,7 @@ package org.gitools.cli;
 
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.persistence.IPersistenceManager;
+import org.gitools.heatmap.plugins.PluginManager;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -38,6 +39,7 @@ public class Main {
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(IPersistenceManager.class).get());
+        ApplicationContext.setPluginManger(container.instance().select(PluginManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         //TODO
