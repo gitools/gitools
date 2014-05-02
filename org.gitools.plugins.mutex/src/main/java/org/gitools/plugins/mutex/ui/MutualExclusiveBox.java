@@ -44,9 +44,9 @@ public class MutualExclusiveBox extends DetailsBox {
      * @param title   Optional title of the details table
      * @param actions
      */
-    public MutualExclusiveBox(String title, ActionSet actions, Heatmap heatmap) {
+    public MutualExclusiveBox(String title, ActionSet actions, Heatmap heatmap, MutualExclusivePlugin plugin) {
         super(title, actions, heatmap);
-        this.plugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+        this.plugin = plugin;
     }
 
 
@@ -77,17 +77,18 @@ public class MutualExclusiveBox extends DetailsBox {
 
         final List<DetailsDecoration> details = new ArrayList<>();
 
-        for (String s : plugin.getKeys()) {
-            DetailsDecoration d = new DetailsDecoration(s, Double.toString(plugin.getResult(s).getTwoTailPvalue()));
-            d.setReference(s);
+        for (String key : plugin.getKeys()) {
+            DetailsDecoration d = new DetailsDecoration(key, Double.toString(plugin.getResult(key).getTwoTailPvalue()));
+            d.setReference(key);
             details.add(d);
         }
 
+        MutualExclusiveBox.this.draw(details);
     }
 
     @Override
     public boolean isVisible() {
-        return (plugin.isActive() && plugin.isNotEmpty());
+        return (plugin.isEnabled() && plugin.isNotEmpty());
     }
 
     @Override

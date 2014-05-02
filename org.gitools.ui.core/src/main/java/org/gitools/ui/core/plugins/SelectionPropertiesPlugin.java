@@ -21,22 +21,22 @@
  */
 package org.gitools.ui.core.plugins;
 
+import org.gitools.api.plugins.PluginAccess;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugins.AbstractPlugin;
-import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.components.boxes.SelectionBox;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@Dependent
+@ApplicationScoped
 public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlugin {
 
     //TODO module for plugin
-    public static String NAME = "SelectionProperties";
+    public static final String NAME = "SelectionProperties";
 
     public SelectionPropertiesPlugin() {
         super(NAME);

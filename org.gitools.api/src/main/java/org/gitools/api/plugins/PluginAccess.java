@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.heatmap.plugins;
+package org.gitools.api.plugins;
 
 
 import java.util.ArrayList;

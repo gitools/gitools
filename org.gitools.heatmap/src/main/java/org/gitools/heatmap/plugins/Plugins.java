@@ -23,60 +23,61 @@ package org.gitools.heatmap.plugins;
 
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.ApplicationContext;
+import org.gitools.api.plugins.IPlugin;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-@Dependent
+//@XmlAccessorType(XmlAccessType.FIELD)
+@XmlTransient
 public class Plugins extends Model {
 
-    @XmlTransient
-    @Inject
-    @Any
-    private Instance<IPlugin> pluginIterator;
 
     @XmlTransient
     private static final String PROPERTY_CONTENTS = "pluginscontent";
 
     @XmlElement(name = "plugin")
-    private List<AbstractPlugin> plugins;
+    private List<IPlugin> plugins;
 
     @XmlTransient
     private Map<String, Integer> nameMap;
 
     public Plugins() {
         this.plugins = new ArrayList<>();
-    }
-
-    @PostConstruct
-    public void init() {
-
-        for (IPlugin plugin : pluginIterator) {
-            if (plugin instanceof AbstractPlugin)
-                register((AbstractPlugin) plugin);
+        for (IPlugin plugin : ApplicationContext.getPluginManger().getPlugins()) {
+            if (plugin.isEnabled()) {
+                register(plugin.createNewInstance());
+            }
         }
     }
 
-    public void register(AbstractPlugin plugin) {
-        for (AbstractPlugin existing : plugins) {
+    public List<IPlugin> getAll() {
+        return plugins;
+    }
+
+    public <T extends IPlugin> List<T> filter(Class<T> pluginClass) {
+        List<T> filtered = new ArrayList<>();
+        for (IPlugin p : this.plugins) {
+            if (p.isAssginableTo(pluginClass)) {
+                filtered.add((T) p);
+            }
+        }
+        return filtered;
+    }
+
+    public void register(IPlugin plugin) {
+        for (IPlugin existing : plugins) {
             if (existing.getName().equals(plugin.getName())) {
                 plugins.remove(existing);
                 break;
             }
         }
         plugins.add(plugin);
-        Collections.sort(plugins, new Comparator<AbstractPlugin>() {
+        Collections.sort(plugins, new Comparator<IPlugin>() {
             @Override
-            public int compare(AbstractPlugin o1, AbstractPlugin o2) {
+            public int compare(IPlugin o1, IPlugin o2) {
                 return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
             }
         });
@@ -85,18 +86,19 @@ public class Plugins extends Model {
 
     }
 
+
     private void updateMap() {
         if (nameMap == null) {
             nameMap = new HashMap<>();
         }
         nameMap.clear();
         Integer counter = 0;
-        for (AbstractPlugin p : plugins) {
+        for (IPlugin p : plugins) {
             nameMap.put(p.getName(), counter++);
         }
     }
 
-    public AbstractPlugin get(String name) {
+    public IPlugin get(String name) {
         if (nameMap == null) {
             updateMap();
         }
@@ -104,29 +106,5 @@ public class Plugins extends Model {
             return null;
         }
         return plugins.get(nameMap.get(name));
-    }
-
-    public List<AbstractPlugin> getAll() {
-        return plugins;
-    }
-
-    private boolean nameOccupied(String name) {
-        for (AbstractPlugin p : plugins) {
-            if (p.getName().toLowerCase().equals(name.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public <T extends IPlugin> List<T> filter(Class<T> pluginClass) {
-        List<T> filtered = new ArrayList<>();
-        for (AbstractPlugin p : this.plugins) {
-            if (pluginClass.isAssignableFrom(p.getClass())) {
-                filtered.add((T) p);
-            }
-        }
-        return filtered;
     }
 }

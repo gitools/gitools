@@ -110,7 +110,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         List<IBoxPlugin> boxPlugins = heatmap.getPluggedBoxes().filter(IBoxPlugin.class);
         for (IBoxPlugin p : boxPlugins) {
-            if (p.isActive()) {
+            if (p.isEnabled()) {
                 for (Box b : p.getBoxes(heatmap)) {
                     registerBox(b);
                 }

@@ -30,6 +30,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
+import org.gitools.heatmap.plugins.PluginManager;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.MenuActionSet;
@@ -39,13 +40,13 @@ import org.gitools.ui.app.batch.CommandExecutor;
 import org.gitools.ui.app.batch.CommandListener;
 import org.gitools.ui.app.dialog.TipsDialog;
 import org.gitools.ui.app.welcome.WelcomeEditor;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.Tips;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.os.SystemInfo;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.jboss.weld.environment.se.StartMain;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -88,6 +89,7 @@ public class Main {
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
+        ApplicationContext.setPluginManger(container.instance().select(PluginManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         setProgressText(progress, "Loading command executor");
@@ -173,7 +175,7 @@ public class Main {
                 } else {
 
                     if (Strings.isNullOrEmpty(Settings.get().getStatisticsConsentmentVersion()) ||
-                        (!Settings.get().isAllowUsageStatistics() && !Application.getAppVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
+                            (!Settings.get().isAllowUsageStatistics() && !Application.getAppVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
 
                         Settings.get().setAllowUsageStatistics(true);
                         JPanel panel = new GitoolsSatsSection(Settings.get()).getPanel();

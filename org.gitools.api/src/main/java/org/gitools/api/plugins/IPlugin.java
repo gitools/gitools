@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.heatmap.plugins;
+package org.gitools.api.plugins;
 
 
 public interface IPlugin {
@@ -32,9 +32,13 @@ public interface IPlugin {
 
     public boolean isCompatibleVersion(String version);
 
-    public boolean isActive();
+    public boolean isEnabled();
 
-    public void setActive(boolean active);
+    public void setEnabled(boolean enabled);
 
     public PluginAccess getPluginAccess();
+
+    public <T extends IPlugin> boolean isAssginableTo(Class<T> pluginClass);
+
+    IPlugin createNewInstance();
 }

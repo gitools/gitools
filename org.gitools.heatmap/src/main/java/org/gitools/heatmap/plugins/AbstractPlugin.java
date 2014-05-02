@@ -23,6 +23,7 @@ package org.gitools.heatmap.plugins;
 
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.plugins.IPlugin;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -32,7 +33,7 @@ import java.io.Serializable;
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class AbstractPlugin extends Model implements Serializable, IPlugin {
 
-    private static final String PLUGIN_ACTIVE = "plugin_active";
+    private static final String PLUGIN_ENABLED = "plugin_active";
 
     @XmlElement
     private String name;
@@ -40,12 +41,10 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     @XmlElement
     private String version;
 
-    @XmlElement
-    private boolean active = true;
 
     public AbstractPlugin(String name) {
         this.name = name;
-        this.name = getVersion();
+        this.version = getVersion();
     }
 
 
@@ -58,16 +57,18 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     }
 
     @Override
-    public boolean isActive() {
-        return active;
+    public boolean isEnabled() {
+        //TODO incorporate in Settings
+        return true;
     }
 
     @Override
-    public void setActive(boolean active) {
-        boolean old = active;
-        this.active = active;
-        firePropertyChange(PLUGIN_ACTIVE, old, active);
-
+    public void setEnabled(boolean enabled) {
+        //TODO incorporate in Settings
+        //boolean old = enabled;
+        //this.enabled = enabled;
+        //firePropertyChange(PLUGIN_ENABLED, enabled, enabled);
+        throw new RuntimeException("Method not supported");
     }
 
     @Override
@@ -122,5 +123,23 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
 
             return false;
         }
+    }
+
+    @Override
+    public <T extends IPlugin> boolean isAssginableTo(Class<T> pluginClass) {
+        Class<? extends AbstractPlugin> c = this.getClass();
+        return pluginClass.isAssignableFrom(c);
+    }
+
+    @Override
+    public IPlugin createNewInstance() {
+        try {
+            return this.getClass().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

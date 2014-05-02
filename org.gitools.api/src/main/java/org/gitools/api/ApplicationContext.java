@@ -23,11 +23,13 @@ package org.gitools.api;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.IPersistenceManager;
+import org.gitools.api.plugins.IPluginManager;
 
 public class ApplicationContext {
 
     private static IPersistenceManager persistenceManager;
     private static IProgressMonitor progressMonitor;
+    private static IPluginManager pluginManger;
 
     public static IPersistenceManager getPersistenceManager() {
         return persistenceManager;
@@ -43,5 +45,13 @@ public class ApplicationContext {
 
     public static void setProgressMonitor(IProgressMonitor progressMonitor) {
         ApplicationContext.progressMonitor = progressMonitor;
+    }
+
+    public static void setPluginManger(IPluginManager pluginManger) {
+        ApplicationContext.pluginManger = pluginManger;
+    }
+
+    public static IPluginManager getPluginManger() {
+        return pluginManger;
     }
 }

@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.core.plugins;
 
+import org.gitools.api.plugins.IPlugin;
+import org.gitools.api.plugins.PluginAccess;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.plugins.IPlugin;
-import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.ui.core.components.boxes.Box;
 
 public interface IBoxPlugin extends IPlugin {

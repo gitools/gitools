@@ -22,23 +22,26 @@
 package org.gitools.plugins.mutex;
 
 
+import org.gitools.api.plugins.PluginAccess;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugins.AbstractPlugin;
-import org.gitools.heatmap.plugins.PluginAccess;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.plugins.mutex.ui.MutualExclusiveBox;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.plugins.IActionPlugin;
 import org.gitools.ui.core.plugins.IBoxPlugin;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Dependent
+@XmlAccessorType(XmlAccessType.FIELD)
+@ApplicationScoped
 public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin, IActionPlugin {
 
     public static final String PROPERTY_NAME = "mutex";
@@ -75,7 +78,8 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public void addResult(MutualExclusiveResult result, Bookmark bookmark) {
         results.put(bookmark.getName(), result);
         bookmarks.put(bookmark.getName(), bookmark);
-        firePropertyChange(PROPERTY_NAME, "", "");
+        keys.add(bookmark.getName());
+        firePropertyChange(PROPERTY_NAME, null, result);
     }
 
     public List<String> getKeys() {
@@ -93,7 +97,8 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public void removeResult(String name) {
         bookmarks.remove(name);
         results.remove(name);
-        firePropertyChange(PROPERTY_NAME, "", "");
+        keys.remove(name);
+        firePropertyChange(PROPERTY_NAME, null, name);
     }
 
     public boolean isNotEmpty() {
@@ -102,6 +107,6 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
 
     @Override
     public Box[] getBoxes(Heatmap heatmap) {
-        return new Box[]{new MutualExclusiveBox("Mutual exclusion results", null, heatmap)};
+        return new Box[]{new MutualExclusiveBox("Mutual exclusion results", null, heatmap, this)};
     }
 }

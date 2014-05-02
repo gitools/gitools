@@ -22,8 +22,8 @@
 package org.gitools.ui.core.plugins;
 
 
-import org.gitools.heatmap.plugins.IPlugin;
-import org.gitools.heatmap.plugins.PluginAccess;
+import org.gitools.api.plugins.IPlugin;
+import org.gitools.api.plugins.PluginAccess;
 
 public interface IActionPlugin extends IPlugin {
 
