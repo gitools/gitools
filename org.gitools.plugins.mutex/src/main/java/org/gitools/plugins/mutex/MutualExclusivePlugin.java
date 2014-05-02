@@ -35,17 +35,23 @@ import org.gitools.ui.core.plugins.IBoxPlugin;
 import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @ApplicationScoped
+@XmlRootElement(name = "mutual-exclusive")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin, IActionPlugin {
 
+    @XmlTransient
     public static final String PROPERTY_NAME = "mutex";
-    public static String NAME = "mutual-exclusive-plugin";
+
+    @XmlTransient
+    public static String NAME = "mutual-exclusive";
 
     private Map<String, MutualExclusiveResult> results;
     private Map<String, Bookmark> bookmarks;

@@ -38,7 +38,7 @@ public interface IPlugin {
 
     public PluginAccess getPluginAccess();
 
-    public <T extends IPlugin> boolean isAssginableTo(Class<T> pluginClass);
+    Class getPluginClass();
 
     IPlugin createNewInstance();
 }

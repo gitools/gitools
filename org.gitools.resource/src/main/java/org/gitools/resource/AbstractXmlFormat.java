@@ -24,6 +24,7 @@ package org.gitools.resource;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.plugins.IPlugin;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
@@ -94,7 +95,12 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         R entity;
 
         try {
-            JAXBContext context = JAXBContext.newInstance(getResourceClass());
+            List<Class> classList = new ArrayList<>();
+            classList.add(getResourceClass());
+            for (IPlugin p : ApplicationContext.getPluginManger().getPlugins()) {
+                classList.add(p.getPluginClass());
+            }
+            JAXBContext context = JAXBContext.newInstance(classList.toArray(new Class[classList.size()]));
 
             Unmarshaller unmarshaller = context.createUnmarshaller();
 
@@ -127,7 +133,13 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
         monitor.begin("Saving " + resourceLocator.getName(), 1);
 
         try {
-            JAXBContext context = JAXBContext.newInstance(getResourceClass());
+
+            List<Class> classList = new ArrayList<>();
+            classList.add(getResourceClass());
+            for (IPlugin p : ApplicationContext.getPluginManger().getPlugins()) {
+                classList.add(p.getPluginClass());
+            }
+            JAXBContext context = JAXBContext.newInstance(classList.toArray(new Class[classList.size()]));
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 

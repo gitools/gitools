@@ -25,14 +25,14 @@ package org.gitools.heatmap.plugins;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.plugins.IPlugin;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
+@XmlRootElement(name = "abstract")
 @XmlAccessorType(XmlAccessType.NONE)
 public abstract class AbstractPlugin extends Model implements Serializable, IPlugin {
 
+    @XmlTransient
     private static final String PLUGIN_ENABLED = "plugin_active";
 
     @XmlElement
@@ -126,9 +126,8 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     }
 
     @Override
-    public <T extends IPlugin> boolean isAssginableTo(Class<T> pluginClass) {
-        Class<? extends AbstractPlugin> c = this.getClass();
-        return pluginClass.isAssignableFrom(c);
+    public Class getPluginClass() {
+        return this.getClass();
     }
 
     @Override

@@ -30,13 +30,17 @@ import org.gitools.ui.core.components.boxes.SelectionBox;
 import javax.enterprise.context.ApplicationScoped;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @ApplicationScoped
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "selection-properties")
 public class SelectionPropertiesPlugin extends AbstractPlugin implements IBoxPlugin {
 
     //TODO module for plugin
-    public static final String NAME = "SelectionProperties";
+    @XmlTransient
+    public static final String NAME = "selection-properties";
 
     public SelectionPropertiesPlugin() {
         super(NAME);

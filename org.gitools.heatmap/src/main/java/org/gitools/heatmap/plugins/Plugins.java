@@ -26,20 +26,23 @@ import com.jgoodies.binding.beans.Model;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.plugins.IPlugin;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.*;
 
-//@XmlAccessorType(XmlAccessType.FIELD)
-@XmlTransient
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(AbstractPlugin.class)
 public class Plugins extends Model {
 
 
     @XmlTransient
     private static final String PROPERTY_CONTENTS = "pluginscontent";
 
-    @XmlElement(name = "plugin")
-    private List<IPlugin> plugins;
+    //@XmlElement(name = "plugin")
+    //@XmlAnyElement
+    //@XmlElementWrapper not neccesary
+    @XmlElementRef()
+    private List<AbstractPlugin> plugins;
 
     @XmlTransient
     private Map<String, Integer> nameMap;
@@ -53,14 +56,14 @@ public class Plugins extends Model {
         }
     }
 
-    public List<IPlugin> getAll() {
+    public List<AbstractPlugin> getPlugins() {
         return plugins;
     }
 
     public <T extends IPlugin> List<T> filter(Class<T> pluginClass) {
         List<T> filtered = new ArrayList<>();
         for (IPlugin p : this.plugins) {
-            if (p.isAssginableTo(pluginClass)) {
+            if (pluginClass.isAssignableFrom(p.getPluginClass())) {
                 filtered.add((T) p);
             }
         }
@@ -74,7 +77,7 @@ public class Plugins extends Model {
                 break;
             }
         }
-        plugins.add(plugin);
+        plugins.add((AbstractPlugin) plugin);
         Collections.sort(plugins, new Comparator<IPlugin>() {
             @Override
             public int compare(IPlugin o1, IPlugin o2) {
