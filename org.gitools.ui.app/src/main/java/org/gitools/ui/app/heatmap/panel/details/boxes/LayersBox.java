@@ -27,9 +27,12 @@ import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
-import org.gitools.ui.core.components.boxes.DetailsBox;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
+import org.gitools.ui.core.components.boxes.DetailsBox;
 
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -97,16 +100,25 @@ public class LayersBox extends DetailsBox {
     }
 
     @Override
-    protected void onMouseClick(DetailsDecoration detail) {
+    protected void onMouseSingleClick(DetailsDecoration detail) {
         getHeatmap().getLayers().setTopLayerIndex(detail.getIndex());
     }
 
     @Override
-    protected void onMouseDblClick(DetailsDecoration detail) {
+    protected void onMouseDoubleClick(DetailsDecoration detail) {
         Object reference = detail.getReference();
 
         if (reference instanceof HeatmapLayer) {
             new EditLayerAction((HeatmapLayer) reference).actionPerformed(null);
+        }
+    }
+
+    @Override
+    protected void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e) {
+
+        if (propertyItem.getReference() instanceof HeatmapLayer) {
+            DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapLayerAction.class, (HeatmapLayer) propertyItem.getReference(), null);
+            popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }

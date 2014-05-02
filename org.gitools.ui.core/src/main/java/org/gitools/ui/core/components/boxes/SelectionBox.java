@@ -34,6 +34,7 @@ import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -56,6 +57,11 @@ public class SelectionBox extends DetailsBox {
      */
     public SelectionBox(String title, ActionSet actions, Heatmap heatmap) {
         super(title, actions, heatmap);
+    }
+
+    @Override
+    protected void onMouseSingleClick(DetailsDecoration propertyItem) {
+
     }
 
     @Override
@@ -170,7 +176,12 @@ public class SelectionBox extends DetailsBox {
     }
 
     @Override
-    protected void onMouseDblClick(DetailsDecoration detail) {
+    protected void onMouseDoubleClick(DetailsDecoration detail) {
+
+    }
+
+    @Override
+    protected void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e) {
 
     }
 }

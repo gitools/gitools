@@ -27,9 +27,12 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
-import org.gitools.ui.core.components.boxes.DetailsBox;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.core.components.boxes.DetailsBox;
 
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -79,11 +82,23 @@ public class DimensionBox extends DetailsBox {
     }
 
     @Override
-    protected void onMouseDblClick(DetailsDecoration detail) {
+    protected void onMouseSingleClick(DetailsDecoration propertyItem) {
+    }
+
+    @Override
+    protected void onMouseDoubleClick(DetailsDecoration detail) {
         Object reference = detail.getReference();
 
         if (reference instanceof HeatmapHeader) {
             new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
+        }
+    }
+
+    @Override
+    protected void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e) {
+        if (propertyItem.getReference() instanceof HeatmapHeader) {
+            DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapHeaderAction.class, (HeatmapHeader) propertyItem.getReference(), null);
+            popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }

@@ -29,6 +29,7 @@ import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 import org.gitools.ui.platform.wizard.PageDialog;
 
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class MutualExclusiveBox extends DetailsBox {
         super(title, actions, heatmap);
         this.plugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.NAME);
     }
+
 
     @Override
     public void registerListeners() {
@@ -89,7 +91,7 @@ public class MutualExclusiveBox extends DetailsBox {
     }
 
     @Override
-    protected void onMouseDblClick(DetailsDecoration detail) {
+    protected void onMouseDoubleClick(DetailsDecoration detail) {
         String key = (String) detail.getReference();
         MutualExclusiveResultPage page =
                 new MutualExclusiveResultPage(getHeatmap(),
@@ -97,6 +99,16 @@ public class MutualExclusiveBox extends DetailsBox {
                         plugin.getBookmark(key));
         PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
+    }
+
+    @Override
+    protected void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e) {
+
+    }
+
+    @Override
+    protected void onMouseSingleClick(DetailsDecoration propertyItem) {
+
     }
 }
 

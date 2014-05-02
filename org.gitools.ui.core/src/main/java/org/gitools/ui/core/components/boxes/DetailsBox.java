@@ -33,14 +33,9 @@ import com.alee.managers.tooltip.TooltipWay;
 import com.alee.utils.SwingUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
-import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,6 +58,13 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
     public DetailsBox(String title, ActionSet actions, Heatmap heatmap) {
         super(title, actions, heatmap);
     }
+
+
+    protected abstract void onMouseSingleClick(DetailsDecoration propertyItem);
+
+    protected abstract void onMouseDoubleClick(DetailsDecoration propertyItem);
+
+    protected abstract void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e);
 
     public void draw(List<DetailsDecoration> details) {
 
@@ -230,33 +232,17 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         public void mouseReleased(MouseEvent e) {
             if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
 
-                if (item.getReference() instanceof HeatmapHeader) {
-                    DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapHeaderAction.class, (HeatmapHeader) item.getReference(), null);
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
-
-                if (item.getReference() instanceof HeatmapLayer) {
-                    DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapLayerAction.class, (HeatmapLayer) item.getReference(), null);
-                    popupMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
+                onMouseRightClick(item, e);
 
             } else {
                 if (e.getClickCount() > 1) {
-                    onMouseDblClick(item);
+                    onMouseDoubleClick(item);
                 } else {
-                    onMouseClick(item);
+                    onMouseSingleClick(item);
                 }
             }
         }
 
-    }
-
-    protected void onMouseClick(DetailsDecoration propertyItem) {
-        // Override
-    }
-
-    protected void onMouseDblClick(DetailsDecoration propertyItem) {
-        // Override
     }
 
 
