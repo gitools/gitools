@@ -63,7 +63,9 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public HeatmapLayer() {
         super();
 
-        // JAXB requirement
+        if (this.font == null) {
+            setFont(new Font(Font.MONOSPACED, Font.PLAIN, 9));
+        }
     }
 
     public HeatmapLayer(String id, Class<?> valueClass, Decorator decorator) {
@@ -87,10 +89,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     }
 
     public Font getFont() {
-        if (font == null) {
-            font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
-        }
-        return font;
+        return this.font;
     }
 
     public void setFont(Font font) {
