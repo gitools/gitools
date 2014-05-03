@@ -71,6 +71,10 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return getHeader().getIdentifierTransform().apply(getHeatmapDimension().getLabel(index));
     }
 
+    protected boolean isHighlightedIndex(int i) {
+        return getHeatmapDimension().isHighlighted(getHeatmapDimension().getLabel(i));
+    }
+
     @Override
     public HeatmapPosition getPosition(Point p) {
         int point = (isHorizontal() ? p.x : p.y);

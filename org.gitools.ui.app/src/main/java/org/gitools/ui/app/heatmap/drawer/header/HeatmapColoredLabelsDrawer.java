@@ -80,7 +80,10 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
             decoration.reset();
             boolean highlighted = isHighlightedIndex(startGroupIndex);
-            header.decorate(decoration, groupLabel, false, highlighted);
+            header.decorate(decoration, groupLabel, false);
+            if (highlighted) {
+                decoration.highlight();
+            }
 
             int fullSize = getHeatmapDimension().getFullSize();
             //gridSize = 0 (no grid) if same group
@@ -105,10 +108,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         }
 
         g.setFont(previousFont);
-    }
-
-    private boolean isHighlightedIndex(int i) {
-        return getHeatmapDimension().isHighlighted(getHeatmapDimension().getLabel(i));
     }
 
     @Override
