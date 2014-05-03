@@ -31,7 +31,6 @@ import java.awt.*;
 
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
-    protected static final Color highlightingColor = Color.YELLOW;
     private final HT header;
     private HeatmapDimension heatmapDimension;
 

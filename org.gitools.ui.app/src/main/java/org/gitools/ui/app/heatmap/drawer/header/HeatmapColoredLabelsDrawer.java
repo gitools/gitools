@@ -60,7 +60,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
-        decoration.setHighlightColor(highlightingColor);
+        decoration.setHighlightColor(getHeatmapDimension().getHighlightingColor());
 
         int cellWidth = header.getSize();
 

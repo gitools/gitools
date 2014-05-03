@@ -89,7 +89,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             String label = getLabel(index);
             String matrixLabel = heatmapDimension.getLabel(index);
 
-            Color bgColor = heatmapDimension.isHighlighted(matrixLabel) ? highlightingColor : header.getBackgroundColor();
+            Color bgColor = heatmapDimension.isHighlighted(matrixLabel) ? getHeatmapDimension().getHighlightingColor() : header.getBackgroundColor();
 
             g.setColor(gridColor);
             g.fillRect(x, y + cellHeight, width, gridSize);

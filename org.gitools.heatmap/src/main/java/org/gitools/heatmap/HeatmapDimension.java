@@ -70,6 +70,9 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     @XmlTransient
     private Set<String> highlightedLabels;
 
+    @XmlTransient
+    private static Color highlightingColor;
+
     public HeatmapDimension() {
         this(null);
     }
@@ -216,5 +219,18 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
                 header.populateDetails(details, getFocus());
             }
         }
+    }
+
+    public void setHighlightingColor(Color highlightingColor) {
+        this.highlightingColor = highlightingColor;
+        firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
+        updateHeaders();
+    }
+
+    public Color getHighlightingColor() {
+        if (highlightingColor == null) {
+            return Color.YELLOW;
+        }
+        return highlightingColor;
     }
 }

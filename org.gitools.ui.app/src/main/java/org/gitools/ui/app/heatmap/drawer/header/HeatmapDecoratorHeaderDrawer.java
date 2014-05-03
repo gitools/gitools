@@ -50,7 +50,7 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
         int lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
-        decoration.setHighlightColor(highlightingColor);
+        decoration.setHighlightColor(getHeatmapDimension().getHighlightingColor());
 
         g.setFont(header.getFont());
 

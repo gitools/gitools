@@ -26,6 +26,7 @@ import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.actions.ApplyMutualExclusiveBookmarkAction;
+import org.gitools.plugins.mutex.actions.HighlightMutualExclusiveBookmarkAction;
 import org.gitools.plugins.mutex.actions.RemoveMutualExclusiveAction;
 import org.gitools.plugins.mutex.actions.SelectTestedMutualExclusiveAction;
 import org.gitools.ui.core.Application;
@@ -129,7 +130,10 @@ public class MutualExclusiveBox extends DetailsBox {
 
     @Override
     protected void onMouseSingleClick(DetailsDecoration propertyItem) {
-
+        MutualExclusiveBookmark bookmark = plugin.getBookmark((String) propertyItem.getReference());
+        HighlightMutualExclusiveBookmarkAction action =
+                new HighlightMutualExclusiveBookmarkAction(bookmark);
+        action.actionPerformed(null);
     }
 }
 
