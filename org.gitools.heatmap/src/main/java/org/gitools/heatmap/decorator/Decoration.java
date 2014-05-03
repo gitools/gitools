@@ -32,6 +32,7 @@ public class Decoration implements Serializable {
 
     private String value;
     private Color bgColor;
+    private Color highlightColor;
 
     public Decoration(String value, Color bgColor) {
         this.value = value;
@@ -69,5 +70,13 @@ public class Decoration implements Serializable {
 
     public void setBgColor(Color bgColor) {
         this.bgColor = bgColor;
+    }
+
+    public Color getHighlightColor() {
+        return highlightColor;
+    }
+
+    public void setHighlightColor(Color highlightColor) {
+        this.highlightColor = highlightColor;
     }
 }
