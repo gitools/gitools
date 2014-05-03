@@ -26,7 +26,6 @@ import org.gitools.api.plugins.PluginAccess;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.plugins.AbstractPlugin;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.plugins.mutex.ui.MutualExclusiveBox;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.plugins.IActionPlugin;
@@ -37,10 +36,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
 @XmlRootElement(name = "mutual-exclusive")
@@ -53,15 +49,16 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     @XmlTransient
     public static String NAME = "mutual-exclusive";
 
-    private Map<String, MutualExclusiveResult> results;
-    private Map<String, Bookmark> bookmarks;
-    private List<String> keys;
+    private List<MutualExclusiveBookmark> bookmarks;
+
+    @XmlTransient
+    private Map<String, Integer> keysMap;
 
     public MutualExclusivePlugin() {
         super(NAME);
-        results = new HashMap<>();
-        bookmarks = new HashMap<>();
-        keys = new ArrayList<>();
+        bookmarks = new ArrayList<>();
+        keysMap = new HashMap<>();
+        updateKeys();
     }
 
     @Override
@@ -81,38 +78,45 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     }
 
 
-    public void addResult(MutualExclusiveResult result, Bookmark bookmark) {
-        results.put(bookmark.getName(), result);
-        bookmarks.put(bookmark.getName(), bookmark);
-        keys.add(bookmark.getName());
-        firePropertyChange(PROPERTY_NAME, null, result);
+    public void add(MutualExclusiveBookmark bookmark) {
+        bookmarks.add(bookmark);
+        updateKeys();
     }
 
-    public List<String> getKeys() {
+    private void updateKeys() {
+        keysMap.clear();
+        for (Bookmark b : bookmarks)
+            keysMap.put(b.getName(), bookmarks.indexOf(b));
+        firePropertyChange(PROPERTY_NAME, null, bookmarks);
+
+    }
+
+    public String[] getKeys() {
+        String[] keys = keysMap.keySet().toArray(new String[keysMap.size()]);
+        Arrays.sort(keys);
         return keys;
     }
 
-    public Bookmark getBookmark(String name) {
-        return bookmarks.get(name);
+    public MutualExclusiveBookmark getBookmark(String name) {
+        return bookmarks.get(keysMap.get(name));
     }
 
-    public MutualExclusiveResult getResult(String name) {
-        return results.get(name);
-    }
-
-    public void removeResult(String name) {
-        bookmarks.remove(name);
-        results.remove(name);
-        keys.remove(name);
-        firePropertyChange(PROPERTY_NAME, null, name);
+    public void remove(String name) {
+        Bookmark b = getBookmark(name);
+        bookmarks.remove(b);
+        updateKeys();
     }
 
     public boolean isNotEmpty() {
-        return results.size() > 0;
+        return bookmarks.size() > 0;
     }
 
     @Override
     public Box[] getBoxes(Heatmap heatmap) {
-        return new Box[]{new MutualExclusiveBox("Mutual exclusion results", null, heatmap, this)};
+        return new Box[]{new MutualExclusiveBox("Mutual exclusion results", heatmap, this)};
+    }
+
+    public void forceUpdate() {
+        updateKeys();
     }
 }

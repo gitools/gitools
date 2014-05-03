@@ -21,9 +21,11 @@
  */
 package org.gitools.plugins.mutex.ui;
 
-import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.plugins.mutex.MutualExclusiveBookmark;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
@@ -48,7 +50,7 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     private JLabel varianceLabel;
     private boolean delete = false;
     private List<String> forbiddenNames;
-    private Bookmark bookmark;
+    private MutualExclusiveBookmark bookmark;
     private MutualExclusiveResult result;
     boolean creating;
 
@@ -57,33 +59,20 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     }
 
 
-    public MutualExclusiveResultPage(Heatmap heatmap, MutualExclusiveResult result, Bookmark bookmark) {
+    public MutualExclusiveResultPage(Heatmap heatmap, MutualExclusiveBookmark bookmark) {
         this.setTitle("Mutual Exclusive result");
-        this.result = result;
+        this.result = bookmark.getResult();
         this.bookmark = bookmark;
 
-/*        // DELETE button
-        if (creating) {
-            setLogo(IconUtils.getImageIconResource(IconNames.bookmarkAdd48));
-            setTitle("Create Bookmark");
-            discardButton.setEnabled(false);
-            discardButton.setVisible(false);
-        } else {
-            setLogo(IconUtils.getImageIconResource(IconNames.bookmark48));
-            setTitle("Edit Bookmark");
-            forbiddenNames.remove(bookmark.getName());
-
-            discardButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    delete = true;
-                    nameField.setEnabled(false);
-                    setMessage(MessageStatus.PROGRESS, "Click OK to remove the Bookmark");
-                    setComplete(true);
-                }
-            });
-
-        }*/
+        if (bookmark.getDescription().equals("")) {
+            StringBuilder sb = new StringBuilder("Sorted and tested:\n");
+            List<String> tested = bookmark.getTestDimension().equals(MatrixDimensionKey.ROWS) ?
+                    bookmark.getRows() : bookmark.getColumns();
+            for (String t : tested) {
+                sb.append(" - " + t + "\n");
+            }
+            bookmark.setDescription(sb.toString());
+        }
 
         setMessage(MessageStatus.INFO, "Choose a name for the Bookmark");
 

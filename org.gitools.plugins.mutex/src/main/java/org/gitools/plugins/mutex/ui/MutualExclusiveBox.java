@@ -23,9 +23,15 @@ package org.gitools.plugins.mutex.ui;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.MutualExclusivePlugin;
+import org.gitools.plugins.mutex.actions.ApplyMutualExclusiveBookmarkAction;
+import org.gitools.plugins.mutex.actions.RemoveMutualExclusiveAction;
+import org.gitools.plugins.mutex.actions.SelectTestedMutualExclusiveAction;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 import org.gitools.ui.platform.wizard.PageDialog;
 
@@ -40,12 +46,16 @@ public class MutualExclusiveBox extends DetailsBox {
 
     private final MutualExclusivePlugin plugin;
 
-    /**
-     * @param title   Optional title of the details table
-     * @param actions
-     */
-    public MutualExclusiveBox(String title, ActionSet actions, Heatmap heatmap, MutualExclusivePlugin plugin) {
-        super(title, actions, heatmap);
+    public static final ActionSet ACTIONS = new ActionSet(new BaseAction[]{
+            new ApplyMutualExclusiveBookmarkAction(),
+            new SelectTestedMutualExclusiveAction(),
+            BaseAction.separator,
+            new RemoveMutualExclusiveAction()
+    });
+
+
+    public MutualExclusiveBox(String title, Heatmap heatmap, MutualExclusivePlugin plugin) {
+        super(title, ACTIONS, heatmap);
         this.plugin = plugin;
     }
 
@@ -78,7 +88,11 @@ public class MutualExclusiveBox extends DetailsBox {
         final List<DetailsDecoration> details = new ArrayList<>();
 
         for (String key : plugin.getKeys()) {
-            DetailsDecoration d = new DetailsDecoration(key, Double.toString(plugin.getResult(key).getTwoTailPvalue()));
+            MutualExclusiveBookmark bookmark = plugin.getBookmark(key);
+            DetailsDecoration d =
+                    new DetailsDecoration(key + " p-value",
+                            bookmark.getDescription(),
+                            Double.toString(bookmark.getResult().getTwoTailPvalue()));
             d.setReference(key);
             details.add(d);
         }
@@ -96,15 +110,21 @@ public class MutualExclusiveBox extends DetailsBox {
         String key = (String) detail.getReference();
         MutualExclusiveResultPage page =
                 new MutualExclusiveResultPage(getHeatmap(),
-                        plugin.getResult(key),
                         plugin.getBookmark(key));
         PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
+
+        if (dlg.isCancelled()) {
+            return;
+        }
+        plugin.forceUpdate();
     }
 
     @Override
     protected void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e) {
-
+        DynamicActionsManager.updatePopupMenu(popupMenu, IMutualExclusiveAction.class,
+                (MutualExclusiveBookmark) plugin.getBookmark((String) propertyItem.getReference()), null);
+        popupMenu.show(e.getComponent(), e.getX(), e.getY());
     }
 
     @Override

@@ -21,29 +21,29 @@
  */
 package org.gitools.plugins.mutex.actions;
 
-import org.gitools.plugins.mutex.MutualExclusivePlugin;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveTest;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
-import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.modulemap.HashModuleMap;
-import org.gitools.ui.core.actions.HeatmapAction;
-import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
-import org.gitools.ui.platform.settings.Settings;
+import org.gitools.plugins.mutex.MutualExclusiveBookmark;
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveTest;
 import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
+import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
@@ -117,11 +117,13 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                     MutualExclusiveResult result = (MutualExclusiveResult) adapter.get(resultsMatrix, resultsMatrix.newPosition());
 
 
-                    Bookmark bookmark = (dimensionKey == MatrixDimensionKey.ROWS) ?
-                            new Bookmark("Mutex result", selected, hm.getColumns().toList(), hm.getLayers().getTopLayer().getId()) :
-                            new Bookmark("Mutex result", hm.getRows().toList(), selected, hm.getLayers().getTopLayer().getId());
+                    MutualExclusiveBookmark bookmark = (dimensionKey == MatrixDimensionKey.ROWS) ?
+                            new MutualExclusiveBookmark("Mutex result", selected, hm.getColumns().toList(),
+                                    hm.getLayers().getTopLayer().getId(), testDimension.getId(), result) :
+                            new MutualExclusiveBookmark("Mutex result", hm.getRows().toList(), selected,
+                                    hm.getLayers().getTopLayer().getId(), testDimension.getId(), result);
 
-                    MutualExclusiveResultPage resultPage = new MutualExclusiveResultPage(hm, result, bookmark);
+                    MutualExclusiveResultPage resultPage = new MutualExclusiveResultPage(hm, bookmark);
                     PageDialog dlg = new PageDialog(Application.get(), resultPage);
 
                     dlg.open();
@@ -130,13 +132,12 @@ public class SortByMutualExclusionAction extends HeatmapAction {
                         return;
                     }
 
-                    bookmark = resultPage.getBookmark();
+                    //bookmark = resultPage.getBookmark();
                     MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
                     if (plugin == null) {
                         return;
                     }
-                    plugin.addResult(result, bookmark);
-
+                    plugin.add(bookmark);
 
 
                 }
