@@ -249,7 +249,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     @Override
     public String getLabel(int index) {
-        if (index < 0 || index > size()) {
+        if (index < 0 || index > size() - 1) {
             return null;
         }
 
