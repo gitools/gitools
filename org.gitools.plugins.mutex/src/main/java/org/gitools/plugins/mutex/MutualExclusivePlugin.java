@@ -92,6 +92,9 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     }
 
     public String[] getKeys() {
+        if (keysMap.size() != bookmarks.size()) {
+            updateKeys();
+        }
         String[] keys = keysMap.keySet().toArray(new String[keysMap.size()]);
         Arrays.sort(keys);
         return keys;

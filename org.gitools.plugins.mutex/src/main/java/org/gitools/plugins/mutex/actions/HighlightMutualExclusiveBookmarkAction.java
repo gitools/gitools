@@ -46,7 +46,7 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
     private ScheduledFuture<?> updating = null;
 
     public HighlightMutualExclusiveBookmarkAction(MutualExclusiveBookmark bookmark) {
-        super("<html><i>Apply</i> mutual exclusive order (top)</html>");
+        super("<html><i>Highlight</i> mutual exclusive</html>");
         this.bookmark = bookmark;
     }
 
@@ -74,19 +74,19 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
                 getHeatmap().getColumns().setHighlightedLabels(new HashSet<String>(columns));
 
                 for (int i = 0; i < 256; i = i + step) {
-                    //try {
-                    //Thread.currentThread().sleep(1);
-                    Color c = new Color(
+                    try {
+                        Thread.currentThread().sleep(50);
+                        Color c = new Color(
                             color.getRed(),
                             color.getGreen(),
                             color.getBlue(),
                             255 - i);
-                    //getHeatmap().getRows().setHighlightingColor(c);
-                    getHeatmap().getColumns().setHighlightingColor(c);
+                        getHeatmap().getRows().setHighlightingColor(c);
+                        getHeatmap().getColumns().setHighlightingColor(c);
 
-                    // } catch (InterruptedException e1) {
-                    // e1.printStackTrace();
-                    // }
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
                 getHeatmap().getRows().setHighlightedLabels(new HashSet<String>());
