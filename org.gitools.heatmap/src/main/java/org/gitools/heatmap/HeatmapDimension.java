@@ -197,7 +197,6 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     public void setHighlightedLabels(Set<String> highlightedLabels) {
         this.highlightedLabels = highlightedLabels;
         firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
-        updateHeaders();
     }
 
     public void clearHighlightedLabels() {

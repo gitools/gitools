@@ -31,6 +31,7 @@ import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.utils.events.EventUtils;
 
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -56,7 +57,14 @@ public class DimensionBox extends DetailsBox {
         dimension.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                update();
+                if (EventUtils.isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_FOCUS,
+                        HeatmapDimension.PROPERTY_HEADERS,
+                        HeatmapDimension.PROPERTY_SELECTED,
+                        HeatmapDimension.PROPERTY_VISIBLE)
+                        ) {
+                    update();
+                }
             }
         });
     }

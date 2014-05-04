@@ -22,6 +22,7 @@
 package org.gitools.ui.app.heatmap.panel.details.boxes;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
@@ -31,6 +32,7 @@ import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.utils.events.EventUtils;
 
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -54,7 +56,13 @@ public class LayersBox extends DetailsBox {
         PropertyChangeListener updateLayers = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                update();
+                if (EventUtils.isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_FOCUS,
+                        HeatmapDimension.PROPERTY_SELECTED,
+                        HeatmapDimension.PROPERTY_VISIBLE)
+                        ) {
+                    update();
+                }
             }
         };
 
