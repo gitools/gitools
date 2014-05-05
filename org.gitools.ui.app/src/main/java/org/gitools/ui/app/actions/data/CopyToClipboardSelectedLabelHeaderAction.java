@@ -21,10 +21,11 @@
  */
 package org.gitools.ui.app.actions.data;
 
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.*;
@@ -32,6 +33,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
+import static com.google.common.base.Predicates.in;
+import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
@@ -52,7 +55,9 @@ public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction impl
         }
 
         StringBuilder content = new StringBuilder();
-        for (String label : transform(header.getHeatmapDimension().getSelected(), header.getIdentifierTransform())) {
+
+        HeatmapDimension dimension = header.getHeatmapDimension();
+        for (String label : transform(filter(dimension, in(dimension.getSelected())), header.getIdentifierTransform())) {
             if (!isEmpty(label)) {
                 content.append(label).append('\n');
             }

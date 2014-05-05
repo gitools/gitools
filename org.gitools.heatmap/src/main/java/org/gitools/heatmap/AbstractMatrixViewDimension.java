@@ -203,6 +203,11 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         firePropertyChange(PROPERTY_VISIBLE, null, visible);
     }
 
+    /**
+     * Returns selected without guaranteeing it's order represeting the heatmap order
+     *
+     * @return
+     */
     @Override
     public Set<String> getSelected() {
         return selected;
