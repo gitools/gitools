@@ -23,6 +23,7 @@ package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
+import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.platform.os.OSProperties;
@@ -59,8 +60,10 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int shiftMask = OSProperties.get().getShiftMask();
     private int altMask = OSProperties.get().getAltMask();
     private int metaMask = OSProperties.get().getMetaMask();
+    private Timer timer;
 
     private HeatmapPanelInputProcessor ip;
+    private MouseEvent lastMovingEvent;
 
     public HeatmapHeaderMouseController(HeatmapPanel panel,
                                         HeatmapPanelInputProcessor inputProcessor,
@@ -77,6 +80,20 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
         setMode(none);
         this.ip = inputProcessor;
+        this.timer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.stop();
+                processStoredEvents();
+            }
+        });
+    }
+
+    private void processStoredEvents() {
+        if (lastMovingEvent != null) {
+            updateSelectionMove(lastMovingEvent, true);
+            lastMovingEvent = null;
+        }
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -158,13 +175,15 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             if (!selectionHasMoved) {
                 //There was no dragging, user wanted to unselect the selection
                 ip.switchSelection(dimension, index, altDown);
+                setLeading(e);
+                setMode(none);
             } else {
+                setMode(none);
+                dimension.forceUpdate(AbstractMatrixViewDimension.PROPERTY_VISIBLE);
+                //updateSelectionMove(e, true);
                 selectionHasMoved = false;
             }
         }
-
-        setLeading(e);
-        setMode(none);
     }
 
     private void setLeading(MouseEvent e) {
@@ -271,6 +290,13 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private void updateSelectionMove(MouseEvent e, boolean dragging) {
 
+        if (!timer.isRunning()) {
+            timer.start();
+        } else {
+            lastMovingEvent = e;
+            return;
+        }
+
         // Scroll heatmap if needed
         Point point = e.getPoint();
         if (horizontal) {
@@ -322,8 +348,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 }
             }
         }
-
-        setLeading(e);
     }
 
     private void updateSelection(MouseEvent e, boolean dragging) {

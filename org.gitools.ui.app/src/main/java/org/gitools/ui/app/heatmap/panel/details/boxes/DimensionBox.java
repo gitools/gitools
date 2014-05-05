@@ -39,6 +39,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.movingSelected;
+import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
+
 public class DimensionBox extends DetailsBox {
     private final HeatmapDimension dimension;
 
@@ -57,12 +60,12 @@ public class DimensionBox extends DetailsBox {
         dimension.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if (EventUtils.isAny(evt, HeatmapDimension.class,
+                if ((EventUtils.isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_HEADERS,
                         HeatmapDimension.PROPERTY_SELECTED,
                         HeatmapDimension.PROPERTY_VISIBLE)
-                        ) {
+                ) && getInteractionMode() != movingSelected) {
                     update();
                 }
             }
@@ -71,6 +74,7 @@ public class DimensionBox extends DetailsBox {
 
     @Override
     public void update() {
+
         String lead = dimension.getFocus();
         String label = StringUtils.capitalize(dimension.getId().getLabel());
 

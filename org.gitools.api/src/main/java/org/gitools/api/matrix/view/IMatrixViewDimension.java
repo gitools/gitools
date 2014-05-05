@@ -58,5 +58,7 @@ public interface IMatrixViewDimension extends IMatrixDimension {
 
     void setFocus(String identifier);
 
+    void forceUpdate(String property);
+
 
 }

@@ -167,7 +167,6 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         visibleToIndex = null;
 
         firePropertyChange(PROPERTY_VISIBLE, null, visible);
-        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public void hide(Set<String> identifiers) {
@@ -304,5 +303,11 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
     @Override
     public IMatrixDimension subset(Set<String> identifiers) {
         return new HashMatrixDimension(getId(), Iterables.filter(visible, Predicates.in(identifiers)));
+    }
+
+
+    @Override
+    public void forceUpdate(String property) {
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
     }
 }
