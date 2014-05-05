@@ -34,6 +34,7 @@ import java.util.*;
 public class HeatmapPanelInputProcessor {
 
 
+    private static Mode mode;
     private final List<HeatmapMouseListener> mouseListeners = new ArrayList<>();
 
     private IMatrixView mv;
@@ -73,6 +74,14 @@ public class HeatmapPanelInputProcessor {
         rowMouseCtrl.addHeatmapMouseListener(mouseListenerProxy);
 
 
+    }
+
+    public static Mode getInteractionMode() {
+        return mode;
+    }
+
+    public static void setMode(Mode mode) {
+        HeatmapPanelInputProcessor.mode = mode;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -334,7 +343,7 @@ public class HeatmapPanelInputProcessor {
     }
 
 
-    enum Mode {
+    public enum Mode {
         none, selectingLead, selectingRowsAndCols, dragging, moving, zooming, scrolling, movingSelected
     }
 }
