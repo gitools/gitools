@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -49,8 +50,8 @@ public class Bookmark implements Serializable {
 
     public Bookmark(String name, List<String> rows, List<String> columns, String layerId) {
         this.name = name;
-        this.rows = rows;
-        this.columns = columns;
+        setRows(rows);
+        setColumns(columns);
         this.layerId = layerId;
     }
 
@@ -71,11 +72,11 @@ public class Bookmark implements Serializable {
     }
 
     public void setRows(List<String> rows) {
-        this.rows = rows;
+        this.rows = new ArrayList<>(rows);
     }
 
     public void setColumns(List<String> columns) {
-        this.columns = columns;
+        this.columns = new ArrayList<>(columns);
     }
 
     public void setName(String name) {
