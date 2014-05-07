@@ -24,6 +24,7 @@ package org.gitools.ui.app.heatmap.panel.details.boxes;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
@@ -32,7 +33,6 @@ import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
-import org.gitools.utils.events.EventUtils;
 
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -40,8 +40,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.gitools.heatmap.AbstractMatrixViewDimension.*;
+import static org.gitools.heatmap.HeatmapLayer.*;
+import static org.gitools.heatmap.HeatmapLayers.PROPERTY_LAYERS;
+import static org.gitools.heatmap.HeatmapLayers.PROPERTY_TOP_LAYER;
 import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.movingSelected;
 import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
+import static org.gitools.utils.events.EventUtils.isAny;
 
 
 public class LayersBox extends DetailsBox {
@@ -59,11 +64,26 @@ public class LayersBox extends DetailsBox {
         PropertyChangeListener updateLayers = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ((EventUtils.isAny(evt, HeatmapDimension.class,
-                        HeatmapDimension.PROPERTY_FOCUS,
-                        HeatmapDimension.PROPERTY_SELECTED,
-                        HeatmapDimension.PROPERTY_VISIBLE)
-                ) && getInteractionMode() != movingSelected) {
+                if ((getInteractionMode() != movingSelected) &&
+
+                        (isAny(evt, HeatmapDimension.class,
+                                PROPERTY_FOCUS,
+                                PROPERTY_SELECTED,
+                                PROPERTY_VISIBLE)
+                                ||
+                                isAny(evt, HeatmapLayer.class,
+                                        PROPERTY_DECORATOR,
+                                        PROPERTY_SHORT_FORMATTER,
+                                        PROPERTY_LONG_FORMATTER,
+                                        PROPERTY_NAME,
+                                        PROPERTY_DESCRIPTION,
+                                        PROPERTY_DESCRIPTION_URL,
+                                        PROPERTY_VALUE_URL)
+                                ||
+                                isAny(evt, HeatmapLayers.class,
+                                        PROPERTY_TOP_LAYER,
+                                        PROPERTY_LAYERS))
+                        ) {
                     update();
                 }
             }
