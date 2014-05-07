@@ -27,7 +27,7 @@ import org.gitools.api.plugins.IPlugin;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
@@ -37,15 +37,15 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     @XmlTransient
     private static final String PLUGIN_ENABLED = "plugin_active";
 
-    @XmlElement
-    private String name;
+    @XmlAttribute
+    private String id;
 
-    @XmlElement
+    @XmlAttribute
     private String version;
 
 
-    public AbstractPlugin(String name) {
-        this.name = name;
+    public AbstractPlugin(String id) {
+        this.id = id;
         this.version = getVersion();
     }
 
@@ -54,8 +54,8 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -70,7 +70,7 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
         //boolean old = enabled;
         //this.enabled = enabled;
         //firePropertyChange(PLUGIN_ENABLED, enabled, enabled);
-        throw new RuntimeException("Method not supported");
+        throw new RuntimeException("Method to be implemented");
     }
 
     @Override
@@ -85,7 +85,7 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
 
     @Override
     public String toString() {
-        return name;
+        return id;
     }
 
     private class SemanticVersion {

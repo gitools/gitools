@@ -69,7 +69,7 @@ public class Plugins extends Model {
 
     public void register(IPlugin plugin) {
         for (IPlugin existing : plugins) {
-            if (existing.getName().equals(plugin.getName())) {
+            if (existing.getId().equals(plugin.getId())) {
                 plugins.remove(existing);
                 break;
             }
@@ -78,7 +78,7 @@ public class Plugins extends Model {
         Collections.sort(plugins, new Comparator<IPlugin>() {
             @Override
             public int compare(IPlugin o1, IPlugin o2) {
-                return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+                return o1.getId().toLowerCase().compareTo(o2.getId().toLowerCase());
             }
         });
         firePropertyChange(PROPERTY_CONTENTS, null, this);
@@ -94,7 +94,7 @@ public class Plugins extends Model {
         nameMap.clear();
         Integer counter = 0;
         for (IPlugin p : plugins) {
-            nameMap.put(p.getName(), counter++);
+            nameMap.put(p.getId(), counter++);
         }
     }
 
