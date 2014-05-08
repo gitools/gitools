@@ -61,8 +61,13 @@ public class ExceptionDialog extends javax.swing.JDialog {
         if (parent instanceof IApplicationTracking) {
             IApplicationTracking track = (IApplicationTracking) parent;
 
+            String description;
             Throwable rootCause = ExceptionUtils.getRootCause(cause);
-            String description = ExceptionUtils.getStackTrace(rootCause);
+            if (rootCause != null) {
+                description = ExceptionUtils.getStackTrace(rootCause);
+            } else {
+                description = ExceptionUtils.getStackTrace(cause);
+            }
 
             if (description.length() > 150) {
                 description = description.substring(0, 145);
