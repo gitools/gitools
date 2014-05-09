@@ -27,7 +27,6 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.matrix.modulemap.HashModuleMap;
@@ -37,6 +36,7 @@ import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveTest;
+import org.gitools.plugins.mutex.sort.MutualExclusiveMatrixViewSorter;
 import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
 import org.gitools.ui.core.Application;
@@ -45,18 +45,17 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.PageDialog;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-public class SortByMutualExclusionAction extends HeatmapAction {
+public class MutualExclusiveSortAction extends HeatmapAction {
 
     private MatrixDimensionKey dimensionKey;
 
-    public SortByMutualExclusionAction(MatrixDimensionKey dimensionKey) {
+    public MutualExclusiveSortAction(MatrixDimensionKey dimensionKey) {
         super("<html><i>Sort</i> by mutual exclusion</html>");
 
         this.dimensionKey = dimensionKey;
@@ -81,7 +80,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
-                MatrixViewSorter.sortByMutualExclusion(
+                MutualExclusiveMatrixViewSorter.sortByMutualExclusion(
                         hm,
                         page.getPattern(),
                         page.getValues(),
@@ -163,8 +162,7 @@ public class SortByMutualExclusionAction extends HeatmapAction {
         analysis.setWeightGroupsModuleMap(weightMap);
         analysis.setData(hm);
         analysis.setLayer(hm.getLayers().getTopLayer().getId());
-        analysis.setCutoffCmp(CutoffCmp.NE);
-        analysis.setCutoff(0);
+        analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getDecorator().getEventFunction());
     }
 
 }

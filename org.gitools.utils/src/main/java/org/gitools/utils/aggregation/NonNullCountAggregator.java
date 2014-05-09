@@ -19,22 +19,25 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.utils.colorscale;
+package org.gitools.utils.aggregation;
 
-import java.awt.*;
+import org.gitools.api.analysis.IAggregator;
 
-public class ColorConstants {
+public class NonNullCountAggregator extends AbstractAggregator {
 
-    public static final Color notANumberColor = Color.WHITE;
-    public static final Color posInfinityColor = Color.GREEN;
-    public static final Color negInfinityColor = Color.CYAN;
-    public static final Color emptyColor = Color.WHITE;
+    public final static IAggregator INSTANCE = new NonNullCountAggregator();
 
-    public static final Color nonSignificantColor = new Color(221, 221, 221);
+    private NonNullCountAggregator() {
+        super("Count (Non-zero)");
+    }
 
-    public static final Color minColor = new Color(255, 0, 0);
-    public static final Color maxColor = new Color(255, 255, 0);
+    @Override
+    public Double aggregateNoNulls(double[] data) {
+        double events = 0.0;
+        for (Double d : data) {
+            if (d != null) events++;
+        }
+        return events;
+    }
 
-    public static final Color binaryMinColor = nonSignificantColor;
-    public static final Color binaryMaxColor = new Color(20, 120, 250);
 }

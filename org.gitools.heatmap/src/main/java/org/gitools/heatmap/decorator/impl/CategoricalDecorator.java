@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.ColorScalePoint;
@@ -112,6 +113,27 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
         ColorScalePoint[] old = getScale().getPointObjects();
         getScale().setPointObjects(newScalePoints);
         firePropertyChange(PROPERTY_CATEGORIES, old, newScalePoints);
+    }
+
+    @Override
+    public NonEventToNullFunction getEventFunction() {
+        return new NonEventToNullFunction<CategoricalColorScale>(scale, "All values represented in the categorical scale are events ") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+
+                if (value == null) {
+                    return null;
+                }
+
+                for (double pointValue : getColorScale().getPoints()) {
+                    if (pointValue == value) {
+                        return value;
+                    }
+                }
+                return null;
+            }
+        };
     }
 
 }

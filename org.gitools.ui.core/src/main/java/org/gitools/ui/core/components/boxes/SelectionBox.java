@@ -29,6 +29,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.utils.aggregation.NonNullCountAggregator;
 import org.gitools.utils.aggregation.StdDevAggregator;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
@@ -122,15 +123,6 @@ public class SelectionBox extends DetailsBox {
                     columns = Sets.newHashSet(heatmap.getColumns());
                 }
 
-                HeatmapLayer layer = getHeatmap().getLayers().getTopLayer();
-                IMatrix data = getHeatmap().getContents();
-
-                IMatrixIterable<Double> cellValues = getHeatmap().newPosition()
-                        .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
-                        .monitor(new NullProgressMonitor(), "Aggregating values of layer '" + layer.getId() + "'");
-
-                Double agg = layer.getAggregator().aggregate(cellValues);
-
                 int selectedRows = rows.size();
                 int selectedColumns = columns.size();
                 if (selectedColumns > 0) {
@@ -143,7 +135,27 @@ public class SelectionBox extends DetailsBox {
                 }
 
 
+                HeatmapLayer layer = getHeatmap().getLayers().getTopLayer();
+                IMatrix data = getHeatmap().getContents();
+
+                //aggregator
+                IMatrixIterable<Double> cellValues = getHeatmap().newPosition()
+                        .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
+                        .monitor(new NullProgressMonitor(), "Aggregating values of layer '" + layer.getId() + "'");
+                Double agg = layer.getAggregator().aggregate(cellValues);
                 details.add(new DetailsDecoration(layer.getAggregator().toString(), valueString(agg, layer.getLongFormatter())));
+
+
+                IMatrixIterable<Double> eventsIt = getHeatmap().newPosition()
+                        .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
+                        .transform(layer.getDecorator().getEventFunction());
+                Double events = NonNullCountAggregator.INSTANCE.aggregate(eventsIt);
+                details.add(
+                        new DetailsDecoration("Events",
+                                layer.getDecorator().getEventFunction().toString(),
+                                valueString(events, layer.getLongFormatter())));
+
+
                 //Double var = VarianceAggregator.INSTANCE.aggregate(cellValues);
                 Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValues);
                 //details.add(new DetailsDecoration("Variance", var.toString()));

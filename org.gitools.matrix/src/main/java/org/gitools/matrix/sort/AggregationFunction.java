@@ -19,14 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.sort.mutualexclusion;
+package org.gitools.matrix.sort;
 
 import com.google.common.collect.Sets;
 import org.gitools.api.analysis.IAggregator;
-import org.gitools.api.matrix.AbstractMatrixFunction;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
+import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
 
 import java.util.Set;
 
@@ -37,29 +35,35 @@ public class AggregationFunction extends AbstractMatrixFunction<Double, String> 
     private IAggregator aggregator;
     private IMatrixDimension aggregationDimension;
     private Set<String> aggregationIdentifiers;
+    private IMatrixFunction<Double, Double> transformFunction;
 
     public AggregationFunction(IMatrixLayer<Double> layer, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers) {
-        this(layer, layer.getAggregator(), aggregationDimension, aggregationIdentifiers);
+        this(layer, layer.getAggregator(), aggregationDimension, aggregationIdentifiers, new IdentityMatrixFunction<Double>());
     }
 
     public AggregationFunction(IMatrixLayer<Double> layer, IAggregator aggregator, IMatrixDimension aggregationDimension) {
-        this(layer, aggregator, aggregationDimension, Sets.newHashSet(aggregationDimension));
+        this(layer, aggregator, aggregationDimension, Sets.newHashSet(aggregationDimension), new IdentityMatrixFunction<Double>());
     }
 
-    public AggregationFunction(IMatrixLayer<Double> layer, IAggregator aggregator, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers) {
+    public AggregationFunction(IMatrixLayer<Double> layer, IAggregator aggregator, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IMatrixFunction<Double, Double> transformFunction) {
         super();
 
         this.layer = layer;
         this.aggregator = aggregator;
         this.aggregationDimension = aggregationDimension;
         this.aggregationIdentifiers = aggregationIdentifiers;
+        this.transformFunction = transformFunction;
+    }
+
+    public AggregationFunction(IMatrixLayer<Double> layer, IAggregator aggregator, IMatrixDimension aggregationDimension, IMatrixFunction<Double, Double> transformFunction) {
+        this(layer, aggregator, aggregationDimension, Sets.newHashSet(aggregationDimension), transformFunction);
     }
 
     @Override
     public Double apply(String value, IMatrixPosition position) {
 
         return aggregator.aggregate(
-                position.iterate(layer, aggregationDimension.subset(aggregationIdentifiers))
+                position.iterate(layer, aggregationDimension.subset(aggregationIdentifiers)).transform(transformFunction)
         );
     }
 }

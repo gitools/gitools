@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
@@ -139,6 +140,17 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
         if (isShowValue()) {
             decoration.setValue(textFormatter.format(value));
         }
+    }
+
+    @Override
+    public NonEventToNullFunction getEventFunction() {
+        return new NonEventToNullFunction<PValueColorScale>(scale, "All significant values are events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                return (value == null || value > getColorScale().getSignificanceLevel() ? null : 1 - value);
+            }
+        };
     }
 
 

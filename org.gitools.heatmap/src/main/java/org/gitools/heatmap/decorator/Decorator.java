@@ -51,6 +51,16 @@ public abstract class Decorator<C extends IColorScale> extends Model {
 
     public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers);
 
+    public NonEventToNullFunction getEventFunction() {
+
+        return new NonEventToNullFunction<IColorScale>(getScale(), "All values equal to 0 or 'empty' are non-events") {
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                return (value == null || value == 0) ? null : value;
+            }
+        };
+    }
+
     public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, IMatrixPosition position) {
         decorate(decoration, textFormatter, matrix, layer, position.toVector());
     }

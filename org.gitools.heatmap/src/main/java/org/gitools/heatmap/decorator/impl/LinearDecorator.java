@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
@@ -164,6 +165,26 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
             decoration.setValue(textFormatter.format(value));
         }
 
+    }
+
+    @Override
+    public NonEventToNullFunction getEventFunction() {
+        return new NonEventToNullFunction<LinearTwoSidedColorScale>(scale,
+                "All values below min or above max of scale are events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+
+                if (value == null) {
+                    return null;
+                }
+
+                if (value < getColorScale().getMin().getValue() || value > getColorScale().getMax().getValue()) {
+                    return value;
+                }
+                return null;
+            }
+        };
     }
 
 }

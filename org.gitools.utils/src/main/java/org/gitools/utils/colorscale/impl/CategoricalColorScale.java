@@ -36,7 +36,7 @@ import java.util.Arrays;
 public class CategoricalColorScale extends NumericColorScale {
 
     private ColorScalePoint[] points;
-    private boolean cagetoricalSpans = true;
+    private boolean cagetoricalSpans = false;
 
     public CategoricalColorScale() {
         this(new double[]{1.0, 2.0});

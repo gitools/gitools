@@ -133,12 +133,6 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         label.setDrawShade(true);
         SwingUtils.changeFontSize(label, -1);
 
-
-        if (StringUtils.isNotEmpty(detail.getDescription())) {
-            String description = "<html><body width=\"300px\">" + detail.getDescription() + "</body></html>";
-            TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
-        }
-
         if (detail.isSelected()) {
             SwingUtils.setBoldFont(label);
         }
@@ -151,6 +145,11 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
             webLabel.setIcon(IconNames.INFO_ICON);
             webLabel.setLink(detail.getDescriptionLink(), false);
             return new GroupPanel(GroupingType.fillFirst, 5, webLabel, label);
+        }
+
+        if (StringUtils.isNotEmpty(detail.getDescription())) {
+            String description = "<html><body width=\"300px\">" + detail.getDescription() + "</body></html>";
+            TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
         }
 
         return label;

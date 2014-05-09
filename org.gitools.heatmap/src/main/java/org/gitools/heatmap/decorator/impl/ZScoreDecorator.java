@@ -24,6 +24,7 @@ package org.gitools.heatmap.decorator.impl;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.matrix.MatrixUtils;
@@ -235,5 +236,19 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         if (isShowValue()) {
             decoration.setValue(textFormatter.format(value));
         }
+    }
+
+    @Override
+    public NonEventToNullFunction getEventFunction() {
+        return new NonEventToNullFunction<ZScoreColorScale>(scale, "All values below significance threshold are non-events.") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+
+                return (value == null || Math.abs(value) <= getColorScale().getSigHalfAmplitude()) ?
+                        null : Math.abs(value);
+            }
+
+        };
     }
 }

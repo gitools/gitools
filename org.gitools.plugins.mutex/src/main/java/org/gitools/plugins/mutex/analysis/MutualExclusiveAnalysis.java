@@ -26,7 +26,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -49,13 +49,10 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     private int iterations = 10000;
 
-    private CutoffCmp cutoffCmp;
-
-    private double cutoff;
+    private NonEventToNullFunction eventFunction;
 
     public MutualExclusiveAnalysis() {
     }
-
 
 
     public IMatrixDimension getTestDimension() {
@@ -75,7 +72,7 @@ public class MutualExclusiveAnalysis extends Analysis {
     }
 
     public void setTestGroupsModuleMap(IModuleMap testGroupsModuleMap) {
-        setTestGroupsModuleMap(new ResourceReference<>("testGroupsModuleMap", testGroupsModuleMap)) ;
+        setTestGroupsModuleMap(new ResourceReference<>("testGroupsModuleMap", testGroupsModuleMap));
     }
 
     public ResourceReference<IModuleMap> getWeightGroupsModuleMap() {
@@ -89,6 +86,7 @@ public class MutualExclusiveAnalysis extends Analysis {
     public void setWeightGroupsModuleMap(IModuleMap weightGroupsModuleMap) {
         setWeightGroupsModuleMap(new ResourceReference<>("weightGroupsModuleMap", weightGroupsModuleMap));
     }
+
     public ResourceReference<IMatrix> getData() {
         return data;
     }
@@ -138,19 +136,11 @@ public class MutualExclusiveAnalysis extends Analysis {
         this.iterations = iterations;
     }
 
-    public CutoffCmp getCutoffCmp() {
-        return cutoffCmp;
+    public NonEventToNullFunction getEventFunction() {
+        return eventFunction;
     }
 
-    public void setCutoffCmp(CutoffCmp cutoffCmp) {
-        this.cutoffCmp = cutoffCmp;
-    }
-
-    public double getCutoff() {
-        return cutoff;
-    }
-
-    public void setCutoff(double cutoff) {
-        this.cutoff = cutoff;
+    public void setEventFunction(NonEventToNullFunction eventFunction) {
+        this.eventFunction = eventFunction;
     }
 }

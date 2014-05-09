@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.BinaryColorScale;
@@ -139,6 +140,17 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
             decoration.setValue(textFormatter.format(value));
         }
 
+    }
+
+    @Override
+    public NonEventToNullFunction getEventFunction() {
+        return new NonEventToNullFunction<BinaryColorScale>(scale, "All 'true' values are events") {
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
+                return satisfies ? null : 1.0;
+            }
+        };
     }
 
 }

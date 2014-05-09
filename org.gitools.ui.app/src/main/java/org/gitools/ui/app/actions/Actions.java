@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.plugins.mutex.actions.SortByMutualExclusionAction;
+import org.gitools.plugins.mutex.actions.MutualExclusiveSortAction;
 import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.actions.file.*;
-import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
 import org.gitools.ui.app.actions.toolbar.HeatmapCreateImageAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
 import org.gitools.ui.core.actions.ActionManager;
 import org.gitools.ui.core.actions.BaseAction;
 
@@ -106,9 +106,9 @@ public class Actions {
 
     public static final BaseAction sortRowsByValue = new SortByValueAction(ROWS);
 
-    public static final BaseAction sortColumnsByMutualExclusion = new SortByMutualExclusionAction(COLUMNS);
+    public static final BaseAction sortColumnsByMutualExclusion = new MutualExclusiveSortAction(COLUMNS);
 
-    public static final BaseAction sortRowsByMutualExclusion = new SortByMutualExclusionAction(ROWS);
+    public static final BaseAction sortRowsByMutualExclusion = new MutualExclusiveSortAction(ROWS);
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
 

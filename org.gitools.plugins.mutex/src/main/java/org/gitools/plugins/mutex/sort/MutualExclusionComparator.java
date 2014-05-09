@@ -19,12 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.matrix.sort.mutualexclusion;
+package org.gitools.plugins.mutex.sort;
 
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
-import org.gitools.utils.aggregation.NonZeroCountAggregator;
+import org.gitools.matrix.sort.AggregationFunction;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class MutualExclusionComparator implements Comparator<String> {
 
     private final Map<String, Double> aggregationCache;
 
-    public MutualExclusionComparator(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension sortDimension, IMatrixPredicate<String> validIdentifiers, IMatrixDimension aggregationDimension, IProgressMonitor monitor) {
+    public MutualExclusionComparator(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension sortDimension, IMatrixPredicate<String> validIdentifiers, AggregationFunction aggregationFunction, IProgressMonitor monitor) {
 
         aggregationCache = new HashMap<>(sortDimension.size());
 
@@ -43,7 +43,7 @@ public class MutualExclusionComparator implements Comparator<String> {
                 .iterate(sortDimension)
                 .monitor(monitor, "Aggregating values")
                 .filter(validIdentifiers)
-                .transform(new AggregationFunction(layer, NonZeroCountAggregator.INSTANCE, aggregationDimension));
+                .transform(aggregationFunction);
 
         for (Double value : aggregatedValues) {
             aggregationCache.put(position.get(sortDimension), value);

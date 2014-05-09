@@ -30,7 +30,6 @@ import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.PositionMapping;
-import org.gitools.matrix.sort.mutualexclusion.AggregationFunction;
 
 import java.util.Comparator;
 import java.util.Set;

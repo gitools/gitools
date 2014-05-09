@@ -21,77 +21,19 @@
  */
 package org.gitools.heatmap;
 
-import com.google.common.collect.Lists;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.sort.AggregationSortByValueComparator;
-import org.gitools.matrix.sort.SingleSortByValueComparator;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
-import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 public abstract class MatrixViewSorter {
-
-    public static void sortByMutualExclusion(final Heatmap heatmap, String pattern, Set<String> values, boolean regExChecked, boolean applyToColumns, IProgressMonitor monitor, boolean showProgress) {
-
-        IMatrixLayer<Double> layer = heatmap.getLayers().getTopLayer();
-        HeatmapDimension rows = heatmap.getRows();
-        HeatmapDimension columns = heatmap.getColumns();
-
-        if (applyToColumns) {
-            rows = heatmap.getColumns();
-            columns = heatmap.getRows();
-        }
-
-        rows.sort(new MutualExclusionComparator(
-                heatmap,
-                layer,
-                rows,
-                new IdentifiersPredicate<String>(rows, values, pattern, rows.getAnnotations()),
-                columns,
-                monitor));
-
-        monitor.begin("Sorting rows...", rows.size());
-
-        PropertyChangeListener[] listeners = columns.getPropertyChangeListeners();
-        if (!showProgress) {
-            // Remove listeners to avoid heatmap refresh at each iteration
-            for (PropertyChangeListener listener : listeners) {
-                columns.removePropertyChangeListener(listener);
-            }
-        }
-
-        IMatrixPosition position = heatmap.newPosition();
-        for (String row : Lists.reverse(Lists.newArrayList(rows))) {
-            monitor.worked(1);
-
-            if (monitor.isCancelled()) {
-                break;
-            }
-
-            position.set(rows, row);
-            columns.sort(new SingleSortByValueComparator(position, layer, columns, SortDirection.DESCENDING));
-        }
-
-        if (!showProgress) {
-            for (PropertyChangeListener listener : listeners) {
-                columns.addPropertyChangeListener(listener);
-            }
-
-            // Force to fire the events
-            columns.show(columns.toList());
-        }
-
-    }
 
     public static void sortByValue(IMatrixView matrixView, Iterable<IMatrixLayer> layers, boolean applyToRows, boolean applyToColumns, IProgressMonitor progressMonitor) {
 
