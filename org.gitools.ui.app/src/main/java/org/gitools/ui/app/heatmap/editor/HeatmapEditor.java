@@ -50,6 +50,8 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.MemoryUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -66,6 +68,7 @@ import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HeatmapEditor.class);
     private static final int DEFAULT_ACCORDION_WIDTH = 320;
     private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
 
@@ -123,15 +126,7 @@ public class HeatmapEditor extends AbstractEditor {
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.
         timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD) {
-                    System.out.println("WARNING: Memory too low, cleaning cache.");
-                    detach();
-                }
-            }
-        }, 5000, 5000);
+        timer.scheduleAtFixedRate(new CleanCacheTimer(), 5000, 5000);
 
     }
 
@@ -353,5 +348,26 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
+    }
+
+
+    private class CleanCacheTimer extends TimerTask {
+
+        private long lastDetach;
+
+        private CleanCacheTimer() {
+            this.lastDetach = System.currentTimeMillis();
+        }
+
+        @Override
+        public void run() {
+            if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD && ((System.currentTimeMillis() - lastDetach)) > 2000) {
+
+                LOGGER.warn("Memory too low, cleaning cache.");
+                this.lastDetach = System.currentTimeMillis();
+
+                detach();
+            }
+        }
     }
 }

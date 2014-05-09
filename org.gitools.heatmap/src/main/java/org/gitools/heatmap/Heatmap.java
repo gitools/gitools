@@ -133,8 +133,11 @@ public class Heatmap extends Resource implements IMatrixView {
 
         // Detach layers cache
         for (HeatmapLayer layer : layers) {
-
+            layer.detach();
         }
+
+        // Force garbage collection
+        System.gc();
     }
 
     public void init() {

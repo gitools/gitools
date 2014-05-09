@@ -29,6 +29,7 @@ import edu.upf.bg.mtabix.MTabixIndex;
 import static edu.upf.bg.mtabix.bgz.BlockCompressedFilePointerUtil.getBlockAddress;
 import edu.upf.bg.mtabix.bgz.BlockCompressedInputStream;
 import edu.upf.bg.mtabix.bgz.BlockCompressedStreamConstants;
+import edu.upf.bg.mtabix.parsers.IKeyParser;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -36,78 +37,40 @@ import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.utils.MemoryUtils;
-import org.gitools.utils.readers.text.CSVParser;
 import org.gitools.utils.translators.DoubleTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MTabixMatrix extends HashMatrix {
     private static final Logger LOGGER = LoggerFactory.getLogger(MTabixMatrix.class);
-    private static CSVParser PARSER = new CSVParser();
 
     private MTabixIndex index;
     private BlockCompressedInputStream dataStream;
     private Set<String> indexedLayers;
-    private LoadingCache<Long, MTabixMatrixBlock> indexedCache;
+
+    // Cache
+    private Map<String, LoadingCache<Long, MTabixBlockValues>> indexedCache;
 
     public MTabixMatrix(MTabixIndex index, final MatrixLayers<? extends IMatrixLayer> layers, final MatrixDimensionKey... dimensions) throws IOException {
         super(layers, createMTabixDimensions(index, dimensions));
 
         this.index = index;
         this.dataStream = new BlockCompressedInputStream(index.getConfig().getDataFile());
+
+        // Create the caches
+        indexedCache = new HashMap<>(layers.size());
         this.indexedLayers = new HashSet<>(layers.size());
-        for (IMatrixLayer layer : layers) {
+        for (int l=0; l < layers.size(); l++) {
+            IMatrixLayer layer = layers.get(l);
             indexedLayers.add(layer.getId());
+            indexedCache.put(layer.getId(), CacheBuilder.newBuilder().build(new BlockLoader(l)));
         }
-
-        // Use a maximum of 50% of the available memory
-        long availableMemory = MemoryUtils.getAvailableMemory() / 2;
-        int cacheSize = (int) (availableMemory / BlockCompressedStreamConstants.DEFAULT_UNCOMPRESSED_BLOCK_SIZE);
-
-        // Create the rows cache
-        indexedCache = CacheBuilder.newBuilder()
-                .maximumSize(cacheSize)
-                .build(
-                        new CacheLoader<Long, MTabixMatrixBlock>() {
-                            public MTabixMatrixBlock load(Long filePointer) throws IOException {
-
-                                long block = getBlockAddress(filePointer);
-                                LOGGER.info("Loading block '" + Long.toHexString(block) + "'");
-                                MTabixMatrixBlock matrix = new MTabixMatrixBlock(layers, dimensions);
-
-                                dataStream.seek(filePointer);
-
-                                // read body
-                                String line;
-                                String fields[];
-                                while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((line = dataStream.readLine()) != null)) {
-                                    fields = PARSER.parseLineMulti(line);
-                                    final String columnId = fields[0];
-                                    final String rowId = fields[1];
-
-                                    for (int i = 2; i < fields.length; i++) {
-                                        Double value = DoubleTranslator.get().stringToValue(fields[i]);
-                                        matrix.set(getLayers().get(i - 2), value, rowId, columnId);
-                                    }
-                                }
-
-                                return matrix;
-                            }
-                        });
-
-        //TODO use dynamic cache
-        /*try {
-            InputStream in = new BlockCompressedInputStream(new FileInputStream(index.getConfig().getDataFile()));
-            CSVReader parser = new CSVReader(new InputStreamReader(in));
-            read(this, parser);
-            in.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } */
 
     }
 
@@ -117,8 +80,8 @@ public class MTabixMatrix extends HashMatrix {
         if (indexedLayers.contains(layer.getId())) {
             MTabixBlock block = index.getBlock(identifiers);
             if (block != null) {
-                MTabixMatrixBlock matrixBlock = indexedCache.getUnchecked(block.getFilePointer());
-                return matrixBlock.get(layer, identifiers);
+                MTabixBlockValues matrixBlock = indexedCache.get(layer.getId()).getUnchecked(block.getFilePointer());
+                return (T) matrixBlock.get(identifiers);
             }
         }
 
@@ -137,7 +100,12 @@ public class MTabixMatrix extends HashMatrix {
     }
 
     public void detach() {
-        this.indexedCache.invalidateAll();
+
+        //TODO improve evict policy
+        for (LoadingCache<Long, MTabixBlockValues> cache : indexedCache.values()) {
+            cache.invalidateAll();
+        }
+
     }
 
     private static IMatrixDimension[] createMTabixDimensions(MTabixIndex index, MatrixDimensionKey[] dimensions) {
@@ -152,6 +120,35 @@ public class MTabixMatrix extends HashMatrix {
     }
 
 
+    private class BlockLoader extends CacheLoader<Long, MTabixBlockValues> {
+
+        private int column;
+
+        private BlockLoader(int layer) {
+            this.column = layer + 2;
+        }
+
+        public MTabixBlockValues load(Long filePointer) throws IOException {
+
+            long block = getBlockAddress(filePointer);
+            LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
+            MTabixBlockValues matrix = new MTabixBlockValues();
+            dataStream.seek(filePointer);
+            IKeyParser parser = index.getConfig().getKeyParser();
+
+            // read body
+            String line;
+            while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((line = dataStream.readLine()) != null)) {
+                final String columnId = parser.parse(line, 0);
+                final String rowId = parser.parse(line, 1);
+                final Double value = DoubleTranslator.get().stringToValue(parser.parse(line, column));
+                matrix.set(value, rowId, columnId);
+            }
+
+            return matrix;
+        }
+
+    }
 
 
 }
