@@ -24,7 +24,7 @@ package org.gitools.matrix.format;
 import static com.google.common.collect.Lists.newArrayList;
 import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
-import edu.upf.bg.mtabix.parsers.DefaultKeyParser;
+import edu.upf.bg.mtabix.parse.DefaultKeyParser;
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;

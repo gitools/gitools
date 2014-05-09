@@ -26,17 +26,15 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import edu.upf.bg.mtabix.MTabixBlock;
 import edu.upf.bg.mtabix.MTabixIndex;
-import static edu.upf.bg.mtabix.bgz.BlockCompressedFilePointerUtil.getBlockAddress;
-import edu.upf.bg.mtabix.bgz.BlockCompressedInputStream;
-import edu.upf.bg.mtabix.bgz.BlockCompressedStreamConstants;
-import edu.upf.bg.mtabix.parsers.IKeyParser;
+import static edu.upf.bg.mtabix.compress.BlockCompressedFilePointerUtil.getBlockAddress;
+import edu.upf.bg.mtabix.compress.BlockCompressedInputStream;
+import edu.upf.bg.mtabix.parse.IKeyParser;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
-import org.gitools.utils.MemoryUtils;
 import org.gitools.utils.translators.DoubleTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,36 +117,38 @@ public class MTabixMatrix extends HashMatrix {
         return result;
     }
 
+    private synchronized MTabixBlockValues loadBlock(Long filePointer, int column) throws IOException {
+
+        long block = getBlockAddress(filePointer);
+        LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
+        MTabixBlockValues matrix = new MTabixBlockValues();
+        dataStream.seek(filePointer);
+        IKeyParser parser = index.getConfig().getKeyParser();
+
+        // read body
+        String line;
+        while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((line = dataStream.readLine()) != null)) {
+            final String columnId = parser.parse(line, 0);
+            final String rowId = parser.parse(line, 1);
+            final Double value = DoubleTranslator.get().stringToValue(parser.parse(line, column));
+            matrix.set(value, rowId, columnId);
+        }
+
+        return matrix;
+
+    }
 
     private class BlockLoader extends CacheLoader<Long, MTabixBlockValues> {
 
         private int column;
-
         private BlockLoader(int layer) {
             this.column = layer + 2;
         }
 
         public MTabixBlockValues load(Long filePointer) throws IOException {
-
-            long block = getBlockAddress(filePointer);
-            LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
-            MTabixBlockValues matrix = new MTabixBlockValues();
-            dataStream.seek(filePointer);
-            IKeyParser parser = index.getConfig().getKeyParser();
-
-            // read body
-            String line;
-            while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((line = dataStream.readLine()) != null)) {
-                final String columnId = parser.parse(line, 0);
-                final String rowId = parser.parse(line, 1);
-                final Double value = DoubleTranslator.get().stringToValue(parser.parse(line, column));
-                matrix.set(value, rowId, columnId);
-            }
-
-            return matrix;
+             return loadBlock(filePointer, column);
         }
 
     }
-
 
 }

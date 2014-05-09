@@ -3,10 +3,10 @@
   <groupId>edu.upf.bg</groupId>
   <artifactId>mtabix</artifactId>
   <versioning>
-    <release>1.0-20140429</release>
+    <release>1.0-20140509</release>
     <versions>
-      <version>1.0-20140429</version>
+      <version>1.0-20140509</version>
     </versions>
-    <lastUpdated>20140429145452</lastUpdated>
+    <lastUpdated>20140509135757</lastUpdated>
   </versioning>
 </metadata>

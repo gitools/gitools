@@ -243,7 +243,7 @@
             <dependency>
                 <groupId>edu.upf.bg</groupId>
                 <artifactId>mtabix</artifactId>
-                <version>1.0-20140429</version>
+                <version>1.0-20140509</version>
             </dependency>
 
             <dependency>

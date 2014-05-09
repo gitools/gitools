@@ -21,9 +21,9 @@
  */
 package org.gitools.persistence.locators;
 
-import edu.upf.bg.mtabix.bgz.SeekableBufferedStream;
-import edu.upf.bg.mtabix.bgz.SeekableFileStream;
-import edu.upf.bg.mtabix.bgz.SeekableHTTPStream;
+import edu.upf.bg.mtabix.compress.SeekableBufferedStream;
+import edu.upf.bg.mtabix.compress.SeekableFileStream;
+import edu.upf.bg.mtabix.compress.SeekableHTTPStream;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;

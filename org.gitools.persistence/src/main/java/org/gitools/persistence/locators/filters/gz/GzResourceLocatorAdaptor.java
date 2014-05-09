@@ -21,8 +21,8 @@
  */
 package org.gitools.persistence.locators.filters.gz;
 
-import edu.upf.bg.mtabix.bgz.BlockCompressedInputStream;
-import edu.upf.bg.mtabix.bgz.BlockCompressedOutputStream;
+import edu.upf.bg.mtabix.compress.BlockCompressedInputStream;
+import edu.upf.bg.mtabix.compress.BlockCompressedOutputStream;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;

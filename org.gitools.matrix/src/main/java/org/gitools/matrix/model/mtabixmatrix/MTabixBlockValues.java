@@ -21,24 +21,20 @@
  */
 package org.gitools.matrix.model.mtabixmatrix;
 
-import gnu.trove.map.TIntDoubleMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntDoubleHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
-import java.util.HashMap;
-import java.util.Map;
+import gnu.trove.map.TLongDoubleMap;
+import gnu.trove.map.hash.TLongDoubleHashMap;
 
 public class MTabixBlockValues {
-    private TIntObjectMap<TIntDoubleMap> map;
+
+    private TLongDoubleMap map;
+
     public MTabixBlockValues() {
         super();
-        this.map = new TIntObjectHashMap<>();
+        this.map = new TLongDoubleHashMap();
     }
 
     public Double get(String... identifiers) {
-        TIntDoubleMap submap = map.get(identifiers[0].hashCode());
-        return submap==null ? null : submap.get(identifiers[1].hashCode());
+        return map.get(hash(identifiers));
     }
 
     public void set(Double value, String row, String column) {
@@ -47,9 +43,12 @@ public class MTabixBlockValues {
             return;
         }
 
-        if (!map.containsKey(row.hashCode())) {
-            map.put(row.hashCode(), new TIntDoubleHashMap());
-        }
-        map.get(row.hashCode()).put(column.hashCode(), value);
+        map.put(hash(row, column), value);
+    }
+
+    private long hash(String... identifiers) {
+        int a = identifiers[0].hashCode();
+        int b = identifiers[1].hashCode();
+        return (long) a << 32 | b & 0xFFFFFFFFL;
     }
 }
