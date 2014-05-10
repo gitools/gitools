@@ -86,11 +86,6 @@ public class RawFlatTextWriter {
     }
 
     public void write(String raw) {
-
-        if (raw == null) {
-            return;
-        }
-
         out.print(raw);
     }
 

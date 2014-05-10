@@ -24,6 +24,7 @@ package org.gitools.matrix.format;
 import static com.google.common.collect.Lists.newArrayList;
 import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
+import edu.upf.bg.mtabix.compress.BlockCompressedStreamConstants;
 import edu.upf.bg.mtabix.parse.DefaultKeyParser;
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
@@ -184,11 +185,11 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
-        monitor.begin("Saving results...", results.getRows().size());
+        monitor.begin("Saving results...", results.getColumns().size());
 
         try {
             OutputStream out = resourceLocator.openOutputStream();
-            Writer writer = new OutputStreamWriter(out);
+            Writer writer = new OutputStreamWriter(new BufferedOutputStream(out, BlockCompressedStreamConstants.DEFAULT_UNCOMPRESSED_BLOCK_SIZE * 100));
             writeCells(writer, results, monitor);
             writer.close();
 
@@ -253,10 +254,14 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         IMatrixDimension rows = resultsMatrix.getRows();
 
         for (String column : columns) {
+
             for (String row : rows) {
                 writeLine(out, resultsMatrix, column, row, progressMonitor);
             }
             progressMonitor.worked(1);
+            if (progressMonitor.isCancelled()) {
+                throw new CancellationException();
+            }
         }
 
     }
@@ -271,6 +276,8 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             out.writeSeparator();
 
             Object value = resultsMatrix.get(layer, row, column);
+
+            //TODO Use IMatrixLayer translator
             if (value instanceof Double) {
                 Double v = (Double) value;
                 out.write(DoubleTranslator.get().valueToString(v));

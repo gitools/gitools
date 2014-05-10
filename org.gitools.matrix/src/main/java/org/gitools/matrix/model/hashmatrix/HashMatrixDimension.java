@@ -88,4 +88,21 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
         return new HashMatrixDimension(getId(), identifiers);
     }
 
+    public void optimize(Iterable<String> identifiers) {
+
+        Map<String, Integer> allIds = labelToIndex;
+        this.labelToIndex = new HashMap<>();
+        this.indexToLabel = new HashMap<>();
+
+        for (String id : identifiers) {
+            add(id);
+            if (allIds.containsKey(id)) {
+                allIds.remove(id);
+            }
+        }
+
+        for (String id : allIds.keySet()) {
+            add(id);
+        }
+    }
 }

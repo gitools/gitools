@@ -28,6 +28,7 @@ import edu.upf.bg.mtabix.MTabixBlock;
 import edu.upf.bg.mtabix.MTabixIndex;
 import static edu.upf.bg.mtabix.compress.BlockCompressedFilePointerUtil.getBlockAddress;
 import edu.upf.bg.mtabix.compress.BlockCompressedInputStream;
+import edu.upf.bg.mtabix.compress.BlockCompressedReader;
 import edu.upf.bg.mtabix.parse.IKeyParser;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
@@ -49,7 +50,7 @@ public class MTabixMatrix extends HashMatrix {
     private static final Logger LOGGER = LoggerFactory.getLogger(MTabixMatrix.class);
 
     private MTabixIndex index;
-    private BlockCompressedInputStream dataStream;
+    private BlockCompressedReader dataStream;
     private Set<String> indexedLayers;
 
     // Cache
@@ -59,7 +60,7 @@ public class MTabixMatrix extends HashMatrix {
         super(layers, createMTabixDimensions(index, dimensions));
 
         this.index = index;
-        this.dataStream = new BlockCompressedInputStream(index.getConfig().getDataFile());
+        this.dataStream = new BlockCompressedReader(index.getConfig().getDataFile());
 
         // Create the caches
         indexedCache = new HashMap<>(layers.size());
@@ -117,25 +118,93 @@ public class MTabixMatrix extends HashMatrix {
         return result;
     }
 
+    private int lineLength;
+    private byte[] line = new byte[8192];
+
     private synchronized MTabixBlockValues loadBlock(Long filePointer, int column) throws IOException {
 
         long block = getBlockAddress(filePointer);
         LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
         MTabixBlockValues matrix = new MTabixBlockValues();
         dataStream.seek(filePointer);
-        IKeyParser parser = index.getConfig().getKeyParser();
 
         // read body
-        String line;
-        while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((line = dataStream.readLine()) != null)) {
-            final String columnId = parser.parse(line, 0);
-            final String rowId = parser.parse(line, 1);
-            final Double value = DoubleTranslator.get().stringToValue(parser.parse(line, column));
-            matrix.set(value, rowId, columnId);
+        while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((lineLength = dataStream.readLine(line)) != -1)) {
+
+            final Double value = DoubleTranslator.get().stringToValue(parseLine(line, column, lineLength));
+            if (value!=null) {
+                int a = parseHash(line, 1, lineLength);
+                int b = parseHash(line, 0, lineLength);
+                long key = (long) a << 32 | b & 0xFFFFFFFFL;
+                matrix.put(key, value);
+            }
+
         }
 
         return matrix;
 
+    }
+
+    private int start, end, tabs;
+    private int parseTab(byte[] str, int pos, int length) {
+
+        tabs=pos; start=0; end=0;
+
+        while(true) {
+            if (str[end] == '\t') {
+
+                if (tabs == 0) {
+                    break;
+                }
+
+                tabs--;
+                start = end + 1;
+            }
+
+            end++;
+            if (end == length) {
+                if (tabs == pos) {
+                    return -1;
+                }
+                break;
+            }
+
+        }
+
+        if (start != end && str[start] == '"' && str[end-1] == '"') {
+            start = start + 1;
+            end = end - 1;
+        }
+
+        return end - start;
+
+    }
+
+    public String parseLine(byte[] str, int pos, int length) {
+
+        int size = parseTab(str, pos, length);
+
+        if (size == -1) {
+            return null;
+        }
+
+        return new String(str, start, size);
+    }
+
+    public int parseHash(byte[] str, int pos, int length) {
+
+        int size = parseTab(str, pos, length);
+
+        if (size == -1) {
+            return 0;
+        }
+
+        int hash = 0;
+        for (int i=start; i < end; i++) {
+            hash = 31 * hash + str[i];
+        }
+
+        return hash;
     }
 
     private class BlockLoader extends CacheLoader<Long, MTabixBlockValues> {

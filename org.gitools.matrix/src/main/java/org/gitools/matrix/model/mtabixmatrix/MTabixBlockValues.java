@@ -37,16 +37,11 @@ public class MTabixBlockValues {
         return map.get(hash(identifiers));
     }
 
-    public void set(Double value, String row, String column) {
-
-        if (value == null) {
-            return;
-        }
-
-        map.put(hash(row, column), value);
+    public void put(long key, double value) {
+        map.put(key, value);
     }
 
-    private long hash(String... identifiers) {
+    public static long hash(String... identifiers) {
         int a = identifiers[0].hashCode();
         int b = identifiers[1].hashCode();
         return (long) a << 32 | b & 0xFFFFFFFFL;

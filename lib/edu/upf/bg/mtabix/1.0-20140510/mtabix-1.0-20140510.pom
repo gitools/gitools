@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.upf.bg</groupId>
   <artifactId>mtabix</artifactId>
-  <version>1.0-20140509</version>
+  <version>1.0-20140510</version>
   <description>POM was created from install:install-file</description>
 </project>
