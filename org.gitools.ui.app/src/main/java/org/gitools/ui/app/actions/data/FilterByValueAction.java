@@ -28,9 +28,9 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.matrix.filter.MatrixViewValueFilter;
 import org.gitools.matrix.filter.ValueFilterFunction;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.dialog.filter.ValueFilterPage;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -87,7 +87,8 @@ public class FilterByValueAction extends HeatmapAction {
                         page.isAllElementsMatch(),
                         page.isHideMatching(),
                         page.isApplyToRows(),
-                        page.isApplyToColumns());
+                        page.isApplyToColumns(),
+                        monitor);
             }
         });
 
