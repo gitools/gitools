@@ -36,7 +36,6 @@ import java.util.List;
 
 import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.*;
 import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.setMode;
 
 public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -62,7 +61,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int metaMask = OSProperties.get().getMetaMask();
     private Timer timer;
 
-    private HeatmapPanelInputProcessor ip;
+    private HeatmapPanelInputProcessor inputProcessor;
     private MouseEvent lastMovingEvent;
 
     public HeatmapHeaderMouseController(HeatmapPanel panel,
@@ -78,8 +77,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         viewPort.addMouseMotionListener(this);
         viewPort.addMouseWheelListener(this);
 
-        setMode(none);
-        this.ip = inputProcessor;
+        this.inputProcessor = inputProcessor;
+        this.inputProcessor.setMode(none);
         this.timer = new Timer(50, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,9 +140,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int index = convertToIndex(e);
 
         if (isSelectedIndex(index)) {
-            setMode(movingSelected);
+            this.inputProcessor.setMode(movingSelected);
         } else {
-            setMode(selectingRowsAndCols);
+            this.inputProcessor.setMode(selectingRowsAndCols);
         }
 
 
@@ -174,11 +173,11 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         if (getInteractionMode() == movingSelected) {
             if (!selectionHasMoved) {
                 //There was no dragging, user wanted to unselect the selection
-                ip.switchSelection(dimension, index, altDown);
+                inputProcessor.switchSelection(dimension, index, altDown);
                 setLeading(e);
-                setMode(none);
+                this.inputProcessor.setMode(none);
             } else {
-                setMode(none);
+                this.inputProcessor.setMode(none);
                 dimension.forceUpdate(AbstractMatrixViewDimension.PROPERTY_VISIBLE);
                 //updateSelectionMove(e, true);
                 selectionHasMoved = false;
@@ -237,7 +236,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int modifiers = e.getModifiers();
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-        setMode((ctrlDown) ? zooming : scrolling);
+        this.inputProcessor.setMode((ctrlDown) ? zooming : scrolling);
 
         if (getInteractionMode() == scrolling) {
             HeatmapPosition pos = panel.getScrollPosition();
@@ -249,9 +248,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             }
         } else {
 
-            if (ip.isKeyPressed(KeyEvent.VK_C) ||
-                    ip.isKeyPressed(KeyEvent.VK_R)) {
-                ip.zoomHeatmap(unitsToScroll);
+            if (inputProcessor.isKeyPressed(KeyEvent.VK_C) ||
+                    inputProcessor.isKeyPressed(KeyEvent.VK_R)) {
+                inputProcessor.zoomHeatmap(unitsToScroll);
             } else {
 
                 point = e.getPoint();
@@ -260,7 +259,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
                 HeatmapHeader header = headerPanel.getHeaderDrawer().getHeader(point);
 
-                if (ip.isKeyPressed(KeyEvent.VK_M)) {
+                if (inputProcessor.isKeyPressed(KeyEvent.VK_M)) {
                     int margin = header.getMargin() + unitsToScroll * -2;
 
                     if (margin < 1) {
@@ -336,7 +335,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 for (int i = 0; i < indexDiff; i++) {
                     dimension.move(Direction.LEFT, dimension.getSelected());
-                    ip.shiftSelStart(dimension, -1);
+                    inputProcessor.shiftSelStart(dimension, -1);
                 }
             }
 
@@ -344,7 +343,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 for (int i = 0; i > indexDiff; i--) {
                     dimension.move(Direction.RIGHT, dimension.getSelected());
-                    ip.shiftSelStart(dimension, 1);
+                    inputProcessor.shiftSelStart(dimension, 1);
                 }
             }
         }
@@ -367,12 +366,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
         if (!dragging && !shiftDown) {
-            ip.switchSelection(dimension, index, false);
+            inputProcessor.switchSelection(dimension, index, false);
         } else if (shiftDown) {
 
-            int lastSelected = horizontal ? ip.getLastSelectedCol() : ip.getLastSelectedRow();
-            ip.addToSelected(lastSelected, index, dimension);
-            ip.setLastSelected(index, horizontal);
+            int lastSelected = horizontal ? inputProcessor.getLastSelectedCol() : inputProcessor.getLastSelectedRow();
+            inputProcessor.addToSelected(lastSelected, index, dimension);
+            inputProcessor.setLastSelected(index, horizontal);
 
         }
     }

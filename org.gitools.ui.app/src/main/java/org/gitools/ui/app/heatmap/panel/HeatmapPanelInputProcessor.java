@@ -80,8 +80,8 @@ public class HeatmapPanelInputProcessor {
         return mode;
     }
 
-    public static void setMode(Mode mode) {
-        HeatmapPanelInputProcessor.mode = mode;
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
