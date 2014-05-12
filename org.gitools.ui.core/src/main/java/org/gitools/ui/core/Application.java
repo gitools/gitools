@@ -26,12 +26,12 @@ import com.brsanthu.googleanalytics.ExceptionHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.ui.core.components.StatusBar;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.application.IApplicationTracking;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.Settings;
-import org.gitools.ui.platform.application.IApplicationTracking;
-import org.gitools.ui.core.components.editor.EditorsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -213,4 +213,11 @@ public class Application extends JFrame implements IApplicationTracking {
     public void refresh() {
     }
 
+    public void setCursorWaiting() {
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    }
+
+    public void setCursorNormal() {
+        this.setCursor(Cursor.getDefaultCursor());
+    }
 }

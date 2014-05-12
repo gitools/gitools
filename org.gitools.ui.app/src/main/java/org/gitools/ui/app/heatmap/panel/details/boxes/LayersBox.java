@@ -29,11 +29,13 @@ import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
+import org.gitools.ui.app.actions.edit.SetLayerAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -133,7 +135,9 @@ public class LayersBox extends DetailsBox {
 
     @Override
     protected void onMouseSingleClick(DetailsDecoration detail) {
-        getHeatmap().getLayers().setTopLayerIndex(detail.getIndex());
+
+        HeatmapLayer layer = getHeatmap().getLayers().get(detail.getIndex());
+        new SetLayerAction(layer).actionPerformed(new ActionEvent(this, 0, null));
     }
 
     @Override

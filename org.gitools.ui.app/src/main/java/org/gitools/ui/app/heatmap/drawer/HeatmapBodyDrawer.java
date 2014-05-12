@@ -25,6 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
@@ -37,6 +38,9 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
 
     @Override
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
+
+        Application.get().setCursorWaiting();
+
 
         g.setFont(heatmap.getLayers().getTopLayer().getFont());
         calculateFontSize(g, rows.getCellSize(), 7);
@@ -90,6 +94,8 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             drawSelectedAndFocus(g, box, rows, true);
             drawSelectedAndFocus(g, box, columns, false);
         }
+
+        Application.get().setCursorNormal();
 
     }
 
