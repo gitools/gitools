@@ -120,7 +120,7 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLastSelectedRow(int lastSelectedRow) {
-        if (lastSelectedRow > -1 && lastSelectedRow < mv.getColumns().size()) {
+        if (lastSelectedRow > -1 && lastSelectedRow < mv.getRows().size()) {
             this.lastSelectedRow = lastSelectedRow;
         } else if (lastSelectedRow >= mv.getRows().size()) {
             this.lastSelectedRow = mv.getRows().size() - 1;
