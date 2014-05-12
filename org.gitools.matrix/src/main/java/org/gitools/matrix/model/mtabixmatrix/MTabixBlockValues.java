@@ -34,7 +34,14 @@ public class MTabixBlockValues {
     }
 
     public Double get(String... identifiers) {
-        return map.get(hash(identifiers));
+
+        long hash = hash(identifiers);
+
+        if (!map.containsKey(hash)) {
+            return null;
+        }
+
+        return map.get(hash);
     }
 
     public void put(long key, double value) {
