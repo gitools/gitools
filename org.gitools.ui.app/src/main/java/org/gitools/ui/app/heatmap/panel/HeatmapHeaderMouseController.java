@@ -250,7 +250,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
             if (inputProcessor.isKeyPressed(KeyEvent.VK_C) ||
                     inputProcessor.isKeyPressed(KeyEvent.VK_R)) {
-                inputProcessor.zoomHeatmap(unitsToScroll);
+                inputProcessor.zoomHeatmap(unitsToScroll > 0 ? 1 : -1);
             } else {
 
                 point = e.getPoint();
