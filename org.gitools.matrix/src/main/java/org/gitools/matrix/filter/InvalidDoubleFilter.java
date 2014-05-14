@@ -24,10 +24,17 @@ package org.gitools.matrix.filter;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
 
-public class NullPredicate<T> implements IMatrixPredicate<T> {
+public class InvalidDoubleFilter implements IMatrixPredicate<Double> {
 
+    /**
+     * Removes (returns false) if the double is null nor NaN
+     *
+     * @param value
+     * @param position
+     * @return
+     */
     @Override
-    public boolean apply(T value, IMatrixPosition position) {
-        return value == null;
+    public boolean apply(Double value, IMatrixPosition position) {
+        return !(value == null || Double.isNaN(value));
     }
 }
