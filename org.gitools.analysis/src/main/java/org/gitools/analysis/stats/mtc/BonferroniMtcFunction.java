@@ -21,10 +21,11 @@
  */
 package org.gitools.analysis.stats.mtc;
 
+import com.google.common.collect.Iterators;
 import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.matrix.filter.NullPredicate;
+import org.gitools.matrix.filter.InvalidDoubleFilter;
 
 public class BonferroniMtcFunction extends AbstractMatrixFunction<Double, Double> {
 
@@ -35,10 +36,7 @@ public class BonferroniMtcFunction extends AbstractMatrixFunction<Double, Double
 
     @Override
     public void onBeforeIterate(IMatrixIterable<Double> parentIterable) {
-
-        n = parentIterable
-                .filter(new NullPredicate<Double>())
-                .count();
+        n = Iterators.size(parentIterable.filter(new InvalidDoubleFilter()).iterator());
     }
 
     @Override

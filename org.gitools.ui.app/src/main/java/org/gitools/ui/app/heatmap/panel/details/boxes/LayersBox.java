@@ -29,16 +29,21 @@ import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
+import org.gitools.ui.app.actions.edit.SetLayerAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.gitools.heatmap.AbstractMatrixViewDimension.*;
 import static org.gitools.heatmap.HeatmapLayer.*;
@@ -50,6 +55,10 @@ import static org.gitools.utils.events.EventUtils.isAny;
 
 
 public class LayersBox extends DetailsBox {
+
+    private static final ScheduledExecutorService worker =
+            Executors.newSingleThreadScheduledExecutor();
+
     /**
      * @param title   Optional title of the details table
      * @param actions
@@ -133,7 +142,18 @@ public class LayersBox extends DetailsBox {
 
     @Override
     protected void onMouseSingleClick(DetailsDecoration detail) {
-        getHeatmap().getLayers().setTopLayerIndex(detail.getIndex());
+
+        final HeatmapLayer layer = getHeatmap().getLayers().get(detail.getIndex());
+
+
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                new SetLayerAction(layer).actionPerformed(new ActionEvent(this, 0, null));
+            }
+        };
+        worker.schedule(task, 10, TimeUnit.MILLISECONDS);
+
     }
 
     @Override

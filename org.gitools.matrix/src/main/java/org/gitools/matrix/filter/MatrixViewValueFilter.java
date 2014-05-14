@@ -23,6 +23,7 @@ package org.gitools.matrix.filter;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Sets;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
@@ -34,18 +35,18 @@ import java.util.Set;
 
 public class MatrixViewValueFilter {
 
-    public static void filter(IMatrixView matrixView, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns) {
+    public static void filter(IMatrixView matrixView, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, boolean applyToRows, boolean applyToColumns, IProgressMonitor monitor) {
 
         if (applyToColumns) {
-            filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria);
+            filter(matrixView, matrixView.getColumns(), matrixView.getRows(), criteriaList, allCriteria, allElements, invertCriteria, monitor);
         }
 
         if (applyToRows) {
-            filter(matrixView, matrixView.getRows(), matrixView.getColumns(), criteriaList, allCriteria, allElements, invertCriteria);
+            filter(matrixView, matrixView.getRows(), matrixView.getColumns(), criteriaList, allCriteria, allElements, invertCriteria, monitor);
         }
     }
 
-    private static void filter(IMatrixView matrixView, IMatrixViewDimension filterDimension, IMatrixViewDimension otherDimension, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria) {
+    private static void filter(IMatrixView matrixView, IMatrixViewDimension filterDimension, IMatrixViewDimension otherDimension, List<ValueFilterFunction> criteriaList, boolean allCriteria, boolean allElements, boolean invertCriteria, IProgressMonitor monitor) {
 
         Set<String> selection = otherDimension.getSelected();
         if (selection.isEmpty()) {
@@ -55,6 +56,8 @@ public class MatrixViewValueFilter {
         Set<String> filterin = new HashSet<>();
 
         IMatrixPosition position = matrixView.newPosition();
+        int length = filterDimension.size();
+        monitor.begin("Filtering " + filterDimension.getId().getLabel() + "s", length);
         for (String filterItem : position.iterate(filterDimension)) {
 
             boolean cellsAnd = true;
@@ -76,6 +79,7 @@ public class MatrixViewValueFilter {
                 cellsAnd &= critFilterIn;
                 cellsOr |= critFilterIn;
             }
+
             boolean cellsFilterIn = allElements ? cellsAnd : cellsOr;
             if (invertCriteria) {
                 cellsFilterIn = !cellsFilterIn;
@@ -83,6 +87,10 @@ public class MatrixViewValueFilter {
 
             if (cellsFilterIn) {
                 filterin.add(filterItem);
+            }
+            monitor.worked(1);
+            if (monitor.isCancelled()) {
+                return;
             }
         }
 

@@ -80,8 +80,8 @@ public class HeatmapPanelInputProcessor {
         return mode;
     }
 
-    public static void setMode(Mode mode) {
-        HeatmapPanelInputProcessor.mode = mode;
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -120,7 +120,7 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLastSelectedRow(int lastSelectedRow) {
-        if (lastSelectedRow > -1 && lastSelectedRow < mv.getColumns().size()) {
+        if (lastSelectedRow > -1 && lastSelectedRow < mv.getRows().size()) {
             this.lastSelectedRow = lastSelectedRow;
         } else if (lastSelectedRow >= mv.getRows().size()) {
             this.lastSelectedRow = mv.getRows().size() - 1;
