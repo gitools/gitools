@@ -78,27 +78,29 @@ public abstract class FilterResourceLocator implements IResourceLocator {
 
     @Override
     public long getContentLength() {
-        return getResourceLocator().getContentLength();
+        return getParentLocator().getContentLength();
     }
 
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
-        return getResourceLocator().getReferenceLocator(referenceName);
+        return getParentLocator().getReferenceLocator(referenceName);
     }
 
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
-        return getResourceLocator().openInputStream(progressMonitor);
+        return getParentLocator().openInputStream(progressMonitor);
     }
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return getResourceLocator().openOutputStream();
+        return getParentLocator().openOutputStream();
     }
 
-    protected IResourceLocator getResourceLocator() {
+    @Override
+    public IResourceLocator getParentLocator() {
         return resourceLocator;
     }
+
 
 
 }

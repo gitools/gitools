@@ -50,7 +50,7 @@ public class GzResourceLocatorAdaptor extends FilterResourceLocator {
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
-        InputStream in = getResourceLocator().openInputStream(progressMonitor);
+        InputStream in = getParentLocator().openInputStream(progressMonitor);
 
         if (!in.markSupported()) {
             in = new BufferedInputStream(in);
@@ -67,7 +67,7 @@ public class GzResourceLocatorAdaptor extends FilterResourceLocator {
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return new BlockCompressedOutputStream(getResourceLocator().openOutputStream(), null);
+        return new BlockCompressedOutputStream(getParentLocator().openOutputStream(), null);
     }
 
 }

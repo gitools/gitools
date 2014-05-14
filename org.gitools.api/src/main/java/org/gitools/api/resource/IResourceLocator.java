@@ -51,6 +51,8 @@ public interface IResourceLocator {
      */
     long getContentLength();
 
+    IResourceLocator getParentLocator();
+
     IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException;
 
     boolean isWritable();

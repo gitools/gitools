@@ -77,6 +77,11 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public IResourceLocator getParentLocator() {
+        return originalLocator;
+    }
+
+    @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return originalLocator.getReferenceLocator(referenceName);
     }

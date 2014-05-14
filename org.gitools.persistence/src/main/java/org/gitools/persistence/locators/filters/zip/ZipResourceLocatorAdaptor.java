@@ -61,7 +61,7 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
         int extensionIndex = referenceName.indexOf(extension);
         String extensionWithFilters = referenceName.substring(extensionIndex);
 
-        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extensionWithFilters, getResourceLocator()) {
+        return new ZipResourceLocatorAdaptor(referenceName, referenceName, extensionWithFilters, getParentLocator()) {
             @Override
             protected ZipOutputStream getZipOutputStream() throws IOException {
                 return ZipResourceLocatorAdaptor.this.getZipOutputStream();
@@ -78,7 +78,7 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
 
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
-        ZipInputStream in = new ZipInputStream(getResourceLocator().openInputStream(progressMonitor));
+        ZipInputStream in = new ZipInputStream(getParentLocator().openInputStream(progressMonitor));
 
         ZipEntry entry;
         while ((entry = in.getNextEntry()) != null) {
@@ -87,7 +87,7 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
             }
         }
 
-        throw new PersistenceException("Entry '" + entryName + "' not found in '" + getResourceLocator().getURL() + "'");
+        throw new PersistenceException("Entry '" + entryName + "' not found in '" + getParentLocator().getURL() + "'");
     }
 
 
@@ -103,7 +103,7 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
     protected ZipOutputStream getZipOutputStream() throws IOException {
 
         if (this.out == null) {
-            this.out = new ZipOutputStream(getResourceLocator().openOutputStream()) {
+            this.out = new ZipOutputStream(getParentLocator().openOutputStream()) {
                 @Override
                 public void close() throws IOException {
                     super.close();

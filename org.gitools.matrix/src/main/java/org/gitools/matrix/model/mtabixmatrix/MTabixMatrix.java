@@ -148,6 +148,10 @@ public class MTabixMatrix extends HashMatrix {
     private int start, end, tabs;
     private int parseTab(byte[] str, int pos, int length) {
 
+        if (length < 1) {
+            return -1;
+        }
+
         tabs=pos; start=0; end=0;
 
         while(true) {

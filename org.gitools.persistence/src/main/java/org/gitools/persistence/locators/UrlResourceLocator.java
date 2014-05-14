@@ -135,6 +135,11 @@ public class UrlResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public IResourceLocator getParentLocator() {
+        return null;
+    }
+
+    @Override
     public String getExtension() {
         String name = getName();
         return name.substring(name.indexOf(".") + 1);

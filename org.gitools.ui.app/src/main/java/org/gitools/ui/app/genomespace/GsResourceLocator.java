@@ -34,31 +34,31 @@ import java.net.URL;
 
 public class GsResourceLocator implements IResourceLocator {
 
-    private final IResourceLocator resourceLocator;
+    private final IResourceLocator parentLocator;
 
-    public GsResourceLocator(IResourceLocator resourceLocator) throws PersistenceException {
+    public GsResourceLocator(IResourceLocator parentLocator) throws PersistenceException {
         super();
-        this.resourceLocator = resourceLocator;
+        this.parentLocator = parentLocator;
     }
 
     @Override
     public URL getURL() {
-        return resourceLocator.getURL();
+        return parentLocator.getURL();
     }
 
     @Override
     public String getBaseName() {
-        return resourceLocator.getBaseName();
+        return parentLocator.getBaseName();
     }
 
     @Override
     public String getExtension() {
-        return resourceLocator.getExtension();
+        return parentLocator.getExtension();
     }
 
     @Override
     public String getName() {
-        return resourceLocator.getName();
+        return parentLocator.getName();
     }
 
     @Override
@@ -77,19 +77,24 @@ public class GsResourceLocator implements IResourceLocator {
             }
         }
 
-        return resourceLocator.getContentLength();
+        return parentLocator.getContentLength();
 
+    }
+
+    @Override
+    public IResourceLocator getParentLocator() {
+        return parentLocator;
     }
 
 
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
-        return new GsResourceLocator(resourceLocator.getReferenceLocator(referenceName));
+        return new GsResourceLocator(parentLocator.getReferenceLocator(referenceName));
     }
 
     @Override
     public boolean isWritable() {
-        return resourceLocator.isWritable();
+        return parentLocator.isWritable();
     }
 
 
@@ -100,11 +105,11 @@ public class GsResourceLocator implements IResourceLocator {
             return new ProgressMonitorInputStream(progressMonitor, HttpUtils.getInstance().openConnectionStream(getURL()));
         }
 
-        return resourceLocator.openInputStream(progressMonitor);
+        return parentLocator.openInputStream(progressMonitor);
     }
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return resourceLocator.openOutputStream();
+        return parentLocator.openOutputStream();
     }
 }

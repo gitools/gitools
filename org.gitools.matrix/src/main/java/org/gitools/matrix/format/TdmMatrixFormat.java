@@ -157,7 +157,9 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 // Copy data to a temporal file
                 File dataFile = File.createTempFile("gitools-cache-", "zip_bgz");
                 dataFile.deleteOnExit();
-                InputStream dataStream = resourceLocator.openInputStream(progressMonitor);
+
+                InputStream dataStream = resourceLocator.getParentLocator().openInputStream(progressMonitor);
+
                 IOUtils.copy(dataStream, new FileOutputStream(dataFile));
                 dataURL = dataFile.toURL();
 
