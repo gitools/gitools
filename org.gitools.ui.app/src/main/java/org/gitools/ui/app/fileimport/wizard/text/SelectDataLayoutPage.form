@@ -51,7 +51,7 @@
         <properties>
           <font style="1"/>
           <labelFor value="f0939"/>
-          <text value="Data is formatted as:"/>
+          <text value="Data is layout is as:"/>
         </properties>
       </component>
       <component id="922b" class="javax.swing.JRadioButton" binding="tableRadioButton" default-binding="true">

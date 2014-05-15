@@ -27,8 +27,9 @@ import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
-import org.gitools.ui.core.utils.FileFormatFilter;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.utils.FileFormatFilter;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -77,6 +78,8 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     public void addPages() {
 
         selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextImporter(locator, monitor, true));
+        selectDataLayoutPage.setTitle("Select data Layout");
+        selectDataLayoutPage.setMessage(MessageStatus.INFO, "");
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();

@@ -22,9 +22,9 @@ package org.gitools.ui.app.fileimport.wizard.text;
  * #L%
  */
 
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.readers.FileField;
@@ -103,17 +103,16 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
             updateParsing();
 
             if (tableRadioButton.isSelected()) {
-                dataFormatTextPane.setText("<html><body>" +
-                        "Each line is a heatmap cell: Two fields describing Column and Row id.<br>" +
-                        "The other fields are data points, therefore <b>multiple per cell</b>.<br>" +
+                dataFormatTextPane.setText("<html><body><small>" +
+                        "<b>Table layout:</b>Each line is a heatmap cell: Two fields describing Column and Row id.<br>" +
+                        "The other fields are data points</b>.<br>" +
                         "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_TABLE.toString() + "\">" +
-                        "</body></html>");
+                        "</small></body></html>");
             } else if (matrixRadioButton.isSelected()) {
-                dataFormatTextPane.setText("<html><body>" +
-                        "The first row and column of the file are the Column and Row ids <br>" +
-                        "<b>Only one data point per cell is possible</b>.<br>" +
+                dataFormatTextPane.setText("<html><body><small>" +
+                        "<b>Matrix layout</b>:The first row and column of the file are the Column and Row ids <br>" +
                         "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_MATRIX.toString() + "\">" +
-                        "</body></html>");
+                        "</small></body></html>");
             }
 
         } catch (Exception e) {
