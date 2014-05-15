@@ -129,7 +129,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     }
 
     private boolean correctValueName() {
-        return !valueNameBox.getText().equals("");
+        return !valueNameBox.getText().equals("") && !valueNameBox.getText().toLowerCase().equals("value")
+                && !valueNameBox.getText().toLowerCase().equals("values");
     }
 
     private void updateRowIdHeader() {
@@ -300,7 +301,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         }
 
         if (!correctValueName()) {
-            setMessage(MessageStatus.ERROR, "Please specify a name for the value (e.g. expression value)");
+            setMessage(MessageStatus.ERROR, "Please specify a name describing the data values (e.g. expression)");
             setComplete(false);
             return;
         }

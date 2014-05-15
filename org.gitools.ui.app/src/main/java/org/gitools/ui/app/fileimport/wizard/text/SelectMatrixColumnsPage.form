@@ -70,12 +70,12 @@
       </scrollpane>
       <component id="91894" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="2" row-span="2" col-span="3" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
           <forms top="0" left="5" bottom="0" right="0" defaultalign-vert="false"/>
         </constraints>
         <properties>
           <font style="1"/>
-          <text value="Value Layer name: "/>
+          <text value="Data layer name:"/>
         </properties>
       </component>
       <component id="7493a" class="javax.swing.JLabel">
