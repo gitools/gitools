@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.core.actions;
 
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.IEditor;
+import org.gitools.ui.platform.IconUtils;
 
-import javax.swing.*;
 import javax.swing.AbstractAction;
+import javax.swing.*;
 import java.net.URL;
 
 public abstract class BaseAction extends AbstractAction {
@@ -92,7 +92,7 @@ public abstract class BaseAction extends AbstractAction {
     }
 
 
-    ImageIcon getSmallIcon() {
+    public ImageIcon getSmallIcon() {
         return (ImageIcon) getValue(SMALL_ICON);
     }
 

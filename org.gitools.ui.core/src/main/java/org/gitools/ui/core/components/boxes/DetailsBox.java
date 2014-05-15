@@ -35,7 +35,10 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.ActionSetUtils;
+import org.gitools.ui.core.actions.BaseAction;
 import org.gitools.ui.platform.icons.IconNames;
+import org.jdesktop.swingx.HorizontalLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,6 +52,7 @@ import java.util.List;
 public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Box {
     private static final int DEFAULT_MARGIN = 20;
     private static final int MINIMUM_VALUE_LENGTH = 12;
+    private final JPanel actionsPanel;
     private WebPanel container;
 
 
@@ -57,6 +61,16 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
      */
     public DetailsBox(String title, ActionSet actions, Heatmap heatmap) {
         super(title, actions, heatmap);
+        actionsPanel = null;
+    }
+
+    public DetailsBox(String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
+        super(title, contextActionSet, heatmap);
+        actionsPanel = new JPanel(new HorizontalLayout(2), true);
+        actionsPanel.setBackground(Color.white);
+        for (BaseAction action : bottomActionSet.getActions()) {
+            actionsPanel.add(ActionSetUtils.createActionButton(action));
+        }
     }
 
 
@@ -106,6 +120,14 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
                 container.add(createHorizontalSeparator(), "0," + (nextRow + 1) + ",4," + (nextRow + 1));
             }
         }
+
+        if (actionsPanel != null) {
+
+            int nextRow = nextDetail * 2;
+            container.add(actionsPanel, "1, " + (nextRow) + ", 4, " + (nextRow));
+
+        }
+
 
         container.repaint();
 

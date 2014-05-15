@@ -33,15 +33,16 @@ import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
-import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.utils.FileChoose;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.core.utils.FileFormatFilter;
-import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -91,7 +92,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     }
 
     public AddNewLayersFromFileAction() {
-        super("New layer...");
+        super("New data layer...");
+        setSmallIconFromResource(IconNames.add16);
     }
 
     @Override

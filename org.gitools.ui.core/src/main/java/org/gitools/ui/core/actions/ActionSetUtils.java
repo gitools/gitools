@@ -51,22 +51,22 @@ public class ActionSetUtils {
             } else if (a instanceof IPanelAction) {
                 toolBar.add(((IPanelAction) a).getPanel());
             } else {
-                toolBar.add(createTool(a));
+                toolBar.add(createActionButton(a));
             }
         }
 
         return toolBar;
     }
 
-    private static JComponent createTool(BaseAction a) {
-        WebButton tool = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
-        tool.setAction(a);
-        tool.addActionListener(new TrackingListener("ToolBar", a));
-        tool.setHideActionText(true);
-        TooltipManager.setTooltip(tool, a.getDesc(), TooltipWay.down, 0);
-        tool.setFocusable(false);
-        tool.setRequestFocusEnabled(false);
-        return tool;
+    public static JComponent createActionButton(BaseAction a) {
+        WebButton button = WebButton.createIconWebButton(a.getSmallIcon(), StyleConstants.smallRound, true);
+        button.setAction(a);
+        button.addActionListener(new TrackingListener("ToolBar", a));
+        button.setHideActionText(true);
+        TooltipManager.setTooltip(button, a.getDesc(), TooltipWay.down, 0);
+        button.setFocusable(false);
+        button.setRequestFocusEnabled(false);
+        return button;
     }
 
 

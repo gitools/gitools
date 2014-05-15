@@ -32,7 +32,7 @@ public class ActionSet extends BaseAction {
 
     private List<BaseAction> actions;
 
-    public ActionSet(BaseAction[] actions) {
+    public ActionSet(BaseAction... actions) {
         this("", actions);
     }
 
