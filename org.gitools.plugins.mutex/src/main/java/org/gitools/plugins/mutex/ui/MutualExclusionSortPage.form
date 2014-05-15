@@ -40,7 +40,9 @@
     <constraints>
       <xy x="20" y="20" width="508" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <enabled value="false"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="2d43d" class="javax.swing.JTextField" binding="patternsField">

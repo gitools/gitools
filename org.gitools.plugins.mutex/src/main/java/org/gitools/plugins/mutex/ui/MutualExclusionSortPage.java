@@ -26,12 +26,12 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.pages.common.PatternSourcePage;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
-import org.gitools.ui.core.pages.common.PatternSourcePage;
-import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 
@@ -71,10 +71,6 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private String pattern;
 
     public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey dimensionKey) {
-        this.hm = hm;
-        this.dimensionKey = dimensionKey;
-
-
         patternsArea.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
             protected void update(DocumentEvent e) {
@@ -119,6 +115,11 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
                 changePatternAction();
             }
         });
+
+        this.hm = hm;
+        this.dimensionKey = dimensionKey;
+
+
     }
 
     private void saveBtnAction() {
