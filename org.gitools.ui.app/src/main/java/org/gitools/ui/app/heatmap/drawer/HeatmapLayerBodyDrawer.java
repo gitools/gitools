@@ -86,7 +86,7 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         VisibleRect newRect = new VisibleRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
         redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(visibleRect));
 
-        if (redrawBufferedImage) {
+        if (redrawBufferedImage || isPictureMode()) {
 
             Application.get().setCursorWaiting();
 

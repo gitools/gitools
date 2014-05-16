@@ -23,6 +23,7 @@ package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.HeatmapPosition;
@@ -37,6 +38,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import static org.gitools.utils.events.EventUtils.isAny;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -339,7 +342,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
-       /* boolean updateFocusAndSelection =
+        boolean updateFocusAndSelection =
                 isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_SELECTED);
@@ -364,7 +367,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             updateScrolls();
             revalidate();
             repaint();
-        }  */
+        }
 
 
     }
