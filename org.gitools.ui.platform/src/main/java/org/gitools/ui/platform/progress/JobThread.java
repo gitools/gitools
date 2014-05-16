@@ -42,6 +42,8 @@ public class JobThread implements JobRunnable {
 
     private JobProgressMonitor monitor;
 
+    private static boolean running = false;
+
     public static void execute(Window parent, JobRunnable runnable) {
         new JobThread(parent, runnable).execute();
     }
@@ -148,7 +150,9 @@ public class JobThread implements JobRunnable {
                 try {
 
                     monitor.start();
+                    running = true;
                     runnable.run(monitor);
+                    running = false;
                     monitor.end();
 
                 } catch (CancellationException e) {
@@ -189,5 +193,9 @@ public class JobThread implements JobRunnable {
     @Override
     public void run(IProgressMonitor monitor) {
         throw new UnsupportedOperationException("Opperation should be overrided");
+    }
+
+    public static boolean isRunning() {
+        return running;
     }
 }

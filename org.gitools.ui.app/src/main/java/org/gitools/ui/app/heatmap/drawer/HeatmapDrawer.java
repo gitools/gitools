@@ -31,7 +31,7 @@ import java.awt.geom.AffineTransform;
 
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
-    private final HeatmapBodyDrawer body;
+    private final HeatmapLayerBodyDrawer body;
 
     private final HeatmapHeaderDrawer rowsHeader;
 
@@ -42,7 +42,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
     public HeatmapDrawer(Heatmap heatmap) {
         super(heatmap);
 
-        body = new HeatmapBodyDrawer(heatmap);
+        body = new HeatmapLayerBodyDrawer(heatmap);
         rowsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getRows());
         colsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getColumns());
         headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap, colsHeader, rowsHeader);

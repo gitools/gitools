@@ -22,21 +22,29 @@
 package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.heatmap.drawer.HeatmapBodyDrawer;
+import org.gitools.ui.app.heatmap.drawer.HeatmapLayerBodyDrawer;
+import org.gitools.ui.app.heatmap.drawer.SelectionLayerBodyDrawer;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class HeatmapBodyPanel extends JLayeredPane {
 
-    private HeatmapBodyDrawer drawer;
-    private AbstractHeatmapPanel panel;
+    private HeatmapLayerBodyDrawer drawer;
+    private AbstractHeatmapPanel heatmapLayerPanel;
+    private SelectionLayerBodyDrawer selectionDrawer;
+    private AbstractHeatmapPanel selectionLayerPanel;
+
 
     public HeatmapBodyPanel(Heatmap heatmap) {
         super();
 
-        drawer = new HeatmapBodyDrawer(heatmap);
-        panel = new AbstractHeatmapPanel(heatmap, drawer);
+        drawer = new HeatmapLayerBodyDrawer(heatmap);
+        heatmapLayerPanel = new AbstractHeatmapPanel(heatmap, drawer);
+
+        selectionDrawer = new SelectionLayerBodyDrawer(heatmap);
+        selectionLayerPanel = new AbstractHeatmapPanel(heatmap, selectionDrawer);
+        selectionLayerPanel.setOpaque(false);
 
         setOpaque(false);
 
@@ -46,21 +54,26 @@ public class HeatmapBodyPanel extends JLayeredPane {
         Dimension size = drawer.getSize();
         setPreferredSize(size);
 
-        panel.setBounds(0, 0, size.width, size.height);
-        add(panel, 4);
-/*
-        JLabel label = new JLabel("HOLA");
+        heatmapLayerPanel.setBounds(0, 0, size.width, size.height);
+        add(heatmapLayerPanel, new Integer(10));
+        selectionLayerPanel.setBounds(0, 0, size.width, size.height);
+        add(selectionLayerPanel, new Integer(20));
+
+ /*     JLabel label = new JLabel("HOLA");
+        label.setFont(label.getFont().deriveFont(44f));
+        label.setForeground(new Color(0,0,0,125));
         label.setBounds(10, 10, 140, 140);
-        add(label, JLayeredPane.MODAL_LAYER);*/
+        add(label, 100);*/
 
     }
 
-    public HeatmapBodyDrawer getDrawer() {
+    public HeatmapLayerBodyDrawer getDrawer() {
         return drawer;
     }
 
 
     public void updateSize() {
-        panel.updateSize();
+        heatmapLayerPanel.updateSize();
+        selectionLayerPanel.updateSize();
     }
 }

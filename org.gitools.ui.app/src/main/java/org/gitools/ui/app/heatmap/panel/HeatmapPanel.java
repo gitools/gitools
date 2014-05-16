@@ -23,14 +23,13 @@ package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
 import javax.swing.*;
@@ -38,8 +37,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import static org.gitools.utils.events.EventUtils.isAny;
 
 public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
@@ -193,8 +190,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (
                 (focusPoint < scrollBar.getValue()) ||
-                (scrollBar.getValue() + visibleLength < focusPoint)
-           ) {
+                        (scrollBar.getValue() + visibleLength < focusPoint)
+                ) {
             scrollBar.setValue(focusPoint);
         }
     }
@@ -326,16 +323,33 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
 
     @Override
+    public void update(Graphics g) {
+        super.update(g);
+    }
+
+    @Override
+    public void updateUI() {
+        super.updateUI();
+    }
+
+    public HeatmapPanel(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
+
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
+       /* boolean updateFocusAndSelection =
+                isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_FOCUS,
+                        HeatmapDimension.PROPERTY_SELECTED);
 
         boolean updateAll =
                 isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_CELL_SIZE,
                         HeatmapDimension.PROPERTY_VISIBLE,
-                        HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_GRID_SIZE,
-                        HeatmapDimension.PROPERTY_GRID_COLOR,
-                        HeatmapDimension.PROPERTY_SELECTED
+                        HeatmapDimension.PROPERTY_GRID_COLOR
                 ) ||
                         isAny(evt, HeatmapLayer.class,
                                 HeatmapLayer.PROPERTY_DECORATOR,
@@ -350,7 +364,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             updateScrolls();
             revalidate();
             repaint();
-        }
+        }  */
 
 
     }

@@ -22,35 +22,55 @@
 package org.gitools.ui.app.heatmap.drawer;
 
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.platform.progress.JobThread;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
+public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
-    public HeatmapBodyDrawer(Heatmap heatmap) {
+    VisibleRect visibleRect;
+    BufferedImage bufferedImage;
+
+    private boolean redrawBufferedImage = true;
+
+    public HeatmapLayerBodyDrawer(Heatmap heatmap) {
         super(heatmap);
+
+        visibleRect = new VisibleRect();
+
+        PropertyChangeListener redrawImageListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                redrawBufferedImage = true;
+            }
+        };
+
+        heatmap.getRows().addPropertyChangeListener(HeatmapDimension.PROPERTY_VISIBLE, redrawImageListener);
+        heatmap.getColumns().addPropertyChangeListener(HeatmapDimension.PROPERTY_GRID_COLOR, redrawImageListener);
+        heatmap.getColumns().addPropertyChangeListener(HeatmapDimension.PROPERTY_VISIBLE, redrawImageListener);
+        heatmap.getColumns().addPropertyChangeListener(HeatmapDimension.PROPERTY_GRID_COLOR, redrawImageListener);
+        heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(redrawImageListener);
+        heatmap.getLayers().addPropertyChangeListener(redrawImageListener);
+
+
     }
 
     @Override
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
-        Application.get().setCursorWaiting();
-
-
-        g.setFont(heatmap.getLayers().getTopLayer().getFont());
-        calculateFontSize(g, rows.getCellSize(), 7);
 
         int rowsGridSize = (rows.showGrid() ? rows.getGridSize() : 0);
         int columnsGridSize = (columns.showGrid() ? columns.getGridSize() : 0);
 
-        // Clear background
-        g.setColor(Color.WHITE);
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
         int cellWidth = columns.getCellSize() + columnsGridSize;
         int cellHeight = rows.getCellSize() + rowsGridSize;
@@ -62,6 +82,38 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         int colStart = (clip.x - box.x) / cellWidth;
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < columns.size() ? colEnd : columns.size();
+
+        VisibleRect newRect = new VisibleRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
+        redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(visibleRect));
+
+        if (redrawBufferedImage) {
+
+            Application.get().setCursorWaiting();
+
+            bufferedImage = new BufferedImage(box.width, box.height, BufferedImage.TYPE_4BYTE_ABGR);
+            Graphics2D gb = bufferedImage.createGraphics();
+            // Clear background
+            gb.setColor(Color.WHITE);
+            gb.fillRect(clip.x, clip.y, clip.width, clip.height);
+
+            redraw(gb, box, rowsGridSize, columnsGridSize, cellWidth, cellHeight, rowStart, rowEnd, colStart, colEnd);
+
+            Application.get().setCursorNormal();
+
+            visibleRect = newRect;
+            redrawBufferedImage = false;
+
+        }
+
+        g.drawImage(bufferedImage, null, 0, 0);
+
+
+    }
+
+    private void redraw(Graphics2D g, Rectangle box, int rowsGridSize, int columnsGridSize, int cellWidth, int cellHeight, int rowStart, int rowEnd, int colStart, int colEnd) {
+
+        g.setFont(heatmap.getLayers().getTopLayer().getFont());
+        calculateFontSize(g, rows.getCellSize(), 7);
 
         Decoration decoration = new Decoration();
         int y = box.y + rowStart * cellHeight;
@@ -89,13 +141,6 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
             y += cellHeight;
         }
 
-
-        if (!isPictureMode()) {
-            drawSelectedAndFocus(g, box, rows, true);
-            drawSelectedAndFocus(g, box, columns, false);
-        }
-
-        Application.get().setCursorNormal();
 
     }
 
@@ -157,5 +202,45 @@ public class HeatmapBodyDrawer extends AbstractHeatmapDrawer {
         }
 
         return new Point(x, y);
+    }
+
+    private class VisibleRect {
+        public final int rowStart;
+        public final int rowEnd;
+        public final int colStart;
+        public final int colEnd;
+        public final int width;
+        public final int height;
+
+        public VisibleRect(int rowStart, int rowEnd, int colStart, int colEnd, int width, int height) {
+            this.rowStart = rowStart;
+            this.rowEnd = rowEnd;
+            this.colStart = colStart;
+            this.colEnd = colEnd;
+            this.width = width;
+            this.height = height;
+        }
+
+        public VisibleRect() {
+            this(0, 0, 0, 0, 0, 0);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof VisibleRect) {
+
+                VisibleRect rect = (VisibleRect) obj;
+
+                return (this.rowStart == rect.rowStart &&
+                        this.rowEnd == rect.rowEnd &&
+                        this.colStart == rect.colStart &&
+                        this.colEnd == rect.colEnd &&
+                        this.width == rect.width &&
+                        this.height == rect.height);
+
+            }
+
+            return false;
+        }
     }
 }
