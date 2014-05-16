@@ -24,9 +24,43 @@ package org.gitools.ui.app.heatmap.panel;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.drawer.HeatmapBodyDrawer;
 
-public class HeatmapBodyPanel extends AbstractHeatmapPanel {
+import javax.swing.*;
+import java.awt.*;
+
+public class HeatmapBodyPanel extends JLayeredPane {
+
+    private HeatmapBodyDrawer drawer;
+    private AbstractHeatmapPanel panel;
 
     public HeatmapBodyPanel(Heatmap heatmap) {
-        super(heatmap, new HeatmapBodyDrawer(heatmap));
+        super();
+
+        drawer = new HeatmapBodyDrawer(heatmap);
+        panel = new AbstractHeatmapPanel(heatmap, drawer);
+
+        setOpaque(false);
+
+        setBorder(null);
+        setBackground(Color.WHITE);
+
+        Dimension size = drawer.getSize();
+        setPreferredSize(size);
+
+        panel.setBounds(0, 0, size.width, size.height);
+        add(panel, 4);
+/*
+        JLabel label = new JLabel("HOLA");
+        label.setBounds(10, 10, 140, 140);
+        add(label, JLayeredPane.MODAL_LAYER);*/
+
+    }
+
+    public HeatmapBodyDrawer getDrawer() {
+        return drawer;
+    }
+
+
+    public void updateSize() {
+        panel.updateSize();
     }
 }
