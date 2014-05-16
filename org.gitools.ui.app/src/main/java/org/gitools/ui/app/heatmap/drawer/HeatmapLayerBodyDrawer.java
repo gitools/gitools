@@ -90,11 +90,12 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
             Application.get().setCursorWaiting();
 
-            bufferedImage = new BufferedImage(box.width, box.height, BufferedImage.TYPE_4BYTE_ABGR);
+            bufferedImage = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D gb = bufferedImage.createGraphics();
             // Clear background
             gb.setColor(Color.WHITE);
-            gb.fillRect(clip.x, clip.y, clip.width, clip.height);
+            gb.fillRect(0, 0, clip.width, clip.height);
+
 
             redraw(gb, box, rowsGridSize, columnsGridSize, cellWidth, cellHeight, rowStart, rowEnd, colStart, colEnd);
 
@@ -105,7 +106,8 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
         }
 
-        g.drawImage(bufferedImage, null, 0, 0);
+        // offset for first
+        g.drawImage(bufferedImage, null, colStart * cellWidth, rowStart * cellHeight);
 
 
     }
@@ -116,9 +118,9 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         calculateFontSize(g, rows.getCellSize(), 7);
 
         Decoration decoration = new Decoration();
-        int y = box.y + rowStart * cellHeight;
+        int y = 0;
         for (int row = rowStart; row < rowEnd; row++) {
-            int x = box.x + colStart * cellWidth;
+            int x = 0;
             for (int col = colStart; col < colEnd; col++) {
 
                 if (heatmap.isDiagonal() && col < row) {
@@ -134,7 +136,7 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
                 g.setColor(colsGridColor);
                 g.fillRect(x - columnsGridSize, y, columnsGridSize, cellHeight);
 
-                paintCell(decoration, rowsGridColor, rowsGridSize, x - box.x, y - box.y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
+                paintCell(decoration, rowsGridColor, rowsGridSize, x, y, cellWidth - columnsGridSize, cellHeight - rowsGridSize, g, box);
 
                 x += cellWidth;
             }
