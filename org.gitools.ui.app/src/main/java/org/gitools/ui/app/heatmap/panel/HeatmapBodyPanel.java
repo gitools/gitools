@@ -59,12 +59,6 @@ public class HeatmapBodyPanel extends JLayeredPane {
         selectionLayerPanel.setBounds(0, 0, size.width, size.height);
         add(selectionLayerPanel, new Integer(20));
 
- /*     JLabel label = new JLabel("HOLA");
-        label.setFont(label.getFont().deriveFont(44f));
-        label.setForeground(new Color(0,0,0,125));
-        label.setBounds(10, 10, 140, 140);
-        add(label, 100);*/
-
     }
 
     public HeatmapLayerBodyDrawer getDrawer() {
