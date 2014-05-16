@@ -162,9 +162,9 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         }
         if (row != null && column != null) {
             boolean previousShowValue = getDecorator().isShowValue();
-            getDecorator().setShowValue(true);
+            getDecorator().setShowValue(true, true);
             getDecorator().decorate(decoration, getLongFormatter(), matrix, matrix.getLayers().get(layerIndex), row, column);
-            getDecorator().setShowValue(previousShowValue);
+            getDecorator().setShowValue(previousShowValue, true);
         }
         details.add(decoration);
     }

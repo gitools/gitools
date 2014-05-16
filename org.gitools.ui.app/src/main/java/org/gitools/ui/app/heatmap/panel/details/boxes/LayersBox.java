@@ -120,11 +120,11 @@ public class LayersBox extends DetailsBox {
             Decorator decorator = heatmap.getLayers().getTopLayer().getDecorator();
             Decoration decoration = new Decoration();
             boolean showValue = decorator.isShowValue();
-            decorator.setShowValue(true);
+            decorator.setShowValue(true, true);
             decoration.reset();
             HeatmapLayer layer = heatmap.getLayers().getTopLayer();
             decorator.decorate(decoration, layer.getLongFormatter(), heatmap, layer, row, col);
-            decorator.setShowValue(showValue);
+            decorator.setShowValue(showValue, true);
 
             this.setTitle("Values: " + decoration.getFormatedValue());
         } else {

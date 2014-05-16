@@ -80,9 +80,15 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     }
 
     public void setShowValue(boolean showValue) {
+        setShowValue(showValue, false);
+    }
+
+    public void setShowValue(boolean showValue, boolean avoidFirePropertyChange) {
         boolean oldValue = this.showValue;
         this.showValue = showValue;
-        firePropertyChange(PROPERTY_SHOW_VALUE, oldValue, showValue);
+        if (!avoidFirePropertyChange) {
+            firePropertyChange(PROPERTY_SHOW_VALUE, oldValue, showValue);
+        }
     }
 
     protected static double toDouble(Object value) {
