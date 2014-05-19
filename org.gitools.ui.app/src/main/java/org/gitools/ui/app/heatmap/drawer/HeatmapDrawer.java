@@ -55,7 +55,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         Dimension columnsSize = colsHeader.getSize();
 
         Rectangle columnsBounds = new Rectangle(0, 0, columnsSize.width, columnsSize.height);
-        Rectangle bodyBounds = new Rectangle(0, columnsSize.height, bodySize.width, bodySize.height);
+        Rectangle bodyBounds = new Rectangle(0, columnsSize.height, bodySize.width, bodySize.height + columnsSize.height);
         Rectangle rowsBounds = new Rectangle(bodySize.width, columnsSize.height, rowsSize.width, rowsSize.height);
         Rectangle headerIntersectionBounds = new Rectangle(bodySize.width, 0, rowsSize.width, columnsSize.height);
 
