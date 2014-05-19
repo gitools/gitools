@@ -50,7 +50,7 @@ public class MTabixMatrix extends HashMatrix {
     private static final Logger LOGGER = LoggerFactory.getLogger(MTabixMatrix.class);
 
     private MTabixIndex index;
-    private BlockCompressedInputStream dataStream;
+    private BlockCompressedReader dataStream;
     private Set<String> indexedLayers;
 
     // Cache
@@ -60,7 +60,7 @@ public class MTabixMatrix extends HashMatrix {
         super(layers, createMTabixDimensions(index, dimensions));
 
         this.index = index;
-        this.dataStream = new BlockCompressedInputStream(index.getConfig().getDataFile());
+        this.dataStream = new BlockCompressedReader(index.getConfig().getDataFile());
 
         // Create the caches
         indexedCache = new HashMap<>(layers.size());
@@ -128,12 +128,7 @@ public class MTabixMatrix extends HashMatrix {
         MTabixBlockValues matrix = new MTabixBlockValues();
         dataStream.seek(filePointer);
 
-        // read body
-        String str;
-        while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((str = dataStream.readLine()) != null)) {
-
-            line = str.getBytes();
-            lineLength = line.length;
+        while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((lineLength = dataStream.readLine(line)) != -1)) {
 
             final Double value = DoubleTranslator.get().stringToValue(parseLine(line, column, lineLength));
             if (value!=null) {
