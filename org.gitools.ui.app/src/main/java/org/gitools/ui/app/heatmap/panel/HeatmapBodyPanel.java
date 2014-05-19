@@ -67,6 +67,8 @@ public class HeatmapBodyPanel extends JLayeredPane {
 
 
     public void updateSize() {
+        heatmapLayerPanel.setSize(drawer.getSize());
+        selectionLayerPanel.setSize(selectionDrawer.getSize());
         heatmapLayerPanel.updateSize();
         selectionLayerPanel.updateSize();
     }
