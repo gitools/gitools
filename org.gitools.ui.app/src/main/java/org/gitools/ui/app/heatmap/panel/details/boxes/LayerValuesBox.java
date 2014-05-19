@@ -55,7 +55,7 @@ import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInt
 import static org.gitools.utils.events.EventUtils.isAny;
 
 
-public class LayersBox extends DetailsBox {
+public class LayerValuesBox extends DetailsBox {
 
     private static final ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
@@ -64,7 +64,7 @@ public class LayersBox extends DetailsBox {
      * @param title   Optional title of the details table
      * @param actions
      */
-    public LayersBox(String title, ActionSet actions, Heatmap heatmap) {
+    public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
         super(title, actions, new ActionSet(new AddNewLayersFromFileAction()), heatmap);
     }
 

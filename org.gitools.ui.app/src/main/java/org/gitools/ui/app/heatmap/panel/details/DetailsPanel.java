@@ -27,7 +27,7 @@ import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.resource.Resource;
 import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
-import org.gitools.ui.app.heatmap.panel.details.boxes.LayersBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.LayerValuesBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.components.boxes.DetailsBox;
@@ -89,7 +89,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         rowsBox.setCollapsed(true);
         registerBox(rowsBox);
 
-        layersBox = new LayersBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
+        layersBox = new LayerValuesBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
         registerBox(layersBox);
 
         initPluginBoxes(heatmap);

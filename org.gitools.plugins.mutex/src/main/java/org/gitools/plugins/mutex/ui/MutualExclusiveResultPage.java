@@ -60,6 +60,7 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
 
 
     public MutualExclusiveResultPage(Heatmap heatmap, MutualExclusiveBookmark bookmark) {
+        super();
         this.setTitle("Mutual Exclusive result");
         this.result = bookmark.getResult();
         this.bookmark = bookmark;

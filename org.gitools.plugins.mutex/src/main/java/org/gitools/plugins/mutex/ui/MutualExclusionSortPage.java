@@ -71,6 +71,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private String pattern;
 
     public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey dimensionKey) {
+        super();
         patternsArea.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
             protected void update(DocumentEvent e) {
