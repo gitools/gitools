@@ -22,7 +22,7 @@
 package org.gitools.ui.platform.progress;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,7 +168,7 @@ public class JobThread implements JobRunnable {
                 setThread(null);
 
                 if (monitor.getCause() != null) {
-                    ExceptionDialog ed = new ExceptionDialog(parent, monitor.getCause());
+                    ExceptionGlassPane ed = new ExceptionGlassPane(parent, monitor.getCause());
                     ed.setVisible(true);
                 }
             }

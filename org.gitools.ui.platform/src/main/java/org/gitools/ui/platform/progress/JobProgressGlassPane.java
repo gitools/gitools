@@ -27,35 +27,16 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class JobProgressGlassPane extends JComponent implements MouseListener {
-
-    protected Thread animation = null;
-    protected boolean started = false;
-    protected int alphaLevel = 0;
-    protected int rampDelay = 300;
-    protected float shield = 0.85f;
-    protected String text = "";
-    protected int barsCount = 14;
-    protected float fps = 15.0f;
-
-    protected RenderingHints hints = null;
+class JobProgressGlassPane extends GitoolsGlassPane {
 
     public JobProgressGlassPane(Window parent, boolean showGitoolsTips) {
+        super(parent);
 
-        //progress
-
-        if (parent instanceof RootPaneContainer) {
-            ((RootPaneContainer) parent).setGlassPane(this);
-        }
         initComponents();
 
         msgLabel.setText("");
@@ -72,17 +53,11 @@ class JobProgressGlassPane extends JComponent implements MouseListener {
         progressBar.setIndeterminate(true);
 
         //glassPane
-        this.hints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         this.hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         this.hints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         this.setBorder(new EmptyBorder(50, 20, 50, 20));
 
-    }
-
-
-    public Container getContentPane() {
-        return this;
     }
 
 
@@ -178,6 +153,12 @@ class JobProgressGlassPane extends JComponent implements MouseListener {
     private JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
 
+
+    @Override
+    public void start() {
+        super.start();
+    }
+
     public void setMessage(String msg) {
         msgLabel.setText(msg);
         infoLabel.setText("");
@@ -206,160 +187,6 @@ class JobProgressGlassPane extends JComponent implements MouseListener {
         }
     }
 
-
-    public void setText(String text) {
-        repaint();
-        this.text = text;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public void setVisible(boolean aFlag) {
-        if (aFlag) {
-            start();
-        } else {
-            stop();
-        }
-        super.setVisible(aFlag);
-    }
-
-    public void start() {
-        addMouseListener(this);
-        //setVisible(true);
-        //ticker = buildTicker();
-        animation = new Thread(new Animator(true));
-        animation.start();
-    }
-
-    public void stop() {
-        if (animation != null) {
-            animation.interrupt();
-            animation = null;
-            animation = new Thread(new Animator(false));
-            animation.start();
-        }
-    }
-
-    public void paintComponent(Graphics g) {
-        if (started) {
-            int width = getWidth();
-            int height = getHeight();
-
-            double maxY = 0.0;
-
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHints(hints);
-
-            g2.setColor(new Color(255, 255, 255, (int) (alphaLevel * shield)));
-            g2.fillRect(0, 0, getWidth(), getHeight());
-
-            if (text != null && text.length() > 0) {
-                FontRenderContext context = g2.getFontRenderContext();
-                TextLayout layout = new TextLayout(text, getFont(), context);
-                Rectangle2D bounds = layout.getBounds();
-                g2.setColor(getForeground());
-                layout.draw(g2, (float) (width - bounds.getWidth()) / 2,
-                        (float) (maxY + layout.getLeading() + 2 * layout.getAscent()));
-            }
-        }
-    }
-
-    private Area[] buildTicker() {
-        Area[] ticker = new Area[barsCount];
-        Point2D.Double center = new Point2D.Double((double) getWidth() / 2, (double) getHeight() / 2);
-        double fixedAngle = 2.0 * Math.PI / ((double) barsCount);
-
-        for (double i = 0.0; i < (double) barsCount; i++) {
-            Area primitive = buildPrimitive();
-
-            AffineTransform toCenter = AffineTransform.getTranslateInstance(center.getX(), center.getY());
-            AffineTransform toBorder = AffineTransform.getTranslateInstance(45.0, -6.0);
-            AffineTransform toCircle = AffineTransform.getRotateInstance(-i * fixedAngle, center.getX(), center.getY());
-
-            AffineTransform toWheel = new AffineTransform();
-            toWheel.concatenate(toCenter);
-            toWheel.concatenate(toBorder);
-
-            primitive.transform(toWheel);
-            primitive.transform(toCircle);
-
-            ticker[(int) i] = primitive;
-        }
-
-        return ticker;
-    }
-
-    private Area buildPrimitive() {
-        Rectangle2D.Double body = new Rectangle2D.Double(6, 0, 30, 12);
-        Ellipse2D.Double head = new Ellipse2D.Double(0, 0, 12, 12);
-        Ellipse2D.Double tail = new Ellipse2D.Double(30, 0, 12, 12);
-
-        Area tick = new Area(body);
-        tick.add(new Area(head));
-        tick.add(new Area(tail));
-
-        return tick;
-    }
-
-    protected class Animator implements Runnable {
-        private boolean rampUp = true;
-
-        protected Animator(boolean rampUp) {
-            this.rampUp = rampUp;
-        }
-
-        public void run() {
-            Point2D.Double center = new Point2D.Double((double) getWidth() / 2, (double) getHeight() / 2);
-            double fixedIncrement = 2.0 * Math.PI / ((double) barsCount);
-            AffineTransform toCircle = AffineTransform.getRotateInstance(fixedIncrement, center.getX(), center.getY());
-
-            long start = System.currentTimeMillis();
-            if (rampDelay == 0)
-                alphaLevel = rampUp ? 255 : 0;
-
-            started = true;
-            boolean inRamp = rampUp;
-
-            while (!Thread.interrupted()) {
-
-                repaint();
-
-                if (rampUp) {
-                    if (alphaLevel < 255) {
-                        alphaLevel = (int) (255 * (System.currentTimeMillis() - start) / rampDelay);
-                        if (alphaLevel >= 255) {
-                            alphaLevel = 255;
-                            inRamp = false;
-                        }
-                    }
-                } else if (alphaLevel > 0) {
-                    alphaLevel = (int) (255 - (255 * (System.currentTimeMillis() - start) / rampDelay));
-                    if (alphaLevel <= 0) {
-                        alphaLevel = 0;
-                        break;
-                    }
-                }
-
-                try {
-                    Thread.sleep(inRamp ? 10 : (int) (1000 / fps));
-                } catch (InterruptedException ie) {
-                    break;
-                }
-                Thread.yield();
-            }
-
-            if (!rampUp) {
-                started = false;
-                repaint();
-
-                setVisible(false);
-                //removeMouseListener(InfiniteProgressPanel.this);
-            }
-        }
-    }
 
     public void mouseClicked(MouseEvent e) {
     }

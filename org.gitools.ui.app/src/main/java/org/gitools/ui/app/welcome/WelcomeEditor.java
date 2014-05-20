@@ -26,22 +26,22 @@ import org.apache.commons.io.IOUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.platform.settings.Settings;
-import org.gitools.ui.core.utils.FileChoose;
-import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
 import org.gitools.ui.core.components.editor.HtmlEditor;
+import org.gitools.ui.core.utils.FileChoose;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.HttpUtils;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -62,7 +62,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     @Override
     protected void exception(Exception e) {
-        ExceptionDialog.show(Application.get(), e);
+        ExceptionGlassPane.show(Application.get(), e);
     }
 
     @Override

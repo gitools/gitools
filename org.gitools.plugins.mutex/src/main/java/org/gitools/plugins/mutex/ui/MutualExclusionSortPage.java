@@ -30,7 +30,7 @@ import org.gitools.ui.core.Application;
 import org.gitools.ui.core.pages.common.PatternSourcePage;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -137,7 +137,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
             bw.append(patternsArea.getText()).append('\n');
             bw.close();
         } catch (Exception ex) {
-            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(Application.get(), ex);
             edlg.setVisible(true);
         }
     }
@@ -163,7 +163,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
             patternsArea.setText(readNamesFromFile(file));
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(Application.get(), ex);
             edlg.setVisible(true);
         }
     }
@@ -196,9 +196,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     }
 
 
-
     public MatrixDimensionKey getDimension() {
-        return  dimensionKey;
+        return dimensionKey;
     }
 
     public String getPattern() {
@@ -236,7 +235,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
                 }
             }
         } catch (IOException ex) {
-            ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), ex);
             dlg.setVisible(true);
         }
 

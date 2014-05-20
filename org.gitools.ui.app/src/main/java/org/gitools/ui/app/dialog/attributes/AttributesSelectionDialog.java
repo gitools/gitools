@@ -22,9 +22,9 @@
 package org.gitools.ui.app.dialog.attributes;
 
 import org.gitools.ui.app.dialog.ListDialog;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.utils.FileChooserUtils;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
+import org.gitools.ui.platform.settings.Settings;
 
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -289,7 +289,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
                 }
             }
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(getOwner(), ex);
             edlg.setVisible(true);
         }
 
@@ -315,7 +315,7 @@ public class AttributesSelectionDialog<T> extends javax.swing.JDialog {
                 bw.append(attributes[i].toString()).append('\n');
             bw.close();
         } catch (Exception ex) {
-            ExceptionDialog edlg = new ExceptionDialog(getOwner(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(getOwner(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtnActionPerformed

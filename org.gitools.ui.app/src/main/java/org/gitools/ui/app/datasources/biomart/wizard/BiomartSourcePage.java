@@ -28,9 +28,9 @@ import org.gitools.datasources.biomart.restful.model.DatasetInfo;
 import org.gitools.datasources.biomart.restful.model.MartLocation;
 import org.gitools.datasources.biomart.settings.BiomartSource;
 import org.gitools.datasources.biomart.settings.BiomartSourceManager;
-import org.gitools.ui.core.pages.common.FilteredListPanel;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.core.pages.common.FilteredListPanel;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
@@ -277,7 +277,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
             biomartService = null;
             biomartService = BiomartServiceFactory.createService(bs);
         } catch (BiomartServiceException ex) {
-            ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), ex);
             dlg.setVisible(true);
             setStatus(MessageStatus.ERROR);
             setMessage(ex.getMessage());
@@ -310,7 +310,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
                             setMessage(ex.getMessage());
                         }
                     });
-                    ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
+                    ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), ex);
                     dlg.setVisible(true);
                 }
             }
@@ -358,7 +358,7 @@ public class BiomartSourcePage extends AbstractWizardPage {
                             setMessage(ex.getMessage());
                         }
                     });
-                    ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
+                    ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), ex);
                     dlg.setVisible(true);
                 }
             }

@@ -24,7 +24,7 @@ package org.gitools.ui.platform.wizard;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.help.HelpException;
@@ -238,7 +238,7 @@ public class WizardDialog extends AbstractDialog {
             try {
                 Help.get().showHelp(context);
             } catch (HelpException ex) {
-                ExceptionDialog dlg = new ExceptionDialog(this, ex);
+                ExceptionGlassPane dlg = new ExceptionGlassPane(this, ex);
                 dlg.setVisible(true);
             }
         }
