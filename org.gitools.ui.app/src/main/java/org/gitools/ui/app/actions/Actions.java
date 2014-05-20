@@ -102,6 +102,8 @@ public class Actions {
 
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
+    public static final BaseAction invertOrder = new InvertOrderAction();
+
     public static final BaseAction sortColumnsByValue = new SortByValueAction(COLUMNS);
 
     public static final BaseAction sortRowsByValue = new SortByValueAction(ROWS);

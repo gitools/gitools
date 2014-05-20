@@ -21,16 +21,21 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class UnselectAllAction extends HeatmapAction {
+public class UnselectAllAction extends HeatmapAction implements IHeatmapHeaderAction {
 
-    private static final long serialVersionUID = 1581417292789818975L;
+    private HeatmapHeader header;
 
     public UnselectAllAction() {
         super("<html><i>Unselect</i> all</html>");
@@ -44,10 +49,26 @@ public class UnselectAllAction extends HeatmapAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getHeatmap().getColumns().getSelected().clear();
-        getHeatmap().getRows().getSelected().clear();
+
+        if (header != null) {
+            HeatmapDimension dimension = header.getHeatmapDimension();
+            dimension.getSelected().clear();
+        }
 
         Application.get().setStatusText("Unselected all.");
     }
 
+    @Override
+    public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        this.header = header;
+
+        if (header instanceof HeatmapDecoratorHeader) {
+            ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
+        }
+
+        String dimension = header.getHeatmapDimension().getId().getLabel();
+        setName("<html><i>Unselect</i> all " + dimension + "s </html>");
+
+    }
 }

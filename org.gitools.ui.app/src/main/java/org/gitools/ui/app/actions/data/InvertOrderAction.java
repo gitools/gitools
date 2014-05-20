@@ -19,9 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.actions.edit;
+package org.gitools.ui.app.actions.data;
 
-import org.gitools.api.matrix.view.IMatrixView;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -29,37 +29,51 @@ import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class SelectAllAction extends HeatmapAction implements IHeatmapHeaderAction {
+
+public class InvertOrderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HeatmapHeader header;
 
-    public SelectAllAction() {
-        super("<html><i>Select</i> all</html>");
-
-        setSmallIconFromResource(IconNames.selectAll16);
-        setLargeIconFromResource(IconNames.selectAll24);
-        setMnemonic(KeyEvent.VK_A);
+    public InvertOrderAction() {
+        super("<html><i>Invert</i> order</html>");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IMatrixView matrixView = getHeatmap();
 
-        if (header != null) {
-            HeatmapDimension dimension = header.getHeatmapDimension();
-            dimension.selectAll();
+        if (header == null) {
+            return;
         }
 
-        Application.get().setStatusText("Selected all.");
+        JobThread.execute(Application.get(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
+                monitor.begin("Sorting ...", 1);
+
+                HeatmapDimension dimension = header.getHeatmapDimension();
+
+                List<String> visible = new ArrayList<>(dimension.toList());
+                Collections.reverse(visible);
+                dimension.show(visible);
+
+
+            }
+        });
+
+        Application.get().setStatusText("Sort done.");
     }
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
         this.header = header;
 
         if (header instanceof HeatmapDecoratorHeader) {
@@ -67,7 +81,7 @@ public class SelectAllAction extends HeatmapAction implements IHeatmapHeaderActi
         }
 
         String dimension = header.getHeatmapDimension().getId().getLabel();
-        setName("<html><i>Select</i> all " + dimension + "s </html>");
 
+        setName("<html><i>Invert</i> order of all " + dimension + "s </html>");
     }
 }
