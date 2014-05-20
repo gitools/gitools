@@ -56,6 +56,8 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
 
 
         descriptionArea.setFont(descriptionArea.getFont().deriveFont(Font.BOLD, 18));
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
         descriptionArea.setForeground(Color.RED);
         descriptionArea.setBorder(null);
         jScrollPane1.setBorder(null);
@@ -63,7 +65,7 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
         jLabel2.setFont(jLabel2.getFont().deriveFont(Font.BOLD));
 
         this.cause = cause;
-        String errorMessage = cause.getLocalizedMessage() == null ? "<empty error message>" : cause.getLocalizedMessage();
+        String errorMessage = getFriendlyMessage(cause);
         descriptionArea.setText(errorMessage);
 
 
@@ -91,6 +93,14 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
             track.trackException(description);
         }
 
+    }
+
+    private String getFriendlyMessage(Throwable cause) {
+        String message = cause.getLocalizedMessage() == null ? "<empty error message>" : cause.getLocalizedMessage();
+        if (message.contains("heap space")) {
+            message = message + ": Not enough memory for this operation.";
+        }
+        return message;
     }
 
     @SuppressWarnings("unchecked")
