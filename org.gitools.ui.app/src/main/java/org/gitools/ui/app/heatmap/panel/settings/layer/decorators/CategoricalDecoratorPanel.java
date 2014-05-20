@@ -22,17 +22,24 @@
 package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.ui.app.actions.data.DetectCategoriesAction;
+import org.gitools.ui.app.commands.DetectCategoriesCommand;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.progress.ProgressUtils;
 import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.color.ColorRegistry;
 import org.gitools.utils.colorscale.ColorScalePoint;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -65,20 +72,39 @@ public class CategoricalDecoratorPanel extends DecoratorPanel {
     }
 
     private void detectCategories() {
-        DetectCategoriesAction detection = new DetectCategoriesAction();
-        detection.setParentWindow(ProgressUtils.getParentGlassPaneWindow(this.getRootPanel()));
-        detection.run();
 
-        List<ColoredLabel> coloredLabels = new ArrayList<>();
-        ColorGenerator cg = new ColorGenerator();
+        JobRunnable detectionJob = new JobRunnable() {
 
-        for (double c : detection.getCategories()) {
-            String value = Double.toString(c);
-            coloredLabels.add(new ColoredLabel(value, cg.next(value)));
-        }
-        if (coloredLabels.size() > 0) {
-            categoriesPage.setColoredLabels(coloredLabels);
-        }
+            @Override
+            public void run(IProgressMonitor monitor) throws Exception {
+
+                IEditor editor = Application.get().getEditorsPanel().getSelectedEditor();
+
+                Object model = editor != null ? editor.getModel() : null;
+                if (!(model instanceof Heatmap)) {
+                    throw new UnsupportedOperationException("This action is only valid on a heatmap editor");
+                }
+
+                DetectCategoriesCommand detection = new DetectCategoriesCommand((Heatmap) model);
+                detection.run();
+
+
+                List<ColoredLabel> coloredLabels = new ArrayList<>();
+                ColorGenerator colorGenerator = new ColorGenerator();
+
+                for (double c : detection.getCategories()) {
+                    String value = Double.toString(c);
+                    Color color = colorGenerator.next(value);
+                    coloredLabels.add(new ColoredLabel(value, color));
+                }
+                if (coloredLabels.size() > 0) {
+                    categoriesPage.setColoredLabels(coloredLabels);
+                }
+            }
+        };
+
+        JobThread.execute(ProgressUtils.getParentGlassPaneWindow(this.getRootPanel()), detectionJob);
+
     }
 
     private CategoricalDecorator getDecorator() {
