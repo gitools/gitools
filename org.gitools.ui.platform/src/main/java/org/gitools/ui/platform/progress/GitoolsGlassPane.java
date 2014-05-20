@@ -41,13 +41,21 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
     protected RenderingHints hints = null;
     protected String text = "";
     protected float shield = 0.85f;
+    private RootPaneContainer parent;
 
+    Component oldGlass;
 
     public GitoolsGlassPane(Window parent) {
-        if (parent instanceof RootPaneContainer) {
-            ((RootPaneContainer) parent).setGlassPane(this);
-        }
+        this.parent = (RootPaneContainer) parent;
+        oldGlass = this.parent.getGlassPane();
+        assignGlassPane(this.parent, this);
         this.hints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    }
+
+    private void assignGlassPane(RootPaneContainer parent, Component component) {
+        if (!oldGlass.equals(parent.getGlassPane())) {
+            parent.setGlassPane(component);
+        }
     }
 
     public Container getContentPane() {
@@ -60,8 +68,10 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
             start();
         } else {
             stop();
+            assignGlassPane(parent, oldGlass);
         }
         super.setVisible(aFlag);
+
     }
 
     public void start() {
