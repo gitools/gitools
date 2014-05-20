@@ -72,11 +72,15 @@ public class Bookmark implements Serializable {
     }
 
     public void setRows(List<String> rows) {
-        this.rows = new ArrayList<>(rows);
+        if (rows != null) {
+            this.rows = new ArrayList<>(rows);
+        }
     }
 
     public void setColumns(List<String> columns) {
-        this.columns = new ArrayList<>(columns);
+        if (columns != null) {
+            this.columns = new ArrayList<>(columns);
+        }
     }
 
     public void setName(String name) {
