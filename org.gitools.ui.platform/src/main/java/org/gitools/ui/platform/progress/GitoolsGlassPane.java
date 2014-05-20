@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.platform.progress;
 
+import com.alee.managers.glasspane.WebGlassPane;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
@@ -34,6 +36,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class GitoolsGlassPane extends JComponent implements MouseListener {
     protected Thread animation = null;
     protected boolean started = false;
+    protected boolean stopped = false;
     protected int alphaLevel = 0;
     protected int rampDelay = 300;
     protected int barsCount = 14;
@@ -48,13 +51,17 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
     public GitoolsGlassPane(Window parent) {
         this.parent = (RootPaneContainer) parent;
         oldGlass = this.parent.getGlassPane();
-        assignGlassPane(this.parent, this);
+        this.parent.setGlassPane(this);
         this.hints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
 
-    private void assignGlassPane(RootPaneContainer parent, Component component) {
+    private void revertToOldGlass(RootPaneContainer parent, Component component) {
         if (!oldGlass.equals(parent.getGlassPane())) {
             parent.setGlassPane(component);
+            if (component instanceof WebGlassPane) {
+                //Enable tooltips glasspane
+                parent.getGlassPane().setVisible(true);
+            }
         }
     }
 
@@ -67,11 +74,15 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
         if (aFlag) {
             start();
         } else {
-            stop();
-            assignGlassPane(parent, oldGlass);
+            if (stopped) {
+                //Fade out animation performed
+                super.setVisible(aFlag);
+                revertToOldGlass(parent, oldGlass);
+            } else {
+                //Perform fade out before setting unvisible
+                stop();
+            }
         }
-        super.setVisible(aFlag);
-
     }
 
     public void start() {
@@ -162,10 +173,11 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
 
             if (!rampUp) {
                 started = false;
+                stopped = true;
                 repaint();
 
+                removeMouseListener(GitoolsGlassPane.this);
                 setVisible(false);
-                //removeMouseListener(InfiniteProgressPanel.this);
             }
         }
     }
