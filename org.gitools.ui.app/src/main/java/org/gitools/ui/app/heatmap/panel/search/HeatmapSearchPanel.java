@@ -55,7 +55,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     public HeatmapSearchPanel(Heatmap hm, HeatmapPanel heatmapPanel) {
         this.hm = hm;
         this.heatmapPanel = heatmapPanel;
-        this.setBackground(Color.WHITE);
+        this.setBackground(new Color(255, 253, 247));
 
         initComponents();
 
