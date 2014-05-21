@@ -23,11 +23,12 @@ package org.gitools.matrix.model.iterable;
 
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.matrix.model.MatrixPosition;
 
 public class IdentifierSourceIterable extends AbstractSourceIterable<String> {
     private IMatrixDimension iterateDimension;
 
-    public IdentifierSourceIterable(IMatrixPosition position, IMatrixDimension iterateDimension) {
+    public IdentifierSourceIterable(MatrixPosition position, IMatrixDimension iterateDimension) {
         super(position, iterateDimension);
 
         this.iterateDimension = iterateDimension;

@@ -34,10 +34,25 @@ import java.util.Set;
 public class MatrixPosition implements IMatrixPosition {
 
     private IMatrix matrix;
+    private MatrixPosition parentPosition;
 
     private MatrixDimensionKey[] dimensions;
     private String[] identifiers;
     private Map<MatrixDimensionKey, Integer> positions;
+
+    public MatrixPosition(MatrixPosition position) {
+
+        this.parentPosition = position;
+        this.identifiers = Arrays.copyOf(position.identifiers, position.identifiers.length);
+        //0this.identifiers = position.identifiers;
+
+        this.matrix = position.matrix;
+        this.dimensions = position.dimensions;
+        this.positions = position.positions;
+
+
+
+    }
 
     public MatrixPosition(IMatrix matrix) {
         super();
@@ -82,6 +97,10 @@ public class MatrixPosition implements IMatrixPosition {
 
         if (identifier != null) {
             identifiers[positions.get(dimension)] = identifier;
+
+            if (parentPosition != null) {
+                parentPosition.identifiers[positions.get(dimension)] = identifier;
+            }
         }
 
         return this;
@@ -94,7 +113,12 @@ public class MatrixPosition implements IMatrixPosition {
 
     public MatrixPosition set(String... identifiers) {
         assert identifiers.length == dimensions.length : "This matrix position has " + dimensions.length + " and your identifier vector " + identifiers.length;
-        this.identifiers = identifiers;
+        this.identifiers = Arrays.copyOf(identifiers, identifiers.length);
+
+        if (parentPosition != null) {
+            parentPosition.identifiers = Arrays.copyOf(identifiers, identifiers.length);
+        }
+
         return this;
     }
 

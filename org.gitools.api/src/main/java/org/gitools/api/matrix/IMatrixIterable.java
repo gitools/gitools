@@ -23,6 +23,7 @@ package org.gitools.api.matrix;
 
 import org.gitools.api.analysis.IProgressMonitor;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 public interface IMatrixIterable<T> extends Iterable<T> {
@@ -50,6 +51,8 @@ public interface IMatrixIterable<T> extends Iterable<T> {
     void store(IMatrix output, ILayerAdapter<T> layerAdapter);
 
     void store(IMatrix output, IMatrixLayer<T> layer);
+
+    void store(Collection<T> output);
 
     int count();
 

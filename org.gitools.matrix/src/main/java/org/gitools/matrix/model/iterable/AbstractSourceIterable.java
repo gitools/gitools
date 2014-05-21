@@ -22,6 +22,7 @@
 package org.gitools.matrix.model.iterable;
 
 import org.gitools.api.matrix.*;
+import org.gitools.matrix.model.MatrixPosition;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,10 +32,20 @@ import java.util.NoSuchElementException;
 public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
     private long size = 1;
-    private IMatrixPosition position;
+
+    private MatrixPosition mainPosition;
+
+    // Thread safe position
+    private ThreadLocal<MatrixPosition> position = new ThreadLocal<MatrixPosition>() {
+        @Override
+        protected MatrixPosition initialValue() {
+            return new MatrixPosition(mainPosition);
+        }
+    };
+
     private IMatrixDimension[] iterateDimensions;
 
-    protected AbstractSourceIterable(IMatrixPosition position, IMatrixDimension... iterateDimensions) {
+    protected AbstractSourceIterable(MatrixPosition position, IMatrixDimension... iterateDimensions) {
 
         // Iterate all dimensions if any dimension is set
         if (iterateDimensions.length == 0) {
@@ -49,7 +60,7 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
         }
 
-        this.position = position;
+        this.mainPosition = position;
         this.iterateDimensions = iterateDimensions;
 
         for (IMatrixDimension dimension : iterateDimensions) {
@@ -59,12 +70,12 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
     }
 
     public IMatrix getMatrix() {
-        return position.getMatrix();
+        return mainPosition.getMatrix();
     }
 
     @Override
     public IMatrixPosition getPosition() {
-        return position;
+        return position.get();
     }
 
     @Override
@@ -118,16 +129,16 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
         }
 
         @Override
-        public boolean hasNext() {
+        public synchronized boolean hasNext() {
             return this.hasNext;
         }
 
         @Override
-        public T next() {
+        public synchronized T next() {
             return getValue(nextPosition());
         }
 
-        private IMatrixPosition nextPosition() {
+        private synchronized IMatrixPosition nextPosition() {
 
             // Return current position
             IMatrixPosition position = getPosition();
@@ -163,4 +174,5 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
             throw new UnsupportedOperationException("Read only iterator");
         }
     }
+
 }

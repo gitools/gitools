@@ -26,9 +26,21 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.utils.ComparableComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
+
+    private static int CORES = Runtime.getRuntime().availableProcessors();
+    private static ExecutorService EXECUTOR = Executors.newFixedThreadPool(CORES);
 
     @Override
     public abstract long size();
@@ -67,23 +79,117 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
     }
 
     @Override
-    public void store(IMatrix output, IMatrixPositionMapping mapping, ILayerAdapter<T> layerAdapter) {
+    public void store(final IMatrix output, final IMatrixPositionMapping mapping, final ILayerAdapter<T> layerAdapter) {
+
+        List<Future<?>> tasks = new ArrayList<>(CORES);
+        final Iterator<T> iterator = iterator();
+        for (int c=0; c < CORES; c++) {
+            tasks.add(EXECUTOR.submit(new Runnable() {
+                @Override
+                public void run() {
+
+                    IMatrixPosition position = output.newPosition();
+                    while (iterator.hasNext()) {
+                        T value = iterator.next();
+                        mapping.map(getPosition(), position);
+                        layerAdapter.set(output, value, position);
+                    }
+                }
+            }));
+        }
 
         IMatrixPosition position = output.newPosition();
-        for (T value : this) {
+        while (iterator.hasNext()) {
+            T value = iterator.next();
             mapping.map(getPosition(), position);
             layerAdapter.set(output, value, position);
+        }
+
+        // Wait other tasks to finish
+        boolean done = false;
+        while(!done) {
+            done = true;
+            for (Future task : tasks) {
+                if (task.isDone()) {
+                    continue;
+                }
+                done = false;
+            }
         }
 
     }
 
     @Override
-    public void store(IMatrix output, IMatrixPositionMapping mapping, IMatrixLayer<T> layer) {
+    public void store(final IMatrix output, final IMatrixPositionMapping mapping, final IMatrixLayer<T> layer) {
+
+        List<Future<?>> tasks = new ArrayList<>(CORES);
+        final Iterator<T> iterator = iterator();
+        for (int c=0; c < CORES; c++) {
+            tasks.add(EXECUTOR.submit(new Runnable() {
+                @Override
+                public void run() {
+
+                    IMatrixPosition position = output.newPosition();
+                    while (iterator.hasNext()) {
+                        T value = iterator.next();
+                        mapping.map(getPosition(), position);
+                        output.set(layer, value, position);
+                    }
+                }
+            }));
+        }
 
         IMatrixPosition position = output.newPosition();
-        for (T value : this) {
+        while (iterator.hasNext()) {
+            T value = iterator.next();
             mapping.map(getPosition(), position);
             output.set(layer, value, position);
+        }
+
+        // Wait other tasks to finish
+        boolean done = false;
+        while(!done) {
+            done = true;
+            for (Future task : tasks) {
+                if (task.isDone()) {
+                    continue;
+                }
+                done = false;
+            }
+        }
+
+    }
+
+    @Override
+    public void store(final Collection<T> output) {
+
+        List<Future<?>> tasks = new ArrayList<>(CORES);
+        final Iterator<T> iterator = iterator();
+        for (int c=0; c < CORES; c++) {
+            tasks.add(EXECUTOR.submit(new Runnable() {
+                @Override
+                public void run() {
+                    while (iterator.hasNext()) {
+                        output.add(iterator.next());
+                    }
+                }
+            }));
+        }
+
+        while (iterator.hasNext()) {
+            output.add(iterator.next());
+        }
+
+        // Wait other tasks to finish
+        boolean done = false;
+        while(!done) {
+            done = true;
+            for (Future task : tasks) {
+                if (task.isDone()) {
+                    continue;
+                }
+                done = false;
+            }
         }
 
     }

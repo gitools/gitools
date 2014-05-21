@@ -27,7 +27,7 @@ import org.gitools.analysis.stats.test.results.FisherResult;
 
 public class FisherTest extends AbstractTest {
 
-    int populationNotOnes, populationOnes;
+    private int populationNotOnes, populationOnes;
 
     public FisherTest() {
         super("fisher", FisherResult.class);

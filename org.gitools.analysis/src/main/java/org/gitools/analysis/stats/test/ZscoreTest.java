@@ -37,7 +37,7 @@ import static com.google.common.collect.Iterables.*;
 
 public class ZscoreTest extends AbstractTest {
 
-    final Statistic statCalc;
+    private final Statistic statCalc;
 
     private Random random;
     private List<Double> population;

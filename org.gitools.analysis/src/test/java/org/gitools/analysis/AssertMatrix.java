@@ -87,6 +87,10 @@ public class AssertMatrix {
             Assert.failNotEquals(message, v1, v2);
         }
 
+        if (v2 == null) {
+            Assert.failNotEquals(message, v1, v2);
+        }
+
         if (v1 instanceof Double) {
             Assert.assertEquals(message, ((Double) v1).doubleValue(), ((Double) v2).doubleValue(), delta);
             return;

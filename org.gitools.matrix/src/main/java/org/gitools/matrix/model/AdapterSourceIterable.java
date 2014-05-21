@@ -34,7 +34,7 @@ public class AdapterSourceIterable<T> extends AbstractSourceIterable<T> {
 
     private ILayerAdapter<T> adapter;
 
-    public AdapterSourceIterable(IMatrixPosition matrixPosition, ILayerAdapter<T> adapter, IMatrixDimension... dimensions) {
+    public AdapterSourceIterable(MatrixPosition matrixPosition, ILayerAdapter<T> adapter, IMatrixDimension... dimensions) {
         super(matrixPosition, dimensions);
 
         this.adapter = adapter;

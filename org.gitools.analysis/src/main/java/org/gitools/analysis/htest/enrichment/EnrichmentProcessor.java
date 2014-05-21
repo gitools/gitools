@@ -63,8 +63,16 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
         IMatrix data = analysis.getData().get();
         final IMatrixLayer<Double> layer = data.getLayers().get(analysis.getLayer());
-        final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
-        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.getResultClass());
+
+        final TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
+        final ThreadLocal<Test> test = new ThreadLocal<Test>() {
+            @Override
+            protected Test initialValue() {
+                return testFactory.create();
+            }
+        };
+
+        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.get().getResultClass());
         final IModuleMap moduleMap = analysis.getModuleMap().get();
         final IMatrixDimension conditions = data.getColumns();
         final IMatrixDimension items = data.getRows();
@@ -124,7 +132,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                         // Apply cutoff
                         population = population.transform(cutoffFunction);
 
-                        test.processPopulation(
+                        test.get().processPopulation(
                                 concat(
                                         population,
                                         transform(missingBackgroundItems, backgroundValue)
@@ -156,7 +164,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
                             }
 
-                            SimpleResult result = test.processTest(moduleValues);
+                            SimpleResult result = test.get().processTest(moduleValues);
                             if (result != null && result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
                                 results.put(module, result);
                             }
