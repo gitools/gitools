@@ -92,6 +92,10 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
             bufferedImage = new BufferedImage(clip.width, clip.height, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D gb = bufferedImage.createGraphics();
+            gb.setRenderingHint(
+                    RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
             // Clear background
             gb.setColor(Color.WHITE);
             gb.fillRect(0, 0, clip.width, clip.height);
