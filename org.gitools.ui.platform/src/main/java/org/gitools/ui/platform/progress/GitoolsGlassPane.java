@@ -45,14 +45,24 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
     protected String text = "";
     protected float shield = 0.85f;
     private RootPaneContainer parent;
+    private static GitoolsGlassPane lastSetVisible;
 
     Component oldGlass;
 
     public GitoolsGlassPane(Window parent) {
         this.parent = (RootPaneContainer) parent;
-        oldGlass = this.parent.getGlassPane();
+        assignOldGlass();
         this.parent.setGlassPane(this);
         this.hints = new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+    }
+
+    protected void assignOldGlass() {
+        // Make sure that old glass is not a Gitools glass pane
+        Component oldGlass = this.parent.getGlassPane();
+        while (oldGlass instanceof GitoolsGlassPane) {
+            oldGlass = ((GitoolsGlassPane) oldGlass).getOldGlass();
+        }
+        this.oldGlass = oldGlass;
     }
 
     private void revertToOldGlass(RootPaneContainer parent, Component component) {
@@ -71,18 +81,38 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
 
     @Override
     public void setVisible(boolean aFlag) {
+
+
+        if (this.isVisible() == aFlag) {
+            if (aFlag == false && stopped) {
+                return;
+            } else if (aFlag && started) {
+                return;
+            }
+        }
+
         if (aFlag) {
+            if (lastSetVisible == null || !lastSetVisible.equals(this)) {
+                lastSetVisible = this;
+            }
             start();
         } else {
             if (stopped) {
                 //Fade out animation performed
-                super.setVisible(aFlag);
-                revertToOldGlass(parent, oldGlass);
+                doHideAfterAnimation();
             } else {
                 //Perform fade out before setting unvisible
                 stop();
             }
         }
+    }
+
+    public void doHideAfterAnimation() {
+        if (!this.equals(lastSetVisible)) {
+            return;
+        }
+        super.setVisible(false);
+        revertToOldGlass(parent, oldGlass);
     }
 
     public void start() {
@@ -122,6 +152,10 @@ public abstract class GitoolsGlassPane extends JComponent implements MouseListen
                         (float) (maxY + layout.getLeading() + 2 * layout.getAscent()));
             }
         }
+    }
+
+    public Component getOldGlass() {
+        return oldGlass;
     }
 
     protected class Animator implements Runnable {
