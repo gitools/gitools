@@ -22,15 +22,13 @@
 package org.gitools.matrix.model.hashmatrix;
 
 import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.AbstractMatrixDimension;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HashMatrixDimension extends AbstractMatrixDimension {
 
@@ -40,8 +38,8 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     public HashMatrixDimension(MatrixDimensionKey id) {
         super(id);
 
-        this.labelToIndex = new HashMap<>();
-        this.indexToLabel = new HashMap<>();
+        this.labelToIndex = new ConcurrentHashMap<>();
+        this.indexToLabel = new ConcurrentHashMap<>();
     }
 
     public HashMatrixDimension(MatrixDimensionKey id, Iterable<String> labels) {
