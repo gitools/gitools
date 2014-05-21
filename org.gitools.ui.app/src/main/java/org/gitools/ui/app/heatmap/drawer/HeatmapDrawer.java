@@ -65,10 +65,10 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         g.setColor(Color.WHITE);
         g.fillRect(clip.x, clip.y, clip.width, clip.height);
 
-        colsHeader.draw(g, columnsBounds, columnsBounds);
+        body.draw(g, bodyBounds, bodyBounds);
         at.setToIdentity();
         g.setTransform(at);
-        body.draw(g, bodyBounds, bodyBounds);
+        colsHeader.draw(g, columnsBounds, columnsBounds);
         at.setToIdentity();
         g.setTransform(at);
         rowsHeader.draw(g, rowsBounds, rowsBounds);
