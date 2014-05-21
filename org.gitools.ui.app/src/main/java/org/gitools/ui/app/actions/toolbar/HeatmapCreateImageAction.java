@@ -23,11 +23,11 @@ package org.gitools.ui.app.actions.toolbar;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;
 import org.gitools.ui.app.imageviewer.BitmapImageViewer;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -67,7 +67,7 @@ public class HeatmapCreateImageAction extends HeatmapAction {
 
                     Dimension heatmapSize = drawer.getSize();
 
-                    int type = BufferedImage.TYPE_INT_RGB;
+                    int type = BufferedImage.TYPE_3BYTE_BGR;
 
                     final BufferedImage bi = new BufferedImage(heatmapSize.width, heatmapSize.height, type);
                     Graphics2D g = bi.createGraphics();
