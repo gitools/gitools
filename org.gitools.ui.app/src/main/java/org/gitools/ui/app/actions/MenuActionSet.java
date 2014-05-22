@@ -66,6 +66,7 @@ public class MenuActionSet extends ActionSet {
                                                 Actions.exportMatrixAction,
                                                 Actions.exportTableAction,
                                                 Actions.exportHeatmapImageAction,
+                                                Actions.exportHeatmapSVGAction,
                                                 Actions.exportScaleImageAction,
                                                 Actions.exportHierarchicalTreeImageAction
                                         }

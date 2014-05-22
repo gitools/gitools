@@ -28,6 +28,7 @@ import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.actions.file.*;
 import org.gitools.ui.app.actions.toolbar.HeatmapCreateImageAction;
 import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
+import org.gitools.ui.app.svg.ExportHeatmapSVGAction;
 import org.gitools.ui.core.actions.ActionManager;
 import org.gitools.ui.core.actions.BaseAction;
 
@@ -63,6 +64,7 @@ public class Actions {
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+    public static final BaseAction exportHeatmapSVGAction = new ExportHeatmapSVGAction();
     public static final BaseAction exportHierarchicalTreeImageAction = new ExportHierarchicalTreeImageAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
 

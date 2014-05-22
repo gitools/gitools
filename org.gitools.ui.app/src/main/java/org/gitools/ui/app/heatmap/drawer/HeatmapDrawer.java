@@ -62,8 +62,10 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         AffineTransform at = new AffineTransform();
 
         // Clear background
-        g.setColor(Color.WHITE);
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        if (!isPictureMode()) {
+            g.setColor(Color.WHITE);
+            g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
 
         body.draw(g, bodyBounds, bodyBounds);
         at.setToIdentity();

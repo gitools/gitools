@@ -46,6 +46,7 @@ public class Settings extends Model {
     private static final int DEFAULT_EDITOR_TAB_LENGTH = 20;
     private static final String DEFAULT_IGV_URL = "http://127.0.0.1:60151";
     private static final String DEFAULT_WELCOME_URL = "http://www.gitools.org/welcome";
+    private static final int DEFAULT_SVG_BODY_LIMIT = 50000;
 
     public static final String PROPERTY_USAGE_STATS = "allowUsageStatistics";
     public static final String PROPERTY_TIPS = "showTipsAtStartup";
@@ -84,6 +85,9 @@ public class Settings extends Model {
 
     // Preview features
     private boolean previewFeatures = false;
+
+    // SVG body bitmap limit
+    private int svgBodyLimit = DEFAULT_SVG_BODY_LIMIT;
 
     private Settings() {
     }
@@ -272,6 +276,14 @@ public class Settings extends Model {
 
     public void setShowMutualExclusionProgress(boolean showMutualExclusionProgress) {
         this.showMutualExclusionProgress = showMutualExclusionProgress;
+    }
+
+    public int getSvgBodyLimit() {
+        return svgBodyLimit;
+    }
+
+    public void setSvgBodyLimit(int svgBodyLimit) {
+        this.svgBodyLimit = svgBodyLimit;
     }
 
     public boolean isAllowUsageStatistics() {

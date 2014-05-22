@@ -41,7 +41,7 @@ public class SaveFileWizard extends AbstractWizard {
         addPage(getSaveFilePage());
     }
 
-    SaveFilePage getSaveFilePage() {
+    public SaveFilePage getSaveFilePage() {
         if (page == null) {
             page = new SaveFilePage();
         }

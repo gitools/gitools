@@ -29,23 +29,30 @@ import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
-    VisibleRect visibleRect;
-    BufferedImage bufferedImage;
+    private static final AffineTransformOp TRANSFORM_OP = new AffineTransformOp(AffineTransform.getScaleInstance(1, 1), AffineTransformOp.TYPE_BILINEAR);
+
+    private VisibleRect visibleRect;
+    private BufferedImage bufferedImage;
 
     private boolean redrawBufferedImage = true;
+    private int svgLimit;
 
     public HeatmapLayerBodyDrawer(Heatmap heatmap) {
         super(heatmap);
 
         visibleRect = new VisibleRect();
+        svgLimit = Settings.get().getSvgBodyLimit();
 
         PropertyChangeListener redrawImageListener = new PropertyChangeListener() {
             @Override
@@ -83,6 +90,11 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < columns.size() ? colEnd : columns.size();
 
+        if (isPictureMode() && ((columns.size()*rows.size()) <= svgLimit)) {
+            redraw(g, box, rowsGridSize, columnsGridSize, cellWidth, cellHeight, rowStart, rowEnd, colStart, colEnd);
+            return;
+        }
+
         VisibleRect newRect = new VisibleRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
         redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(visibleRect));
 
@@ -111,7 +123,7 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         }
 
         // offset for first
-        g.drawImage(bufferedImage, null, colStart * cellWidth, rowStart * cellHeight);
+        g.drawImage(bufferedImage, TRANSFORM_OP, colStart * cellWidth, rowStart * cellHeight);
 
 
     }
