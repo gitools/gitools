@@ -34,7 +34,7 @@ public final class ToolBarActionSet extends ActionSet {
 
     public ToolBarActionSet() {
         super(new BaseAction[]{
-                Actions.open,
+                Actions.openBrowse,
                 Actions.saveAction,
                 BaseAction.separator,
                 Actions.openGenomeSpace,

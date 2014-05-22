@@ -38,7 +38,8 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 public class Actions {
 
     // Open
-    public static final BaseAction open = new OpenFromFilesystemAction();
+    public static final BaseAction open = new OpenFromFileSystemActionSet();
+    public static final BaseAction openBrowse = new OpenFromFilesystemBrowseAction();
     public static final BaseAction openGenomeSpace = new OpenFromGenomeSpaceAction();
     public static final BaseAction openURL = new OpenFromURLAction();
 

@@ -55,7 +55,7 @@ import java.util.List;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
 
-public class OpenFromFilesystemAction extends AbstractAction {
+public class OpenFromFilesystemBrowseAction extends AbstractAction {
 
     public static FileFormat[] FORMAT_ANALYSIS = new FileFormat[]{
             EnrichmentAnalysisFormat.FILE_FORMAT,
@@ -80,6 +80,7 @@ public class OpenFromFilesystemAction extends AbstractAction {
     };
 
     public static FileFormatFilter[] FILE_FORMAT_FILTERS;
+
     static {
 
         List<FileFormatFilter> filters = new ArrayList<>();
@@ -114,8 +115,8 @@ public class OpenFromFilesystemAction extends AbstractAction {
         FILE_FORMAT_FILTERS = filters.toArray(new FileFormatFilter[filters.size()]);
     }
 
-    public OpenFromFilesystemAction() {
-        super("Open...");
+    public OpenFromFilesystemBrowseAction() {
+        super("Browse...");
         setDesc("Open a heatmap or an analysis from the filesystem");
         setSmallIconFromResource(IconNames.openMatrix16);
         setLargeIconFromResource(IconNames.openMatrix24);

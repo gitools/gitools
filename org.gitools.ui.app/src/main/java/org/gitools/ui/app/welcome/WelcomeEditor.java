@@ -26,7 +26,7 @@ import org.apache.commons.io.IOUtils;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
+import org.gitools.ui.app.actions.file.OpenFromFilesystemBrowseAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
@@ -71,7 +71,7 @@ public class WelcomeEditor extends HtmlEditor {
             case "open": {
                 switch (params.get("ref")) {
                     case "filesystem":
-                        new OpenFromFilesystemAction().actionPerformed(new ActionEvent(this, 0, name));
+                        new OpenFromFilesystemBrowseAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
                     case "genomespace":
                         new OpenFromGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
