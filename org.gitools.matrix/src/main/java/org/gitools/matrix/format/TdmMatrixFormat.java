@@ -286,7 +286,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             } else if (value instanceof Integer) {
                 out.writeValue(value.toString());
             } else if (value != null) {
-                out.writeQuotedValue(value.toString());
+                out.writeValue(value.toString());
             } else {
                 out.writeValue("-");
             }
