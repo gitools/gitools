@@ -35,16 +35,16 @@ import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
-import org.gitools.ui.platform.settings.Settings;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.utils.FileChoose;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.core.utils.FileFormatFilter;
-import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -146,8 +146,12 @@ public class OpenFromFilesystemAction extends AbstractAction {
             }
         }
 
-        CommandLoadFile loadFile = new CommandLoadFile(fileChoose.getFile().getAbsolutePath(), format);
+        String fileName = fileChoose.getFile().getAbsolutePath();
+        CommandLoadFile loadFile = new CommandLoadFile(fileName, format);
         JobThread.execute(Application.get(), loadFile);
-        Application.get().setStatusText("Done.");
+
+        Settings.get().addRecentFile(fileName);
+        Settings.get().save();
+        Application.get().setStatusText("Loaded " + fileName + ".");
     }
 }

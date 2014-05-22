@@ -27,10 +27,10 @@ import com.jgoodies.binding.beans.Model;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @XmlRootElement
@@ -63,6 +63,9 @@ public class Settings extends Model {
     private String lastExportPath = userPath;
     private String lastImportPath = userPath;
     private String lastPath = userPath;
+    @XmlElementWrapper(name = "recentFiles")
+    @XmlElement(name = "file")
+    private List<String> recentFiles = new ArrayList<>();
 
     private String version;
     private String uuid;
@@ -321,5 +324,31 @@ public class Settings extends Model {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public void addRecentFile(String fileName) {
+        if (recentFiles.contains(fileName)) {
+            recentFiles.remove(fileName);
+        }
+
+        recentFiles.add(fileName);
+
+        while (recentFiles.size() > 5) {
+            recentFiles.remove(0);
+        }
+    }
+
+    public void setRecentFiles(List<String> recentFiles) {
+        this.recentFiles = recentFiles;
+    }
+
+    /**
+     * Returns a list of up to 5 last .heatmap files accessed
+     * in revers order (most recent last)
+     *
+     * @return
+     */
+    public List<String> getRecentFiles() {
+        return recentFiles;
     }
 }

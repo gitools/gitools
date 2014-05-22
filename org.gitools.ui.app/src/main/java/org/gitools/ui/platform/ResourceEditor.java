@@ -30,12 +30,12 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.resource.Resource;
-import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.app.wizard.SaveFileWizard;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.swing.*;
@@ -132,6 +132,8 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
         }
 
         setDirty(false);
+        Settings.get().addRecentFile(file.getAbsolutePath());
+        Settings.get().save();
 
     }
 

@@ -35,19 +35,19 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.app.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.app.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.MemoryUtils;
 import org.slf4j.Logger;
@@ -280,6 +280,8 @@ public class HeatmapEditor extends AbstractEditor {
         }
 
         setDirty(false);
+        Settings.get().addRecentFile(file.getAbsolutePath());
+        Settings.get().save();
     }
 
     @Override
