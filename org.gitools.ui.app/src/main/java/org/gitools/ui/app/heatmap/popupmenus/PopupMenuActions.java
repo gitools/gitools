@@ -32,6 +32,7 @@ import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
 import org.gitools.ui.core.actions.PopupSectionTitleAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 public class PopupMenuActions {
 
@@ -82,8 +83,8 @@ public class PopupMenuActions {
     public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.ROWS, "Edit..."),
             BaseAction.separator,
-            new MoveUpHeaderAction("Move up", MatrixDimensionKey.ROWS),
-            new MoveDownHeaderAction("Move down", MatrixDimensionKey.ROWS),
+            new MoveUpHeaderAction("Move up", MatrixDimensionKey.ROWS, IconNames.moveUp16),
+            new MoveDownHeaderAction("Move down", MatrixDimensionKey.ROWS, IconNames.moveDown16),
             BaseAction.separator,
             new RemoveHeaderAction(MatrixDimensionKey.ROWS, "Remove")
     });
@@ -91,8 +92,8 @@ public class PopupMenuActions {
     public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.COLUMNS, "Edit..."),
             BaseAction.separator,
-            new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS),
-            new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS),
+            new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS, IconNames.moveUp16),
+            new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS, IconNames.moveDown16),
             BaseAction.separator,
             new RemoveHeaderAction(MatrixDimensionKey.COLUMNS, "Remove")
     });

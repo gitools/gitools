@@ -24,11 +24,10 @@ package org.gitools.ui.app.actions.edit;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.core.Application;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -37,10 +36,11 @@ public class MoveDownHeaderAction extends HeatmapDimensionAction implements IHea
 
     private HeatmapHeader header;
 
-    public MoveDownHeaderAction(String title, MatrixDimensionKey dim) {
+    public MoveDownHeaderAction(String title, MatrixDimensionKey dim, String iconName) {
         super(dim, title);
-
-        setSmallIconFromResource(IconNames.add16);
+        if (iconName != null) {
+            setSmallIconFromResource(iconName);
+        }
     }
 
     @Override

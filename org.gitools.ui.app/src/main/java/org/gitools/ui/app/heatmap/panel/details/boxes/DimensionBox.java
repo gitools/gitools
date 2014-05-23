@@ -26,6 +26,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.app.actions.edit.AddHeaderAction;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
@@ -52,7 +53,7 @@ public class DimensionBox extends DetailsBox {
      * @param dimension
      */
     public DimensionBox(String title, ActionSet actions, Heatmap heatmap, HeatmapDimension dimension) {
-        super(title, actions, heatmap);
+        super(title, actions, new ActionSet(new AddHeaderAction(dimension.getId())), heatmap);
         this.dimension = dimension;
     }
 

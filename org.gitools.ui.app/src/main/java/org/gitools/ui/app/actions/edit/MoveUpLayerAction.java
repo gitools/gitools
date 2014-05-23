@@ -22,11 +22,11 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.HeatmapAction;
-import org.gitools.ui.core.HeatmapPosition;
-import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -38,7 +38,7 @@ public class MoveUpLayerAction extends HeatmapAction implements IHeatmapLayerAct
     public MoveUpLayerAction() {
         super("Move up");
 
-        setSmallIconFromResource(IconNames.add16);
+        setSmallIconFromResource(IconNames.moveUp16);
     }
 
     @Override

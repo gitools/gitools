@@ -25,15 +25,15 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
-import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.heatmap.panel.settings.headers.ColorScaleSection;
-import org.gitools.ui.app.heatmap.panel.settings.headers.FormatSection;
 import org.gitools.ui.app.heatmap.panel.settings.headers.DetailsSection;
-import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.app.heatmap.panel.settings.headers.FormatSection;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
@@ -48,11 +48,12 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
     public EditHeaderAction(MatrixDimensionKey dimensionKey, String name) {
         super(dimensionKey, name);
+        setSmallIconFromResource(IconNames.edit16);
     }
 
     public EditHeaderAction(HeatmapHeader header) {
         super(header.getHeatmapDimension().getId(), header.getTitle());
-
+        setSmallIconFromResource(IconNames.edit16);
         this.header = header;
     }
 
