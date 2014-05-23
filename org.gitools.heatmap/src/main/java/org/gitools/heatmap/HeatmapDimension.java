@@ -205,8 +205,6 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     }
 
     public void populateDetails(List<DetailsDecoration> details) {
-        details.add(new DetailsDecoration("Size", Integer.toString(size())));
-
         Iterable<HeatmapHeader> itHeaders = headers;
 
         if (getId() == MatrixDimensionKey.COLUMNS) {

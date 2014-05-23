@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.app.actions.edit;
 
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.panel.settings.GridDetailsSection;
 import org.gitools.ui.app.heatmap.panel.settings.HeatmapDetailsSection;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
@@ -35,7 +35,8 @@ import java.awt.event.ActionEvent;
 public class HeatmapSettingsAction extends HeatmapAction {
 
     public HeatmapSettingsAction() {
-        super("Settings...");
+        super("Heatmap settings...");
+        setSmallIconFromResource(IconNames.editHeatmap16);
     }
 
     @Override

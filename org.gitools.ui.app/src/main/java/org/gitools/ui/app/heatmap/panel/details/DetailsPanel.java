@@ -21,12 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.panel.details;
 
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.Bindings;
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.resource.Resource;
 import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.HeatmapInfoBox;
 import org.gitools.ui.app.heatmap.panel.details.boxes.LayerValuesBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.components.boxes.Box;
@@ -70,16 +68,15 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         setBackground(Color.WHITE);
 
-        titleLabel = new JLabel();
-        PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
-        Bindings.bind(titleLabel, model.getModel(Resource.PROPERTY_TITLE));
-        Font f = titleLabel.getFont();
-        titleLabel.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
-        add(titleLabel);
+        HeatmapInfoBox infoBox = new HeatmapInfoBox(heatmap);
+        infoBox.registerListeners();
+        infoBox.update();
+        add(infoBox);
+
         add(new JSeparator());
 
-        boxes = new ListOrderedMap();
 
+        boxes = new ListOrderedMap();
 
         columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns());
         columnsBox.setCollapsed(true);

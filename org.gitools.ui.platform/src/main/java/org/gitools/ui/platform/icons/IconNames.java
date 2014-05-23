@@ -71,6 +71,8 @@ public class IconNames {
     public static final String openMatrix24 = "/img/OpenMatrix24.png";
 
     public static final String edit16 = "/img/edit16.png";
+    public static final String editHeatmap16 = "/img/editHeatmap16.png";
+
 
     public static final String add16 = "/img/add16.png";
 
