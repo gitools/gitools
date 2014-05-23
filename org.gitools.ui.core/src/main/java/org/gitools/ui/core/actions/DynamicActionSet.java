@@ -55,6 +55,7 @@ public abstract class DynamicActionSet extends ActionSet {
     public JMenu createJMenu() {
         JMenu menu = new JMenu(this);
         menu.addMenuListener(new DynamicMenuListener());
+        populateMenu(menu);
         return menu;
     }
 

@@ -66,7 +66,18 @@ public abstract class HeatmapDynamicActionSet extends DynamicActionSet {
 
     @Override
     protected void populateMenu(JMenu menu) {
-        populateMenu(getHeatmap(), menu);
+        Heatmap heatmap;
+        try {
+            heatmap = getHeatmap();
+        } catch (NullPointerException e) {
+            heatmap = null;
+        }
+
+        if (heatmap == null) {
+            return;
+        }
+
+        populateMenu(heatmap, menu);
     }
 
     protected abstract void populateMenu(Heatmap heatmap, JMenu menu);

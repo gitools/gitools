@@ -26,7 +26,6 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.Settings;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
@@ -35,12 +34,11 @@ import static com.google.common.collect.Lists.reverse;
 public class OpenFromFileSystemActionSet extends DynamicActionSet {
 
     public OpenFromFileSystemActionSet() {
-        super("Open file", KeyEvent.VK_O, null);
+        super("Open file", -1, null);
         setDesc("Open from the filesystem");
         setSmallIconFromResource(IconNames.openMatrix16);
         setLargeIconFromResource(IconNames.openMatrix24);
         setDefaultEnabled(true);
-        setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
     }
 
     @Override
