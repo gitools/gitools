@@ -27,6 +27,7 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 
@@ -36,11 +37,12 @@ public class RemoveHeaderAction extends HeatmapDimensionAction implements IHeatm
 
     public RemoveHeaderAction(MatrixDimensionKey dimensionKey, String name) {
         super(dimensionKey, name);
+        setSmallIconFromResource(IconNames.remove16);
     }
 
     public RemoveHeaderAction(HeatmapHeader header) {
         super(header.getHeatmapDimension().getId(), header.getTitle());
-
+        setSmallIconFromResource(IconNames.remove16);
         this.header = header;
     }
 

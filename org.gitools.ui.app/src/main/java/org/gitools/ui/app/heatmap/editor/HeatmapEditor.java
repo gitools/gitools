@@ -62,6 +62,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
@@ -271,6 +272,17 @@ public class HeatmapEditor extends AbstractEditor {
         if (file == null) {
             doSaveAs(monitor);
             return;
+        }
+
+
+        // Last saved and author info.
+        heatmap.setLastSaved(new Date());
+        if (!Settings.get().getAuthorName().equals("")) {
+            heatmap.setAuthorName(Settings.get().getAuthorName());
+
+            if (!Settings.get().getAuthorEmail().equals("")) {
+                heatmap.setAuthorEmail(Settings.get().getAuthorEmail());
+            }
         }
 
         try {

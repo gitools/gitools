@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks", "pluggedBoxes"})
+@XmlType(propOrder = {"diagonal", "lastSaved", "authorName", "authorEmail", "rows", "columns", "data", "layers", "bookmarks", "pluggedBoxes"})
 public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
@@ -51,6 +52,11 @@ public class Heatmap extends Resource implements IMatrixView {
 
     @XmlTransient
     private PropertyChangeListener propertyListener;
+
+    private Date lastSaved;
+
+    private String authorName;
+    private String authorEmail;
 
     private HeatmapDimension rows;
     private HeatmapDimension columns;
@@ -288,4 +294,27 @@ public class Heatmap extends Resource implements IMatrixView {
         return cache;
     }
 
+    public Date getLastSaved() {
+        return lastSaved;
+    }
+
+    public void setLastSaved(Date lastSaved) {
+        this.lastSaved = lastSaved;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
 }

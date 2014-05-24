@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.AbstractAction;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
 
@@ -35,7 +35,8 @@ import java.util.List;
 
 public class SettingsAction extends AbstractAction {
     public SettingsAction() {
-        super("Settings");
+        super("Gitools Settings");
+        setSmallIconFromResource(IconNames.settings16);
         setDefaultEnabled(true);
 
     }
@@ -50,6 +51,7 @@ public class SettingsAction extends AbstractAction {
         List<ISettingsSection> sections = new ArrayList<>();
 
         sections.add(new GitoolsSettingsSection(settings));
+        sections.add(new GitoolsInterconnectivitySection(settings));
         sections.add(new GitoolsSatsSection(settings));
 
 

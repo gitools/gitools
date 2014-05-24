@@ -28,6 +28,8 @@ import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.resource.Property;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.app.actions.edit.HeatmapSettingsAction;
+import org.gitools.ui.app.actions.help.SettingsAction;
+import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
@@ -50,7 +52,13 @@ import static org.gitools.utils.events.EventUtils.isAny;
 public class HeatmapInfoBox extends DetailsBox {
 
     public HeatmapInfoBox(Heatmap heatmap) {
-        super(capitalize(heatmap.getTitle()), null, new ActionSet(new HeatmapSettingsAction()), heatmap);
+        super(capitalize(heatmap.getTitle()), null, createBottomActions(), heatmap);
+    }
+
+    private static ActionSet createBottomActions() {
+        return new ActionSet(new HeatmapSettingsAction(),
+                new SettingsAction(),
+                new ShortcutsAction());
     }
 
     @Override
@@ -99,6 +107,20 @@ public class HeatmapInfoBox extends DetailsBox {
 
         if (rows != visibleRows || columns != visibleColumns) {
             details.add(new DetailsDecoration("Size (visible)", rows + " x " + columns));
+        }
+
+        if (heatmap.getLastSaved() != null) {
+            details.add(new DetailsDecoration("Last saved", heatmap.getLastSaved().toString()));
+        }
+
+        if (heatmap.getAuthorName() != null && !heatmap.getAuthorName().equals("")) {
+            String authorName = heatmap.getAuthorName();
+            String authorEmail = heatmap.getAuthorEmail();
+
+
+            details.add(new DetailsDecoration("Author", "Last saved by this author",
+                    null, authorName, authorName));
+
         }
 
         for (Property property : heatmap.getProperties()) {

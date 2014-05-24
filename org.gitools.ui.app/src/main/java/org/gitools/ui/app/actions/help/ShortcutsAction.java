@@ -21,9 +21,10 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.dialog.ShortcutsDialog;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -33,7 +34,8 @@ public class ShortcutsAction extends AbstractAction {
 
     public ShortcutsAction() {
         super("Shortcuts...");
-        setDesc("See all the shortcuts for Gitools");
+        setDesc("Shortcuts list");
+        setSmallIconFromResource(IconNames.shortcuts16);
         setMnemonic(KeyEvent.VK_S);
         setDefaultEnabled(true);
     }

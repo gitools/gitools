@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.help;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.beans.PropertyAdapter;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.utils.formatter.IntegerFormat;
@@ -32,29 +31,27 @@ import javax.swing.*;
 import static com.jgoodies.binding.adapter.Bindings.bind;
 import static com.jgoodies.binding.value.ConverterFactory.createStringConverter;
 
-public class GitoolsSettingsSection implements ISettingsSection {
+public class GitoolsInterconnectivitySection implements ISettingsSection {
     private JPanel panel;
-    private JCheckBox tips;
-    private JFormattedTextField authorName;
-    private JFormattedTextField authorEmail;
-    private JFormattedTextField recentFilesNumber;
+    private JCheckBox IGVBox;
+    private JTextField port;
+    private JCheckBox portBox;
+    private JTextField IGVUrl;
 
-    public GitoolsSettingsSection(Settings settings) {
+    public GitoolsInterconnectivitySection(Settings settings) {
 
         PresentationModel<Settings> model = new PresentationModel<>(settings);
 
-        bind(tips, new PropertyAdapter<>(settings, Settings.PROPERTY_TIPS));
-        bind(authorName, new PropertyAdapter<>(settings, Settings.PROPERTY_AUTHOR_NAME));
-        bind(authorEmail, new PropertyAdapter<>(settings, Settings.PROPERTY_AUTHOR_EMAIL));
-        bind(recentFilesNumber, createStringConverter(model.getModel(Settings.PROPERTY_RECENT_FILES_NUMBER), IntegerFormat.get()));
-        bind(recentFilesNumber, createStringConverter(model.getModel(Settings.PROPERTY_RECENT_FILES_NUMBER), IntegerFormat.get()));
-
+        bind(portBox, model.getModel(Settings.PROPERTY_PORT_ENABLED));
+        bind(port, createStringConverter(model.getModel(Settings.PROPERTY_PORT), IntegerFormat.get()));
+        bind(IGVBox, model.getModel(Settings.PROPERTY_IGV_ENABLED));
+        bind(IGVUrl, model.getModel(Settings.PROPERTY_IGV_URL));
 
     }
 
     @Override
     public String getName() {
-        return "General";
+        return "Interconnectivity";
     }
 
     @Override
