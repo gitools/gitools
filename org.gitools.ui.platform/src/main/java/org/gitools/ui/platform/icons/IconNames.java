@@ -78,6 +78,8 @@ public class IconNames {
 
     public static final String moveUp16 = "/img/moveUp16.png";
     public static final String moveDown16 = "/img/moveDown16.png";
+    public static final String nextEventRows16 = "/img/nextEventRows16.png";
+    public static final String nextEventColumns16 = "/img/nextEventColumns16.png";
 
     public static final String add16 = "/img/add16.png";
     public static final String remove16 = "/img/remove16.png";

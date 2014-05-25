@@ -23,12 +23,15 @@ package org.gitools.heatmap.decorator.impl;
 
 
 import org.gitools.api.matrix.AbstractMatrixFunction;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.utils.colorscale.IColorScale;
 
 public abstract class NonEventToNullFunction<T extends IColorScale> extends AbstractMatrixFunction<Double, Double> {
 
     private String description;
     private T colorScale;
+
+    protected IMatrixPosition position;
 
     protected NonEventToNullFunction(T colorScale, String description) {
         this.description = description;
@@ -37,6 +40,10 @@ public abstract class NonEventToNullFunction<T extends IColorScale> extends Abst
 
     public T getColorScale() {
         return colorScale;
+    }
+
+    public IMatrixPosition getPosition() {
+        return position;
     }
 
     @Override

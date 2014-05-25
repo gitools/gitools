@@ -121,7 +121,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
-
+                this.position = position;
                 if (value == null) {
                     return null;
                 }

@@ -148,6 +148,7 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
                 return (value == null || value > getColorScale().getSignificanceLevel() ? null : 1 - value);
             }
         };

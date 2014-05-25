@@ -24,6 +24,7 @@ package org.gitools.ui.core.components.boxes;
 import com.google.common.collect.Sets;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixIterable;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
@@ -35,6 +36,7 @@ import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -51,18 +53,26 @@ public class SelectionBox extends DetailsBox {
 
     private static ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> updating = null;
+    private static JumpToNextEventAction nextRowEventAction = new JumpToNextEventAction(MatrixDimensionKey.ROWS);
+    private static JumpToNextEventAction nextColumnsEventAction = new JumpToNextEventAction(MatrixDimensionKey.COLUMNS);
+
 
     /**
      * @param title   Optional title of the details table
      * @param actions
      */
     public SelectionBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(title, actions, heatmap);
+        super(title, actions, new ActionSet(nextRowEventAction, nextColumnsEventAction), heatmap);
+        nextRowEventAction.setHeatmap(heatmap);
+        nextColumnsEventAction.setHeatmap(heatmap);
+
     }
 
     @Override
-    protected void onMouseSingleClick(DetailsDecoration propertyItem) {
-
+    protected void onMouseSingleClick(DetailsDecoration detail) {
+        if (detail.getName().equals("Events")) {
+            nextRowEventAction.actionPerformed(new ActionEvent(this, 1, ""));
+        }
     }
 
     @Override
@@ -113,6 +123,9 @@ public class SelectionBox extends DetailsBox {
                 final List<DetailsDecoration> details = new ArrayList<>();
                 Heatmap heatmap = getHeatmap();
 
+                nextRowEventAction.reset();
+                nextColumnsEventAction.reset();
+
                 Set<String> rows = heatmap.getRows().getSelected();
                 Set<String> columns = heatmap.getColumns().getSelected();
                 if (rows.isEmpty()) {
@@ -146,6 +159,7 @@ public class SelectionBox extends DetailsBox {
                 details.add(new DetailsDecoration(layer.getAggregator().toString(), valueString(agg, layer.getLongFormatter())));
 
 
+                //Events
                 IMatrixIterable<Double> eventsIt = getHeatmap().newPosition()
                         .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
                         .transform(layer.getDecorator().getEventFunction());
