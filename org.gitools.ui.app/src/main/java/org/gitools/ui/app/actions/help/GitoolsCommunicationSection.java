@@ -31,16 +31,23 @@ import javax.swing.*;
 import static com.jgoodies.binding.adapter.Bindings.bind;
 import static com.jgoodies.binding.value.ConverterFactory.createStringConverter;
 
-public class GitoolsInterconnectivitySection implements ISettingsSection {
+public class GitoolsCommunicationSection implements ISettingsSection {
     private JPanel panel;
     private JCheckBox IGVBox;
     private JTextField port;
     private JCheckBox portBox;
     private JTextField IGVUrl;
+    private JCheckBox proxyEnabled;
+    private JFormattedTextField proxyPort;
+    private JFormattedTextField proxyHost;
 
-    public GitoolsInterconnectivitySection(Settings settings) {
+    public GitoolsCommunicationSection(Settings settings) {
 
         PresentationModel<Settings> model = new PresentationModel<>(settings);
+
+        bind(proxyEnabled, model.getModel(Settings.PROPERTY_PROXY_ENABLED));
+        bind(proxyPort, createStringConverter(model.getModel(Settings.PROPERTY_PROXY_PORT), IntegerFormat.get()));
+        bind(proxyHost, model.getModel(Settings.PROPERTY_PROXY_HOST));
 
         bind(portBox, model.getModel(Settings.PROPERTY_PORT_ENABLED));
         bind(port, createStringConverter(model.getModel(Settings.PROPERTY_PORT), IntegerFormat.get()));
@@ -51,7 +58,7 @@ public class GitoolsInterconnectivitySection implements ISettingsSection {
 
     @Override
     public String getName() {
-        return "Interconnectivity";
+        return "Communication";
     }
 
     @Override

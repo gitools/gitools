@@ -59,6 +59,9 @@ public class Settings extends Model {
     public static final String PROPERTY_AUTHOR_NAME = "authorName";
     public static final String PROPERTY_AUTHOR_EMAIL = "authorEmail";
     public static final String PROPERTY_RECENT_FILES_NUMBER = "recentFilesNumber";
+    public static final String PROPERTY_PROXY_ENABLED = "proxyEnabled";
+    public static final String PROPERTY_PROXY_PORT = "proxyPort";
+    public static final String PROPERTY_PROXY_HOST = "proxyHost";
 
 
     private String authorName = System.getProperty("user.name");
@@ -102,7 +105,7 @@ public class Settings extends Model {
     private int svgBodyLimit = DEFAULT_SVG_BODY_LIMIT;
 
     // Proxy settings
-    private boolean proxyEnable = false;
+    private boolean proxyEnabled = false;
     private String proxyHost = "";
     private int proxyPort = 8080;
 
@@ -332,12 +335,12 @@ public class Settings extends Model {
         return statisticsConsentmentVersion;
     }
 
-    public boolean isProxyEnable() {
-        return proxyEnable;
+    public boolean isProxyEnabled() {
+        return proxyEnabled;
     }
 
-    public void setProxyEnable(boolean proxyEnable) {
-        this.proxyEnable = proxyEnable;
+    public void setProxyEnabled(boolean proxyEnabled) {
+        this.proxyEnabled = proxyEnabled;
     }
 
     public String getProxyHost() {
@@ -417,7 +420,7 @@ public class Settings extends Model {
 
     public Proxy getProxy() {
 
-        if (isProxyEnable()) {
+        if (isProxyEnabled()) {
 
             // Update system proxy
             System.getProperties().put("http.proxyHost", getProxyHost());

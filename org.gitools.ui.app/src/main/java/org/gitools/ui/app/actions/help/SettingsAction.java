@@ -51,7 +51,7 @@ public class SettingsAction extends AbstractAction {
         List<ISettingsSection> sections = new ArrayList<>();
 
         sections.add(new GitoolsSettingsSection(settings));
-        sections.add(new GitoolsInterconnectivitySection(settings));
+        sections.add(new GitoolsCommunicationSection(settings));
         sections.add(new GitoolsSatsSection(settings));
 
 
